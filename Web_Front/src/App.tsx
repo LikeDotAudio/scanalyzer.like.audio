@@ -1,9 +1,30 @@
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import initWasm, { analyze_audio_buffer } from 'wasm_analyzer'
 import './index.css'
 import SampleCloud from './SampleCloud'
 
 function App() {
   const [isScanning, setIsScanning] = useState(false)
+  const [wasmReady, setWasmReady] = useState(false)
+  const [analysisResult, setAnalysisResult] = useState<any>(null)
+
+  useEffect(() => {
+    // Initialize the WebAssembly module when the app loads
+    initWasm().then(() => setWasmReady(true)).catch(console.error)
+  }, [])
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !wasmReady) return
+    
+    // Read the file as raw bytes
+    const arrayBuffer = await file.arrayBuffer()
+    const uint8Array = new Uint8Array(arrayBuffer)
+    
+    // Pass the bytes directly to the Rust WebAssembly module!
+    const jsonResult = analyze_audio_buffer(uint8Array)
+    setAnalysisResult(JSON.parse(jsonResult))
+  }
 
   const handleScan = () => {
     setIsScanning(true)
@@ -19,9 +40,10 @@ function App() {
         </h1>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <button className="btn">Settings</button>
-          <button className="btn primary" onClick={handleScan}>
-            {isScanning ? 'Scanning...' : 'Start Scan'}
-          </button>
+          <label className="btn primary" style={{ cursor: 'pointer' }}>
+            {wasmReady ? 'Upload .wav File' : 'Loading Engine...'}
+            <input type="file" accept=".wav" style={{ display: 'none' }} onChange={handleFileUpload} />
+          </label>
         </div>
       </header>
 
@@ -61,8 +83,16 @@ function App() {
 
           <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
             <p className="text-secondary" style={{ fontSize: '0.85rem', lineHeight: '1.5' }}>
-              <strong>Status:</strong> Waiting for connection to Rust server...
+              <strong>WASM Status:</strong> {wasmReady ? '🟢 Engine Online' : '🔴 Offline'}
             </p>
+            {analysisResult && (
+              <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px' }}>
+                <h4 style={{ color: 'var(--accent-secondary)', marginBottom: '0.5rem' }}>WASM DSP Result:</h4>
+                <pre style={{ fontSize: '0.75rem', color: 'var(--text-primary)', whiteSpace: 'pre-wrap' }}>
+                  {JSON.stringify(analysisResult, null, 2)}
+                </pre>
+              </div>
+            )}
           </div>
         </aside>
 
