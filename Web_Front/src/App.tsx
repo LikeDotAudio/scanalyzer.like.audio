@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import './index.css'
+import SampleCloud from './SampleCloud'
 
 function App() {
   const [isScanning, setIsScanning] = useState(false)
@@ -66,13 +67,16 @@ function App() {
         </aside>
 
         {/* 3D WebGL Canvas Area */}
-        <section className="main-view glass-panel">
-          <div className="cloud-placeholder">
-            <div className="cloud-dot"></div>
-            <h2 className="text-gradient">WebGL Engine Initializing</h2>
-            <p className="text-secondary" style={{ textAlign: 'center', maxWidth: '400px' }}>
-              The 3D interactive cloud will render here, powered by Three.js and hardware acceleration.
-            </p>
+        <section className="main-view glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
+          <Suspense fallback={<div style={{ color: 'white' }}>Loading 3D Engine...</div>}>
+            <SampleCloud />
+          </Suspense>
+          
+          {/* Overlay UI elements on top of the 3D canvas */}
+          <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', zIndex: 10 }}>
+             <p className="text-secondary" style={{ background: 'rgba(0,0,0,0.5)', padding: '0.5rem 1rem', borderRadius: '8px', backdropFilter: 'blur(4px)' }}>
+               Left Click: Orbit • Right Click: Pan • Scroll: Zoom
+             </p>
           </div>
         </section>
       </main>
