@@ -13,28 +13,23 @@ function CloudParticles({ data = [] }: { data: any[] }) {
   // Use data length or fallback to 0
   const count = data.length;
 
-  const [positions, colors, sizes] = useMemo(() => {
+  const [positions, colors] = useMemo(() => {
     const positions = new Float32Array(count * 3)
     const colors = new Float32Array(count * 3)
-    const sizes = new Float32Array(count)
 
     for (let i = 0; i < count; i++) {
       const item = data[i]
       // Fallbacks in case properties are missing
-      const pitch = item.pitch_hz || (Math.random() * 1000)
-      const complexity = item.complexity || (Math.random() * 10)
-      const length = item.length_seconds || 1.0
+      const pitch = item.pitch_hz || 0;
+      const complexity = item.complexity || 0;
 
       // Map values to 3D space
       // X = pitch (scaled down a bit)
-      // Y = depth (random or grouped, for now random spread to simulate cloud depth)
+      // Y = depth (using index to spread them out somewhat evenly instead of random)
       // Z = complexity (scaled up)
       positions[i * 3] = (pitch / 100) - 10
-      positions[i * 3 + 1] = (Math.random() * 20) - 10 // random depth for now
+      positions[i * 3 + 1] = ((i % 20) - 10) 
       positions[i * 3 + 2] = (complexity * 2) - 5
-      
-      // Size based on length
-      sizes[i] = length * 2.0
 
       // Color based on pitch/complexity
       const color = new THREE.Color()
@@ -44,7 +39,7 @@ function CloudParticles({ data = [] }: { data: any[] }) {
       colors[i * 3 + 1] = color.g
       colors[i * 3 + 2] = color.b
     }
-    return [positions, colors, sizes]
+    return [positions, colors]
   }, [count, data])
 
   useFrame((state) => {
