@@ -407,7 +407,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                           <label className="btn secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <input type="checkbox" checked={autoPlay} onChange={e => setAutoPlay(e.target.checked)} /> auto-play
                           </label>
-                          <span className="text-secondary" style={{ fontSize: '0.8rem' }}>{selectedItem.length_seconds ? `${selectedItem.length_seconds.toFixed(2)} s` : ''}</span>
+                          <span className="text-secondary" style={{ fontSize: '0.8rem' }}>{selectedItem.length_seconds ? `${selectedItem.length_seconds.toFixed(2)} s · ${Math.round(selectedItem.length_seconds * (Number(selectedItem.sample_rate ?? selectedItem.samplerate) || 44100)).toLocaleString()} smp` : ''}</span>
                       </div>
                   </>
               ) : (
