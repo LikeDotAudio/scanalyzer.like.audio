@@ -146,15 +146,15 @@ class RenameMixin:
             ("god_category", "God category", True),
             ("group", "Group", True),
             ("subgroup", "Subgroup", True),
-            ("timbre", "Timbre", False),
+            ("timbre", "Timbre", True),
             ("instrument_family", "Instrument family", False),
         ], self._rename_scan)
         self.prepend_parts.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=3)
         self.append_parts = PartList(build, "Append to file name", [
-            ("root", "ROOT note", False),
+            ("root", "ROOT note", True),
             ("bpm", "BPM (when > 10)", True),
             ("length_class", "Length tier", False),
-            ("envelope_shape", "Envelope shape", False),
+            ("envelope_shape", "Envelope shape", True),
             ("distortion", "Distortion", False),
             ("cluster", "Cluster", False),
         ], self._rename_scan)
@@ -166,14 +166,49 @@ class RenameMixin:
         ttk.Checkbutton(grow2, text="Strip group/subgroup words from the original name",
                         variable=self.rename_strip_group,
                         command=self._rename_scan).pack(side=tk.LEFT)
-        self.rename_dedup = tk.BooleanVar(value=False)
+        self.rename_dedup = tk.BooleanVar(value=True)
         ttk.Checkbutton(grow2, text="Remove repeated words", variable=self.rename_dedup,
                         command=self._rename_scan).pack(side=tk.LEFT, padx=(16, 4))
 
+        format_row = ttk.LabelFrame(tab, text="Audio Conversion Settings", padding=(6, 4))
+        format_row.pack(fill=tk.X, padx=4, pady=(6, 0))
+        
+        # Format
+        ttk.Label(format_row, text="Format:").pack(side=tk.LEFT)
+        self.conv_format = tk.StringVar(value="FLAC")
+        ttk.Radiobutton(format_row, text="WAV", variable=self.conv_format, value="WAV").pack(side=tk.LEFT, padx=2)
+        ttk.Radiobutton(format_row, text="FLAC", variable=self.conv_format, value="FLAC").pack(side=tk.LEFT, padx=2)
+
+        ttk.Separator(format_row, orient=tk.VERTICAL).pack(side=tk.LEFT, padx=8, fill=tk.Y)
+
+        # Channels
+        ttk.Label(format_row, text="Channels:").pack(side=tk.LEFT)
+        self.conv_channels = tk.StringVar(value="Preserve")
+        ttk.Radiobutton(format_row, text="Preserve", variable=self.conv_channels, value="Preserve").pack(side=tk.LEFT, padx=2)
+        ttk.Radiobutton(format_row, text="Mono", variable=self.conv_channels, value="Mono").pack(side=tk.LEFT, padx=2)
+        ttk.Radiobutton(format_row, text="Stereo", variable=self.conv_channels, value="Stereo").pack(side=tk.LEFT, padx=2)
+
+        ttk.Separator(format_row, orient=tk.VERTICAL).pack(side=tk.LEFT, padx=8, fill=tk.Y)
+
+        # Sample Rate
+        ttk.Label(format_row, text="Sample Rate:").pack(side=tk.LEFT)
+        self.conv_samplerate = tk.StringVar(value="48000")
+        rates = ["Preserve", "44100", "48000", "88200", "96000"]
+        ttk.Combobox(format_row, textvariable=self.conv_samplerate, values=rates, width=10, state="readonly").pack(side=tk.LEFT, padx=4)
+
+        # Progress status and bar
+        self.conv_status = ttk.Label(format_row, text="", foreground="#888", width=30, anchor="e")
+        self.conv_status.pack(side=tk.LEFT, padx=(16, 8))
+        self.conv_progress = ttk.Progressbar(format_row, orient=tk.HORIZONTAL, mode="determinate")
+        self.conv_progress.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 6))
+
         ctl = ttk.Frame(tab, padding=(6, 4))
         ctl.pack(fill=tk.X)
+        self.rename_btn_apply = ttk.Button(ctl, text="Apply Rename & Convert", command=self._rename_apply)
+        self.rename_btn_apply.pack(side=tk.LEFT, padx=(8, 4))
+        self.rename_btn_stop = ttk.Button(ctl, text="Stop", command=self._rename_stop, state=tk.DISABLED)
+        self.rename_btn_stop.pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(ctl, text="Rescan", command=self._rename_scan).pack(side=tk.LEFT)
-        ttk.Button(ctl, text="Apply Rename", command=self._rename_apply).pack(side=tk.LEFT, padx=8)
         self.rename_summary = ttk.Label(ctl, text="Pick a directory to preview.", foreground="#888")
         self.rename_summary.pack(side=tk.RIGHT)
 
@@ -326,6 +361,8 @@ class RenameMixin:
                 return ("Cymbal", "Gong")
             return ("Cymbal", "")
         if "hh" in norm:
+            return ("Hi-Hat", "")
+        if "hat" in norm:
             return ("Hi-Hat", "")
         if "sfx" in norm:
             return ("FX", "")
@@ -495,7 +532,10 @@ class RenameMixin:
                     if key == "cluster":
                         v = rec.get("cluster", -1) if rec else -1
                         return f"Cluster {v}" if isinstance(v, int) and v >= 0 else ""
-                    return str((rec.get(key) if rec else "") or "")
+                    val = (rec.get(key) if rec else "") or ""
+                    if isinstance(val, list):
+                        return ", ".join(str(x) for x in val)
+                    return str(val)
 
                 def clean(v):
                     return re.sub(r'[\\/:*?"<>|]+', "_", v).strip()
@@ -611,31 +651,142 @@ class RenameMixin:
                 f"{'Copy' if copy else 'Rename'} {len(todo)} file(s)?\n\n" + where + "This modifies files on disk. Continue?"):
             return
 
+        fmt = getattr(self, "conv_format", tk.StringVar(value="WAV")).get()
+        chans = getattr(self, "conv_channels", tk.StringVar(value="Preserve")).get()
+        sr = getattr(self, "conv_samplerate", tk.StringVar(value="Preserve")).get()
+
         used = set()
         # Pre-seed with files that keep their name (no-ops) so we don't clobber them.
         for abspath, rel, _disp, new_abs, *_rest in self.rename_map:
             if new_abs == abspath:
                 used.add(new_abs)
-        ok = fail = 0
-        errors = []
+        
+        jobs = []
         for abspath, rel, _disp, new_abs, *_rest in todo:
+            if fmt == "FLAC":
+                base, _ext = os.path.splitext(new_abs)
+                new_abs = base + ".flac"
             target = self._dedupe(new_abs, used)
             used.add(target)
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            metadata = {}
+            rec = self._peak_for(abspath)
+            if rec:
+                metadata["TITLE"] = rec.get("name", "")
+                metadata["GENRE"] = rec.get("group", "")
+                metadata["ALBUM"] = "Sample Analysis"
+                
+                if rec.get("instrument_family"):
+                    metadata["INSTRUMENT_FAMILY"] = ", ".join(rec["instrument_family"]) if isinstance(rec["instrument_family"], list) else str(rec["instrument_family"])
+                if rec.get("god_category"):
+                    metadata["GOD_CATEGORY"] = rec["god_category"]
+                if rec.get("timbre"):
+                    metadata["TIMBRE"] = rec["timbre"]
+                if rec.get("envelope_shape"):
+                    metadata["ENVELOPE_SHAPE"] = rec["envelope_shape"]
+                if rec.get("root_note_name"):
+                    metadata["ROOT_NOTE"] = rec["root_note_name"]
+                if rec.get("beats_per_minute", 0) > 0:
+                    metadata["BPM"] = str(round(rec["beats_per_minute"]))
+
+            jobs.append({
+                "source_path": abspath,
+                "target_path": target,
+                "target_format": fmt,
+                "target_channels": chans,
+                "target_sample_rate": sr,
+                "metadata": metadata
+            })
+
+        manifest_path = os.path.join(root, "job_manifest.json") if 'root' in locals() else "job_manifest.json"
+        with open(manifest_path, "w") as f:
+            json.dump(jobs, f)
+
+        if hasattr(self, 'rename_btn_apply'):
+            self.rename_btn_apply.config(state=tk.DISABLED)
+        if hasattr(self, 'set_tab_blinking'):
+            self.set_tab_blinking("Flatten / Rename", True)
+        if hasattr(self, 'rename_btn_stop'):
+            self.rename_btn_stop.config(state=tk.NORMAL)
+        self.conv_progress["maximum"] = len(jobs)
+        self.conv_process = None
+        self.conv_progress["value"] = 0
+
+        def run_jobs():
+            import subprocess
+            import os
+            import signal
+            ok = fail = 0
+            errors = []
             try:
-                os.makedirs(os.path.dirname(target), exist_ok=True)
-                if copy:
-                    shutil.copy2(abspath, target)
-                else:
-                    shutil.move(abspath, target)
-                ok += 1
+                proc = subprocess.Popen(
+                    ["/home/anthony/Documents/GitProjects/Sample Analysis/Sample_Conversion_rs/target/release/Sample_Conversion_rs", manifest_path],
+                    stdout=subprocess.PIPE, text=True, preexec_fn=os.setsid
+                )
+                self.conv_process = proc
+                for line in proc.stdout:
+                    try:
+                        msg = json.loads(line)
+                        if msg.get("status") == "success":
+                            ok += 1
+                            if not copy:
+                                # They requested a move, so delete original
+                                src = next((j["source_path"] for j in jobs if j["target_path"] == msg.get("file")), None)
+                                if src and os.path.exists(src):
+                                    os.remove(src)
+                        elif msg.get("status") == "error":
+                            fail += 1
+                            errors.append(msg.get("error", "Unknown error"))
+                        
+                        def update_ui(v=ok+fail, fname=os.path.basename(msg.get("file", ""))):
+                            self.conv_progress["value"] = v
+                            self.conv_status.config(text=f"Processed {v} of {len(jobs)}: {fname}")
+                        self.rename_btn_apply.after(0, update_ui)
+
+                    except:
+                        pass
+                proc.wait()
+                msg_txt = f"Processed {ok} file(s)."
+                if fail:
+                    short_errors = [e[:120] + ("..." if len(e) > 120 else "") for e in errors[:5]]
+                    msg_txt += f"\n{fail} failed (first few errors):\n" + "\n".join(short_errors)
+                
+                # Cleanup empty folders if it was a move and flatten
+                if not copy and flatten:
+                    pass # Optional cleanup
+                    
+                self.rename_btn_apply.after(0, lambda: messagebox.showinfo("Apply Rename", msg_txt))
+                self.rename_btn_apply.after(0, self._rename_scan)
             except Exception as e:
-                fail += 1
-                errors.append(f"{rel}: {e}")
-        msg = f"{'Copied' if copy else 'Renamed'} {ok} file(s)."
-        if fail:
-            msg += f"\n{fail} failed:\n" + "\n".join(errors[:8])
-        messagebox.showinfo("Apply Rename", msg)
-        self._rename_scan()
+                self.rename_btn_apply.after(0, lambda: messagebox.showerror("Error", str(e)))
+            finally:
+                if os.path.exists(manifest_path):
+                    os.remove(manifest_path)
+                if hasattr(self, 'rename_btn_apply'):
+                    self.rename_btn_apply.after(0, lambda: self.rename_btn_apply.config(state=tk.NORMAL))
+                if hasattr(self, 'rename_btn_stop'):
+                    self.rename_btn_apply.after(0, lambda: self.rename_btn_stop.config(state=tk.DISABLED))
+                self.rename_btn_apply.after(0, lambda: self.conv_status.config(text=""))
+                if hasattr(self, 'set_tab_blinking'):
+                    self.rename_btn_apply.after(0, lambda: self.set_tab_blinking("Flatten / Rename", False))
+                self.conv_process = None
+
+        import threading
+        threading.Thread(target=run_jobs, daemon=True).start()
+
+    def _rename_stop(self):
+        if hasattr(self, 'conv_process') and self.conv_process:
+            import os
+            import signal
+            try:
+                os.killpg(os.getpgid(self.conv_process.pid), signal.SIGTERM)
+            except Exception:
+                pass
+            self.conv_process = None
+            self.conv_status.config(text="Stopping conversion...")
+            self.rename_btn_stop.config(state=tk.DISABLED)
+            if hasattr(self, 'set_tab_blinking'):
+                self.set_tab_blinking("Flatten / Rename", False)
 
     @staticmethod
     def _dedupe(path, used):

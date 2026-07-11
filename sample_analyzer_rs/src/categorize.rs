@@ -26,9 +26,13 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
         return ("Cymbal", sub, "cym");
     }
 
-    // "hh" anywhere ⇒ strongly a hi-hat ("ClosedHH1", "808HH", …).
+    // "hh" or "hat" anywhere ⇒ strongly a hi-hat ("ClosedHH1", "808HH",
+    // "OpenHat", …).
     if norm.contains("hh") {
         return ("Hi-Hat", "", "hh");
+    }
+    if norm.contains("hat") {
+        return ("Hi-Hat", "", "hat");
     }
 
     // "sfx" anywhere ⇒ strongly a sound effect.
@@ -92,6 +96,8 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
         // 808 is a drum machine, NOT bass — so it is intentionally not a Bass keyword.
         ("Bass", "", &["bass", "sub bass"], &["sub"]),
         ("Vocal", "", &["vocal", "voice", "vox"], &["vx"]),
+        // Generic "drum" tag catches things before they fall through to Keyboards (e.g. "Synth Drum")
+        ("Perc", "Drum", &["drum"], &["drm"]),
         // Keyboards — new group with curated subgroups (Electric Piano before
         // Piano so "epiano" doesn't fall through to plain Piano).
         ("Keyboards", "Electric Piano", &["electric piano", "rhodes", "wurlitzer", "wurli", "e-piano", "epiano"], &["ep"]),
@@ -202,6 +208,7 @@ mod tests {
             ("Scratch_01.wav", "Scratch", ""), ("Vinyl_scratches.wav", "Scratch", ""),
             ("DJ_scratch.wav", "Scratch", ""), ("Turntable_stop.wav", "DJ", ""), ("DJ_fx.wav", "DJ", ""),
             ("Beat_01.wav", "Loops/Patterns", ""), ("Groove.wav", "Loops/Patterns", ""), ("Loop_120.wav", "Loops/Patterns", ""),
+            ("Synth Drum.wav", "Perc", "Drum"), ("Synthesized Drums.wav", "Perc", "Drum"),
             ("randomthing.wav", "Unclassified", ""),
         ];
         for (name, want_g, want_sg) in cases {

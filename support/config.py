@@ -93,7 +93,15 @@ def _subgroup_nudge(subgroup):
 def group_color(group, subgroup=""):
     """Deterministic shade for a name group (+ optional subgroup): the god
     category fixes the hue, the group picks a shade within it, the subgroup
-    nudges that shade — identical everywhere in the app."""
+    nudges that shade — identical everywhere in the app.
+    Exception: 'Perc' and 'Loops/Patterns' subgroups get distinct colours for clarity."""
+    if group in ("Perc", "Loops/Patterns") and subgroup:
+        if subgroup in _KNOWN_SUBGROUPS:
+            idx = _KNOWN_SUBGROUPS.index(subgroup)
+        else:
+            idx = zlib.crc32(subgroup.encode())
+        return CLOUD_PALETTE[idx % len(CLOUD_PALETTE)]
+
     cat = god_category(group)
     hue = GOD_HUES.get(cat)
     members = _CATEGORY_GROUPS.get(cat, [])

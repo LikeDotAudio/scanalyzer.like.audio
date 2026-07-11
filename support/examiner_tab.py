@@ -85,8 +85,11 @@ class ExaminerMixin:
             if tag not in tinted:
                 tv.tag_configure(tag, foreground=color)
                 tinted.add(tag)
+            reason = r.get("reason", "")
+            if isinstance(reason, list):
+                reason = reason[0] if reason else ""
             tv.insert("", "end", text=r.get("name", ""), tags=(tag,), values=(
-                r.get("group", ""), r.get("reason", ""), r.get("timbre", ""), r.get("cluster", ""),
+                r.get("group", ""), reason, r.get("timbre", ""), r.get("cluster", ""),
                 r.get("root_note_name", ""), f"{r.get('pitch_hz', 0):.0f}", f"{r.get('length_seconds', 0):.2f}", r.get("transient_count", ""),
                 f"{r.get('spectral_centroid_hz', 0):.0f}", f"{r.get('harmonicity', 0):.2f}",
                 f"{r.get('beats_per_minute', 0):.0f}", r.get("sample_rate", ""), r.get("bit_depth", "")))

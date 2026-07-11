@@ -46,7 +46,7 @@ from support.rename_tab import RenameMixin
 class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, GuessMixin, RenameMixin):
     def __init__(self, root):
         self.root = root
-        self.root.title("Sample Analyzer (Rust core)")
+        self.root.title("Scanalyzer")
         self.root.geometry("820x640")
         apply_dark(self.root)  # near-black theme, bright text
 
@@ -57,6 +57,11 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         self.is_analyzing = False
         self.q = queue.Queue()
         self.proc = None
+
+        # blink states
+        self._blink_flags = {}
+        self._blink_state = False
+        self._blink_loop_running = False
 
         # live cloud data — one entry per analyzed file
         self.d_pitch = []   # X
@@ -87,25 +92,29 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         self.root.after(60, self._drain_queue)
 
     def _build_ui(self):
-        top = ttk.Frame(self.root, padding=10)
+        self.notebook = ttk.Notebook(self.root)
+        self.notebook.pack(fill=tk.BOTH, expand=True)
+
+        scan_tab = ttk.Frame(self.notebook, padding=10)
+        self.notebook.add(scan_tab, text="SCANALIZE")
+
+        top = ttk.Frame(scan_tab, padding=(0, 0, 0, 10))
         top.pack(fill=tk.X)
         ttk.Label(top, text="Directory:", font=("Helvetica", 10, "bold")).pack(side=tk.LEFT, padx=(0, 8))
         ttk.Label(top, textvariable=self.directory, foreground="#c47a1a", wraplength=520).pack(side=tk.LEFT, fill=tk.X, expand=True)
         ttk.Button(top, text="Browse…", command=self.browse).pack(side=tk.RIGHT)
 
-        row = ttk.Frame(self.root, padding=(10, 0))
+        row = ttk.Frame(scan_tab, padding=(0, 0, 0, 10))
         row.pack(fill=tk.X)
         self.progress = ttk.Progressbar(row, orient=tk.HORIZONTAL, mode="determinate")
         self.progress.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8))
         self.action_btn = ttk.Button(row, text="Start Analysis", command=self.start, state=tk.DISABLED)
         self.action_btn.pack(side=tk.RIGHT)
 
-        self.status = ttk.Label(self.root, text=("Rust binary: " + (self.binary or "NOT BUILT — run: cargo build --release in sample_analyzer_rs/")),
-                                foreground=("#2a7" if self.binary else "#c33"), padding=(10, 4))
+        self.status = ttk.Label(scan_tab, text=("Rust binary: " + (self.binary or "NOT BUILT — run: cargo build --release in sample_analyzer_rs/")),
+                                foreground=("#2a7" if self.binary else "#c33"), padding=(0, 4))
         self.status.pack(fill=tk.X)
 
-        self.notebook = ttk.Notebook(self.root)
-        self.notebook.pack(fill=tk.BOTH, expand=True)
         self._build_cloud_tab()
         self._build_stats_tab()   # 2D stats live right beside the 3D cloud
         self._build_groups_tab()
@@ -137,12 +146,49 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         else:
             self.sel_label.config(text="⚠ file not found")
 
+    def set_tab_blinking(self, tab_name, is_blinking):
+        for i in range(self.notebook.index("end")):
+            txt = self.notebook.tab(i, "text").replace("🔴 ", "")
+            if txt == tab_name:
+                self._blink_flags[i] = {"blinking": is_blinking, "base": txt}
+                if not is_blinking:
+                    self.notebook.tab(i, text=txt)
+        if any(f["blinking"] for f in self._blink_flags.values()):
+            if not self._blink_loop_running:
+                self._blink_loop_running = True
+                self._run_blink_loop()
+                
+    def _run_blink_loop(self):
+        active = any(f["blinking"] for f in self._blink_flags.values())
+        if not active:
+            self._blink_loop_running = False
+            return
+        self._blink_state = not self._blink_state
+        for i, f in self._blink_flags.items():
+            if f["blinking"]:
+                prefix = "🔴 " if self._blink_state else ""
+                self.notebook.tab(i, text=prefix + f["base"])
+        self.root.after(600, self._run_blink_loop)
+
+    def _stop_playback(self):
+        """Stop the sample currently playing (if any) so plays never overlap."""
+        proc = getattr(self, "_player_proc", None)
+        self._player_proc = None
+        if proc is not None and proc.poll() is None:
+            try:
+                proc.terminate()
+            except Exception:
+                pass
+
     def _play_file(self, path):
+        self._stop_playback()
         try:
             if sys.platform == "darwin":
-                subprocess.Popen(["afplay", path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                self._player_proc = subprocess.Popen(
+                    ["afplay", path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             elif os.name == "nt":
                 import winsound
+                # SND_ASYNC playback is replaced by the next PlaySound call.
                 winsound.PlaySound(path, winsound.SND_FILENAME | winsound.SND_ASYNC)
             else:
                 player = shutil.which("paplay") or shutil.which("aplay") or shutil.which("ffplay")
@@ -150,7 +196,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
                     self.sel_label.config(text="⚠ no audio player (install pulseaudio/alsa)")
                     return
                 cmd = [player, "-nodisp", "-autoexit", path] if player.endswith("ffplay") else [player, path]
-                subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                self._player_proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except Exception as e:
             self.sel_label.config(text="⚠ " + str(e)[:30])
 
@@ -174,6 +220,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         self.root_dir = directory
         # The Start button becomes the Stop button for the duration of the run.
         self.action_btn.config(text="■ Stop Analysis", command=self.stop_analysis)
+        self.set_tab_blinking("SCANALIZE", True)
         self.progress["value"] = 0
         self.d_pitch, self.d_cx, self.d_len, self.d_group, self.d_rec = [], [], [], [], []
         self.n_loops = 0
@@ -185,10 +232,13 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         self.play_btn.config(state=tk.DISABLED)
         self.ax.clear(); self._style_axes()
         self.scatter = self.ax.scatter([], [], [], depthshade=True)
+        self.scatter.set_clip_on(False)
         if self.ax.get_legend():
             self.ax.get_legend().remove()
         self.canvas.draw_idle()
         threading.Thread(target=self._run, args=(directory,), daemon=True).start()
+        # Switch to the 3D Cloud tab so the user can watch it populate live
+        self.notebook.select(1)
 
     def stop_analysis(self):
         """Terminate the Rust analyzer. Per-file sidecars written so far are
@@ -249,6 +299,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
                 elif t == "finished":
                     self.is_analyzing = False
                     self.action_btn.config(text="Start Analysis", command=self.start, state=tk.NORMAL)
+                    self.set_tab_blinking("SCANALIZE", False)
         except queue.Empty:
             pass
         if redraw and self.d_pitch:

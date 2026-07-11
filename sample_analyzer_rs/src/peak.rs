@@ -14,7 +14,7 @@ pub struct Peak {
     pub sub: String,    // alias of `folder` (SoundCloud view compatibility)
     pub path: String,   // absolute path
     pub group: String,        // path-derived category (Kick, Snare, Perc, Keyboards, DJ, … Unclassified) — or "Loops/Patterns"
-    pub reason: String,       // WHY it's in `group`: "1) name evidence  2) envelope evidence  3) spectral evidence"
+    pub reason: Vec<String>,  // WHY it's in `group`: ["name evidence", "envelope evidence", "spectral evidence"]
     pub timbre: String,       // feature-derived class (Percussive/Tonal/Noise/Bass/Bright/Loop/Pad)
     pub length_class: String, // one-shot length tier: Short / Medium / Long (or "Loop")
     pub subgroup: String,     // curated instrument level (Perc→Conga, Tom→Hi/Mid/Lo), a "Drum" audit tag, or "group + length tier"
@@ -69,7 +69,7 @@ pub struct Peak {
     // --- multi-label timbre taxonomy (a sound can carry several tags) ---
     pub acoustic_types: Vec<String>,     // Harmonic / Inharmonic / Stochastic / Impulsive
     pub sound_design_roles: Vec<String>, // Pad / Pluck / Lead / Bass ([] for drums/FX)
-    pub instrument_family: String,       // Hornbostel-Sachs guess ("" = unknown)
+    pub instrument_family: Vec<String>,  // Hornbostel-Sachs and western family labels
     pub god_category: String,            // top-level envelope "god category"
 
     // --- raw file attributes ---

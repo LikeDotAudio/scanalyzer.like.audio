@@ -8,7 +8,7 @@ from .inspector import RecordInspector
 
 
 class GroupsMixin:
-    GROUP_COLS = ("folder", "reason", "god", "shape", "timbre", "cluster", "pitch_hz", "length_seconds", "tr")
+    GROUP_COLS = ("folder", "group", "subgroup", "family", "reason", "god", "shape", "timbre", "cluster", "pitch_hz", "length_seconds", "tr")
     # Dimensions offered in the "Group by" / "then by" pickers.
     GROUP_DIMS = ["God category", "Name group", "Timbre", "Env shape",
                   "Acoustic", "Sound design", "Family", "Distortion", "Cluster"]
@@ -45,14 +45,14 @@ class GroupsMixin:
 
         wrap = ttk.Frame(body)
         tv = ttk.Treeview(wrap, columns=self.GROUP_COLS, show="tree headings")
-        tv.heading("#0", text="Group / File")
+        tv.heading("#0", text="Group / File", command=lambda: self._sort_groups_tree(tv, "#0", False))
         tv.column("#0", width=260, stretch=True)
-        heads = {"folder": ("Folder", 160), "reason": ("Reason in group", 180),
+        heads = {"folder": ("Folder", 160), "group": ("Group", 100), "subgroup": ("Subgroup", 100), "family": ("Instrument Family", 180), "reason": ("Reason in group", 180),
                  "god": ("God category", 140), "shape": ("Envelope", 80), "timbre": ("Timbre", 90),
                  "cluster": ("Clust", 50), "pitch_hz": ("Pitch", 60), "length_seconds": ("Len s", 60), "tr": ("Trans", 50)}
         for c in self.GROUP_COLS:
             label, w = heads[c]
-            tv.heading(c, text=label)
+            tv.heading(c, text=label, command=lambda cc=c: self._sort_groups_tree(tv, cc, False))
             tv.column(c, width=w, anchor=tk.W)
         vs = ttk.Scrollbar(wrap, orient=tk.VERTICAL, command=tv.yview)
         tv.configure(yscrollcommand=vs.set)
@@ -93,7 +93,10 @@ class GroupsMixin:
         if by == "Sound design":
             return "+".join(rec.get("sound_design_roles") or []) or "(no role)"
         if by == "Family":
-            return rec.get("instrument_family") or "Unknown"
+            fam = rec.get("instrument_family")
+            if isinstance(fam, list):
+                return ", ".join(fam) if fam else "Unknown"
+            return fam or "Unknown"
         if by == "Distortion":
             return rec.get("distortion") or "Unknown"
         return rec.get("group") or "Other"
@@ -128,8 +131,14 @@ class GroupsMixin:
 
     def _insert_file_row(self, parent, r):
         tint = self._row_tint(group_color(r.get("group") or "", r.get("subgroup") or ""))
+        reason = r.get("reason", [])
+        if isinstance(reason, list):
+            reason = reason[0] if reason else ""
+        family = r.get("instrument_family", [])
+        if isinstance(family, list):
+            family = ", ".join(family)
         iid = self.groups_tv.insert(parent, "end", text=r.get("name", ""), tags=(tint,), values=(
-            r.get("folder", ""), r.get("reason", ""),
+            r.get("folder", ""), r.get("group", ""), r.get("subgroup", ""), family, reason,
             r.get("god_category", ""), r.get("envelope_shape", ""), r.get("timbre", ""),
             r.get("cluster", ""), f"{r.get('pitch_hz', 0):.0f}",
             f"{r.get('length_seconds', 0):.2f}", r.get("transient_count", "")))
@@ -220,3 +229,26 @@ class GroupsMixin:
             messagebox.showinfo("Export CSV", f"Wrote {len(self.records)} rows to:\n{path}")
         except Exception as e:
             messagebox.showerror("Export CSV", str(e))
+
+    def _sort_groups_tree(self, tv, col, reverse):
+        """Recursively sort a Treeview by a clicked column (numeric-aware, toggles order)."""
+        def sort_node(node):
+            if col == "#0":
+                items = [(tv.item(iid, "text"), iid) for iid in tv.get_children(node)]
+            else:
+                items = [(tv.set(iid, col), iid) for iid in tv.get_children(node)]
+
+            def keyf(pair):
+                v = pair[0]
+                try:
+                    return (0, float(v))
+                except (TypeError, ValueError):
+                    return (1, str(v).lower())
+            
+            items.sort(key=keyf, reverse=reverse)
+            for idx, (_v, iid) in enumerate(items):
+                tv.move(iid, node, idx)
+                sort_node(iid)
+                
+        sort_node("")
+        tv.heading(col, command=lambda: self._sort_groups_tree(tv, col, not reverse))

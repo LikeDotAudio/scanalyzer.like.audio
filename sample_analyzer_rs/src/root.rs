@@ -69,7 +69,7 @@ pub fn extract_root(data: &[f32], sr_f: f64) -> Root {
     if hps_len < 8 {
         return Root::none();
     }
-    // Search only a musical fundamental range (~30–1100 Hz).
+    // Search a musical fundamental range (~30–1100 Hz).
     let lo = ((30.0 / bin_hz).floor() as usize).max(1);
     let hi = ((1100.0 / bin_hz).ceil() as usize).min(hps_len - 1);
     if hi <= lo {
@@ -100,6 +100,12 @@ pub fn extract_root(data: &[f32], sr_f: f64) -> Root {
     } else {
         best_bin as f64 * bin_hz
     };
+
+    // No real sample root sits above A5 (880 Hz) — a "fundamental" up there
+    // means the detector locked onto a harmonic or noise. Report none instead.
+    if f > 880.0 * 1.03 {
+        return Root::none();
+    }
 
     let (midi, note, cents) = hz_to_note(f);
     if midi < 0 {

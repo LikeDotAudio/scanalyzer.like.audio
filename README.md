@@ -1,4 +1,4 @@
-# Sample Analysis
+# Scanalyzer
 
 A self-contained audio-sample analyzer and file-management tool.
 
@@ -46,7 +46,9 @@ parallel (default 30 worker threads), streaming one JSON line per file so the
    measurements only.
 4. **The file name is the LAST step** — only after all acoustic evidence is
    in does the path/name get consulted, to lay the curated taxonomy (group,
-   subgroup, family, god category) on top.
+   subgroup, family, god category) on top. If the name is completely ambiguous
+   ("Unclassified"), the system leans entirely on the computed acoustic instrument
+   family to definitively assign a group (e.g., Idiophone → Percussion).
 5. After all files: **K-Means clustering** and a **PCA embedding** over the
    whole set.
 6. **Write** per-file `<sample>.PEAK` sidecars plus the aggregate
@@ -289,16 +291,24 @@ decay + release > 0.5 s (a ringing wash), else Percussive.
 
 ### Hornbostel-Sachs family (`family.rs`) — what is physically vibrating
 
-Membranophone (stretched skin), Idiophone (the body itself), Chordophone
-(strings), Aerophone (air column), Electrophone (oscillators/circuits), or
-Voice. A confident name match decides first (Kick/Snare/Tom → Membranophone;
-Cymbal/Hi-Hat/Ride/Rim/Clap and Perc's Cowbell/Clave/Block/Shaker → Idiophone;
-Conga/Bongo → Membranophone; Guitar/Strings/Piano/Clav → Chordophone;
-Electric Piano/Organ/Synth → Electrophone; Vocal → Voice). Otherwise the
-acoustic tags are consulted: Inharmonic → Idiophone; Stochastic + Impulsive →
-Membranophone; Harmonic + sustained + spectral_flux < 0.05 (a perfectly
-static held spectrum — oscillator-like) → Electrophone. Left `""` when there
-is no honest basis for a guess.
+Expressed as a multi-tier array (e.g., `["Percussion", "Membranophone", "Struck Membranophone"]`),
+this taxonomy covers Membranophones (stretched skins), Idiophones (the body itself),
+Chordophones (strings), Aerophones (air columns), Electrophones (oscillators/circuits),
+and Voice. It also captures physical excitation methods (Struck, Scraped, Shaken,
+Friction, Plucked, Bowed).
+
+A confident name match maps into these structures first (Kick/Snare/Tom → Struck Membranophone;
+Cymbal/Hi-Hat/Ride/Rim/Clap and Perc's Cowbell/Block → Struck Idiophone;
+Shaker → Shaken Idiophone; Cuica → Friction Membranophone; Guitar/Piano → Chordophone;
+Synth → Electrophone).
+
+**The Acoustic Fallback:** If the file name yields "Unclassified", the acoustic
+tags are consulted directly: Inharmonic → Idiophone; Stochastic + Impulsive →
+Membranophone; Harmonic + sustained + low spectral flux → Electrophone;
+Harmonic + decaying → Chordophone.
+Crucially, this acoustic guess is then fed *back* into the primary taxonomy to
+rescue unclassified files (e.g., an unnamed Membranophone is instantly promoted
+to the "Perc" group). Left empty when there is no honest basis for a guess.
 
 ### Name taxonomy (`categorize.rs`, `label.rs`) — deliberately LAST
 

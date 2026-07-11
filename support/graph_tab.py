@@ -18,7 +18,7 @@ import textwrap
 from math import sqrt
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, filedialog
 
 import numpy as np
 import matplotlib
@@ -29,6 +29,7 @@ from mpl_toolkits.mplot3d import Axes3D, proj3d  # noqa: F401 (registers the 3d 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from .config import CLOUD_PALETTE, CATEGORY_ORDER, god_category, god_color, group_color
+from .inspector import RecordInspector
 
 
 class GraphMixin:
@@ -64,13 +65,21 @@ class GraphMixin:
         views = ttk.Frame(tab, padding=(10, 4))
         views.pack(fill=tk.X)
         ttk.Label(views, text="View:", foreground="#888").pack(side=tk.LEFT, padx=(0, 6))
-        ttk.Button(views, text="Top", width=7, command=lambda: self._set_view(90, -90)).pack(side=tk.LEFT, padx=2)
-        ttk.Button(views, text="Front", width=7, command=lambda: self._set_view(0, -90)).pack(side=tk.LEFT, padx=2)
-        ttk.Button(views, text="Side", width=7, command=lambda: self._set_view(0, 0)).pack(side=tk.LEFT, padx=2)
-        ttk.Button(views, text="Iso", width=7, command=lambda: self._set_view(22, -60)).pack(side=tk.LEFT, padx=2)
+        face_views = (("Top", 90, -90), ("Bottom", -90, -90), ("Front", 0, -90),
+                      ("Back", 0, 90), ("Right", 0, 0), ("Left", 0, 180))
+        for name, el, az in face_views:
+            ttk.Button(views, text=name, width=6,
+                       command=lambda e=el, a=az: self._set_view(e, a)).pack(side=tk.LEFT, padx=2)
+        # Iso 1–4: the four corners from above; Iso 5–6: opposite corners from below.
+        iso_views = ((22, -60), (22, 30), (22, 120), (22, 210), (-22, -60), (-22, 120))
+        for i, (el, az) in enumerate(iso_views, 1):
+            ttk.Button(views, text=f"Iso{i}", width=5,
+                       command=lambda e=el, a=az: self._set_view(e, a)).pack(side=tk.LEFT, padx=2)
         ttk.Label(views, text="   (scroll to zoom · drag to orbit · click a point)", foreground="#555").pack(side=tk.LEFT, padx=6)
         self.play_btn = ttk.Button(views, text="▶ Play", width=8, state=tk.DISABLED, command=self._play_selected)
         self.play_btn.pack(side=tk.RIGHT)
+        ttk.Button(views, text="Hi-Res PNG", width=11,
+                   command=self._export_cloud_png).pack(side=tk.RIGHT, padx=(0, 4))
         self.sel_label = ttk.Label(views, text="Click a point to inspect", foreground="#c47a1a")
         self.sel_label.pack(side=tk.RIGHT, padx=8)
 
@@ -98,8 +107,25 @@ class GraphMixin:
                        command=lambda x=px, y=py, z=pz, s=ps: self._apply_cloud_preset(x, y, z, s)
                        ).pack(side=tk.LEFT, padx=1)
 
-        body = ttk.Frame(tab)
-        body.pack(fill=tk.BOTH, expand=True)
+        # --- Mono/Stereo signing: flip the chosen axis negative for mono
+        # files, positive for stereo — on whichever axis the dropdown says
+        # (complexity isn't always the thing that should carry the sign).
+        self.ms_sign = tk.BooleanVar(value=False)
+        ttk.Checkbutton(axrow, text="Mono/Stereo", variable=self.ms_sign,
+                        command=self._redraw_cloud).pack(side=tk.LEFT, padx=(10, 2))
+        self.ms_axis = tk.StringVar(value="Z")
+        ttk.Combobox(axrow, textvariable=self.ms_axis, state="readonly", width=3,
+                     values=["X", "Y", "Z"]).pack(side=tk.LEFT)
+        self.ms_axis.trace_add("write", lambda *_: self._redraw_cloud())
+
+        pane = ttk.Panedwindow(tab, orient=tk.VERTICAL)
+        pane.pack(fill=tk.BOTH, expand=True)
+
+        body = ttk.Frame(pane)
+        pane.add(body, weight=3)
+
+        self.cloud_inspector = RecordInspector(pane, play_cb=lambda p: self._play_file(p), height=7)
+        pane.add(self.cloud_inspector, weight=1)
 
         # --- left sidebar: show/hide groups ---
         side = ttk.Frame(body, width=196)
@@ -135,6 +161,7 @@ class GraphMixin:
         self.fig.subplots_adjust(left=0.0, right=1.0, bottom=0.0, top=1.0)
         self._style_axes()
         self.scatter = self.ax.scatter([], [], [], depthshade=True)
+        self.scatter.set_clip_on(False)
         self.canvas = FigureCanvasTkAgg(self.fig, master=right)
         cw = self.canvas.get_tk_widget()
         cw.pack(fill=tk.BOTH, expand=True, padx=0, pady=0)
@@ -149,14 +176,32 @@ class GraphMixin:
         cw.bind("<Down>", lambda e: self._orbit(0, -12))
         self.selected_rec = None
 
+    def _export_cloud_png(self, path=None):
+        """Save the current cloud view as a 3000×3000 PNG (10 in² at 300 dpi).
+        The on-screen figure is resized for the render and restored after."""
+        if path is None:
+            path = filedialog.asksaveasfilename(
+                defaultextension=".png", filetypes=[("PNG image", "*.png")],
+                initialfile="sample_cloud.png", title="Export high-resolution PNG")
+        if not path:
+            return
+        orig = self.fig.get_size_inches().copy()
+        try:
+            self.fig.set_size_inches(10, 10)
+            self.fig.savefig(path, dpi=300, facecolor=self.fig.get_facecolor())
+        finally:
+            self.fig.set_size_inches(orig)
+            self.canvas.draw_idle()
+
     def _apply_cloud_preset(self, x, y, z, size):
         """Set all four axes at once; the final set triggers the one redraw."""
         self._suspend_redraw = True
         self.axis_x.set(x)
         self.axis_y.set(y)
         self.axis_z.set(z)
-        self._suspend_redraw = False
         self.axis_size.set(size)
+        self._suspend_redraw = False
+        self._redraw_cloud()
 
     def _style_axes(self):
         self.ax.set_xlabel("Pitch (Hz)", color="#aaa", labelpad=8)
@@ -227,9 +272,20 @@ class GraphMixin:
         """(Re)build the show/hide list as a 3-level tree: envelope god-category →
         name group → curated subgroup. Rebuilds only when the structure changes."""
         tree = {}
+        counts_cat = {}
+        counts_group = {}
+        counts_sub = {}
         for r in self.d_rec:
             g = r.get("group", "Other") or "Other"
-            tree.setdefault(g, set()).add(self._deeper_sub(r))
+            s = self._deeper_sub(r)
+            tree.setdefault(g, set()).add(s)
+            
+            c = god_category(g)
+            counts_cat[c] = counts_cat.get(c, 0) + 1
+            counts_group[g] = counts_group.get(g, 0) + 1
+            if s:
+                counts_sub[(g, s)] = counts_sub.get((g, s), 0) + 1
+
         # group each name group under its god-category, keeping category order.
         by_cat = {}
         for g in sorted(tree):
@@ -237,42 +293,42 @@ class GraphMixin:
             by_cat.setdefault(god_category(g), []).append((g, subs))
         cats = [c for c in CATEGORY_ORDER if c in by_cat] + \
                [c for c in sorted(by_cat) if c not in CATEGORY_ORDER]
-        structure = tuple((c, tuple(by_cat[c])) for c in cats)
-        if structure == self._group_box_keys:
+        structure = tuple((c, counts_cat[c], tuple((g, counts_group[g], tuple((s, counts_sub[(g, s)]) for s in by_cat_g_subs)) for g, by_cat_g_subs in by_cat[c])) for c in cats)
+        if structure == getattr(self, "_group_box_keys", None):
             return
         for w in self.group_box.winfo_children():
             w.destroy()
-        for cat, groups in structure:
+        for cat, cat_count, groups in structure:
             cvar = self.category_vars.get(cat)
             if cvar is None:
                 cvar = tk.BooleanVar(value=True)
                 self.category_vars[cat] = cvar
             ccol = god_color(cat)
-            tk.Checkbutton(self.group_box, text=cat, variable=cvar, anchor="w",
+            tk.Checkbutton(self.group_box, text=f"{cat} ({cat_count})", variable=cvar, anchor="w",
                            bg="#2a2a2a", activebackground="#2a2a2a",
                            fg=ccol, activeforeground=ccol, selectcolor="#101010",
                            bd=0, highlightthickness=0, relief=tk.FLAT,
                            font=("Helvetica", 9, "bold"),
                            command=lambda c=cat: self._toggle_category(c)).pack(fill=tk.X, anchor="w")
-            for g, subs in groups:
+            for g, g_count, subs in groups:
                 var = self.group_vars.get(g)
                 if var is None:
                     var = tk.BooleanVar(value=True)
                     self.group_vars[g] = var
                 gcol = group_color(g)
-                tk.Checkbutton(self.group_box, text="  " + g, variable=var, anchor="w",
+                tk.Checkbutton(self.group_box, text=f"  {g} ({g_count})", variable=var, anchor="w",
                                bg="#1e1e1e", activebackground="#1e1e1e",
                                fg=gcol, activeforeground=gcol, selectcolor="#101010",
                                bd=0, highlightthickness=0, relief=tk.FLAT,
                                font=("Helvetica", 9, "bold" if subs else "normal"),
-                               command=self._redraw_cloud).pack(fill=tk.X, anchor="w")
-                for s in subs:
+                               command=lambda gg=g: self._toggle_group(gg)).pack(fill=tk.X, anchor="w")
+                for s, s_count in subs:
                     sv = self.subgroup_vars.get((g, s))
                     if sv is None:
                         sv = tk.BooleanVar(value=True)
                         self.subgroup_vars[(g, s)] = sv
                     scol = group_color(g, s)
-                    tk.Checkbutton(self.group_box, text="     ↳ " + s, variable=sv, anchor="w",
+                    tk.Checkbutton(self.group_box, text=f"     ↳ {s} ({s_count})", variable=sv, anchor="w",
                                    bg="#1e1e1e", activebackground="#1e1e1e",
                                    fg=scol, activeforeground=scol, selectcolor="#101010",
                                    bd=0, highlightthickness=0, relief=tk.FLAT,
@@ -282,12 +338,22 @@ class GraphMixin:
     def _toggle_category(self, cat):
         """A category checkbox is a master switch for its groups + subgroups."""
         on = self.category_vars[cat].get()
-        for g in [grp for c, groups in self._group_box_keys if c == cat for grp, _s in groups]:
+        for g in [grp for c, c_count, groups in getattr(self, "_group_box_keys", []) if c == cat for grp, g_count, _s in groups]:
             if g in self.group_vars:
                 self.group_vars[g].set(on)
             for (gg, s), sv in self.subgroup_vars.items():
                 if gg == g:
                     sv.set(on)
+        self._redraw_cloud()
+
+    def _toggle_group(self, group):
+        """A group checkbox toggles all its subgroups."""
+        if group not in self.group_vars:
+            return
+        on = self.group_vars[group].get()
+        for (g, s), sv in self.subgroup_vars.items():
+            if g == group:
+                sv.set(on)
         self._redraw_cloud()
 
     def _set_all_groups(self, on):
@@ -346,6 +412,8 @@ class GraphMixin:
                 except Exception:
                     pass
                 setattr(self, attr, None)
+        if hasattr(self, "cloud_inspector"):
+            self.cloud_inspector.clear()
         self.canvas.draw_idle()
 
     def _select_point(self, i):
@@ -356,53 +424,14 @@ class GraphMixin:
         self.play_btn.config(state=tk.NORMAL)
         self.sel_label.config(text=rec.get("name", "")[:40])
 
-        # Overlay the PEAK record to the side of the graph.
-        ch = rec.get("channels")
-        title = rec.get("name", "") + (" (mono)" if ch == 1 else "")
-        lines = [title]
-        fld = rec.get("folder", "")
-        if fld:
-            lines.append("dir: " + fld)
-        lines.append("")
-        for k, label, fmt in (
-            ("group", "group", "{}"), ("reason", "reason", "{}"), ("timbre", "timbre", "{}"),
-            ("cluster", "cluster", "{}"), ("root_note_name", "root note", "{}"), ("pitch_hz", "pitch", "{:.0f} Hz"),
-            ("spectral_centroid_hz", "brightness", "{:.0f} Hz"), ("harmonicity", "harmonicity", "{:.2f}"),
-            ("complexity", "complexity", "{:.1f}"), ("attack_seconds", "attack", "{:.3f} s"),
-            ("length_seconds", "length", "{:.2f} s"), ("transient_count", "transients", "{}"),
-            ("beats_per_minute", "BPM", "{:.1f}"), ("sample_rate", "sample rate", "{} Hz"), ("bit_depth", "bits", "{}"),
-        ):
-            v = rec.get(k)
-            if v in (None, "", 0) and k in ("beats_per_minute", "cluster"):
-                continue
-            if k == "reason":
-                # "1) …  2) …  3) …" → one numbered part per line, wrapped.
-                for part in re.split(r"\s+(?=\d\))", str(v)):
-                    lines.extend(textwrap.wrap("reason " + part if part.startswith("1)") else part,
-                                               width=64, subsequent_indent="     ") or [part])
-                continue
-            try:
-                lines.append(f"{label}: " + fmt.format(v))
-            except Exception:
-                lines.append(f"{label}: {v}")
-        lines.append("channels: " + ("mono" if ch == 1 else "stereo" if ch == 2 else str(ch)))
-        if rec.get("sustained"):
-            lines.append("* sustained single note")
-        if rec.get("audit"):
-            lines.append("! generic 'drum' tag — needs audit")
-        text = "\n".join(lines)
-
         if self._sel_txt is not None:
             try:
                 self._sel_txt.remove()
             except Exception:
                 pass
-        # Pinned to the window's top-right corner (figure coords), not the cube.
-        self._sel_txt = self.fig.text(
-            0.995, 0.995, text, ha="right", va="top", multialignment="left",
-            fontsize=8, color="#f2f2d8", family="monospace", zorder=30,
-            bbox=dict(boxstyle="round,pad=0.6", facecolor="#080808", edgecolor="#f4902c",
-                      alpha=1.0, linewidth=1.3))
+            self._sel_txt = None
+
+        self.cloud_inspector.show(rec, rec.get("path"))
 
         # Highlight the picked point.
         xs, ys, zs = self._pts
@@ -412,9 +441,10 @@ class GraphMixin:
             except Exception:
                 pass
         self._sel_marker = self.ax.scatter([xs[i]], [ys[i]], [zs[i]], s=260,
-                                           facecolors="none", edgecolors="#ffffff", linewidths=1.8, depthshade=False)
+                                           c="none", edgecolors="#fff", linewidths=1.5,
+                                           depthshade=False)
+        self._sel_marker.set_clip_on(False)
         self.canvas.draw_idle()
-        self._play_selected()
 
     # ---- layout engine (Rust) --------------------------------------------
     def _compute_layout(self, req):
@@ -474,17 +504,33 @@ class GraphMixin:
             return
 
         isolated = len({grp(r) for r in recs}) == 1
+        was_isolated = getattr(self, "_was_isolated", False)
+        self._was_isolated = isolated
+
+        if isolated and not was_isolated:
+            self._suspend_redraw = True
+            self._pre_iso_y = self.axis_y.get()
+            self._pre_iso_z = self.axis_z.get()
+            self._pre_iso_size = self.axis_size.get()
+            if self.axis_y.get() == "Group":
+                self.axis_y.set("Length")
+            if self.axis_z.get() != "Complexity":
+                self.axis_z.set("Complexity")
+            if self.axis_size.get() != "Timbre":
+                self.axis_size.set("Timbre")
+            self._suspend_redraw = False
+        elif not isolated and was_isolated:
+            self._suspend_redraw = True
+            if hasattr(self, "_pre_iso_y"):
+                self.axis_y.set(self._pre_iso_y)
+                self.axis_z.set(self._pre_iso_z)
+                self.axis_size.set(self._pre_iso_size)
+            self._suspend_redraw = False
+
         x_key = self._feat_key(self.axis_x.get())
         y_key = self._feat_key(self.axis_y.get())
-        if isolated:
-            # Deep-dive a single group: timbre → size, Z → complexity, and give
-            # Y a real feature if it's still on the (now-degenerate) group depth.
-            z_key, size_key = "complexity", "timbre"
-            if y_key is None:
-                y_key = "length_seconds"
-        else:
-            z_key = self._feat_key(self.axis_z.get())
-            size_key = self._feat_key(self.axis_size.get()) or "length_seconds"
+        z_key = self._feat_key(self.axis_z.get())
+        size_key = self._feat_key(self.axis_size.get()) or "length_seconds"
 
         req = {
             "axes": {"x": x_key, "y": y_key, "z": z_key},
@@ -504,6 +550,7 @@ class GraphMixin:
         ys = np.array(p["y"]["vals"], dtype=float)
         zs = np.array(p["z"]["vals"], dtype=float)
         sizes = np.array(p["sizes"], dtype=float)
+        xs, ys, zs = self._apply_mono_stereo_sign(recs, p, x_key, y_key, z_key, xs, ys, zs)
         # God-category colour system: hue = category, shade = group, nudge =
         # subgroup — the same colours the tables use.
         colors = [group_color(r.get("group") or "", r.get("subgroup") or "") for r in recs]
@@ -526,8 +573,7 @@ class GraphMixin:
 
         n = len(recs)
         size_label = p.get("size_label", "")
-        extra = (f" · ISOLATED {groups[0]}: Y={p['y']['label']}, Z={p['z']['label']}"
-                 if isolated else "")
+        extra = f" · ISOLATED {groups[0]}" if isolated else ""
         self.ax.set_title(
             f"{n} shown  ·  {len(groups)}/{len(all_groups)} groups  ·  size = {size_label}{extra}",
             color="#f4902c", fontsize=9)
@@ -538,6 +584,26 @@ class GraphMixin:
         # Keep the 2D-Stats group picker in sync with what's been analyzed.
         if hasattr(self, "_refresh_stats_groups"):
             self._refresh_stats_groups()
+
+    def _apply_mono_stereo_sign(self, recs, p, x_key, y_key, z_key, xs, ys, zs):
+        """When the Mono/Stereo box is ticked, sign the chosen axis by channel
+        count: positive = stereo, negative = mono. Numeric axes only — group
+        depth and timbre positions are categorical, a sign would scramble them."""
+        if not self.ms_sign.get():
+            return xs, ys, zs
+        axis = self.ms_axis.get()
+        key = {"X": x_key, "Y": y_key, "Z": z_key}.get(axis)
+        if key in (None, "timbre"):
+            return xs, ys, zs
+        sign = np.array([1.0 if (r.get("channels") or 2) >= 2 else -1.0 for r in recs])
+        if axis == "X":
+            xs = xs * sign
+        elif axis == "Y":
+            ys = ys * sign
+        else:
+            zs = zs * sign
+        p[axis.lower()]["label"] += "  (+ stereo / − mono)"
+        return xs, ys, zs
 
     def _draw_legends(self, groups, size_legend, size_label):
         """Colour legend (name groups) + a separate bubble-size legend."""

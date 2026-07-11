@@ -88,13 +88,39 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         .unwrap_or_default();
 
     // Taxonomy labels (group / subgroup / reason / timbre / length tier / audit).
-    let l = label_sample(
+    let mut l = label_sample(
         &folder, &name, length, transients, bpm, harmonicity, sustain,
         amp.attack, amp.crest, spec.centroid, spec.low, spec.high,
     );
-    let is_loop = l.group == "Loops/Patterns";
     let family = classify_family(&l.group, &l.subgroup, &acoustic, flux, l.sustained);
+
+    if l.group == "Unclassified" {
+        if family.contains(&"Membranophone".to_string()) || family.contains(&"Idiophone".to_string()) {
+            l.group = "Perc".to_string();
+            l.subgroup = "Acoustic Guess".to_string();
+            l.reason = "Acoustic ML Fallback (ZCR/Inharmonicity)".to_string();
+        } else if family.contains(&"Electrophone".to_string()) {
+            l.group = "Keyboards".to_string();
+            l.subgroup = "Synth".to_string();
+            l.reason = "Acoustic ML Fallback (Sustained Harmonic)".to_string();
+        } else if family.contains(&"Chordophone".to_string()) {
+            l.group = "Strings".to_string();
+            l.reason = "Acoustic ML Fallback (Plucked Harmonic)".to_string();
+        }
+    }
+
+    let is_loop = l.group == "Loops/Patterns";
     let god_class = god_category(&l.group, is_loop, &env).to_string();
+
+    // Percussive hits rarely carry a meaningful root note. Unless an embedded
+    // ACID root says otherwise or the pitch evidence is strong (clearly
+    // harmonic, e.g. an 808 or a pitched tom), report none — nil is fine.
+    let (root_name, root_hz, root_cents) =
+        if god_class == crate::god::PERCUSSIVE && root_note < 0 && harmonicity < 0.6 {
+            (String::new(), 0.0, 0.0)
+        } else {
+            (root_name, root_hz, root_cents)
+        };
 
     // Three-part membership reason: 1) the name evidence, 2) the envelope
     // evidence, 3) the spectral evidence — so a record always shows WHY it
@@ -107,13 +133,14 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         ("mid", spec.mid)
     };
     let root_part = if root_name.is_empty() { String::new() } else { format!(" · root {}", root_name) };
-    let reason = format!(
-        "1) {}  2) envelope {} (attack {:.0} ms, sustain {:.0}%, {} transient{})  3) {} · {}-band {:.0}%{}",
-        l.reason,
-        env.shape, env.attack * 1000.0, env.sustain * 100.0,
-        transients, if transients == 1 { "" } else { "s" },
-        acoustic.join("+"), band.0, band.1 * 100.0, root_part,
-    );
+    let reason = vec![
+        format!("1) {}", l.reason),
+        format!("2) envelope {} (attack {:.0} ms, sustain {:.0}%, {} transient{})",
+            env.shape, env.attack * 1000.0, env.sustain * 100.0,
+            transients, if transients == 1 { "" } else { "s" }
+        ),
+        format!("3) {} · {}-band {:.0}%{}", acoustic.join("+"), band.0, band.1 * 100.0, root_part),
+    ];
 
     Some(Peak {
         analyzer_version: ANALYZER_VERSION.to_string(),

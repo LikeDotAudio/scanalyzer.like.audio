@@ -42,7 +42,7 @@ pub fn label_sample(
     // loop when the name gives NO drum/instrument hint — a named drum ("snr",
     // "kick", the word "drum", …) with no BPM stays a one-shot even if it
     // re-triggers (a roll/flam), rather than being mis-flagged as a loop.
-    let name_says_loop = name_group == "Loops/Patterns";
+    let name_says_loop = name_group == "Loops/Patterns" || norm.contains("loop");
     let has_drum_hint = !name_match.is_empty() || norm.contains("drum");
     let is_loop = bpm > 0.0 || name_says_loop || (transients > 1 && !has_drum_hint);
     // A single fundamental note held for the whole file (drone/pad/sustained tone).
@@ -83,17 +83,26 @@ pub fn label_sample(
     // A generic "drum" tag with no specific instrument matched ⇒ flag for a
     // second (acoustic) audit rather than trusting the vague name. Uses the full
     // path so a "…/Drums/…" folder counts too.
-    let audit = !is_loop && group == "Unclassified" && norm.contains("drum");
+    let audit = !is_loop && (group == "Unclassified" || (group == "Perc" && name_sub == "Drum")) && norm.contains("drum");
 
     // subgroup: loops split Beat/Groove/Loop by name; one-shots use the curated
     // instrument level, else a "Drum" audit tag, else the group + length tier.
     let subgroup = if is_loop {
-        // Instrument subgroups for loops (extend this list as needed), else the
-        // Beat/Groove flavour, else a plain Loop.
-        if norm.contains("guitar") { "Guitar" }
-        else if norm.contains("beat") { "Beat" }
-        else if norm.contains("groove") { "Groove" }
-        else { "Loop" }.to_string()
+        // What the loop is MADE OF: the name/folder-derived instrument when
+        // the taxonomy matched one ("…/Sound FX & Scratches/x.wav" → Scratch,
+        // "Piano Loop" → Piano), else the Beat/Groove flavour. A bare "Loop"
+        // under Loops/Patterns says nothing — it's the last resort.
+        if !name_sub.is_empty() {
+            name_sub.to_string()
+        } else if !name_match.is_empty() && name_group != "Loops/Patterns" {
+            name_group.to_string()
+        } else if norm.contains("beat") {
+            "Beat".to_string()
+        } else if norm.contains("groove") {
+            "Groove".to_string()
+        } else {
+            "Loop".to_string()
+        }
     } else if !name_sub.is_empty() {
         name_sub.to_string()
     } else if audit {
@@ -126,12 +135,28 @@ mod tests {
         assert_eq!(group_of("Snr_roll.wav", 5, 0.0), "Snare");
         assert_eq!(group_of("Kick_flam.wav", 3, 0.0), "Kick");
         // The generic word "drum" also blocks the transient→loop guess.
-        assert_eq!(group_of("Drum_hit.wav", 4, 0.0), "Unclassified");
+        assert_eq!(group_of("Drum_hit.wav", 4, 0.0), "Perc");
         // A real BPM (ACID) tag is authoritative → loop regardless of name.
         assert_eq!(group_of("Snare_thing.wav", 5, 120.0), "Loops/Patterns");
         // A name that literally says "loop" → loop.
         assert_eq!(group_of("Drum Loop.wav", 5, 0.0), "Loops/Patterns");
         // Unnamed, many transients, no BPM → loop (the transient fallback still works).
         assert_eq!(group_of("01.wav", 5, 0.0), "Loops/Patterns");
+    }
+
+    fn loop_subgroup_of(folder: &str, name: &str) -> String {
+        label_sample(folder, name, 4.0, 12, 115.0, 0.3, 0.1, 0.6, 5.0, 3000.0, 0.1, 0.5).subgroup
+    }
+
+    #[test]
+    fn loop_subgroup_says_what_the_loop_is_made_of() {
+        // Folder keywords name the instrument — never a redundant bare "Loop".
+        assert_eq!(loop_subgroup_of("Sound FX & Scratches", "Dektronics 31.wav"), "Scratch");
+        assert_eq!(loop_subgroup_of("", "Guitar_120.wav"), "Guitar");
+        assert_eq!(loop_subgroup_of("", "Piano Loop 90.wav"), "Piano");
+        assert_eq!(loop_subgroup_of("", "Funky Beat 03.wav"), "Beat");
+        assert_eq!(loop_subgroup_of("", "Groover.wav"), "Groove");
+        // Nothing recognizable at all — only then a plain Loop.
+        assert_eq!(loop_subgroup_of("", "01.wav"), "Loop");
     }
 }
