@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './index.css'
+import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
 import CloudTab from './components/CloudTab'
 import StatsTab from './components/StatsTab'
@@ -27,22 +28,33 @@ function App() {
   }
 
   const handleImportPeak = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const json = JSON.parse(event.target?.result as string);
-        if (Array.isArray(json)) {
-          setAnalysisResult(json);
-        } else {
-          console.error("Invalid .peak file format");
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    let allResults: any[] = [];
+    let filesProcessed = 0;
+
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const json = JSON.parse(event.target?.result as string);
+          if (Array.isArray(json)) {
+            allResults = [...allResults, ...json];
+          } else {
+            console.error("Invalid .peak file format in", file.name);
+          }
+        } catch (err) {
+          console.error("Failed to parse .peak file", file.name, err);
         }
-      } catch (err) {
-        console.error("Failed to parse .peak file", err);
-      }
-    };
-    reader.readAsText(file);
+        
+        filesProcessed++;
+        if (filesProcessed === files.length) {
+           setAnalysisResult(allResults);
+        }
+      };
+      reader.readAsText(file);
+    });
   }
 
   const tabs = [
@@ -57,27 +69,7 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Header */}
-      <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="https://github.com/LikeDotAudio/scanalyzer.like.audio/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <h1>
-            Scan<span className="accent-gradient">alyzer</span>
-          </h1>
-        </a>
-        
-        {isAnalyzing && (
-          <div style={{ flex: 1, margin: '0 2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ color: 'var(--accent-primary)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Analyzing... {progress}%</span>
-            <div style={{ flex: 1, background: 'rgba(0,0,0,0.3)', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', height: '12px' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.2s', boxShadow: '0 0 10px var(--accent-primary)' }}></div>
-            </div>
-          </div>
-        )}
-
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn">Settings</button>
-        </div>
-      </header>
+      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} />
 
       {/* Tabs Navigation */}
       <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '0.5rem', padding: '0.5rem 1rem', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
@@ -109,7 +101,6 @@ function App() {
             isAnalyzing={isAnalyzing}
             setIsAnalyzing={setIsAnalyzing}
             setProgress={setProgress}
-            onImportPeak={handleImportPeak} 
             onExportPeak={handleExportPeak}
             onViewCloud={() => setActiveTab('cloud')}
           />

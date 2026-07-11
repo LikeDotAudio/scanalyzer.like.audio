@@ -7,7 +7,6 @@ interface ScanalyzeTabProps {
   isAnalyzing: boolean;
   setIsAnalyzing: (val: boolean) => void;
   setProgress: (val: number) => void;
-  onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onExportPeak: () => void;
   onViewCloud: () => void;
 }
@@ -18,29 +17,47 @@ export default function ScanalyzeTab({
     isAnalyzing, 
     setIsAnalyzing, 
     setProgress, 
-    onImportPeak, 
     onExportPeak, 
     onViewCloud 
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
+  const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
 
   useEffect(() => {
     initWasm().then(() => setWasmReady(true)).catch(console.error);
   }, []);
 
-  const handleFolderUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || !wasmReady) return;
 
-    const wavFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.wav'));
-    if (wavFiles.length === 0) return;
+    // Create a Set of already analyzed files to enable resuming
+    const existingPaths = new Set(analysisResult.map(res => res.path));
 
+    const allWavFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.wav'));
+    
+    // Only process files we haven't seen yet
+    const wavFilesToProcess = allWavFiles.filter(file => {
+        const folder = (file.webkitRelativePath || file.name).split('/')[0] || "folder";
+        const expectedPath = `${folder}/${file.name}`;
+        return !existingPaths.has(expectedPath);
+    });
+
+    if (wavFilesToProcess.length === 0) {
+        alert("All files in this folder have already been analyzed!");
+        return;
+    }
+
+    setPendingWavFiles(wavFilesToProcess);
+  };
+
+  const startAnalysis = async () => {
     setIsAnalyzing(true);
     setProgress(0);
-    const results = [];
+    const newResults = [];
 
-    for (let i = 0; i < wavFiles.length; i++) {
-        const file = wavFiles[i];
+    for (let i = 0; i < pendingWavFiles.length; i++) {
+        const file = pendingWavFiles[i];
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
         const folder = (file.webkitRelativePath || file.name).split('/')[0] || "folder";
@@ -49,24 +66,57 @@ export default function ScanalyzeTab({
             const jsonResult = analyze_audio_buffer(uint8Array, file.name, folder);
             const parsed = JSON.parse(jsonResult);
             if (parsed.status !== "error") {
-                results.push(parsed);
+                newResults.push(parsed);
             }
         } catch (err) {
             console.error(`Failed to analyze ${file.name}`, err);
         }
 
-        setProgress(Math.round(((i + 1) / wavFiles.length) * 100));
+        setProgress(Math.round(((i + 1) / pendingWavFiles.length) * 100));
+        
+        // Auto-save every 10% if there are a lot of files (e.g., more than 1000)
+        if (pendingWavFiles.length >= 1000) {
+            const tenPercent = Math.floor(pendingWavFiles.length / 10);
+            if (i > 0 && i % tenPercent === 0) {
+                const chunk = newResults.slice(i - tenPercent, i);
+                const blob = new Blob([JSON.stringify(chunk, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `scan_part_${Math.floor(i / tenPercent)}.peak`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
         await new Promise(resolve => setTimeout(resolve, 0));
     }
 
-    setAnalysisResult(results);
+    // Append new results to the existing ones!
+    setAnalysisResult([...analysisResult, ...newResults]);
     setIsAnalyzing(false);
+    setPendingWavFiles([]);
   };
 
   if (isAnalyzing) {
       return (
           <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <div className="text-secondary" style={{ fontSize: '1.2rem' }}>Scanning in progress. Please wait...</div>
+          </div>
+      );
+  }
+
+  if (pendingWavFiles.length > 0) {
+      return (
+          <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Ready to Scan</h2>
+              <p className="text-secondary" style={{ marginBottom: '2.5rem', fontSize: '1.2rem' }}>
+                  Found <strong>{pendingWavFiles.length}</strong> new .wav files to process.
+              </p>
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                  <button className="btn" onClick={() => setPendingWavFiles([])}>Cancel</button>
+                  <button className="btn primary" onClick={startAnalysis}>Continue to Analysis</button>
+              </div>
           </div>
       );
   }
@@ -97,16 +147,6 @@ export default function ScanalyzeTab({
             style={{ display: 'none' }} 
             onChange={handleFolderUpload} 
             disabled={!wasmReady}
-          />
-        </label>
-
-        <label className="btn" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }}>
-          Load .PEAK
-          <input 
-            type="file" 
-            accept=".peak,.PEAK,.json" 
-            style={{ display: 'none' }} 
-            onChange={onImportPeak} 
           />
         </label>
       </div>
