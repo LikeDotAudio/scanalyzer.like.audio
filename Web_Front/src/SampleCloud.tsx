@@ -138,6 +138,40 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, hiddenGroup
     if (e.instanceId != null) onPick(e.instanceId);
   };
 
+  // Arrow keys move the selection to the nearest point in that screen direction.
+  const { camera } = useThree();
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+      if (selectedIndex == null || selectedIndex >= positions.length) return;
+      e.preventDefault();
+      const sel = new THREE.Vector3(...positions[selectedIndex]).project(camera);
+      const p = new THREE.Vector3();
+      let best = -1, bestScore = Infinity;
+      for (let i = 0; i < positions.length; i++) {
+        if (i === selectedIndex) continue;
+        const g = data[i].group || 'Unclassified';
+        const sg = data[i].subgroup || '';
+        if (hiddenGroups.has(g) || (sg && hiddenGroups.has(subKey(g, sg)))) continue;
+        p.set(...positions[i]).project(camera);
+        const dx = p.x - sel.x, dy = p.y - sel.y;
+        let along = 0, perp = 0;
+        if (e.key === 'ArrowRight') { along = dx; perp = Math.abs(dy); }
+        else if (e.key === 'ArrowLeft') { along = -dx; perp = Math.abs(dy); }
+        else if (e.key === 'ArrowUp') { along = dy; perp = Math.abs(dx); }
+        else { along = -dy; perp = Math.abs(dx); }
+        if (along <= 0 || perp > along) continue; // outside a 45° cone toward the key
+        const score = Math.hypot(dx, dy);
+        if (score < bestScore) { bestScore = score; best = i; }
+      }
+      if (best >= 0) onPick(best);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [positions, selectedIndex, hiddenGroups, data, onPick, camera]);
+
   if (count === 0) return null;
 
   const sel = selectedIndex != null && selectedIndex < positions.length ? positions[selectedIndex] : null;
