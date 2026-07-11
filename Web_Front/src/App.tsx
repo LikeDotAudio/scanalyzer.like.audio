@@ -10,6 +10,7 @@ import RenameTab from './components/RenameTab'
 
 function App() {
   const [analysisResult, setAnalysisResult] = useState<any[]>([])
+  const [audioFiles, setAudioFiles] = useState<File[]>([])
   const [activeTab, setActiveTab] = useState('scanalyze')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -55,6 +56,9 @@ function App() {
       };
       reader.readAsText(file);
     });
+    
+    // Reset the input so the user can load the exact same file again if they want to
+    e.target.value = '';
   }
 
   const tabs = [
@@ -63,7 +67,6 @@ function App() {
     { id: 'stats', label: 'Stats' },
     { id: 'groups', label: 'Groups' },
     { id: 'examiner', label: 'Examiner' },
-    { id: 'guess', label: 'Auto-Guess' },
     { id: 'rename', label: 'Flatten / Rename' }
   ];
 
@@ -103,30 +106,16 @@ function App() {
             setProgress={setProgress}
             onExportPeak={handleExportPeak}
             onViewCloud={() => setActiveTab('cloud')}
+            setAudioFiles={setAudioFiles}
           />
         )}
 
         {activeTab === 'cloud' && <CloudTab analysisResult={analysisResult} />}
-
-        {/* Placeholders for other tabs */}
-        {['stats', 'groups', 'examiner', 'guess', 'rename'].includes(activeTab) && (
-            <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, overflowY: 'auto' }}>
-                <h2 style={{ marginBottom: '1rem', color: 'var(--accent-primary)' }}>{tabs.find(t => t.id === activeTab)?.label}</h2>
-                
-                {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} />}
-                
-                {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-                
-                {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} />}
-                
-                {activeTab === 'examiner' && (
-                  <ExaminerTab 
-                    analysisResult={analysisResult} 
-                    onGoToScanalyze={() => setActiveTab('scanalyze')} 
-                  />
-                )}
-            </div>
-        )}
+        {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} />}
+        {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
+        {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} setAudioFiles={setAudioFiles} />}
+        {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} />}
+        
       </main>
     </div>
   )

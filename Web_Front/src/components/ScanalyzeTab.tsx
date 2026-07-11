@@ -9,6 +9,7 @@ interface ScanalyzeTabProps {
   setProgress: (val: number) => void;
   onExportPeak: () => void;
   onViewCloud: () => void;
+  setAudioFiles: (files: File[]) => void;
 }
 
 export default function ScanalyzeTab({ 
@@ -18,7 +19,8 @@ export default function ScanalyzeTab({
     setIsAnalyzing, 
     setProgress, 
     onExportPeak, 
-    onViewCloud 
+    onViewCloud,
+    setAudioFiles
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
   const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
@@ -45,10 +47,12 @@ export default function ScanalyzeTab({
 
     if (wavFilesToProcess.length === 0) {
         alert("All files in this folder have already been analyzed!");
+        setAudioFiles(Array.from(files)); // Update audio files even if skipping scan
         return;
     }
 
     setPendingWavFiles(wavFilesToProcess);
+    setAudioFiles(Array.from(files)); // Link audio folder automatically when they scan
   };
 
   const startAnalysis = async () => {
