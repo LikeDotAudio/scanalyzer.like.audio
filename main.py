@@ -25,6 +25,7 @@ mixed into AnalyzerApp:
 import os
 import sys
 import json
+import time
 import queue
 import shutil
 import threading
@@ -251,7 +252,13 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         except queue.Empty:
             pass
         if redraw and self.d_pitch:
-            self._redraw_cloud()
+            # Throttle live redraws: matplotlib's 3D scatter is CPU-bound, so
+            # during analysis repaint at most ~once a second. The final state
+            # is always drawn by _load_records() when the run completes.
+            now = time.monotonic()
+            if now - getattr(self, "_last_cloud_draw", 0.0) > 1.0 or not self.is_analyzing:
+                self._last_cloud_draw = now
+                self._redraw_cloud()
         self.root.after(120, self._drain_queue)
 
     def _load_records(self, out_path):
@@ -270,6 +277,10 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
             self.exam_records = self.records
             self.exam_path = out_path
             self._populate_examiner()
+            # Point the Flatten/Rename tab at the analyzed directory.
+            if self.root_dir and os.path.isdir(self.root_dir):
+                self.rename_dir.set(self.root_dir)
+                self._rename_scan()
         except Exception as e:
             self.status.config(text="Loaded but could not read PEAK: " + str(e), foreground="#c33")
 

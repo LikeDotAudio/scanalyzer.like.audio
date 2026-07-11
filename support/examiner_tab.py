@@ -3,6 +3,7 @@ import json
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
+from .config import group_color
 from .inspector import RecordInspector
 
 
@@ -73,11 +74,18 @@ class ExaminerMixin:
         recs = getattr(self, "exam_records", [])
         flt = (self.exam_filter.get() or "").lower()
         shown = 0
+        tinted = set()
         for r in recs:
             if flt and flt not in (r.get("name", "") + " " + r.get("folder", "") + " "
                                    + str(r.get("group", "")) + " " + str(r.get("timbre", ""))).lower():
                 continue
-            tv.insert("", "end", text=r.get("name", ""), values=(
+            # Rows carry the god-category colour of their group (same as the cloud).
+            color = group_color(r.get("group") or "", r.get("subgroup") or "")
+            tag = "c" + color.lstrip("#")
+            if tag not in tinted:
+                tv.tag_configure(tag, foreground=color)
+                tinted.add(tag)
+            tv.insert("", "end", text=r.get("name", ""), tags=(tag,), values=(
                 r.get("group", ""), r.get("reason", ""), r.get("timbre", ""), r.get("cluster", ""),
                 r.get("root_note_name", ""), f"{r.get('pitch_hz', 0):.0f}", f"{r.get('length_seconds', 0):.2f}", r.get("transient_count", ""),
                 f"{r.get('spectral_centroid_hz', 0):.0f}", f"{r.get('harmonicity', 0):.2f}",

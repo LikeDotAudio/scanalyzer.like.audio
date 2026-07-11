@@ -12,7 +12,7 @@ pub fn classify_family(group: &str, subgroup: &str, acoustic: &[String], flux: f
     // --- name-derived (authoritative when the taxonomy matched) ---
     let by_name = match group {
         "Kick" | "Snare" | "Tom" => "Membranophone",
-        "Cymbal" | "HiHat" | "Ride" | "Rim" | "Clap" => "Idiophone",
+        "Cymbal" | "Hi-Hat" | "Ride" | "Rim" | "Clap" => "Idiophone",
         "Perc" => match subgroup {
             "Conga" | "Bongo" => "Membranophone",
             "Cowbell" | "Clave" | "Block" | "Shaker" => "Idiophone",

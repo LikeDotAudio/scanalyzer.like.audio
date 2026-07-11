@@ -16,18 +16,80 @@ from .config import DEFAULT_DIR
 from .inspector import RecordInspector
 
 
+class PartList(ttk.LabelFrame):
+    """Ordered checkbox list: each row is one candidate part with an
+    include-checkbox and ▲/▼ buttons to reorder it. `enabled_keys()` returns
+    the checked keys in their current order."""
+
+    def __init__(self, master, title, parts, on_change):
+        super().__init__(master, text=title, padding=(6, 2))
+        # parts: [(key, label, checked_by_default)]
+        self.parts = [{"key": k, "label": lbl, "var": tk.BooleanVar(value=on)} for k, lbl, on in parts]
+        self.on_change = on_change
+        self._rows = ttk.Frame(self)
+        self._rows.pack(fill=tk.BOTH, expand=True)
+        self._rebuild()
+
+    def _rebuild(self):
+        for w in self._rows.winfo_children():
+            w.destroy()
+        last = len(self.parts) - 1
+        for i, p in enumerate(self.parts):
+            row = ttk.Frame(self._rows)
+            row.pack(fill=tk.X)
+            for txt, d in (("▼", +1), ("▲", -1)):  # packed RIGHT: ▲ ends up left of ▼
+                b = tk.Button(row, text=txt, font=("Helvetica", 7), padx=3, pady=0,
+                              bg="#2a2a2a", fg="#e8e8e8", activebackground="#3a3a3a",
+                              activeforeground="#ffffff", bd=0, highlightthickness=0,
+                              command=lambda i=i, d=d: self._move(i, d))
+                if (d < 0 and i == 0) or (d > 0 and i == last):
+                    b.config(state=tk.DISABLED, fg="#555")
+                b.pack(side=tk.RIGHT, padx=1)
+            tk.Checkbutton(row, text=p["label"], variable=p["var"], anchor="w",
+                           bg="#0e0e0e", activebackground="#0e0e0e",
+                           fg="#e8e8e8", activeforeground="#e8e8e8", selectcolor="#101010",
+                           bd=0, highlightthickness=0, font=("Helvetica", 9),
+                           command=self.on_change).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+    def _move(self, i, d):
+        j = i + d
+        if 0 <= j < len(self.parts):
+            self.parts[i], self.parts[j] = self.parts[j], self.parts[i]
+            self._rebuild()
+            self.on_change()
+
+    def enabled_keys(self):
+        return [p["key"] for p in self.parts if p["var"].get()]
+
+    def enabled_labels(self):
+        return [p["label"] for p in self.parts if p["var"].get()]
+
+    def label_for(self, key):
+        return next((p["label"] for p in self.parts if p["key"] == key), key)
+
+
 class RenameMixin:
     AUDIO_EXTS = (".wav", ".aif", ".aiff", ".aifc", ".mp3", ".flac", ".ogg", ".m4a")
 
-    # .PEAK fields shown as columns in the renamer: (key, header, width).
-    RENAME_PEAK_COLS = [
-        ("group", "Group", 70), ("subgroup", "Subgroup", 105), ("timbre", "Timbre", 70),
-        ("length_class", "Len tier", 60), ("root_note_name", "Root", 46), ("pitch_hz", "Pitch", 55), ("length_seconds", "Len s", 50),
-        ("transient_count", "Tr", 34), ("sustained", "Sust", 40), ("audit", "Audit", 44),
-        ("beats_per_minute", "BPM", 46), ("channels", "Ch", 46), ("sample_rate", "SR", 50),
-        ("bit_depth", "Bits", 38), ("harmonicity", "Harm", 46), ("spectral_centroid_hz", "Bright", 55),
-        ("complexity", "Cplx", 50), ("cluster", "Clu", 38), ("reason", "Reason", 170),
-    ]
+    def _configure_rename_columns(self, part_specs, with_folder):
+        """One preview column per enabled name part, in build order — the row
+        IS the proposed file name — plus the old path, the destination folder
+        (when folder levels are on) and the auto-number note."""
+        tv = self.rename_tv
+        cols = (["old"] + (["folder"] if with_folder else [])
+                + [f"part{i}" for i in range(len(part_specs))] + ["note"])
+        tv.configure(columns=cols)
+
+        def head(cid, label, width, stretch=False):
+            tv.heading(cid, text=label, command=lambda c=cid: self._tv_sort(tv, c, False))
+            tv.column(cid, width=width, anchor=tk.W, stretch=stretch)
+
+        head("old", "Old path  (relative)", 240)
+        if with_folder:
+            head("folder", "→ Folder", 150)
+        for i, (key, label) in enumerate(part_specs):
+            head(f"part{i}", label, 200 if key == "original" else 120)
+        head("note", "Note", 90)
 
     def _build_rename_tab(self):
         tab = ttk.Frame(self.notebook)
@@ -62,40 +124,48 @@ class RenameMixin:
         ttk.Label(drow, textvariable=self.rename_dest, foreground="#2a7", wraplength=300).pack(side=tk.LEFT, padx=6)
         ttk.Button(drow, text="Clear", command=lambda: (self.rename_dest.set(""), self._rename_scan())).pack(side=tk.RIGHT)
 
-        grow = ttk.Frame(tab, padding=(6, 0))
-        grow.pack(fill=tk.X)
-        self.rename_group_sort = tk.BooleanVar(value=False)
-        ttk.Checkbutton(grow, text="Sort into subfolders by", variable=self.rename_group_sort,
-                        command=self._rename_scan).pack(side=tk.LEFT)
-        self.rename_group_field = tk.StringVar(value="Group")
-        gcb = ttk.Combobox(grow, textvariable=self.rename_group_field, state="readonly", width=10,
-                           values=["Group", "Subgroup", "Timbre", "Cluster"])
-        gcb.pack(side=tk.LEFT, padx=4)
-        gcb.bind("<<ComboboxSelected>>", lambda e: self._rename_scan())
-        ttk.Label(grow, text="then").pack(side=tk.LEFT, padx=(8, 2))
-        self.rename_group_field2 = tk.StringVar(value="(none)")
-        gcb2 = ttk.Combobox(grow, textvariable=self.rename_group_field2, state="readonly", width=10,
-                            values=["(none)", "Group", "Subgroup", "Timbre", "Cluster", "Len tier"])
-        gcb2.pack(side=tk.LEFT, padx=4)
-        gcb2.bind("<<ComboboxSelected>>", lambda e: self._rename_scan())
-        self.rename_add_root = tk.BooleanVar(value=False)
-        ttk.Checkbutton(grow, text="Append ROOT-note", variable=self.rename_add_root,
-                        command=self._rename_scan).pack(side=tk.LEFT, padx=(16, 4))
-        self.rename_add_bpm = tk.BooleanVar(value=False)
-        ttk.Checkbutton(grow, text="Append ###BPM (when > 10)", variable=self.rename_add_bpm,
-                        command=self._rename_scan).pack(side=tk.LEFT, padx=(16, 4))
+        # --- comprehensive name builder: three ordered checkbox tables.
+        # New name = [prepend parts] - <original name> - [append parts], and the
+        # destination folder is built one level per checked folder part.
+        build = ttk.Frame(tab, padding=(6, 4))
+        build.pack(fill=tk.X)
+        self.folder_parts = PartList(build, "Destination subfolders (one level each)", [
+            ("god_category", "God category", False),
+            ("group", "Group", False),
+            ("subgroup", "Subgroup", False),
+            ("timbre", "Timbre", False),
+            ("instrument_family", "Instrument family", False),
+            ("distortion", "Distortion", False),
+            ("envelope_shape", "Envelope shape", False),
+            ("length_class", "Length tier", False),
+            ("cluster", "Cluster", False),
+        ], self._rename_scan)
+        self.folder_parts.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 3))
+        self.prepend_parts = PartList(build, "Prepend to file name", [
+            ("path", "Folder path (flattened)", True),
+            ("god_category", "God category", False),
+            ("group", "Group", False),
+            ("subgroup", "Subgroup", False),
+            ("timbre", "Timbre", False),
+            ("instrument_family", "Instrument family", False),
+        ], self._rename_scan)
+        self.prepend_parts.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=3)
+        self.append_parts = PartList(build, "Append to file name", [
+            ("root", "ROOT note", False),
+            ("bpm", "BPM (when > 10)", False),
+            ("length_class", "Length tier", False),
+            ("envelope_shape", "Envelope shape", False),
+            ("distortion", "Distortion", False),
+            ("cluster", "Cluster", False),
+        ], self._rename_scan)
+        self.append_parts.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(3, 0))
 
         grow2 = ttk.Frame(tab, padding=(6, 0))
         grow2.pack(fill=tk.X)
-        self.rename_prepend_group = tk.BooleanVar(value=False)
-        ttk.Checkbutton(grow2, text="Prepend", variable=self.rename_prepend_group,
+        self.rename_strip_group = tk.BooleanVar(value=True)
+        ttk.Checkbutton(grow2, text="Strip group/subgroup words from the original name",
+                        variable=self.rename_strip_group,
                         command=self._rename_scan).pack(side=tk.LEFT)
-        self.rename_prepend_fields = tk.StringVar(value="group")
-        pcb = ttk.Combobox(grow2, textvariable=self.rename_prepend_fields, state="readonly", width=24,
-                           values=["group", "group - subgroup", "group - subgroup - timbre"])
-        pcb.pack(side=tk.LEFT, padx=4)
-        pcb.bind("<<ComboboxSelected>>", lambda e: self._rename_scan())
-        ttk.Label(grow2, text='to file names (e.g. "Snare - Acoustic - ")').pack(side=tk.LEFT, padx=(2, 0))
         self.rename_dedup = tk.BooleanVar(value=False)
         ttk.Checkbutton(grow2, text="Remove repeated words", variable=self.rename_dedup,
                         command=self._rename_scan).pack(side=tk.LEFT, padx=(16, 4))
@@ -111,17 +181,10 @@ class RenameMixin:
         body.pack(fill=tk.BOTH, expand=True)
 
         wrap = ttk.Frame(body)
-        cols = ("old", "new", "err") + tuple(k for k, _h, _w in self.RENAME_PEAK_COLS)
-        tv = ttk.Treeview(wrap, columns=cols, show="headings")
-        tv.heading("old", text="Old folder structure  (relative)", command=lambda: self._tv_sort(tv, "old", False))
-        tv.column("old", width=260, anchor=tk.W)
-        tv.heading("new", text="New file name", command=lambda: self._tv_sort(tv, "new", False))
-        tv.column("new", width=240, anchor=tk.W)
-        tv.heading("err", text="Note", command=lambda: self._tv_sort(tv, "err", False))
-        tv.column("err", width=100, anchor=tk.W)
-        for k, h, w in self.RENAME_PEAK_COLS:
-            tv.heading(k, text=h, command=lambda c=k: self._tv_sort(tv, c, False))
-            tv.column(k, width=w, anchor=tk.W, stretch=False)
+        tv = ttk.Treeview(wrap, columns=("old", "note"), show="headings")
+        self.rename_tv = tv
+        # The columns mirror the enabled name parts — configured on every scan.
+        self._configure_rename_columns([("original", "Original name")], with_folder=False)
         vs = ttk.Scrollbar(wrap, orient=tk.VERTICAL, command=tv.yview)
         hs = ttk.Scrollbar(wrap, orient=tk.HORIZONTAL, command=tv.xview)
         tv.configure(yscrollcommand=vs.set, xscrollcommand=hs.set)
@@ -174,9 +237,11 @@ class RenameMixin:
     # when a file has no .PEAK record. (group, subgroup, phrases, abbrev-tokens).
     _NAME_RULES = [
         ("IR", "", ["impulse response", "impulse", "convolution", "convol", "cabinet", "guitar cab", "reverb ir"], ["ir", "cab", "conv"]),
-        ("Kick", "", ["kick", "kik", "bass drum", "bassdrum"], ["bd", "kk", "kik", "kic", "kck"]),
+        # Kick before Bass: ANY "bass drum" spelling is a Kick, plain "bass" is Bass.
+        ("Kick", "", ["kick", "kik", "bass drum", "bassdrum", "bassdrm", "bass drm", "bdrum"],
+                     ["bd", "kk", "kik", "kic", "kck", "bassd", "bdr"]),
         ("Snare", "", ["snare"], ["sd", "sn", "snr"]),
-        ("HiHat", "", ["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hat"], ["hh", "chh", "ohh", "ch", "oh", "ph"]),
+        ("Hi-Hat", "", ["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hat"], ["hh", "chh", "ohh", "ch", "oh", "ph"]),
         ("Ride", "", ["ride bell", "ride cymbal", "ride"], ["rd", "rdcym"]),
         ("Cymbal", "", ["crash cymbal", "splash cymbal", "cymbal", "crash", "splash"], ["cy", "cym", "crsh"]),
         ("Clap", "", ["handclap", "hand clap", "clap"], ["cp", "clp"]),
@@ -287,25 +352,6 @@ class RenameMixin:
             tv.move(iid, "", idx)
         tv.heading(col, command=lambda: self._tv_sort(tv, col, not reverse))
 
-    def _peak_cols(self, r):
-        if not r:
-            return ["" for _ in self.RENAME_PEAK_COLS]
-
-        def fmt(key):
-            v = r.get(key)
-            if v is None:
-                return ""
-            if key in ("sustained", "audit"):
-                return "yes" if v else ""
-            if key == "channels":
-                return {1: "mono", 2: "stereo"}.get(v, str(v))
-            if key in ("pitch_hz", "spectral_centroid_hz", "complexity", "sample_rate"):
-                return f"{v:.0f}"
-            if key in ("length_seconds", "harmonicity", "beats_per_minute"):
-                return f"{v:.2f}" if v else ("" if key == "beats_per_minute" else f"{v:.2f}")
-            return str(v)
-        return [fmt(k) for k, _h, _w in self.RENAME_PEAK_COLS]
-
     def _rename_pick(self):
         d = filedialog.askdirectory(title="Select folder to flatten / rename")
         if d:
@@ -318,12 +364,42 @@ class RenameMixin:
             self.rename_dest.set(d)
             self._rename_scan()
 
-    def _encode_name(self, root, abspath):
-        """B/C/D.wav (relative to the picked root, root name NOT included)
-        -> 'B - C - D.wav'."""
-        rel = os.path.relpath(abspath, root)
-        parts = [p for p in rel.replace("\\", "/").split("/") if p]
-        return " - ".join(parts)
+    def _strip_group_words(self, stem, egroup, esub):
+        """Remove the detected group/subgroup words (and that group's known
+        keyword aliases, e.g. 'bd'/'kik' for Kick) from the original stem, so
+        'Kick_01' under a Kick prefix/folder becomes just '01'. Falls back to
+        the untouched stem when everything would be stripped."""
+        words = set()
+        for g in (egroup, esub):
+            if g and g != "Unclassified":
+                words.update(self._normalize_name(g).split())
+        for group, sub, phrases, abbrevs in self._NAME_RULES:
+            if group == egroup or (sub and sub == esub):
+                for p in phrases:
+                    words.update(p.split())
+                words.update(abbrevs)
+        # Never strip plain numbers — they're the sample's index ("Tom 2"),
+        # even when a rule phrase (like "tom 2") contains one.
+        words = {w for w in words if not w.isdigit()}
+        if not words:
+            return stem
+        tokens = re.split(r'( - | |_|-)', stem)
+        kept, pending = [], None
+        for i in range(0, len(tokens), 2):
+            w = tokens[i]
+            parts = self._normalize_name(w).split()
+            drop = bool(parts) and all(
+                t in words or any(len(gw) >= 3 and t.startswith(gw) for gw in words)
+                for t in parts)
+            delim = tokens[i + 1] if i + 1 < len(tokens) else None
+            if drop:
+                continue
+            if kept and pending is not None:
+                kept.append(pending)
+            kept.append(w)
+            pending = delim
+        out = re.sub(r'^(?: - | |_|-)+|(?: - | |_|-)+$', "", "".join(kept))
+        return out or stem
 
     def _rename_scan(self):
         tv = self.rename_tv
@@ -337,20 +413,16 @@ class RenameMixin:
         audio_only = self.rename_audio_only.get()
         dest = self.rename_dest.get()
         dest_ok = bool(dest) and os.path.isdir(dest)
-        sort_grp = self.rename_group_sort.get()
-        FMAP = {"Group": "group", "Subgroup": "subgroup", "Timbre": "timbre",
-                "Cluster": "cluster", "Len tier": "length_class"}
-        gfield = FMAP.get(self.rename_group_field.get(), "group")
-        gfield2 = FMAP.get(self.rename_group_field2.get())  # None for "(none)"
-        add_root = self.rename_add_root.get()
-        add_bpm = self.rename_add_bpm.get()
-        prepend_group = self.rename_prepend_group.get()
-        prepend_keys = {
-            "group": ["group"],
-            "group - subgroup": ["group", "subgroup"],
-            "group - subgroup - timbre": ["group", "subgroup", "timbre"],
-        }.get(self.rename_prepend_fields.get(), ["group"])
+        folder_keys = self.folder_parts.enabled_keys()
+        prepend_keys = self.prepend_parts.enabled_keys()
+        append_keys = self.append_parts.enabled_keys()
+        strip_group = self.rename_strip_group.get()
         dedup = self.rename_dedup.get()
+        # The preview columns mirror the enabled parts, in build order.
+        name_specs = ([(k, self.prepend_parts.label_for(k)) for k in prepend_keys]
+                      + [("original", "Original name")]
+                      + [(k, self.append_parts.label_for(k)) for k in append_keys])
+        self._configure_rename_columns(name_specs, with_folder=bool(folder_keys))
         targets = {}   # new_abs -> count (collision detection)
         rows = []
         for dirpath, _dirs, files in os.walk(root):
@@ -362,7 +434,6 @@ class RenameMixin:
                 if audio_only and not fn.lower().endswith(self.AUDIO_EXTS):
                     continue
                 abspath = os.path.join(dirpath, fn)
-                new_name = self._encode_name(root, abspath)
                 rec = self._peak_for(abspath)
                 # Effective group/subgroup: prefer the PEAK record, else fall back
                 # to a name-based classification of the path, so e.g. "Bass Drum"
@@ -375,48 +446,70 @@ class RenameMixin:
                         egroup = fg
                     if not esub:
                         esub = fsg
-                # Append ROOT-<note> before the extension (when a root is known),
-                # ahead of the BPM tag so the name reads "… - ROOT-A3 - 120BPM".
-                if add_root and rec and rec.get("root_note_name"):
-                    stem, ext = os.path.splitext(new_name)
-                    new_name = f"{stem} - ROOT-{rec['root_note_name']}{ext}"
-                # Append the BPM before the extension (any real tempo, bpm > 10).
-                if add_bpm and rec and (rec.get("beats_per_minute") or 0) > 10:
-                    stem, ext = os.path.splitext(new_name)
-                    new_name = f"{stem} - {round(rec['beats_per_minute'])}BPM{ext}"
-                # Prepend the category (e.g. "Snare - " or "Snare - Acoustic - ").
-                # Strip the group out of the subgroup so "Snare - Snare Medium"
-                # collapses to "Snare - Medium" (independent of the dedup option).
-                if prepend_group:
-                    kv = {"group": egroup, "subgroup": esub}
-                    vals = [self._safe_folder(kv[k]) for k in prepend_keys if kv.get(k)]
-                    if vals:
-                        prefix = self._dedup_words(" - ".join(vals))
-                        new_name = prefix + " - " + new_name
-                # Collapse repeated words (case-insensitive), keeping the extension.
+
+                def part_value(key):
+                    """Resolve one builder token to its text for this file."""
+                    if key == "path":
+                        relf = os.path.relpath(dirpath, root).replace("\\", "/")
+                        return " - ".join(p for p in relf.split("/") if p and p != ".")
+                    if key == "group":
+                        return egroup
+                    if key == "subgroup":
+                        return esub
+                    if key == "root":
+                        v = (rec.get("root_note_name") if rec else "") or ""
+                        return f"ROOT-{v}" if v else ""
+                    if key == "bpm":
+                        v = (rec.get("beats_per_minute") or 0) if rec else 0
+                        return f"{round(v)}BPM" if v > 10 else ""
+                    if key == "cluster":
+                        v = rec.get("cluster", -1) if rec else -1
+                        return f"Cluster {v}" if isinstance(v, int) and v >= 0 else ""
+                    return str((rec.get(key) if rec else "") or "")
+
+                def clean(v):
+                    return re.sub(r'[\\/:*?"<>|]+', "_", v).strip()
+
+                # File name: [prepend parts] - <original stem> - [append parts].
+                # One value per enabled part (kept aligned with the preview
+                # columns); metadata parts collapse repeats among themselves
+                # ("Snare - Snare Medium" → "Snare - Medium") regardless of
+                # the dedup option.
+                stem0, ext = os.path.splitext(fn)
+                orig = self._strip_group_words(stem0, egroup, esub) if strip_group else stem0
+                display_vals, meta_seen = [], []
+                for key, _lbl in name_specs:
+                    if key == "original":
+                        display_vals.append(orig)
+                        continue
+                    v = clean(part_value(key))
+                    if v and key != "path" and meta_seen:
+                        joined = " - ".join(meta_seen)
+                        combined = self._dedup_words(joined + " - " + v)
+                        v = combined[len(joined):].lstrip(" -_")
+                    if v and key != "path":
+                        meta_seen.append(v)
+                    display_vals.append(v)
+                stem = " - ".join(v for v in display_vals if v) or stem0
                 if dedup:
-                    stem, ext = os.path.splitext(new_name)
-                    new_name = self._dedup_words(stem) + ext
+                    stem = self._dedup_words(stem)
+                new_name = (stem or stem0) + ext
+
+                # Destination folder: one level per checked folder part, each
+                # level stripped of words the previous level already carries
+                # (Loop/"Loop Guitar" → Loop/Guitar).
                 base = dest if dest_ok else (root if flatten else dirpath)
                 sub_parts = []
-                if sort_grp:
-                    def folder_for(field):
-                        if field == "group":
-                            v = egroup
-                        elif field == "subgroup":
-                            v = esub
-                        else:
-                            v = rec.get(field) if rec else None
-                        return self._safe_folder(v) if v not in (None, "") else "Unsorted"
-                    f1 = folder_for(gfield)
-                    sub_parts.append(f1)
-                    # Strip the group out of the subgroup folder so
-                    # Loop/"Loop Guitar" -> Loop/Guitar and Loop/Loop -> Loop.
-                    if gfield2:
-                        combined = self._dedup_words(f1 + " - " + folder_for(gfield2))
-                        f2 = combined[len(f1):].lstrip(" -_")
-                        if f2 and f2.lower() != f1.lower():
-                            sub_parts.append(f2)
+                for key in folder_keys:
+                    v = part_value(key)
+                    lvl = self._safe_folder(v) if v not in (None, "") else "Unsorted"
+                    if sub_parts:
+                        combined = self._dedup_words(sub_parts[-1] + " - " + lvl)
+                        stripped = combined[len(sub_parts[-1]):].lstrip(" -_")
+                        if not stripped or stripped.lower() == sub_parts[-1].lower():
+                            continue
+                        lvl = stripped
+                    sub_parts.append(lvl)
                 if sub_parts:
                     dest_dir = os.path.join(base, *sub_parts)
                     disp_new = os.path.join(*sub_parts, new_name)
@@ -425,7 +518,7 @@ class RenameMixin:
                     disp_new = new_name
                 new_abs = os.path.join(dest_dir, new_name)
                 rel = os.path.relpath(abspath, root)
-                rows.append([abspath, rel, disp_new, new_abs, rec])
+                rows.append([abspath, rel, disp_new, new_abs, rec, "/".join(sub_parts), display_vals])
                 targets[new_abs] = targets.get(new_abs, 0) + 1
 
         n_change = n_noop = n_suffixed = 0
@@ -433,8 +526,9 @@ class RenameMixin:
         for r in rows:                       # pre-seed no-op targets so we don't clobber them
             if r[3] == r[0]:
                 used.add(r[3])
+        show_folder = bool(folder_keys)
         for r in rows:
-            abspath, rel, disp_new, new_abs, rec = r
+            abspath, rel, disp_new, new_abs, rec, folder_disp, display_vals = r
             note = ""
             if new_abs == abspath:
                 tags = ("noop",); n_noop += 1
@@ -454,7 +548,8 @@ class RenameMixin:
                 used.add(new_abs)
                 tags = ("suffixed",) if note else ()
                 n_change += 1
-            iid = tv.insert("", "end", values=(rel, disp_new, note, *self._peak_cols(rec)), tags=tags)
+            vals = [rel] + ([folder_disp] if show_folder else []) + list(display_vals) + [note]
+            iid = tv.insert("", "end", values=vals, tags=tags)
             self.rename_item_rec[iid] = (rec, abspath)
         self.rename_map = rows
         self.rename_summary.config(
@@ -479,8 +574,8 @@ class RenameMixin:
             where = f"Files will be {verb} up into the picked folder.\n"
         else:
             where = ("Renamed copies made in place.\n" if copy else "Files renamed in place.\n")
-        if self.rename_group_sort.get():
-            where += f"Sorted into subfolders by {self.rename_group_field.get()}.\n"
+        if self.folder_parts.enabled_keys():
+            where += "Sorted into subfolders by " + " / ".join(self.folder_parts.enabled_labels()) + ".\n"
         if not messagebox.askyesno(
                 "Apply Rename",
                 f"{'Copy' if copy else 'Rename'} {len(todo)} file(s)?\n\n" + where + "This modifies files on disk. Continue?"):

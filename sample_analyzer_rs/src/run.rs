@@ -21,7 +21,7 @@ pub fn run(cfg: &Config) {
     let files = discover_wavs(&cfg.root);
     let total = files.len();
     emit(&serde_json::json!({ "type": "start", "total": total, "workers": cfg.workers,
-                              "analyzer": ANALYZER_VERSION }));
+                              "analyzer_version": ANALYZER_VERSION }));
     if total == 0 {
         emit(&serde_json::json!({ "type": "done", "count": 0, "out": cfg.out.to_string_lossy() }));
         return;
@@ -107,5 +107,5 @@ pub fn run(cfg: &Config) {
     }
     emit(&serde_json::json!({ "type": "done", "count": results.len(), "out": cfg.out.to_string_lossy(),
                               "per_file": cfg.per_file, "reused": reused.load(Ordering::Relaxed),
-                              "analyzer": ANALYZER_VERSION }));
+                              "analyzer_version": ANALYZER_VERSION }));
 }

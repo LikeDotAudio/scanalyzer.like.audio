@@ -3,6 +3,7 @@ import csv
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
+from .config import god_color, group_color
 from .inspector import RecordInspector
 
 
@@ -60,6 +61,7 @@ class GroupsMixin:
         tv.bind("<<TreeviewSelect>>", self._groups_select)
         self.groups_tv = tv
         self.groups_item_rec = {}  # tree item id -> full record (file rows only)
+        self._tint_tags = set()    # colour tags already configured on the tree
         body.add(wrap, weight=3)
 
         # Same inspector as the PEAK Examiner: full JSON + waveform + Play.
@@ -106,8 +108,27 @@ class GroupsMixin:
         sub = self.subgroup_by.get()
         return sub != "(none)" and sub != self.group_by.get()
 
+    def _row_tint(self, color):
+        """One Treeview tag per colour: rows are tinted with the same god-
+        category shades the 3D cloud uses."""
+        tag = "c" + color.lstrip("#")
+        if tag not in self._tint_tags:
+            self.groups_tv.tag_configure(tag, foreground=color)
+            self._tint_tags.add(tag)
+        return tag
+
+    def _header_tint(self, dim, key):
+        """Header rows carry the same colour system: god categories their base
+        colour, name groups their shade; other dimensions stay neutral."""
+        if dim == "God category":
+            return self._row_tint(god_color(key))
+        if dim == "Name group":
+            return self._row_tint(group_color(key))
+        return self._row_tint("#e8e8e8")
+
     def _insert_file_row(self, parent, r):
-        iid = self.groups_tv.insert(parent, "end", text=r.get("name", ""), values=(
+        tint = self._row_tint(group_color(r.get("group") or "", r.get("subgroup") or ""))
+        iid = self.groups_tv.insert(parent, "end", text=r.get("name", ""), tags=(tint,), values=(
             r.get("folder", ""), r.get("reason", ""),
             r.get("god_category", ""), r.get("envelope_shape", ""), r.get("timbre", ""),
             r.get("cluster", ""), f"{r.get('pitch_hz', 0):.0f}",
@@ -127,6 +148,7 @@ class GroupsMixin:
         for g in sorted(buckets):
             rows = buckets[g]
             parent = tv.insert("", "end", text=f"{g}  ({len(rows)})", open=False,
+                               tags=(self._header_tint(self.group_by.get(), g),),
                                values=[""] * len(self.GROUP_COLS))
             if sub_active:
                 subs = {}
@@ -136,6 +158,7 @@ class GroupsMixin:
                 for sg in sorted(subs):
                     srows = subs[sg]
                     snode = tv.insert(parent, "end", text=f"{sg}  ({len(srows)})", open=False,
+                                      tags=(self._header_tint(self.subgroup_by.get(), sg),),
                                       values=[""] * len(self.GROUP_COLS))
                     for r in sorted(srows, key=lambda x: x.get("name", "")):
                         self._insert_file_row(snode, r)

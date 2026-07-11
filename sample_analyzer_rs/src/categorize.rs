@@ -24,11 +24,13 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
     const RULES: &[(&str, &str, &[&str], &[&str])] = &[
         // Impulse responses (convolution / cabinet / reverb IRs) — checked early.
         ("IR", "", &["impulse response", "impulse", "convolution", "convol", "cabinet", "guitar cab", "reverb ir"], &["ir", "cab", "conv"]),
-        // Kick before Bass so "bass drum" -> Kick, plain "bass" -> Bass.
-        ("Kick", "", &["kick", "kik", "bass drum", "bassdrum"], &["bd", "kk", "kik", "kic", "kck"]),
+        // Kick before Bass: ANYTHING that says "bass drum" (in any spelling —
+        // BassDrum, Bass_Drm, BDrum, …) is a Kick; only a plain "bass" is Bass.
+        ("Kick", "", &["kick", "kik", "bass drum", "bassdrum", "bassdrm", "bass drm", "bdrum"],
+                     &["bd", "kk", "kik", "kic", "kck", "bassd", "bdr"]),
         ("Snare", "", &["snare"], &["sd", "sn", "snr"]),
         // Hi-hat variants (closed/open/pedal).
-        ("HiHat", "", &["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hat"], &["hh", "chh", "ohh", "ch", "oh", "ph"]),
+        ("Hi-Hat", "", &["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hat"], &["hh", "chh", "ohh", "ch", "oh", "ph"]),
         ("Ride", "", &["ride bell", "ride cymbal", "ride"], &["rd", "rdcym"]),
         ("Cymbal", "", &["crash cymbal", "splash cymbal", "cymbal", "crash", "splash"], &["cy", "cym", "crsh"]),
         ("Clap", "", &["handclap", "hand clap", "clap"], &["cp", "clp"]),
@@ -90,9 +92,15 @@ mod tests {
         let cases: &[(&str, &str, &str)] = &[
             ("Kick_01.wav", "Kick", ""), ("BD_808.wav", "Kick", ""), ("Bass Drum 3.wav", "Kick", ""),
             ("Kk-tight.wav", "Kick", ""), ("Kik_punchy.wav", "Kick", ""),
+            // Every "bass drum" spelling is a Kick — never a Bass.
+            ("BassDrum.wav", "Kick", ""), ("BASSDRUM2.wav", "Kick", ""), ("Bass-Drum.wav", "Kick", ""),
+            ("Bassdrums_08.wav", "Kick", ""), ("BassDrm_03.wav", "Kick", ""), ("Bass Drm 1.wav", "Kick", ""),
+            ("BDrum_7.wav", "Kick", ""), ("BassD_2.wav", "Kick", ""), ("BDR_4.wav", "Kick", ""),
+            // …but a plain "bass" stays Bass.
+            ("Bass_808.wav", "Bass", ""), ("Bassline_A.wav", "Bass", ""),
             ("Snare_Acoustic.wav", "Snare", ""), ("SD_04.wav", "Snare", ""), ("Snr_rimmy.wav", "Snare", ""),
-            ("HiHat_closed.wav", "HiHat", ""), ("HH_01.wav", "HiHat", ""), ("OH_open.wav", "HiHat", ""),
-            ("CH_tight.wav", "HiHat", ""), ("Pedal Hat.wav", "HiHat", ""), ("808_HH.wav", "HiHat", ""),
+            ("HiHat_closed.wav", "Hi-Hat", ""), ("HH_01.wav", "Hi-Hat", ""), ("OH_open.wav", "Hi-Hat", ""),
+            ("CH_tight.wav", "Hi-Hat", ""), ("Pedal Hat.wav", "Hi-Hat", ""), ("808_HH.wav", "Hi-Hat", ""),
             ("Perc_shot.wav", "Perc", ""), ("PRC_02.wav", "Perc", ""),
             ("Clap_big.wav", "Clap", ""), ("CP_room.wav", "Clap", ""), ("Handclap.wav", "Clap", ""),
             ("Rimshot.wav", "Rim", ""), ("RS_dry.wav", "Rim", ""), ("Cross-stick.wav", "Rim", ""),

@@ -12,7 +12,9 @@ by the standalone `oa_graph_layout` Rust binary — this module just draws it.
 All methods here become part of AnalyzerApp via the GraphMixin.
 """
 import json
+import re
 import subprocess
+import textwrap
 from math import sqrt
 
 import tkinter as tk
@@ -26,7 +28,7 @@ from matplotlib.lines import Line2D
 from mpl_toolkits.mplot3d import Axes3D, proj3d  # noqa: F401 (registers the 3d projection)
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from .config import CLOUD_PALETTE, CATEGORY_ORDER, god_category
+from .config import CLOUD_PALETTE, CATEGORY_ORDER, god_category, god_color, group_color
 
 
 class GraphMixin:
@@ -172,7 +174,7 @@ class GraphMixin:
         self._apply_zoom()
 
     def _color_for(self, groups, g):
-        return CLOUD_PALETTE[max(0, groups.index(g)) % len(CLOUD_PALETTE)]
+        return group_color(g)
 
     def _feat_key(self, label):
         for l, k in self.ISO_FEATURES:
@@ -245,9 +247,11 @@ class GraphMixin:
             if cvar is None:
                 cvar = tk.BooleanVar(value=True)
                 self.category_vars[cat] = cvar
+            ccol = god_color(cat)
             tk.Checkbutton(self.group_box, text=cat, variable=cvar, anchor="w",
                            bg="#2a2a2a", activebackground="#2a2a2a",
-                           fg="#f4b04c", activeforeground="#f4b04c", selectcolor="#101010",
+                           fg=ccol, activeforeground=ccol, selectcolor="#101010",
+                           bd=0, highlightthickness=0, relief=tk.FLAT,
                            font=("Helvetica", 9, "bold"),
                            command=lambda c=cat: self._toggle_category(c)).pack(fill=tk.X, anchor="w")
             for g, subs in groups:
@@ -255,9 +259,11 @@ class GraphMixin:
                 if var is None:
                     var = tk.BooleanVar(value=True)
                     self.group_vars[g] = var
+                gcol = group_color(g)
                 tk.Checkbutton(self.group_box, text="  " + g, variable=var, anchor="w",
                                bg="#1e1e1e", activebackground="#1e1e1e",
-                               fg="#e8e8e8", activeforeground="#e8e8e8", selectcolor="#101010",
+                               fg=gcol, activeforeground=gcol, selectcolor="#101010",
+                               bd=0, highlightthickness=0, relief=tk.FLAT,
                                font=("Helvetica", 9, "bold" if subs else "normal"),
                                command=self._redraw_cloud).pack(fill=tk.X, anchor="w")
                 for s in subs:
@@ -265,9 +271,11 @@ class GraphMixin:
                     if sv is None:
                         sv = tk.BooleanVar(value=True)
                         self.subgroup_vars[(g, s)] = sv
+                    scol = group_color(g, s)
                     tk.Checkbutton(self.group_box, text="     ↳ " + s, variable=sv, anchor="w",
                                    bg="#1e1e1e", activebackground="#1e1e1e",
-                                   fg="#b8b8b8", activeforeground="#b8b8b8", selectcolor="#101010",
+                                   fg=scol, activeforeground=scol, selectcolor="#101010",
+                                   bd=0, highlightthickness=0, relief=tk.FLAT,
                                    command=self._redraw_cloud).pack(fill=tk.X, anchor="w")
         self._group_box_keys = structure
 
@@ -307,6 +315,14 @@ class GraphMixin:
 
     # ---- click-to-inspect + play -----------------------------------------
     def _on_click_point(self, event):
+        # A click on the record overlay itself dismisses it.
+        if self._sel_txt is not None:
+            try:
+                if self._sel_txt.contains(event)[0]:
+                    self._hide_record_overlay()
+                    return
+            except Exception:
+                pass
         if event.inaxes != self.ax or self._pts is None or event.x is None:
             return
         xs, ys, zs = self._pts
@@ -320,6 +336,17 @@ class GraphMixin:
         if d2[i] > 900:  # >30 px away — treat as an orbit drag, not a pick
             return
         self._select_point(i)
+
+    def _hide_record_overlay(self):
+        for attr in ("_sel_txt", "_sel_marker"):
+            obj = getattr(self, attr, None)
+            if obj is not None:
+                try:
+                    obj.remove()
+                except Exception:
+                    pass
+                setattr(self, attr, None)
+        self.canvas.draw_idle()
 
     def _select_point(self, i):
         if i < 0 or i >= len(self._pt_recs):
@@ -339,14 +366,20 @@ class GraphMixin:
         lines.append("")
         for k, label, fmt in (
             ("group", "group", "{}"), ("reason", "reason", "{}"), ("timbre", "timbre", "{}"),
-            ("cluster", "cluster", "{}"), ("root_note_name", "root_note_name", "{}"), ("pitch_hz", "pitch_hz", "{:.0f} Hz"),
-            ("spectral_centroid_hz", "high_band_energy", "{:.0f} Hz"), ("harmonicity", "harmonicity", "{:.2f}"),
-            ("complexity", "complexity", "{:.1f}"), ("attack_seconds", "attack_seconds", "{:.3f} s"),
-            ("length_seconds", "length_seconds", "{:.2f} s"), ("transient_count", "transient_count", "{}"),
-            ("beats_per_minute", "beats_per_minute", "{:.1f}"), ("sample_rate", "sample rate", "{} Hz"), ("bit_depth", "bits", "{}"),
+            ("cluster", "cluster", "{}"), ("root_note_name", "root note", "{}"), ("pitch_hz", "pitch", "{:.0f} Hz"),
+            ("spectral_centroid_hz", "brightness", "{:.0f} Hz"), ("harmonicity", "harmonicity", "{:.2f}"),
+            ("complexity", "complexity", "{:.1f}"), ("attack_seconds", "attack", "{:.3f} s"),
+            ("length_seconds", "length", "{:.2f} s"), ("transient_count", "transients", "{}"),
+            ("beats_per_minute", "BPM", "{:.1f}"), ("sample_rate", "sample rate", "{} Hz"), ("bit_depth", "bits", "{}"),
         ):
             v = rec.get(k)
             if v in (None, "", 0) and k in ("beats_per_minute", "cluster"):
+                continue
+            if k == "reason":
+                # "1) …  2) …  3) …" → one numbered part per line, wrapped.
+                for part in re.split(r"\s+(?=\d\))", str(v)):
+                    lines.extend(textwrap.wrap("reason " + part if part.startswith("1)") else part,
+                                               width=64, subsequent_indent="     ") or [part])
                 continue
             try:
                 lines.append(f"{label}: " + fmt.format(v))
@@ -366,7 +399,7 @@ class GraphMixin:
                 pass
         # Pinned to the window's top-right corner (figure coords), not the cube.
         self._sel_txt = self.fig.text(
-            0.995, 0.995, text, ha="right", va="top",
+            0.995, 0.995, text, ha="right", va="top", multialignment="left",
             fontsize=8, color="#f2f2d8", family="monospace", zorder=30,
             bbox=dict(boxstyle="round,pad=0.6", facecolor="#080808", edgecolor="#f4902c",
                       alpha=1.0, linewidth=1.3))
@@ -420,8 +453,8 @@ class GraphMixin:
             setlabels([f"{v:.2g}" for v in ticks], fontsize=7, color="#bbb")
 
     def _redraw_cloud(self):
-        if not self.d_rec:
-            return
+        if getattr(self, "_suspend_redraw", False) or not self.d_rec:
+            return  # a preset is mid-way through setting all four axes
         # Preserve the user's current view angle across live updates.
         elev, azim = self.ax.elev, self.ax.azim
 
@@ -471,7 +504,9 @@ class GraphMixin:
         ys = np.array(p["y"]["vals"], dtype=float)
         zs = np.array(p["z"]["vals"], dtype=float)
         sizes = np.array(p["sizes"], dtype=float)
-        colors = [CLOUD_PALETTE[ci % len(CLOUD_PALETTE)] for ci in p["color_idx"]]
+        # God-category colour system: hue = category, shade = group, nudge =
+        # subgroup — the same colours the tables use.
+        colors = [group_color(r.get("group") or "", r.get("subgroup") or "") for r in recs]
 
         self._pts = (xs, ys, zs)
         self._pt_recs = recs

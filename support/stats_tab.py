@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from .config import CLOUD_PALETTE, god_category
+from .config import CLOUD_PALETTE, god_category, god_color, group_color
 
 
 class GroupStatsMixin:
@@ -136,7 +136,7 @@ class GroupStatsMixin:
         self.stats_group_btns = {}
         for g in groups:
             b = tk.Button(self.stats_gbar, text=g, font=("Helvetica", 8), padx=6, pady=1,
-                          bg="#2a2a2a", fg="#e8e8e8",
+                          bg="#2a2a2a", fg=group_color(g),
                           activebackground="#3a3a3a", activeforeground="#ffffff",
                           relief=tk.RAISED, bd=1,
                           command=lambda gg=g: self._select_stats_group(gg))
@@ -169,9 +169,9 @@ class GroupStatsMixin:
         sel = self.stats_group.get()
         for g, b in self.stats_group_btns.items():
             if g == sel:
-                b.config(bg="#f4902c", fg="#111", relief=tk.SUNKEN)
+                b.config(bg=group_color(g), fg="#111", relief=tk.SUNKEN)
             else:
-                b.config(bg="#2a2a2a", fg="#e8e8e8", relief=tk.RAISED)
+                b.config(bg="#2a2a2a", fg=group_color(g), relief=tk.RAISED)
 
     def _redraw_stats(self):
         if not hasattr(self, "stats_ax"):
@@ -211,7 +211,7 @@ class GroupStatsMixin:
             xs = [float(r.get(xk, 0) or 0) for r in pts]
             ys = [float(r.get(yk, 0) or 0) for r in pts]
             ax.scatter(xs, ys, s=26, alpha=0.8, edgecolors="none",
-                       color=CLOUD_PALETTE[i % len(CLOUD_PALETTE)], label=s)
+                       color=group_color(g, s if s != g else ""), label=s)
             all_x += xs
             all_y += ys
             all_recs += pts
