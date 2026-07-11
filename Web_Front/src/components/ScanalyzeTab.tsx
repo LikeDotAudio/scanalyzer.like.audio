@@ -78,21 +78,6 @@ export default function ScanalyzeTab({
         }
 
         setProgress(Math.round(((i + 1) / pendingWavFiles.length) * 100));
-        
-        // Auto-save every 10% if there are a lot of files (e.g., more than 1000)
-        if (pendingWavFiles.length >= 1000) {
-            const tenPercent = Math.floor(pendingWavFiles.length / 10);
-            if (i > 0 && i % tenPercent === 0) {
-                const chunk = newResults.slice(i - tenPercent, i);
-                const blob = new Blob([JSON.stringify(chunk, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `scan_part_${Math.floor(i / tenPercent)}.peak`;
-                a.click();
-                URL.revokeObjectURL(url);
-            }
-        }
 
         await new Promise(resolve => setTimeout(resolve, 0));
     }

@@ -1,12 +1,12 @@
 import { Suspense, useState, useRef, useMemo } from 'react';
 import SampleCloud, { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS } from '../SampleCloud';
 import { groupColor, subKey } from '../groupColors';
-import { findAudioFile, pickDirectoryFiles, fsaSupported, filterAudioFiles } from '../audioLinking';
+import { findAudioFile } from '../audioLinking';
 
 interface CloudTabProps {
   analysisResult: any[];
   audioFiles: File[];
-  setAudioFiles: (files: File[]) => void;
+  onSound?: (name: string) => void;
 }
 
 // One-click axis presets: [label, X, Y, Z, Size] — ported from the desktop app.
@@ -25,7 +25,7 @@ const selStyle: React.CSSProperties = {
   padding: '0.25rem 0.4rem', fontSize: '0.8rem',
 };
 
-export default function CloudTab({ analysisResult, audioFiles, setAudioFiles }: CloudTabProps) {
+export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudTabProps) {
   const [xAxis, setXAxis] = useState('Pitch');
   const [yAxis, setYAxis] = useState('Group');
   const [zAxis, setZAxis] = useState('Complexity');
@@ -71,21 +71,12 @@ export default function CloudTab({ analysisResult, audioFiles, setAudioFiles }: 
     setXAxis(x); setYAxis(y); setZAxis(z); setSizeAxis(size);
   };
 
-  const linkAudio = async () => {
-    try {
-      const files = await pickDirectoryFiles();
-      setAudioFiles(files);
-      setPlayMsg(`${files.length} audio files linked`);
-    } catch (err) {
-      if ((err as Error)?.name !== 'AbortError') setPlayMsg((err as Error).message);
-    }
-  };
-
   const handlePick = (index: number) => {
     setSelectedIndex(index);
     const item = analysisResult[index];
     if (!item) return;
-    if (audioFiles.length === 0) { setPlayMsg('No audio linked — click "Link Audio Folder".'); return; }
+    onSound?.(item.name || '');
+    if (audioFiles.length === 0) { setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
     const file = findAudioFile(audioFiles, item);
     if (file && audioRef.current) {
       audioRef.current.src = URL.createObjectURL(file);
@@ -127,15 +118,6 @@ export default function CloudTab({ analysisResult, audioFiles, setAudioFiles }: 
           ))}
         </div>
         <div style={{ flex: 1 }} />
-        {fsaSupported() ? (
-          <button className="btn primary" style={{ padding: '0.2rem 0.6rem', fontSize: '0.8rem' }} onClick={linkAudio}>Link Audio Folder</button>
-        ) : (
-          <label className="btn primary" style={{ padding: '0.2rem 0.6rem', fontSize: '0.8rem', cursor: 'pointer' }}>
-            Link Audio Folder
-            <input type="file" webkitdirectory="true" directory="true" style={{ display: 'none' }}
-              onChange={e => e.target.files && setAudioFiles(filterAudioFiles(Array.from(e.target.files)))} />
-          </label>
-        )}
         <span className="text-secondary" style={{ fontSize: '0.75rem' }}>{audioFiles.length} audio linked</span>
       </div>
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './index.css'
+import { pickDirectoryFiles, fsaSupported, filterAudioFiles } from './audioLinking'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
 import CloudTab from './components/CloudTab'
@@ -21,6 +22,7 @@ function App() {
   const [activeTab, setActiveTab] = useState(tabFromHash())
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [currentSound, setCurrentSound] = useState('')
 
   // Keep the active tab in sync with the URL hash (linkable / back-forward).
   useEffect(() => {
@@ -91,6 +93,21 @@ function App() {
     if (files.length) loadPeakFiles(files);
   }
 
+  // Global "Load Sounds": link an audio folder app-wide (all tabs share it).
+  const handleLoadSounds = async () => {
+    if (fsaSupported()) {
+      try { setAudioFiles(await pickDirectoryFiles()); }
+      catch (err) { if ((err as Error)?.name !== 'AbortError') console.warn(err); }
+    } else {
+      // Fallback: a hidden directory <input> for non-Chromium browsers.
+      const input = document.createElement('input');
+      input.type = 'file';
+      (input as any).webkitdirectory = true;
+      input.onchange = () => { if (input.files) setAudioFiles(filterAudioFiles(Array.from(input.files))); };
+      input.click();
+    }
+  }
+
   const tabs = [
     { id: 'scanalyze', label: 'SCANALIZE' },
     { id: 'cloud', label: '3D Cloud' },
@@ -112,7 +129,7 @@ function App() {
           <div style={{ color: 'white', fontSize: '1.5rem' }}>Drop .PEAK file to load</div>
         </div>
       )}
-      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} />
+      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} audioCount={audioFiles.length} currentSound={currentSound} />
 
       {/* Tabs Navigation */}
       <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '2px', padding: '2px', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
@@ -150,10 +167,10 @@ function App() {
           />
         )}
 
-        {activeTab === 'cloud' && <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} setAudioFiles={setAudioFiles} />}
-        {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} setAudioFiles={setAudioFiles} />}
+        {activeTab === 'cloud' && <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
+        {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
         {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-        {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} setAudioFiles={setAudioFiles} />}
+        {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
         {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} />}
         
       </main>

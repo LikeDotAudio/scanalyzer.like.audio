@@ -1,12 +1,12 @@
 import { useState, useMemo, useRef } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
 import { groupColor, godColor, godCategory, CLOUD_PALETTE } from '../groupColors'
-import { findAudioFile, pickDirectoryFiles, fsaSupported, filterAudioFiles } from '../audioLinking'
+import { findAudioFile } from '../audioLinking'
 
 interface StatsTabProps {
   analysisResult: any[];
   audioFiles: File[];
-  setAudioFiles: (files: File[]) => void;
+  onSound?: (name: string) => void;
 }
 
 // Numeric features selectable on the configurable scatter charts.
@@ -28,7 +28,7 @@ const selStyle: React.CSSProperties = {
   borderRadius: 0, padding: '0.15rem 0.3rem', fontSize: '0.75rem',
 };
 
-export default function StatsTab({ analysisResult, audioFiles, setAudioFiles }: StatsTabProps) {
+export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsTabProps) {
   const [group, setGroup] = useState<string | null>(null);      // null = All
   const [sub, setSub] = useState<string | null>(null);
   const [x1, setX1] = useState('Pitch');
@@ -99,13 +99,9 @@ export default function StatsTab({ analysisResult, audioFiles, setAudioFiles }: 
     return Object.entries(c).map(([name, v]) => ({ name, ...v })).sort((a, b) => b.value - a.value).slice(0, 24);
   }, [data]);
 
-  const linkAudio = async () => {
-    try { setAudioFiles(await pickDirectoryFiles()); }
-    catch (err) { if ((err as Error)?.name !== 'AbortError') console.warn(err); }
-  };
-
   const playItem = (item: any) => {
     if (!item) return;
+    onSound?.(item.name || '');
     const file = findAudioFile(audioFiles, item);
     if (file && audioRef.current) {
       audioRef.current.src = URL.createObjectURL(file);
@@ -173,15 +169,6 @@ export default function StatsTab({ analysisResult, audioFiles, setAudioFiles }: 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} samples in scope</span>
           <div style={{ flex: 1 }} />
-          {(fsaSupported() ? (
-            <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={linkAudio}>Link Audio</button>
-          ) : (
-            <label className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', cursor: 'pointer' }}>
-              Link Audio
-              <input type="file" webkitdirectory="true" directory="true" style={{ display: 'none' }}
-                onChange={e => e.target.files && setAudioFiles(filterAudioFiles(Array.from(e.target.files)))} />
-            </label>
-          ))}
           <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => audioRef.current?.play()}>▶</button>
           <span className="text-secondary" style={{ fontSize: '0.72rem', minWidth: '120px' }}>{nowPlaying || 'click a point to play'}</span>
           <audio ref={audioRef} style={{ display: 'none' }} />
