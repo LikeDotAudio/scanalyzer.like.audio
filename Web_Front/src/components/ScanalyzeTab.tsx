@@ -4,15 +4,25 @@ import initWasm, { analyze_audio_buffer } from 'wasm_analyzer';
 interface ScanalyzeTabProps {
   analysisResult: any[];
   setAnalysisResult: (results: any[]) => void;
+  isAnalyzing: boolean;
+  setIsAnalyzing: (val: boolean) => void;
+  setProgress: (val: number) => void;
   onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onExportPeak: () => void;
   onViewCloud: () => void;
 }
 
-export default function ScanalyzeTab({ analysisResult, setAnalysisResult, onImportPeak, onExportPeak, onViewCloud }: ScanalyzeTabProps) {
+export default function ScanalyzeTab({ 
+    analysisResult, 
+    setAnalysisResult, 
+    isAnalyzing, 
+    setIsAnalyzing, 
+    setProgress, 
+    onImportPeak, 
+    onExportPeak, 
+    onViewCloud 
+}: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     initWasm().then(() => setWasmReady(true)).catch(console.error);
@@ -53,6 +63,14 @@ export default function ScanalyzeTab({ analysisResult, setAnalysisResult, onImpo
     setIsAnalyzing(false);
   };
 
+  if (isAnalyzing) {
+      return (
+          <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="text-secondary" style={{ fontSize: '1.2rem' }}>Scanning in progress. Please wait...</div>
+          </div>
+      );
+  }
+
   return (
     <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scan a Directory</h2>
@@ -70,7 +88,7 @@ export default function ScanalyzeTab({ analysisResult, setAnalysisResult, onImpo
       
       <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
         <label className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem', boxShadow: '0 4px 15px rgba(206, 171, 147, 0.2)' }}>
-          {isAnalyzing ? `Analyzing... ${progress}%` : (wasmReady ? 'Scan Folder' : 'Loading Engine...')}
+          {wasmReady ? 'Scan Folder' : 'Loading Engine...'}
           <input 
             type="file" 
             // @ts-ignore
@@ -78,7 +96,7 @@ export default function ScanalyzeTab({ analysisResult, setAnalysisResult, onImpo
             directory="true" 
             style={{ display: 'none' }} 
             onChange={handleFolderUpload} 
-            disabled={isAnalyzing || !wasmReady}
+            disabled={!wasmReady}
           />
         </label>
 
@@ -89,18 +107,11 @@ export default function ScanalyzeTab({ analysisResult, setAnalysisResult, onImpo
             accept=".peak,.PEAK,.json" 
             style={{ display: 'none' }} 
             onChange={onImportPeak} 
-            disabled={isAnalyzing}
           />
         </label>
       </div>
 
-      {isAnalyzing && (
-        <div style={{ width: '100%', maxWidth: '600px', marginTop: '2.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
-          <div style={{ width: `${progress}%`, height: '12px', background: 'var(--accent-primary)', transition: 'width 0.2s', boxShadow: '0 0 10px var(--accent-primary)' }}></div>
-        </div>
-      )}
-
-      {analysisResult.length > 0 && !isAnalyzing && (
+      {analysisResult.length > 0 && (
         <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
           <h3 style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem' }}>Analysis Complete</h3>
           <p className="text-secondary">{analysisResult.length} files successfully processed.</p>
