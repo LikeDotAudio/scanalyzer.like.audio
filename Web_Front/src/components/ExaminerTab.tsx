@@ -132,16 +132,36 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
   const [autoPlay, setAutoPlay] = useState(true);
   const [digging, setDigging] = useState(false);
   const [filter, setFilter] = useState('');
+  const [scopeGroup, setScopeGroup] = useState<string | null>(null);
+  const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
 
-  // Only rows whose name/group/timbre/root/reason contain the filter text.
+  // Groups present, and subgroups within the scoped group — for the scope bar.
+  const groups = useMemo(() => {
+    const s = new Set<string>();
+    for (const it of analysisResult) s.add(it.group || 'Unclassified');
+    return Array.from(s).sort();
+  }, [analysisResult]);
+  const subgroups = useMemo(() => {
+    if (!scopeGroup) return [];
+    const s = new Set<string>();
+    for (const it of analysisResult) {
+      if ((it.group || 'Unclassified') === scopeGroup && (it.subgroup || '').trim()) s.add(it.subgroup.trim());
+    }
+    return Array.from(s).sort();
+  }, [analysisResult, scopeGroup]);
+
+  // Rows matching the group/subgroup scope AND the filter text.
   const filteredRows = useMemo(() => {
     const q = filter.trim().toLowerCase();
-    if (!q) return analysisResult;
-    return analysisResult.filter(it =>
-      `${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
-        .toLowerCase().includes(q));
-  }, [analysisResult, filter]);
+    return analysisResult.filter(it => {
+      if (scopeGroup && (it.group || 'Unclassified') !== scopeGroup) return false;
+      if (scopeSub && (it.subgroup || '').trim() !== scopeSub) return false;
+      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+        .toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [analysisResult, filter, scopeGroup, scopeSub]);
 
   // The displayed list: filtered, then sorted by the clicked column.
   const rows = useMemo(() => {
@@ -566,7 +586,25 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                   {fsaSupported() ? 'Link (basic)' : 'Link Audio Folder'}
                   <input type="file" webkitdirectory="true" directory="true" style={{ display: 'none' }} onChange={handleLinkFolder} />
               </label>
-              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{filter ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
+              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
+          </div>
+
+          {/* Group / subgroup scope filter bar (like the Stats tab) */}
+          <div style={{ padding: '0.3rem 1rem', display: 'flex', alignItems: 'center', gap: '0.3rem', flexWrap: 'wrap', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
+              <button className={`btn ${!scopeGroup ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => { setScopeGroup(null); setScopeSub(null); }}>All</button>
+              {groups.map(g => (
+                  <button key={g} className={`btn ${scopeGroup === g ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(g, '')}` }} onClick={() => { setScopeGroup(g); setScopeSub(null); }}>{g}</button>
+              ))}
+              {scopeGroup && subgroups.length > 0 && (
+                  <>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: '0 0.25rem' }}>·</span>
+                      <button className={`btn ${!scopeSub ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => setScopeSub(null)}>All {scopeGroup}</button>
+                      {subgroups.map(sg => (
+                          <button key={sg} className={`btn ${scopeSub === sg ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(scopeGroup, sg)}` }} onClick={() => setScopeSub(sg)}>{sg}</button>
+                      ))}
+                  </>
+              )}
           </div>
           <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>

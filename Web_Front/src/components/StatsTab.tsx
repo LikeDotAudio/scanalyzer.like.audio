@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
-import { groupColor, godColor, godCategory } from '../groupColors'
+import { groupColor, godColor, godCategory, CLOUD_PALETTE } from '../groupColors'
 import { findAudioFile, pickDirectoryFiles, fsaSupported, filterAudioFiles } from '../audioLinking'
 
 interface StatsTabProps {
@@ -73,6 +73,19 @@ export default function StatsTab({ analysisResult, audioFiles, setAudioFiles }: 
     return Object.entries(c).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
   }, [data]);
 
+  // Distinct colour per subgroup present in scope, so subgroups read apart.
+  const subColors = useMemo(() => {
+    const subs = Array.from(new Set(data.map(it => (it.subgroup || '').trim()).filter(Boolean))).sort();
+    const map = new Map<string, string>();
+    subs.forEach((s, i) => map.set(s, CLOUD_PALETTE[i % CLOUD_PALETTE.length]));
+    return map;
+  }, [data]);
+
+  const pointColor = (it: any) => {
+    const sg = (it.subgroup || '').trim();
+    return sg ? (subColors.get(sg) as string) : groupColor(it.group || 'Unclassified', '');
+  };
+
   const subgroupData = useMemo(() => {
     const c: Record<string, { value: number; group: string; sub: string }> = {};
     for (const it of data) {
@@ -132,7 +145,7 @@ export default function StatsTab({ analysisResult, audioFiles, setAudioFiles }: 
               formatter={(v: any, n: any) => [v, n]} labelFormatter={() => ''} />
             <Scatter data={data} onClick={(pt: any) => playItem(pt?.payload || pt)} cursor="pointer">
               {data.map((entry, i) => (
-                <Cell key={i} fill={groupColor(entry.group || 'Unclassified', entry.subgroup || '')} />
+                <Cell key={i} fill={pointColor(entry)} />
               ))}
             </Scatter>
           </ScatterChart>
@@ -204,7 +217,7 @@ export default function StatsTab({ analysisResult, audioFiles, setAudioFiles }: 
               <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} />
               <Bar dataKey="value">
                 {(group ? subgroupData : groupData).map((e: any, i) => (
-                  <Cell key={i} fill={group ? groupColor(e.group, e.sub) : groupColor(e.name, '')} />
+                  <Cell key={i} fill={group ? (subColors.get(e.sub) || groupColor(e.group, e.sub)) : groupColor(e.name, '')} />
                 ))}
               </Bar>
             </BarChart>

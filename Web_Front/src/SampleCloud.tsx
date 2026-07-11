@@ -1,5 +1,5 @@
 import { useRef, useMemo, useEffect } from 'react'
-import { Canvas, type ThreeEvent } from '@react-three/fiber'
+import { Canvas, useThree, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import { groupColor, godColor, godCategory, subKey } from './groupColors'

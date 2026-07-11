@@ -220,18 +220,24 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
           {renderOrderedList('Append to file name (top → first)', append, setAppend)}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <button className="btn primary" disabled={analysisResult.length === 0}>Apply Rename &amp; Convert</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span className="text-secondary" style={{ fontSize: '0.85rem' }}>Generate rename script:</span>
+            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('bash')}>Bash (.sh)</button>
+            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('powershell')}>PowerShell (.ps1)</button>
+            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('python')}>Python (.py)</button>
+          </div>
           <div className="text-secondary" style={{ fontSize: '0.9rem' }}>
-            {analysisResult.length} files to rename
+            {analysisResult.length} files → {mode} into “{destRoot}”
           </div>
         </div>
       </div>
 
-      {/* Preview Table */}
+      {/* Preview Table (virtualized) */}
       <div className="glass-panel" style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ overflowX: 'auto', overflowY: 'auto', flex: 1 }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+        <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ overflowX: 'auto', overflowY: 'auto', flex: 1 }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', tableLayout: 'fixed' }}>
+            <colgroup><col style={{ width: '32%' }} /><col style={{ width: '25%' }} /><col style={{ width: '43%' }} /></colgroup>
             <thead style={{ position: 'sticky', top: 0, background: '#1A1D24', zIndex: 1 }}>
               <tr>
                 <th style={{ padding: '0.4rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Old Path</th>
@@ -240,17 +246,30 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
               </tr>
             </thead>
             <tbody>
-              {analysisResult.slice(0, 100).map((item, idx) => {
-                const folder = Object.entries(subfolders).filter(([, v]) => v)
-                  .map(([k]) => tokenValue(item, k as TokenKey)).filter(Boolean).join('/');
+              {(() => {
+                const total = analysisResult.length;
+                const OVER = 12;
+                const start = Math.max(0, Math.floor(scrollTop / PREVIEW_ROW_H) - OVER);
+                const end = Math.min(total, Math.ceil((scrollTop + viewportH) / PREVIEW_ROW_H) + OVER);
+                const cellS: React.CSSProperties = { padding: '0 0.5rem', height: PREVIEW_ROW_H, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' };
                 return (
-                  <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={{ padding: '0.35rem 0.5rem', color: 'var(--text-secondary)' }}>{item.path}</td>
-                    <td style={{ padding: '0.35rem 0.5rem', color: 'var(--accent-primary)' }}>{folder || '—'}</td>
-                    <td style={{ padding: '0.35rem 0.5rem', color: '#FCD34D' }}>{newNameFor(item)}</td>
-                  </tr>
+                  <>
+                    {start > 0 && <tr style={{ height: start * PREVIEW_ROW_H }}><td colSpan={3} style={{ padding: 0 }} /></tr>}
+                    {analysisResult.slice(start, end).map((item, i) => {
+                      const folder = folderFor(item);
+                      const name = newNameFor(item);
+                      return (
+                        <tr key={start + i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', height: PREVIEW_ROW_H }}>
+                          <td style={{ ...cellS, color: 'var(--text-secondary)' }} title={item.path}>{item.path}</td>
+                          <td style={{ ...cellS, color: 'var(--accent-primary)' }} title={folder}>{folder || '—'}</td>
+                          <td style={{ ...cellS, color: '#FCD34D' }} title={name}>{name}</td>
+                        </tr>
+                      );
+                    })}
+                    {end < total && <tr style={{ height: (total - end) * PREVIEW_ROW_H }}><td colSpan={3} style={{ padding: 0 }} /></tr>}
+                  </>
                 );
-              })}
+              })()}
             </tbody>
           </table>
         </div>
