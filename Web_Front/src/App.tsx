@@ -178,7 +178,13 @@ function App() {
         {activeTab === 'scanalyze' && (
           <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scan a Directory</h2>
-            <p className="text-secondary" style={{ marginBottom: '2.5rem', fontSize: '1.2rem' }}>Select a folder containing .wav files to begin local DSP analysis.</p>
+            <p className="text-secondary" style={{ marginBottom: '1rem', fontSize: '1.2rem', textAlign: 'center', maxWidth: '800px' }}>
+                Select a folder containing .wav files to begin local DSP analysis.
+            </p>
+            
+            <div style={{ marginBottom: '2.5rem', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid var(--accent-secondary)', padding: '1rem', borderRadius: '8px', maxWidth: '800px', textAlign: 'left' }}>
+                <strong style={{ color: 'var(--accent-secondary)' }}>🔒 Privacy Notice:</strong> Your files are <strong>NOT</strong> uploaded to any server. All audio analysis is performed entirely locally on your machine using WebAssembly. The browser may ask for permission to "upload", but the data never leaves your computer. Sub-folders are scanned automatically.
+            </div>
             
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
               <label className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem', boxShadow: '0 4px 15px rgba(206, 171, 147, 0.2)' }}>
