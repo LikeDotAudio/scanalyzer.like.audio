@@ -1,4 +1,4 @@
-# Scanalyzer
+# scanalyzer.like.audio
 
 A self-contained audio-sample analyzer and file-management tool.
 
