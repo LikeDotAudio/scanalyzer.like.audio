@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { pickDirectoryFiles, findAudioFile, fsaSupported } from '../audioLinking';
 
 interface ExaminerTabProps {
   analysisResult: any[];
@@ -292,7 +293,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
   const handleSelect = async (item: any) => {
     setSelectedItem(item);
 
-    const file = audioFiles.find(f => f.name === item.name || f.webkitRelativePath.endsWith(item.path));
+    const file = findAudioFile(audioFiles, item);
     if (!file) {
       // No linked audio — clear the preview so it doesn't show a stale sample.
       const canvas = canvasRef.current;
@@ -325,6 +326,16 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       }
   };
 
+  const handleDeepLink = async () => {
+      try {
+          const files = await pickDirectoryFiles();
+          setAudioFiles(files);
+      } catch (err) {
+          // User cancelled the picker, or the API is unavailable — ignore.
+          if ((err as Error)?.name !== 'AbortError') console.warn(err);
+      }
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
 
@@ -334,11 +345,16 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
               <button className="btn secondary" style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem' }}>Open .PEAK...</button>
               <input type="text" placeholder="Filter:" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px' }} />
               <div style={{ flex: 1 }} />
-              <label className="btn primary" style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem', cursor: 'pointer' }}>
-                  Link Audio Folder
+              {fsaSupported() && (
+                <button className="btn primary" style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem' }} onClick={handleDeepLink}>
+                    Link Audio Folder
+                </button>
+              )}
+              <label className="btn secondary" style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem', cursor: 'pointer' }} title="Fallback folder picker">
+                  {fsaSupported() ? 'Link (basic)' : 'Link Audio Folder'}
                   <input type="file" webkitdirectory="true" directory="true" style={{ display: 'none' }} onChange={handleLinkFolder} />
               </label>
-              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{analysisResult.length} shown</div>
+              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{audioFiles.length ? `${audioFiles.length} linked · ` : ''}{analysisResult.length} shown</div>
           </div>
           <div style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
@@ -394,11 +410,15 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
 
           {/* Bottom Left: Field/Value Table */}
           <div style={{ width: '300px', borderRight: '1px solid var(--border-color)', overflowY: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.75rem', tableLayout: 'fixed' }}>
+                  <colgroup>
+                      <col style={{ width: '105px' }} />
+                      <col />
+                  </colgroup>
                   <thead style={{ position: 'sticky', top: 0, background: '#1A1D24' }}>
                       <tr>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Field</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Value</th>
+                          <th style={{ padding: '0.2rem 0.4rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Field</th>
+                          <th style={{ padding: '0.2rem 0.4rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Value</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -406,9 +426,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                           if (Array.isArray(v)) v = v.join(', ');
                           if (typeof v === 'number') v = v.toFixed(2);
                           return (
-                              <tr key={k} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: '#3B82F6' }}>{k}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: '#FCD34D' }}>{v?.toString()}</td>
+                              <tr key={k} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', verticalAlign: 'top' }}>
+                                  <td style={{ padding: '0.2rem 0.4rem', color: '#3B82F6', wordBreak: 'break-word' }}>{k}</td>
+                                  <td style={{ padding: '0.2rem 0.4rem', color: '#FCD34D', wordBreak: 'break-word' }}>{v?.toString()}</td>
                               </tr>
                           );
                       }) : (

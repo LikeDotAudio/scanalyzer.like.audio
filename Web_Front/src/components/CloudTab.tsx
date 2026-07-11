@@ -1,6 +1,7 @@
 import { Suspense, useState, useRef, useMemo } from 'react';
 import SampleCloud, { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS } from '../SampleCloud';
 import { groupColor } from '../groupColors';
+import { findAudioFile } from '../audioLinking';
 
 interface CloudTabProps {
   analysisResult: any[];
@@ -18,8 +19,8 @@ const PRESETS: [string, string, string, string, string][] = [
 ];
 
 const selStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.06)', color: 'white',
-  border: '1px solid var(--border-color)', borderRadius: '4px',
+  background: '#000', color: '#fff',
+  border: '1px solid var(--border-color)', borderRadius: 0,
   padding: '0.25rem 0.4rem', fontSize: '0.8rem',
 };
 
@@ -56,7 +57,7 @@ export default function CloudTab({ analysisResult, audioFiles }: CloudTabProps) 
     setSelectedIndex(index);
     const item = analysisResult[index];
     if (!item) return;
-    const file = audioFiles.find(f => f.name === item.name || (f.webkitRelativePath && item.path && f.webkitRelativePath.endsWith(item.path)));
+    const file = findAudioFile(audioFiles, item);
     if (file && audioRef.current) {
       audioRef.current.src = URL.createObjectURL(file);
       audioRef.current.play().catch(() => {});
@@ -110,7 +111,7 @@ export default function CloudTab({ analysisResult, audioFiles }: CloudTabProps) 
         </aside>
 
         {/* 3D WebGL Canvas Area */}
-        <section className="main-view glass-panel" style={{ margin: '1rem 1rem 1rem 0', padding: 0, overflow: 'hidden', flex: 1, position: 'relative' }}>
+        <section className="main-view glass-panel" style={{ margin: 0, padding: 0, overflow: 'hidden', flex: 1, position: 'relative' }}>
           <Suspense fallback={<div style={{ color: 'white', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>Initializing 3D Engine...</div>}>
             <SampleCloud
               data={analysisResult} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}

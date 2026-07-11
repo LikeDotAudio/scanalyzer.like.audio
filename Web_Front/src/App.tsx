@@ -115,7 +115,7 @@ function App() {
       <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} />
 
       {/* Tabs Navigation */}
-      <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '0.5rem', padding: '0.5rem 1rem', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
+      <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '2px', padding: '2px', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
         {tabs.map(tab => (
           <button
             key={tab.id}

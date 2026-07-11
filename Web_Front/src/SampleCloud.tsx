@@ -10,6 +10,7 @@ import { groupColor, godColor, godCategory } from './groupColors'
 type Feature = { categorical?: boolean; key?: string; get?: (it: any) => string };
 export const CLOUD_FEATURES: Record<string, Feature> = {
   Group: { categorical: true, get: (it) => it.group || 'Unclassified' },
+  Subgroup: { categorical: true, get: (it) => it.subgroup || '—' },
   Timbre: { categorical: true, get: (it) => it.timbre || '?' },
   Length: { key: 'length_seconds' },
   Complexity: { key: 'complexity' },
@@ -142,7 +143,8 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, hiddenGroup
     <>
       <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, count]} onClick={handleClick}>
         <sphereGeometry args={[0.5, 10, 10]} />
-        <meshStandardMaterial vertexColors emissiveIntensity={0.4} roughness={0.5} metalness={0.1} />
+        {/* Unlit: the per-instance colour IS the colour, no shading darkening. */}
+        <meshBasicMaterial toneMapped={false} />
       </instancedMesh>
       {sel && (
         <mesh position={sel}>

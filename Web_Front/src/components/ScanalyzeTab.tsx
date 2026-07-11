@@ -104,7 +104,7 @@ export default function ScanalyzeTab({
 
   if (isAnalyzing) {
       return (
-          <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <div className="text-secondary" style={{ fontSize: '1.2rem' }}>Scanning in progress. Please wait...</div>
           </div>
       );
@@ -112,7 +112,7 @@ export default function ScanalyzeTab({
 
   if (pendingWavFiles.length > 0) {
       return (
-          <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Ready to Scan</h2>
               <p className="text-secondary" style={{ marginBottom: '2.5rem', fontSize: '1.2rem' }}>
                   Found <strong>{pendingWavFiles.length}</strong> new .wav files to process.
@@ -126,13 +126,13 @@ export default function ScanalyzeTab({
   }
 
   return (
-    <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scan a Directory</h2>
       <p className="text-secondary" style={{ marginBottom: '1rem', fontSize: '1.2rem', textAlign: 'center', maxWidth: '800px' }}>
           Select a folder containing .wav files to begin local DSP analysis.
       </p>
       
-      <div style={{ marginBottom: '2.5rem', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid var(--accent-secondary)', padding: '1rem', borderRadius: '8px', maxWidth: '800px', textAlign: 'left' }}>
+      <div style={{ marginBottom: '1.5rem', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid var(--accent-secondary)', padding: '0.75rem', maxWidth: '800px', textAlign: 'left' }}>
           <strong style={{ color: 'var(--accent-secondary)' }}>🔒 Privacy Notice:</strong> Your files are <strong>NOT</strong> uploaded to any server. All audio analysis is performed entirely locally on your machine using the compiled WebAssembly DSP Engine. The browser may ask for permission to "upload", but the data never leaves your computer. Sub-folders are scanned automatically.
       </div>
       
