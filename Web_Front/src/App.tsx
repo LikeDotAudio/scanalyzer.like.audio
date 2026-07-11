@@ -151,7 +151,7 @@ function App() {
         )}
 
         {activeTab === 'cloud' && <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} setAudioFiles={setAudioFiles} />}
-        {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} />}
+        {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} setAudioFiles={setAudioFiles} />}
         {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
         {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} setAudioFiles={setAudioFiles} />}
         {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} />}

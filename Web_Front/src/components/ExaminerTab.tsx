@@ -94,12 +94,30 @@ function computeSpectrum(mono: Float32Array, sr: number): { fx: number[]; fy: nu
   return fx.length ? { fx, fy } : null;
 }
 
+const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
+
+// Scientific-pitch note name (e.g. "C1", "F#2", "A4") → frequency in Hz.
+// A4 = 440 Hz, A0 = 27.5 Hz — matches the top axis's A-octave series.
+function noteToFreq(name: any): number | null {
+  if (!name || typeof name !== 'string') return null;
+  const m = /^([A-Ga-g])([#b]?)(-?\d+)$/.exec(name.trim());
+  if (!m) return null;
+  const letters: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+  let semi = letters[m[1].toUpperCase()];
+  if (semi == null) return null;
+  if (m[2] === '#') semi += 1; else if (m[2] === 'b') semi -= 1;
+  const midi = (parseInt(m[3], 10) + 1) * 12 + semi;
+  return 440 * Math.pow(2, (midi - 69) / 12);
+}
+
 export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [autoPlay, setAutoPlay] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const selectedRowRef = useRef<HTMLTableRowElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [viewportH, setViewportH] = useState(400);
   // A lightweight context used only to decode audio for the static preview.
   const decodeCtxRef = useRef<AudioContext | null>(null);
 
@@ -129,10 +147,28 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
     return () => window.removeEventListener('keydown', onKey);
   }, [selectedItem, analysisResult, autoPlay, audioFiles]);
 
-  // Keep the selected row visible as the user arrows through the list.
+  // Track the scroll viewport height for virtualization.
   useEffect(() => {
-    selectedRowRef.current?.scrollIntoView({ block: 'nearest' });
-  }, [selectedItem]);
+    const el = scrollRef.current;
+    if (!el) return;
+    const update = () => setViewportH(el.clientHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Keep the selected row visible as the user arrows through the (virtualized) list.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!selectedItem || !el) return;
+    const idx = analysisResult.indexOf(selectedItem);
+    if (idx < 0) return;
+    const top = idx * ROW_H;
+    const bottom = top + ROW_H;
+    if (top < el.scrollTop) el.scrollTop = top;
+    else if (bottom > el.scrollTop + el.clientHeight) el.scrollTop = bottom - el.clientHeight;
+  }, [selectedItem, analysisResult]);
 
   // Draw the STATIC player preview (no animation): whole-file waveform +
   // averaged-FFT spectral trace, note-frequency axis on top, time axis on the
@@ -254,6 +290,25 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       ctx.textAlign = 'right';
       ctx.fillStyle = 'rgba(127,214,226,0.85)';
       ctx.fillText('spectrum', w - 4, 2);
+
+      // Root-note fundamental as a vertical marker on the frequency axis.
+      const rf = noteToFreq(item?.root_note_name);
+      if (rf && rf >= f0 && rf <= f1) {
+        const X = xFreq(rf);
+        ctx.strokeStyle = 'rgba(168,85,247,0.9)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 3]);
+        ctx.beginPath();
+        ctx.moveTo(X, plotTop);
+        ctx.lineTo(X, plotBottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(196,150,255,0.95)';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.fillText(`root ${item.root_note_name}`, Math.min(X + 3, w - 62), plotTop + 3);
+      }
     }
 
     // ---- ADSR envelope overlay (white dashed line + markers) ----
@@ -382,51 +437,64 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
               </label>
               <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
           </div>
-          <div style={{ flex: 1, overflow: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+          <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
+                  <colgroup>
+                      <col style={{ width: '22%' }} /><col style={{ width: '9%' }} /><col style={{ width: '20%' }} />
+                      <col style={{ width: '8%' }} /><col style={{ width: '5%' }} /><col style={{ width: '6%' }} />
+                      <col style={{ width: '6%' }} /><col style={{ width: '5%' }} /><col style={{ width: '4%' }} />
+                      <col style={{ width: '6%' }} /><col style={{ width: '5%' }} /><col style={{ width: '5%' }} />
+                  </colgroup>
                   <thead style={{ position: 'sticky', top: 0, background: '#1A1D24', zIndex: 1 }}>
                       <tr>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>File</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Group</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Reason</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Timbre</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Clust</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Root</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Pitch</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Len</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Tr</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Cntrd</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Harm</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>BPM</th>
+                          {['File', 'Group', 'Reason', 'Timbre', 'Clust', 'Root', 'Pitch', 'Len', 'Tr', 'Cntrd', 'Harm', 'BPM'].map(h => (
+                              <th key={h} style={{ padding: '0.4rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{h}</th>
+                          ))}
                       </tr>
                   </thead>
                   <tbody>
-                      {analysisResult.slice(0, 100).map((item, idx) => {
-                          const isSelected = selectedItem === item;
+                      {(() => {
+                          const total = analysisResult.length;
+                          const OVER = 12;
+                          const startIndex = Math.max(0, Math.floor(scrollTop / ROW_H) - OVER);
+                          const endIndex = Math.min(total, Math.ceil((scrollTop + viewportH) / ROW_H) + OVER);
+                          const topPad = startIndex * ROW_H;
+                          const botPad = Math.max(0, (total - endIndex) * ROW_H);
+                          const cell = (extra: React.CSSProperties = {}): React.CSSProperties => ({
+                              padding: '0 0.5rem', height: ROW_H, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', ...extra,
+                          });
                           return (
-                              <tr key={idx}
-                                  ref={isSelected ? selectedRowRef : null}
-                                  onClick={() => handleSelect(item)}
-                                  style={{
-                                      cursor: 'pointer',
-                                      background: isSelected ? 'rgba(59, 130, 246, 0.2)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
-                                      borderBottom: '1px solid rgba(255,255,255,0.05)'
-                                  }}>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: isSelected ? 'white' : 'var(--accent-secondary)' }}>{item.name}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: 'var(--accent-primary)' }}>{item.group}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: 'var(--text-secondary)' }}>{item.reason?.[0] || ''}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem' }}>{item.timbre}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: '#10B981' }}>{item.cluster !== -1 ? item.cluster : ''}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: '#8B5CF6' }}>{item.root_note_name}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem' }}>{item.pitch_hz ? Math.round(item.pitch_hz) : 0}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem' }}>{item.length_seconds?.toFixed(2)}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem', color: '#F59E0B' }}>{item.transient_count}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem' }}>{item.spectral_centroid_hz ? Math.round(item.spectral_centroid_hz) : 0}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem' }}>{item.harmonicity?.toFixed(2)}</td>
-                                  <td style={{ padding: '0.3rem 0.5rem' }}>{item.beats_per_minute || 0}</td>
-                              </tr>
+                            <>
+                              {topPad > 0 && <tr style={{ height: topPad }}><td colSpan={12} style={{ padding: 0 }} /></tr>}
+                              {analysisResult.slice(startIndex, endIndex).map((item, i) => {
+                                  const idx = startIndex + i;
+                                  const isSelected = selectedItem === item;
+                                  return (
+                                      <tr key={idx}
+                                          onClick={() => handleSelect(item)}
+                                          style={{
+                                              cursor: 'pointer', height: ROW_H,
+                                              background: isSelected ? 'rgba(59, 130, 246, 0.25)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
+                                          }}>
+                                          <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.name}>{item.name}</td>
+                                          <td style={cell({ color: 'var(--accent-primary)' })}>{item.group}</td>
+                                          <td style={cell({ color: 'var(--text-secondary)' })} title={item.reason?.[0] || ''}>{item.reason?.[0] || ''}</td>
+                                          <td style={cell()}>{item.timbre}</td>
+                                          <td style={cell({ color: '#10B981' })}>{item.cluster !== -1 ? item.cluster : ''}</td>
+                                          <td style={cell({ color: '#8B5CF6' })}>{item.root_note_name}</td>
+                                          <td style={cell()}>{item.pitch_hz ? Math.round(item.pitch_hz) : 0}</td>
+                                          <td style={cell()}>{item.length_seconds?.toFixed(2)}</td>
+                                          <td style={cell({ color: '#F59E0B' })}>{item.transient_count}</td>
+                                          <td style={cell()}>{item.spectral_centroid_hz ? Math.round(item.spectral_centroid_hz) : 0}</td>
+                                          <td style={cell()}>{item.harmonicity?.toFixed(2)}</td>
+                                          <td style={cell()}>{item.beats_per_minute || 0}</td>
+                                      </tr>
+                                  );
+                              })}
+                              {botPad > 0 && <tr style={{ height: botPad }}><td colSpan={12} style={{ padding: 0 }} /></tr>}
+                            </>
                           );
-                      })}
+                      })()}
                   </tbody>
               </table>
           </div>
