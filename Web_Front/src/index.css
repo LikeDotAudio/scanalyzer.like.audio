@@ -27,9 +27,6 @@
 
 body {
   background-color: var(--bg-main);
-  background-image: 
-    radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.08), transparent 25%);
   color: var(--text-primary);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -38,14 +35,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Glassmorphism Panels */
+/* Flat panels — no blur, no rounded corners, no shadow. */
 .glass-panel {
-  background: var(--bg-surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: #0f131b;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 /* Typography */
@@ -67,32 +62,32 @@ h1, h2, h3, h4 {
   -webkit-text-fill-color: transparent;
 }
 
-/* Base App Layout */
+/* Base App Layout — dense, zero-chrome. */
 .app-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 1.5rem;
-  gap: 1.5rem;
+  padding: 0;
+  gap: 0;
 }
 
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.4rem 0.75rem;
   flex-shrink: 0;
 }
 
 .app-header h1 {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   font-weight: 800;
 }
 
 .app-main {
   display: flex;
   flex: 1;
-  gap: 1.5rem;
+  gap: 0;
   min-height: 0;
 }
 
@@ -101,8 +96,8 @@ h1, h2, h3, h4 {
   width: 340px;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  gap: 1.5rem;
+  padding: 0.5rem;
+  gap: 0.5rem;
   overflow-y: auto;
 }
 
@@ -131,18 +126,18 @@ h1, h2, h3, h4 {
   color: var(--text-secondary);
 }
 
-/* Buttons */
+/* Buttons — flat, square, tight. */
 .btn {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.06);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0;
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,19 +145,16 @@ h1, h2, h3, h4 {
 }
 
 .btn:hover {
-  background: rgba(255,255,255,0.1);
-  transform: translateY(-1px);
+  background: rgba(255,255,255,0.12);
 }
 
 .btn.primary {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  background: var(--accent-primary);
   border: none;
-  box-shadow: 0 4px 15px var(--accent-primary-glow);
   font-weight: 600;
 }
 
 .btn.primary:hover {
-  box-shadow: 0 6px 20px var(--accent-primary-glow);
   filter: brightness(1.1);
 }
 

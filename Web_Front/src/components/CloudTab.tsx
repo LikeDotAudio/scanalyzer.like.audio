@@ -95,7 +95,7 @@ export default function CloudTab({ analysisResult, audioFiles }: CloudTabProps) 
 
       <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
         {/* Sidebar: group legend (click to show/hide) */}
-        <aside className="sidebar glass-panel" style={{ width: '220px', margin: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto' }}>
+        <aside className="sidebar glass-panel" style={{ width: '200px', margin: 0, borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.4rem', overflowY: 'auto' }}>
           <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem' }}>Name group</h3>
           <div className="text-secondary" style={{ fontSize: '0.7rem' }}>click a group to hide / show it</div>
           {groups.map(g => {

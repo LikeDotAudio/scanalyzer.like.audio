@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './index.css'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
@@ -8,12 +8,29 @@ import GroupsTab from './components/GroupsTab'
 import ExaminerTab from './components/ExaminerTab'
 import RenameTab from './components/RenameTab'
 
+const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'rename'] as const;
+
+function tabFromHash(): string {
+  const h = window.location.hash.replace(/^#\/?/, '');
+  return (TAB_IDS as readonly string[]).includes(h) ? h : 'scanalyze';
+}
+
 function App() {
   const [analysisResult, setAnalysisResult] = useState<any[]>([])
   const [audioFiles, setAudioFiles] = useState<File[]>([])
-  const [activeTab, setActiveTab] = useState('scanalyze')
+  const [activeTab, setActiveTab] = useState(tabFromHash())
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [progress, setProgress] = useState(0)
+
+  // Keep the active tab in sync with the URL hash (linkable / back-forward).
+  useEffect(() => {
+    const onHash = () => setActiveTab(tabFromHash());
+    window.addEventListener('hashchange', onHash);
+    if (!window.location.hash) window.location.hash = '#/scanalyze';
+    return () => window.removeEventListener('hashchange', onHash);
+  }, [])
+
+  const goToTab = (id: string) => { window.location.hash = `#/${id}`; setActiveTab(id); }
 
   const handleExportPeak = () => {
     if (analysisResult.length === 0) return;
@@ -28,14 +45,14 @@ function App() {
     URL.revokeObjectURL(url);
   }
 
-  const handleImportPeak = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-    
+  const loadPeakFiles = (fileList: File[]) => {
+    const files = fileList.filter(f => /\.peak$|\.json$/i.test(f.name) || f.type === 'application/json');
+    if (files.length === 0) return;
+
     let allResults: any[] = [];
     let filesProcessed = 0;
 
-    Array.from(files).forEach(file => {
+    files.forEach(file => {
       const reader = new FileReader();
       reader.onload = (event) => {
         try {
@@ -48,7 +65,7 @@ function App() {
         } catch (err) {
           console.error("Failed to parse .peak file", file.name, err);
         }
-        
+
         filesProcessed++;
         if (filesProcessed === files.length) {
            setAnalysisResult(allResults);
@@ -56,9 +73,22 @@ function App() {
       };
       reader.readAsText(file);
     });
-    
+  }
+
+  const handleImportPeak = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    loadPeakFiles(Array.from(e.target.files));
     // Reset the input so the user can load the exact same file again if they want to
     e.target.value = '';
+  }
+
+  const [isDragging, setIsDragging] = useState(false)
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = Array.from(e.dataTransfer.files || []);
+    if (files.length) loadPeakFiles(files);
   }
 
   const tabs = [
@@ -71,7 +101,17 @@ function App() {
   ];
 
   return (
-    <div className="app-container">
+    <div
+      className="app-container"
+      onDragOver={(e) => { e.preventDefault(); if (!isDragging) setIsDragging(true); }}
+      onDragLeave={(e) => { if (e.currentTarget === e.target) setIsDragging(false); }}
+      onDrop={handleDrop}
+    >
+      {isDragging && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(11,14,20,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px dashed var(--accent-primary)', pointerEvents: 'none' }}>
+          <div style={{ color: 'white', fontSize: '1.5rem' }}>Drop .PEAK file to load</div>
+        </div>
+      )}
       <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} />
 
       {/* Tabs Navigation */}
@@ -79,7 +119,7 @@ function App() {
         {tabs.map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => goToTab(tab.id)}
             className={`btn ${activeTab === tab.id ? 'primary' : ''}`}
             style={{ 
               background: activeTab === tab.id ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
@@ -105,7 +145,7 @@ function App() {
             setIsAnalyzing={setIsAnalyzing}
             setProgress={setProgress}
             onExportPeak={handleExportPeak}
-            onViewCloud={() => setActiveTab('cloud')}
+            onViewCloud={() => goToTab('cloud')}
             setAudioFiles={setAudioFiles}
           />
         )}
