@@ -3,47 +3,59 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 
-function CloudParticles() {
-  const pointsRef = useRef<THREE.Points>(null!)
-  const count = 10000
+interface SampleCloudProps {
+  data?: any[];
+}
 
-  // Generate random data for 10,000 samples
-  const [positions, colors] = useMemo(() => {
+function CloudParticles({ data = [] }: { data: any[] }) {
+  const pointsRef = useRef<THREE.Points>(null!)
+  
+  // Use data length or fallback to 0
+  const count = data.length;
+
+  const [positions, colors, sizes] = useMemo(() => {
     const positions = new Float32Array(count * 3)
     const colors = new Float32Array(count * 3)
-    
-    const colorA = new THREE.Color('#6366f1') // Primary accent
-    const colorB = new THREE.Color('#0ea5e9') // Secondary accent
-    const colorC = new THREE.Color('#f43f5e') // Red accent for contrast
+    const sizes = new Float32Array(count)
 
     for (let i = 0; i < count; i++) {
-      // Create a massive, glowing spherical cloud distribution
-      const theta = Math.random() * 2 * Math.PI
-      const phi = Math.acos((Math.random() * 2) - 1)
-      const radius = 10 + (Math.random() * 15) // Spread between 10 and 25 units
+      const item = data[i]
+      // Fallbacks in case properties are missing
+      const pitch = item.pitch_hz || (Math.random() * 1000)
+      const complexity = item.complexity || (Math.random() * 10)
+      const length = item.length_seconds || 1.0
 
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta)
-      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta)
-      positions[i * 3 + 2] = radius * Math.cos(phi)
-
-      // Mix colors based on position to simulate clustering
-      const mixRatio = Math.random()
-      const mixColor = mixRatio > 0.8 ? colorC : (mixRatio > 0.4 ? colorA : colorB)
+      // Map values to 3D space
+      // X = pitch (scaled down a bit)
+      // Y = depth (random or grouped, for now random spread to simulate cloud depth)
+      // Z = complexity (scaled up)
+      positions[i * 3] = (pitch / 100) - 10
+      positions[i * 3 + 1] = (Math.random() * 20) - 10 // random depth for now
+      positions[i * 3 + 2] = (complexity * 2) - 5
       
-      colors[i * 3] = mixColor.r
-      colors[i * 3 + 1] = mixColor.g
-      colors[i * 3 + 2] = mixColor.b
-    }
-    return [positions, colors]
-  }, [count])
+      // Size based on length
+      sizes[i] = length * 2.0
 
-  // Slowly rotate the entire cloud in 3D space
+      // Color based on pitch/complexity
+      const color = new THREE.Color()
+      color.setHSL((pitch % 1000) / 1000, 0.8, 0.5)
+      
+      colors[i * 3] = color.r
+      colors[i * 3 + 1] = color.g
+      colors[i * 3 + 2] = color.b
+    }
+    return [positions, colors, sizes]
+  }, [count, data])
+
   useFrame((state) => {
     if (pointsRef.current) {
       pointsRef.current.rotation.y = state.clock.getElapsedTime() * 0.05
-      pointsRef.current.rotation.z = state.clock.getElapsedTime() * 0.02
     }
   })
+
+  if (count === 0) {
+    return null; // Don't render empty cloud
+  }
 
   return (
     <points ref={pointsRef}>
@@ -58,7 +70,7 @@ function CloudParticles() {
         />
       </bufferGeometry>
       <pointsMaterial 
-        size={0.15} 
+        size={0.5} 
         vertexColors 
         transparent 
         opacity={0.8} 
@@ -69,13 +81,18 @@ function CloudParticles() {
   )
 }
 
-export default function SampleCloud() {
+export default function SampleCloud({ data = [] }: SampleCloudProps) {
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 0 }}>
+      {data.length === 0 && (
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', zIndex: 10 }}>
+          Upload a .PEAK file or scan a folder to visualize the cloud.
+        </div>
+      )}
       <Canvas camera={{ position: [0, 0, 40], fov: 60 }}>
         <color attach="background" args={['#0B0E14']} />
         <ambientLight intensity={0.5} />
-        <CloudParticles />
+        <CloudParticles data={data} />
         <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} autoRotate={false} />
       </Canvas>
     </div>

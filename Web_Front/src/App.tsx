@@ -1,108 +1,349 @@
 import { useState, useEffect, Suspense } from 'react'
 import initWasm, { analyze_audio_buffer } from 'wasm_analyzer'
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from 'recharts'
 import './index.css'
 import SampleCloud from './SampleCloud'
 
 function App() {
   const [wasmReady, setWasmReady] = useState(false)
-  const [analysisResult, setAnalysisResult] = useState<any>(null)
+  const [analysisResult, setAnalysisResult] = useState<any[]>([])
+  const [activeTab, setActiveTab] = useState('scanalyze')
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     // Initialize the WebAssembly module when the app loads
     initWasm().then(() => setWasmReady(true)).catch(console.error)
   }, [])
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file || !wasmReady) return
-    
-    // Read the file as raw bytes
-    const arrayBuffer = await file.arrayBuffer()
-    const uint8Array = new Uint8Array(arrayBuffer)
-    
-    // Pass the bytes directly to the Rust WebAssembly module!
-    const jsonResult = analyze_audio_buffer(uint8Array)
-    setAnalysisResult(JSON.parse(jsonResult))
+  const handleFolderUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || !wasmReady) return;
+
+    // Filter only .wav files
+    const wavFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.wav'));
+    if (wavFiles.length === 0) return;
+
+    setIsAnalyzing(true);
+    setProgress(0);
+    const results = [];
+
+    // Analyze files sequentially (to not freeze UI too much, we could use workers, 
+    // but here we just yield to the event loop occasionally)
+    for (let i = 0; i < wavFiles.length; i++) {
+        const file = wavFiles[i];
+        const arrayBuffer = await file.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        
+        try {
+            // Pass the bytes directly to the Rust WebAssembly module!
+            const jsonResult = analyze_audio_buffer(uint8Array);
+            const parsed = JSON.parse(jsonResult);
+            // Attach file name and path
+            parsed.name = file.name;
+            parsed.path = file.webkitRelativePath || file.name;
+            results.push(parsed);
+        } catch (err) {
+            console.error(`Failed to analyze ${file.name}`, err);
+        }
+
+        setProgress(Math.round(((i + 1) / wavFiles.length) * 100));
+        
+        // Let UI update
+        await new Promise(resolve => setTimeout(resolve, 0));
+    }
+
+    setAnalysisResult(results);
+    setIsAnalyzing(false);
   }
+
+  const handleExportPeak = () => {
+    if (analysisResult.length === 0) return;
+    const blob = new Blob([JSON.stringify(analysisResult, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sample_analysis.peak';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  const handleImportPeak = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const json = JSON.parse(event.target?.result as string);
+        if (Array.isArray(json)) {
+          setAnalysisResult(json);
+        } else {
+          console.error("Invalid .peak file format");
+        }
+      } catch (err) {
+        console.error("Failed to parse .peak file", err);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  const tabs = [
+    { id: 'scanalyze', label: 'SCANALIZE' },
+    { id: 'cloud', label: '3D Cloud' },
+    { id: 'stats', label: 'Stats' },
+    { id: 'groups', label: 'Groups' },
+    { id: 'examiner', label: 'Examiner' },
+    { id: 'guess', label: 'Auto-Guess' },
+    { id: 'rename', label: 'Flatten / Rename' }
+  ];
 
   return (
     <div className="app-container">
       {/* Header */}
-      <header className="app-header glass-panel">
+      <header className="app-header glass-panel" style={{ zIndex: 10 }}>
         <h1>
           Scan<span className="accent-gradient">alyzer</span>
         </h1>
         <div style={{ display: 'flex', gap: '1rem' }}>
+          <div className="text-secondary" style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>
+             <strong>WASM Status:</strong> <span style={{ marginLeft: '0.5rem', color: wasmReady ? 'var(--accent-primary)' : 'var(--accent-secondary)' }}>{wasmReady ? '🟢 Online' : '🔴 Offline'}</span>
+          </div>
           <button className="btn">Settings</button>
-          <label className="btn primary" style={{ cursor: 'pointer' }}>
-            {wasmReady ? 'Upload .wav File' : 'Loading Engine...'}
-            <input type="file" accept=".wav" style={{ display: 'none' }} onChange={handleFileUpload} />
-          </label>
         </div>
       </header>
 
+      {/* Tabs Navigation */}
+      <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '0.5rem', padding: '0.5rem 1rem', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`btn ${activeTab === tab.id ? 'primary' : ''}`}
+            style={{ 
+              background: activeTab === tab.id ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
+              color: activeTab === tab.id ? 'black' : 'var(--text-primary)',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              fontWeight: activeTab === tab.id ? 'bold' : 'normal',
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+
       {/* Main Content Area */}
-      <main className="app-main">
-        {/* Sidebar Controls */}
-        <aside className="sidebar glass-panel">
-          <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', marginBottom: '0.5rem' }}>
-            View Controls
-          </h3>
-          
-          <div className="control-group">
-            <label>Color Mapping</label>
-            <select className="btn" style={{ width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
-              <option>God Category</option>
-              <option>Instrument Family</option>
-              <option>Timbre</option>
-            </select>
-          </div>
+      <main className="app-main" style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', padding: 0 }}>
+        
+        {activeTab === 'scanalyze' && (
+          <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scan a Directory</h2>
+            <p className="text-secondary" style={{ marginBottom: '2.5rem', fontSize: '1.2rem' }}>Select a folder containing .wav files to begin local DSP analysis.</p>
+            
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+              <label className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem', boxShadow: '0 4px 15px rgba(206, 171, 147, 0.2)' }}>
+                {isAnalyzing ? `Analyzing... ${progress}%` : (wasmReady ? 'Scan Folder' : 'Loading Engine...')}
+                <input 
+                  type="file" 
+                  // @ts-ignore
+                  webkitdirectory="true" 
+                  directory="true" 
+                  style={{ display: 'none' }} 
+                  onChange={handleFolderUpload} 
+                  disabled={isAnalyzing || !wasmReady}
+                />
+              </label>
 
-          <div className="control-group">
-            <label>X-Axis</label>
-            <select className="btn" style={{ width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
-              <option>Pitch (Hz)</option>
-              <option>Spectral Centroid</option>
-              <option>Length</option>
-            </select>
-          </div>
-          
-          <div className="control-group">
-            <label>Y-Axis</label>
-            <select className="btn" style={{ width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
-              <option>Envelope Shape</option>
-              <option>Complexity</option>
-            </select>
-          </div>
+              <label className="btn" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }}>
+                Load .PEAK
+                <input 
+                  type="file" 
+                  accept=".peak,.json" 
+                  style={{ display: 'none' }} 
+                  onChange={handleImportPeak} 
+                  disabled={isAnalyzing}
+                />
+              </label>
+            </div>
 
-          <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-            <p className="text-secondary" style={{ fontSize: '0.85rem', lineHeight: '1.5' }}>
-              <strong>WASM Status:</strong> {wasmReady ? '🟢 Engine Online' : '🔴 Offline'}
-            </p>
-            {analysisResult && (
-              <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px' }}>
-                <h4 style={{ color: 'var(--accent-secondary)', marginBottom: '0.5rem' }}>WASM DSP Result:</h4>
-                <pre style={{ fontSize: '0.75rem', color: 'var(--text-primary)', whiteSpace: 'pre-wrap' }}>
-                  {JSON.stringify(analysisResult, null, 2)}
-                </pre>
+            {isAnalyzing && (
+              <div style={{ width: '100%', maxWidth: '600px', marginTop: '2.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
+                <div style={{ width: `${progress}%`, height: '12px', background: 'var(--accent-primary)', transition: 'width 0.2s', boxShadow: '0 0 10px var(--accent-primary)' }}></div>
+              </div>
+            )}
+
+            {analysisResult.length > 0 && !isAnalyzing && (
+              <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+                <h3 style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem' }}>Analysis Complete</h3>
+                <p className="text-secondary">{analysisResult.length} files successfully processed.</p>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
+                  <button className="btn" onClick={handleExportPeak}>
+                    Save .PEAK File
+                  </button>
+                  <button className="btn primary" onClick={() => setActiveTab('cloud')}>
+                    View 3D Cloud
+                  </button>
+                </div>
               </div>
             )}
           </div>
-        </aside>
+        )}
 
-        {/* 3D WebGL Canvas Area */}
-        <section className="main-view glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
-          <Suspense fallback={<div style={{ color: 'white' }}>Loading 3D Engine...</div>}>
-            <SampleCloud />
-          </Suspense>
-          
-          {/* Overlay UI elements on top of the 3D canvas */}
-          <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', zIndex: 10 }}>
-             <p className="text-secondary" style={{ background: 'rgba(0,0,0,0.5)', padding: '0.5rem 1rem', borderRadius: '8px', backdropFilter: 'blur(4px)' }}>
-               Left Click: Orbit • Right Click: Pan • Scroll: Zoom
-             </p>
-          </div>
-        </section>
+        {activeTab === 'cloud' && (
+            <div style={{ display: 'flex', flex: 1, width: '100%', height: '100%' }}>
+                {/* Sidebar Controls */}
+                <aside className="sidebar glass-panel" style={{ width: '300px', margin: '1rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', overflowY: 'auto' }}>
+                  <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>Cloud Controls</h3>
+                  
+                  <div className="control-group">
+                    <label>Color Mapping</label>
+                    <select className="btn" style={{ width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
+                      <option>God Category</option>
+                      <option>Instrument Family</option>
+                      <option>Timbre</option>
+                    </select>
+                  </div>
+        
+                  <div className="control-group">
+                    <label>X-Axis</label>
+                    <select className="btn" style={{ width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
+                      <option>Pitch (Hz)</option>
+                      <option>Spectral Centroid</option>
+                      <option>Length</option>
+                    </select>
+                  </div>
+                  
+                  <div className="control-group">
+                    <label>Y-Axis (Depth)</label>
+                    <select className="btn" style={{ width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
+                      <option>Name Group</option>
+                      <option>Category</option>
+                    </select>
+                  </div>
+
+                  <div className="control-group">
+                    <label>Z-Axis</label>
+                    <select className="btn" style={{ width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
+                      <option>Complexity / Timbre</option>
+                      <option>Transient Count</option>
+                    </select>
+                  </div>
+                </aside>
+        
+                {/* 3D WebGL Canvas Area */}
+                <section className="main-view glass-panel" style={{ margin: '1rem 1rem 1rem 0', padding: 0, overflow: 'hidden', flex: 1, position: 'relative' }}>
+                  <Suspense fallback={<div style={{ color: 'white', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>Initializing 3D Engine...</div>}>
+                    <SampleCloud data={analysisResult} />
+                  </Suspense>
+                  
+                  {/* Overlay UI elements on top of the 3D canvas */}
+                  <div style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', zIndex: 10 }}>
+                     <p className="text-secondary" style={{ background: 'rgba(0,0,0,0.6)', padding: '0.75rem 1.25rem', borderRadius: '8px', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                       🖱️ Left Click: Orbit • Right Click: Pan • Scroll: Zoom
+                     </p>
+                  </div>
+                </section>
+            </div>
+        )}
+
+        {/* Placeholders for other tabs */}
+        {['stats', 'groups', 'examiner', 'guess', 'rename'].includes(activeTab) && (
+            <div className="tab-content glass-panel" style={{ margin: '1rem', padding: '2rem', flex: 1, overflowY: 'auto' }}>
+                <h2 style={{ marginBottom: '1rem', color: 'var(--accent-primary)' }}>{tabs.find(t => t.id === activeTab)?.label}</h2>
+                
+                {activeTab === 'stats' && (
+                    <div style={{ height: '500px', width: '100%', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                        {analysisResult.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                                    <XAxis type="number" dataKey="pitch_hz" name="Pitch" unit="Hz" stroke="var(--text-secondary)" tick={{fill: 'var(--text-secondary)'}} />
+                                    <YAxis type="number" dataKey="complexity" name="Complexity" stroke="var(--text-secondary)" tick={{fill: 'var(--text-secondary)'}} />
+                                    <RechartsTooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: '1px solid var(--border-color)', borderRadius: '8px' }} />
+                                    <Scatter name="Samples" data={analysisResult} fill="var(--accent-primary)">
+                                        {analysisResult.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={`hsl(${((entry.pitch_hz || 0) / 10) % 360}, 70%, 50%)`} />
+                                        ))}
+                                    </Scatter>
+                                </ScatterChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', color: 'var(--text-secondary)' }}>No data to graph</div>
+                        )}
+                    </div>
+                )}
+                
+                {activeTab === 'groups' && (
+                    <div style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', padding: '1.5rem', border: '1px solid var(--border-color)', overflowX: 'auto' }}>
+                        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', color: 'var(--text-primary)' }}>
+                          <thead>
+                            <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                              <th style={{ padding: '0.5rem' }}>Group</th>
+                              <th style={{ padding: '0.5rem' }}>Subgroup</th>
+                              <th style={{ padding: '0.5rem' }}>Count</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {/* Simple grouping example */}
+                            {Object.entries(
+                              analysisResult.reduce((acc, curr) => {
+                                const key = curr.group || 'Other';
+                                acc[key] = (acc[key] || 0) + 1;
+                                return acc;
+                              }, {} as Record<string, number>)
+                            ).map(([group, count], idx) => (
+                              <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <td style={{ padding: '0.5rem' }}>{group}</td>
+                                <td style={{ padding: '0.5rem' }}>-</td>
+                                <td style={{ padding: '0.5rem' }}>{count as number}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                    </div>
+                )}
+                
+                {analysisResult.length > 0 && activeTab === 'examiner' && (
+                    <div style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', padding: '1.5rem', border: '1px solid var(--border-color)' }}>
+                        <h3 style={{ marginBottom: '1rem' }}>Analyzed Samples ({analysisResult.length})</h3>
+                        <div style={{ display: 'grid', gap: '0.5rem' }}>
+                          {analysisResult.slice(0, 100).map((res, i) => (
+                              <div key={i} style={{ 
+                                background: 'rgba(255,255,255,0.03)', 
+                                padding: '1rem', 
+                                borderRadius: '8px',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                              }}>
+                                  <strong style={{ color: 'var(--text-primary)', wordBreak: 'break-all', flex: 1 }}>{res.name}</strong>
+                                  <div style={{ display: 'flex', gap: '1rem', color: 'var(--text-secondary)', fontSize: '0.9rem', width: '300px', justifyContent: 'flex-end' }}>
+                                    <span>Pitch: <span style={{ color: 'var(--accent-primary)' }}>{res.pitch_hz?.toFixed(1) || 'N/A'}</span> Hz</span>
+                                    <span>Cmplx: <span style={{ color: 'var(--accent-secondary)' }}>{res.complexity?.toFixed(2) || 'N/A'}</span></span>
+                                  </div>
+                              </div>
+                          ))}
+                          {analysisResult.length > 100 && (
+                            <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-secondary)' }}>
+                              ... and {analysisResult.length - 100} more files
+                            </div>
+                          )}
+                        </div>
+                    </div>
+                )}
+                
+                {analysisResult.length === 0 && activeTab === 'examiner' && (
+                  <div style={{ padding: '3rem', textAlign: 'center', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', border: '1px dashed var(--border-color)' }}>
+                    <p className="text-secondary">Scan a directory first to see the analysis results here.</p>
+                    <button className="btn primary" style={{ marginTop: '1rem' }} onClick={() => setActiveTab('scanalyze')}>
+                      Go to Scanalyze
+                    </button>
+                  </div>
+                )}
+            </div>
+        )}
       </main>
     </div>
   )
