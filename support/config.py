@@ -21,7 +21,10 @@ GOD_CATEGORIES = [
     # Cymbals and rides are drums — percussive, tail and all.
     ("Percussive", ["Clap", "Cymbal", "Hi-Hat", "Kick", "Perc", "Ride", "Rim", "Snare", "Tom"]),
     ("Impulsive with Tail", ["IR"]),
-    ("Tonal", ["Bass", "Guitar", "Keyboards", "Strings", "Vocal"]),
+    ("Tonal", ["Bass", "Guitar", "Horn", "Note", "Sax", "Strings", "Vocal"]),
+    # Keyboards are their own top-level container: a keyboard with no BPM tag
+    # is tonal by nature and never falls through to the envelope guess.
+    ("Keyboards", ["Keyboards"]),
     ("Complex", ["DJ", "FX", "Loops/Patterns", "Scratch"]),
     ("Unassigned", ["Unclassified"]),
 ]
@@ -49,6 +52,7 @@ GOD_HUES = {
     "Percussive": 0.02,  # red-orange
     "Impulsive with Tail":    0.12,  # gold
     "Tonal":      0.36,  # green
+    "Keyboards":  0.55,  # cyan-blue
     "Complex":   0.74,  # violet
     "Unassigned":             None,  # grey ramp
 }
@@ -70,8 +74,10 @@ def god_color(category):
 
 # Curated subgroups get fixed, guaranteed-distinct shade positions; anything
 # unknown falls back to a stable hash.
-_KNOWN_SUBGROUPS = ["Hi", "Mid", "Lo",
+_KNOWN_SUBGROUPS = ["Hi", "Mid", "Lo", "Disco",
+                    "Crash", "Gong",
                     "Conga", "Bongo", "Cowbell", "Clave", "Shaker", "Block",
+                    "Bell", "Chime", "Kalimba", "Taiko", "Tabla", "Slap", "Triangle",
                     "Piano", "Electric Piano", "Organ", "Clav", "Synth",
                     "Beat", "Groove", "Guitar", "Loop", "Drum"]
 

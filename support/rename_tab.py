@@ -130,9 +130,9 @@ class RenameMixin:
         build = ttk.Frame(tab, padding=(6, 4))
         build.pack(fill=tk.X)
         self.folder_parts = PartList(build, "Destination subfolders (one level each)", [
-            ("god_category", "God category", False),
-            ("group", "Group", False),
-            ("subgroup", "Subgroup", False),
+            ("god_category", "God category", True),
+            ("group", "Group", True),
+            ("subgroup", "Subgroup", True),
             ("timbre", "Timbre", False),
             ("instrument_family", "Instrument family", False),
             ("distortion", "Distortion", False),
@@ -142,17 +142,17 @@ class RenameMixin:
         ], self._rename_scan)
         self.folder_parts.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 3))
         self.prepend_parts = PartList(build, "Prepend to file name", [
-            ("path", "Folder path (flattened)", True),
-            ("god_category", "God category", False),
-            ("group", "Group", False),
-            ("subgroup", "Subgroup", False),
+            ("path", "Folder path (flattened)", False),
+            ("god_category", "God category", True),
+            ("group", "Group", True),
+            ("subgroup", "Subgroup", True),
             ("timbre", "Timbre", False),
             ("instrument_family", "Instrument family", False),
         ], self._rename_scan)
         self.prepend_parts.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=3)
         self.append_parts = PartList(build, "Append to file name", [
             ("root", "ROOT note", False),
-            ("bpm", "BPM (when > 10)", False),
+            ("bpm", "BPM (when > 10)", True),
             ("length_class", "Length tier", False),
             ("envelope_shape", "Envelope shape", False),
             ("distortion", "Distortion", False),
@@ -241,25 +241,44 @@ class RenameMixin:
         ("Kick", "", ["kick", "kik", "bass drum", "bassdrum", "bassdrm", "bass drm", "bdrum"],
                      ["bd", "kk", "kik", "kic", "kck", "bassd", "bdr"]),
         ("Snare", "", ["snare"], ["sd", "sn", "snr"]),
-        ("Hi-Hat", "", ["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hat"], ["hh", "chh", "ohh", "ch", "oh", "ph"]),
+        ("Hi-Hat", "", ["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hats", "hat"], ["hh", "chh", "ohh", "ch", "oh", "ph"]),
         ("Ride", "", ["ride bell", "ride cymbal", "ride"], ["rd", "rdcym"]),
-        ("Cymbal", "", ["crash cymbal", "splash cymbal", "cymbal", "crash", "splash"], ["cy", "cym", "crsh"]),
+        # Cymbals: crashes and gongs are curated subgroups; china/sizzle/swish
+        # and the big cymbal brands count too, so packs don't land Unclassified.
+        ("Cymbal", "Crash", ["crash cymbal", "crash"], ["crsh"]),
+        ("Cymbal", "Gong", ["gong", "tam tam", "tamtam"], []),
+        ("Cymbal", "", ["splash cymbal", "cymbal", "splash", "china", "sizzle", "swish",
+                        "zildjian", "sabian", "paiste"], ["cy", "cym"]),
         ("Clap", "", ["handclap", "hand clap", "clap"], ["cp", "clp"]),
         ("Rim", "", ["rimshot", "rim shot", "cross stick", "crossstick", "rim"], ["rs", "rm"]),
         # Toms are ONE instrument at different pitches: one group, Hi/Mid/Lo subgroups.
         ("Tom", "Hi", ["high tom", "hi tom", "rack tom 1", "tom 1", "hitom"], ["ht", "hitom"]),
         ("Tom", "Mid", ["mid tom", "middle tom", "rack tom 2", "tom 2", "midtom"], ["mt", "midtom"]),
         ("Tom", "Lo", ["low tom", "floor tom", "tom 3", "lotom"], ["lt", "ft", "lotom"]),
+        ("Tom", "Disco", ["disco tom", "discotom", "disco"], []),
         ("Tom", "", ["tom"], ["tm"]),
-        ("Perc", "Cowbell", ["cowbell", "cow bell"], ["cb", "cow", "cowb"]),
+        # Cowbell before Bell so "cowbell" never falls through to plain Bell.
+        ("Perc", "Cowbell", ["cowbell", "cow bell", "cow"], ["cb", "cow", "cowb"]),
         ("Perc", "Conga", ["conga", "tumba", "quinto"], ["cg", "con", "cng"]),
         ("Perc", "Bongo", ["bongo"], ["bng"]),
         ("Perc", "Clave", ["claves", "clave"], ["cv", "clv"]),
         ("Perc", "Shaker", ["shaker", "maracas", "cabasa"], ["shk", "sh"]),
         ("Perc", "Block", ["woodblock", "wood block", "block"], ["wb"]),
+        ("Perc", "Bell", ["bell"], []),
+        ("Perc", "Chime", ["chime"], []),
+        ("Perc", "Kalimba", ["kalimba", "mbira", "thumb piano"], []),
+        ("Perc", "Taiko", ["taiko"], []),
+        ("Perc", "Tabla", ["tabla"], []),
+        ("Perc", "Triangle", ["triangle"], []),
+        # Slap bass is a Bass technique — guard it before the Slap percussion rule.
+        ("Bass", "", ["slap bass", "bass slap"], []),
+        ("Perc", "Slap", ["slap"], []),
         ("Perc", "", ["percussion", "auxiliary", "perc"], ["prc"]),
         ("Guitar", "", ["guitar", "gtr", "acoustic gt", "electric gt"], ["gtr", "gt"]),
         ("Strings", "", ["strings", "string", "violin", "viola", "cello", "orchestra", "ensemble", "pizz", "arco"], []),
+        # Horns and saxes — Tonal wind groups.
+        ("Horn", "", ["horn"], ["hrn"]),
+        ("Sax", "", ["saxophone", "sax"], []),
         ("Bass", "", ["bass", "sub bass"], ["sub"]),
         ("Vocal", "", ["vocal", "voice", "vox"], ["vx"]),
         ("Keyboards", "Electric Piano", ["electric piano", "rhodes", "wurlitzer", "wurli", "e-piano", "epiano"], ["ep"]),
@@ -268,9 +287,12 @@ class RenameMixin:
         ("Keyboards", "Piano", ["grand piano", "upright piano", "piano"], ["pno"]),
         ("Keyboards", "Synth", ["synthesizer", "synth"], ["syn"]),
         ("Keyboards", "", ["keyboard", "keys"], ["kb", "keyb"]),
+        # Generic single tonal notes — after every named instrument, so
+        # "Piano Note C3" stays a Piano.
+        ("Note", "", ["note"], []),
         ("Scratch", "", ["scratches", "scratch"], ["scr"]),
         ("DJ", "", ["turntable", "deck"], ["dj"]),
-        ("FX", "", ["sound effect", "foley", "atmosphere", "atmos", "riser", "sweep", "noise",
+        ("FX", "", ["sound effect", "foley", "atmosphere", "atmos", "riser", "sweep", "laser", "noise",
                     "impact", "boom", "zap", "glitch", "drone", "whoosh", "reverse", "downlifter",
                     "uplifter", "sfx", "fx"], ["fx", "sfx"]),
         ("Loops/Patterns", "", ["loop", "groove", "beat"], ["lp"]),
@@ -298,7 +320,15 @@ class RenameMixin:
         """Fallback (group, subgroup) from a file path's keywords."""
         norm = cls._normalize_name(text)
         if "cym" in norm:
+            if "crash" in norm:
+                return ("Cymbal", "Crash")
+            if "gong" in norm:
+                return ("Cymbal", "Gong")
             return ("Cymbal", "")
+        if "hh" in norm:
+            return ("Hi-Hat", "")
+        if "sfx" in norm:
+            return ("FX", "")
         toks = set(norm.split())
         for group, sub, phrases, abbrevs in cls._NAME_RULES:
             if any(p in norm for p in phrases) or any(a in toks for a in abbrevs):
@@ -583,12 +613,12 @@ class RenameMixin:
 
         used = set()
         # Pre-seed with files that keep their name (no-ops) so we don't clobber them.
-        for abspath, rel, _disp, new_abs, _rec in self.rename_map:
+        for abspath, rel, _disp, new_abs, *_rest in self.rename_map:
             if new_abs == abspath:
                 used.add(new_abs)
         ok = fail = 0
         errors = []
-        for abspath, rel, _disp, new_abs, _rec in todo:
+        for abspath, rel, _disp, new_abs, *_rest in todo:
             target = self._dedupe(new_abs, used)
             used.add(target)
             try:

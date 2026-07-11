@@ -13,9 +13,27 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
     let tok = |t: &str| toks.iter().any(|x| *x == t);
     let ph = |p: &str| norm.contains(p);
 
-    // "cym" anywhere ⇒ definitely a cymbal (highest priority).
+    // "cym" anywhere ⇒ definitely a cymbal (highest priority); a "crash" or
+    // "gong" alongside it still picks the curated subgroup.
     if norm.contains("cym") {
-        return ("Cymbal", "", "cym");
+        let sub = if norm.contains("crash") {
+            "Crash"
+        } else if norm.contains("gong") {
+            "Gong"
+        } else {
+            ""
+        };
+        return ("Cymbal", sub, "cym");
+    }
+
+    // "hh" anywhere ⇒ strongly a hi-hat ("ClosedHH1", "808HH", …).
+    if norm.contains("hh") {
+        return ("Hi-Hat", "", "hh");
+    }
+
+    // "sfx" anywhere ⇒ strongly a sound effect.
+    if norm.contains("sfx") {
+        return ("FX", "", "sfx");
     }
 
     // Each rule: (group, subgroup, phrases[], abbrev-tokens[]). subgroup "" ⇒
@@ -30,9 +48,15 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
                      &["bd", "kk", "kik", "kic", "kck", "bassd", "bdr"]),
         ("Snare", "", &["snare"], &["sd", "sn", "snr"]),
         // Hi-hat variants (closed/open/pedal).
-        ("Hi-Hat", "", &["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hat"], &["hh", "chh", "ohh", "ch", "oh", "ph"]),
+        ("Hi-Hat", "", &["hihat", "hi hat", "closed hat", "open hat", "pedal hat", "hats", "hat"], &["hh", "chh", "ohh", "ch", "oh", "ph"]),
         ("Ride", "", &["ride bell", "ride cymbal", "ride"], &["rd", "rdcym"]),
-        ("Cymbal", "", &["crash cymbal", "splash cymbal", "cymbal", "crash", "splash"], &["cy", "cym", "crsh"]),
+        // Cymbals: crashes and gongs are curated subgroups; the rest stay plain.
+        // China/sizzle/swish and the big cymbal brands count too, so those
+        // packs don't fall through to Unclassified.
+        ("Cymbal", "Crash", &["crash cymbal", "crash"], &["crsh"]),
+        ("Cymbal", "Gong", &["gong", "tam tam", "tamtam"], &[]),
+        ("Cymbal", "", &["splash cymbal", "cymbal", "splash", "china", "sizzle", "swish",
+                         "zildjian", "sabian", "paiste"], &["cy", "cym"]),
         ("Clap", "", &["handclap", "hand clap", "clap"], &["cp", "clp"]),
         ("Rim", "", &["rimshot", "rim shot", "cross stick", "crossstick", "rim"], &["rs", "rm"]),
         // Toms are ONE instrument at different pitches — one group, with the
@@ -40,17 +64,31 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
         ("Tom", "Hi", &["high tom", "hi tom", "rack tom 1", "tom 1", "hitom"], &["ht", "hitom"]),
         ("Tom", "Mid", &["mid tom", "middle tom", "rack tom 2", "tom 2", "midtom"], &["mt", "midtom"]),
         ("Tom", "Lo", &["low tom", "floor tom", "tom 3", "lotom"], &["lt", "ft", "lotom"]),
+        ("Tom", "Disco", &["disco tom", "discotom", "disco"], &[]),
         ("Tom", "", &["tom"], &["tm"]),
         // Auxiliary percussion — all under "Perc" with a curated subgroup.
-        ("Perc", "Cowbell", &["cowbell", "cow bell"], &["cb", "cow", "cowb"]),
+        // Cowbell before Bell so "cowbell" never falls through to plain Bell.
+        ("Perc", "Cowbell", &["cowbell", "cow bell", "cow"], &["cb", "cow", "cowb"]),
         ("Perc", "Conga", &["conga", "tumba", "quinto"], &["cg", "con", "cng"]),
         ("Perc", "Bongo", &["bongo"], &["bng"]),
         ("Perc", "Clave", &["claves", "clave"], &["cv", "clv"]),
         ("Perc", "Shaker", &["shaker", "maracas", "cabasa"], &["shk", "sh"]),
         ("Perc", "Block", &["woodblock", "wood block", "block"], &["wb"]),
+        ("Perc", "Bell", &["bell"], &[]),
+        ("Perc", "Chime", &["chime"], &[]),
+        ("Perc", "Kalimba", &["kalimba", "mbira", "thumb piano"], &[]),
+        ("Perc", "Taiko", &["taiko"], &[]),
+        ("Perc", "Tabla", &["tabla"], &[]),
+        ("Perc", "Triangle", &["triangle"], &[]),
+        // Slap bass is a Bass technique — guard it before the Slap percussion rule.
+        ("Bass", "", &["slap bass", "bass slap"], &[]),
+        ("Perc", "Slap", &["slap"], &[]),
         ("Perc", "", &["percussion", "auxiliary", "perc"], &["prc"]),
         ("Guitar", "", &["guitar", "gtr", "acoustic gt", "electric gt"], &["gtr", "gt"]),
         ("Strings", "", &["strings", "string", "violin", "viola", "cello", "orchestra", "ensemble", "pizz", "arco"], &[]),
+        // Horns and saxes — Tonal wind groups.
+        ("Horn", "", &["horn"], &["hrn"]),
+        ("Sax", "", &["saxophone", "sax"], &[]),
         // 808 is a drum machine, NOT bass — so it is intentionally not a Bass keyword.
         ("Bass", "", &["bass", "sub bass"], &["sub"]),
         ("Vocal", "", &["vocal", "voice", "vox"], &["vx"]),
@@ -62,10 +100,13 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
         ("Keyboards", "Piano", &["grand piano", "upright piano", "piano"], &["pno"]),
         ("Keyboards", "Synth", &["synthesizer", "synth"], &["syn"]),
         ("Keyboards", "", &["keyboard", "keys"], &["kb", "keyb"]),
+        // Generic single tonal notes — after every named instrument, so
+        // "Piano Note C3" stays a Piano.
+        ("Note", "", &["note"], &[]),
         // Turntablism: scratches are their own group; DJ = turntable / decks.
         ("Scratch", "", &["scratches", "scratch"], &["scr"]),
         ("DJ", "", &["turntable", "deck"], &["dj"]),
-        ("FX", "", &["sound effect", "foley", "atmosphere", "atmos", "riser", "sweep", "noise",
+        ("FX", "", &["sound effect", "foley", "atmosphere", "atmos", "riser", "sweep", "laser", "noise",
                  "impact", "boom", "zap", "glitch", "drone", "whoosh", "reverse", "downlifter",
                  "uplifter", "riser", "sfx", "fx"], &["fx", "sfx"]),
         ("Loops/Patterns", "", &["loop", "groove", "beat"], &["lp"]),
@@ -109,8 +150,18 @@ mod tests {
             ("Mid Tom.wav", "Tom", "Mid"), ("Tom2.wav", "Tom", "Mid"),
             ("High Tom.wav", "Tom", "Hi"), ("HT_rack.wav", "Tom", "Hi"), ("Tom1.wav", "Tom", "Hi"),
             ("Tom_generic.wav", "Tom", ""),
-            ("Crash Cymbal.wav", "Cymbal", ""), ("CY_splash.wav", "Cymbal", ""), ("Crsh.wav", "Cymbal", ""),
+            // Cymbals: crashes and gongs get their own curated subgroup.
+            ("Crash Cymbal.wav", "Cymbal", "Crash"), ("Crash_01.wav", "Cymbal", "Crash"), ("Crsh.wav", "Cymbal", "Crash"),
+            ("Gong_low.wav", "Cymbal", "Gong"), ("TamTam.wav", "Cymbal", "Gong"), ("Gong Cymbal.wav", "Cymbal", "Gong"),
+            ("CY_splash.wav", "Cymbal", ""),
             ("OHCYM.wav", "Cymbal", ""), ("808_CYM.wav", "Cymbal", ""), ("Tom_cym_hit.wav", "Cymbal", ""),
+            // "hh" anywhere is strongly a hi-hat, even embedded.
+            ("ClosedHH1.wav", "Hi-Hat", ""), ("808HH.wav", "Hi-Hat", ""),
+            ("Hats_02.wav", "Hi-Hat", ""),
+            // "sfx" anywhere is strongly a sound effect.
+            ("Snare_SFX.wav", "FX", ""), ("GameSFX7.wav", "FX", ""),
+            ("Laser_zap.wav", "FX", ""),
+            ("China.wav", "Cymbal", ""), ("Zildjian_18.wav", "Cymbal", ""), ("Sizzle.wav", "Cymbal", ""),
             ("Hall_IR.wav", "IR", ""), ("guitar_cab.wav", "IR", ""), ("Impulse_room.wav", "IR", ""),
             ("Convolution 01.wav", "IR", ""),
             ("Ride Bell.wav", "Ride", ""), ("RD_ping.wav", "Ride", ""),
@@ -121,6 +172,24 @@ mod tests {
             ("Claves.wav", "Perc", "Clave"), ("CV_01.wav", "Perc", "Clave"),
             ("Shaker.wav", "Perc", "Shaker"), ("Maracas.wav", "Perc", "Shaker"), ("Cabasa.wav", "Perc", "Shaker"),
             ("Woodblock.wav", "Perc", "Block"), ("Wood Block 2.wav", "Perc", "Block"),
+            ("Cow_1.wav", "Perc", "Cowbell"),
+            ("Bell_C4.wav", "Perc", "Bell"), ("Sleigh Bells.wav", "Perc", "Bell"),
+            ("Chimes.wav", "Perc", "Chime"), ("Wind Chime.wav", "Perc", "Chime"),
+            ("Kalimba_A.wav", "Perc", "Kalimba"), ("Mbira.wav", "Perc", "Kalimba"), ("Thumb Piano.wav", "Perc", "Kalimba"),
+            ("Taiko_hit.wav", "Perc", "Taiko"),
+            ("Tabla_na.wav", "Perc", "Tabla"),
+            ("Triangle_open.wav", "Perc", "Triangle"),
+            ("Slap_01.wav", "Perc", "Slap"),
+            // …but slap bass is a Bass technique, not percussion.
+            ("Slap Bass G.wav", "Bass", ""),
+            // Disco toms are toms.
+            ("Disco Tom.wav", "Tom", "Disco"), ("Disco_hi.wav", "Tom", "Disco"),
+            // Ride bells stay Rides; cowbells stay Cowbells — never plain Bell.
+            ("Horn_stab.wav", "Horn", ""), ("French Horn.wav", "Horn", ""),
+            ("Sax_riff.wav", "Sax", ""), ("Saxophone_A2.wav", "Sax", ""),
+            ("Note_C3.wav", "Note", ""),
+            // A named instrument's note stays with the instrument.
+            ("Piano Note C3.wav", "Keyboards", "Piano"),
             ("FX_riser.wav", "FX", ""), ("SFX_boom.wav", "FX", ""), ("Foley_door.wav", "FX", ""),
             ("Sub_808.wav", "Bass", ""), ("Bassline.wav", "Bass", ""),
             ("Vox_chop.wav", "Vocal", ""), ("Vocal_ah.wav", "Vocal", ""),

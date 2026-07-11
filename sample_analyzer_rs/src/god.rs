@@ -18,6 +18,9 @@ use crate::envelope::Envelope;
 pub const PERCUSSIVE: &str = "Percussive";
 pub const IMPULSIVE_TAIL: &str = "Impulsive with Tail";
 pub const TONAL: &str = "Tonal";
+// Keyboards are their own top-level container: a keyboard with no BPM tag is
+// tonal by nature and never falls through to the envelope guess.
+pub const KEYBOARDS: &str = "Keyboards";
 pub const COMPLEX: &str = "Complex";
 pub const UNASSIGNED: &str = "Unassigned";
 
@@ -32,7 +35,10 @@ pub fn god_category(group: &str, is_loop: bool, env: &Envelope) -> &'static str 
         // Cymbals and rides are drums — percussive, tail and all.
         "Clap" | "Cymbal" | "Hi-Hat" | "Kick" | "Perc" | "Ride" | "Rim" | "Snare" | "Tom" => PERCUSSIVE,
         "IR" => IMPULSIVE_TAIL,
-        "Bass" | "Guitar" | "Keyboards" | "Strings" | "Vocal" => TONAL,
+        "Bass" | "Guitar" | "Horn" | "Note" | "Sax" | "Strings" | "Vocal" => TONAL,
+        // A named keyboard with no BPM can never be flagged a loop (the name
+        // match blocks the transient fallback), so this always lands here.
+        "Keyboards" => KEYBOARDS,
         "DJ" | "FX" | "Loops/Patterns" | "Scratch" => COMPLEX,
         // Name taxonomy failed — classify by the measured envelope.
         _ => god_from_envelope(env),
@@ -76,6 +82,8 @@ mod tests {
         assert_eq!(god_category("Ride", false, &e), PERCUSSIVE);
         assert_eq!(god_category("IR", false, &e), IMPULSIVE_TAIL);
         assert_eq!(god_category("Guitar", false, &e), TONAL);
+        // Keyboards are their own category; no BPM (is_loop=false) keeps them there.
+        assert_eq!(god_category("Keyboards", false, &e), KEYBOARDS);
         assert_eq!(god_category("FX", false, &e), COMPLEX);
         // A loop is Complex regardless of its name.
         assert_eq!(god_category("Kick", true, &e), COMPLEX);

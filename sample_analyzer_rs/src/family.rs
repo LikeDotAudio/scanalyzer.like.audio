@@ -14,11 +14,13 @@ pub fn classify_family(group: &str, subgroup: &str, acoustic: &[String], flux: f
         "Kick" | "Snare" | "Tom" => "Membranophone",
         "Cymbal" | "Hi-Hat" | "Ride" | "Rim" | "Clap" => "Idiophone",
         "Perc" => match subgroup {
-            "Conga" | "Bongo" => "Membranophone",
-            "Cowbell" | "Clave" | "Block" | "Shaker" => "Idiophone",
+            "Conga" | "Bongo" | "Taiko" | "Tabla" => "Membranophone",
+            // Kalimba tines are plucked metal — a plucked idiophone.
+            "Cowbell" | "Clave" | "Block" | "Shaker" | "Bell" | "Chime" | "Kalimba" | "Triangle" => "Idiophone",
             _ => "",
         },
         "Guitar" | "Strings" => "Chordophone",
+        "Horn" | "Sax" => "Aerophone",
         "Keyboards" => match subgroup {
             "Piano" | "Clav" => "Chordophone",
             // Rhodes/Wurli tines are struck metal, but the sound is electric.

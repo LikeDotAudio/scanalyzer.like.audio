@@ -2,7 +2,8 @@
 
 One widget, shared by the PEAK Examiner, Groups / CSV, and Auto-Guess tabs so
 every table gets the same drill-down: select a row → full record JSON on the
-left, waveform with a Play button on the right.
+left, waveform with a Play button on the right. A one-shot spectral trace
+(whole-file averaged FFT, log-frequency) is overlaid on top of the waveform.
 """
 import json
 import os
@@ -43,7 +44,10 @@ class RecordInspector(ttk.Panedwindow):
         self.status.pack(side=tk.LEFT, padx=8)
         self.fig = Figure(figsize=(4.4, 1.6), dpi=100, facecolor="#1b1b1b")
         self.wax = self.fig.add_subplot(111, facecolor="#0f0f0f")
-        self.fig.subplots_adjust(left=0.02, right=0.99, top=0.92, bottom=0.12)
+        # Twin x-axis over the same plot area: time along the bottom for the
+        # waveform, log-frequency along the top for the spectral trace.
+        self.spec_ax = self.wax.twiny()
+        self.fig.subplots_adjust(left=0.02, right=0.99, top=0.84, bottom=0.12)
         self._style_axes()
         self.canvas = FigureCanvasTkAgg(self.fig, master=wavf)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
@@ -66,6 +70,7 @@ class RecordInspector(ttk.Panedwindow):
         self.play_btn.config(state=tk.DISABLED)
         self.status.config(text="select a sample")
         self.wax.clear()
+        self.spec_ax.clear()
         self._style_axes()
         self.canvas.draw_idle()
 
@@ -83,10 +88,16 @@ class RecordInspector(ttk.Panedwindow):
         for spine in ax.spines.values():
             spine.set_color("#333")
         ax.set_facecolor("#0f0f0f")
+        sx = self.spec_ax
+        sx.set_yticks([])
+        sx.tick_params(colors="#3fa9ba", labelsize=6, length=2)
+        for spine in sx.spines.values():
+            spine.set_color("#333")
+        sx.patch.set_visible(False)  # keep the waveform visible underneath
 
     @staticmethod
-    def read_wav_preview(path, max_points=2400):
-        """Return (times, mono_samples in [-1,1]) downsampled for plotting."""
+    def read_wav(path):
+        """Decode a WAV to (sample_rate, full-resolution mono samples in [-1,1])."""
         with wave.open(path, "rb") as w:
             n, sr, ch, sw = w.getnframes(), w.getframerate(), w.getnchannels(), w.getsampwidth()
             raw = w.readframes(n)
@@ -108,12 +119,50 @@ class RecordInspector(ttk.Panedwindow):
             data = data.reshape(-1, ch).mean(axis=1)
         if full:
             data = data / full
-        duration = (n / sr) if sr else (len(data) / 44100.0)
+        return (sr or 44100), data
+
+    @classmethod
+    def read_wav_preview(cls, path, max_points=2400):
+        """Return (times, mono_samples in [-1,1]) downsampled for plotting."""
+        sr, data = cls.read_wav(path)
+        duration = len(data) / sr
         if len(data) > max_points:
             step = len(data) // max_points
             data = data[::step]
         times = np.linspace(0, duration, len(data)) if len(data) else np.array([])
         return times, data
+
+    @staticmethod
+    def compute_spectrum(data, sample_rate, segment=1 << 16, max_segments=32):
+        """One-shot spectral trace of the whole file: averaged-magnitude FFT
+        (Hann windows), peak-normalized to dB, condensed onto a log-frequency
+        grid (bin-max, so narrow peaks survive). Returns (freqs, dB) or None."""
+        n = len(data)
+        if n < 256 or sample_rate <= 0:
+            return None
+        seg = int(min(n, segment))
+        window = np.hanning(seg)
+        starts = np.linspace(0, n - seg, min(max_segments, max(1, n // seg))).astype(int)
+        power = np.zeros(seg // 2 + 1)
+        for s in starts:
+            power += np.abs(np.fft.rfft(data[s:s + seg] * window)) ** 2
+        freqs = np.fft.rfftfreq(seg, 1.0 / sample_rate)
+        mag = np.sqrt(power / len(starts))
+        peak = mag.max()
+        low, high = 20.0, sample_rate / 2.0
+        if peak <= 0 or high <= low:
+            return None
+        db = 20.0 * np.log10(np.maximum(mag / peak, 1e-6))
+        edges = np.geomspace(low, high, 361)
+        idx = np.searchsorted(freqs, edges)
+        fx, fy = [], []
+        for a, b in zip(idx[:-1], idx[1:]):
+            b = max(b, a + 1)
+            if a >= len(db):
+                break
+            fx.append(np.sqrt(edges[len(fx)] * edges[len(fx) + 1]))
+            fy.append(db[a:b].max())
+        return np.array(fx), np.array(fy)
 
     def _draw_waveform(self, path, rec):
         ax = self.wax
