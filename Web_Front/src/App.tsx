@@ -4,7 +4,6 @@ import './index.css'
 import SampleCloud from './SampleCloud'
 
 function App() {
-  const [isScanning, setIsScanning] = useState(false)
   const [wasmReady, setWasmReady] = useState(false)
   const [analysisResult, setAnalysisResult] = useState<any>(null)
 
@@ -24,11 +23,6 @@ function App() {
     // Pass the bytes directly to the Rust WebAssembly module!
     const jsonResult = analyze_audio_buffer(uint8Array)
     setAnalysisResult(JSON.parse(jsonResult))
-  }
-
-  const handleScan = () => {
-    setIsScanning(true)
-    setTimeout(() => setIsScanning(false), 3000)
   }
 
   return (
