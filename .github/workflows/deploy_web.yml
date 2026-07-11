@@ -36,7 +36,7 @@ jobs:
 
       - name: 📦 Install Dependencies
         working-directory: ./Web_Front
-        run: npm ci
+        run: npm install
 
       - name: 🔨 Build Vite Project
         working-directory: ./Web_Front
