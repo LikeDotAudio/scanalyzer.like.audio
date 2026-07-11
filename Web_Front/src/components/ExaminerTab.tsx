@@ -81,7 +81,7 @@ function computeSpectrum(mono: Float32Array, sr: number): { fx: number[]; fy: nu
   const idxFor = (f: number) => Math.min(half + 1, Math.max(0, Math.ceil((f * seg) / sr)));
   const fx: number[] = [], fy: number[] = [];
   for (let i = 0; i < bands; i++) {
-    let a = idxFor(edges[i]);
+    const a = idxFor(edges[i]);
     let b = idxFor(edges[i + 1]);
     if (a > half) break;
     b = Math.max(Math.min(b, half + 1), a + 1);
@@ -95,55 +95,43 @@ function computeSpectrum(mono: Float32Array, sr: number): { fx: number[]; fy: nu
 
 export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [autoPlay, setAutoPlay] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const waveformCanvasRef = useRef<HTMLCanvasElement>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
-  const animationRef = useRef<number>(0);
-  // Pre-rendered whole-file waveform (static) that the playhead is drawn over.
-  const waveformImageRef = useRef<HTMLCanvasElement | null>(null);
-  const durationRef = useRef<number>(0);
+  // A lightweight context used only to decode audio for the static preview.
+  const decodeCtxRef = useRef<AudioContext | null>(null);
 
-  // Cleanup audio context on unmount
   useEffect(() => {
     return () => {
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      if (decodeCtxRef.current) decodeCtxRef.current.close();
     };
   }, []);
 
-  // Render the whole-file waveform (amplitude over time) into an offscreen
-  // canvas once per selected sample, with the ADSR envelope overlaid — same
-  // idea as the Python inspector's _draw_waveform.
-  const renderWaveformImage = (buffer: AudioBuffer, item: any) => {
-    const visible = waveformCanvasRef.current;
-    const w = Math.max(1, Math.floor(visible?.clientWidth || 800));
-    const h = Math.max(1, Math.floor(visible?.clientHeight || 200));
-
-    const off = document.createElement('canvas');
-    off.width = w;
-    off.height = h;
-    const ctx = off.getContext('2d');
+  // Draw the STATIC player preview (no animation): whole-file waveform +
+  // averaged-FFT spectral trace, note-frequency axis on top, time axis on the
+  // bottom, ADSR envelope overlay. Mirrors the Python inspector's preview.
+  const renderPreview = (buffer: AudioBuffer, item: any) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const w = Math.max(1, Math.floor(canvas.clientWidth || 800));
+    const h = Math.max(1, Math.floor(canvas.clientHeight || 320));
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.fillStyle = '#0B0E14';
+    ctx.fillStyle = '#0A0A0A';
     ctx.fillRect(0, 0, w, h);
 
     // Leave room for note-frequency labels (top) and time labels (bottom).
-    const padTop = 24, padBottom = 16;
+    const padTop = 26, padBottom = 18;
     const plotTop = padTop;
     const plotBottom = h - padBottom;
     const plotH = Math.max(1, plotBottom - plotTop);
     const mid = (plotTop + plotBottom) / 2;
-    const half = plotH / 2;
+    const halfH = plotH / 2;
 
-    // Mix channels down to mono once (used by both the waveform and the FFT).
+    // Mono mixdown, shared by the waveform and the FFT.
     const ch = buffer.numberOfChannels;
     const len = buffer.length;
     const chans: Float32Array[] = [];
@@ -157,37 +145,55 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
     const duration = buffer.duration;
     const sr = buffer.sampleRate;
 
-    // Zero-crossing baseline.
-    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(0, mid);
-    ctx.lineTo(w, mid);
-    ctx.stroke();
-
-    // ---- Averaged FFT spectral trace + top note axis (drawn under the wave) ----
+    // ---- FFT spectral trace: olive fill first (behind the waveform) ----
     const spec = computeSpectrum(mono, sr);
+    let xFreq: ((f: number) => number) | null = null;
+    let fx: number[] = [], fy: number[] = [];
     if (spec) {
-      const { fx, fy } = spec;
+      fx = spec.fx; fy = spec.fy;
       const lf0 = Math.log(fx[0]);
       const lf1 = Math.log(fx[fx.length - 1]);
-      const xFreq = (f: number) => ((Math.log(f) - lf0) / (lf1 - lf0)) * w;
+      xFreq = (f: number) => ((Math.log(f) - lf0) / (lf1 - lf0)) * w;
       const yDb = (db: number) => plotBottom - Math.max(0, Math.min(1, (db + 90) / 90)) * plotH;
 
-      // Filled trace.
       ctx.beginPath();
       ctx.moveTo(xFreq(fx[0]), plotBottom);
       for (let i = 0; i < fx.length; i++) ctx.lineTo(xFreq(fx[i]), yDb(fy[i]));
       ctx.lineTo(xFreq(fx[fx.length - 1]), plotBottom);
       ctx.closePath();
-      ctx.fillStyle = 'rgba(77,208,225,0.15)';
+      ctx.fillStyle = 'rgba(150,150,30,0.18)';
       ctx.fill();
+    }
+
+    // ---- Waveform: blue min/max amplitude per pixel column ----
+    const samplesPerCol = len / w;
+    ctx.strokeStyle = 'rgba(74,88,224,0.70)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x < w; x++) {
+      const start = Math.floor(x * samplesPerCol);
+      const end = Math.min(len, Math.floor((x + 1) * samplesPerCol));
+      let min = 1.0, max = -1.0;
+      for (let i = start; i < end; i++) {
+        const v = mono[i];
+        if (v < min) min = v;
+        if (v > max) max = v;
+      }
+      if (min > max) { min = 0; max = 0; }
+      ctx.moveTo(x + 0.5, mid - max * halfH * 0.97);
+      ctx.lineTo(x + 0.5, mid - min * halfH * 0.97);
+    }
+    ctx.stroke();
+
+    // ---- FFT spectral trace: bright yellow line on top of the waveform ----
+    if (spec && xFreq) {
+      const yDb = (db: number) => plotBottom - Math.max(0, Math.min(1, (db + 90) / 90)) * plotH;
       ctx.beginPath();
       for (let i = 0; i < fx.length; i++) {
         const X = xFreq(fx[i]), Y = yDb(fy[i]);
         if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
       }
-      ctx.strokeStyle = 'rgba(77,208,225,0.85)';
+      ctx.strokeStyle = 'rgba(214,214,26,0.95)';
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -219,32 +225,11 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
         ctx.fillText(flabel, X, 12);
       }
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(127,214,226,0.8)';
+      ctx.fillStyle = 'rgba(127,214,226,0.85)';
       ctx.fillText('spectrum', w - 4, 2);
     }
 
-    // ---- Waveform: min/max amplitude per pixel column ----
-    const samplesPerCol = len / w;
-    ctx.strokeStyle = '#C026D3';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for (let x = 0; x < w; x++) {
-      const start = Math.floor(x * samplesPerCol);
-      const end = Math.min(len, Math.floor((x + 1) * samplesPerCol));
-      let min = 1.0;
-      let max = -1.0;
-      for (let i = start; i < end; i++) {
-        const v = mono[i];
-        if (v < min) min = v;
-        if (v > max) max = v;
-      }
-      if (min > max) { min = 0; max = 0; }
-      ctx.moveTo(x + 0.5, mid - max * half * 0.95);
-      ctx.lineTo(x + 0.5, mid - min * half * 0.95);
-    }
-    ctx.stroke();
-
-    // ---- ADSR envelope overlay (white dashed line, matching the Python view) ----
+    // ---- ADSR envelope overlay (white dashed line + markers) ----
     const att = Number(item?.envelope_attack_seconds ?? item?.attack_seconds ?? 0) || 0;
     const dec = Number(item?.envelope_decay_seconds ?? 0) || 0;
     const sus = Number(item?.envelope_sustain_level ?? 0) || 0;
@@ -262,7 +247,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       ctx.beginPath();
       pts.forEach(([t, v], i) => {
         const px = (t / duration) * w;
-        const py = mid - v * half * 0.95;
+        const py = mid - v * halfH * 0.97;
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       });
       ctx.stroke();
@@ -270,7 +255,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
       pts.forEach(([t, v]) => {
         const px = (t / duration) * w;
-        const py = mid - v * half * 0.95;
+        const py = mid - v * halfH * 0.97;
         ctx.beginPath();
         ctx.arc(px, py, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -279,10 +264,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
 
     // ---- Bottom axis: time in seconds ----
     if (duration > 0) {
-      const nTicks = 6;
+      const nTicks = 8;
       ctx.font = '9px sans-serif';
       ctx.textBaseline = 'bottom';
-      ctx.fillStyle = '#888';
       for (let i = 0; i <= nTicks; i++) {
         const X = (i / nTicks) * w;
         const t = (i / nTicks) * duration;
@@ -291,120 +275,47 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
         ctx.moveTo(X, plotBottom);
         ctx.lineTo(X, plotBottom + 4);
         ctx.stroke();
+        ctx.fillStyle = '#999';
         ctx.textAlign = i === 0 ? 'left' : i === nTicks ? 'right' : 'center';
-        ctx.fillText(`${t.toFixed(2)}s`, Math.max(2, Math.min(w - 2, X)), h - 2);
+        ctx.fillText(`${t.toFixed(1)}`, Math.max(2, Math.min(w - 2, X)), h - 2);
       }
     }
 
-    waveformImageRef.current = off;
-    durationRef.current = duration;
-    // Paint it immediately so the waveform shows even before playback starts.
-    drawWaveformFrame();
+    // ---- Sample name (top-left) ----
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.font = '10px sans-serif';
+    ctx.fillStyle = '#cddc39';
+    ctx.fillText(String(item?.name || '').slice(0, 60), 4, padTop - 2);
   };
 
-  // Blit the cached waveform and draw the playhead for the current position.
-  const drawWaveformFrame = () => {
-    const canvas = waveformCanvasRef.current;
-    const img = waveformImageRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const w = Math.max(1, Math.floor(canvas.clientWidth || 800));
-    const h = Math.max(1, Math.floor(canvas.clientHeight || 120));
-    if (canvas.width !== w) canvas.width = w;
-    if (canvas.height !== h) canvas.height = h;
-
-    ctx.fillStyle = '#0B0E14';
-    ctx.fillRect(0, 0, w, h);
-    if (img) ctx.drawImage(img, 0, 0, w, h);
-
-    const dur = durationRef.current;
-    const t = audioRef.current?.currentTime ?? 0;
-    if (dur > 0) {
-      const px = Math.min(w, (t / dur) * w);
-      ctx.strokeStyle = '#FCD34D';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(px + 0.5, 0);
-      ctx.lineTo(px + 0.5, h);
-      ctx.stroke();
-    }
-  };
-
-  const drawVisualizer = () => {
-    if (!analyserRef.current || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const analyser = analyserRef.current;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const draw = () => {
-      animationRef.current = requestAnimationFrame(draw);
-      analyser.getByteFrequencyData(dataArray);
-
-      ctx.fillStyle = '#1A1D24';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      const barWidth = (canvas.width / bufferLength) * 2.5;
-      let x = 0;
-
-      for (let i = 0; i < bufferLength; i++) {
-        const barHeight = (dataArray[i] / 255) * canvas.height;
-        ctx.fillStyle = `hsl(${280 + (i / bufferLength) * 60}, 80%, 60%)`;
-        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-        x += barWidth + 1;
-      }
-
-      // Advance the whole-file waveform playhead in the same frame.
-      drawWaveformFrame();
-    };
-    draw();
-  };
-
-  const handlePlay = async (item: any) => {
+  const handleSelect = async (item: any) => {
     setSelectedItem(item);
 
     const file = audioFiles.find(f => f.name === item.name || f.webkitRelativePath.endsWith(item.path));
     if (!file) {
-        // No linked audio — clear the waveform so it doesn't show a stale sample.
-        waveformImageRef.current = null;
-        durationRef.current = 0;
-        drawWaveformFrame();
-        return;
+      // No linked audio — clear the preview so it doesn't show a stale sample.
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext('2d');
+      if (canvas && ctx) { ctx.fillStyle = '#0A0A0A'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+      return;
     }
 
     if (audioRef.current) {
-        audioRef.current.src = URL.createObjectURL(file);
-        audioRef.current.play();
+      audioRef.current.src = URL.createObjectURL(file);
+      if (autoPlay) audioRef.current.play().catch(() => {});
+    }
 
-        if (!audioContextRef.current) {
-            audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-            analyserRef.current = audioContextRef.current.createAnalyser();
-            analyserRef.current.fftSize = 512;
-            sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
-            sourceRef.current.connect(analyserRef.current);
-            analyserRef.current.connect(audioContextRef.current.destination);
-            drawVisualizer();
-        }
-
-        if (audioContextRef.current.state === 'suspended') {
-            await audioContextRef.current.resume();
-        }
-
-        // Decode the whole file and render the static waveform preview.
-        try {
-            const buf = await file.arrayBuffer();
-            const decoded = await audioContextRef.current.decodeAudioData(buf);
-            renderWaveformImage(decoded, item);
-        } catch {
-            waveformImageRef.current = null;
-            durationRef.current = 0;
-            drawWaveformFrame();
-        }
+    // Decode the whole file and draw the static preview.
+    try {
+      if (!decodeCtxRef.current) {
+        decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const buf = await file.arrayBuffer();
+      const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+      renderPreview(decoded, item);
+    } catch {
+      /* undecodable file — leave the preview blank */
     }
   };
 
@@ -416,7 +327,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
-      
+
       {/* Top Half: Data Table */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
           <div style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: '#111318' }}>
@@ -451,9 +362,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                       {analysisResult.slice(0, 100).map((item, idx) => {
                           const isSelected = selectedItem === item;
                           return (
-                              <tr key={idx} 
-                                  onClick={() => handlePlay(item)}
-                                  style={{ 
+                              <tr key={idx}
+                                  onClick={() => handleSelect(item)}
+                                  style={{
                                       cursor: 'pointer',
                                       background: isSelected ? 'rgba(59, 130, 246, 0.2)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                       borderBottom: '1px solid rgba(255,255,255,0.05)'
@@ -480,7 +391,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
 
       {/* Bottom Half: Details, Bar Chart, Waveform */}
       <div style={{ height: '400px', display: 'flex', background: '#0B0E14' }}>
-          
+
           {/* Bottom Left: Field/Value Table */}
           <div style={{ width: '300px', borderRight: '1px solid var(--border-color)', overflowY: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
@@ -521,21 +432,18 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
               ) : null}
           </div>
 
-          {/* Bottom Right: Waveform and FFT */}
-          <div style={{ flex: 1, position: 'relative', background: '#1A1D24', padding: '1rem' }}>
+          {/* Bottom Right: Static waveform + FFT preview */}
+          <div style={{ flex: 1, position: 'relative', background: '#0A0A0A', padding: '0.75rem' }}>
               {selectedItem ? (
                   <>
-                      <div style={{ color: '#FCD34D', fontSize: '0.9rem', marginBottom: '0.5rem' }}>{selectedItem.name}</div>
-                      <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '0.2rem' }}>Waveform (amplitude · time) + FFT spectrum (note · frequency)</div>
-                      <canvas ref={waveformCanvasRef} style={{ width: '100%', height: '210px', background: '#0B0E14', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
-                      <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: '0.3rem 0 0.2rem' }}>Live spectrum analyzer</div>
-                      <canvas ref={canvasRef} style={{ width: '100%', height: '70px', background: '#0B0E14', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
+                      <canvas ref={canvasRef} style={{ width: '100%', height: 'calc(100% - 1.5rem)', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
                       <audio ref={audioRef} style={{ display: 'none' }} />
-                      <div style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', display: 'flex', gap: '0.5rem' }}>
+                      <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           <button className="btn secondary" onClick={() => audioRef.current?.play()}>▶ Play</button>
                           <label className="btn secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <input type="checkbox" defaultChecked /> auto-play
+                              <input type="checkbox" checked={autoPlay} onChange={e => setAutoPlay(e.target.checked)} /> auto-play
                           </label>
+                          <span className="text-secondary" style={{ fontSize: '0.8rem' }}>{selectedItem.length_seconds ? `${selectedItem.length_seconds.toFixed(2)} s` : ''}</span>
                       </div>
                   </>
               ) : (
