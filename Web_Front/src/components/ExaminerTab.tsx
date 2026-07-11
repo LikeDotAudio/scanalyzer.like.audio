@@ -162,10 +162,15 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const outerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [viewportH, setViewportH] = useState(400);
+  const [bottomHeight, setBottomHeight] = useState(400); // draggable visualizer height
   // A lightweight context used only to decode audio for the static preview.
   const decodeCtxRef = useRef<AudioContext | null>(null);
+  // Last decoded buffer/item so the preview can be re-drawn on resize.
+  const lastBufferRef = useRef<AudioBuffer | null>(null);
+  const lastItemRef = useRef<any>(null);
 
   useEffect(() => {
     return () => {
@@ -188,6 +193,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
           ? Math.min(rows.length - 1, idx + 1)
           : Math.max(0, idx - 1);
       handleSelect(rows[next]);
+      // Centre the selected row in the viewport as you arrow through the list.
+      const el = scrollRef.current;
+      if (el) el.scrollTop = Math.max(0, next * ROW_H - el.clientHeight / 2 + ROW_H / 2);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -203,6 +211,34 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Re-draw the preview whenever the canvas changes size (sash drag / window resize).
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ro = new ResizeObserver(() => {
+      if (lastBufferRef.current) renderPreview(lastBufferRef.current, lastItemRef.current);
+    });
+    ro.observe(canvas);
+    return () => ro.disconnect();
+  }, [selectedItem]);
+
+  // Drag the sash between the sample list and the visualizer to resize them.
+  const startResize = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const onMove = (ev: MouseEvent) => {
+      const rect = outerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const h = rect.bottom - ev.clientY;
+      setBottomHeight(Math.max(140, Math.min(rect.height - 120, h)));
+    };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  };
 
   // Keep the selected row visible as the user arrows through the (virtualized) list.
   useEffect(() => {
@@ -445,6 +481,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       }
       const buf = await file.arrayBuffer();
       const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+      lastBufferRef.current = decoded;
+      lastItemRef.current = item;
       renderPreview(decoded, item);
     } catch {
       /* undecodable file — leave the preview blank */
@@ -494,7 +532,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
+    <div ref={outerRef} style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
 
       {/* Top Half: Data Table */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
@@ -580,8 +618,12 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
           </div>
       </div>
 
+      {/* Draggable sash between the sample list and the visualizer */}
+      <div onMouseDown={startResize} title="Drag to resize"
+           style={{ height: '6px', cursor: 'row-resize', background: 'var(--border-color)', flexShrink: 0, borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }} />
+
       {/* Bottom Half: Details, Bar Chart, Waveform */}
-      <div style={{ height: '400px', display: 'flex', background: '#0B0E14' }}>
+      <div style={{ height: `${bottomHeight}px`, flexShrink: 0, display: 'flex', background: '#0B0E14' }}>
 
           {/* Bottom Left: Field/Value Table */}
           <div style={{ width: '300px', borderRight: '1px solid var(--border-color)', overflowY: 'auto' }}>
