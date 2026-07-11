@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+
 
 interface HeaderProps {
   isAnalyzing: boolean;
