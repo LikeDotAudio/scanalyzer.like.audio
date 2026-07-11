@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { pickDirectoryFiles, findAudioFile, fsaSupported, filterAudioFiles } from '../audioLinking';
+import { groupColor, complementColor } from '../groupColors';
 
 interface ExaminerTabProps {
   analysisResult: any[];
@@ -96,6 +97,22 @@ function computeSpectrum(mono: Float32Array, sr: number): { fx: number[]; fy: nu
 
 const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
+// Column config drives the sortable header row. `get` returns the sort key.
+const COLUMNS: { key: string; label: string; numeric?: boolean; get: (it: any) => any }[] = [
+  { key: 'name', label: 'File', get: it => it.name || '' },
+  { key: 'group', label: 'Group', get: it => it.group || '' },
+  { key: 'reason', label: 'Reason', get: it => it.reason?.[0] || '' },
+  { key: 'timbre', label: 'Timbre', get: it => it.timbre || '' },
+  { key: 'cluster', label: 'Clust', numeric: true, get: it => (it.cluster ?? -1) },
+  { key: 'root', label: 'Root', numeric: true, get: it => (noteToFreq(it.root_note_name) ?? -1) },
+  { key: 'pitch_hz', label: 'Pitch', numeric: true, get: it => (it.pitch_hz || 0) },
+  { key: 'length_seconds', label: 'Len', numeric: true, get: it => (it.length_seconds || 0) },
+  { key: 'transient_count', label: 'Tr', numeric: true, get: it => (it.transient_count || 0) },
+  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, get: it => (it.spectral_centroid_hz || 0) },
+  { key: 'harmonicity', label: 'Harm', numeric: true, get: it => (it.harmonicity || 0) },
+  { key: 'beats_per_minute', label: 'BPM', numeric: true, get: it => (it.beats_per_minute || 0) },
+];
+
 // Scientific-pitch note name (e.g. "C1", "F#2", "A4") → frequency in Hz.
 // A4 = 440 Hz, A0 = 27.5 Hz — matches the top axis's A-octave series.
 function noteToFreq(name: any): number | null {
@@ -113,6 +130,35 @@ function noteToFreq(name: any): number | null {
 export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [digging, setDigging] = useState(false);
+  const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
+
+  // Only rows whose name/group/timbre/root/reason contain the filter text.
+  const filteredRows = useMemo(() => {
+    const q = filter.trim().toLowerCase();
+    if (!q) return analysisResult;
+    return analysisResult.filter(it =>
+      `${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+        .toLowerCase().includes(q));
+  }, [analysisResult, filter]);
+
+  // The displayed list: filtered, then sorted by the clicked column.
+  const rows = useMemo(() => {
+    if (!sort) return filteredRows;
+    const col = COLUMNS.find(c => c.key === sort.key);
+    if (!col) return filteredRows;
+    const arr = filteredRows.slice();
+    arr.sort((a, b) => {
+      const va = col.get(a), vb = col.get(b);
+      const cmp = col.numeric ? (va - vb) : String(va).localeCompare(String(vb));
+      return cmp * sort.dir;
+    });
+    return arr;
+  }, [filteredRows, sort]);
+
+  const toggleSort = (key: string) =>
+    setSort(prev => prev?.key === key ? { key, dir: (prev.dir === 1 ? -1 : 1) } : { key, dir: 1 });
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -133,19 +179,19 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-      if (!analysisResult.length) return;
+      if (!rows.length) return;
       e.preventDefault();
-      const idx = selectedItem ? analysisResult.indexOf(selectedItem) : -1;
+      const idx = selectedItem ? rows.indexOf(selectedItem) : -1;
       const next = idx < 0
         ? 0
         : e.key === 'ArrowDown'
-          ? Math.min(analysisResult.length - 1, idx + 1)
+          ? Math.min(rows.length - 1, idx + 1)
           : Math.max(0, idx - 1);
-      handleSelect(analysisResult[next]);
+      handleSelect(rows[next]);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [selectedItem, analysisResult, autoPlay, audioFiles]);
+  }, [selectedItem, rows, autoPlay, audioFiles]);
 
   // Track the scroll viewport height for virtualization.
   useEffect(() => {
@@ -162,13 +208,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
   useEffect(() => {
     const el = scrollRef.current;
     if (!selectedItem || !el) return;
-    const idx = analysisResult.indexOf(selectedItem);
+    const idx = rows.indexOf(selectedItem);
     if (idx < 0) return;
     const top = idx * ROW_H;
     const bottom = top + ROW_H;
     if (top < el.scrollTop) el.scrollTop = top;
     else if (bottom > el.scrollTop + el.clientHeight) el.scrollTop = bottom - el.clientHeight;
-  }, [selectedItem, analysisResult]);
+  }, [selectedItem, rows]);
 
   // Draw the STATIC player preview (no animation): whole-file waveform +
   // averaged-FFT spectral trace, note-frequency axis on top, time axis on the
@@ -208,7 +254,11 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
     const duration = buffer.duration;
     const sr = buffer.sampleRate;
 
-    // ---- FFT spectral trace: olive fill first (behind the waveform) ----
+    // Waveform = the sample's group colour; spectrum = its complement.
+    const gcol = groupColor(item?.group || 'Unclassified', item?.subgroup || '');
+    const ccol = complementColor(gcol);
+
+    // ---- FFT spectral trace: complement-coloured fill first (behind wave) ----
     const spec = computeSpectrum(mono, sr);
     let xFreq: ((f: number) => number) | null = null;
     let fx: number[] = [], fy: number[] = [];
@@ -224,13 +274,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       for (let i = 0; i < fx.length; i++) ctx.lineTo(xFreq(fx[i]), yDb(fy[i]));
       ctx.lineTo(xFreq(fx[fx.length - 1]), plotBottom);
       ctx.closePath();
-      ctx.fillStyle = 'rgba(150,150,30,0.18)';
+      ctx.fillStyle = ccol + '2E';
       ctx.fill();
     }
 
-    // ---- Waveform: blue min/max amplitude per pixel column ----
+    // ---- Waveform: group-coloured min/max amplitude per pixel column ----
     const samplesPerCol = len / w;
-    ctx.strokeStyle = 'rgba(74,88,224,0.70)';
+    ctx.strokeStyle = gcol + 'B3';
     ctx.lineWidth = 1;
     ctx.beginPath();
     for (let x = 0; x < w; x++) {
@@ -256,7 +306,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
         const X = xFreq(fx[i]), Y = yDb(fy[i]);
         if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
       }
-      ctx.strokeStyle = 'rgba(214,214,26,0.95)';
+      ctx.strokeStyle = ccol + 'F2';
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -288,7 +338,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
         ctx.fillText(flabel, X, 12);
       }
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(127,214,226,0.85)';
+      ctx.fillStyle = ccol;
       ctx.fillText('spectrum', w - 4, 2);
 
       // Root-note fundamental as a vertical marker on the frequency axis.
@@ -371,7 +421,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
     ctx.fillText(String(item?.name || '').slice(0, 60), 4, padTop - 2);
   };
 
-  const handleSelect = async (item: any) => {
+  const handleSelect = async (item: any, forcePlay = false) => {
     setSelectedItem(item);
 
     const file = findAudioFile(audioFiles, item);
@@ -385,7 +435,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
 
     if (audioRef.current) {
       audioRef.current.src = URL.createObjectURL(file);
-      if (autoPlay) audioRef.current.play().catch(() => {});
+      if (autoPlay || forcePlay) audioRef.current.play().catch(() => {});
     }
 
     // Decode the whole file and draw the static preview.
@@ -417,6 +467,32 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       }
   };
 
+  // DIG: play through the list, advancing to the next playable sample each time
+  // one finishes, until the user stops. Skips samples with no linked audio.
+  const advanceDig = (fromIdx: number) => {
+    let i = Math.max(0, fromIdx);
+    while (i < rows.length && !findAudioFile(audioFiles, rows[i])) i++;
+    if (i < rows.length) handleSelect(rows[i], true);
+    else setDigging(false); // reached the end of the list
+  };
+
+  const startDig = () => {
+    setDigging(true);
+    const idx = selectedItem ? rows.indexOf(selectedItem) : -1;
+    if (idx >= 0 && findAudioFile(audioFiles, selectedItem)) handleSelect(selectedItem, true);
+    else advanceDig(idx + 1);
+  };
+
+  const stopDig = () => {
+    setDigging(false);
+    audioRef.current?.pause();
+  };
+
+  const handleEnded = () => {
+    if (!digging) return;
+    advanceDig(rows.indexOf(selectedItem) + 1);
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
 
@@ -424,7 +500,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
           <div style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: '#111318' }}>
               <button className="btn secondary" style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem' }}>Open .PEAK...</button>
-              <input type="text" placeholder="Filter:" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px' }} />
+              <input type="text" placeholder="Filter…" value={filter} onChange={e => setFilter(e.target.value)} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px' }} />
               <div style={{ flex: 1 }} />
               {fsaSupported() && (
                 <button className="btn primary" style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem' }} onClick={handleDeepLink}>
@@ -435,7 +511,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                   {fsaSupported() ? 'Link (basic)' : 'Link Audio Folder'}
                   <input type="file" webkitdirectory="true" directory="true" style={{ display: 'none' }} onChange={handleLinkFolder} />
               </label>
-              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
+              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{filter ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
           </div>
           <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
@@ -447,14 +523,18 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                   </colgroup>
                   <thead style={{ position: 'sticky', top: 0, background: '#1A1D24', zIndex: 1 }}>
                       <tr>
-                          {['File', 'Group', 'Reason', 'Timbre', 'Clust', 'Root', 'Pitch', 'Len', 'Tr', 'Cntrd', 'Harm', 'BPM'].map(h => (
-                              <th key={h} style={{ padding: '0.4rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{h}</th>
+                          {COLUMNS.map(c => (
+                              <th key={c.key} onClick={() => toggleSort(c.key)}
+                                  title={`Sort by ${c.label}`}
+                                  style={{ padding: '0.4rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', cursor: 'pointer', userSelect: 'none', color: sort?.key === c.key ? 'var(--accent-secondary)' : undefined }}>
+                                  {c.label}{sort?.key === c.key ? (sort.dir === 1 ? ' ▲' : ' ▼') : ''}
+                              </th>
                           ))}
                       </tr>
                   </thead>
                   <tbody>
                       {(() => {
-                          const total = analysisResult.length;
+                          const total = rows.length;
                           const OVER = 12;
                           const startIndex = Math.max(0, Math.floor(scrollTop / ROW_H) - OVER);
                           const endIndex = Math.min(total, Math.ceil((scrollTop + viewportH) / ROW_H) + OVER);
@@ -466,7 +546,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                           return (
                             <>
                               {topPad > 0 && <tr style={{ height: topPad }}><td colSpan={12} style={{ padding: 0 }} /></tr>}
-                              {analysisResult.slice(startIndex, endIndex).map((item, i) => {
+                              {rows.slice(startIndex, endIndex).map((item, i) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
                                   return (
@@ -477,7 +557,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                                               background: isSelected ? 'rgba(59, 130, 246, 0.25)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                           }}>
                                           <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.name}>{item.name}</td>
-                                          <td style={cell({ color: 'var(--accent-primary)' })}>{item.group}</td>
+                                          <td style={cell({ color: groupColor(item.group || 'Unclassified', item.subgroup || '') })}>{item.group}</td>
                                           <td style={cell({ color: 'var(--text-secondary)' })} title={item.reason?.[0] || ''}>{item.reason?.[0] || ''}</td>
                                           <td style={cell()}>{item.timbre}</td>
                                           <td style={cell({ color: '#10B981' })}>{item.cluster !== -1 ? item.cluster : ''}</td>
@@ -552,9 +632,12 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
               {selectedItem ? (
                   <>
                       <canvas ref={canvasRef} style={{ width: '100%', height: 'calc(100% - 1.5rem)', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
-                      <audio ref={audioRef} style={{ display: 'none' }} />
+                      <audio ref={audioRef} style={{ display: 'none' }} onEnded={handleEnded} />
                       <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           <button className="btn secondary" onClick={() => audioRef.current?.play()}>▶ Play</button>
+                          {digging
+                            ? <button className="btn primary" style={{ background: '#ef4444' }} onClick={stopDig}>■ Stop DIG</button>
+                            : <button className="btn primary" onClick={startDig}>⛏ DIG</button>}
                           <label className="btn secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <input type="checkbox" checked={autoPlay} onChange={e => setAutoPlay(e.target.checked)} /> auto-play
                           </label>

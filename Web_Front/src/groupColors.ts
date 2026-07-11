@@ -101,6 +101,26 @@ function subgroupNudge(subgroup: string): number {
   return (crc32(subgroup) % 9) - 4;
 }
 
+// Complementary colour (hue rotated 180°) of a hex colour — used to paint the
+// spectrum trace opposite the group-coloured waveform, matching the desktop app.
+export function complementColor(hex: string): string {
+  const m = hex.replace('#', '');
+  if (m.length < 6) return '#4dd0e1';
+  const r = parseInt(m.slice(0, 2), 16) / 255;
+  const g = parseInt(m.slice(2, 4), 16) / 255;
+  const b = parseInt(m.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  let h = 0;
+  if (d !== 0) {
+    if (max === r) h = (((g - b) / d) % 6 + 6) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h /= 6;
+  }
+  const s = max === 0 ? 0 : d / max;
+  return hsv(h + 0.5, s, max);
+}
+
 export function godColor(category: string): string {
   const hue = GOD_HUES[category];
   if (hue == null) return '#9a9a9a';
