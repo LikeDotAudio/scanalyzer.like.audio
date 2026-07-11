@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { buildScript, type RenamePlan, type ScriptKind, type Mode } from '../renameScript';
 
 interface RenameTabProps {
   analysisResult: any[];
 }
+
+const PREVIEW_ROW_H = 26; // virtualized preview row height (px)
 
 // The complete set of rename variables. Every one is available in BOTH the
 // prepend and append lists — the two lists are just different orderings of the
@@ -99,6 +102,23 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
     setter(prev => prev.map((s, i) => i === idx ? { ...s, enabled: !s.enabled } : s));
   };
 
+  const [destRoot, setDestRoot] = useState('Renamed Samples');
+  const [mode, setMode] = useState<Mode>('copy');
+
+  // Virtualized preview scroll state.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [viewportH, setViewportH] = useState(400);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const update = () => setViewportH(el.clientHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   // Compose the new base name for a record from the ordered enabled tokens.
   const newNameFor = (item: any): string => {
     const base = String(item.name || '').replace(/\.[^.]+$/, '');
@@ -106,6 +126,28 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
     const pre = prepend.filter(s => s.enabled).map(s => tokenValue(item, s.key)).filter(Boolean);
     const post = append.filter(s => s.enabled).map(s => tokenValue(item, s.key)).filter(Boolean);
     return [...pre, base, ...post].join('_') + ext;
+  };
+
+  // Destination subfolder path for a record, from the enabled subfolder tokens.
+  const folderFor = (item: any): string =>
+    Object.entries(subfolders).filter(([, v]) => v)
+      .map(([k]) => tokenValue(item, k as TokenKey)).filter(Boolean).join('/');
+
+  // Build the source→destination plan and download a rename script.
+  const generate = (kind: ScriptKind) => {
+    const plan: RenamePlan = analysisResult.map(item => {
+      const src = item.path || item.name;
+      const folder = folderFor(item);
+      const dest = [destRoot, folder, newNameFor(item)].filter(Boolean).join('/');
+      return { src, dest };
+    });
+    const { text, filename } = buildScript(plan, kind, mode);
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const boxStyle: React.CSSProperties = {
@@ -150,10 +192,16 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
           </label>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-          <button className="btn secondary">Destination...</button>
-          <span className="text-secondary" style={{ color: 'var(--accent-primary)' }}>COPY into destination (keep originals)</span>
-          <span className="text-secondary">/home/user/Renamed Samples</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <span className="text-secondary">Destination folder:</span>
+          <input type="text" value={destRoot} onChange={e => setDestRoot(e.target.value)}
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', color: 'white', padding: '0.2rem 0.5rem', minWidth: '220px' }} />
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.85rem' }}>
+            <input type="radio" checked={mode === 'copy'} onChange={() => setMode('copy')} /> Copy (keep originals)
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.85rem' }}>
+            <input type="radio" checked={mode === 'move'} onChange={() => setMode('move')} /> Move
+          </label>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>

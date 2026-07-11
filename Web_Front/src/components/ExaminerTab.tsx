@@ -159,6 +159,23 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
 
   const toggleSort = (key: string) =>
     setSort(prev => prev?.key === key ? { key, dir: (prev.dir === 1 ? -1 : 1) } : { key, dir: 1 });
+
+  // Per-feature min/max across the dataset, so each property bar fills relative
+  // to that feature's real range instead of a raw /100 (which made tiny values
+  // invisible). Matches the desktop app's per-feature scaling.
+  const BAR_PROPS = ['pitch_hz', 'length_seconds', 'complexity', 'spectral_centroid_hz', 'harmonicity', 'attack_seconds'];
+  const barRanges = useMemo(() => {
+    const r: Record<string, { min: number; max: number }> = {};
+    for (const p of BAR_PROPS) {
+      let mn = Infinity, mx = -Infinity;
+      for (const it of analysisResult) {
+        const v = Number(it[p]);
+        if (Number.isFinite(v)) { if (v < mn) mn = v; if (v > mx) mx = v; }
+      }
+      r[p] = { min: mn === Infinity ? 0 : mn, max: mx === -Infinity ? 1 : mx };
+    }
+    return r;
+  }, [analysisResult]);
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -658,14 +675,22 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
           {/* Bottom Middle: Horizontal Bar Chart properties */}
           <div style={{ width: '250px', borderRight: '1px solid var(--border-color)', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto' }}>
               {selectedItem ? (
-                  ['pitch_hz', 'length_seconds', 'complexity', 'spectral_centroid_hz', 'harmonicity', 'attack_seconds'].map(prop => (
-                      <div key={prop} style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textAlign: 'right' }}>{prop}</div>
-                          <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)' }}>
-                              <div style={{ width: `${Math.min(100, (selectedItem[prop] || 0) / 100)}%`, height: '100%', background: '#10B981' }} />
+                  BAR_PROPS.map(prop => {
+                      const val = Number(selectedItem[prop]) || 0;
+                      const { min, max } = barRanges[prop];
+                      const pct = max > min ? Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100)) : 0;
+                      return (
+                          <div key={prop} style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
+                                  <span>{prop}</span>
+                                  <span style={{ color: '#FCD34D' }}>{val.toFixed(2)}</span>
+                              </div>
+                              <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)' }}>
+                                  <div style={{ width: `${pct}%`, height: '100%', background: '#10B981' }} />
+                              </div>
                           </div>
-                      </div>
-                  ))
+                      );
+                  })
               ) : null}
           </div>
 
