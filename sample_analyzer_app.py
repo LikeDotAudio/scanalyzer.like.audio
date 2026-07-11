@@ -16,11 +16,11 @@ This module is the thin app shell: it wires the shared state, the analysis
 subprocess, and file playback. Each notebook tab lives in its own module and is
 mixed into AnalyzerApp:
 
-    graph_tab.GraphMixin        — 3D cloud
-    groups_tab.GroupsMixin      — Groups / CSV
-    examiner_tab.ExaminerMixin  — PEAK Examiner
-    guess_tab.GuessMixin        — Auto-Guess
-    rename_tab.RenameMixin      — Flatten / Rename
+    support.graph_tab.GraphMixin        — 3D cloud
+    support.groups_tab.GroupsMixin      — Groups / CSV
+    support.examiner_tab.ExaminerMixin  — PEAK Examiner
+    support.guess_tab.GuessMixin        — Auto-Guess
+    support.rename_tab.RenameMixin      — Flatten / Rename
 """
 import os
 import sys
@@ -32,12 +32,12 @@ import subprocess
 import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
 
-from config import DEFAULT_DIR, find_binary
-from graph_tab import GraphMixin
-from groups_tab import GroupsMixin
-from examiner_tab import ExaminerMixin
-from guess_tab import GuessMixin
-from rename_tab import RenameMixin
+from support.config import DEFAULT_DIR, find_binary
+from support.graph_tab import GraphMixin
+from support.groups_tab import GroupsMixin
+from support.examiner_tab import ExaminerMixin
+from support.guess_tab import GuessMixin
+from support.rename_tab import RenameMixin
 
 
 class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixin):

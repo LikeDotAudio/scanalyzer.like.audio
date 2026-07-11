@@ -16,7 +16,7 @@ from matplotlib.lines import Line2D
 from mpl_toolkits.mplot3d import Axes3D, proj3d  # noqa: F401 (registers the 3d projection)
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from config import CLOUD_PALETTE
+from .config import CLOUD_PALETTE
 
 
 class GraphMixin:

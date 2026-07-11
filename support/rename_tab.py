@@ -12,7 +12,7 @@ import shutil
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
-from config import DEFAULT_DIR
+from .config import DEFAULT_DIR
 
 
 class RenameMixin:
