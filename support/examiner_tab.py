@@ -3,10 +3,12 @@ import json
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
+from .inspector import RecordInspector
+
 
 class ExaminerMixin:
-    EXAM_COLS = ("group", "reason", "timbre", "cluster", "root", "pitch", "length", "tr",
-                 "centroid", "harm", "bpm", "sr", "bits")
+    EXAM_COLS = ("group", "reason", "timbre", "cluster", "root_note_name", "pitch_hz", "length_seconds", "tr",
+                 "spectral_centroid_hz", "harm", "beats_per_minute", "sr", "bits")
 
     def _build_examiner_tab(self):
         tab = ttk.Frame(self.notebook)
@@ -28,15 +30,15 @@ class ExaminerMixin:
 
         wrap = ttk.Frame(body)
         tv = ttk.Treeview(wrap, columns=self.EXAM_COLS, show="tree headings")
-        tv.heading("#0", text="File")
+        tv.heading("#0", text="File", command=lambda: self._tv_sort(tv, "#0", False))
         tv.column("#0", width=220, stretch=True)
         heads = {"group": ("Group", 80), "reason": ("Reason", 150), "timbre": ("Timbre", 80),
-                 "cluster": ("Clust", 48), "root": ("Root", 46), "pitch": ("Pitch", 55), "length": ("Len", 50),
-                 "tr": ("Tr", 40), "centroid": ("Cntrd", 60), "harm": ("Harm", 50),
-                 "bpm": ("BPM", 50), "sr": ("SR", 55), "bits": ("Bits", 40)}
+                 "cluster": ("Clust", 48), "root_note_name": ("Root", 46), "pitch_hz": ("Pitch", 55), "length_seconds": ("Len", 50),
+                 "tr": ("Tr", 40), "spectral_centroid_hz": ("Cntrd", 60), "harm": ("Harm", 50),
+                 "beats_per_minute": ("BPM", 50), "sr": ("SR", 55), "bits": ("Bits", 40)}
         for c in self.EXAM_COLS:
             label, w = heads[c]
-            tv.heading(c, text=label)
+            tv.heading(c, text=label, command=lambda cc=c: self._tv_sort(tv, cc, False))
             tv.column(c, width=w, anchor=tk.W)
         vs = ttk.Scrollbar(wrap, orient=tk.VERTICAL, command=tv.yview)
         tv.configure(yscrollcommand=vs.set)
@@ -46,9 +48,9 @@ class ExaminerMixin:
         self.exam_tv = tv
         body.add(wrap, weight=3)
 
-        self.exam_detail = tk.Text(body, height=9, bg="#0f0f0f", fg="#cfcf9f",
-                                   insertbackground="#ccc", font=("Courier", 9), wrap=tk.NONE)
-        body.add(self.exam_detail, weight=1)
+        # Lower area: shared inspector (raw JSON + waveform preview + Play).
+        self.exam_inspector = RecordInspector(body, play_cb=lambda p: self._play_file(p))
+        body.add(self.exam_inspector, weight=1)
 
     def _open_peak_file(self):
         path = filedialog.askopenfilename(
@@ -77,9 +79,9 @@ class ExaminerMixin:
                 continue
             tv.insert("", "end", text=r.get("name", ""), values=(
                 r.get("group", ""), r.get("reason", ""), r.get("timbre", ""), r.get("cluster", ""),
-                r.get("root", ""), f"{r.get('pitch', 0):.0f}", f"{r.get('length', 0):.2f}", r.get("transients", ""),
-                f"{r.get('centroid', 0):.0f}", f"{r.get('harmonicity', 0):.2f}",
-                f"{r.get('bpm', 0):.0f}", r.get("sample_rate", ""), r.get("bit_depth", "")))
+                r.get("root_note_name", ""), f"{r.get('pitch_hz', 0):.0f}", f"{r.get('length_seconds', 0):.2f}", r.get("transient_count", ""),
+                f"{r.get('spectral_centroid_hz', 0):.0f}", f"{r.get('harmonicity', 0):.2f}",
+                f"{r.get('beats_per_minute', 0):.0f}", r.get("sample_rate", ""), r.get("bit_depth", "")))
             shown += 1
         groups = len({r.get("group") for r in recs})
         self.exam_summary.config(text=f"{getattr(self, 'exam_path', '')}  —  {shown}/{len(recs)} shown · {groups} groups")
@@ -91,6 +93,6 @@ class ExaminerMixin:
             return
         name = tv.item(sel[0], "text")
         rec = next((r for r in getattr(self, "exam_records", []) if r.get("name") == name), None)
-        self.exam_detail.delete("1.0", tk.END)
         if rec:
-            self.exam_detail.insert(tk.END, json.dumps(rec, indent=2))
+            path = self._resolve_path(rec) if hasattr(self, "_resolve_path") else rec.get("path")
+            self.exam_inspector.show(rec, path)

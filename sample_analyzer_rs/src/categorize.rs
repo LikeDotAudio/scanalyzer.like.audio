@@ -33,10 +33,11 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
         ("Cymbal", "", &["crash cymbal", "splash cymbal", "cymbal", "crash", "splash"], &["cy", "cym", "crsh"]),
         ("Clap", "", &["handclap", "hand clap", "clap"], &["cp", "clp"]),
         ("Rim", "", &["rimshot", "rim shot", "cross stick", "crossstick", "rim"], &["rs", "rm"]),
-        // Toms split high / mid / low, then generic.
-        ("Tom Hi", "", &["high tom", "hi tom", "rack tom 1", "tom 1", "hitom"], &["ht", "hitom"]),
-        ("Tom Mid", "", &["mid tom", "middle tom", "rack tom 2", "tom 2", "midtom"], &["mt", "midtom"]),
-        ("Tom Lo", "", &["low tom", "floor tom", "tom 3", "lotom"], &["lt", "ft", "lotom"]),
+        // Toms are ONE instrument at different pitches — one group, with the
+        // pitch position (Hi / Mid / Lo) as the curated subgroup.
+        ("Tom", "Hi", &["high tom", "hi tom", "rack tom 1", "tom 1", "hitom"], &["ht", "hitom"]),
+        ("Tom", "Mid", &["mid tom", "middle tom", "rack tom 2", "tom 2", "midtom"], &["mt", "midtom"]),
+        ("Tom", "Lo", &["low tom", "floor tom", "tom 3", "lotom"], &["lt", "ft", "lotom"]),
         ("Tom", "", &["tom"], &["tm"]),
         // Auxiliary percussion — all under "Perc" with a curated subgroup.
         ("Perc", "Cowbell", &["cowbell", "cow bell"], &["cb", "cow", "cowb"]),
@@ -95,9 +96,11 @@ mod tests {
             ("Perc_shot.wav", "Perc", ""), ("PRC_02.wav", "Perc", ""),
             ("Clap_big.wav", "Clap", ""), ("CP_room.wav", "Clap", ""), ("Handclap.wav", "Clap", ""),
             ("Rimshot.wav", "Rim", ""), ("RS_dry.wav", "Rim", ""), ("Cross-stick.wav", "Rim", ""),
-            ("Low Tom.wav", "Tom Lo", ""), ("FT_floor.wav", "Tom Lo", ""), ("Tom3.wav", "Tom Lo", ""),
-            ("Mid Tom.wav", "Tom Mid", ""), ("Tom2.wav", "Tom Mid", ""),
-            ("High Tom.wav", "Tom Hi", ""), ("HT_rack.wav", "Tom Hi", ""), ("Tom1.wav", "Tom Hi", ""),
+            // Toms: one group, pitch position as the subgroup.
+            ("Low Tom.wav", "Tom", "Lo"), ("FT_floor.wav", "Tom", "Lo"), ("Tom3.wav", "Tom", "Lo"),
+            ("Mid Tom.wav", "Tom", "Mid"), ("Tom2.wav", "Tom", "Mid"),
+            ("High Tom.wav", "Tom", "Hi"), ("HT_rack.wav", "Tom", "Hi"), ("Tom1.wav", "Tom", "Hi"),
+            ("Tom_generic.wav", "Tom", ""),
             ("Crash Cymbal.wav", "Cymbal", ""), ("CY_splash.wav", "Cymbal", ""), ("Crsh.wav", "Cymbal", ""),
             ("OHCYM.wav", "Cymbal", ""), ("808_CYM.wav", "Cymbal", ""), ("Tom_cym_hit.wav", "Cymbal", ""),
             ("Hall_IR.wav", "IR", ""), ("guitar_cab.wav", "IR", ""), ("Impulse_room.wav", "IR", ""),

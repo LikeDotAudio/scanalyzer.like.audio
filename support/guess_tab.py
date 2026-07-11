@@ -9,19 +9,21 @@ from tkinter import ttk, messagebox
 
 import numpy as np
 
+from .inspector import RecordInspector
+
 
 class GuessMixin:
     # Acoustic (name-independent) features used to fingerprint each group.
-    GUESS_FEATS = ["centroid", "harmonicity", "low", "mid", "high", "crest",
-                   "attack", "zcr", "rolloff", "flatness", "sustain", "loglen"]
+    GUESS_FEATS = ["spectral_centroid_hz", "harmonicity", "low_band_energy", "mid_band_energy", "high_band_energy", "crest_factor",
+                   "attack_seconds", "zero_crossings_per_second", "spectral_rolloff_hz", "spectral_flatness", "sustain_ratio", "loglen"]
 
     def _feat_row(self, r):
         return [
-            r.get("centroid", 0) or 0, r.get("harmonicity", 0) or 0,
-            r.get("low", 0) or 0, r.get("mid", 0) or 0, r.get("high", 0) or 0,
-            r.get("crest", 0) or 0, r.get("attack", 0) or 0, r.get("zcr", 0) or 0,
-            r.get("rolloff", 0) or 0, r.get("flatness", 0) or 0, r.get("sustain", 0) or 0,
-            math.log(1.0 + (r.get("length", 0) or 0)),
+            r.get("spectral_centroid_hz", 0) or 0, r.get("harmonicity", 0) or 0,
+            r.get("low_band_energy", 0) or 0, r.get("mid_band_energy", 0) or 0, r.get("high_band_energy", 0) or 0,
+            r.get("crest_factor", 0) or 0, r.get("attack_seconds", 0) or 0, r.get("zero_crossings_per_second", 0) or 0,
+            r.get("spectral_rolloff_hz", 0) or 0, r.get("spectral_flatness", 0) or 0, r.get("sustain_ratio", 0) or 0,
+            math.log(1.0 + (r.get("length_seconds", 0) or 0)),
         ]
 
     def _build_guess_tab(self):
@@ -39,8 +41,10 @@ class GuessMixin:
                                        foreground="#888")
         self.guess_summary.pack(side=tk.RIGHT)
 
-        wrap = ttk.Frame(tab)
-        wrap.pack(fill=tk.BOTH, expand=True)
+        body = ttk.Panedwindow(tab, orient=tk.VERTICAL)
+        body.pack(fill=tk.BOTH, expand=True)
+
+        wrap = ttk.Frame(body)
         cols = ("folder", "current", "guess", "conf", "note")
         tv = ttk.Treeview(wrap, columns=cols, show="tree headings")
         tv.heading("#0", text="File")
@@ -54,9 +58,24 @@ class GuessMixin:
         tv.configure(yscrollcommand=vs.set)
         vs.pack(side=tk.RIGHT, fill=tk.Y)
         tv.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        tv.tag_configure("other", foreground="#1565c0")
+        tv.tag_configure("other", foreground="#6fa8ff")
         tv.tag_configure("mismatch", foreground="#c33")
+        tv.bind("<<TreeviewSelect>>", self._guess_select)
         self.guess_tv = tv
+        self.guess_item_rec = {}  # tree item id -> full record
+        body.add(wrap, weight=3)
+
+        # Same inspector as the PEAK Examiner: full JSON + waveform + Play.
+        self.guess_inspector = RecordInspector(body, play_cb=lambda p: self._play_file(p))
+        body.add(self.guess_inspector, weight=1)
+
+    def _guess_select(self, event):
+        sel = self.guess_tv.selection()
+        if not sel:
+            return
+        rec = self.guess_item_rec.get(sel[0])
+        if rec:
+            self.guess_inspector.show(rec, self._resolve_path(rec))
 
     def _run_guess(self):
         if not self.records:
@@ -89,6 +108,7 @@ class GuessMixin:
         scope_all = self.guess_scope.get() == "All one-shots"
         tv = self.guess_tv
         tv.delete(*tv.get_children())
+        self.guess_item_rec = {}
         rows = []
         for i, r in enumerate(recs):
             d = np.linalg.norm(cmat - norm[i], axis=1)
@@ -111,8 +131,9 @@ class GuessMixin:
 
         rows.sort(key=lambda x: (x[5] == "", -x[3]))
         for r, cur, g1, conf, note, tag in rows:
-            tv.insert("", "end", text=r.get("name", ""), tags=(tag,) if tag else (),
-                      values=(r.get("folder", ""), cur, g1, conf, note))
+            iid = tv.insert("", "end", text=r.get("name", ""), tags=(tag,) if tag else (),
+                            values=(r.get("folder", ""), cur, g1, conf, note))
+            self.guess_item_rec[iid] = r
         self.guess_summary.config(
             text=f"learned {len(gnames)} fingerprints · {len(rows)} shown "
                  f"({sum(1 for x in rows if x[5]=='other')} Unclassified, "

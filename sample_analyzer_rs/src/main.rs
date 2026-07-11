@@ -14,9 +14,16 @@
 //!   categorize   — name/path → group + subgroup taxonomy (+ tests)
 //!   wav / acid   — WAV decode (mono f32) and ACID loop metadata
 //!   amplitude / pitch / spectrum / transients / sustain — feature extractors
+//!   stft / flux / mfcc / framestats — frame-based spectral features
+//!   envelope     — measured ADSR (attack/decay/sustain/release) + moments + shape
+//!   partials     — overtone peak-picking → inharmonicity (harmonic vs metallic)
+//!   distortion   — THD + clipping density → Clean / Dirty / Clipped
+//!   moments      — mean / variance / skewness / kurtosis of a series
 //!   timbre / label — feature+name → timbre and taxonomy labels
+//!   tags / family / god — multi-label acoustic types, sound-design roles,
+//!                  Hornbostel-Sachs family, envelope god category
 //!   analyze      — orchestrates the extractors into one `Peak`
-//!   feature_vec / sqdist / kmeans / cluster — blind K-Means grouping
+//!   feature_vec / sqdist / kmeans / cluster / pca — blind grouping + embedding
 //!   args / discover / sidecar / stream / emit / run — CLI + orchestration
 
 mod acid;
@@ -26,11 +33,21 @@ mod args;
 mod categorize;
 mod cluster;
 mod discover;
+mod distortion;
 mod emit;
+mod envelope;
+mod family;
 mod feature_vec;
+mod flux;
+mod framestats;
+mod god;
 mod kmeans;
 mod label;
+mod mfcc;
+mod moments;
 mod normalize;
+mod partials;
+mod pca;
 mod peak;
 mod pitch;
 mod root;
@@ -38,10 +55,13 @@ mod run;
 mod sidecar;
 mod spectrum;
 mod sqdist;
+mod stft;
 mod stream;
 mod sustain;
+mod tags;
 mod timbre;
 mod transients;
+mod version;
 mod wav;
 
 fn main() {
@@ -51,7 +71,7 @@ fn main() {
     match args::Config::parse(std::env::args().collect()) {
         Some(cfg) => run::run(&cfg),
         None => {
-            eprintln!("usage: oa_sample_analyzer <dir> [--out <path>] [--workers <n>] [--max-len <s>]");
+            eprintln!("usage: oa_sample_analyzer <dir> [--out <path>] [--workers <n>] [--max-len <s>] [--clusters <k>] [--no-per-file] [--force]");
             std::process::exit(2);
         }
     }

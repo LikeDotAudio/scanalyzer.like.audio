@@ -10,27 +10,31 @@ pub fn kmeans_assign(results: &mut [Peak], idx: &[usize], k: usize, offset: i32)
         return;
     }
     let k = k.max(1).min(n);
-    let d = 9;
 
     // Min-max normalize each feature column so no dimension dominates.
-    let feats: Vec<[f64; 9]> = idx.iter().map(|&i| feature_vec(&results[i])).collect();
-    let mut mn = [f64::INFINITY; 9];
-    let mut mx = [f64::NEG_INFINITY; 9];
+    let feats: Vec<Vec<f64>> = idx.iter().map(|&i| feature_vec(&results[i])).collect();
+    let d = feats[0].len();
+    let mut mn = vec![f64::INFINITY; d];
+    let mut mx = vec![f64::NEG_INFINITY; d];
     for f in &feats {
         for j in 0..d {
             mn[j] = mn[j].min(f[j]);
             mx[j] = mx[j].max(f[j]);
         }
     }
-    let norm: Vec<[f64; 9]> = feats
+    let norm: Vec<Vec<f64>> = feats
         .iter()
         .map(|f| {
-            let mut o = [0.0; 9];
-            for j in 0..d {
-                let r = mx[j] - mn[j];
-                o[j] = if r > 1e-12 { (f[j] - mn[j]) / r } else { 0.0 };
-            }
-            o
+            (0..d)
+                .map(|j| {
+                    let r = mx[j] - mn[j];
+                    if r > 1e-12 {
+                        (f[j] - mn[j]) / r
+                    } else {
+                        0.0
+                    }
+                })
+                .collect()
         })
         .collect();
 
@@ -44,8 +48,8 @@ pub fn kmeans_assign(results: &mut [Peak], idx: &[usize], k: usize, offset: i32)
     };
 
     // K-Means++ init.
-    let mut centers: Vec<[f64; 9]> = Vec::with_capacity(k);
-    centers.push(norm[(rnd() * n as f64) as usize % n]);
+    let mut centers: Vec<Vec<f64>> = Vec::with_capacity(k);
+    centers.push(norm[(rnd() * n as f64) as usize % n].clone());
     while centers.len() < k {
         let dists: Vec<f64> = norm
             .iter()
@@ -53,7 +57,7 @@ pub fn kmeans_assign(results: &mut [Peak], idx: &[usize], k: usize, offset: i32)
             .collect();
         let sum: f64 = dists.iter().sum();
         if sum <= 0.0 {
-            centers.push(norm[centers.len() % n]);
+            centers.push(norm[centers.len() % n].clone());
             continue;
         }
         let mut target = rnd() * sum;
@@ -65,7 +69,7 @@ pub fn kmeans_assign(results: &mut [Peak], idx: &[usize], k: usize, offset: i32)
                 break;
             }
         }
-        centers.push(norm[pick]);
+        centers.push(norm[pick].clone());
     }
 
     // Lloyd's iterations.
@@ -87,7 +91,7 @@ pub fn kmeans_assign(results: &mut [Peak], idx: &[usize], k: usize, offset: i32)
                 changed = true;
             }
         }
-        let mut sums = vec![[0.0f64; 9]; k];
+        let mut sums = vec![vec![0.0f64; d]; k];
         let mut cnt = vec![0usize; k];
         for (i, x) in norm.iter().enumerate() {
             let a = assign[i];

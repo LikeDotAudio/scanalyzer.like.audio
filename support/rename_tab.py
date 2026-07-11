@@ -13,6 +13,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
 from .config import DEFAULT_DIR
+from .inspector import RecordInspector
 
 
 class RenameMixin:
@@ -21,10 +22,10 @@ class RenameMixin:
     # .PEAK fields shown as columns in the renamer: (key, header, width).
     RENAME_PEAK_COLS = [
         ("group", "Group", 70), ("subgroup", "Subgroup", 105), ("timbre", "Timbre", 70),
-        ("length_class", "Len tier", 60), ("root", "Root", 46), ("pitch", "Pitch", 55), ("length", "Len s", 50),
-        ("transients", "Tr", 34), ("sustained", "Sust", 40), ("audit", "Audit", 44),
-        ("bpm", "BPM", 46), ("channels", "Ch", 46), ("sample_rate", "SR", 50),
-        ("bit_depth", "Bits", 38), ("harmonicity", "Harm", 46), ("centroid", "Bright", 55),
+        ("length_class", "Len tier", 60), ("root_note_name", "Root", 46), ("pitch_hz", "Pitch", 55), ("length_seconds", "Len s", 50),
+        ("transient_count", "Tr", 34), ("sustained", "Sust", 40), ("audit", "Audit", 44),
+        ("beats_per_minute", "BPM", 46), ("channels", "Ch", 46), ("sample_rate", "SR", 50),
+        ("bit_depth", "Bits", 38), ("harmonicity", "Harm", 46), ("spectral_centroid_hz", "Bright", 55),
         ("complexity", "Cplx", 50), ("cluster", "Clu", 38), ("reason", "Reason", 170),
     ]
 
@@ -106,8 +107,10 @@ class RenameMixin:
         self.rename_summary = ttk.Label(ctl, text="Pick a directory to preview.", foreground="#888")
         self.rename_summary.pack(side=tk.RIGHT)
 
-        wrap = ttk.Frame(tab)
-        wrap.pack(fill=tk.BOTH, expand=True)
+        body = ttk.Panedwindow(tab, orient=tk.VERTICAL)
+        body.pack(fill=tk.BOTH, expand=True)
+
+        wrap = ttk.Frame(body)
         cols = ("old", "new", "err") + tuple(k for k, _h, _w in self.RENAME_PEAK_COLS)
         tv = ttk.Treeview(wrap, columns=cols, show="headings")
         tv.heading("old", text="Old folder structure  (relative)", command=lambda: self._tv_sort(tv, "old", False))
@@ -125,10 +128,25 @@ class RenameMixin:
         vs.pack(side=tk.RIGHT, fill=tk.Y)
         hs.pack(side=tk.BOTTOM, fill=tk.X)
         tv.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        tv.tag_configure("suffixed", foreground="#3a7ca5")  # auto-numbered (info, not an error)
-        tv.tag_configure("noop", foreground="#777")
+        tv.tag_configure("suffixed", foreground="#6fa8ff")  # auto-numbered (info, not an error)
+        tv.tag_configure("noop", foreground="#9a9a9a")
+        tv.bind("<<TreeviewSelect>>", self._rename_select)
         self.rename_tv = tv
         self.rename_map = []
+        self.rename_item_rec = {}  # tree item id -> (record or None, abspath)
+        body.add(wrap, weight=3)
+
+        # Same inspector as the PEAK Examiner: full JSON + waveform + Play.
+        self.rename_inspector = RecordInspector(body, play_cb=lambda p: self._play_file(p))
+        body.add(self.rename_inspector, weight=1)
+
+    def _rename_select(self, event):
+        sel = self.rename_tv.selection()
+        if not sel:
+            return
+        rec, abspath = self.rename_item_rec.get(sel[0], (None, None))
+        if abspath:
+            self.rename_inspector.show(rec or {"name": os.path.basename(abspath)}, abspath)
 
     def _peak_for(self, abspath):
         """Find the analysis record for a file: prefer its sidecar <stem>.PEAK,
@@ -163,9 +181,10 @@ class RenameMixin:
         ("Cymbal", "", ["crash cymbal", "splash cymbal", "cymbal", "crash", "splash"], ["cy", "cym", "crsh"]),
         ("Clap", "", ["handclap", "hand clap", "clap"], ["cp", "clp"]),
         ("Rim", "", ["rimshot", "rim shot", "cross stick", "crossstick", "rim"], ["rs", "rm"]),
-        ("Tom Hi", "", ["high tom", "hi tom", "rack tom 1", "tom 1", "hitom"], ["ht", "hitom"]),
-        ("Tom Mid", "", ["mid tom", "middle tom", "rack tom 2", "tom 2", "midtom"], ["mt", "midtom"]),
-        ("Tom Lo", "", ["low tom", "floor tom", "tom 3", "lotom"], ["lt", "ft", "lotom"]),
+        # Toms are ONE instrument at different pitches: one group, Hi/Mid/Lo subgroups.
+        ("Tom", "Hi", ["high tom", "hi tom", "rack tom 1", "tom 1", "hitom"], ["ht", "hitom"]),
+        ("Tom", "Mid", ["mid tom", "middle tom", "rack tom 2", "tom 2", "midtom"], ["mt", "midtom"]),
+        ("Tom", "Lo", ["low tom", "floor tom", "tom 3", "lotom"], ["lt", "ft", "lotom"]),
         ("Tom", "", ["tom"], ["tm"]),
         ("Perc", "Cowbell", ["cowbell", "cow bell"], ["cb", "cow", "cowb"]),
         ("Perc", "Conga", ["conga", "tumba", "quinto"], ["cg", "con", "cng"]),
@@ -252,7 +271,10 @@ class RenameMixin:
 
     def _tv_sort(self, tv, col, reverse):
         """Sort a Treeview by a clicked column (numeric-aware, toggles order)."""
-        items = [(tv.set(iid, col), iid) for iid in tv.get_children("")]
+        if col == "#0":
+            items = [(tv.item(iid, "text"), iid) for iid in tv.get_children("")]
+        else:
+            items = [(tv.set(iid, col), iid) for iid in tv.get_children("")]
 
         def keyf(pair):
             v = pair[0]
@@ -277,10 +299,10 @@ class RenameMixin:
                 return "yes" if v else ""
             if key == "channels":
                 return {1: "mono", 2: "stereo"}.get(v, str(v))
-            if key in ("pitch", "centroid", "complexity", "sample_rate"):
+            if key in ("pitch_hz", "spectral_centroid_hz", "complexity", "sample_rate"):
                 return f"{v:.0f}"
-            if key in ("length", "harmonicity", "bpm"):
-                return f"{v:.2f}" if v else ("" if key == "bpm" else f"{v:.2f}")
+            if key in ("length_seconds", "harmonicity", "beats_per_minute"):
+                return f"{v:.2f}" if v else ("" if key == "beats_per_minute" else f"{v:.2f}")
             return str(v)
         return [fmt(k) for k, _h, _w in self.RENAME_PEAK_COLS]
 
@@ -307,6 +329,7 @@ class RenameMixin:
         tv = self.rename_tv
         tv.delete(*tv.get_children())
         self.rename_map = []
+        self.rename_item_rec = {}
         root = self.rename_dir.get()
         if not os.path.isdir(root):
             return
@@ -354,13 +377,13 @@ class RenameMixin:
                         esub = fsg
                 # Append ROOT-<note> before the extension (when a root is known),
                 # ahead of the BPM tag so the name reads "… - ROOT-A3 - 120BPM".
-                if add_root and rec and rec.get("root"):
+                if add_root and rec and rec.get("root_note_name"):
                     stem, ext = os.path.splitext(new_name)
-                    new_name = f"{stem} - ROOT-{rec['root']}{ext}"
+                    new_name = f"{stem} - ROOT-{rec['root_note_name']}{ext}"
                 # Append the BPM before the extension (any real tempo, bpm > 10).
-                if add_bpm and rec and (rec.get("bpm") or 0) > 10:
+                if add_bpm and rec and (rec.get("beats_per_minute") or 0) > 10:
                     stem, ext = os.path.splitext(new_name)
-                    new_name = f"{stem} - {round(rec['bpm'])}BPM{ext}"
+                    new_name = f"{stem} - {round(rec['beats_per_minute'])}BPM{ext}"
                 # Prepend the category (e.g. "Snare - " or "Snare - Acoustic - ").
                 # Strip the group out of the subgroup so "Snare - Snare Medium"
                 # collapses to "Snare - Medium" (independent of the dedup option).
@@ -431,7 +454,8 @@ class RenameMixin:
                 used.add(new_abs)
                 tags = ("suffixed",) if note else ()
                 n_change += 1
-            tv.insert("", "end", values=(rel, disp_new, note, *self._peak_cols(rec)), tags=tags)
+            iid = tv.insert("", "end", values=(rel, disp_new, note, *self._peak_cols(rec)), tags=tags)
+            self.rename_item_rec[iid] = (rec, abspath)
         self.rename_map = rows
         self.rename_summary.config(
             text=f"{len(rows)} files · {n_change} to rename · {n_noop} unchanged · "

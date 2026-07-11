@@ -32,23 +32,27 @@ import subprocess
 import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
 
-from support.config import DEFAULT_DIR, find_binary
+from support.config import DEFAULT_DIR, find_binary, find_graph_binary
+from support.theme import apply_dark
 from support.graph_tab import GraphMixin
 from support.groups_tab import GroupsMixin
+from support.stats_tab import GroupStatsMixin
 from support.examiner_tab import ExaminerMixin
 from support.guess_tab import GuessMixin
 from support.rename_tab import RenameMixin
 
 
-class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixin):
+class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, GuessMixin, RenameMixin):
     def __init__(self, root):
         self.root = root
         self.root.title("Sample Analyzer (Rust core)")
         self.root.geometry("820x640")
+        apply_dark(self.root)  # near-black theme, bright text
 
         _default = DEFAULT_DIR if os.path.isdir(DEFAULT_DIR) else "No directory selected"
         self.directory = tk.StringVar(value=_default)
         self.binary = find_binary()
+        self.graph_binary = find_graph_binary()
         self.is_analyzing = False
         self.q = queue.Queue()
         self.proc = None
@@ -66,8 +70,10 @@ class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixi
         self._sel_txt = None        # overlay annotation for the selected point
         self._sel_marker = None     # highlight marker for the selected point
 
+        self.category_vars = {}     # god-category -> BooleanVar (master show/hide)
         self.group_vars = {}        # group name -> BooleanVar (visible?)
-        self._group_box_keys = None # last set of groups drawn as checkboxes
+        self.subgroup_vars = {}     # (group, subgroup) -> BooleanVar (visible?)
+        self._group_box_keys = None # last group/subgroup structure drawn as checkboxes
         self._pt_recs = []          # records parallel to the plotted points
 
         # full records (from the .PEAK file) for the Groups / Examiner tabs
@@ -100,6 +106,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixi
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(fill=tk.BOTH, expand=True)
         self._build_cloud_tab()
+        self._build_stats_tab()   # 2D stats live right beside the 3D cloud
         self._build_groups_tab()
         self._build_examiner_tab()
         self._build_guess_tab()
@@ -164,7 +171,8 @@ class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixi
             return
         self.is_analyzing = True
         self.root_dir = directory
-        self.action_btn.config(state=tk.DISABLED)
+        # The Start button becomes the Stop button for the duration of the run.
+        self.action_btn.config(text="■ Stop Analysis", command=self.stop_analysis)
         self.progress["value"] = 0
         self.d_pitch, self.d_cx, self.d_len, self.d_group, self.d_rec = [], [], [], [], []
         self.n_loops = 0
@@ -180,6 +188,17 @@ class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixi
             self.ax.get_legend().remove()
         self.canvas.draw_idle()
         threading.Thread(target=self._run, args=(directory,), daemon=True).start()
+
+    def stop_analysis(self):
+        """Terminate the Rust analyzer. Per-file sidecars written so far are
+        kept, and (version permitting) reused on the next run."""
+        if self.proc and self.proc.poll() is None:
+            try:
+                self.proc.terminate()
+            except Exception:
+                pass
+        self.status.config(text="Analysis stopped — already-written sidecars will be reused next run.",
+                           foreground="#c47a1a")
 
     def _run(self, directory):
         try:
@@ -212,12 +231,12 @@ class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixi
                 elif t in ("result", "skip"):
                     self.progress["value"] = msg.get("done", 0)
                     if t == "result":
-                        self.d_pitch.append(msg.get("pitch", 0.0) or 0.0)
+                        self.d_pitch.append(msg.get("pitch_hz", 0.0) or 0.0)
                         self.d_cx.append(msg.get("complexity", 0.0) or 0.0)
-                        self.d_len.append(msg.get("length", 0.1) or 0.1)
+                        self.d_len.append(msg.get("length_seconds", 0.1) or 0.1)
                         self.d_group.append(msg.get("group", "Other") or "Other")
                         self.d_rec.append(msg)
-                        if (msg.get("transients", 1) or 1) > 1:
+                        if (msg.get("transient_count", 1) or 1) > 1:
                             self.n_loops += 1
                         redraw = True
                 elif t == "done":
@@ -228,7 +247,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, ExaminerMixin, GuessMixin, RenameMixi
                     self.status.config(text="Error: " + msg.get("msg", ""), foreground="#c33")
                 elif t == "finished":
                     self.is_analyzing = False
-                    self.action_btn.config(state=tk.NORMAL)
+                    self.action_btn.config(text="Start Analysis", command=self.start, state=tk.NORMAL)
         except queue.Empty:
             pass
         if redraw and self.d_pitch:
