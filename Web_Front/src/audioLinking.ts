@@ -2,10 +2,16 @@
 // folder, we recurse the whole tree and index every audio file by its relative
 // path, so any loaded .PEAK's records resolve to their sibling files.
 
-const AUDIO_RE = /\.(wav|aif|aiff|flac|mp3|ogg)$/i;
+const AUDIO_RE = /\.(wav|aif|aiff|flac|mp3|ogg|m4a|opus)$/i;
 
 export function fsaSupported(): boolean {
   return typeof (window as any).showDirectoryPicker === 'function';
+}
+
+// Keep only audio files. The webkitdirectory picker returns EVERY file in the
+// tree (images, .DS_Store, .peak, .asd, …), so counts and matching must filter.
+export function filterAudioFiles(files: File[]): File[] {
+  return files.filter(f => AUDIO_RE.test(f.name));
 }
 
 // Prompt for a directory and return every audio File within, each tagged with

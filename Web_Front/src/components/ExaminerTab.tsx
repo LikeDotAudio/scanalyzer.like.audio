@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { pickDirectoryFiles, findAudioFile, fsaSupported } from '../audioLinking';
+import { pickDirectoryFiles, findAudioFile, fsaSupported, filterAudioFiles } from '../audioLinking';
 
 interface ExaminerTabProps {
   analysisResult: any[];
@@ -348,7 +348,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
 
   const handleLinkFolder = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
-          setAudioFiles(Array.from(e.target.files));
+          setAudioFiles(filterAudioFiles(Array.from(e.target.files)));
       }
   };
 
@@ -380,7 +380,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                   {fsaSupported() ? 'Link (basic)' : 'Link Audio Folder'}
                   <input type="file" webkitdirectory="true" directory="true" style={{ display: 'none' }} onChange={handleLinkFolder} />
               </label>
-              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{audioFiles.length ? `${audioFiles.length} linked · ` : ''}{analysisResult.length} shown</div>
+              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
           </div>
           <div style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>

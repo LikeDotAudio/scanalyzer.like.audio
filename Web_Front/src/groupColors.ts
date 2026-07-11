@@ -23,6 +23,12 @@ export function godCategory(group: string): string {
   return GROUP_TO_CATEGORY[group] ?? 'Unassigned';
 }
 
+// Composite key for a group+subgroup (used for show/hide sets). The unit-
+// separator (0x1F) can't occur in a real name, so there are no collisions.
+export function subKey(group: string, subgroup: string): string {
+  return group + String.fromCharCode(31) + subgroup;
+}
+
 // Same palette the desktop cloud uses.
 export const CLOUD_PALETTE = [
   '#f4902c', '#8ab4f8', '#4caf50', '#e57373', '#ba68c8', '#4dd0e1',

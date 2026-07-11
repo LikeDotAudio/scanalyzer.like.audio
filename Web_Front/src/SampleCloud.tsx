@@ -2,7 +2,7 @@ import { useRef, useMemo, useEffect } from 'react'
 import { Canvas, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
-import { groupColor, godColor, godCategory } from './groupColors'
+import { groupColor, godColor, godCategory, subKey } from './groupColors'
 
 // Feature registry: label → how to read it. Numeric features are normalized
 // across the dataset; categorical ones are spread into bands. Mirrors the
@@ -119,7 +119,10 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, hiddenGroup
     if (!mesh) return;
     for (let i = 0; i < count; i++) {
       const [x, y, z] = positions[i];
-      const hidden = hiddenGroups.has(data[i].group || 'Unclassified');
+      const g = data[i].group || 'Unclassified';
+      const sg = data[i].subgroup || '';
+      // Hidden if the whole group is hidden, or this specific subgroup is.
+      const hidden = hiddenGroups.has(g) || (!!sg && hiddenGroups.has(subKey(g, sg)));
       dummy.position.set(x, y, z);
       dummy.scale.setScalar(hidden ? 0.0001 : sizes[i]);
       dummy.updateMatrix();

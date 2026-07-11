@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import initWasm, { analyze_audio_buffer } from 'wasm_analyzer';
+import { filterAudioFiles } from '../audioLinking';
 
 interface ScanalyzeTabProps {
   analysisResult: any[];
@@ -47,12 +48,12 @@ export default function ScanalyzeTab({
 
     if (wavFilesToProcess.length === 0) {
         alert("All files in this folder have already been analyzed!");
-        setAudioFiles(Array.from(files)); // Update audio files even if skipping scan
+        setAudioFiles(filterAudioFiles(Array.from(files))); // Update audio files even if skipping scan
         return;
     }
 
     setPendingWavFiles(wavFilesToProcess);
-    setAudioFiles(Array.from(files)); // Link audio folder automatically when they scan
+    setAudioFiles(filterAudioFiles(Array.from(files))); // Link audio folder automatically when they scan
   };
 
   const startAnalysis = async () => {
