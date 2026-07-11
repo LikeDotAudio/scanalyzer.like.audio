@@ -99,6 +99,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
   const [autoPlay, setAutoPlay] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const selectedRowRef = useRef<HTMLTableRowElement>(null);
   // A lightweight context used only to decode audio for the static preview.
   const decodeCtxRef = useRef<AudioContext | null>(null);
 
@@ -107,6 +108,31 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
       if (decodeCtxRef.current) decodeCtxRef.current.close();
     };
   }, []);
+
+  // Arrow Up / Down move to the previous / next sample.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (!analysisResult.length) return;
+      e.preventDefault();
+      const idx = selectedItem ? analysisResult.indexOf(selectedItem) : -1;
+      const next = idx < 0
+        ? 0
+        : e.key === 'ArrowDown'
+          ? Math.min(analysisResult.length - 1, idx + 1)
+          : Math.max(0, idx - 1);
+      handleSelect(analysisResult[next]);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedItem, analysisResult, autoPlay, audioFiles]);
+
+  // Keep the selected row visible as the user arrows through the list.
+  useEffect(() => {
+    selectedRowRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [selectedItem]);
 
   // Draw the STATIC player preview (no animation): whole-file waveform +
   // averaged-FFT spectral trace, note-frequency axis on top, time axis on the
@@ -379,6 +405,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, setAudioFiles 
                           const isSelected = selectedItem === item;
                           return (
                               <tr key={idx}
+                                  ref={isSelected ? selectedRowRef : null}
                                   onClick={() => handleSelect(item)}
                                   style={{
                                       cursor: 'pointer',
