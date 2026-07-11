@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from 'recharts'
 
 interface StatsTabProps {
