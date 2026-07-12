@@ -292,21 +292,34 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
               <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
           </div>
 
-          {/* Group / subgroup scope filter bar (like the Stats tab) */}
+          {/* Group / subgroup scope filter bar. When a group is active, it and
+              its subgroups lead on the left and the other groups grey out. */}
           <div style={{ padding: '0.3rem 1rem', display: 'flex', alignItems: 'center', gap: '0.3rem', flexWrap: 'wrap', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
               <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
               <button className={`btn ${!scopeGroup ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => { setScopeGroup(null); setScopeSub(null); }}>All</button>
-              {groups.map(g => (
-                  <button key={g} className={`btn ${scopeGroup === g ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(g, '')}` }} onClick={() => { setScopeGroup(g); setScopeSub(null); }}>{g}</button>
-              ))}
-              {scopeGroup && subgroups.length > 0 && (
+
+              {scopeGroup ? (
                   <>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: '0 0.25rem' }}>·</span>
-                      <button className={`btn ${!scopeSub ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => setScopeSub(null)}>All {scopeGroup}</button>
-                      {subgroups.map(sg => (
-                          <button key={sg} className={`btn ${scopeSub === sg ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(scopeGroup, sg)}` }} onClick={() => setScopeSub(sg)}>{sg}</button>
+                      {/* Active group + its subgroups, front and centre */}
+                      <button className="btn primary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(scopeGroup, '')}` }} onClick={() => setScopeSub(null)}>{scopeGroup}</button>
+                      {subgroups.length > 0 && (
+                          <>
+                              <button className={`btn ${!scopeSub ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => setScopeSub(null)}>All {scopeGroup}</button>
+                              {subgroups.map(sg => (
+                                  <button key={sg} className={`btn ${scopeSub === sg ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(scopeGroup, sg)}` }} onClick={() => setScopeSub(sg)}>{sg}</button>
+                              ))}
+                          </>
+                      )}
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', margin: '0 0.25rem' }}>│</span>
+                      {/* Every other group, greyed until the scope is cleared */}
+                      {groups.filter(g => g !== scopeGroup).map(g => (
+                          <button key={g} className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(g, '')}`, opacity: 0.35 }} onClick={() => { setScopeGroup(g); setScopeSub(null); }}>{g}</button>
                       ))}
                   </>
+              ) : (
+                  groups.map(g => (
+                      <button key={g} className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(g, '')}` }} onClick={() => { setScopeGroup(g); setScopeSub(null); }}>{g}</button>
+                  ))
               )}
           </div>
           <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
