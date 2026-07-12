@@ -156,11 +156,11 @@ function App() {
 
   const tabs = [
     { id: 'scanalyze', label: 'SCANALIZE' },
-    { id: 'cloud', label: '3D Cloud' },
-    { id: 'stats', label: 'Stats' },
-    { id: 'groups', label: 'Groups' },
+    { id: 'cloud', label: '3D' },
+    { id: 'stats', label: '2D' },
+    // { id: 'groups', label: 'Groups' },
     { id: 'examiner', label: 'Examiner' },
-    { id: 'rename', label: 'Flatten / Rename' }
+    { id: 'rename', label: 'File Names' }
   ];
 
   return (

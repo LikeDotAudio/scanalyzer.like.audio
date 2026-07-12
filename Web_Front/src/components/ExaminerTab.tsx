@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { findAudioFile } from '../audioLinking';
+import { generateNewName } from '../renameConfig';
 import { groupColor, complementColor } from '../groupColors';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
@@ -298,6 +299,24 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     advanceDig(rows.indexOf(selectedItem) + 1);
   };
 
+  const handleDownload = () => {
+    if (!selectedItem) return;
+    const file = findAudioFile(audioFiles, selectedItem);
+    if (!file) {
+      alert('Audio file not found in linked directory.');
+      return;
+    }
+    const newName = generateNewName(selectedItem);
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = newName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div ref={outerRef} style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
 
@@ -431,6 +450,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                       <canvas ref={canvasRef} style={{ width: '100%', height: 'calc(100% - 1.5rem)', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
                       <audio ref={audioRef} style={{ display: 'none' }} onEnded={handleEnded} />
                       <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>
                           <button className="btn secondary" onClick={() => audioRef.current?.play()}>▶ Play</button>
                           {digging
                             ? <button className="btn primary" style={{ background: '#ef4444' }} onClick={stopDig}>■ Stop DIG</button>

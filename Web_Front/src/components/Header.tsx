@@ -22,7 +22,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
       </div>
 
       {!isAnalyzing && (
-        <div style={{ flex: 1, minWidth: '250px', textAlign: 'center', overflow: 'hidden' }}>
+        <div className="hide-on-mobile" style={{ flex: 1, minWidth: '250px', textAlign: 'center', overflow: 'hidden' }}>
           {currentSound ? (
             <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
           ) : !hasData ? (
@@ -42,7 +42,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
       )}
 
       {isAnalyzing && (
-        <div style={{ flex: 1, minWidth: '250px', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div className="hide-on-mobile" style={{ flex: 1, minWidth: '250px', display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span style={{ color: 'var(--accent-primary)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Analyzing... {progress}%</span>
           <div style={{ flex: 1, background: 'rgba(0,0,0,0.3)', overflow: 'hidden', border: '1px solid var(--border-color)', height: '12px' }}>
             <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.2s' }}></div>
