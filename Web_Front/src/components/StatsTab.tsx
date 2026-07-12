@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
 import { groupColor, godColor, godCategory, CLOUD_PALETTE } from '../groupColors'
 import { findAudioFile } from '../audioLinking'
@@ -52,21 +52,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     setFilterText('');
   }, [analysisResult]);
 
-  // Groups and (for the active group) subgroups present in the data.
-  const groups = useMemo(() => {
-    const s = new Set<string>();
-    for (const it of analysisResult) s.add(it.group || 'Unclassified');
-    return Array.from(s).sort();
-  }, [analysisResult]);
 
-  const subgroups = useMemo(() => {
-    if (!group) return [];
-    const s = new Set<string>();
-    for (const it of analysisResult) {
-      if ((it.group || 'Unclassified') === group && (it.subgroup || '').trim()) s.add(it.subgroup.trim());
-    }
-    return Array.from(s).sort();
-  }, [analysisResult, group]);
 
   // The filtered dataset all charts are relative to.
   const data = useMemo(() => {

@@ -140,7 +140,7 @@ function Axes({ xLabel, yLabel, zLabel }: { xLabel: string; yLabel: string; zLab
 
 interface CloudProps {
   data: any[];
-  xAxis: string; yAxis: string; zAxis: string; sizeAxis: string; colorBy: string;
+  xAxis: string; yAxis: string; zAxis: string; sizeAxis: string; colorBy: string; shapeBy: string;
   hiddenGroups: Set<string>;
   selectedIndex: number | null;
   onPick: (index: number) => void;
@@ -255,10 +255,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
     return { shapeData: shapes, allPositions, selectedSize, selectedShape };
   }, [data, count, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, selectedIndex]);
 
-  const handleClick = (e: ThreeEvent<MouseEvent>) => {
-    e.stopPropagation();
-    if (e.instanceId != null) onPick(e.instanceId);
-  };
+
 
   // Arrow keys move the selection to the nearest point in that screen direction.
   const { camera } = useThree();

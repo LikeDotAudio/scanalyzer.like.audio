@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { buildScript, type RenamePlan, type ScriptKind, type Mode, type BitDepth } from '../renameScript';
-import { type TokenKey, TOKEN_LABELS, type Slot, getSavedPrepend, getSavedAppend, tokenValue } from '../renameConfig';
+import { type TokenKey, TOKEN_LABELS, type Slot, getSavedPrepend, getSavedAppend, tokenValue, generateNewName } from '../renameConfig';
 import ScopeBar from './ScopeBar';
 
 interface RenameTabProps {
