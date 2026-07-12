@@ -1,4 +1,3 @@
-mod run;
 fn main() {
     // Per-file panics are caught during the run; keep their default messages off stderr.
     std::panic::set_hook(Box::new(|_| {}));

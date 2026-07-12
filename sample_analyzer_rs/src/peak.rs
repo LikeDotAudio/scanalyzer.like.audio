@@ -83,7 +83,7 @@ pub struct Peak {
     pub root_cents_offset: f64,   // cents off the equal-tempered note (−50..+50)
 
     // --- embedded metadata (ACID chunk, when present) ---
-    pub beats_per_minute: f64,    // 0 if none
+    pub beats_per_minute: u32,    // 0 if none
     pub root_midi_note: i32,      // MIDI root note from the ACID chunk, -1 if none
 
     // --- unsupervised grouping (assigned after all files are analyzed) ---
