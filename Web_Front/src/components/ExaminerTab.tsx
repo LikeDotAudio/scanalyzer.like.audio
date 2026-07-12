@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { findAudioFile } from '../audioLinking';
 import { groupColor, complementColor } from '../groupColors';
-import { computeSpectrum, toMono, noteToFreq, type PlotGeo } from '../examiner/audioAnalysis';
+import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
-import { drawEnvelope, drawAxesAndName } from '../examiner/drawEnvelope';
+import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 
@@ -213,10 +213,19 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     const ccol = complementColor(gcol);
     const spec = computeSpectrum(mono, buffer.sampleRate);
 
-    // Draw order: spectrum fill (behind) → waveform → spectrum trace → envelope → axes.
+    // BPM: prefer the record's value; for loops with none, estimate in-browser.
+    let bpm = Number(item?.beats_per_minute) || 0;
+    let bpmEst = false;
+    if (!bpm && (item?.timbre === 'Loop' || item?.length_class === 'Loop')) {
+      bpm = estimateBpm(mono, buffer.sampleRate);
+      bpmEst = bpm > 0;
+    }
+
+    // Draw order: spectrum fill (behind) → waveform → spectrum → beats → envelope → axes.
     if (spec) drawSpectrumFill(ctx, spec, geo, ccol);
     drawWaveform(ctx, mono, geo, gcol);
     if (spec) drawSpectrumTrace(ctx, spec, geo, ccol, item);
+    drawBeats(ctx, geo, duration, bpm, bpmEst);
     drawEnvelope(ctx, item, duration, geo);
     drawAxesAndName(ctx, item, duration, geo);
   };

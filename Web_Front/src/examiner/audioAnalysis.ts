@@ -111,6 +111,42 @@ export function toMono(buffer: AudioBuffer): Float32Array {
   return mono;
 }
 
+// Heuristic BPM from a mono signal (used when a loop has no ACID tempo tag):
+// autocorrelation of the onset-strength envelope (positive RMS increases).
+// Mirrors the Rust core's tempo estimator. Returns 0 when undecidable.
+export function estimateBpm(mono: Float32Array, sr: number): number {
+  const win = Math.max(1, Math.round(sr * 0.01)); // ~10 ms frames
+  const n = Math.floor(mono.length / win);
+  if (n < 16 || sr <= 0) return 0;
+  const env = new Float64Array(n);
+  for (let i = 0; i < n; i++) {
+    let s = 0;
+    for (let j = 0; j < win; j++) { const v = mono[i * win + j]; s += v * v; }
+    env[i] = Math.sqrt(s / win);
+  }
+  const onset = new Float64Array(n);
+  for (let i = 1; i < n; i++) { const d = env[i] - env[i - 1]; onset[i] = d > 0 ? d : 0; }
+  let mean = 0; for (let i = 0; i < n; i++) mean += onset[i]; mean /= n;
+  for (let i = 0; i < n; i++) onset[i] -= mean;
+
+  const framePeriod = win / sr;
+  const lagFor = (bpm: number) => Math.round(60 / bpm / framePeriod);
+  const lagMin = Math.max(1, lagFor(200));
+  const lagMax = Math.min(n - 1, lagFor(60));
+  if (lagMax <= lagMin) return 0;
+  let best = -Infinity, bestLag = 0;
+  for (let lag = lagMin; lag <= lagMax; lag++) {
+    let acc = 0;
+    for (let i = 0; i < n - lag; i++) acc += onset[i] * onset[i + lag];
+    if (acc > best) { best = acc; bestLag = lag; }
+  }
+  if (bestLag === 0 || best <= 0) return 0;
+  let bpm = 60 / (bestLag * framePeriod);
+  while (bpm < 70) bpm *= 2;
+  while (bpm > 180) bpm /= 2;
+  return Math.round(bpm * 10) / 10;
+}
+
 // Scientific-pitch note name (e.g. "C1", "F#2", "A4") → frequency in Hz.
 export function noteToFreq(name: any): number | null {
   if (!name || typeof name !== 'string') return null;

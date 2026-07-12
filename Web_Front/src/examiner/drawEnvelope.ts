@@ -36,6 +36,41 @@ export function drawEnvelope(ctx: CanvasRenderingContext2D, item: any, duration:
   });
 }
 
+// Beat grid: a coloured dot on every beat (red 1, orange 2, yellow 3, green 4 —
+// the downbeat is red and larger), with faint vertical gridlines. `est` marks
+// the tempo as estimated rather than read from an ACID tag.
+const BEAT_COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e'];
+export function drawBeats(ctx: CanvasRenderingContext2D, geo: PlotGeo, duration: number, bpm: number, est: boolean) {
+  if (!bpm || bpm <= 0 || duration <= 0) return;
+  const { w, plotTop, plotBottom } = geo;
+  const beat = 60 / bpm;
+  const y = plotTop + 9;
+  let i = 0;
+  for (let t = 0; t <= duration + 1e-6; t += beat, i++) {
+    const x = (t / duration) * w;
+    if (x > w) break;
+    const down = i % 4 === 0;
+    ctx.strokeStyle = down ? 'rgba(239,68,68,0.28)' : 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = down ? 1.5 : 1;
+    ctx.beginPath();
+    ctx.moveTo(x, plotTop);
+    ctx.lineTo(x, plotBottom);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x, y, down ? 5 : 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = BEAT_COLORS[i % 4];
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+  ctx.font = '10px sans-serif';
+  ctx.fillStyle = '#9ca3af';
+  ctx.fillText(`♩ ${bpm}${est ? ' (est)' : ''} BPM`, w - 4, plotTop + 3);
+}
+
 // Bottom time axis (seconds) + the sample name at the top-left.
 export function drawAxesAndName(ctx: CanvasRenderingContext2D, item: any, duration: number, geo: PlotGeo) {
   const { w, h, plotBottom, padTop } = geo;
