@@ -86,12 +86,16 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
     onSound?.(item.name || '');
     if (audioFiles.length === 0) { setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
     const file = findAudioFile(audioFiles, item);
-    if (file && audioRef.current) {
-      audioRef.current.src = URL.createObjectURL(file);
-      audioRef.current.play().catch(() => {});
+    if (!file) {
+      setPlayMsg(`No file matched "${item.name}" among ${audioFiles.length} linked.`);
+      return;
+    }
+    if (audioRef.current) {
+      const el = audioRef.current;
+      el.src = URL.createObjectURL(file);
+      el.volume = 1;
       setPlayMsg('');
-    } else {
-      setPlayMsg(`No matching audio file found for "${item.name}".`);
+      el.play().then(() => setPlayMsg('')).catch(err => setPlayMsg(`Playback failed: ${err?.message || err}`));
     }
   };
 
@@ -190,7 +194,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
               selectedIndex={selectedIndex} onPick={handlePick}
             />
           </Suspense>
-          <audio ref={audioRef} style={{ display: 'none' }} />
+          <audio ref={audioRef} style={{ display: 'none' }} onError={() => setPlayMsg('Browser could not decode this audio file.')} />
 
           {/* Selected sample readout */}
           {selected && (

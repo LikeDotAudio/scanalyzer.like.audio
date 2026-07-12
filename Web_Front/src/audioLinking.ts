@@ -46,10 +46,11 @@ function relPathOf(f: File): string {
 }
 
 // Resolve a .PEAK record to its audio File — full relative-path match first
-// (robust across identically-named files in different folders), then basename.
+// (robust across identically-named files in different folders), then basename
+// (case-insensitive, since the .PEAK path root may differ from the linked root).
 export function findAudioFile(files: File[], item: any): File | undefined {
   const wantPath = String(item?.path || '').replace(/^\.?\/+/, '');
-  const wantName = String(item?.name || '');
+  const wantName = String(item?.name || '').toLowerCase();
   if (wantPath) {
     const byPath = files.find(f => {
       const rp = relPathOf(f);
@@ -57,5 +58,8 @@ export function findAudioFile(files: File[], item: any): File | undefined {
     });
     if (byPath) return byPath;
   }
-  return wantName ? files.find(f => f.name === wantName) : undefined;
+  // Fall back to the just-the-filename tail of the path, then the name field.
+  const wantBase = (wantPath.split('/').pop() || wantName).toLowerCase();
+  return files.find(f => f.name.toLowerCase() === wantBase)
+      || (wantName ? files.find(f => f.name.toLowerCase() === wantName) : undefined);
 }

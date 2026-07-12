@@ -120,16 +120,21 @@ function App() {
   return (
     <div
       className="app-container"
-      onDragOver={(e) => { e.preventDefault(); if (!isDragging) setIsDragging(true); }}
+      onDragOver={(e) => {
+        // Only react to files being dragged in — ignore text/element drags.
+        if (!Array.from(e.dataTransfer.types || []).includes('Files')) return;
+        e.preventDefault();
+        if (!isDragging) setIsDragging(true);
+      }}
       onDragLeave={(e) => { if (e.currentTarget === e.target) setIsDragging(false); }}
       onDrop={handleDrop}
     >
       {isDragging && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(11,14,20,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px dashed var(--accent-primary)', pointerEvents: 'none' }}>
-          <div style={{ color: 'white', fontSize: '1.5rem' }}>Drop .PEAK file to load</div>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, background: 'var(--accent-primary)', color: 'black', textAlign: 'center', padding: '0.35rem', fontSize: '0.85rem', fontWeight: 600, pointerEvents: 'none' }}>
+          Drop .PEAK file to load
         </div>
       )}
-      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} audioCount={audioFiles.length} currentSound={currentSound} />
+      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} audioCount={audioFiles.length} currentSound={currentSound} hasData={analysisResult.length > 0} />
 
       {/* Tabs Navigation */}
       <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '2px', padding: '2px', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
@@ -164,6 +169,7 @@ function App() {
             onExportPeak={handleExportPeak}
             onViewCloud={() => goToTab('cloud')}
             setAudioFiles={setAudioFiles}
+            onImportPeak={handleImportPeak}
           />
         )}
 

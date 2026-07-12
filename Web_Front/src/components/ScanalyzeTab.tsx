@@ -11,17 +11,19 @@ interface ScanalyzeTabProps {
   onExportPeak: () => void;
   onViewCloud: () => void;
   setAudioFiles: (files: File[]) => void;
+  onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function ScanalyzeTab({ 
-    analysisResult, 
-    setAnalysisResult, 
-    isAnalyzing, 
-    setIsAnalyzing, 
-    setProgress, 
-    onExportPeak, 
+export default function ScanalyzeTab({
+    analysisResult,
+    setAnalysisResult,
+    isAnalyzing,
+    setIsAnalyzing,
+    setProgress,
+    onExportPeak,
     onViewCloud,
-    setAudioFiles
+    setAudioFiles,
+    onImportPeak
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
   const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
@@ -157,7 +159,7 @@ export default function ScanalyzeTab({
 
   return (
     <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scan a Directory</h2>
+      <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scan a New Directory…</h2>
       <p className="text-secondary" style={{ marginBottom: '1rem', fontSize: '1.2rem', textAlign: 'center', maxWidth: '800px' }}>
           Select a folder containing .wav files to begin local DSP analysis.
       </p>
@@ -170,18 +172,22 @@ export default function ScanalyzeTab({
          <strong>WASM Engine Status:</strong> <span style={{ marginLeft: '0.5rem', color: wasmReady ? 'var(--accent-primary)' : 'var(--accent-secondary)' }}>{wasmReady ? '🟢 Online' : '🔴 Offline'}</span>
       </div>
       
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-        <label className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem', boxShadow: '0 4px 15px rgba(206, 171, 147, 0.2)' }}>
-          {wasmReady ? 'Scan Folder' : 'Loading Engine...'}
-          <input 
-            type="file" 
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem', alignItems: 'center' }}>
+        <label className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }}>
+          {wasmReady ? 'Scan a New Directory…' : 'Loading Engine...'}
+          <input
+            type="file"
             // @ts-ignore
-            webkitdirectory="true" 
-            directory="true" 
-            style={{ display: 'none' }} 
-            onChange={handleFolderUpload} 
+            webkitdirectory="true"
+            directory="true"
+            style={{ display: 'none' }}
+            onChange={handleFolderUpload}
             disabled={!wasmReady}
           />
+        </label>
+        <label className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem' }}>
+          Load a PEAK File previously scanned…
+          <input type="file" accept=".peak,.PEAK,.json" multiple style={{ display: 'none' }} onChange={onImportPeak} />
         </label>
       </div>
 

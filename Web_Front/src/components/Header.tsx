@@ -5,9 +5,10 @@ interface HeaderProps {
   onLoadSounds: () => void;
   audioCount: number;
   currentSound?: string;
+  hasData: boolean;
 }
 
-export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, audioCount, currentSound }: HeaderProps) {
+export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, audioCount, currentSound, hasData }: HeaderProps) {
   return (
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -35,7 +36,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
       )}
 
       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-        <label className="btn" style={{ cursor: 'pointer', margin: 0 }}>
+        <label className={`btn ${hasData ? '' : 'primary blink'}`} style={{ cursor: 'pointer', margin: 0 }}>
           Load PEAK Files
           <input
             type="file"
