@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './index.css'
-import { pickDirectoryFiles, fsaSupported, filterAudioFiles } from './audioLinking'
+import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanDirectoryHandle } from './audioLinking'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
 import CloudTab from './components/CloudTab'
@@ -31,6 +31,24 @@ function App() {
     if (!window.location.hash) window.location.hash = '#/cloud';
     return () => window.removeEventListener('hashchange', onHash);
   }, [])
+
+  // Auto-load previous directory handle if permitted
+  const [hasPreviousDir, setHasPreviousDir] = useState(false);
+  useEffect(() => {
+    if (fsaSupported()) {
+      getDirHandle().then(async (handle) => {
+        if (handle) {
+          const options = { mode: 'read' } as any;
+          if ((await handle.queryPermission(options)) === 'granted') {
+             const files = await scanDirectoryHandle(handle);
+             setAudioFiles(files);
+          } else {
+             setHasPreviousDir(true);
+          }
+        }
+      });
+    }
+  }, []);
 
   // Auto-load default peak file on mount so users can wander around
   useEffect(() => {
@@ -110,7 +128,21 @@ function App() {
   // Global "Load Sounds": link an audio folder app-wide (all tabs share it).
   const handleLoadSounds = async () => {
     if (fsaSupported()) {
-      try { setAudioFiles(await pickDirectoryFiles()); }
+      try { 
+        if (hasPreviousDir && audioFiles.length === 0) {
+          const handle = await getDirHandle();
+          if (handle) {
+            const options = { mode: 'read' } as any;
+            if ((await handle.requestPermission(options)) === 'granted') {
+              setAudioFiles(await scanDirectoryHandle(handle));
+              setHasPreviousDir(false);
+              return;
+            }
+          }
+        }
+        setAudioFiles(await pickDirectoryFiles()); 
+        setHasPreviousDir(false);
+      }
       catch (err) { if ((err as Error)?.name !== 'AbortError') console.warn(err); }
     } else {
       // Fallback: a hidden directory <input> for non-Chromium browsers.
@@ -184,6 +216,7 @@ function App() {
             onViewCloud={() => goToTab('cloud')}
             setAudioFiles={setAudioFiles}
             onImportPeak={handleImportPeak}
+            onLoadSounds={handleLoadSounds}
           />
         )}
 

@@ -50,7 +50,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div className="hide-on-mobile" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
         <label className={`btn ${hasData ? '' : 'primary blink'}`} style={{ cursor: 'pointer', margin: 0 }}>
           Load PEAK Files
           <input

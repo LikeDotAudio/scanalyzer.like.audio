@@ -1,4 +1,4 @@
-import { Suspense, useState, useRef, useMemo } from 'react';
+import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
 import SampleCloud, { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS } from '../SampleCloud';
 import { groupColor, subKey } from '../groupColors';
 import { findAudioFile } from '../audioLinking';
@@ -26,12 +26,22 @@ const selStyle: React.CSSProperties = {
   padding: '0.25rem 0.4rem', fontSize: '0.8rem',
 };
 
+const getPref = (key: string, def: string) => localStorage.getItem(`scanalyzer_cloud_${key}`) || def;
+
 export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSounds }: CloudTabProps) {
-  const [xAxis, setXAxis] = useState('Pitch');
-  const [yAxis, setYAxis] = useState('Group');
-  const [zAxis, setZAxis] = useState('Complexity');
-  const [sizeAxis, setSizeAxis] = useState('Length');
-  const [colorBy, setColorBy] = useState('Group');
+  const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
+  const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
+  const [zAxis, setZAxis] = useState(() => getPref('zAxis', 'Complexity'));
+  const [sizeAxis, setSizeAxis] = useState(() => getPref('sizeAxis', 'Length'));
+  const [colorBy, setColorBy] = useState(() => getPref('colorBy', 'Group'));
+
+  useEffect(() => {
+    localStorage.setItem('scanalyzer_cloud_xAxis', xAxis);
+    localStorage.setItem('scanalyzer_cloud_yAxis', yAxis);
+    localStorage.setItem('scanalyzer_cloud_zAxis', zAxis);
+    localStorage.setItem('scanalyzer_cloud_sizeAxis', sizeAxis);
+    localStorage.setItem('scanalyzer_cloud_colorBy', colorBy);
+  }, [xAxis, yAxis, zAxis, sizeAxis, colorBy]);
   const [showAxes, setShowAxes] = useState(true);
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());

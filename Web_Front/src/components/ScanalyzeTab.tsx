@@ -12,6 +12,7 @@ interface ScanalyzeTabProps {
   onViewCloud: () => void;
   setAudioFiles: (files: File[]) => void;
   onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onLoadSounds: () => void;
 }
 
 export default function ScanalyzeTab({
@@ -23,7 +24,8 @@ export default function ScanalyzeTab({
     onExportPeak,
     onViewCloud,
     setAudioFiles,
-    onImportPeak
+    onImportPeak,
+    onLoadSounds
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
   const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
@@ -224,6 +226,9 @@ export default function ScanalyzeTab({
           Load a PEAK File previously scanned…
           <input type="file" accept=".peak,.PEAK,.json" multiple style={{ display: 'none' }} onChange={onImportPeak} />
         </label>
+        <button className="btn primary" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem' }} onClick={onLoadSounds}>
+          Load Sounds Directory…
+        </button>
       </div>
 
       {analysisResult.length > 0 && (

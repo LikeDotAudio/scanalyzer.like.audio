@@ -14,14 +14,37 @@ export function filterAudioFiles(files: File[]): File[] {
   return files.filter(f => AUDIO_RE.test(f.name));
 }
 
-// Prompt for a directory and return every audio File within, each tagged with
-// its relative path (stashed on `relPath` since webkitRelativePath is read-only).
-export async function pickDirectoryFiles(): Promise<File[]> {
-  const anyWin = window as any;
-  if (!fsaSupported()) {
-    throw new Error('This browser does not support the File System Access API (use Chrome or Edge).');
-  }
-  const dir = await anyWin.showDirectoryPicker();
+// Simple IndexedDB wrapper for persisting the directory handle
+export async function setDirHandle(handle: any) {
+  return new Promise((resolve) => {
+    const req = indexedDB.open('ScanalyzerDB', 1);
+    req.onupgradeneeded = (e: any) => { e.target.result.createObjectStore('handles'); };
+    req.onsuccess = (e: any) => {
+      const db = e.target.result;
+      const tx = db.transaction('handles', 'readwrite');
+      tx.objectStore('handles').put(handle, 'audioDir');
+      tx.oncomplete = () => resolve(true);
+    };
+  });
+}
+
+export async function getDirHandle(): Promise<any> {
+  return new Promise((resolve) => {
+    const req = indexedDB.open('ScanalyzerDB', 1);
+    req.onupgradeneeded = (e: any) => { e.target.result.createObjectStore('handles'); };
+    req.onsuccess = (e: any) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('handles')) return resolve(null);
+      const tx = db.transaction('handles', 'readonly');
+      const getReq = tx.objectStore('handles').get('audioDir');
+      getReq.onsuccess = () => resolve(getReq.result);
+      getReq.onerror = () => resolve(null);
+    };
+    req.onerror = () => resolve(null);
+  });
+}
+
+export async function scanDirectoryHandle(dirHandle: any): Promise<File[]> {
   const out: File[] = [];
   async function walk(handle: any, prefix: string) {
     for await (const [name, child] of handle.entries()) {
@@ -37,8 +60,20 @@ export async function pickDirectoryFiles(): Promise<File[]> {
       }
     }
   }
-  await walk(dir, '');
+  await walk(dirHandle, '');
   return out;
+}
+
+// Prompt for a directory and return every audio File within, each tagged with
+// its relative path (stashed on `relPath` since webkitRelativePath is read-only).
+export async function pickDirectoryFiles(): Promise<File[]> {
+  const anyWin = window as any;
+  if (!fsaSupported()) {
+    throw new Error('This browser does not support the File System Access API (use Chrome or Edge).');
+  }
+  const dir = await anyWin.showDirectoryPicker();
+  await setDirHandle(dir);
+  return scanDirectoryHandle(dir);
 }
 
 function relPathOf(f: File): string {
