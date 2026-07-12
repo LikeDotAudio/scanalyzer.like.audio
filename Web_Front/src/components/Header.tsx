@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, audioCount, currentSound, hasData }: HeaderProps) {
   return (
-    <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
         <a href="https://github.com/LikeDotAudio/scanalyzer.like.audio/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           <img src="/logo.svg" alt="Scanalyzer logo" width={34} height={34} style={{ display: 'block' }} />
@@ -22,7 +22,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
       </div>
 
       {!isAnalyzing && (
-        <div style={{ flex: 1, margin: '0 2rem', minWidth: 0, textAlign: 'center', overflow: 'hidden' }}>
+        <div style={{ flex: 1, minWidth: '250px', textAlign: 'center', overflow: 'hidden' }}>
           {currentSound ? (
             <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
           ) : !hasData ? (
@@ -42,7 +42,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
       )}
 
       {isAnalyzing && (
-        <div style={{ flex: 1, margin: '0 2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ flex: 1, minWidth: '250px', display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span style={{ color: 'var(--accent-primary)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Analyzing... {progress}%</span>
           <div style={{ flex: 1, background: 'rgba(0,0,0,0.3)', overflow: 'hidden', border: '1px solid var(--border-color)', height: '12px' }}>
             <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.2s' }}></div>
@@ -50,7 +50,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
         <label className={`btn ${hasData ? '' : 'primary blink'}`} style={{ cursor: 'pointer', margin: 0 }}>
           Load PEAK Files
           <input
