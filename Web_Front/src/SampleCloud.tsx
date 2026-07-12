@@ -29,6 +29,7 @@ export const SIZE_OPTIONS = Object.entries(CLOUD_FEATURES)
   .filter(([, f]) => !f.categorical)
   .map(([label]) => label);
 export const COLOR_OPTIONS = ['Group', 'God Category', 'Subgroup'];
+export const SHAPE_OPTIONS = ['Instrument', 'God Category', 'Timbre', 'Uniform'];
 
 const SPAN = 30; // world units each axis is spread over
 
@@ -84,6 +85,43 @@ function colorFor(item: any, colorBy: string): string {
   return groupColor(group, '');
 }
 
+function getShapeFor(it: any, shapeBy: string): string {
+  if (shapeBy === 'Uniform') return 'sphere';
+
+  const g = (it.group || '').toLowerCase();
+  const god = (it.god_category || '').toLowerCase();
+  const t = (it.timbre || '').toLowerCase();
+  
+  if (shapeBy === 'God Category') {
+    if (god === 'percussive') return 'pyramid';
+    if (god === 'impulsive with tail') return 'diamond';
+    if (god === 'tonal') return 'cube';
+    if (god === 'complex') return 'torus';
+    return 'sphere';
+  }
+
+  if (shapeBy === 'Timbre') {
+    if (t === 'percussive') return 'pyramid';
+    if (t === 'loop') return 'torus';
+    if (t === 'bass') return 'cylinder';
+    if (t === 'tonal') return 'cube';
+    if (t === 'noise') return 'diamond';
+    if (t === 'bright') return 'icosahedron';
+    if (t === 'pad') return 'dodecahedron';
+    return 'sphere';
+  }
+
+  // Instrument (default)
+  if (g.includes('kick') || g.includes('snare') || g.includes('tom') || g.includes('clap')) return 'cylinder';
+  if (g.includes('cymbal') || g.includes('hi-hat') || g.includes('ride') || g.includes('crash') || g.includes('hihat')) return 'disc';
+  if (g === 'ir' || god === 'impulsive with tail') return 'diamond';
+  if (g === 'perc' || god === 'percussive') return 'pyramid';
+  if (it.transient_count > 1 || god === 'complex' || g.includes('loop') || g === 'fx') return 'torus';
+  if (g === 'bass' || g.includes('synth') || god === 'tonal') return 'cube';
+  if (g === 'vocal' || g.includes('voice')) return 'icosahedron';
+  return 'sphere'; // default for unclassified
+}
+
 // 3D axis lines through the origin + DOM labels at their ends.
 function Axes({ xLabel, yLabel, zLabel }: { xLabel: string; yLabel: string; zLabel: string }) {
   const L = SPAN / 2 + 2;
@@ -108,46 +146,114 @@ interface CloudProps {
   onPick: (index: number) => void;
 }
 
-function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, hiddenGroups, selectedIndex, onPick }: CloudProps) {
-  const meshRef = useRef<THREE.InstancedMesh>(null!)
-  const dummy = useMemo(() => new THREE.Object3D(), [])
+interface ShapeData {
+  positions: [number, number, number][];
+  colors: THREE.Color[];
+  sizes: number[];
+  origIndex: number[];
+}
+
+function ShapeMesh({ shape, sData, hiddenGroups, allData, onPick }: { shape: string, sData: ShapeData, hiddenGroups: Set<string>, allData: any[], onPick: (i: number) => void }) {
+  const meshRef = useRef<THREE.InstancedMesh>(null!);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  
+  useEffect(() => {
+    const mesh = meshRef.current;
+    if (!mesh || sData.positions.length === 0) return;
+    for (let i = 0; i < sData.positions.length; i++) {
+      const origIdx = sData.origIndex[i];
+      const [x, y, z] = sData.positions[i];
+      const origIt = allData[origIdx];
+      const g = origIt.group || 'Unclassified';
+      const sg = origIt.subgroup || '';
+      const hidden = hiddenGroups.has(g) || (!!sg && hiddenGroups.has(subKey(g, sg)));
+      
+      dummy.position.set(x, y, z);
+      if (shape === 'pyramid') dummy.rotation.set(Math.PI/2, Math.PI/4, 0);
+      else if (shape === 'diamond' || shape === 'cube' || shape === 'icosahedron' || shape === 'dodecahedron') dummy.rotation.set(Math.PI/4, 0, Math.PI/4);
+      else if (shape === 'cylinder' || shape === 'disc' || shape === 'torus') dummy.rotation.set(Math.PI/2, 0, 0);
+      else dummy.rotation.set(0, 0, 0);
+
+      dummy.scale.setScalar(hidden ? 0.0001 : sData.sizes[i]);
+      dummy.updateMatrix();
+      mesh.setMatrixAt(i, dummy.matrix);
+      mesh.setColorAt(i, sData.colors[i]);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+  }, [sData, hiddenGroups, allData, dummy, shape]);
+
+  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation();
+    if (e.instanceId != null) onPick(sData.origIndex[e.instanceId]);
+  };
+
+  if (sData.positions.length === 0) return null;
+
+  let geom;
+  if (shape === 'cylinder') geom = <cylinderGeometry args={[0.5, 0.5, 0.9, 16]} />;
+  else if (shape === 'disc') geom = <cylinderGeometry args={[0.6, 0.6, 0.15, 16]} />;
+  else if (shape === 'diamond') geom = <octahedronGeometry args={[0.6, 0]} />;
+  else if (shape === 'pyramid') geom = <coneGeometry args={[0.6, 0.9, 4]} />;
+  else if (shape === 'cube') geom = <boxGeometry args={[0.8, 0.8, 0.8]} />;
+  else if (shape === 'torus') geom = <torusGeometry args={[0.5, 0.2, 12, 16]} />;
+  else if (shape === 'icosahedron') geom = <icosahedronGeometry args={[0.6, 0]} />;
+  else if (shape === 'dodecahedron') geom = <dodecahedronGeometry args={[0.55, 0]} />;
+  else geom = <sphereGeometry args={[0.5, 10, 10]} />;
+
+  return (
+    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, sData.positions.length]} onClick={handleClick}>
+      {geom}
+      <meshBasicMaterial toneMapped={false} />
+    </instancedMesh>
+  );
+}
+
+function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hiddenGroups, selectedIndex, onPick }: CloudProps) {
   const count = data.length
 
-  const { positions, colors, sizes } = useMemo(() => {
+  const { shapeData, allPositions, selectedSize, selectedShape } = useMemo(() => {
     const xf = makeAxis(data, xAxis);
     const yf = makeAxis(data, yAxis);
     const zf = makeAxis(data, zAxis);
     const sf = makeSize(data, sizeAxis);
-    const positions: [number, number, number][] = [];
-    const colors: THREE.Color[] = [];
-    const sizes: number[] = [];
+    
+    const shapes: Record<string, ShapeData> = {
+      sphere: { positions: [], colors: [], sizes: [], origIndex: [] },
+      cylinder: { positions: [], colors: [], sizes: [], origIndex: [] },
+      disc: { positions: [], colors: [], sizes: [], origIndex: [] },
+      diamond: { positions: [], colors: [], sizes: [], origIndex: [] },
+      pyramid: { positions: [], colors: [], sizes: [], origIndex: [] },
+      cube: { positions: [], colors: [], sizes: [], origIndex: [] },
+      torus: { positions: [], colors: [], sizes: [], origIndex: [] },
+      icosahedron: { positions: [], colors: [], sizes: [], origIndex: [] },
+      dodecahedron: { positions: [], colors: [], sizes: [], origIndex: [] },
+    };
+
+    const allPositions: [number, number, number][] = [];
+    let selectedSize = 0.7;
+    let selectedShape = 'sphere';
+
     for (let i = 0; i < count; i++) {
       const it = data[i];
-      positions.push([xf(it, i), yf(it, i), zf(it, i)]);
-      colors.push(new THREE.Color(colorFor(it, colorBy)));
-      sizes.push(sf(it));
-    }
-    return { positions, colors, sizes };
-  }, [data, count, xAxis, yAxis, zAxis, sizeAxis, colorBy]);
+      const pos: [number, number, number] = [xf(it, i), yf(it, i), zf(it, i)];
+      allPositions.push(pos);
+      
+      const shape = getShapeFor(it, shapeBy);
+      const sh = shapes[shape];
+      sh.positions.push(pos);
+      sh.colors.push(new THREE.Color(colorFor(it, colorBy)));
+      const size = sf(it);
+      sh.sizes.push(size);
+      sh.origIndex.push(i);
 
-  useEffect(() => {
-    const mesh = meshRef.current;
-    if (!mesh) return;
-    for (let i = 0; i < count; i++) {
-      const [x, y, z] = positions[i];
-      const g = data[i].group || 'Unclassified';
-      const sg = data[i].subgroup || '';
-      // Hidden if the whole group is hidden, or this specific subgroup is.
-      const hidden = hiddenGroups.has(g) || (!!sg && hiddenGroups.has(subKey(g, sg)));
-      dummy.position.set(x, y, z);
-      dummy.scale.setScalar(hidden ? 0.0001 : sizes[i]);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
-      mesh.setColorAt(i, colors[i]);
+      if (i === selectedIndex) {
+        selectedSize = size;
+        selectedShape = shape;
+      }
     }
-    mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-  }, [positions, colors, sizes, hiddenGroups, data, count, dummy]);
+    return { shapeData: shapes, allPositions, selectedSize, selectedShape };
+  }, [data, count, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, selectedIndex]);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -161,17 +267,17 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, hiddenGroup
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
-      if (selectedIndex == null || selectedIndex >= positions.length) return;
+      if (selectedIndex == null || selectedIndex >= allPositions.length) return;
       e.preventDefault();
-      const sel = new THREE.Vector3(...positions[selectedIndex]).project(camera);
+      const sel = new THREE.Vector3(...allPositions[selectedIndex]).project(camera);
       const p = new THREE.Vector3();
       let best = -1, bestScore = Infinity;
-      for (let i = 0; i < positions.length; i++) {
+      for (let i = 0; i < allPositions.length; i++) {
         if (i === selectedIndex) continue;
         const g = data[i].group || 'Unclassified';
         const sg = data[i].subgroup || '';
         if (hiddenGroups.has(g) || (sg && hiddenGroups.has(subKey(g, sg)))) continue;
-        p.set(...positions[i]).project(camera);
+        p.set(...allPositions[i]).project(camera);
         const dx = p.x - sel.x, dy = p.y - sel.y;
         let along = 0, perp = 0;
         if (e.key === 'ArrowRight') { along = dx; perp = Math.abs(dy); }
@@ -186,22 +292,38 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, hiddenGroup
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [positions, selectedIndex, hiddenGroups, data, onPick, camera]);
+  }, [allPositions, selectedIndex, hiddenGroups, data, onPick, camera]);
 
   if (count === 0) return null;
 
-  const sel = selectedIndex != null && selectedIndex < positions.length ? positions[selectedIndex] : null;
+  const selPos = selectedIndex != null && selectedIndex < allPositions.length ? allPositions[selectedIndex] : null;
+
+  let selGeom;
+  if (selectedShape === 'cylinder') selGeom = <cylinderGeometry args={[0.6, 0.6, 1.1, 16]} />;
+  else if (selectedShape === 'disc') selGeom = <cylinderGeometry args={[0.7, 0.7, 0.2, 16]} />;
+  else if (selectedShape === 'diamond') selGeom = <octahedronGeometry args={[0.7, 0]} />;
+  else if (selectedShape === 'pyramid') selGeom = <coneGeometry args={[0.7, 1.1, 4]} />;
+  else if (selectedShape === 'cube') selGeom = <boxGeometry args={[1.0, 1.0, 1.0]} />;
+  else if (selectedShape === 'torus') selGeom = <torusGeometry args={[0.6, 0.25, 12, 16]} />;
+  else if (selectedShape === 'icosahedron') selGeom = <icosahedronGeometry args={[0.7, 0]} />;
+  else if (selectedShape === 'dodecahedron') selGeom = <dodecahedronGeometry args={[0.65, 0]} />;
+  else selGeom = <sphereGeometry args={[0.6, 12, 12]} />;
+
+  const meshRot = (shape: string): [number, number, number] => {
+    if (shape === 'pyramid') return [Math.PI/2, Math.PI/4, 0];
+    if (shape === 'diamond' || shape === 'cube' || shape === 'icosahedron' || shape === 'dodecahedron') return [Math.PI/4, 0, Math.PI/4];
+    if (shape === 'cylinder' || shape === 'disc' || shape === 'torus') return [Math.PI/2, 0, 0];
+    return [0, 0, 0];
+  };
 
   return (
     <>
-      <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, count]} onClick={handleClick}>
-        <sphereGeometry args={[0.5, 10, 10]} />
-        {/* Unlit: the per-instance colour IS the colour, no shading darkening. */}
-        <meshBasicMaterial toneMapped={false} />
-      </instancedMesh>
-      {sel && (
-        <mesh position={sel}>
-          <sphereGeometry args={[(sizes[selectedIndex!] || 0.7) * 0.5 + 0.5, 16, 16]} />
+      {Object.entries(shapeData).map(([shape, sData]) => (
+        <ShapeMesh key={shape} shape={shape} sData={sData} hiddenGroups={hiddenGroups} allData={data} onPick={onPick} />
+      ))}
+      {selPos && (
+        <mesh position={selPos} rotation={meshRot(selectedShape)} scale={(selectedSize || 0.7) * 0.5 + 0.6}>
+          {selGeom}
           <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.9} />
         </mesh>
       )}
@@ -211,7 +333,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, hiddenGroup
 
 interface SampleCloudProps {
   data?: any[];
-  xAxis?: string; yAxis?: string; zAxis?: string; sizeAxis?: string; colorBy?: string;
+  xAxis?: string; yAxis?: string; zAxis?: string; sizeAxis?: string; colorBy?: string; shapeBy?: string;
   hiddenGroups?: Set<string>;
   selectedIndex?: number | null;
   onPick?: (index: number) => void;
@@ -220,7 +342,7 @@ interface SampleCloudProps {
 
 export default function SampleCloud({
   data = [], xAxis = 'Pitch', yAxis = 'Group', zAxis = 'Complexity',
-  sizeAxis = 'Length', colorBy = 'Group', hiddenGroups = new Set(),
+  sizeAxis = 'Length', colorBy = 'Group', shapeBy = 'Instrument', hiddenGroups = new Set(),
   selectedIndex = null, onPick = () => {}, showAxes = true,
 }: SampleCloudProps) {
   return (
@@ -237,7 +359,7 @@ export default function SampleCloud({
         {showAxes && <Axes xLabel={xAxis} yLabel={yAxis} zLabel={zAxis} />}
         <CloudPoints
           data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
-          sizeAxis={sizeAxis} colorBy={colorBy} hiddenGroups={hiddenGroups}
+          sizeAxis={sizeAxis} colorBy={colorBy} shapeBy={shapeBy} hiddenGroups={hiddenGroups}
           selectedIndex={selectedIndex} onPick={onPick}
         />
         <OrbitControls enablePan enableZoom enableRotate autoRotate={false} />

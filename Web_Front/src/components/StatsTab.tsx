@@ -46,6 +46,12 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [filterText, setFilterText] = useState('');
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  useEffect(() => {
+    setGroup(null);
+    setSub(null);
+    setFilterText('');
+  }, [analysisResult]);
+
   // Groups and (for the active group) subgroups present in the data.
   const groups = useMemo(() => {
     const s = new Set<string>();

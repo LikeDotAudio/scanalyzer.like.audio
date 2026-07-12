@@ -51,6 +51,12 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
   const [showColMenu, setShowColMenu] = useState(false);
+
+  useEffect(() => {
+    setScopeGroup(null);
+    setScopeSub(null);
+    setFilter('');
+  }, [analysisResult]);
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('scanalyzer_examiner_cols');

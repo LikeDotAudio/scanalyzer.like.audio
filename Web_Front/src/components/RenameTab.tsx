@@ -14,6 +14,14 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [filterText, setFilterText] = useState('');
 
+  useEffect(() => {
+    setScopeGroup(null);
+    setScopeSub(null);
+    setFilterText('');
+    const ts = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+    setDestRoot(`Renamed_Samples_${ts}`);
+  }, [analysisResult]);
+
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
@@ -58,7 +66,7 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
 
   const [destRoot, setDestRoot] = useState(() => {
     const ts = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
-    return `Renamed Samples_${ts}`;
+    return `Renamed_Samples_${ts}`;
   });
   const [mode, setMode] = useState<Mode>('copy');
   const [resample, setResample] = useState(false);

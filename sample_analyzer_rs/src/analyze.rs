@@ -115,6 +115,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     if bpm == 0.0 && (is_loop || l.timbre == "Loop" || l.length_class == "Loop") {
         bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
     }
+    bpm = bpm.round();
     let god_class = god_category(&l.group, is_loop, &env).to_string();
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
@@ -294,6 +295,7 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     if bpm == 0.0 && (is_loop || l.timbre == "Loop" || l.length_class == "Loop") {
         bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
     }
+    bpm = bpm.round();
     let god_class = god_category(&l.group, is_loop, &env).to_string();
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded

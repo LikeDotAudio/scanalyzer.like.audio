@@ -1,5 +1,5 @@
 import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
-import SampleCloud, { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS } from '../SampleCloud';
+import SampleCloud, { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS, SHAPE_OPTIONS } from '../SampleCloud';
 import { groupColor, subKey } from '../groupColors';
 import { findAudioFile } from '../audioLinking';
 import ScopeBar from './ScopeBar';
@@ -35,9 +35,16 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const [zAxis, setZAxis] = useState(() => getPref('zAxis', 'Complexity'));
   const [sizeAxis, setSizeAxis] = useState(() => getPref('sizeAxis', 'Length'));
   const [colorBy, setColorBy] = useState(() => getPref('colorBy', 'Group'));
+  const [shapeBy, setShapeBy] = useState(() => getPref('shapeBy', 'Instrument'));
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [filterText, setFilterText] = useState('');
+
+  useEffect(() => {
+    setScopeGroup(null);
+    setScopeSub(null);
+    setFilterText('');
+  }, [analysisResult]);
 
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
@@ -56,7 +63,8 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
     localStorage.setItem('scanalyzer_cloud_zAxis', zAxis);
     localStorage.setItem('scanalyzer_cloud_sizeAxis', sizeAxis);
     localStorage.setItem('scanalyzer_cloud_colorBy', colorBy);
-  }, [xAxis, yAxis, zAxis, sizeAxis, colorBy]);
+    localStorage.setItem('scanalyzer_cloud_shapeBy', shapeBy);
+  }, [xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy]);
   const [showAxes, setShowAxes] = useState(true);
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -152,7 +160,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
         <Suspense fallback={<div style={{ color: 'white', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>Initializing 3D Engine...</div>}>
           <SampleCloud
             data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
-            sizeAxis={sizeAxis} colorBy={colorBy} hiddenGroups={hiddenGroups}
+            sizeAxis={sizeAxis} colorBy={colorBy} shapeBy={shapeBy} hiddenGroups={hiddenGroups}
             selectedIndex={selectedIndex} onPick={handlePick} showAxes={showAxes}
           />
         </Suspense>
@@ -199,6 +207,9 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
             </label>
             <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Color:
               <select style={selStyle} value={colorBy} onChange={e => setColorBy(e.target.value)}>{COLOR_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
+            </label>
+            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Shape:
+              <select style={selStyle} value={shapeBy} onChange={e => setShapeBy(e.target.value)}>{SHAPE_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)', cursor: 'pointer', marginTop: '0.5rem' }}>
               <input type="checkbox" checked={showAxes} onChange={e => setShowAxes(e.target.checked)} /> Show axis labels

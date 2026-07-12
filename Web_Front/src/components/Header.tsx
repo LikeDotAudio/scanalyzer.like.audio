@@ -18,7 +18,10 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
             SCANALYZER.Like.Audio
           </h1>
         </a>
-        <span className="text-secondary" style={{ fontSize: '0.7rem' }}>Designed and Built by Anthony Peter Kuzub</span>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '0.1rem' }}>
+          <span className="text-secondary" style={{ fontSize: '0.7rem', lineHeight: 1.1 }}>Designed and Built by Anthony Peter Kuzub</span>
+          <a href="https://www.paypal.com/paypalme/APKaudio" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', textDecoration: 'none', fontWeight: 600 }}>☕ Tip Jar</a>
+        </div>
       </div>
 
       {!isAnalyzing && (
