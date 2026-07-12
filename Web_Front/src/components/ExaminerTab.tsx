@@ -140,13 +140,24 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
           ? Math.min(rows.length - 1, idx + 1)
           : Math.max(0, idx - 1);
       handleSelect(rows[next]);
-      // Centre the selected row in the viewport as you arrow through the list.
-      const el = scrollRef.current;
-      if (el) el.scrollTop = Math.max(0, next * ROW_H - el.clientHeight / 2 + ROW_H / 2);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [selectedItem, rows, autoPlay, audioFiles]);
+
+  // Always center the selected track in the list
+  useEffect(() => {
+    if (!selectedItem) return;
+    const idx = rows.indexOf(selectedItem);
+    if (idx < 0) return;
+    const el = scrollRef.current;
+    if (el) {
+      el.scrollTo({
+        top: Math.max(0, idx * ROW_H - el.clientHeight / 2 + ROW_H / 2),
+        behavior: 'smooth'
+      });
+    }
+  }, [selectedItem, rows]);
 
   // Track the scroll viewport height for virtualization.
   useEffect(() => {

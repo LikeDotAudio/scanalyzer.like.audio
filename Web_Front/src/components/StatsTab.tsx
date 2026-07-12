@@ -132,6 +132,26 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   // Gate the (expensive) scatter behind a group pick when the scope is huge.
   const gated = !group && !plotAll && data.length > SCATTER_LIMIT;
 
+  const ScatterTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const it = payload[0].payload;
+      return (
+        <div style={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)', padding: '0.5rem', color: '#fff', fontSize: '0.8rem', maxWidth: '300px' }}>
+          <div style={{ fontWeight: 'bold', color: 'var(--accent-primary)', marginBottom: '0.2rem', wordBreak: 'break-all' }}>{it.name}</div>
+          <div><strong style={{ color: 'var(--text-secondary)' }}>Group:</strong> {it.group || 'Unclassified'} {it.subgroup ? `/ ${it.subgroup}` : ''}</div>
+          <div><strong style={{ color: 'var(--text-secondary)' }}>Instrument:</strong> {it.timbre || 'Unknown'}</div>
+          <div><strong style={{ color: 'var(--text-secondary)' }}>Length:</strong> {it.length_seconds?.toFixed(2)}s</div>
+          <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.75rem' }}>
+            {payload.map((p: any) => (
+              <div key={p.name}><strong style={{ color: 'var(--text-secondary)' }}>{p.name}:</strong> {p.value}</div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   const chartCard = (title: string, xLabel: string, setX: (v: string) => void, yLabel: string, setY: (v: string) => void) => {
     const xk = NUM_FEATURES[xLabel], yk = NUM_FEATURES[yLabel];
     return (
@@ -154,9 +174,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
               <XAxis type="number" dataKey={xk} name={xLabel} stroke="var(--text-secondary)" fontSize={11} />
               <YAxis type="number" dataKey={yk} name={yLabel} stroke="var(--text-secondary)" fontSize={11} />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }}
-                formatter={(v: any, n: any) => [v, n]} labelFormatter={() => ''} />
-              <Scatter data={plotData} onClick={(pt: any) => playItem(pt?.payload || pt)} cursor="pointer" isAnimationActive={false}>
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ScatterTooltip />} />
+              <Scatter data={plotData} onClick={(pt: any) => playItem(pt?.payload || pt)} onMouseEnter={(pt: any) => playItem(pt?.payload || pt)} cursor="pointer" isAnimationActive={false}>
                 {plotData.map((entry, i) => (
                   <Cell key={i} fill={pointColor(entry)} />
                 ))}
