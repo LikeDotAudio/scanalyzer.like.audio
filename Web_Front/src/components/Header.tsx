@@ -12,8 +12,8 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
         <a href="https://github.com/LikeDotAudio/scanalyzer.like.audio/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <h1 style={{ margin: 0 }}>
-            SCANALYZER<span className="accent-gradient">.Like.Audio</span>
+          <h1 className="accent-gradient" style={{ margin: 0 }}>
+            SCANALYZER.Like.Audio
           </h1>
         </a>
         <span className="text-secondary" style={{ fontSize: '0.7rem' }}>Designed and Built by Anthony Peter Kuzub</span>
@@ -45,9 +45,8 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
             onChange={onImportPeak}
           />
         </label>
-        <button className="btn primary" onClick={onLoadSounds}>Load Sounds</button>
-        {audioCount > 0 && <span className="text-secondary" style={{ fontSize: '0.75rem' }}>{audioCount} linked</span>}
-        <button className="btn">Settings</button>
+        <button className={`btn ${audioCount > 0 ? '' : 'primary blink'}`} onClick={onLoadSounds}>Load Sounds</button>
+        {audioCount > 0 && <span className="text-secondary" style={{ fontSize: '0.75rem' }}>{audioCount.toLocaleString()} linked</span>}
       </div>
     </header>
   );

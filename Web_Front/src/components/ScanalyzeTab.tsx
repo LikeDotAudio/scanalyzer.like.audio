@@ -92,11 +92,14 @@ export default function ScanalyzeTab({
     const combined = [...analysisResult, ...newResults];
     setAnalysisResult(combined);
     try {
+        const now = new Date();
+        const p = (n: number) => String(n).padStart(2, '0');
+        const ts = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}${p(now.getHours())}${p(now.getMinutes())}`;
         const blob = new Blob([JSON.stringify(combined, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'sample_analysis.peak';
+        a.download = `Scanalyzer.like.audio - File Audit ${ts}.peak`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

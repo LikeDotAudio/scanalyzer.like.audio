@@ -7,6 +7,7 @@ interface CloudTabProps {
   analysisResult: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
+  onLoadSounds?: () => void;
 }
 
 // One-click axis presets: [label, X, Y, Z, Size] — ported from the desktop app.
@@ -25,7 +26,7 @@ const selStyle: React.CSSProperties = {
   padding: '0.25rem 0.4rem', fontSize: '0.8rem',
 };
 
-export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudTabProps) {
+export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSounds }: CloudTabProps) {
   const [xAxis, setXAxis] = useState('Pitch');
   const [yAxis, setYAxis] = useState('Group');
   const [zAxis, setZAxis] = useState('Complexity');
@@ -37,18 +38,25 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
   const [playMsg, setPlayMsg] = useState<string>('');
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Distinct groups → their subgroups, for the nested legend.
+  // Distinct groups → their subgroups, with per-group and per-subgroup file
+  // counts, for the nested legend.
   const groupTree = useMemo(() => {
-    const map = new Map<string, Set<string>>();
+    const map = new Map<string, { count: number; subs: Map<string, number> }>();
     for (const it of analysisResult) {
       const g = it.group || 'Unclassified';
-      if (!map.has(g)) map.set(g, new Set());
+      const entry = map.get(g) || { count: 0, subs: new Map<string, number>() };
+      entry.count++;
       const sg = (it.subgroup || '').trim();
-      if (sg) map.get(g)!.add(sg);
+      if (sg) entry.subs.set(sg, (entry.subs.get(sg) || 0) + 1);
+      map.set(g, entry);
     }
     return Array.from(map.entries())
       .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([g, subs]) => ({ group: g, subs: Array.from(subs).sort() }));
+      .map(([g, { count, subs }]) => ({
+        group: g,
+        count,
+        subs: Array.from(subs.entries()).sort((a, b) => a[0].localeCompare(b[0])).map(([name, c]) => ({ name, count: c })),
+      }));
   }, [analysisResult]);
 
   const toggleKey = (key: string) => {
@@ -118,15 +126,29 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
           ))}
         </div>
         <div style={{ flex: 1 }} />
-        <span className="text-secondary" style={{ fontSize: '0.75rem' }}>{audioFiles.length} audio linked</span>
+        {audioFiles.length > 0
+          ? <span className="text-secondary" style={{ fontSize: '0.75rem' }}>{audioFiles.length.toLocaleString()} audio linked</span>
+          : <button className="btn primary blink" style={{ padding: '0.15rem 0.6rem', fontSize: '0.75rem' }} onClick={() => onLoadSounds?.()}>⚠ 0 audio linked — Load the scanned folder</button>}
       </div>
 
       <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
         {/* Sidebar: nested group / subgroup legend (click to show/hide) */}
         <aside className="sidebar glass-panel" style={{ width: '210px', margin: 0, borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.15rem', overflowY: 'auto' }}>
           <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem' }}>Groups / subgroups</h3>
+          <div style={{ display: 'flex', gap: '0.35rem' }}>
+            <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
+              onClick={() => setHiddenGroups(new Set())}>Show all</button>
+            <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
+              onClick={() => setHiddenGroups(new Set(groupTree.map(g => g.group)))}>Show none</button>
+          </div>
+          <div style={{ display: 'flex', gap: '0.35rem' }}>
+            <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
+              onClick={() => setExpanded(new Set(groupTree.filter(g => g.subs.length).map(g => g.group)))}>Expand all</button>
+            <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
+              onClick={() => setExpanded(new Set())}>Collapse</button>
+          </div>
           <div className="text-secondary" style={{ fontSize: '0.7rem' }}>click to hide / show</div>
-          {groupTree.map(({ group, subs }) => {
+          {groupTree.map(({ group, count, subs }) => {
             const gHidden = hiddenGroups.has(group);
             const isOpen = expanded.has(group);
             return (
@@ -140,16 +162,17 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
                   <div onClick={() => toggleKey(group)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', opacity: gHidden ? 0.35 : 1, flex: 1 }}>
                     <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: groupColor(group, ''), flexShrink: 0 }} />
                     <span style={{ textDecoration: gHidden ? 'line-through' : 'none' }}>{group}</span>
-                    {subs.length > 0 && <span className="text-secondary" style={{ fontSize: '0.65rem' }}>({subs.length})</span>}
+                    <span className="text-secondary" style={{ fontSize: '0.65rem' }}>({count.toLocaleString()})</span>
                   </div>
                 </div>
                 {isOpen && subs.map(sg => {
-                  const key = subKey(group, sg);
+                  const key = subKey(group, sg.name);
                   const sHidden = hiddenGroups.has(key) || gHidden;
                   return (
                     <div key={key} onClick={() => toggleKey(key)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', opacity: sHidden ? 0.35 : 1, fontSize: '0.75rem', paddingLeft: '1.5rem' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: groupColor(group, sg), flexShrink: 0 }} />
-                      <span style={{ textDecoration: hiddenGroups.has(key) ? 'line-through' : 'none' }}>{sg}</span>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: groupColor(group, sg.name), flexShrink: 0 }} />
+                      <span style={{ textDecoration: hiddenGroups.has(key) ? 'line-through' : 'none' }}>{sg.name}</span>
+                      <span className="text-secondary" style={{ fontSize: '0.6rem' }}>({sg.count.toLocaleString()})</span>
                     </div>
                   );
                 })}

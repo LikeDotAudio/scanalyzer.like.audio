@@ -44,6 +44,11 @@ body {
   box-shadow: none;
 }
 
+@keyframes blink {
+  50% { opacity: 0.25; }
+}
+.blink { animation: blink 1s ease-in-out infinite; }
+
 /* Native selects: black dropdown with white text (matches the near-black theme). */
 select {
   background: #000;
