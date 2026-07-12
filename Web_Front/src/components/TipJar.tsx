@@ -7,13 +7,15 @@ interface TipJarProps {
 }
 
 export default function TipJar({ activeTab, hasData, audioCount }: TipJarProps) {
-  const [dance, setDance] = useState(false);
+  const [danceClass, setDanceClass] = useState('');
 
   useEffect(() => {
     let timeout: number;
     const triggerDance = () => {
-      setDance(true);
-      timeout = window.setTimeout(() => setDance(false), 800); // Wait for animation to finish
+      const classes = ['wiggle-rotate', 'wiggle-updown', 'wiggle-leftright', 'wiggle-shake'];
+      const randomClass = classes[Math.floor(Math.random() * classes.length)];
+      setDanceClass(randomClass);
+      timeout = window.setTimeout(() => setDanceClass(''), 800); // Wait for animation to finish
     };
 
     // Trigger on prop changes
@@ -35,7 +37,7 @@ export default function TipJar({ activeTab, hasData, audioCount }: TipJarProps) 
       href="https://www.paypal.com/paypalme/APKaudio"
       target="_blank"
       rel="noopener noreferrer"
-      className={dance ? 'wiggle' : ''}
+      className={danceClass}
       style={{
         fontSize: '0.7rem',
         color: 'var(--accent-primary)',

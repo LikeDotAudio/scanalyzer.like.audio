@@ -49,15 +49,45 @@ body {
 }
 .blink { animation: blink 1s ease-in-out infinite; }
 
-@keyframes wiggle {
+@keyframes wiggle-rotate {
   0% { transform: rotate(0deg); }
-  20% { transform: rotate(-10deg) scale(1.1); }
-  40% { transform: rotate(10deg) scale(1.1); }
-  60% { transform: rotate(-10deg) scale(1.1); }
-  80% { transform: rotate(10deg) scale(1.1); }
+  20% { transform: rotate(-3deg) scale(1.05); }
+  40% { transform: rotate(3deg) scale(1.05); }
+  60% { transform: rotate(-3deg) scale(1.05); }
+  80% { transform: rotate(3deg) scale(1.05); }
   100% { transform: rotate(0deg) scale(1); }
 }
-.wiggle { animation: wiggle 0.8s ease-in-out; }
+.wiggle-rotate { animation: wiggle-rotate 0.8s ease-in-out; }
+
+@keyframes wiggle-updown {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-3px) scale(1.02); }
+  40% { transform: translateY(2px) scale(1.02); }
+  60% { transform: translateY(-2px) scale(1.02); }
+  80% { transform: translateY(1px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+.wiggle-updown { animation: wiggle-updown 0.8s ease-in-out; }
+
+@keyframes wiggle-leftright {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-3px) scale(1.02); }
+  40% { transform: translateX(3px) scale(1.02); }
+  60% { transform: translateX(-2px) scale(1.02); }
+  80% { transform: translateX(2px) scale(1.02); }
+  100% { transform: translateX(0) scale(1); }
+}
+.wiggle-leftright { animation: wiggle-leftright 0.8s ease-in-out; }
+
+@keyframes wiggle-shake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-2px, -1px) rotate(-2deg) scale(1.05); }
+  40% { transform: translate(2px, 1px) rotate(2deg) scale(1.05); }
+  60% { transform: translate(-1px, 2px) rotate(-1deg) scale(1.05); }
+  80% { transform: translate(1px, -2px) rotate(1deg) scale(1.05); }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+.wiggle-shake { animation: wiggle-shake 0.8s ease-in-out; }
 
 /* Native selects: black dropdown with white text (matches the near-black theme). */
 select {
