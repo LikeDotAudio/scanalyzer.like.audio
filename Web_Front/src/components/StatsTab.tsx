@@ -45,6 +45,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [plotAll, setPlotAll] = useState(false);
   const [filterText, setFilterText] = useState('');
   const audioRef = useRef<HTMLAudioElement>(null);
+  const lastUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
     setGroup(null);
@@ -117,7 +118,14 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     onSound?.(item.name || '');
     const file = findAudioFile(audioFiles, item);
     if (file && audioRef.current) {
-      audioRef.current.src = URL.createObjectURL(file);
+      document.querySelectorAll('audio').forEach(a => a.pause());
+      audioRef.current.currentTime = 0;
+      if (lastUrlRef.current) {
+        URL.revokeObjectURL(lastUrlRef.current);
+      }
+      const newUrl = URL.createObjectURL(file);
+      lastUrlRef.current = newUrl;
+      audioRef.current.src = newUrl;
       audioRef.current.play().catch(() => {});
       setNowPlaying(item.name);
     } else {

@@ -118,7 +118,9 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
       return;
     }
     if (audioRef.current) {
+      document.querySelectorAll('audio').forEach(a => a.pause());
       const el = audioRef.current;
+      el.currentTime = 0;
       el.src = URL.createObjectURL(file);
       el.volume = 1;
       setPlayMsg('');

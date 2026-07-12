@@ -273,6 +273,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     }
 
     if (audioRef.current) {
+      document.querySelectorAll('audio').forEach(a => a.pause());
+      audioRef.current.currentTime = 0;
       audioRef.current.src = URL.createObjectURL(file);
       if (autoPlay || forcePlay) audioRef.current.play().catch(() => {});
     }
