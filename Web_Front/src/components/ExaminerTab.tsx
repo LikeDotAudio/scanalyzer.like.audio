@@ -19,7 +19,6 @@ interface ExaminerTabProps {
 
 const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
-// Column config drives the sortable header row. `get` returns the sort key.
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
   { key: 'name', label: 'File', width: '17%', get: it => it.name || '' },
   { key: 'god_category', label: 'Category', width: '9%', get: it => it.god_category || '' },
@@ -36,7 +35,6 @@ const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; g
   { key: 'harmonicity', label: 'Harm', numeric: true, width: '4%', get: it => (it.harmonicity || 0) },
   { key: 'beats_per_minute', label: 'BPM', numeric: true, width: '5%', get: it => (it.beats_per_minute || 0) },
 ];
-const NCOL = COLUMNS.length;
 
 // A small emoji per timbre class, shown in the Timbre column.
 const TIMBRE_EMOJI: Record<string, string> = {
@@ -52,6 +50,24 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
+  const [showColMenu, setShowColMenu] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('scanalyzer_examiner_cols');
+      if (saved) return new Set(JSON.parse(saved));
+    } catch { /* ignore */ }
+    return new Set(COLUMNS.map(c => c.key));
+  });
+
+  const toggleCol = (key: string) => {
+    const next = new Set(visibleColumns);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
+    setVisibleColumns(next);
+    localStorage.setItem('scanalyzer_examiner_cols', JSON.stringify(Array.from(next)));
+  };
+
+  const activeColumns = COLUMNS.filter(c => visibleColumns.has(c.key));
 
   // Rows matching the group/subgroup scope AND the filter text.
   const filteredRows = useMemo(() => {
@@ -313,17 +329,33 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                 analysisResult={analysisResult} 
                 group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
                 filterText={filter} setFilterText={setFilter}
-                rightContent={<div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>}
+                rightContent={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
+                    <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
+                    <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }} onClick={() => setShowColMenu(!showColMenu)}>⚙ Columns</button>
+                    {showColMenu && (
+                      <div className="glass-panel" style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', zIndex: 50, padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', width: '220px', maxHeight: '300px', overflowY: 'auto' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase' }}>Visible Columns</div>
+                        {COLUMNS.map(c => (
+                          <label key={c.key} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', cursor: 'pointer' }}>
+                            <input type="checkbox" checked={visibleColumns.has(c.key)} onChange={() => toggleCol(c.key)} />
+                            {c.label}
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                }
               />
           </div>
           <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
                   <colgroup>
-                      {COLUMNS.map(c => <col key={c.key} style={{ width: c.width }} />)}
+                      {activeColumns.map(c => <col key={c.key} style={{ width: c.width }} />)}
                   </colgroup>
                   <thead style={{ position: 'sticky', top: 0, background: '#1A1D24', zIndex: 1 }}>
                       <tr>
-                          {COLUMNS.map(c => (
+                          {activeColumns.map(c => (
                               <th key={c.key} onClick={() => toggleSort(c.key)}
                                   title={`Sort by ${c.label}`}
                                   style={{ padding: '0.4rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', cursor: 'pointer', userSelect: 'none', color: sort?.key === c.key ? 'var(--accent-secondary)' : undefined }}>
@@ -345,7 +377,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                           });
                           return (
                             <>
-                              {topPad > 0 && <tr style={{ height: topPad }}><td colSpan={NCOL} style={{ padding: 0 }} /></tr>}
+                              {topPad > 0 && <tr style={{ height: topPad }}><td colSpan={activeColumns.length} style={{ padding: 0 }} /></tr>}
                               {rows.slice(startIndex, endIndex).map((item, i) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
@@ -357,24 +389,24 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                               cursor: 'pointer', height: ROW_H,
                                               background: isSelected ? 'rgba(59, 130, 246, 0.25)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                           }}>
-                                          <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.name}>{item.name}</td>
-                                          <td style={cell({ color: 'var(--text-secondary)' })} title={item.god_category}>{item.god_category}</td>
-                                          <td style={cell({ color: gcol })}>{item.group}</td>
-                                          <td style={cell({ color: gcol })} title={item.subgroup}>{item.subgroup}</td>
-                                          <td style={cell({ color: 'var(--text-secondary)' })} title={item.reason?.[0] || ''}>{item.reason?.[0] || ''}</td>
-                                          <td style={cell()} title={item.timbre}>{item.timbre ? `${TIMBRE_EMOJI[item.timbre] || '🎚️'} ${item.timbre}` : ''}</td>
-                                          <td style={cell({ color: '#10B981' })}>{item.cluster !== -1 ? item.cluster : ''}</td>
-                                          <td style={cell({ color: '#8B5CF6' })}>{item.root_note_name}</td>
-                                          <td style={cell()}>{item.pitch_hz ? Math.round(item.pitch_hz) : 0}</td>
-                                          <td style={cell()}>{item.length_seconds?.toFixed(2)}</td>
-                                          <td style={cell({ color: '#F59E0B' })}>{item.transient_count}</td>
-                                          <td style={cell()}>{item.spectral_centroid_hz ? Math.round(item.spectral_centroid_hz) : 0}</td>
-                                          <td style={cell()}>{item.harmonicity?.toFixed(2)}</td>
-                                          <td style={cell()}>{item.beats_per_minute || 0}</td>
+                                          {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.name}>{item.name}</td>}
+                                          {activeColumns.find(c => c.key === 'god_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.god_category}>{item.god_category}</td>}
+                                          {activeColumns.find(c => c.key === 'group') && <td style={cell({ color: gcol })}>{item.group}</td>}
+                                          {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.subgroup}>{item.subgroup}</td>}
+                                          {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.reason?.[0] || ''}>{item.reason?.[0] || ''}</td>}
+                                          {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.timbre}>{item.timbre ? `${TIMBRE_EMOJI[item.timbre] || '🎚️'} ${item.timbre}` : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.cluster !== -1 ? item.cluster : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'root') && <td style={cell({ color: '#8B5CF6' })}>{item.root_note_name}</td>}
+                                          {activeColumns.find(c => c.key === 'pitch_hz') && <td style={cell()}>{item.pitch_hz ? Math.round(item.pitch_hz) : 0}</td>}
+                                          {activeColumns.find(c => c.key === 'length_seconds') && <td style={cell()}>{item.length_seconds?.toFixed(2)}</td>}
+                                          {activeColumns.find(c => c.key === 'transient_count') && <td style={cell({ color: '#F59E0B' })}>{item.transient_count}</td>}
+                                          {activeColumns.find(c => c.key === 'spectral_centroid_hz') && <td style={cell()}>{item.spectral_centroid_hz ? Math.round(item.spectral_centroid_hz) : 0}</td>}
+                                          {activeColumns.find(c => c.key === 'harmonicity') && <td style={cell()}>{item.harmonicity?.toFixed(2)}</td>}
+                                          {activeColumns.find(c => c.key === 'beats_per_minute') && <td style={cell()}>{item.beats_per_minute || 0}</td>}
                                       </tr>
                                   );
                               })}
-                              {botPad > 0 && <tr style={{ height: botPad }}><td colSpan={NCOL} style={{ padding: 0 }} /></tr>}
+                              {botPad > 0 && <tr style={{ height: botPad }}><td colSpan={activeColumns.length} style={{ padding: 0 }} /></tr>}
                             </>
                           );
                       })()}
