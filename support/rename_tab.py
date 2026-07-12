@@ -113,7 +113,9 @@ class RenameMixin:
         drow = ttk.Frame(tab, padding=(6, 0))
         drow.pack(fill=tk.X)
         ttk.Button(drow, text="Destination…", command=self._rename_pick_dest).pack(side=tk.LEFT)
-        self.rename_dest = tk.StringVar(value="/home/anthony/Documents/Renamed Samples")
+        import datetime
+        ts = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        self.rename_dest = tk.StringVar(value=f"/home/anthony/Documents/Renamed Samples_{ts}")
         try:
             os.makedirs(self.rename_dest.get(), exist_ok=True)  # so the default routes on first preview
         except OSError:

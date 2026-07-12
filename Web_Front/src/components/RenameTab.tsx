@@ -102,7 +102,10 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
     setter(prev => prev.map((s, i) => i === idx ? { ...s, enabled: !s.enabled } : s));
   };
 
-  const [destRoot, setDestRoot] = useState('Renamed Samples');
+  const [destRoot, setDestRoot] = useState(() => {
+    const ts = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+    return `Renamed Samples_${ts}`;
+  });
   const [mode, setMode] = useState<Mode>('copy');
   const [resample, setResample] = useState(false);
   const [sampleRate, setSampleRate] = useState(48000);
