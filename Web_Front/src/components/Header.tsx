@@ -20,9 +20,23 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
         <span className="text-secondary" style={{ fontSize: '0.7rem' }}>Designed and Built by Anthony Peter Kuzub</span>
       </div>
 
-      {!isAnalyzing && currentSound && (
+      {!isAnalyzing && (
         <div style={{ flex: 1, margin: '0 2rem', minWidth: 0, textAlign: 'center', overflow: 'hidden' }}>
-          <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
+          {currentSound ? (
+            <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
+          ) : !hasData ? (
+            <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
+              <strong style={{ color: 'var(--accent-primary)' }}>Step 1:</strong> Scan a folder (Scanalize tab) or <strong style={{ color: 'var(--accent-primary)' }}>Load PEAK Files</strong> to bring in an analysis. →
+            </span>
+          ) : audioCount === 0 ? (
+            <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
+              <strong style={{ color: 'var(--accent-primary)' }}>Step 2:</strong> Click <strong style={{ color: 'var(--accent-primary)' }}>Load Sounds</strong> to give the analyzer real-time access to your local files so you can hear them. →
+            </span>
+          ) : (
+            <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
+              🟢 Online — select any sample to hear &amp; inspect it.
+            </span>
+          )}
         </div>
       )}
 
