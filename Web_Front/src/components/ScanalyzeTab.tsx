@@ -98,7 +98,8 @@ export default function ScanalyzeTab({
         const file = pendingWavFiles[i];
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
-        const folder = (file.webkitRelativePath || file.name).split('/')[0] || "folder";
+        const parts = (file.webkitRelativePath || file.name).split('/');
+        const folder = parts.length > 1 ? parts.slice(0, -1).join('/') : "folder";
 
         try {
             const jsonResult = analyze_audio_buffer(uint8Array, file.name, folder);
