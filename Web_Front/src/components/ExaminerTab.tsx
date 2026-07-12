@@ -46,6 +46,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [autoPlay, setAutoPlay] = useState(true);
   const [digging, setDigging] = useState(false);
+  const playheadRef = useRef<HTMLDivElement>(null);
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
@@ -168,6 +169,27 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
+  }, []);
+
+  // Playhead animation loop (bypasses React state to prevent 60fps re-renders)
+  useEffect(() => {
+    let frameId: number;
+    const update = () => {
+      const el = audioRef.current;
+      const playhead = playheadRef.current;
+      if (playhead) {
+        if (el && el.duration && !el.paused) {
+          const progress = el.currentTime / el.duration;
+          playhead.style.left = `${progress * 100}%`;
+          playhead.style.display = 'block';
+        } else {
+          playhead.style.display = 'none';
+        }
+      }
+      frameId = requestAnimationFrame(update);
+    };
+    frameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   // Re-draw the preview whenever the canvas changes size (sash drag / window resize).
@@ -455,7 +477,16 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
           <div style={{ flex: 1, position: 'relative', background: '#0A0A0A', padding: '0.75rem' }}>
               {selectedItem ? (
                   <>
-                      <canvas ref={canvasRef} style={{ width: '100%', height: 'calc(100% - 1.5rem)', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
+                      <div style={{ width: '100%', height: 'calc(100% - 1.5rem)', position: 'relative' }}>
+                        <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
+                        <div ref={playheadRef} style={{
+                          position: 'absolute', top: 0, bottom: 0, left: 0,
+                          width: '2px', backgroundColor: 'rgb(244, 144, 44)', zIndex: 10,
+                          pointerEvents: 'none', display: 'none'
+                        }}>
+                          <div style={{ position: 'absolute', top: 0, left: '-4px', width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '6px solid rgb(244, 144, 44)' }} />
+                        </div>
+                      </div>
                       <audio ref={audioRef} style={{ display: 'none' }} onEnded={handleEnded} />
                       <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>

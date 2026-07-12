@@ -5,11 +5,12 @@ import ScopeBar from './ScopeBar';
 
 interface RenameTabProps {
   analysisResult: any[];
+  audioFiles: File[];
 }
 
 const PREVIEW_ROW_H = 26; // virtualized preview row height (px)
 
-export default function RenameTab({ analysisResult }: RenameTabProps) {
+export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps) {
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [filterText, setFilterText] = useState('');
@@ -143,7 +144,10 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
           analysisResult={analysisResult} group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
           filterText={filterText} setFilterText={setFilterText}
           rightContent={
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} / {analysisResult.length} files</span>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
+              {data.length} / {analysisResult.length} files
+              {audioFiles.length > 0 && ` · ${audioFiles.length} audio linked`}
+            </span>
           }
         />
       </div>
