@@ -49,6 +49,16 @@ body {
 }
 .blink { animation: blink 1s ease-in-out infinite; }
 
+@keyframes wiggle {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-10deg) scale(1.1); }
+  40% { transform: rotate(10deg) scale(1.1); }
+  60% { transform: rotate(-10deg) scale(1.1); }
+  80% { transform: rotate(10deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.wiggle { animation: wiggle 0.8s ease-in-out; }
+
 /* Native selects: black dropdown with white text (matches the near-black theme). */
 select {
   background: #000;

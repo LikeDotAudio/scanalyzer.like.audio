@@ -1,3 +1,5 @@
+import TipJar from './TipJar';
+
 interface HeaderProps {
   isAnalyzing: boolean;
   progress: number;
@@ -6,9 +8,10 @@ interface HeaderProps {
   audioCount: number;
   currentSound?: string;
   hasData: boolean;
+  activeTab?: string;
 }
 
-export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, audioCount, currentSound, hasData }: HeaderProps) {
+export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, audioCount, currentSound, hasData, activeTab }: HeaderProps) {
   return (
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
@@ -20,7 +23,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
         </a>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '0.1rem' }}>
           <span className="text-secondary" style={{ fontSize: '0.7rem', lineHeight: 1.1 }}>Designed and Built by Anthony Peter Kuzub</span>
-          <a href="https://www.paypal.com/paypalme/APKaudio" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', textDecoration: 'none', fontWeight: 600 }}>☕ Tip Jar</a>
+          <TipJar activeTab={activeTab} hasData={hasData} audioCount={audioCount} />
         </div>
       </div>
 

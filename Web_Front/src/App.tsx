@@ -180,7 +180,7 @@ function App() {
           Drop .PEAK file to load
         </div>
       )}
-      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} audioCount={audioFiles.length} currentSound={currentSound} hasData={analysisResult.length > 0} />
+      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} audioCount={audioFiles.length} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
 
       {/* Tabs Navigation */}
       <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '2px', padding: '2px', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
