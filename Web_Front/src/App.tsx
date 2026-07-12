@@ -13,7 +13,7 @@ const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'rename'] 
 
 function tabFromHash(): string {
   const h = window.location.hash.replace(/^#\/?/, '');
-  return (TAB_IDS as readonly string[]).includes(h) ? h : 'scanalyze';
+  return (TAB_IDS as readonly string[]).includes(h) ? h : 'cloud';
 }
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     const onHash = () => setActiveTab(tabFromHash());
     window.addEventListener('hashchange', onHash);
-    if (!window.location.hash) window.location.hash = '#/scanalyze';
+    if (!window.location.hash) window.location.hash = '#/cloud';
     return () => window.removeEventListener('hashchange', onHash);
   }, [])
 
