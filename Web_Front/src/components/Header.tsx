@@ -11,8 +11,9 @@ interface HeaderProps {
 export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, audioCount, currentSound, hasData }: HeaderProps) {
   return (
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
-        <a href="https://github.com/LikeDotAudio/scanalyzer.like.audio/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+        <a href="https://github.com/LikeDotAudio/scanalyzer.like.audio/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <img src="/logo.svg" alt="Scanalyzer logo" width={34} height={34} style={{ display: 'block' }} />
           <h1 className="accent-gradient" style={{ margin: 0 }}>
             SCANALYZER.Like.Audio
           </h1>

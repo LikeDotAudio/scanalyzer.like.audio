@@ -2,18 +2,42 @@
 
 A self-contained audio-sample analyzer and file-management tool.
 
+It ships as **two front-ends over one shared Rust DSP core** — a Python desktop
+GUI and a browser app — so the exact same analysis runs whether you launch the
+native app or open the web page:
+
 ```
-Sample Analysis/
-├── run.sh                 # launcher: builds the Rust crates if needed, opens the GUI
-├── main.py                # Python GUI shell (tabs live in support/)
-├── support/               # one module per GUI tab + config, theme, shared inspector
-├── sample_analyzer_rs/    # Rust DSP core (fast, parallel)
-│   └── target/release/oa_sample_analyzer
-└── graphing_rs/           # Rust 3D-cloud placement engine
-    └── target/release/oa_graph_layout
+                    ┌─────────────────────────────┐
+   Python desktop → │   Rust DSP core             │ ← Browser app (WebAssembly)
+   (main.py + Tk)   │   sample_analyzer_rs         │   (Web_Front, React + Vite)
+                    │   (one engine, both targets) │
+                    └─────────────────────────────┘
 ```
 
-## Run
+- The **Python GUI** shells out to the native `oa_sample_analyzer` binary.
+- The **browser app** runs the *same* core compiled to WebAssembly
+  (`Web_Front/wasm_analyzer`, a thin `wasm-bindgen` wrapper around
+  `oa-sample-analyzer`) — entirely client-side, nothing uploaded.
+- Both read and write the identical **`.PEAK`** JSON format, so an analysis
+  produced by one opens in the other.
+
+```
+Sample Analysis/
+├── sample_analyzer_rs/    # ── THE CORE ── Rust DSP engine (shared by both front-ends)
+│   └── target/release/oa_sample_analyzer     # native binary (desktop)
+│
+├── main.py                # Python desktop GUI shell (tabs live in support/)
+├── support/               # one module per GUI tab + config, theme, shared inspector
+├── graphing_rs/           # Rust 3D-cloud placement engine (desktop)
+├── Sample_Conversion_rs/  # Rust sample-format conversion helper
+├── run.sh                 # desktop launcher: builds the Rust crates, opens the GUI
+│
+└── Web_Front/             # Browser app (React + Vite) — 100% client-side
+    ├── wasm_analyzer/      # the CORE compiled to WebAssembly (wasm-bindgen wrapper)
+    └── src/                # React UI: Scanalize / 3D Cloud / Stats / Groups / Examiner / Rename
+```
+
+## Run — desktop (Python)
 
 ```bash
 ./run.sh          # or:  python3 main.py
@@ -29,6 +53,23 @@ CLI (what the GUI runs for you):
 oa_sample_analyzer <dir> [--out <path>] [--workers <n>] [--max-len <s>]
                          [--clusters <k>] [--no-per-file] [--force]
 ```
+
+## Run — browser (Web_Front)
+
+```bash
+cd Web_Front
+npm install
+npm run dev       # local dev server;  npm run build  → static bundle in dist/
+```
+
+Requires: Node 18+. Rebuilding the WASM core needs a Rust toolchain plus
+`wasm-pack` (`wasm-pack build Web_Front/wasm_analyzer --target web`); the
+committed `wasm_analyzer/pkg` lets you run the app without that step.
+
+The browser app is **fully client-side** — no server does any work, and no data
+ever leaves the machine (see `Web_Front/src` and the `client-side-only` design
+note). It reads local folders through the File System Access API, runs the
+WASM DSP core in a Web Worker-free main pass, and never uploads anything.
 
 ---
 
@@ -470,3 +511,33 @@ the Groups/Examiner table rows all share the exact same colours.
   words out of the original name (`Kick_01.wav` → `Kick - 01.wav`, not
   `Kick - Kick_01.wav`) and collapse repeated words. Copy or move; name
   clashes auto-number. Same inspector in the footer.
+
+---
+
+## The browser app (Web_Front)
+
+The web front-end mirrors the desktop tabs — **Scanalize, 3D Cloud, Stats,
+Groups, Examiner, Flatten/Rename** — running the same Rust DSP core as
+WebAssembly, and sharing the one god-category → group → subgroup colour system.
+It is **100% client-side**: no server performs any computation and nothing is
+uploaded. What differs from the desktop build:
+
+- **Scan** — pick a folder; the WASM core analyzes every WAV locally, streaming
+  progress (`# of #`), then **auto-downloads one `.PEAK`** (`Scanalyzer.like.audio
+  - File Audit <timestamp>.peak`). Load a prior `.PEAK` from the header (or drag
+  it onto the page).
+- **Load Sounds** — links a folder via the File System Access API so samples can
+  play in real time; audio is resolved back to each `.PEAK` record by relative
+  path (basename fallback). Header status text and pulsing buttons walk you
+  through getting "online".
+- **Examiner** — a virtualized list (handles 30k+ rows), sortable columns,
+  group/subgroup scope filters + text filter, a draggable sash, arrow-key
+  navigation, a **DIG** crate-digging auto-advance, and a static waveform +
+  averaged-FFT preview (group colour for the wave, its complement for the
+  spectrum, note-frequency axis on top, root-note marker, ADSR overlay).
+- **3D Cloud** — instanced-point cloud with click / arrow-key selection and
+  playback, a nested show/hide legend with per-group and per-subgroup counts.
+- **Flatten/Rename** — since a browser can't move files, it **generates a rename
+  script** (Bash / PowerShell / Python) that recreates the destination tree and
+  copies/moves each file, with an optional **ffmpeg resample** (sample rate +
+  bit depth) baked in. Run it yourself, on your own machine.
