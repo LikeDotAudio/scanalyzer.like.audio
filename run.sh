@@ -2,7 +2,18 @@
 # Self-contained launcher for the Sample Analyzer.
 # Builds the Rust crates if needed, then starts the Python GUI.
 set -e
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Resolve the directory of this script so it can be run from anywhere
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+HERE="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+echo "Launcher script path: $HERE/run.sh"
+echo "Python script path: $HERE/main.py"
 
 build_crate() {
     local dir="$1" bin="$2"

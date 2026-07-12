@@ -18,20 +18,29 @@ interface ExaminerTabProps {
 const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
 // Column config drives the sortable header row. `get` returns the sort key.
-const COLUMNS: { key: string; label: string; numeric?: boolean; get: (it: any) => any }[] = [
-  { key: 'name', label: 'File', get: it => it.name || '' },
-  { key: 'group', label: 'Group', get: it => it.group || '' },
-  { key: 'reason', label: 'Reason', get: it => it.reason?.[0] || '' },
-  { key: 'timbre', label: 'Timbre', get: it => it.timbre || '' },
-  { key: 'cluster', label: 'Clust', numeric: true, get: it => (it.cluster ?? -1) },
-  { key: 'root', label: 'Root', numeric: true, get: it => (noteToFreq(it.root_note_name) ?? -1) },
-  { key: 'pitch_hz', label: 'Pitch', numeric: true, get: it => (it.pitch_hz || 0) },
-  { key: 'length_seconds', label: 'Len', numeric: true, get: it => (it.length_seconds || 0) },
-  { key: 'transient_count', label: 'Tr', numeric: true, get: it => (it.transient_count || 0) },
-  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, get: it => (it.spectral_centroid_hz || 0) },
-  { key: 'harmonicity', label: 'Harm', numeric: true, get: it => (it.harmonicity || 0) },
-  { key: 'beats_per_minute', label: 'BPM', numeric: true, get: it => (it.beats_per_minute || 0) },
+const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
+  { key: 'name', label: 'File', width: '17%', get: it => it.name || '' },
+  { key: 'god_category', label: 'Category', width: '9%', get: it => it.god_category || '' },
+  { key: 'group', label: 'Group', width: '8%', get: it => it.group || '' },
+  { key: 'subgroup', label: 'Subgroup', width: '9%', get: it => it.subgroup || '' },
+  { key: 'reason', label: 'Reason', width: '14%', get: it => it.reason?.[0] || '' },
+  { key: 'timbre', label: 'Timbre', width: '8%', get: it => it.timbre || '' },
+  { key: 'cluster', label: 'Clust', numeric: true, width: '4%', get: it => (it.cluster ?? -1) },
+  { key: 'root', label: 'Root', numeric: true, width: '5%', get: it => (noteToFreq(it.root_note_name) ?? -1) },
+  { key: 'pitch_hz', label: 'Pitch', numeric: true, width: '5%', get: it => (it.pitch_hz || 0) },
+  { key: 'length_seconds', label: 'Len', numeric: true, width: '4%', get: it => (it.length_seconds || 0) },
+  { key: 'transient_count', label: 'Tr', numeric: true, width: '3%', get: it => (it.transient_count || 0) },
+  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, width: '5%', get: it => (it.spectral_centroid_hz || 0) },
+  { key: 'harmonicity', label: 'Harm', numeric: true, width: '4%', get: it => (it.harmonicity || 0) },
+  { key: 'beats_per_minute', label: 'BPM', numeric: true, width: '5%', get: it => (it.beats_per_minute || 0) },
 ];
+const NCOL = COLUMNS.length;
+
+// A small emoji per timbre class, shown in the Timbre column.
+const TIMBRE_EMOJI: Record<string, string> = {
+  Percussive: '🥁', Tonal: '🎵', Noise: '🌫️', Bass: '🔈',
+  Bright: '✨', Loop: '🔁', Pad: '☁️',
+};
 
 export default function ExaminerTab({ analysisResult, audioFiles, onSound }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -334,10 +343,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
           <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
                   <colgroup>
-                      <col style={{ width: '22%' }} /><col style={{ width: '9%' }} /><col style={{ width: '20%' }} />
-                      <col style={{ width: '8%' }} /><col style={{ width: '5%' }} /><col style={{ width: '6%' }} />
-                      <col style={{ width: '6%' }} /><col style={{ width: '5%' }} /><col style={{ width: '4%' }} />
-                      <col style={{ width: '6%' }} /><col style={{ width: '5%' }} /><col style={{ width: '5%' }} />
+                      {COLUMNS.map(c => <col key={c.key} style={{ width: c.width }} />)}
                   </colgroup>
                   <thead style={{ position: 'sticky', top: 0, background: '#1A1D24', zIndex: 1 }}>
                       <tr>
@@ -363,10 +369,11 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                           });
                           return (
                             <>
-                              {topPad > 0 && <tr style={{ height: topPad }}><td colSpan={12} style={{ padding: 0 }} /></tr>}
+                              {topPad > 0 && <tr style={{ height: topPad }}><td colSpan={NCOL} style={{ padding: 0 }} /></tr>}
                               {rows.slice(startIndex, endIndex).map((item, i) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
+                                  const gcol = groupColor(item.group || 'Unclassified', item.subgroup || '');
                                   return (
                                       <tr key={idx}
                                           onClick={() => handleSelect(item)}
@@ -375,9 +382,11 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                               background: isSelected ? 'rgba(59, 130, 246, 0.25)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                           }}>
                                           <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.name}>{item.name}</td>
-                                          <td style={cell({ color: groupColor(item.group || 'Unclassified', item.subgroup || '') })}>{item.group}</td>
+                                          <td style={cell({ color: 'var(--text-secondary)' })} title={item.god_category}>{item.god_category}</td>
+                                          <td style={cell({ color: gcol })}>{item.group}</td>
+                                          <td style={cell({ color: gcol })} title={item.subgroup}>{item.subgroup}</td>
                                           <td style={cell({ color: 'var(--text-secondary)' })} title={item.reason?.[0] || ''}>{item.reason?.[0] || ''}</td>
-                                          <td style={cell()}>{item.timbre}</td>
+                                          <td style={cell()} title={item.timbre}>{item.timbre ? `${TIMBRE_EMOJI[item.timbre] || '🎚️'} ${item.timbre}` : ''}</td>
                                           <td style={cell({ color: '#10B981' })}>{item.cluster !== -1 ? item.cluster : ''}</td>
                                           <td style={cell({ color: '#8B5CF6' })}>{item.root_note_name}</td>
                                           <td style={cell()}>{item.pitch_hz ? Math.round(item.pitch_hz) : 0}</td>
@@ -389,7 +398,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                       </tr>
                                   );
                               })}
-                              {botPad > 0 && <tr style={{ height: botPad }}><td colSpan={12} style={{ padding: 0 }} /></tr>}
+                              {botPad > 0 && <tr style={{ height: botPad }}><td colSpan={NCOL} style={{ padding: 0 }} /></tr>}
                             </>
                           );
                       })()}

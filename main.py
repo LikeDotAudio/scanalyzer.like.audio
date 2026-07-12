@@ -337,6 +337,9 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
 
 
 def main():
+    script_path = os.path.abspath(__file__)
+    print(f"Python script path: {script_path}")
+    
     root = tk.Tk()
     style = ttk.Style()
     if "clam" in style.theme_names():
