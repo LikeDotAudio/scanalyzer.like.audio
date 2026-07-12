@@ -95,7 +95,7 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
         ("Sax", "", &["saxophone", "sax"], &[]),
         // 808 is a drum machine, NOT bass — so it is intentionally not a Bass keyword.
         ("Bass", "", &["bass", "sub bass"], &["sub"]),
-        ("Vocal", "", &["vocal", "voice", "vox"], &["vx"]),
+        ("Voice", "", &["vocal", "voice", "vox", "choir"], &["vx", "voc"]),
         // Generic "drum" tag catches things before they fall through to Keyboards (e.g. "Synth Drum")
         ("Perc", "Drum", &["drum"], &["drm"]),
         // Keyboards — new group with curated subgroups (Electric Piano before
@@ -198,7 +198,7 @@ mod tests {
             ("Piano Note C3.wav", "Keyboards", "Piano"),
             ("FX_riser.wav", "FX", ""), ("SFX_boom.wav", "FX", ""), ("Foley_door.wav", "FX", ""),
             ("Sub_808.wav", "Bass", ""), ("Bassline.wav", "Bass", ""),
-            ("Vox_chop.wav", "Vocal", ""), ("Vocal_ah.wav", "Vocal", ""),
+            ("Vox_chop.wav", "Voice", ""), ("Vocal_ah.wav", "Voice", ""),
             // Keyboards — new group with curated subgroups.
             ("SynthLead.wav", "Keyboards", "Synth"), ("Analog Synth.wav", "Keyboards", "Synth"),
             ("Grand Piano C3.wav", "Keyboards", "Piano"), ("Rhodes_ep.wav", "Keyboards", "Electric Piano"),

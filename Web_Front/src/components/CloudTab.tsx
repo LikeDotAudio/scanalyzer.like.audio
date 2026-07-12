@@ -1,8 +1,10 @@
 import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
-import SampleCloud, { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS, SHAPE_OPTIONS } from '../SampleCloud';
-import { groupColor, subKey } from '../groupColors';
+import SampleCloud from '../SampleCloud';
 import { findAudioFile } from '../audioLinking';
 import ScopeBar from './ScopeBar';
+import GraphOptionsMenu from './GraphOptionsMenu';
+import GroupsMenu from './GroupsMenu';
+import ShapesMenu from './ShapesMenu';
 
 interface CloudTabProps {
   analysisResult: any[];
@@ -11,21 +13,7 @@ interface CloudTabProps {
   onLoadSounds?: () => void;
 }
 
-// One-click axis presets: [label, X, Y, Z, Size] — ported from the desktop app.
-const PRESETS: [string, string, string, string, string][] = [
-  ['A', 'Pitch', 'Group', 'Complexity', 'Length'],
-  ['B', 'Pitch', 'Group', 'Brightness (centroid)', 'Length'],
-  ['C', 'Attack', 'Sustain', 'Harmonicity', 'RMS'],
-  ['D', 'Brightness (centroid)', 'Harmonicity', 'Complexity', 'Length'],
-  ['E', 'Pitch', 'Harmonicity', 'Sustain', 'RMS'],
-  ['F', 'Length', 'Group', 'Attack', 'RMS'],
-];
 
-const selStyle: React.CSSProperties = {
-  background: '#000', color: '#fff',
-  border: '1px solid var(--border-color)', borderRadius: 0,
-  padding: '0.25rem 0.4rem', fontSize: '0.8rem',
-};
 
 const getPref = (key: string, def: string) => localStorage.getItem(`scanalyzer_cloud_${key}`) || def;
 
@@ -76,6 +64,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
 
   const [showGraphOptions, setShowGraphOptions] = useState(() => window.innerWidth > 768);
   const [showGroups, setShowGroups] = useState(false);
+  const [showShapes, setShowShapes] = useState(false);
   const [playMsg, setPlayMsg] = useState<string>('');
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -116,9 +105,6 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
     });
   };
 
-  const applyPreset = (x: string, y: string, z: string, size: string) => {
-    setXAxis(x); setYAxis(y); setZAxis(z); setSizeAxis(size);
-  };
 
   const handlePick = (index: number) => {
     setSelectedIndex(index);
@@ -185,103 +171,32 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
 
         {/* Overlay Toggles (Top Right) */}
         <div style={{ position: 'absolute', top: '1rem', right: '1rem', zIndex: 20, display: 'flex', gap: '0.5rem' }}>
-          <button className={`btn ${showGroups ? 'primary' : 'secondary'}`} onClick={() => { setShowGroups(!showGroups); setShowGraphOptions(false); }}>📁 Groups</button>
-          <button className={`btn ${showGraphOptions ? 'primary' : 'secondary'}`} onClick={() => { setShowGraphOptions(!showGraphOptions); setShowGroups(false); }}>⚙ Graph Options</button>
+          <button className={`btn ${showGroups ? 'primary' : 'secondary'}`} onClick={() => { setShowGroups(!showGroups); setShowGraphOptions(false); setShowShapes(false); }}>📁 Groups</button>
+          <button className={`btn ${showShapes ? 'primary' : 'secondary'}`} onClick={() => { setShowShapes(!showShapes); setShowGraphOptions(false); setShowGroups(false); }}>🔺 Shapes</button>
+          <button className={`btn ${showGraphOptions ? 'primary' : 'secondary'}`} onClick={() => { setShowGraphOptions(!showGraphOptions); setShowGroups(false); setShowShapes(false); }}>⚙ Graph Options</button>
         </div>
 
         {/* Graph Options Overlay */}
         {showGraphOptions && (
-          <div className="glass-panel" style={{ position: 'absolute', top: '3.5rem', right: '1rem', zIndex: 20, background: 'rgba(17, 19, 24, 0.95)', padding: '1rem', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '280px', maxHeight: 'calc(100% - 5rem)', overflowY: 'auto' }}>
-            <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem', margin: 0 }}>Graph Options</h3>
-            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>X Axis:
-              <select style={selStyle} value={xAxis} onChange={e => setXAxis(e.target.value)}>{AXIS_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
-            </label>
-            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Y Axis:
-              <select style={selStyle} value={yAxis} onChange={e => setYAxis(e.target.value)}>{AXIS_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
-            </label>
-            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Z Axis:
-              <select style={selStyle} value={zAxis} onChange={e => setZAxis(e.target.value)}>{AXIS_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
-            </label>
-            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Size:
-              <select style={selStyle} value={sizeAxis} onChange={e => setSizeAxis(e.target.value)}>{SIZE_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
-            </label>
-            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Color:
-              <select style={selStyle} value={colorBy} onChange={e => setColorBy(e.target.value)}>{COLOR_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
-            </label>
-            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Shape:
-              <select style={selStyle} value={shapeBy} onChange={e => setShapeBy(e.target.value)}>{SHAPE_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)', cursor: 'pointer', marginTop: '0.5rem' }}>
-              <input type="checkbox" checked={showAxes} onChange={e => setShowAxes(e.target.checked)} /> Show axis labels
-            </label>
-            
-            <div style={{ marginTop: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem' }}>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Presets:</div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
-                {PRESETS.map(([label, x, y, z, s]) => (
-                  <button key={label} className="btn secondary" style={{ padding: '0.15rem 0.5rem', fontSize: '0.75rem', flex: '1 1 auto' }}
-                    onClick={() => applyPreset(x, y, z, s)}>{label}</button>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ marginTop: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem' }}>
-              {audioFiles.length > 0
-                ? <div className="text-secondary" style={{ fontSize: '0.75rem', textAlign: 'center' }}>{audioFiles.length.toLocaleString()} audio linked</div>
-                : <button className="btn primary blink" style={{ width: '100%', padding: '0.3rem', fontSize: '0.75rem' }} onClick={() => onLoadSounds?.()}>⚠ 0 audio linked — Load folder</button>}
-            </div>
-          </div>
+          <GraphOptionsMenu
+            xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis}
+            zAxis={zAxis} setZAxis={setZAxis} sizeAxis={sizeAxis} setSizeAxis={setSizeAxis}
+            colorBy={colorBy} setColorBy={setColorBy} showAxes={showAxes} setShowAxes={setShowAxes}
+            audioFilesLength={audioFiles.length} onLoadSounds={onLoadSounds}
+          />
         )}
 
         {/* Groups Overlay */}
         {showGroups && (
-          <div className="glass-panel" style={{ position: 'absolute', top: '3.5rem', right: '1rem', zIndex: 20, background: 'rgba(17, 19, 24, 0.95)', padding: '1rem', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.15rem', width: '280px', maxHeight: 'calc(100% - 5rem)', overflowY: 'auto' }}>
-            <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem', margin: 0, marginBottom: '0.5rem' }}>Groups / subgroups</h3>
-            <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.2rem' }}>
-              <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
-                onClick={() => setHiddenGroups(new Set())}>Show all</button>
-              <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
-                onClick={() => setHiddenGroups(new Set(groupTree.map(g => g.group)))}>Show none</button>
-            </div>
-            <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.5rem' }}>
-              <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
-                onClick={() => setExpanded(new Set(groupTree.filter(g => g.subs.length).map(g => g.group)))}>Expand all</button>
-              <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
-                onClick={() => setExpanded(new Set())}>Collapse</button>
-            </div>
-            <div className="text-secondary" style={{ fontSize: '0.7rem', marginBottom: '0.5rem' }}>click to hide / show</div>
-            {groupTree.map(({ group, count, subs }) => {
-              const gHidden = hiddenGroups.has(group);
-              const isOpen = expanded.has(group);
-              return (
-                <div key={group} style={{ marginBottom: '2px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem' }}>
-                    <span
-                      onClick={() => subs.length && toggleExpand(group)}
-                      style={{ width: '12px', cursor: subs.length ? 'pointer' : 'default', color: 'var(--text-secondary)', userSelect: 'none' }}>
-                      {subs.length ? (isOpen ? '▾' : '▸') : ''}
-                    </span>
-                    <div onClick={() => toggleKey(group)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', opacity: gHidden ? 0.35 : 1, flex: 1 }}>
-                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: groupColor(group, ''), flexShrink: 0 }} />
-                      <span style={{ textDecoration: gHidden ? 'line-through' : 'none' }}>{group}</span>
-                      <span className="text-secondary" style={{ fontSize: '0.65rem' }}>({count.toLocaleString()})</span>
-                    </div>
-                  </div>
-                  {isOpen && subs.map(sg => {
-                    const key = subKey(group, sg.name);
-                    const sHidden = hiddenGroups.has(key) || gHidden;
-                    return (
-                      <div key={key} onClick={() => toggleKey(key)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', opacity: sHidden ? 0.35 : 1, fontSize: '0.75rem', paddingLeft: '1.5rem', marginTop: '2px' }}>
-                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: groupColor(group, sg.name), flexShrink: 0 }} />
-                        <span style={{ textDecoration: hiddenGroups.has(key) ? 'line-through' : 'none' }}>{sg.name}</span>
-                        <span className="text-secondary" style={{ fontSize: '0.6rem' }}>({sg.count.toLocaleString()})</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+          <GroupsMenu
+            groupTree={groupTree} hiddenGroups={hiddenGroups} setHiddenGroups={setHiddenGroups}
+            expanded={expanded} setExpanded={setExpanded} toggleKey={toggleKey} toggleExpand={toggleExpand}
+          />
+        )}
+
+        {/* Shapes Overlay */}
+        {showShapes && (
+          <ShapesMenu shapeBy={shapeBy} setShapeBy={setShapeBy} />
         )}
       </section>
     </div>

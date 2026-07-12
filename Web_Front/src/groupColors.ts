@@ -5,7 +5,7 @@
 export const GOD_CATEGORIES: [string, string[]][] = [
   ['Percussive', ['Clap', 'Cymbal', 'Hi-Hat', 'Kick', 'Perc', 'Ride', 'Rim', 'Snare', 'Tom']],
   ['Impulsive with Tail', ['IR']],
-  ['Tonal', ['Bass', 'Guitar', 'Horn', 'Note', 'Sax', 'Strings', 'Vocal']],
+  ['Tonal', ['Bass', 'Guitar', 'Horn', 'Note', 'Sax', 'Strings', 'Voice']],
   ['Keyboards', ['Keyboards']],
   ['Complex', ['DJ', 'FX', 'Loops/Patterns', 'Scratch']],
   ['Unassigned', ['Unclassified']],

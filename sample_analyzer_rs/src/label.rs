@@ -44,7 +44,22 @@ pub fn label_sample(
     // re-triggers (a roll/flam), rather than being mis-flagged as a loop.
     let name_says_loop = name_group == "Loops/Patterns" || norm.contains("loop");
     let has_drum_hint = !name_match.is_empty() || norm.contains("drum");
-    let is_loop = bpm > 0.0 || name_says_loop || (transients > 1 && !has_drum_hint);
+    
+    let toks: Vec<&str> = norm.split_whitespace().collect();
+    let name_says_oneshot = toks.iter().any(|&t| t == "os" || t == "oneshot" || t == "shot") || norm.contains("one shot");
+    let default_daw_bpm = (bpm - 120.0).abs() < 0.01;
+
+    let is_loop = if name_says_oneshot {
+        false
+    } else if bpm > 0.0 && !default_daw_bpm {
+        if has_drum_hint && transients <= 1 && !name_says_loop {
+            false
+        } else {
+            true
+        }
+    } else {
+        name_says_loop || (transients > 1 && !has_drum_hint)
+    };
     // A single fundamental note held for the whole file (drone/pad/sustained tone).
     let sustained = harmonicity > 0.5 && !is_loop && sustain > 0.6;
 
@@ -66,7 +81,10 @@ pub fn label_sample(
     };
 
     // Feature-derived timbre class — a blind, name-independent classification.
-    let timbre = classify_timbre(transients, attack, crest, harmonicity, centroid, low, high).to_string();
+    let mut timbre = classify_timbre(transients, attack, crest, harmonicity, centroid, low, high).to_string();
+    if name_group == "Voice" {
+        timbre = "Voice".to_string();
+    }
 
     // Length tier: one-shots split Short / Medium / Long; loops are their own.
     let length_class = if is_loop {
@@ -136,8 +154,8 @@ mod tests {
         assert_eq!(group_of("Kick_flam.wav", 3, 0.0), "Kick");
         // The generic word "drum" also blocks the transient→loop guess.
         assert_eq!(group_of("Drum_hit.wav", 4, 0.0), "Perc");
-        // A real BPM (ACID) tag is authoritative → loop regardless of name.
-        assert_eq!(group_of("Snare_thing.wav", 5, 120.0), "Loops/Patterns");
+        // A real non-default BPM (ACID) tag is authoritative → loop regardless of name.
+        assert_eq!(group_of("Snare_thing.wav", 5, 115.0), "Loops/Patterns");
         // A name that literally says "loop" → loop.
         assert_eq!(group_of("Drum Loop.wav", 5, 0.0), "Loops/Patterns");
         // Unnamed, many transients, no BPM → loop (the transient fallback still works).
