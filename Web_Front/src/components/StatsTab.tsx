@@ -2,6 +2,7 @@ import { useState, useMemo, useRef } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
 import { groupColor, godColor, godCategory, CLOUD_PALETTE } from '../groupColors'
 import { findAudioFile } from '../audioLinking'
+import ScopeBar from './ScopeBar'
 
 interface StatsTabProps {
   analysisResult: any[];
@@ -42,6 +43,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [y2, setY2] = useState('Sustain');
   const [nowPlaying, setNowPlaying] = useState<string>('');
   const [plotAll, setPlotAll] = useState(false);
+  const [filterText, setFilterText] = useState('');
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Groups and (for the active group) subgroups present in the data.
@@ -61,11 +63,16 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   }, [analysisResult, group]);
 
   // The filtered dataset all charts are relative to.
-  const data = useMemo(() => analysisResult.filter(it => {
-    if (group && (it.group || 'Unclassified') !== group) return false;
-    if (sub && (it.subgroup || '').trim() !== sub) return false;
-    return true;
-  }), [analysisResult, group, sub]);
+  const data = useMemo(() => {
+    const q = filterText.trim().toLowerCase();
+    return analysisResult.filter(it => {
+      if (group && (it.group || 'Unclassified') !== group) return false;
+      if (sub && (it.subgroup || '').trim() !== sub) return false;
+      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+        .toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [analysisResult, group, sub, filterText]);
 
   const categoryData = useMemo(() => {
     const c: Record<string, number> = {};
@@ -126,13 +133,6 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     }
   };
 
-  const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string) => (
-    <button key={label} onClick={onClick} className={`btn ${active ? 'primary' : 'secondary'}`}
-      style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: color ? `3px solid ${color}` : undefined }}>
-      {label}
-    </button>
-  );
-
   if (analysisResult.length === 0) {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', color: 'var(--text-secondary)' }}>No data to graph. Scan a folder or load a .PEAK file.</div>;
   }
@@ -179,26 +179,19 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
       {/* Filter + player bar */}
-      <div style={{ padding: '0.4rem 0.75rem', background: '#111318', borderBottom: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
-          {filterBtn('All', !group, () => { setGroup(null); setSub(null); setPlotAll(false); })}
-          {groups.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); setPlotAll(false); }, groupColor(g, '')))}
-        </div>
-        {group && subgroups.length > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} subgroups:</span>
-            {filterBtn('All', !sub, () => setSub(null))}
-            {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), groupColor(group, sg)))}
-          </div>
-        )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} samples in scope</span>
-          <div style={{ flex: 1 }} />
-          <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => audioRef.current?.play()}>▶</button>
-          <span className="text-secondary" style={{ fontSize: '0.72rem', minWidth: '120px' }}>{nowPlaying || 'click a point to play'}</span>
-          <audio ref={audioRef} style={{ display: 'none' }} />
-        </div>
+      <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
+        <ScopeBar 
+          analysisResult={analysisResult} group={group} sub={sub} setGroup={(g) => { setGroup(g); setPlotAll(false); }} setSub={setSub} 
+          filterText={filterText} setFilterText={setFilterText}
+          rightContent={
+            <>
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} samples in scope</span>
+              <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', marginLeft: '0.5rem' }} onClick={() => audioRef.current?.play()}>▶</button>
+              <span className="text-secondary" style={{ fontSize: '0.72rem', minWidth: '120px' }}>{nowPlaying || 'click a point to play'}</span>
+              <audio ref={audioRef} style={{ display: 'none' }} />
+            </>
+          }
+        />
       </div>
 
       {/* Charts grid */}

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { findAudioFile } from '../audioLinking';
 import { generateNewName } from '../renameConfig';
+import ScopeBar from './ScopeBar';
 import { groupColor, complementColor } from '../groupColors';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
@@ -51,21 +52,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
-
-  // Groups present, and subgroups within the scoped group — for the scope bar.
-  const groups = useMemo(() => {
-    const s = new Set<string>();
-    for (const it of analysisResult) s.add(it.group || 'Unclassified');
-    return Array.from(s).sort();
-  }, [analysisResult]);
-  const subgroups = useMemo(() => {
-    if (!scopeGroup) return [];
-    const s = new Set<string>();
-    for (const it of analysisResult) {
-      if ((it.group || 'Unclassified') === scopeGroup && (it.subgroup || '').trim()) s.add(it.subgroup.trim());
-    }
-    return Array.from(s).sort();
-  }, [analysisResult, scopeGroup]);
 
   // Rows matching the group/subgroup scope AND the filter text.
   const filteredRows = useMemo(() => {
@@ -322,42 +308,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
       {/* Top Half: Data Table */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
-          <div style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: '#111318' }}>
-              <button className="btn secondary" style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem' }}>Open .PEAK...</button>
-              <input type="text" placeholder="Filter…" value={filter} onChange={e => setFilter(e.target.value)} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px' }} />
-              <div style={{ flex: 1 }} />
-              <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
-          </div>
-
-          {/* Group / subgroup scope filter bar. When a group is active, it and
-              its subgroups lead on the left and the other groups grey out. */}
-          <div style={{ padding: '0.3rem 1rem', display: 'flex', alignItems: 'center', gap: '0.3rem', flexWrap: 'wrap', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
-              <button className={`btn ${!scopeGroup ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => { setScopeGroup(null); setScopeSub(null); }}>All</button>
-
-              {scopeGroup ? (
-                  <>
-                      {/* Active group + its subgroups, front and centre */}
-                      <button className="btn primary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(scopeGroup, '')}` }} onClick={() => setScopeSub(null)}>{scopeGroup}</button>
-                      {subgroups.length > 0 && (
-                          <>
-                              <button className={`btn ${!scopeSub ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }} onClick={() => setScopeSub(null)}>All {scopeGroup}</button>
-                              {subgroups.map(sg => (
-                                  <button key={sg} className={`btn ${scopeSub === sg ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(scopeGroup, sg)}` }} onClick={() => setScopeSub(sg)}>{sg}</button>
-                              ))}
-                          </>
-                      )}
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', margin: '0 0.25rem' }}>│</span>
-                      {/* Every other group, greyed until the scope is cleared */}
-                      {groups.filter(g => g !== scopeGroup).map(g => (
-                          <button key={g} className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(g, '')}`, opacity: 0.35 }} onClick={() => { setScopeGroup(g); setScopeSub(null); }}>{g}</button>
-                      ))}
-                  </>
-              ) : (
-                  groups.map(g => (
-                      <button key={g} className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: `3px solid ${groupColor(g, '')}` }} onClick={() => { setScopeGroup(g); setScopeSub(null); }}>{g}</button>
-                  ))
-              )}
+          <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
+              <ScopeBar 
+                analysisResult={analysisResult} 
+                group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
+                filterText={filter} setFilterText={setFilter}
+                rightContent={<div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>}
+              />
           </div>
           <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>

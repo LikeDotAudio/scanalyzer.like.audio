@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { buildScript, type RenamePlan, type ScriptKind, type Mode, type BitDepth } from '../renameScript';
 import { type TokenKey, TOKEN_LABELS, type Slot, getSavedPrepend, getSavedAppend, tokenValue } from '../renameConfig';
+import ScopeBar from './ScopeBar';
 
 interface RenameTabProps {
   analysisResult: any[];
@@ -9,6 +10,21 @@ interface RenameTabProps {
 const PREVIEW_ROW_H = 26; // virtualized preview row height (px)
 
 export default function RenameTab({ analysisResult }: RenameTabProps) {
+  const [scopeGroup, setScopeGroup] = useState<string | null>(null);
+  const [scopeSub, setScopeSub] = useState<string | null>(null);
+  const [filterText, setFilterText] = useState('');
+
+  const data = useMemo(() => {
+    const q = filterText.trim().toLowerCase();
+    return analysisResult.filter(it => {
+      if (scopeGroup && (it.group || 'Unclassified') !== scopeGroup) return false;
+      if (scopeSub && (it.subgroup || '').trim() !== scopeSub) return false;
+      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+        .toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [analysisResult, scopeGroup, scopeSub, filterText]);
+
   const [flatten, setFlatten] = useState(false);
 
   // Destination subfolders (unchanged behaviour).
@@ -63,14 +79,7 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
     return () => ro.disconnect();
   }, []);
 
-  // Compose the new base name for a record from the ordered enabled tokens.
-  const newNameFor = (item: any): string => {
-    const base = String(item.name || '').replace(/\.[^.]+$/, '');
-    const ext = (String(item.name || '').match(/\.[^.]+$/) || [''])[0];
-    const pre = prepend.filter(s => s.enabled).map(s => tokenValue(item, s.key)).filter(Boolean);
-    const post = append.filter(s => s.enabled).map(s => tokenValue(item, s.key)).filter(Boolean);
-    return [...pre, base, ...post].join('_') + ext;
-  };
+
 
   // Destination subfolder path for a record, from the enabled subfolder tokens.
   const folderFor = (item: any): string =>
@@ -79,10 +88,10 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
 
   // Build the source→destination plan and download a rename script.
   const generate = (kind: ScriptKind) => {
-    const plan: RenamePlan = analysisResult.map(item => {
+    const plan: RenamePlan = data.map(item => {
       const src = item.path || item.name;
       const folder = folderFor(item);
-      const dest = [destRoot, folder, newNameFor(item)].filter(Boolean).join('/');
+      const dest = [destRoot, folder, generateNewName(item, prepend, append)].filter(Boolean).join('/');
       return { src, dest };
     });
     const { text, filename } = buildScript(plan, kind, mode, { enabled: resample, sampleRate, bitDepth });
@@ -124,6 +133,16 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', padding: '0.5rem', gap: '0.5rem', overflow: 'hidden' }}>
+
+      <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
+        <ScopeBar 
+          analysisResult={analysisResult} group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
+          filterText={filterText} setFilterText={setFilterText}
+          rightContent={
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} / {analysisResult.length} files</span>
+          }
+        />
+      </div>
 
       {/* Top Controls */}
       <div className="glass-panel" style={{ padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -202,12 +221,12 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <span className="text-secondary" style={{ fontSize: '0.85rem' }}>Generate rename script:</span>
-            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('bash')} title="For macOS / Linux">Bash (.sh) — Mac</button>
-            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('powershell')} title="For Windows">PowerShell (.ps1) — Windows</button>
-            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('python')} title="Cross-platform — runs anywhere Python does">Python (.py) — anything</button>
+            <button className="btn primary" disabled={data.length === 0} onClick={() => generate('bash')} title="For macOS / Linux">Bash (.sh) — Mac</button>
+            <button className="btn primary" disabled={data.length === 0} onClick={() => generate('powershell')} title="For Windows">PowerShell (.ps1) — Windows</button>
+            <button className="btn primary" disabled={data.length === 0} onClick={() => generate('python')} title="Cross-platform — runs anywhere Python does">Python (.py) — anything</button>
           </div>
           <div className="text-secondary" style={{ fontSize: '0.9rem' }}>
-            {analysisResult.length} files → {mode} into “{destRoot}”
+            {data.length} files → {mode} into “{destRoot}”
           </div>
         </div>
       </div>
@@ -226,7 +245,7 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
             </thead>
             <tbody>
               {(() => {
-                const total = analysisResult.length;
+                const total = data.length;
                 const OVER = 12;
                 const start = Math.max(0, Math.floor(scrollTop / PREVIEW_ROW_H) - OVER);
                 const end = Math.min(total, Math.ceil((scrollTop + viewportH) / PREVIEW_ROW_H) + OVER);
@@ -234,9 +253,9 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
                 return (
                   <>
                     {start > 0 && <tr style={{ height: start * PREVIEW_ROW_H }}><td colSpan={3} style={{ padding: 0 }} /></tr>}
-                    {analysisResult.slice(start, end).map((item, i) => {
+                    {data.slice(start, end).map((item, i) => {
                       const folder = folderFor(item);
-                      const name = newNameFor(item);
+                      const name = generateNewName(item, prepend, append);
                       return (
                         <tr key={start + i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', height: PREVIEW_ROW_H }}>
                           <td style={{ ...cellS, color: 'var(--text-secondary)' }} title={item.path}>{item.path}</td>

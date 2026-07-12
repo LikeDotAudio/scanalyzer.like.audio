@@ -2,6 +2,7 @@ import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
 import SampleCloud, { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS } from '../SampleCloud';
 import { groupColor, subKey } from '../groupColors';
 import { findAudioFile } from '../audioLinking';
+import ScopeBar from './ScopeBar';
 
 interface CloudTabProps {
   analysisResult: any[];
@@ -34,6 +35,20 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const [zAxis, setZAxis] = useState(() => getPref('zAxis', 'Complexity'));
   const [sizeAxis, setSizeAxis] = useState(() => getPref('sizeAxis', 'Length'));
   const [colorBy, setColorBy] = useState(() => getPref('colorBy', 'Group'));
+  const [scopeGroup, setScopeGroup] = useState<string | null>(null);
+  const [scopeSub, setScopeSub] = useState<string | null>(null);
+  const [filterText, setFilterText] = useState('');
+
+  const data = useMemo(() => {
+    const q = filterText.trim().toLowerCase();
+    return analysisResult.filter(it => {
+      if (scopeGroup && (it.group || 'Unclassified') !== scopeGroup) return false;
+      if (scopeSub && (it.subgroup || '').trim() !== scopeSub) return false;
+      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+        .toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [analysisResult, scopeGroup, scopeSub, filterText]);
 
   useEffect(() => {
     localStorage.setItem('scanalyzer_cloud_xAxis', xAxis);
@@ -46,6 +61,11 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    setSelectedIndex(null);
+  }, [scopeGroup, scopeSub]);
+
   const [showGraphOptions, setShowGraphOptions] = useState(() => window.innerWidth > 768);
   const [showGroups, setShowGroups] = useState(false);
   const [playMsg, setPlayMsg] = useState<string>('');
@@ -94,7 +114,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
 
   const handlePick = (index: number) => {
     setSelectedIndex(index);
-    const item = analysisResult[index];
+    const item = data[index];
     if (!item) return;
     onSound?.(item.name || '');
     if (audioFiles.length === 0) { setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
@@ -114,15 +134,24 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
 
   const replay = () => { audioRef.current?.play().catch(() => {}); };
 
-  const selected = selectedIndex != null ? analysisResult[selectedIndex] : null;
+  const selected = selectedIndex != null ? data[selectedIndex] : null;
 
   return (
-    <div style={{ position: 'relative', flex: 1, width: '100%', height: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
+      <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)', zIndex: 10 }}>
+          <ScopeBar 
+            analysisResult={analysisResult} group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
+            filterText={filterText} setFilterText={setFilterText}
+            rightContent={
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} / {analysisResult.length} samples</span>
+            }
+          />
+      </div>
       {/* 3D WebGL Canvas Area */}
-      <section className="main-view glass-panel" style={{ margin: 0, padding: 0, overflow: 'hidden', width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+      <section className="main-view glass-panel" style={{ margin: 0, padding: 0, overflow: 'hidden', flex: 1, position: 'relative' }}>
         <Suspense fallback={<div style={{ color: 'white', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>Initializing 3D Engine...</div>}>
           <SampleCloud
-            data={analysisResult} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
+            data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
             sizeAxis={sizeAxis} colorBy={colorBy} hiddenGroups={hiddenGroups}
             selectedIndex={selectedIndex} onPick={handlePick} showAxes={showAxes}
           />
