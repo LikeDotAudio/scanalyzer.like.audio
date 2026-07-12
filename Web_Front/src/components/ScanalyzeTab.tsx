@@ -25,6 +25,8 @@ export default function ScanalyzeTab({
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
   const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
+  const [done, setDone] = useState(0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     initWasm().then(() => setWasmReady(true)).catch(console.error);
@@ -59,6 +61,8 @@ export default function ScanalyzeTab({
   const startAnalysis = async () => {
     setIsAnalyzing(true);
     setProgress(0);
+    setDone(0);
+    setTotal(pendingWavFiles.length);
     const newResults = [];
 
     for (let i = 0; i < pendingWavFiles.length; i++) {
@@ -66,7 +70,7 @@ export default function ScanalyzeTab({
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
         const folder = (file.webkitRelativePath || file.name).split('/')[0] || "folder";
-        
+
         try {
             const jsonResult = analyze_audio_buffer(uint8Array, file.name, folder);
             const parsed = JSON.parse(jsonResult);
@@ -77,21 +81,58 @@ export default function ScanalyzeTab({
             console.error(`Failed to analyze ${file.name}`, err);
         }
 
+        setDone(i + 1);
         setProgress(Math.round(((i + 1) / pendingWavFiles.length) * 100));
 
         await new Promise(resolve => setTimeout(resolve, 0));
     }
 
-    // Append new results to the existing ones!
-    setAnalysisResult([...analysisResult, ...newResults]);
+    // Append new results to the existing ones, then auto-download the analysis
+    // as a single .peak (the whole point of the scan).
+    const combined = [...analysisResult, ...newResults];
+    setAnalysisResult(combined);
+    try {
+        const blob = new Blob([JSON.stringify(combined, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sample_analysis.peak';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        console.error('Failed to auto-save .peak', err);
+    }
     setIsAnalyzing(false);
     setPendingWavFiles([]);
   };
 
   if (isAnalyzing) {
+      const pct = total ? Math.round((done / total) * 100) : 0;
       return (
           <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <div className="text-secondary" style={{ fontSize: '1.2rem' }}>Scanning in progress. Please wait...</div>
+              <div style={{ width: '100%', maxWidth: '640px' }}>
+                  <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', textAlign: 'center' }}>Scanning in progress…</h2>
+                  <div style={{ textAlign: 'center', color: 'var(--accent-primary)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                      {done.toLocaleString()} of {total.toLocaleString()} files &middot; {pct}%
+                  </div>
+                  <div style={{ width: '100%', height: '16px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', overflow: 'hidden', marginBottom: '1.5rem' }}>
+                      <div style={{ width: `${pct}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.15s' }} />
+                  </div>
+
+                  <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', padding: '1rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                      <strong style={{ color: 'var(--accent-primary)' }}>What happens next</strong>
+                      <ol style={{ margin: '0.5rem 0 0', paddingLeft: '1.25rem' }}>
+                          <li>When the scan finishes, a <strong>.peak</strong> file downloads automatically — this is the analysis of your shared folder.</li>
+                          <li>Load it back in with <strong>Load PEAK Files</strong> (top right).</li>
+                          <li>Then click <strong>Load Sounds</strong> to give the analyzer access again to read your local storage in real time.</li>
+                      </ol>
+                      <div style={{ marginTop: '0.75rem', color: 'var(--text-secondary)' }}>
+                          🔒 Again, nothing is uploaded — this is all done locally on your machine.
+                      </div>
+                  </div>
+              </div>
           </div>
       );
   }

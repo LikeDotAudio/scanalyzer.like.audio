@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { buildScript, type RenamePlan, type ScriptKind, type Mode } from '../renameScript';
+import { buildScript, type RenamePlan, type ScriptKind, type Mode, type BitDepth } from '../renameScript';
 
 interface RenameTabProps {
   analysisResult: any[];
@@ -104,6 +104,9 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
 
   const [destRoot, setDestRoot] = useState('Renamed Samples');
   const [mode, setMode] = useState<Mode>('copy');
+  const [resample, setResample] = useState(false);
+  const [sampleRate, setSampleRate] = useState(48000);
+  const [bitDepth, setBitDepth] = useState<BitDepth>('keep');
 
   // Virtualized preview scroll state.
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -141,7 +144,7 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
       const dest = [destRoot, folder, newNameFor(item)].filter(Boolean).join('/');
       return { src, dest };
     });
-    const { text, filename } = buildScript(plan, kind, mode);
+    const { text, filename } = buildScript(plan, kind, mode, { enabled: resample, sampleRate, bitDepth });
     const blob = new Blob([text], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -204,6 +207,34 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
           </label>
         </div>
 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.85rem' }}>
+            <input type="checkbox" checked={resample} onChange={e => setResample(e.target.checked)} /> Resample on export
+          </label>
+          {resample && (
+            <>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                Rate
+                <select value={sampleRate} onChange={e => setSampleRate(Number(e.target.value))}
+                  style={{ background: '#000', color: '#fff', border: '1px solid var(--border-color)', borderRadius: 0, padding: '0.15rem 0.3rem' }}>
+                  {[22050, 44100, 48000, 88200, 96000, 192000].map(r => <option key={r} value={r}>{r} Hz</option>)}
+                </select>
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                Bit depth
+                <select value={bitDepth} onChange={e => setBitDepth(e.target.value as BitDepth)}
+                  style={{ background: '#000', color: '#fff', border: '1px solid var(--border-color)', borderRadius: 0, padding: '0.15rem 0.3rem' }}>
+                  <option value="keep">Keep</option>
+                  <option value="16">16-bit</option>
+                  <option value="24">24-bit</option>
+                  <option value="32f">32-bit float</option>
+                </select>
+              </label>
+              <span className="text-secondary" style={{ fontSize: '0.72rem' }}>requires ffmpeg on PATH</span>
+            </>
+          )}
+        </div>
+
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
           {/* Subfolders */}
           <div style={boxStyle}>
@@ -220,12 +251,19 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
           {renderOrderedList('Append to file name (top → first)', append, setAppend)}
         </div>
 
+        <div style={{ background: 'rgba(244, 144, 44, 0.1)', border: '1px solid var(--accent-primary)', padding: '0.6rem 0.75rem', fontSize: '0.82rem', lineHeight: 1.5 }}>
+          <strong style={{ color: 'var(--accent-primary)' }}>⚠ Run these scripts at your own risk.</strong> The browser can't touch your
+          local files, so the script must be run <strong>on your own machine</strong>. Test it on a <strong>small folder first</strong>.
+          By default it <strong>copies</strong> files from their original location to the new location (creating the destination
+          folders as needed) — your originals are left untouched unless you chose “Move”.
+        </div>
+
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <span className="text-secondary" style={{ fontSize: '0.85rem' }}>Generate rename script:</span>
-            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('bash')}>Bash (.sh)</button>
-            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('powershell')}>PowerShell (.ps1)</button>
-            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('python')}>Python (.py)</button>
+            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('bash')} title="For macOS / Linux">Bash (.sh) — Mac</button>
+            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('powershell')} title="For Windows">PowerShell (.ps1) — Windows</button>
+            <button className="btn primary" disabled={analysisResult.length === 0} onClick={() => generate('python')} title="Cross-platform — runs anywhere Python does">Python (.py) — anything</button>
           </div>
           <div className="text-secondary" style={{ fontSize: '0.9rem' }}>
             {analysisResult.length} files → {mode} into “{destRoot}”
