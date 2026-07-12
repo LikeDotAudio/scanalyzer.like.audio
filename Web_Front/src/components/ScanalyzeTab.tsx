@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import initWasm, { analyze_audio_buffer } from 'wasm_analyzer';
 import { filterAudioFiles } from '../audioLinking';
 
@@ -29,20 +29,23 @@ export default function ScanalyzeTab({
   const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
   const [done, setDone] = useState(0);
   const [total, setTotal] = useState(0);
+  const stopRef = useRef(false);
 
   useEffect(() => {
     initWasm().then(() => setWasmReady(true)).catch(console.error);
   }, []);
 
-  const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+  // Discover WAV files in the picked folder. everyNth > 1 samples the library
+  // (e.g. every 50th file) for a quick representative test scan.
+  const discover = (files: FileList | null, everyNth = 1) => {
     if (!files || !wasmReady) return;
 
     // Create a Set of already analyzed files to enable resuming
     const existingPaths = new Set(analysisResult.map(res => res.path));
 
-    const allWavFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.wav'));
-    
+    let allWavFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.wav'));
+    if (everyNth > 1) allWavFiles = allWavFiles.filter((_, i) => i % everyNth === 0);
+
     // Only process files we haven't seen yet
     const wavFilesToProcess = allWavFiles.filter(file => {
         const folder = (file.webkitRelativePath || file.name).split('/')[0] || "folder";
@@ -60,14 +63,38 @@ export default function ScanalyzeTab({
     setAudioFiles(filterAudioFiles(Array.from(files))); // Link audio folder automatically when they scan
   };
 
+  const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => discover(e.target.files, 1);
+
+  const downloadPeak = (records: any[]) => {
+    try {
+        const now = new Date();
+        const p = (n: number) => String(n).padStart(2, '0');
+        const ts = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}${p(now.getHours())}${p(now.getMinutes())}`;
+        const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Scanalyzer.like.audio - File Audit ${ts}.peak`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        console.error('Failed to save .peak', err);
+    }
+  };
+
   const startAnalysis = async () => {
     setIsAnalyzing(true);
     setProgress(0);
     setDone(0);
     setTotal(pendingWavFiles.length);
+    stopRef.current = false;
     const newResults = [];
+    let stopped = false;
 
     for (let i = 0; i < pendingWavFiles.length; i++) {
+        if (stopRef.current) { stopped = true; break; }
         const file = pendingWavFiles[i];
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
@@ -89,26 +116,18 @@ export default function ScanalyzeTab({
         await new Promise(resolve => setTimeout(resolve, 0));
     }
 
-    // Append new results to the existing ones, then auto-download the analysis
-    // as a single .peak (the whole point of the scan).
+    // Keep whatever was scanned. On a clean finish, auto-download the .peak;
+    // on a manual stop, ask whether to keep the partial analysis.
     const combined = [...analysisResult, ...newResults];
     setAnalysisResult(combined);
-    try {
-        const now = new Date();
-        const p = (n: number) => String(n).padStart(2, '0');
-        const ts = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}${p(now.getHours())}${p(now.getMinutes())}`;
-        const blob = new Blob([JSON.stringify(combined, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Scanalyzer.like.audio - File Audit ${ts}.peak`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    } catch (err) {
-        console.error('Failed to auto-save .peak', err);
+    if (stopped) {
+        if (window.confirm(`Scan stopped after ${newResults.length} file(s). Keep the .PEAK of what was scanned so far?`)) {
+            downloadPeak(combined);
+        }
+    } else {
+        downloadPeak(combined);
     }
+    stopRef.current = false;
     setIsAnalyzing(false);
     setPendingWavFiles([]);
   };
@@ -122,8 +141,11 @@ export default function ScanalyzeTab({
                   <div style={{ textAlign: 'center', color: 'var(--accent-primary)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.5rem' }}>
                       {done.toLocaleString()} of {total.toLocaleString()} files &middot; {pct}%
                   </div>
-                  <div style={{ width: '100%', height: '16px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', overflow: 'hidden', marginBottom: '1.5rem' }}>
+                  <div style={{ width: '100%', height: '16px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', overflow: 'hidden', marginBottom: '1rem' }}>
                       <div style={{ width: `${pct}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.15s' }} />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                      <button className="btn" style={{ background: '#ef4444', color: 'white', border: 'none' }} onClick={() => { stopRef.current = true; }}>■ Stop scan</button>
                   </div>
 
                   <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', padding: '1rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
@@ -182,6 +204,18 @@ export default function ScanalyzeTab({
             directory="true"
             style={{ display: 'none' }}
             onChange={handleFolderUpload}
+            disabled={!wasmReady}
+          />
+        </label>
+        <label className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem' }} title="Quick test: analyze every 50th file discovered">
+          🎲 Sample the Samples — scan every 50th file (quick test)
+          <input
+            type="file"
+            // @ts-ignore
+            webkitdirectory="true"
+            directory="true"
+            style={{ display: 'none' }}
+            onChange={(e) => discover(e.target.files, 50)}
             disabled={!wasmReady}
           />
         </label>
