@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { buildScript, type RenamePlan, type ScriptKind, type Mode, type BitDepth } from '../renameScript';
-import { type TokenKey, TOKEN_LABELS, type Slot, getSavedPrepend, getSavedAppend, tokenValue, generateNewName } from '../renameConfig';
+import { TOKEN_LABELS, type Slot, getSavedSubfolders, getSavedPrepend, getSavedAppend, tokenValue, generateNewName } from '../renameConfig';
 import ScopeBar from './ScopeBar';
 
 interface RenameTabProps {
@@ -35,20 +35,16 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
 
   const [flatten, setFlatten] = useState(false);
 
-  // Destination subfolders (unchanged behaviour).
-  const [subfolders, setSubfolders] = useState<Record<string, boolean>>({
-    godCategory: true, group: true, subgroup: true, timbre: false,
-    instrumentFamily: false, distortion: false, envelopeShape: false,
-    lengthTier: false, cluster: false,
-  });
-
+  // Destination subfolders (ordered tokens)
+  const [subfolders, setSubfolders] = useState<Slot[]>(getSavedSubfolders);
   const [prepend, setPrepend] = useState<Slot[]>(getSavedPrepend);
   const [append, setAppend] = useState<Slot[]>(getSavedAppend);
 
   useEffect(() => {
+    localStorage.setItem('scanalyzer_rename_subfolders', JSON.stringify(subfolders));
     localStorage.setItem('scanalyzer_rename_prepend', JSON.stringify(prepend));
     localStorage.setItem('scanalyzer_rename_append', JSON.stringify(append));
-  }, [prepend, append]);
+  }, [subfolders, prepend, append]);
 
   const move = (setter: React.Dispatch<React.SetStateAction<Slot[]>>, idx: number, dir: -1 | 1) => {
     setter(prev => {
@@ -91,8 +87,8 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
 
   // Destination subfolder path for a record, from the enabled subfolder tokens.
   const folderFor = (item: any): string =>
-    Object.entries(subfolders).filter(([, v]) => v)
-      .map(([k]) => tokenValue(item, k as TokenKey)).filter(Boolean).join('/');
+    subfolders.filter(s => s.enabled)
+      .map(s => tokenValue(item, s.key)).filter(Boolean).join('/');
 
   // Build the source→destination plan and download a rename script.
   const generate = (kind: ScriptKind) => {
@@ -204,16 +200,7 @@ export default function RenameTab({ analysisResult }: RenameTabProps) {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
-          {/* Subfolders */}
-          <div style={boxStyle}>
-            <h4 style={{ marginBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.35rem', fontSize: '0.85rem' }}>Destination subfolders (one level each)</h4>
-            {Object.entries(subfolders).map(([key, val]) => (
-              <label key={key} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '2px', fontSize: '0.85rem', cursor: 'pointer' }}>
-                <input type="checkbox" checked={val} onChange={e => setSubfolders({ ...subfolders, [key]: e.target.checked })} />
-                {TOKEN_LABELS[key as TokenKey] || key}
-              </label>
-            ))}
-          </div>
+          {renderOrderedList('Destination subfolders (one level each)', subfolders, setSubfolders)}
 
           {renderOrderedList('Prepend to file name (top → first)', prepend, setPrepend)}
           {renderOrderedList('Append to file name (top → first)', append, setAppend)}

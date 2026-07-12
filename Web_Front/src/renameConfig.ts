@@ -56,6 +56,13 @@ export function buildSlots(enabledDefaults: TokenKey[], order: TokenKey[]): Slot
   return full.map(key => ({ key, enabled: enabledDefaults.includes(key) }));
 }
 
+export function getSavedSubfolders(): Slot[] {
+  const v = localStorage.getItem('scanalyzer_rename_subfolders');
+  if (v) try { return JSON.parse(v); } catch {}
+  return buildSlots(['godCategory', 'group', 'subgroup'],
+      ['godCategory', 'group', 'subgroup', 'timbre', 'instrumentFamily', 'distortion', 'envelopeShape', 'lengthTier', 'cluster']);
+}
+
 export function getSavedPrepend(): Slot[] {
   const v = localStorage.getItem('scanalyzer_rename_prepend');
   if (v) try { return JSON.parse(v); } catch {}
