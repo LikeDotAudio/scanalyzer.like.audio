@@ -59,6 +59,7 @@ pub mod stft;
 pub mod stream;
 pub mod sustain;
 pub mod tags;
+pub mod tempo;
 pub mod timbre;
 pub mod transients;
 pub mod version;

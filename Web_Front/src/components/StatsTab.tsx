@@ -28,6 +28,11 @@ const selStyle: React.CSSProperties = {
   borderRadius: 0, padding: '0.15rem 0.3rem', fontSize: '0.75rem',
 };
 
+// Recharts scatter with a Cell per point is slow; above this it's gated behind
+// a group pick / explicit "plot all", and above SAMPLE_MAX it's downsampled.
+const SCATTER_LIMIT = 3000;
+const SAMPLE_MAX = 5000;
+
 export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsTabProps) {
   const [group, setGroup] = useState<string | null>(null);      // null = All
   const [sub, setSub] = useState<string | null>(null);
@@ -36,6 +41,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [x2, setX2] = useState('Attack');
   const [y2, setY2] = useState('Sustain');
   const [nowPlaying, setNowPlaying] = useState<string>('');
+  const [plotAll, setPlotAll] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Groups and (for the active group) subgroups present in the data.
@@ -86,6 +92,14 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     return sg ? (subColors.get(sg) as string) : groupColor(it.group || 'Unclassified', '');
   };
 
+  // Downsample the scatter to keep it responsive on huge scopes.
+  const plotData = useMemo(() => {
+    if (data.length <= SAMPLE_MAX) return data;
+    const step = Math.ceil(data.length / SAMPLE_MAX);
+    return data.filter((_, i) => i % step === 0);
+  }, [data]);
+  const sampled = data.length > SAMPLE_MAX;
+
   const subgroupData = useMemo(() => {
     const c: Record<string, { value: number; group: string; sub: string }> = {};
     for (const it of data) {
@@ -123,6 +137,9 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', color: 'var(--text-secondary)' }}>No data to graph. Scan a folder or load a .PEAK file.</div>;
   }
 
+  // Gate the (expensive) scatter behind a group pick when the scope is huge.
+  const gated = !group && !plotAll && data.length > SCATTER_LIMIT;
+
   const chartCard = (title: string, xLabel: string, setX: (v: string) => void, yLabel: string, setY: (v: string) => void) => {
     const xk = NUM_FEATURES[xLabel], yk = NUM_FEATURES[yLabel];
     return (
@@ -131,21 +148,30 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
           <span style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600 }}>{title}</span>
           <label style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>X <select style={selStyle} value={xLabel} onChange={e => setX(e.target.value)}>{NUM_LABELS.map(o => <option key={o}>{o}</option>)}</select></label>
           <label style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Y <select style={selStyle} value={yLabel} onChange={e => setY(e.target.value)}>{NUM_LABELS.map(o => <option key={o}>{o}</option>)}</select></label>
+          {!gated && sampled && <span className="text-secondary" style={{ fontSize: '0.68rem' }}>({plotData.length.toLocaleString()} of {data.length.toLocaleString()} shown)</span>}
         </div>
-        <ResponsiveContainer width="100%" height="100%">
-          <ScatterChart margin={{ top: 5, right: 15, bottom: 15, left: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-            <XAxis type="number" dataKey={xk} name={xLabel} stroke="var(--text-secondary)" fontSize={11} />
-            <YAxis type="number" dataKey={yk} name={yLabel} stroke="var(--text-secondary)" fontSize={11} />
-            <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }}
-              formatter={(v: any, n: any) => [v, n]} labelFormatter={() => ''} />
-            <Scatter data={data} onClick={(pt: any) => playItem(pt?.payload || pt)} cursor="pointer">
-              {data.map((entry, i) => (
-                <Cell key={i} fill={pointColor(entry)} />
-              ))}
-            </Scatter>
-          </ScatterChart>
-        </ResponsiveContainer>
+        {gated ? (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', textAlign: 'center', padding: '1rem', color: 'var(--text-secondary)' }}>
+            <div><strong style={{ color: 'var(--text-primary)' }}>{data.length.toLocaleString()}</strong> samples in scope</div>
+            <div style={{ fontSize: '0.8rem' }}>Pick a group above to explore — or plot everything (may be slow).</div>
+            <button className="btn primary" style={{ padding: '0.3rem 0.9rem' }} onClick={() => setPlotAll(true)}>Plot all {data.length.toLocaleString()}</button>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart margin={{ top: 5, right: 15, bottom: 15, left: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+              <XAxis type="number" dataKey={xk} name={xLabel} stroke="var(--text-secondary)" fontSize={11} />
+              <YAxis type="number" dataKey={yk} name={yLabel} stroke="var(--text-secondary)" fontSize={11} />
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }}
+                formatter={(v: any, n: any) => [v, n]} labelFormatter={() => ''} />
+              <Scatter data={plotData} onClick={(pt: any) => playItem(pt?.payload || pt)} cursor="pointer" isAnimationActive={false}>
+                {plotData.map((entry, i) => (
+                  <Cell key={i} fill={pointColor(entry)} />
+                ))}
+              </Scatter>
+            </ScatterChart>
+          </ResponsiveContainer>
+        )}
       </div>
     );
   };
@@ -156,8 +182,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       <div style={{ padding: '0.4rem 0.75rem', background: '#111318', borderBottom: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
-          {filterBtn('All', !group, () => { setGroup(null); setSub(null); })}
-          {groups.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, groupColor(g, '')))}
+          {filterBtn('All', !group, () => { setGroup(null); setSub(null); setPlotAll(false); })}
+          {groups.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); setPlotAll(false); }, groupColor(g, '')))}
         </div>
         {group && subgroups.length > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>

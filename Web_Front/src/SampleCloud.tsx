@@ -1,6 +1,6 @@
 import { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useThree, type ThreeEvent } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { groupColor, godColor, godCategory, subKey } from './groupColors'
 
@@ -82,6 +82,22 @@ function colorFor(item: any, colorBy: string): string {
   if (colorBy === 'God Category') return godColor(godCategory(group));
   if (colorBy === 'Subgroup') return groupColor(group, item.subgroup || '');
   return groupColor(group, '');
+}
+
+// 3D axis lines through the origin + DOM labels at their ends.
+function Axes({ xLabel, yLabel, zLabel }: { xLabel: string; yLabel: string; zLabel: string }) {
+  const L = SPAN / 2 + 2;
+  const label: React.CSSProperties = { fontSize: '11px', fontWeight: 700, whiteSpace: 'nowrap', pointerEvents: 'none', userSelect: 'none', textShadow: '0 0 3px #000' };
+  return (
+    <group>
+      <Line points={[[-L, 0, 0], [L, 0, 0]]} color="#f4902c" lineWidth={1} transparent opacity={0.4} />
+      <Line points={[[0, -L, 0], [0, L, 0]]} color="#0ea5e9" lineWidth={1} transparent opacity={0.4} />
+      <Line points={[[0, 0, -L], [0, 0, L]]} color="#aaaaaa" lineWidth={1} transparent opacity={0.4} />
+      <Html position={[L + 1, 0, 0]} center><span style={{ ...label, color: '#f4902c' }}>X · {xLabel}</span></Html>
+      <Html position={[0, L + 1, 0]} center><span style={{ ...label, color: '#0ea5e9' }}>Y · {yLabel}</span></Html>
+      <Html position={[0, 0, L + 1]} center><span style={{ ...label, color: '#cbd5e1' }}>Z · {zLabel}</span></Html>
+    </group>
+  );
 }
 
 interface CloudProps {
@@ -199,12 +215,13 @@ interface SampleCloudProps {
   hiddenGroups?: Set<string>;
   selectedIndex?: number | null;
   onPick?: (index: number) => void;
+  showAxes?: boolean;
 }
 
 export default function SampleCloud({
   data = [], xAxis = 'Pitch', yAxis = 'Group', zAxis = 'Complexity',
   sizeAxis = 'Length', colorBy = 'Group', hiddenGroups = new Set(),
-  selectedIndex = null, onPick = () => {},
+  selectedIndex = null, onPick = () => {}, showAxes = true,
 }: SampleCloudProps) {
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 0 }}>
@@ -217,6 +234,7 @@ export default function SampleCloud({
         <color attach="background" args={['#0B0E14']} />
         <ambientLight intensity={0.7} />
         <directionalLight position={[10, 10, 10]} intensity={0.6} />
+        {showAxes && <Axes xLabel={xAxis} yLabel={yAxis} zLabel={zAxis} />}
         <CloudPoints
           data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
           sizeAxis={sizeAxis} colorBy={colorBy} hiddenGroups={hiddenGroups}

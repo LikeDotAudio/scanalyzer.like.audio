@@ -41,7 +41,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     let spec = spectral_features(&data, sr_f)?; // None ⇒ too short to analyze
     let transients = count_transients(&data, sr);
     let sustain = sustain_ratio(&data, sr);
-    let (bpm, root_note) = read_acid(path);
+    let (mut bpm, root_note) = read_acid(path);
 
     // Frame-based features: one STFT shared by flux, MFCC, and centroid stats.
     let frames = crate::stft::stft_mags(&data, N_FFT, HOP);
@@ -110,6 +110,11 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     }
 
     let is_loop = l.group == "Loops/Patterns";
+    // If it reads as a loop but carries no ACID tempo, estimate BPM from the
+    // onset-envelope autocorrelation.
+    if bpm == 0.0 && (is_loop || l.timbre == "Loop" || l.length_class == "Loop") {
+        bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
+    }
     let god_class = god_category(&l.group, is_loop, &env).to_string();
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
@@ -219,7 +224,8 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     let spec = spectral_features(&data, sr_f)?; // None ⇒ too short to analyze
     let transients = count_transients(&data, sr);
     let sustain = sustain_ratio(&data, sr);
-    let (bpm, root_note) = (0.0, -1);
+    // Read the embedded ACID chunk from the raw bytes (BPM + root note).
+    let (mut bpm, root_note) = crate::acid::read_acid_buffer(buffer);
 
     // Frame-based features: one STFT shared by flux, MFCC, and centroid stats.
     let frames = crate::stft::stft_mags(&data, N_FFT, HOP);
@@ -283,6 +289,11 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     }
 
     let is_loop = l.group == "Loops/Patterns";
+    // If it reads as a loop but carries no ACID tempo, estimate BPM from the
+    // onset-envelope autocorrelation.
+    if bpm == 0.0 && (is_loop || l.timbre == "Loop" || l.length_class == "Loop") {
+        bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
+    }
     let god_class = god_category(&l.group, is_loop, &env).to_string();
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded

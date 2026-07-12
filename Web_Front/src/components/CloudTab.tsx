@@ -32,6 +32,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const [zAxis, setZAxis] = useState('Complexity');
   const [sizeAxis, setSizeAxis] = useState('Length');
   const [colorBy, setColorBy] = useState('Group');
+  const [showAxes, setShowAxes] = useState(true);
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -122,6 +123,9 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
         <label style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Color:
           <select style={selStyle} value={colorBy} onChange={e => setColorBy(e.target.value)}>{COLOR_OPTIONS.map(o => <option key={o}>{o}</option>)}</select>
         </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+          <input type="checkbox" checked={showAxes} onChange={e => setShowAxes(e.target.checked)} /> Axis labels
+        </label>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
           Presets:
           {PRESETS.map(([label, x, y, z, s]) => (
@@ -191,7 +195,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
             <SampleCloud
               data={analysisResult} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
               sizeAxis={sizeAxis} colorBy={colorBy} hiddenGroups={hiddenGroups}
-              selectedIndex={selectedIndex} onPick={handlePick}
+              selectedIndex={selectedIndex} onPick={handlePick} showAxes={showAxes}
             />
           </Suspense>
           <audio ref={audioRef} style={{ display: 'none' }} onError={() => setPlayMsg('Browser could not decode this audio file.')} />
