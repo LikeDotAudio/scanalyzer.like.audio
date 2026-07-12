@@ -32,6 +32,20 @@ function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, [])
 
+  // Auto-load default peak file on mount so users can wander around
+  useEffect(() => {
+    import('./assets/Scanalyzer.like.audio - File Audit 202607112254.peak?url').then(mod => {
+      fetch(mod.default)
+        .then(res => res.json())
+        .then(json => {
+          if (Array.isArray(json)) {
+            setAnalysisResult(prev => prev.length === 0 ? json : prev);
+          }
+        })
+        .catch(err => console.error("Failed to load default peak file:", err));
+    }).catch(err => console.error("Failed to import default peak file URL:", err));
+  }, [])
+
   const goToTab = (id: string) => { window.location.hash = `#/${id}`; setActiveTab(id); }
 
   const handleExportPeak = () => {
