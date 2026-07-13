@@ -28,7 +28,8 @@ from matplotlib.lines import Line2D
 from mpl_toolkits.mplot3d import Axes3D, proj3d  # noqa: F401 (registers the 3d projection)
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from .config import CLOUD_PALETTE, CATEGORY_ORDER, god_category, god_color, group_color
+from .config import (CLOUD_PALETTE, CATEGORY_ORDER, god_category, god_color, group_color,
+                     ucs_color, ucs_sub_color)
 from .inspector import RecordInspector
 
 
@@ -99,6 +100,13 @@ class GraphMixin:
             ttk.Label(axrow, text=text, foreground="#888").pack(side=tk.LEFT, padx=(0, 3))
             ttk.Combobox(axrow, textvariable=var, state="readonly", width=13, values=opts).pack(side=tk.LEFT, padx=(0, 10))
             var.trace_add("write", lambda *_: self._redraw_cloud())
+
+        # --- which taxonomy drives the colours, the tree and the filters ---
+        ttk.Label(axrow, text="Taxonomy:", foreground="#888").pack(side=tk.LEFT, padx=(6, 3))
+        self.taxonomy = tk.StringVar(value="UCS")
+        ttk.Combobox(axrow, textvariable=self.taxonomy, state="readonly", width=11,
+                     values=["UCS", "Name groups"]).pack(side=tk.LEFT, padx=(0, 10))
+        self.taxonomy.trace_add("write", lambda *_: self._switch_taxonomy())
 
         # --- one-click axis presets (A…J) ---
         ttk.Label(axrow, text="Presets:", foreground="#888").pack(side=tk.LEFT, padx=(6, 3))
@@ -218,6 +226,67 @@ class GraphMixin:
             pass
         self._apply_zoom()
 
+    # ---- taxonomy ---------------------------------------------------------
+    # The cloud's tree, colours and filters are driven through these six
+    # accessors, so the SAME code renders either taxonomy:
+    #
+    #   "Name groups" — god category -> name group -> curated subgroup (3 deep)
+    #   "UCS"         — UCS category -> UCS subcategory                (2 deep)
+    #
+    # Under UCS the mid level is keyed "CATEGORY\x1fSUB", never the bare
+    # subcategory: MISC exists in ~70 of the 82 categories, so a bare name
+    # would collide and one checkbox would hide seventy unrelated things.
+    def _ucs_mode(self):
+        return self.taxonomy.get() == "UCS"
+
+    def _tax_top(self, r):
+        if self._ucs_mode():
+            return r.get("ucs_category") or "(unclassified)"
+        return god_category(r.get("group", "Other") or "Other")
+
+    def _tax_mid(self, r):
+        """(key, label) for the middle level."""
+        if self._ucs_mode():
+            cat = r.get("ucs_category") or "(unclassified)"
+            sub = r.get("ucs_subcategory") or "(none)"
+            return (cat + "\x1f" + sub, sub)
+        g = r.get("group", "Other") or "Other"
+        return (g, g)
+
+    def _tax_sub(self, r):
+        """Third level. UCS has none — its subcategory IS the middle level."""
+        return "" if self._ucs_mode() else self._deeper_sub(r)
+
+    def _tax_top_color(self, top):
+        return ucs_color(top) if self._ucs_mode() else god_color(top)
+
+    def _tax_mid_color(self, mid_key):
+        if self._ucs_mode():
+            cat, _, sub = mid_key.partition("\x1f")
+            return ucs_sub_color(cat, sub)
+        return group_color(mid_key)
+
+    def _tax_sub_color(self, mid_key, sub):
+        if self._ucs_mode():
+            cat, _, s = mid_key.partition("\x1f")
+            return ucs_sub_color(cat, s)
+        return group_color(mid_key, sub)
+
+    def _tax_point_color(self, r):
+        if self._ucs_mode():
+            return ucs_sub_color(r.get("ucs_category") or "", r.get("ucs_subcategory") or "")
+        return group_color(r.get("group") or "", r.get("subgroup") or "")
+
+    def _switch_taxonomy(self):
+        """Swapping taxonomy invalidates every checkbox: the keys mean something
+        else now. Rebuild the tree from scratch rather than half-migrate it."""
+        self.category_vars.clear()
+        self.group_vars.clear()
+        self.subgroup_vars.clear()
+        self._group_box_keys = None
+        self._sync_group_checkboxes()
+        self._redraw_cloud()
+
     def _color_for(self, groups, g):
         return group_color(g)
 
@@ -275,24 +344,32 @@ class GraphMixin:
         counts_cat = {}
         counts_group = {}
         counts_sub = {}
+        mid_top = {}   # mid key -> its top-level category
+        mid_label = {}  # mid key -> display label
         for r in self.d_rec:
-            g = r.get("group", "Other") or "Other"
-            s = self._deeper_sub(r)
+            c = self._tax_top(r)
+            g, glabel = self._tax_mid(r)
+            s = self._tax_sub(r)
             tree.setdefault(g, set()).add(s)
-            
-            c = god_category(g)
+            mid_top[g] = c
+            mid_label[g] = glabel
+
             counts_cat[c] = counts_cat.get(c, 0) + 1
             counts_group[g] = counts_group.get(g, 0) + 1
             if s:
                 counts_sub[(g, s)] = counts_sub.get((g, s), 0) + 1
+        self._mid_label = mid_label
 
-        # group each name group under its god-category, keeping category order.
+        # Nest each mid level under its top category.
         by_cat = {}
-        for g in sorted(tree):
+        for g in sorted(tree, key=lambda k: mid_label.get(k, k)):
             subs = tuple(sorted(s for s in tree[g] if s))
-            by_cat.setdefault(god_category(g), []).append((g, subs))
-        cats = [c for c in CATEGORY_ORDER if c in by_cat] + \
-               [c for c in sorted(by_cat) if c not in CATEGORY_ORDER]
+            by_cat.setdefault(mid_top[g], []).append((g, subs))
+        if self._ucs_mode():
+            cats = sorted(by_cat)
+        else:
+            cats = [c for c in CATEGORY_ORDER if c in by_cat] + \
+                   [c for c in sorted(by_cat) if c not in CATEGORY_ORDER]
         structure = tuple((c, counts_cat[c], tuple((g, counts_group[g], tuple((s, counts_sub[(g, s)]) for s in by_cat_g_subs)) for g, by_cat_g_subs in by_cat[c])) for c in cats)
         if structure == getattr(self, "_group_box_keys", None):
             return
@@ -303,7 +380,7 @@ class GraphMixin:
             if cvar is None:
                 cvar = tk.BooleanVar(value=True)
                 self.category_vars[cat] = cvar
-            ccol = god_color(cat)
+            ccol = self._tax_top_color(cat)
             tk.Checkbutton(self.group_box, text=f"{cat} ({cat_count})", variable=cvar, anchor="w",
                            bg="#2a2a2a", activebackground="#2a2a2a",
                            fg=ccol, activeforeground=ccol, selectcolor="#101010",
@@ -315,8 +392,9 @@ class GraphMixin:
                 if var is None:
                     var = tk.BooleanVar(value=True)
                     self.group_vars[g] = var
-                gcol = group_color(g)
-                tk.Checkbutton(self.group_box, text=f"  {g} ({g_count})", variable=var, anchor="w",
+                gcol = self._tax_mid_color(g)
+                glabel = self._mid_label.get(g, g)
+                tk.Checkbutton(self.group_box, text=f"  {glabel} ({g_count})", variable=var, anchor="w",
                                bg="#1e1e1e", activebackground="#1e1e1e",
                                fg=gcol, activeforeground=gcol, selectcolor="#101010",
                                bd=0, highlightthickness=0, relief=tk.FLAT,
@@ -327,7 +405,7 @@ class GraphMixin:
                     if sv is None:
                         sv = tk.BooleanVar(value=True)
                         self.subgroup_vars[(g, s)] = sv
-                    scol = group_color(g, s)
+                    scol = self._tax_sub_color(g, s)
                     tk.Checkbutton(self.group_box, text=f"     ↳ {s} ({s_count})", variable=sv, anchor="w",
                                    bg="#1e1e1e", activebackground="#1e1e1e",
                                    fg=scol, activeforeground=scol, selectcolor="#101010",
@@ -368,11 +446,11 @@ class GraphMixin:
     def _rec_visible(self, r):
         """True when both the record's group and (if any) its curated subgroup
         are checked in the show/hide list."""
-        g = r.get("group", "Other") or "Other"
+        g, _label = self._tax_mid(r)
         gv = self.group_vars.get(g)
         if gv is not None and not gv.get():
             return False
-        s = self._deeper_sub(r)
+        s = self._tax_sub(r)
         if s:
             sv = self.subgroup_vars.get((g, s))
             if sv is not None and not sv.get():
@@ -551,9 +629,9 @@ class GraphMixin:
         zs = np.array(p["z"]["vals"], dtype=float)
         sizes = np.array(p["sizes"], dtype=float)
         xs, ys, zs = self._apply_mono_stereo_sign(recs, p, x_key, y_key, z_key, xs, ys, zs)
-        # God-category colour system: hue = category, shade = group, nudge =
-        # subgroup — the same colours the tables use.
-        colors = [group_color(r.get("group") or "", r.get("subgroup") or "") for r in recs]
+        # Whichever taxonomy is selected: hue = top category, shade = the level
+        # below it — the same colours the tables and the web cloud use.
+        colors = [self._tax_point_color(r) for r in recs]
 
         self._pts = (xs, ys, zs)
         self._pt_recs = recs
@@ -606,15 +684,29 @@ class GraphMixin:
         return xs, ys, zs
 
     def _draw_legends(self, groups, size_legend, size_label):
-        """Colour legend (name groups) + a separate bubble-size legend."""
-        color_handles = [Line2D([0], [0], marker="o", linestyle="", markersize=6,
-                                markerfacecolor=self._color_for(groups, g), markeredgecolor="none", label=g)
-                         for g in groups]
+        """Colour legend + a separate bubble-size legend. Under UCS the legend
+        lists the PARENT categories present, not the name groups — the layout
+        engine's `groups` list is name-group only and would be meaningless."""
+        if self._ucs_mode():
+            present = []
+            for r in self.d_rec:
+                c = self._tax_top(r)
+                if c not in present:
+                    present.append(c)
+            legend_title = "UCS category"
+            color_handles = [Line2D([0], [0], marker="o", linestyle="", markersize=6,
+                                    markerfacecolor=self._tax_top_color(c), markeredgecolor="none", label=c)
+                             for c in sorted(present)]
+        else:
+            legend_title = "Name group"
+            color_handles = [Line2D([0], [0], marker="o", linestyle="", markersize=6,
+                                    markerfacecolor=self._color_for(groups, g), markeredgecolor="none", label=g)
+                             for g in groups]
         # Pin to the window's top-left corner (figure coords), off the cube.
         leg1 = self.ax.legend(handles=color_handles, loc="upper left", fontsize=7, ncol=1,
                               facecolor="#101010", edgecolor="#333", labelcolor="#ccc",
                               framealpha=0.95, bbox_to_anchor=(0.004, 0.996),
-                              bbox_transform=self.fig.transFigure, title="Name group")
+                              bbox_transform=self.fig.transFigure, title=legend_title)
         if leg1 and leg1.get_title():
             leg1.get_title().set_color("#888")
             leg1.get_title().set_fontsize(7)

@@ -116,6 +116,61 @@ def group_color(group, subgroup=""):
                 0.92 - 0.18 * t + 0.045 * sj)
 
 
+# ---- UCS colour system ----------------------------------------------------
+# The second taxonomy. Unrelated to the god categories above: those are six
+# envelope buckets over the drum-pack name groups, whereas these are the 82
+# UCS categories the analyzer now scores every file against.
+#
+# Same idea, one level shallower: the UCS CATEGORY fixes the hue, the UCS
+# SUBCATEGORY picks a shade within it — so a category reads as one colour
+# family across the 3D cloud, the tables, and the web front-end.
+#
+# Hues are spread by the golden ratio over the category's index, which keeps
+# 82 of them maximally far apart instead of clumping. Read from index.json so
+# this list cannot drift from the source of truth.
+def _load_ucs_categories():
+    path = os.path.join(ROOT, "UCS", "categories", "index.json")
+    try:
+        import json
+        with open(path, encoding="utf-8") as fh:
+            return sorted(c["category"] for c in json.load(fh)["categories"])
+    except Exception:
+        return []
+
+
+UCS_CATEGORIES = _load_ucs_categories()
+_UCS_INDEX = {c: i for i, c in enumerate(UCS_CATEGORIES)}
+_GOLDEN_RATIO = 0.6180339887498949
+
+
+def _ucs_hue(category):
+    i = _UCS_INDEX.get(category)
+    return None if i is None else (i * _GOLDEN_RATIO) % 1.0
+
+
+def ucs_color(category):
+    """The UCS parent category's own colour."""
+    hue = _ucs_hue(category)
+    if hue is None:
+        return "#9a9a9a"  # unclassified
+    return _hsv(hue, 0.72, 0.95)
+
+
+def ucs_sub_color(category, subcategory=""):
+    """A shade of the parent category's hue, picked by the subcategory.
+
+    The subcategory is hashed rather than indexed: 'MISC' exists in ~70 of the
+    82 categories, so a subcategory name is only meaningful inside its parent.
+    """
+    hue = _ucs_hue(category)
+    if not subcategory:
+        return ucs_color(category)
+    t = (zlib.crc32(subcategory.encode()) % 9) / 8.0  # 0..1
+    if hue is None:
+        return _hsv(0.0, 0.0, 0.45 + 0.35 * t)
+    return _hsv(hue + (t - 0.5) * 0.045, 0.88 - 0.32 * t, 0.96 - 0.22 * t)
+
+
 def find_binary():
     """Locate the built Rust analyzer binary (build it if missing)."""
     exe = "oa_sample_analyzer" + (".exe" if os.name == "nt" else "")

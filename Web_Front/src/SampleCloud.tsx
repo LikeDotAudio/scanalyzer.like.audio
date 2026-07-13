@@ -2,7 +2,9 @@ import { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useThree, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
-import { groupColor, godColor, godCategory, subKey } from './groupColors'
+import { groupColor, godColor, godCategory, subKey, ucsColor, ucsSubColor,
+         taxonomyOf, taxonomyKeys } from './groupColors'
+import type { Taxonomy } from './groupColors'
 
 // Feature registry: label → how to read it. Numeric features are normalized
 // across the dataset; categorical ones are spread into bands. Mirrors the
@@ -28,7 +30,7 @@ export const AXIS_OPTIONS = Object.keys(CLOUD_FEATURES);
 export const SIZE_OPTIONS = Object.entries(CLOUD_FEATURES)
   .filter(([, f]) => !f.categorical)
   .map(([label]) => label);
-export const COLOR_OPTIONS = ['Group', 'God Category', 'Subgroup'];
+export const COLOR_OPTIONS = ['UCS Category', 'UCS Subcategory', 'Group', 'God Category', 'Subgroup'];
 export const SHAPE_OPTIONS = ['Instrument', 'God Category', 'Timbre', 'Uniform'];
 
 const SPAN = 30; // world units each axis is spread over
@@ -79,6 +81,13 @@ function makeSize(data: any[], label: string): (it: any) => number {
 }
 
 function colorFor(item: any, colorBy: string): string {
+  // The UCS taxonomy (82 categories, scored per file) — hue = parent category,
+  // shade = subcategory. Distinct from the god categories, which are six
+  // envelope buckets over the drum-pack name groups.
+  if (colorBy === 'UCS Category') return ucsColor(item.ucs_category || '');
+  if (colorBy === 'UCS Subcategory') {
+    return ucsSubColor(item.ucs_category || '', item.ucs_subcategory || '');
+  }
   const group = item.group || 'Unclassified';
   if (colorBy === 'God Category') return godColor(godCategory(group));
   if (colorBy === 'Subgroup') return groupColor(group, item.subgroup || '');
@@ -153,7 +162,7 @@ interface ShapeData {
   origIndex: number[];
 }
 
-function ShapeMesh({ shape, sData, hiddenGroups, allData, onPick }: { shape: string, sData: ShapeData, hiddenGroups: Set<string>, allData: any[], onPick: (i: number) => void }) {
+function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { shape: string, sData: ShapeData, hiddenGroups: Set<string>, allData: any[], taxonomy: Taxonomy, onPick: (i: number) => void }) {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   
@@ -164,8 +173,7 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, onPick }: { shape: str
       const origIdx = sData.origIndex[i];
       const [x, y, z] = sData.positions[i];
       const origIt = allData[origIdx];
-      const g = origIt.group || 'Unclassified';
-      const sg = origIt.subgroup || '';
+      const [g, sg] = taxonomyKeys(origIt, taxonomy);
       const hidden = hiddenGroups.has(g) || (!!sg && hiddenGroups.has(subKey(g, sg)));
       
       dummy.position.set(x, y, z);
@@ -181,7 +189,7 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, onPick }: { shape: str
     }
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-  }, [sData, hiddenGroups, allData, dummy, shape]);
+  }, [sData, hiddenGroups, allData, dummy, shape, taxonomy]);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -211,6 +219,8 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, onPick }: { shape: str
 
 function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hiddenGroups, selectedIndex, onPick }: CloudProps) {
   const count = data.length
+  // The legend, the filters and the colours must all read the same taxonomy.
+  const taxonomy = taxonomyOf(colorBy);
 
   const { shapeData, allPositions, selectedSize, selectedShape } = useMemo(() => {
     const xf = makeAxis(data, xAxis);
@@ -271,8 +281,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
       let best = -1, bestScore = Infinity;
       for (let i = 0; i < allPositions.length; i++) {
         if (i === selectedIndex) continue;
-        const g = data[i].group || 'Unclassified';
-        const sg = data[i].subgroup || '';
+        const [g, sg] = taxonomyKeys(data[i], taxonomy);
         if (hiddenGroups.has(g) || (sg && hiddenGroups.has(subKey(g, sg)))) continue;
         p.set(...allPositions[i]).project(camera);
         const dx = p.x - sel.x, dy = p.y - sel.y;
@@ -289,7 +298,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [allPositions, selectedIndex, hiddenGroups, data, onPick, camera]);
+  }, [allPositions, selectedIndex, hiddenGroups, data, onPick, camera, taxonomy]);
 
   if (count === 0) return null;
 
@@ -316,7 +325,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
   return (
     <>
       {Object.entries(shapeData).map(([shape, sData]) => (
-        <ShapeMesh key={shape} shape={shape} sData={sData} hiddenGroups={hiddenGroups} allData={data} onPick={onPick} />
+        <ShapeMesh key={shape} shape={shape} sData={sData} hiddenGroups={hiddenGroups} allData={data} taxonomy={taxonomy} onPick={onPick} />
       ))}
       {selPos && (
         <mesh position={selPos} rotation={meshRot(selectedShape)} scale={(selectedSize || 0.7) * 0.5 + 0.6}>

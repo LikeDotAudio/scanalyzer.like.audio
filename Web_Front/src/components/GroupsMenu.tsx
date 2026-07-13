@@ -1,7 +1,9 @@
-import { groupColor, subKey } from '../groupColors';
+import { subKey, taxonomyColor } from '../groupColors';
+import type { Taxonomy } from '../groupColors';
 
 interface GroupsMenuProps {
   groupTree: { group: string; count: number; subs: { name: string; count: number }[] }[];
+  taxonomy: Taxonomy;
   hiddenGroups: Set<string>;
   setHiddenGroups: (s: Set<string>) => void;
   expanded: Set<string>;
@@ -10,10 +12,10 @@ interface GroupsMenuProps {
   toggleExpand: (g: string) => void;
 }
 
-export default function GroupsMenu({ groupTree, hiddenGroups, setHiddenGroups, expanded, setExpanded, toggleKey, toggleExpand }: GroupsMenuProps) {
+export default function GroupsMenu({ groupTree, taxonomy, hiddenGroups, setHiddenGroups, expanded, setExpanded, toggleKey, toggleExpand }: GroupsMenuProps) {
   return (
     <div className="glass-panel" style={{ position: 'absolute', top: '3.5rem', right: '1rem', zIndex: 20, background: 'rgba(17, 19, 24, 0.95)', padding: '1rem', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.15rem', width: '280px', maxHeight: 'calc(100% - 5rem)', overflowY: 'auto' }}>
-      <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem', margin: 0, marginBottom: '0.5rem' }}>Groups / subgroups</h3>
+      <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem', margin: 0, marginBottom: '0.5rem' }}>{taxonomy === 'UCS' ? 'UCS categories / subcategories' : 'Groups / subgroups'}</h3>
       <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.2rem' }}>
         <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
           onClick={() => setHiddenGroups(new Set())}>Show all</button>
@@ -39,7 +41,7 @@ export default function GroupsMenu({ groupTree, hiddenGroups, setHiddenGroups, e
                 {subs.length ? (isOpen ? '▾' : '▸') : ''}
               </span>
               <div onClick={() => toggleKey(group)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', opacity: gHidden ? 0.35 : 1, flex: 1 }}>
-                <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: groupColor(group, ''), flexShrink: 0 }} />
+                <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: taxonomyColor(group, '', taxonomy), flexShrink: 0 }} />
                 <span style={{ textDecoration: gHidden ? 'line-through' : 'none' }}>{group}</span>
                 <span className="text-secondary" style={{ fontSize: '0.65rem' }}>({count.toLocaleString()})</span>
               </div>
@@ -49,7 +51,7 @@ export default function GroupsMenu({ groupTree, hiddenGroups, setHiddenGroups, e
               const sHidden = hiddenGroups.has(key) || gHidden;
               return (
                 <div key={key} onClick={() => toggleKey(key)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', opacity: sHidden ? 0.35 : 1, fontSize: '0.75rem', paddingLeft: '1.5rem', marginTop: '2px' }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: groupColor(group, sg.name), flexShrink: 0 }} />
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: taxonomyColor(group, sg.name, taxonomy), flexShrink: 0 }} />
                   <span style={{ textDecoration: hiddenGroups.has(key) ? 'line-through' : 'none' }}>{sg.name}</span>
                   <span className="text-secondary" style={{ fontSize: '0.6rem' }}>({sg.count.toLocaleString()})</span>
                 </div>

@@ -5,7 +5,10 @@
 export const GOD_CATEGORIES: [string, string[]][] = [
   ['Percussive', ['Clap', 'Cymbal', 'Hi-Hat', 'Kick', 'Perc', 'Ride', 'Rim', 'Snare', 'Tom']],
   ['Impulsive with Tail', ['IR']],
-  ['Tonal', ['Bass', 'Guitar', 'Horn', 'Note', 'Sax', 'Strings', 'Voice']],
+  // 'Vocal', not 'Voice' — that is the group name the analyzer actually emits
+  // (god.rs / config.py). The typo silently dropped every vocal sample into the
+  // Unassigned grey ramp instead of the Tonal hue.
+  ['Tonal', ['Bass', 'Guitar', 'Horn', 'Note', 'Sax', 'Strings', 'Vocal']],
   ['Keyboards', ['Keyboards']],
   ['Complex', ['DJ', 'FX', 'Loops/Patterns', 'Scratch']],
   ['Unassigned', ['Unclassified']],
@@ -90,7 +93,10 @@ function hsv(h: number, s: number, v: number): string {
     case 4: r = t; g = p; b = v; break;
     case 5: r = v; g = p; b = q; break;
   }
-  const hx = (x: number) => Math.round(x * 255).toString(16).padStart(2, '0');
+  // TRUNCATE, do not round: Python's colorsys path uses int(x * 255), and this
+  // file's whole purpose is to agree with it exactly. Math.round() drifted every
+  // channel by up to 1/255 against the desktop app.
+  const hx = (x: number) => Math.floor(x * 255).toString(16).padStart(2, '0');
   return `#${hx(r)}${hx(g)}${hx(b)}`;
 }
 
@@ -144,4 +150,90 @@ export function groupColor(group: string, subgroup = ''): string {
   const sj = subgroupNudge(subgroup);
   if (hue == null) return hsv(0.0, 0.0, 0.5 + 0.35 * t + 0.03 * sj);
   return hsv(hue + (t - 0.5) * 0.09 + 0.005 * sj, 0.85 - 0.3 * t, 0.92 - 0.18 * t + 0.045 * sj);
+}
+
+// ---- UCS colour system ------------------------------------------------------
+// The second taxonomy, and a faithful port of support/config.py so the web cloud
+// and the desktop cloud colour a UCS category identically.
+//
+// Unrelated to the god categories above: those are six envelope buckets over the
+// drum-pack name groups. These are the 82 UCS categories the analyzer scores
+// every file against. The UCS CATEGORY fixes the hue; the UCS SUBCATEGORY picks
+// a shade within it, so a category reads as one colour family.
+//
+// Hues are spread by the golden ratio over the category's index, which keeps 82
+// of them maximally far apart instead of clumping.
+// Mirrors UCS/categories/index.json — regenerate if a category is ever added.
+export const UCS_CATEGORIES: string[] = [
+  'AIR', 'AIRCRAFT', 'ALARMS', 'AMBIENCE', 'ANIMALS', 'ARCHIVED', 'BEEPS', 'BELLS',
+  'BIRDS', 'BOATS', 'BULLETS', 'CARTOON', 'CERAMICS', 'CHAINS', 'CHEMICALS', 'CLOCKS',
+  'CLOTH', 'COMMUNICATIONS', 'COMPUTERS', 'CREATURES', 'CROWDS', 'DESIGNED', 'DESTRUCTION',
+  'DIRT & SAND', 'DOORS', 'DRAWERS', 'ELECTRICITY', 'EQUIPMENT', 'EXPLOSIONS', 'FARTS',
+  'FIGHT', 'FIRE', 'FIREWORKS', 'FOLEY', 'FOOD & DRINK', 'FOOTSTEPS', 'GAMES',
+  'GEOTHERMAL', 'GLASS', 'GORE', 'GUNS', 'HORNS', 'HUMAN', 'ICE', 'LASERS', 'LEATHER',
+  'LIQUID & MUD', 'MACHINES', 'MAGIC', 'MECHANICAL', 'METAL', 'MOTORS', 'MOVEMENT',
+  'MUSICAL', 'NATURAL DISASTER', 'OBJECTS', 'PAPER', 'PLASTIC', 'RAIN', 'ROBOTS', 'ROCKS',
+  'ROPE', 'RUBBER', 'SCIFI', 'SNOW', 'SPORTS', 'SWOOSHES', 'TOOLS', 'TOYS', 'TRAINS',
+  'USER INTERFACE', 'VEGETATION', 'VEHICLES', 'VOICES', 'WATER', 'WEAPONS', 'WEATHER',
+  'WHISTLES', 'WIND', 'WINDOWS', 'WINGS', 'WOOD'
+];
+
+const UCS_INDEX: Record<string, number> = {};
+UCS_CATEGORIES.forEach((c, i) => { UCS_INDEX[c] = i; });
+
+const GOLDEN_RATIO = 0.6180339887498949;
+
+function ucsHue(category: string): number | null {
+  const i = UCS_INDEX[category];
+  return i === undefined ? null : (i * GOLDEN_RATIO) % 1;
+}
+
+/** The UCS parent category's own colour. */
+export function ucsColor(category: string): string {
+  const hue = ucsHue(category);
+  if (hue == null) return '#9a9a9a'; // unclassified
+  return hsv(hue, 0.72, 0.95);
+}
+
+/**
+ * A shade of the parent category's hue, picked by the subcategory.
+ * The subcategory is hashed rather than indexed: MISC exists in ~70 of the 82
+ * categories, so a subcategory name only means anything inside its parent.
+ */
+export function ucsSubColor(category: string, subcategory = ''): string {
+  const hue = ucsHue(category);
+  if (!subcategory) return ucsColor(category);
+  const t = (crc32(subcategory) % 9) / 8;
+  if (hue == null) return hsv(0, 0, 0.45 + 0.35 * t);
+  return hsv(hue + (t - 0.5) * 0.045, 0.88 - 0.32 * t, 0.96 - 0.22 * t);
+}
+
+/** Composite key for a UCS category+subcategory (show/hide sets, filter trees). */
+export function ucsSubKey(category: string, subcategory: string): string {
+  return category + String.fromCharCode(31) + subcategory;
+}
+
+/**
+ * The two taxonomies, behind one accessor, so the cloud, its legend and its
+ * hide/show filters all read a record the same way.
+ *
+ *   'Name groups' — group  -> subgroup        (the drum-pack taxonomy)
+ *   'UCS'         — ucs_category -> ucs_subcategory
+ */
+export type Taxonomy = 'UCS' | 'Name groups';
+
+export function taxonomyOf(colorBy: string): Taxonomy {
+  return colorBy.startsWith('UCS') ? 'UCS' : 'Name groups';
+}
+
+/** [top, sub] for a record under the given taxonomy. */
+export function taxonomyKeys(item: any, taxonomy: Taxonomy): [string, string] {
+  if (taxonomy === 'UCS') {
+    return [item.ucs_category || '(unclassified)', (item.ucs_subcategory || '').trim()];
+  }
+  return [item.group || 'Unclassified', (item.subgroup || '').trim()];
+}
+
+export function taxonomyColor(top: string, sub: string, taxonomy: Taxonomy): string {
+  return taxonomy === 'UCS' ? ucsSubColor(top, sub) : groupColor(top, sub);
 }

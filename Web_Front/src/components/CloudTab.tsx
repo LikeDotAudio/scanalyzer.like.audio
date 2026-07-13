@@ -3,7 +3,8 @@ import SampleCloud from '../SampleCloud';
 import { findAudioFile } from '../audioLinking';
 import ScopeBar from './ScopeBar';
 import GraphOptionsMenu from './GraphOptionsMenu';
-import GroupsMenu from './GroupsMenu';
+import GroupsMenu from './GroupsMenu'
+import { taxonomyOf, taxonomyKeys } from '../groupColors';
 import ShapesMenu from './ShapesMenu';
 
 interface CloudTabProps {
@@ -70,13 +71,17 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
 
   // Distinct groups → their subgroups, with per-group and per-subgroup file
   // counts, for the nested legend.
+  // Which taxonomy the cloud is showing. Derived from the colour choice, so the
+  // legend and the hide/show filters always describe what you are actually
+  // looking at — colour by UCS and the tree becomes UCS category -> subcategory.
+  const taxonomy = taxonomyOf(colorBy);
+
   const groupTree = useMemo(() => {
     const map = new Map<string, { count: number; subs: Map<string, number> }>();
     for (const it of analysisResult) {
-      const g = it.group || 'Unclassified';
+      const [g, sg] = taxonomyKeys(it, taxonomy);
       const entry = map.get(g) || { count: 0, subs: new Map<string, number>() };
       entry.count++;
-      const sg = (it.subgroup || '').trim();
       if (sg) entry.subs.set(sg, (entry.subs.get(sg) || 0) + 1);
       map.set(g, entry);
     }
@@ -87,7 +92,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
         count,
         subs: Array.from(subs.entries()).sort((a, b) => a[0].localeCompare(b[0])).map(([name, c]) => ({ name, count: c })),
       }));
-  }, [analysisResult]);
+  }, [analysisResult, taxonomy]);
 
   const toggleKey = (key: string) => {
     setHiddenGroups(prev => {
@@ -191,7 +196,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
         {/* Groups Overlay */}
         {showGroups && (
           <GroupsMenu
-            groupTree={groupTree} hiddenGroups={hiddenGroups} setHiddenGroups={setHiddenGroups}
+            groupTree={groupTree} taxonomy={taxonomy} hiddenGroups={hiddenGroups} setHiddenGroups={setHiddenGroups}
             expanded={expanded} setExpanded={setExpanded} toggleKey={toggleKey} toggleExpand={toggleExpand}
           />
         )}
