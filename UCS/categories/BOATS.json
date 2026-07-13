@@ -16,7 +16,108 @@
         "Fan",
         "Hovercraft",
         "Swamp"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 900.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 110.0,
+            "deviation": 65.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.42,
+            "deviation": 0.19,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "partial_count",
+            "mean": 9.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.22,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.26,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.68,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 25.0,
+            "deviation": 25.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "An airboat is an aircraft propeller bolted to a flat hull, so it is PROP physics on water: a blade-pass fundamental around 100 Hz with a harmonic comb, riding on a broadband air-blast bed from the fan wash. Acoustically it is closer to AIRCRAFT-PROP than to any other boat, and that is the honest statement.",
+          "Against BOATS-MOTORBOAT: a marine engine's exhaust pulse is lower, coarser and more distorted, and there is no big fan wash; the airboat carries far more mid-band broadband blast on top of its tonal comb.",
+          "Hovercraft (also filed here) drops the tonal comb and keeps the fan roar — expect spectral_flatness up and harmonicity down."
+        ],
+        "confusable_with": [
+          "AEROProp",
+          "BOATMotr",
+          "BOATRace",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "BOW WASH",
@@ -32,7 +133,127 @@
         "Ripple",
         "Wake",
         "Wave"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 900.0
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.45
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.42,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.18,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1500.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5200.0,
+            "deviation": 3000.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 18.0,
+            "deviation": 13.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.14,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.14,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.66,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 30.0,
+            "deviation": 30.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Per the UCS text this is 'a relatively clean recording' of the WATER, not of the boat: the bow wave churning and bubbling. Dense stochastic water micro-events — texture morphology, high spectral_flatness, mid/HF weighted, and crucially NO engine periodicity and NO tonal comb (harmonicity gated below 0.45).",
+          "That ABSENCE is the whole discrimination against BOATS-MOTORBOAT and BOATS-SHIP, where the engine dominates the energy. If a blade-pass comb or an exhaust firing rhythm is present, it is not a clean bow wash — which is exactly the rule UCS is stating with the word 'clean'.",
+          "Against OCEAN/WATER surf: identical physics, identical morphology. Semantics only."
+        ],
+        "confusable_with": [
+          "BOATMotr",
+          "BOATShip",
+          "BOATRow",
+          "BOATMisc",
+          "BOATRace"
+        ]
+      }
     },
     {
       "subcategory": "DOOR",
@@ -54,7 +275,93 @@
         "Ship",
         "Trapdoor",
         "Watertight"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 30.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.008,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.5,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 1.6,
+            "deviation": 1.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.6,
+            "deviation": 2.117,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.8,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A watertight bulkhead is a heavy steel impact with a long ring, so decay_time_seconds_60db leans long — but it leans toward METAL, not toward BOATS. UCS itself flags the overlap with the general DOOR categories and VEHICLES-DOOR. Semantic.",
+          "The gates still prune: a transient of a few seconds, cleanly excluded from BOATS-INTERIOR and the engine beds."
+        ],
+        "confusable_with": [
+          "BOATMech",
+          "AERODoor",
+          "TRNDoor",
+          "BOATInt"
+        ]
+      }
     },
     {
       "subcategory": "ELECTRIC",
@@ -70,7 +377,115 @@
         "Motor",
         "Powered",
         "Trolling"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 900.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 240.0,
+            "deviation": 170.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.25,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.15,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.07,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "lufs",
+            "mean": -28.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "partial_count",
+            "mean": 5.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 0.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.78,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 20.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "An electric motor has NO combustion firing rhythm, and that absence is measurable: onset_periodicity collapses to ~0.15 where every internal-combustion boat carries an exhaust pulse train. What remains is a clean commutation/inverter whine — high harmonicity, low spectral_flatness — and it is QUIET.",
+          "So against BOATS-MOTORBOAT, BOATS-RACING and BOATS-FISHING (all rhythmic engine morphology) the signal genuinely leans. It cannot finish the job — a distant idling four-stroke smooths into a drone too — hence narrowable.",
+          "UCS calls this 'fairly rare' and suggests an RC boat or a trolling motor; both are low-level, which the level priors encode."
+        ],
+        "confusable_with": [
+          "BOATMotr",
+          "BOATRace",
+          "BOATMisc",
+          "BOATFish"
+        ]
+      }
     },
     {
       "subcategory": "FISHING",
@@ -104,7 +519,81 @@
         "Trawlers",
         "Vessel",
         "Vessels"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 1800.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.48,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 45.0,
+            "deviation": 45.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.18,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A trawler is a diesel boat with winches on it. UCS's own rule is a SIZE rule — 'Simple fishing boats to BOATS-MOTORBOAT' — and size is not a DSP feature. A trawler, a tug and a small freighter are the same LF diesel rumble.",
+          "One weak tell: industrial fishing recordings are usually complex WORKING scenes (winches, chains, gulls, deck crew) rather than a clean engine bed, so stationarity runs lower than BOATS-SHIP. Do not assert on it.",
+          "Text carries this one — Trawler, Crab, Seiner, Gillnetter."
+        ],
+        "confusable_with": [
+          "BOATMotr",
+          "BOATShip",
+          "BOATMil",
+          "BOATMisc",
+          "BOATMech"
+        ]
+      }
     },
     {
       "subcategory": "HORN",
@@ -124,7 +613,139 @@
         "Ship",
         "Tugboat",
         "Warning"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3,
+            "max": 60.0
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.35
+          },
+          {
+            "feature": "pitch_hz",
+            "min": 50.0,
+            "max": 500.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 150.0,
+            "deviation": 90.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.72,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.14,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "partial_count",
+            "mean": 11.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.72,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.82,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.09,
+            "deviation": 2.432,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.32,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "lufs",
+            "mean": -11.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 0.0,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.8,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "One of the most measurable objects in the taxonomy: a LOUD, LOW, STABLE harmonic tone HELD for seconds. harmonicity ~0.72 (gated >= 0.35), spectral_flatness ~0.14, pitch_hz ~150 and essentially FLAT (pitch_slope_semitones_per_second tight around zero), with a plateau envelope and a high sustain_ratio.",
+          "Against every other BOATS subcategory: they are noise, rhythm or texture; this is the only stable TONE. The harmonicity gate rejects the engine beds outright and their noise priors reject this.",
+          "Against ALARMS-SIREN: a siren SWEEPS its pitch and a horn does not — that is the one real signal boundary, and the tight pitch_slope prior enforces it.",
+          "Against TRAINS-HORN: an acoustic near-twin (same air-horn physics, same multi-chime chord). Text decides, though a ship's horn tends LOWER (~150 Hz vs ~300 Hz) and LONGER.",
+          "UCS explicitly redirects fog horns to HORNS-AIR."
+        ],
+        "confusable_with": [
+          "TRNHorn",
+          "BOATShip",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "INTERIOR",
@@ -170,7 +791,116 @@
         "Tanker",
         "Tugboat",
         "Yacht"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 2.0,
+            "max": 1800.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 4500.0,
+            "deviation": 2600.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.64,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.07,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 300.0,
+            "deviation": 220.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -12.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.84,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.05,
+            "deviation": 0.04,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 60.0,
+            "deviation": 60.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.6,
+            "deviation": 1.3,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.1,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.18,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.22,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A steel hull is a brutal low-pass filter: band_limit_high_hz drops to a few kHz, low_band_energy runs ~0.64 (the heaviest of the three vehicle interiors), and an engine-room rumble is extremely stationary. LP + stationary is measurable and prunes hard.",
+          "Against BOATS-SHIP / BOATS-MOTORBOAT (exterior): the exterior keeps its HF — water wash, wind, exhaust crack. The interior does not.",
+          "Against AIRCRAFT-INTERIOR and TRAINS-INTERIOR: same morphology, different vehicle — semantic. The weak physical tells: a ship's interior sits LOWEST of the three in spectral_centroid_hz, and a train interior adds a periodic clack that this one lacks."
+        ],
+        "confusable_with": [
+          "AEROInt",
+          "TRNInt",
+          "BOATShip",
+          "BOATSub",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "MECHANISM",
@@ -200,7 +930,95 @@
         "Wheel",
         "Winch",
         "Windlass"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 5.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.015,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.4,
+            "deviation": 2.399,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.28,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Winches, windlasses, pulleys, rigging, ship's wheels. Generic mechanism morphology — a ratcheting winch is a ratcheting winch whether it sits on a boat or a crane, so this is indistinguishable by signal from TRAINS-MECHANISM or AIRCRAFT-MECHANISM.",
+          "Rope and rigging cases read as FRICTION rather than impulsive; the length gate is left loose (up to 120 s) so a rope-haul does not get killed by a morphology it never claimed.",
+          "UCS routes doors to BOATS-DOOR and close sail cloth to CLOTH-FLAP."
+        ],
+        "confusable_with": [
+          "BOATDoor",
+          "AEROMech",
+          "TRNMech",
+          "BOATSail",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "MILITARY",
@@ -238,7 +1056,72 @@
         "Submarine",
         "Torpedo",
         "Warship"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 1800.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.52,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.2,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 40.0,
+            "deviation": 40.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.22,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A destroyer is a large diesel or turbine ship. Nothing in the waveform says 'navy' — UCS separates this by OWNERSHIP, not by sound, so it is the same LF rumble as BOATS-SHIP.",
+          "Use only to rule out impossibilities (this is not a 0.1 s impulse) and let the synonyms — Battleship, Frigate, Corvette, Flotilla — decide."
+        ],
+        "confusable_with": [
+          "BOATShip",
+          "BOATFish",
+          "BOATSub",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -256,7 +1139,58 @@
         "Capsizing",
         "Paddleboard",
         "Paddleboat"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 1800.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.24,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 15.0,
+            "deviation": 20.0,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.25,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The abstention target for BOATS — barges, paddleboards, capsizes, boatswain's calls. Flat priors and near-open gates by design: it should win whenever no sibling's morphology fits, which for a category this heterogeneous is often."
+        ],
+        "confusable_with": [
+          "BOATMotr",
+          "BOATShip",
+          "BOATRow",
+          "BOATSail",
+          "BOATMech"
+        ]
+      }
     },
     {
       "subcategory": "MOTORBOAT",
@@ -283,7 +1217,119 @@
         "Ski",
         "Small",
         "Speedboat"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 900.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 40.0,
+            "deviation": 30.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.5,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.32,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.42,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 0.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.22,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 30.0,
+            "deviation": 30.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.2,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The internal-combustion morphology: an exhaust PULSE TRAIN whose rate tracks RPM (onset_periodicity moderate-to-high, onset_rate_per_second in the tens), riding on an LF rumble with heavy total_harmonic_distortion. That much is real and measurable.",
+          "What is NOT measurable is WHICH boat. A speedboat, a pontoon boat, a small fishing boat and a race boat share one engine — UCS separates them by size and purpose, and no feature reports either. Hence semantic_only despite a strong, clean morphology.",
+          "Against BOATS-ELECTRIC: the pulse train IS the discriminator — an electric motor has none.",
+          "Against BOATS-RACING: only level and sustained RPM lean. Degree, not kind.",
+          "Against BOATS-BOW WASH: the wash is the water WITHOUT the engine. If a pulse train is present it is not a clean bow wash."
+        ],
+        "confusable_with": [
+          "BOATRace",
+          "BOATFish",
+          "BOATElec",
+          "BOATShip",
+          "BOATWash",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "RACING",
@@ -304,7 +1350,108 @@
         "Powerboat",
         "Regatta",
         "Ski"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 900.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 90.0,
+            "deviation": 60.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.3,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "lufs",
+            "mean": -12.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 1.5,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1300.0,
+            "deviation": 800.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.38,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.44,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.15,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 25.0,
+            "deviation": 25.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Acoustically a motorboat at high RPM. The only honest leans are LEVEL (loud), RATE (a high, sustained onset_rate_per_second as the engine screams) and BRIGHTNESS (more HF crack in the exhaust). Degree, not kind — hence semantic_only.",
+          "But UCS states one rule that IS signal-checkable: 'not for human powered racing boats, those would go under BOATS-ROWING.' An engine pulse train is present here and utterly absent in BOATS-ROWBOAT, which shows sparse oar impacts at well under 1/s. That boundary the DSP can hold.",
+          "Against BOATS-MOTORBOAT: let text decide."
+        ],
+        "confusable_with": [
+          "BOATMotr",
+          "BOATRow",
+          "BOATFish",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "ROWBOAT",
@@ -340,7 +1487,124 @@
         "Scull",
         "Skiff",
         "Wherry"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 900.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 0.6,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.06,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "lufs",
+            "mean": -30.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.18,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.35,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.18,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 30.0,
+            "deviation": 30.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "The only HUMAN-POWERED boat, and the physics shows it plainly. No engine means no LF rumble, no total_harmonic_distortion, no continuous bed. What is there instead is a SPARSE PERIODIC impulse train: an oar dips roughly every one to two seconds, so onset_rate_per_second is ~0.6 — two orders of magnitude below a motor's firing rate — with a high crest_factor because the signal is mostly quiet gaps, and a very low level.",
+          "That onset_rate axis genuinely separates ROWBOAT from every powered boat in the category, and UCS agrees with the physics: BOATS-RACING explicitly says human-powered racing boats belong HERE.",
+          "Against BOATS-BOW WASH: the same water timbre, but a wash is a CONTINUOUS stationary texture with no discrete periodic dips.",
+          "Wood creak (friction) and paddle splash (impulsive) both appear; the sparse periodicity is the through-line."
+        ],
+        "confusable_with": [
+          "BOATWash",
+          "BOATSail",
+          "BOATRace",
+          "BOATMisc",
+          "BOATMotr"
+        ]
+      }
     },
     {
       "subcategory": "SAILBOAT",
@@ -378,7 +1642,101 @@
         "Trimaran",
         "Yacht",
         "Yawl"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 1800.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.15,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.2,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.38,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.09,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 45.0,
+            "deviation": 45.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.2,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "UCS calls this a COMPOSITE in so many words — 'Composite recordings of rigging and sails' — and routes the isolated elements away (close sails to CLOTH-FLAP, rigging to BOATS-MECHANISM). A composite scene has no single morphology, which is what 'complex' means and why it is semantic_only.",
+          "The one solid negative: like BOATS-ROWBOAT it is UNPOWERED. No engine pulse train, no LF rumble, no distortion — that rules out every motorised sibling in the category.",
+          "What remains is wind noise, cloth flap and halyard clank over water, which by signal sits closer to WIND plus CLOTH than to BOATS."
+        ],
+        "confusable_with": [
+          "BOATRow",
+          "BOATMech",
+          "BOATMisc",
+          "WIND"
+        ]
+      }
     },
     {
       "subcategory": "SHIP",
@@ -406,7 +1764,103 @@
         "Tanker",
         "Tugboat",
         "Vessel"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 1800.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.62,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 400.0,
+            "deviation": 280.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -10.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.78,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.06,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.22,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 60.0,
+            "deviation": 60.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.7,
+            "deviation": 1.4,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.2,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A big ship is a very low, very steady rumble. The slow-speed marine diesel turns so slowly, and the hull radiates so much LF, that the firing rhythm SMOOTHS into a bed rather than a countable pulse train — hence sustained_noise rather than rhythmic, and low_band_energy ~0.62.",
+          "That LF + stationary reading DOES separate a large ship from a small outboard (BOATS-MOTORBOAT, brighter and audibly pulsing). SIZE is signal-visible.",
+          "But a tanker, a freighter, a ferry, a trawler (BOATS-FISHING) and a destroyer (BOATS-MILITARY) are acoustically the same object. IDENTITY is not signal-visible — hence semantic_only."
+        ],
+        "confusable_with": [
+          "BOATFish",
+          "BOATMil",
+          "BOATMotr",
+          "BOATInt",
+          "BOATStm",
+          "BOATMisc"
+        ]
+      }
     },
     {
       "subcategory": "STEAM",
@@ -427,7 +1881,108 @@
         "Steamship",
         "Sternwheeler",
         "Titanic"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 900.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.35,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.08,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.18,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 35.0,
+            "deviation": 35.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Steam is a TWO-LAYER signature and both layers are measurable: a continuous HISS (broadband HF noise — high spectral_flatness, high high_band_energy) with a SLOW RHYTHMIC CHUFF laid over it (onset_periodicity ~0.60 at only ~2.5 events per second, because a paddlewheel engine turns slowly). Hiss + slow-periodic-exhaust is a genuine composite fingerprint.",
+          "Against BOATS-SHIP and BOATS-MOTORBOAT (diesel): a diesel fires tens to hundreds of times per second and has no HF steam hiss at all. The onset_rate_per_second gap is an order of magnitude or more, and the spectral tilt is inverted.",
+          "Against TRAINS-STEAM: the same physics, the same signature. Steam is steam — these two are separable from everything else but not from each other, except by the paddlewheel's water splash. Text decides."
+        ],
+        "confusable_with": [
+          "TRNSteam",
+          "BOATShip",
+          "BOATMisc",
+          "BOATFish"
+        ]
+      }
     },
     {
       "subcategory": "SUBMARINE",
@@ -451,7 +2006,81 @@
         "Torpedo",
         "Torpedoing",
         "U-Boat"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3,
+            "max": 1800.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 6000.0,
+            "deviation": 4000.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 30.0,
+            "deviation": 30.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.12,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A grab-bag: hull rumble, interior ambience, and sonar pings — three different morphologies under one label, hence 'complex' and semantic_only.",
+          "The one genuinely separable member is the SONAR PING, which is impulsive_with_tail: a short tonal transient (typically 1-8 kHz) with a very long reverberant decay (decay_time_seconds_60db of seconds). A sparse train of long-ringing tonal pings is a strong positive here even though the category as a whole is not signal-decidable.",
+          "UCS explicitly redirects the 'Dive' klaxon to ALARMS-SIREN.",
+          "Against BOATS-UNDERWATER: submarines are carved out by UCS even when hydrophone-recorded, which no feature can recover."
+        ],
+        "confusable_with": [
+          "BOATUndwtr",
+          "BOATMil",
+          "BOATInt",
+          "BOATShip"
+        ]
+      }
     },
     {
       "subcategory": "UNDERWATER",
@@ -465,7 +2094,120 @@
         "Recorded",
         "Submerged",
         "Undersea"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 1800.0
+          },
+          {
+            "feature": "high_band_energy",
+            "max": 0.3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 3500.0,
+            "deviation": 2200.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.72,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 260.0,
+            "deviation": 180.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 1100.0,
+            "deviation": 800.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -14.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 700.0,
+            "deviation": 500.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.8,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.15,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.8,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 45.0,
+            "deviation": 45.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.1,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Two honest facts, and both belong on the record. FIRST: this is defined by the TRANSDUCER. UCS says 'usually hydrophone recordings', and no feature reports which microphone was used. On that basis alone it would be provenance.",
+          "SECOND, and this is why it is narrowable rather than provenance_only: water plus a hydrophone imposes a real and SEVERE low-pass. band_limit_high_hz collapses to a few kHz, low_band_energy runs ~0.72 (the highest value anywhere in this set), spectral_slope_db_per_octave plunges to ~-14, and high_band_energy is GATED below 0.30 — a hydrophone recording physically cannot be HF-bright, because the water column will not carry it. Hydrophones are also usually mono, so stereo_width sits near zero. That is a strong, checkable, physical fingerprint layered on top of a provenance definition.",
+          "Against BOATS-INTERIOR (also LP-filtered): the underwater cut is steeper and lower still, and an interior keeps a wider image and some cabin HF.",
+          "UCS carves submarines out to BOATS-SUBMARINE even when hydrophone-recorded; that is semantic and unrecoverable from signal."
+        ],
+        "confusable_with": [
+          "BOATInt",
+          "BOATSub",
+          "BOATShip",
+          "BOATMisc"
+        ]
+      }
     }
   ]
 }

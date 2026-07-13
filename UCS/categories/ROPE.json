@@ -28,7 +28,116 @@
         "Tug",
         "Twine",
         "Yank"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 14.0
+          },
+          {
+            "feature": "sustain_ratio",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 800.0,
+            "deviation": 500.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 1.5,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Friction morphology, but the LOW cousin of a door hinge. Rope under tension groans: quasi-periodic stick-slip near 500-1500 Hz, often with a slow upward pitch drift as the fibres tighten. That drift plus the low centroid is the separation from DOORCreak, which squeals bright at 2-4 kHz with a far more erratic centroid.",
+          "Against WOODFric: wood creaks are drier and brighter; rope is fibrous, darker and more tonal (harmonicity ~0.4) because the loaded strand behaves like a stretched string.",
+          "Against ROPEMvmt: a creak is loaded rope under static tension; movement is unloaded rope travelling across a surface (a zuzz or a zipline)."
+        ],
+        "confusable_with": [
+          "DOORCreak",
+          "WOODFric",
+          "ROPEMvmt",
+          "METALFric"
+        ]
+      }
     },
     {
       "subcategory": "HANDLE",
@@ -90,7 +199,104 @@
         "Tying",
         "Untie",
         "Use"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.025,
+            "deviation": 0.025,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4000.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.02,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.5,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Fibre against fibre: a quiet, bright, dry rustle with essentially no low_band_energy and no ring whatsoever (rope is the most damped material in this set). Knot-tying and coiling are dense stochastic micro-events, hence texture.",
+          "Against ROPEImpt: handling is quiet and continuous; an impact is a single loud slap with a sharp transient.",
+          "The explanation admits overlap with ROPEMvmt: handling is in-hand manipulation, movement is the rope travelling or swinging on its own."
+        ],
+        "confusable_with": [
+          "ROPEMvmt",
+          "ROPEImpt",
+          "WOODHndl"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -129,7 +335,108 @@
         "Striking",
         "Thump",
         "Twine"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 30.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 4.0
+          },
+          {
+            "feature": "sustain_ratio",
+            "max": 0.35
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.03,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 14.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "partial_count",
+            "mean": 2.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.6,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 4.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The deadest impact in the whole material set. A rope slap or a coil dropped on a deck has an instant attack and essentially NO ring — decay_time_seconds_60db near 0.03 s, partial_count near zero. Say the boundary from this side: WOODImpt rings for ~0.1-0.2 s and a METAL impact for ~1 s; rope rings for nothing.",
+          "That near-total absence of resonance, plus the broadband slap spectrum, is what makes this narrowable rather than semantic.",
+          "Ropes flogging repeatedly in the wind produce a sparse aperiodic impact train and still belong here per the explanation, not in ROPEMvmt."
+        ],
+        "confusable_with": [
+          "WOODImpt",
+          "ROPEMvmt",
+          "ROPEHndl"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -163,7 +470,26 @@
         "Twine",
         "Wire",
         "Yarn"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The abstention target for ROPE. No gates and no morphology commitment.",
+          "Prefer ROPECreak / ROPEImpt / ROPEMvmt / ROPEHndl whenever one survives its gates."
+        ],
+        "confusable_with": []
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -201,7 +527,104 @@
         "Zip",
         "Zipline",
         "Zuzz"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 18.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_slope_hz_per_second",
+            "mean": 200.0,
+            "deviation": 900.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Rope in transit: the zuzz of a line running over a rail or through a pulley, or a zipline. A sustained, bright, noisy friction bed with low crest factor and near-zero harmonicity; a zipline adds a rising centroid trajectory as speed builds.",
+          "Against ROPECreak: movement is unloaded and running — noisy, flat, bright, no stick-slip groan. A creak is loaded and static, far more tonal and much darker.",
+          "Against ROPEHndl: movement is the rope travelling under its own momentum; handling is in-hand knotting and coiling, quieter and more granular. The explanation cross-references both directions."
+        ],
+        "confusable_with": [
+          "ROPECreak",
+          "ROPEHndl",
+          "ROPEImpt"
+        ]
+      }
     }
   ]
 }

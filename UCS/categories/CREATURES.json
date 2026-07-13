@@ -32,7 +32,108 @@
         "Serpent",
         "Siren",
         "Squid"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 110.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 8000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Kraken, leviathan, sea monster: designed material, usually a slowed and pitch-shifted whale, walrus or big-cat source, often with a wet/gurgle layer. The low-pitch + wet-layer combination is a nudge, not an identification.",
+          "Not separable from CREATURES-MONSTER or CREATURES-BEAST by signal - all three are low, rough, processed roars. Text decides. The only sibling with a real morphological difference is CREATURES-BLOB (texture, not voiced)."
+        ],
+        "confusable_with": [
+          "CREAMnstr",
+          "CREABeast",
+          "CREARept",
+          "ANMLAqua"
+        ]
+      }
     },
     {
       "subcategory": "AVIAN",
@@ -60,7 +161,109 @@
         "Simurgh",
         "Thunderbird",
         "Winged"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 500.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Fantasy birds (griffin, phoenix, harpy) are almost always built by pitch-shifting a real raptor or corvid DOWN and layering it, so they sit BETWEEN the BIRDS priors and the CREATURES priors: brighter and harsher than a beast roar, far lower and rougher than a real bird. The priors reflect that middle position, weakly.",
+          "The honest cue against BIRDS-BIRD OF PREY is 'a screech that is too low and too long for the body it implies', plus processing artefacts (inharmonicity, distortion). Suggestive, never decisive.",
+          "Wing flaps for these creatures go to WINGS-CREATURE, not here."
+        ],
+        "confusable_with": [
+          "BIRDPrey",
+          "CREAMnstr",
+          "CREADrgn",
+          "WINGCrea"
+        ]
+      }
     },
     {
       "subcategory": "BEAST",
@@ -87,7 +290,102 @@
         "Unicorn",
         "Wooly",
         "Yeti"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 85.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Big four-legged beasts (mammoth, Mumakil). The design convention IS the body-size cue taken to an extreme: the implied animal is enormous, so the fundamental is pushed unnaturally low (often below the 50 Hz floor of the pitch tracker) with dominant low_band_energy and long sustained bellows. Lowest-pitched priors in this category, and that much is a real weak signal.",
+          "But BEAST vs MONSTER vs DRAGON vs AQUATIC is a naming convention among designers, not an acoustic fact. All are low, rough, processed roars. semantic_only; text decides.",
+          "If the pitch tracker reports nothing because the fundamental is below 50 Hz, lean on low_band_energy and spectral_centroid rather than pitch_hz."
+        ],
+        "confusable_with": [
+          "CREAMnstr",
+          "CREADino",
+          "CREADrgn",
+          "ANMLWild"
+        ]
+      }
     },
     {
       "subcategory": "BLOB",
@@ -114,7 +412,98 @@
         "Slime",
         "Slimy",
         "Viscous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.75
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.15,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The only CREATURES subcategory with a morphology rather than a name: a gelatinous creature is a WET STOCHASTIC TEXTURE (squelch, ooze, viscous stretch) - dense unvoiced micro-events, high spectral_flux, near-zero harmonicity - not a vocalization. That splits it cleanly from every roaring sibling (BEAST, MONSTER, DRAGON, HUMANOID) without any text, so signal_narrowable.",
+          "It does NOT split from its real-world source material: this is acoustically LIQUID_MUD, GORE and FOOD_DRINK squelch, which is exactly what it is made of. Text has to say 'creature'.",
+          "If there is a sustained voiced growl underneath, it is not a BLOB."
+        ],
+        "confusable_with": [
+          "LIQMisc",
+          "GORESqsh",
+          "CREAElem",
+          "CREAMisc"
+        ]
+      }
     },
     {
       "subcategory": "DINOSAUR",
@@ -218,7 +607,95 @@
         "Tyrannosaurs",
         "Tyrannosaurus",
         "Velociraptor"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 95.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Dinosaur is a PALEONTOLOGICAL label applied to designed sound - nobody has heard one. In practice it is elephant, alligator, tiger, penguin and human vocal source, slowed and layered (the Jurassic Park recipe). There is nothing to measure that separates it from CREATURES-BEAST or CREATURES-MONSTER; the priors below just say 'very large implied animal'. semantic_only.",
+          "The synonyms list is exhaustive Linnaean taxonomy, which is a strong hint that text is the intended and only route in.",
+          "A raptor chirp/chitter (short, mid-pitched, rhythmic) breaks these low-pitch priors completely - the class is broad."
+        ],
+        "confusable_with": [
+          "CREABeast",
+          "CREAMnstr",
+          "CREARept",
+          "CREADrgn"
+        ]
+      }
     },
     {
       "subcategory": "DRAGON",
@@ -246,7 +723,109 @@
         "Wyrmling",
         "Wyvern",
         "Wyverns"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 100.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Dragon material is a composite of three unrelated morphologies - a low processed roar (voiced), a fire-breath (sustained_noise / FIRE) and wing flaps (rhythmic, though those belong in WINGS-CREATURE). No single signature spans them, so the morphology is 'complex' and the tier is semantic_only.",
+          "Against CREATURES-REPTILIAN: the explanation itself cross-references them, and a big hiss belongs equally to either. Text is the only arbiter.",
+          "A fire-breath file with no vocal component will score better against FIRE than against any CREATURES prior; that is correct behaviour, not a failure."
+        ],
+        "confusable_with": [
+          "CREARept",
+          "CREABeast",
+          "CREAMnstr",
+          "FIREMisc"
+        ]
+      }
     },
     {
       "subcategory": "ELEMENTAL",
@@ -279,7 +858,73 @@
         "Snow",
         "Water",
         "Wood"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 180.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.3,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "A rock golem, a fire elemental and an ice monster share a CONCEPT, not a sound: they are literally built from ROCKS, FIRE and ICE material with a growl welded on. Their signatures collide with those source categories, not with each other. The priors here are near-uninformative on purpose; anything tighter would be invented. semantic_only.",
+          "Expect heavy overlap with ROCKS, FIRE, ICE and DESTRUCTION on signal. If there is no vocal/growl layer at all, the file is better described by the material category, and only the filename makes it a creature."
+        ],
+        "confusable_with": [
+          "CREAMnstr",
+          "CREABeast",
+          "ROCKMisc",
+          "FIREMisc"
+        ]
+      }
     },
     {
       "subcategory": "ETHEREAL",
@@ -322,7 +967,105 @@
         "Wisp",
         "Wispy",
         "Wraith"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 180.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 25.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.35,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "envelope_release_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Ghosts and spirits have a real designed morphology, and it is the inverse of every other CREATURES sibling: AIRY and SUSTAINED rather than percussive or roaring - slow attack, long release, breathy/whispered noise, heavy reverb (long release, wide stereo image), low crest factor. That separates it from the roar cluster without text, hence signal_narrowable.",
+          "It does NOT separate from AIR, WIND, DESIGNED-DRONE or MAGIC on signal - a wispy pad is a wispy pad. Text has to say 'ghost'.",
+          "A banshee scream is a voiced outlier that breaks these priors; treat them as describing the wispy/ethereal-movement half of the subcategory."
+        ],
+        "confusable_with": [
+          "MAGMisc",
+          "WINDDsgn",
+          "AIRMisc",
+          "CREAMisc"
+        ]
+      }
     },
     {
       "subcategory": "HUMANOID",
@@ -354,7 +1097,109 @@
         "Werewolf",
         "Witch",
         "Zombie"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 130.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.35
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Zombies, trolls, orcs, ogres: almost always a HUMAN performance, growled and pitch-shifted down. So voicing_ratio and syllabic_modulation_energy stay high (the formant and syllable structure survives the shift) while the fundamental drops below a plausible human range. That 'human structure at an impossible pitch' combination is the single most defensible cue in CREATURES - but it is shared with CREATURES-MONSTER and CREATURES-BEAST, and a light shift leaves it indistinguishable from HUMAN or VOICES.",
+          "Because the source is human, this is the subcategory most likely to be stolen by HUMAN/VOICES on signal alone. semantic_only; text decides.",
+          "See CREATURES-SOURCE for the unprocessed human/prop packs these are built from - that split is provenance, not sound."
+        ],
+        "confusable_with": [
+          "CREAMnstr",
+          "CREASmall",
+          "HMNMisc",
+          "CREASrce"
+        ]
+      }
     },
     {
       "subcategory": "INSECTOID",
@@ -369,7 +1214,88 @@
         "Giant",
         "Spider",
         "Wasp"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2500.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.2,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 8.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Giant spiders and Fly-style creatures: designed from stridulation, chitter and clicking source, so the material is dry, bright, dense and unvoiced (chitters and clicks, high onset_rate) rather than a low roar. That pushes it toward the ANIMALS-INSECT corner and away from the CREATURES roar cluster - a real but weak tendency, since the giant-body convention also demands added low-frequency weight.",
+          "Note the contradiction the designers live with: 'insect' says small and bright, 'giant' says low and heavy. Files split between those poles, so no tight prior is honest here. semantic_only.",
+          "Wings for these go to WINGS-INSECT or WINGS-CREATURE."
+        ],
+        "confusable_with": [
+          "ANMLInsc",
+          "CREAMnstr",
+          "CREAMisc",
+          "WINGInsc"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -384,7 +1310,94 @@
         "Miscellaneous",
         "Mythical",
         "Mythological"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 200.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "The catch-all. Asserts only the class ('a designed, processed, rough vocalization or creature texture') via wide priors, and should win by abstention when no sibling's text evidence fires.",
+          "Deliberately weak so it never out-scores a sibling that has real text support."
+        ],
+        "confusable_with": [
+          "CREAMnstr",
+          "CREABeast",
+          "CREAElem",
+          "ANMLMisc"
+        ]
+      }
     },
     {
       "subcategory": "MONSTER",
@@ -404,7 +1417,95 @@
         "Rancor",
         "Xenomorph",
         "Yeti"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 90.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Godzilla, Xenomorph, horror monsters. This is the CENTROID of the whole CREATURES category - an unnaturally low, rough, distorted, processed roar - which is exactly why it cannot be separated from BEAST, DINOSAUR, DRAGON or AQUATIC by signal: they are all the same recipe under different names. It will tend to win the signal score against its siblings for that reason, which is a hazard, not a virtue. Never assert from signal; make text decide. semantic_only.",
+          "Against ANIMALS, the giveaway is the impossible combination - a big-cat roar's formants at a fundamental no animal that size could produce, plus distortion and inharmonicity from processing. That legitimately separates CREATURES from ANIMALS as a class, and it is all the DSP can give you here.",
+          "See CREATURES-HUMANOID for the human-sized version of the same recipe."
+        ],
+        "confusable_with": [
+          "CREABeast",
+          "CREADino",
+          "CREAHmn",
+          "CREADrgn"
+        ]
+      }
     },
     {
       "subcategory": "REPTILIAN",
@@ -423,7 +1524,109 @@
         "Serpent",
         "Serpentine",
         "Snake"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 110.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "Giant lizards and snakes: the design convention is HISS-dominated, so spectral_flatness runs higher and harmonicity lower than in the roar cluster (BEAST, MONSTER) while the pitch stays impossibly low. That noisy-and-low combination is the only honest cue, and it is weak.",
+          "The explanation cross-references CREATURES-DRAGON, and the two are not separable by signal at all - a hissing dragon and a hissing basilisk are the same file. Text decides.",
+          "A processed hiss is also indistinguishable from ANIMALS-REPTILE, AIR-HISS or steam. Only the low, rough, voiced layer underneath suggests 'creature'."
+        ],
+        "confusable_with": [
+          "CREADrgn",
+          "ANMLRept",
+          "CREAMnstr",
+          "CREAAqua"
+        ]
+      }
     },
     {
       "subcategory": "SMALL",
@@ -450,7 +1653,102 @@
         "Nymph",
         "Pixie",
         "Sprite"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 900.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.8,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Designed vocalization: nearly always a pitch-shifted-DOWN and processed animal or human source. The real (weak) signal cue is the COMBINATION 'unnaturally low fundamental + surviving animal/human formant structure + heavy inharmonicity/roughness', which no natural source produces. That combination separates CREATURES from ANIMALS as a class; it does not separate a dragon from a troll. Which monster it is comes from synonyms text.",
+          "The mirror image of CREATURES-BEAST, and the same physics used in reverse: fairies, pixies and gremlins are built by pitch-shifting a human or small-animal source UP, so this is the only CREATURES subcategory with HIGH pitch, high centroid and almost no low-band energy. That pole is a genuinely defensible axis WITHIN the category (small vs large implied body), and it is the strongest thing DSP can say here.",
+          "'Distinguished by small size' is the explanation's own rule, and size is exactly what the pitch/low-band axis tracks - so this prior is mined from the text, not invented. It still cannot tell a fairy from a gremlin, or from a chipmunk-voiced cartoon character. semantic_only.",
+          "Confusable on signal with ANIMALS-RODENT, CARTOON voices and BIRDS chirps, all of which share the small-body corner."
+        ],
+        "confusable_with": [
+          "ANMLRdnt",
+          "CREAMisc",
+          "CREAHmn",
+          "BIRDSong"
+        ]
+      }
     },
     {
       "subcategory": "SOURCE",
@@ -498,7 +1796,30 @@
         "Whine",
         "Whispers",
         "Yowls"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "provenance_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 600.0
+          }
+        ],
+        "priors": [],
+        "discriminators": [
+          "Defined by INTENT, not by sound: 'source recordings meant for creature design - prop recordings, human voice packs for design'. The identical file, once processed, becomes CREATURES-MONSTER; unprocessed and used straight, it is HUMAN or a prop category. Nothing in the signal marks a recording as 'raw material'. provenance_only: excluded from signal scoring entirely (alpha = 0) and decided by filename/metadata alone.",
+          "Practical tell for a human librarian, not for the scorer: SOURCE material is typically dry, close-mic'd, unprocessed and delivered in long multi-take files, while the finished creature is layered and processed. That is a recording-practice cue, not an acoustic class, so it is deliberately NOT encoded as priors.",
+          "No priors are declared here on purpose. Any number would be a claim that the signal can detect intent, and it cannot."
+        ],
+        "confusable_with": [
+          "HMNMisc",
+          "CREAMnstr",
+          "CREAHmn",
+          "VOXMisc"
+        ]
+      }
     }
   ]
 }

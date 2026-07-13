@@ -32,7 +32,107 @@
         "Thud",
         "Topple",
         "Tumble"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 30.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.75
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.52,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 500.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.14,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.15,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 800.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A body hitting the ground is the most heavily DAMPED impact in the taxonomy: flesh has terrible acoustic impedance and dissipates the strike as heat, so there is essentially no ring. Low centroid, LF-dominated, very short decay, dull. Those four together are a real, measurable morphology.",
+          "Against FIGHT-IMPACT (a punch): a bodyfall is BIGGER and LONGER — the whole mass lands, usually with a scuffle or a slide afterwards, so transient_count is higher and the tail is messier. A punch is one compact thud. A lean, not a boundary.",
+          "Against WOOD-IMPACT / METAL-IMPACT: those RING. If decay_time_seconds_60db is long or the spectrum is bright and inharmonic, it is not a body. That direction of the test is reliable."
+        ],
+        "confusable_with": [
+          "FGHTImpt",
+          "FGHTGrab",
+          "GORESqsh",
+          "FOLYFeet",
+          "WOODImpt",
+          "CLOTHImpt"
+        ]
+      }
     },
     {
       "subcategory": "CLOTH",
@@ -60,7 +160,116 @@
         "Tug",
         "Tussle",
         "Twist"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "lufs",
+            "max": -10.0
+          },
+          {
+            "feature": "low_band_energy",
+            "max": 0.55
+          },
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.7,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 6000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.05,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.04,
+            "deviation": 0.04,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Cloth is a high-centroid, noisy, LOW-CREST friction texture with no f0 and almost no low-band energy — the antithesis of the impacts around it. It SUSTAINS rather than spiking, so crest_factor is low and sustain_ratio well above zero. Separable from FIGHT-IMPACT and FIGHT-BODYFALL on centroid and crest alone.",
+          "Against FOLEY-CLOTH and CLOTH-MOVEMENT: physically identical. The only difference UCS states is INTENSITY — 'active or big scuffling cloth' — so expect higher level, higher spectral_flux and more violent envelope modulation than a walking foley pass. A soft lean, not a boundary, and that is what caps this at narrowable."
+        ],
+        "confusable_with": [
+          "FOLYClth",
+          "CLOTHMvmt",
+          "FGHTGrab",
+          "LETHRMvmt",
+          "FGHTImpt"
+        ]
+      }
     },
     {
       "subcategory": "GRAB",
@@ -94,7 +303,99 @@
         "Snatch",
         "Take",
         "Wrestle"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "lufs",
+            "max": -8.0
+          },
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 30.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.38,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.07,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.22,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.9,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A hand seizing an arm: a brief cloth-and-skin friction gesture, often with a soft impact at the front. It is a HYBRID of FIGHT-CLOTH (the friction) and FIGHT-IMPACT (the slap of contact) and sits between them with no clean boundary on either side.",
+          "UCS folds arm BLOCKS in here as well ('similar sounds'), which blurs it further against FIGHT-IMPACT. Against FOLEY-HANDS the physics is identical.",
+          "Honestly semantic_only: nothing in the signal says 'grapple'. The gates exist only to rule out blasts, rings and tonal material."
+        ],
+        "confusable_with": [
+          "FGHTClth",
+          "FGHTImpt",
+          "FOLYHand",
+          "FOLYClth",
+          "FGHTBf"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -148,7 +449,112 @@
         "Uppercut",
         "Wallop",
         "Whack"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.01,
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.05
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.65
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.08,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.18,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.45,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.0,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A punch or kick landing on a body: a compact, DAMPED, front-loaded thud. The defining feature is what is ABSENT — there is no ring. decay_time_seconds_60db is tiny and high_band_energy is low, because flesh absorbs rather than resonates.",
+          "Against FIGHT-BODYFALL: a punch is a single small compact impact; a bodyfall is bigger and longer, with more low-band mass and usually a scuffle afterwards. Real but weak.",
+          "Against GORE-SPLAT and GORE-SQUISH: the same damped body impact, only WET — gore adds mid-band burble and a messier tail. The dry/wet axis is the only lean and it is not a boundary.",
+          "Against METAL-IMPACT / WOOD-IMPACT: if it rings, it is not a body. That rules OUT reliably; it never rules IN."
+        ],
+        "confusable_with": [
+          "FGHTBf",
+          "GORESplt",
+          "GORESqsh",
+          "FGHTGrab",
+          "WEAPBlnt",
+          "HMNSkin"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -169,7 +575,44 @@
         "Miscellaneous",
         "Quarreling",
         "Sparring"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.15
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.1
+          }
+        ],
+        "discriminators": [
+          "Catch-all: brawls, sparring, general combat scenes. Usually a multi-event SCENE rather than a single gesture — impacts, cloth, grunts and bodyfalls layered together — so no single morphology applies.",
+          "The ABSTAIN target for FIGHT. Given how badly IMPACT / BODYFALL / GRAB overlap with one another and with GORE and FOLEY, abstention here is frequently the correct call.",
+          "Files carrying voiced grunts and shouts will pull toward HUMAN and VOICES; that is not disqualifying for a fight scene."
+        ],
+        "confusable_with": [
+          "FGHTImpt",
+          "FGHTBf",
+          "FGHTGrab",
+          "FGHTClth"
+        ]
+      }
     }
   ]
 }

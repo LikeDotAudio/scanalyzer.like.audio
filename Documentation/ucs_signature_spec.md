@@ -125,7 +125,7 @@ so signatures stay valid while the features land incrementally.
     {"feature": "crest_factor", "min": 6.0}
   ],
   "priors": [
-    {"feature": "envelope_attack_seconds", "mean": 0.004, "deviation": 0.003,
+    {"feature": "envelope_attack_seconds", "mean": 0.004, "deviation": 2.5,
      "transform": "log", "weight": 1.0},
     {"feature": "spectral_flatness", "mean": 0.55, "deviation": 0.15,
      "transform": "linear", "weight": 0.7}
@@ -145,6 +145,14 @@ so signatures stay valid while the features land incrementally.
   `ln(x)` against `ln(mean)` — mandatory for durations, frequencies, and ratios,
   which are log-normal, never Gaussian. `weight` ∈ (0, 1] is how diagnostic this
   feature is *for this subcategory*.
+
+  **Under `transform: "log"`, `deviation` is a MULTIPLICATIVE (geometric) factor,
+  not an additive sigma.** `{"mean": 60.0, "deviation": 3.0, "transform": "log"}`
+  means "about 60, within ×3 / ÷3" — i.e. 20 to 180 at one sigma. It follows that
+  a log `deviation` must always be **> 1.0**; a value of 1.0 means zero tolerance
+  and anything below it is nonsense. Under `transform: "linear"`, `deviation` is
+  an ordinary additive sigma in the feature's own unit. The validator enforces
+  both rules.
 - `discriminators` — prose stating the boundary against the siblings it is most
   confused with. Many are lifted straight from the UCS `explanation` text, which
   is full of hand-written disambiguation rules ("Bigger and sharper than a

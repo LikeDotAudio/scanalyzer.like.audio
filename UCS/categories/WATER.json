@@ -39,7 +39,110 @@
         "Potion",
         "Scuba",
         "Simmer"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.85
+          },
+          {
+            "feature": "low_band_energy",
+            "max": 0.85
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 45.0,
+            "deviation": 35.0,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 8.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 900.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.5,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.5,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.22,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "A bubble's cavity resonance RISES as the bubble shrinks and collapses: strongly positive pitch_slope_semitones_per_second on each micro-event. This upward chirp is the single most distinctive feature in the whole WATER category and separates BUBBLES from every noise-bed sibling.",
+          "Pitched micro-transients: harmonicity is far above FLOW, SURF, STEAM or SPRAY, which are unpitched noise.",
+          "Sparser and far more pitched than FIZZ, which is a dense unpitched high-frequency crackle with no coherent f0.",
+          "Higher f0 and faster events than LIQUID & MUD-BUBBLES, whose viscous, larger bubbles resonate lower and gloop more slowly.",
+          "Gurgling with a downward drain swirl and pulled-in air belongs in WATER-DRAIN."
+        ],
+        "confusable_with": [
+          "WATRFizz",
+          "WATRDran",
+          "LIQBubl",
+          "WATRStm"
+        ]
+      }
     },
     {
       "subcategory": "DRAIN",
@@ -83,7 +186,112 @@
         "Storm",
         "Stream",
         "Trickle"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "max": 0.8
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1300.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 10.0,
+            "deviation": 40.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.2,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 11000.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 8.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.5,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.35
+          }
+        ],
+        "discriminators": [
+          "Gurgle = bubbles embedded in a flow, pulling in air: intermediate between WATER-BUBBLES (pitched, sparse) and WATER-FLOW (stationary noise). Neither pure enough to win on its own axis.",
+          "Confined by a pipe, so more mid-band-dominant and more band-limited than open-air WATER-FLOW.",
+          "The distinction from WATER-PLUMBING is largely contextual: a drain is the gurgling suck, plumbing is the running fixture. Require filename evidence.",
+          "Less pitched and more continuous than WATER-BUBBLES; less stationary and lower-flatness than WATER-FLOW."
+        ],
+        "confusable_with": [
+          "WATRBubl",
+          "WATRPlmb",
+          "WATRFlow",
+          "LIQSuct"
+        ]
+      }
     },
     {
       "subcategory": "DRIP",
@@ -111,7 +319,117 @@
         "Splash",
         "Sprinkle",
         "Trickle"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "onset_rate_per_second",
+            "max": 15.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          },
+          {
+            "feature": "sustain_ratio",
+            "max": 0.45
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 1.5,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 13.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.95
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 14.0,
+            "deviation": 9.0,
+            "transform": "linear",
+            "weight": 0.65
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.06,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.05,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 3.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Isolated sparse transients on a near-silent bed: the lowest onset_rate_per_second and the highest crest_factor of any WATER subcategory. Textbook impulsive morphology.",
+          "The opposite pole from WATER-FIZZ, which is the same droplet physics at 50x the density (texture, low crest).",
+          "Far smaller and quieter than WATER-SPLASH or WATER-IMPACT: a plip, not a body of water displaced. Low root_mean_square_level, tiny attack, negligible low_band_energy.",
+          "A single pitched plop (Minnaert resonance of the entrained bubble) gives moderate harmonicity, unlike a broadband splash.",
+          "If the drips densify into a continuous patter on a surface, it is RAIN, not WATER-DRIP."
+        ],
+        "confusable_with": [
+          "WATRSplsh",
+          "WATRFizz",
+          "WATRBubl",
+          "RAIN"
+        ]
+      }
     },
     {
       "subcategory": "FIZZ",
@@ -149,7 +467,116 @@
         "Soda",
         "Sparkle",
         "Sparkling"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.25
+          },
+          {
+            "feature": "high_band_energy",
+            "min": 0.12
+          },
+          {
+            "feature": "crest_factor",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 70.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4800.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.85
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 6500.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.65
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.72,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.5,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -4.0,
+            "deviation": 3.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 6.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Dense high-frequency crackle: the highest onset_rate_per_second in WATER, with individual events too small and too fast to resolve a pitch. Effervescence, not bubbling.",
+          "Against WATER-BUBBLES: FIZZ has no coherent rising f0 chirp and near-zero harmonicity; BUBBLES are sparse, pitched and rise in pitch.",
+          "Against WATER-STEAM: STEAM is a smooth stationary hiss (very low spectral_flux, low onset_rate); FIZZ is granular, with resolvable micro-transients.",
+          "Against WATER-DRIP: same droplet-scale physics, opposite density and crest_factor."
+        ],
+        "confusable_with": [
+          "WATRBubl",
+          "WATRStm",
+          "WATRSpray",
+          "FIREBurn"
+        ]
+      }
     },
     {
       "subcategory": "FLOW",
@@ -178,7 +605,121 @@
         "Tributary",
         "Water",
         "Watercourse"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0
+          },
+          {
+            "feature": "spectral_flux",
+            "max": 0.45
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.55
+          },
+          {
+            "feature": "crest_factor",
+            "max": 14.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.85,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.07,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.95
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.78,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.65
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.12,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.5,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.35
+          }
+        ],
+        "discriminators": [
+          "Steady water: the stationary-broadband archetype. High stationarity, LOW spectral_flux, high spectral_flatness, long. A creek or river bed that does not change.",
+          "Against WATER-TURBULENT: flux is the separator. Both are continuous and energetic; TURBULENT churns (high spectral_flux, high root_mean_square_level), FLOW does not. UCS: rapids go to TURBULENCE.",
+          "Against WATER-WATERFALL: a waterfall is far louder with much more low_band_energy rumble; UCS gives it its own subcategory.",
+          "Against WATER-SURF: SURF has a slow swell — periodic energy and centroid modulation (high spectral_centroid_deviation_hz, low onset_periodicity but visible cycles); FLOW is flat forever."
+        ],
+        "confusable_with": [
+          "WATRTurb",
+          "WATRFall",
+          "WATRSurf",
+          "WATRFoun",
+          "WATRPlmb"
+        ]
+      }
     },
     {
       "subcategory": "FOUNTAIN",
@@ -205,7 +746,94 @@
         "Water",
         "Well",
         "Wishing"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.8
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.75,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.14,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.17,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 12.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.1,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Physically a trickle plus a splash bed: a stationary noise floor sprinkled with resolvable droplet impacts. Sits between WATER-FLOW (no events) and WATER-SPLASH (nothing but events), and wins on neither axis.",
+          "A fountain is defined by being a man-made water feature, not by its waveform. Signal can only narrow it to 'small continuous water with splashes'; the filename must commit it. Do not assert FOUNTAIN over FLOW from DSP alone.",
+          "Brighter and more transient-rich than WATER-FLOW; quieter and far less low_band_energy than WATER-WATERFALL."
+        ],
+        "confusable_with": [
+          "WATRFlow",
+          "WATRFall",
+          "WATRPlmb",
+          "WATRSplsh",
+          "WATRDrip"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -231,7 +859,118 @@
         "Slam",
         "Splash",
         "Sploosh"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 15.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 4.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 14.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.95
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.28,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "lufs",
+            "mean": -13.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 3.5,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.22,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 0.8,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "UCS, verbatim: 'Bigger and sharper than a SPLASH.' Encoded numerically — IMPACT carries roughly double the crest_factor (14 vs 8), a 5x faster envelope_attack_seconds (4 ms vs 20 ms), nearly double the root_mean_square_level (0.28 vs 0.15), and far more low_band_energy (0.35 vs 0.20, a large mass of water displaced) than WATER-SPLASH.",
+          "BIGGER: high root_mean_square_level / lufs, low-frequency-weighted, a wave slamming an object. SHARPER: fast attack, high crest, front-loaded envelope (low envelope_temporal_centroid).",
+          "A splash is a body entering water (bright, spray-rich, softer onset). An impact is water hitting a solid (percussive, low, hard onset).",
+          "Against WATER-TURBULENT: IMPACT is one discrete event; TURBULENT is a continuous churning bed.",
+          "Against LIQUID & MUD-IMPACT: mud splats are dull and damped (low spectral_centroid_hz, near-zero ring); a water impact still throws bright spray."
+        ],
+        "confusable_with": [
+          "WATRSplsh",
+          "WATRWave",
+          "WATRTurb",
+          "LIQImpt",
+          "WATRLap"
+        ]
+      }
     },
     {
       "subcategory": "LAP",
@@ -252,7 +991,105 @@
         "Slap",
         "Slosh",
         "Sloshing"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0
+          },
+          {
+            "feature": "root_mean_square_level",
+            "max": 0.35
+          }
+        ],
+        "priors": [
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.05,
+            "deviation": 0.04,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 1.2,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.05,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "lufs",
+            "mean": -33.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.15,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Gentle, quiet, quasi-periodic soft slaps against a hull or shore: the lowest root_mean_square_level of any WATER event subcategory. Level is the primary discriminator.",
+          "Against WATER-WAVE: a wave is a large, loud, crescendo-and-break event; a lap is a tiny ripple slap. UCS explicitly routes tiny waves here and distinct waves to WAVE.",
+          "Against WATER-SURF: SURF is the continuous unresolved roar of many waves; LAP has discrete, countable, well-separated onsets on near-silence.",
+          "Against WATER-SPLASH: much quieter, repeated rather than singular, and much softer attack."
+        ],
+        "confusable_with": [
+          "WATRWave",
+          "WATRSurf",
+          "WATRSplsh",
+          "WATRMvmt"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -265,7 +1102,18 @@
         "Aqua",
         "H20",
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [],
+        "discriminators": [
+          "Catch-all. Deliberately uninformative: no gates, no priors, so it scores a neutral likelihood and becomes the abstention target when no WATER sibling wins cleanly (spec section 6).",
+          "Never assert MISC from signal evidence; it is only ever reached by abstention or by explicit filename text."
+        ],
+        "confusable_with": []
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -291,7 +1139,99 @@
         "Swirling",
         "Tread",
         "Wade"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          },
+          {
+            "feature": "high_band_energy",
+            "min": 0.03
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flux",
+            "mean": 0.28,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 5.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2000.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.14,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Irregular, non-stationary sloshing driven by a body or object moving through water: neither a clean single transient nor a steady bed. High spectral_flux with LOW stationarity is the signature.",
+          "UCS is explicit: this is movement in water but NOT underwater. If the spectrum is low-passed (band_limit_high_hz collapsed, high_band_energy near zero), it is WATER-UNDERWATER instead.",
+          "Against WATER-TURBULENT: TURBULENT is louder, more continuous, and more stationary — a raging river, not a swimmer.",
+          "Against WATER-SPLASH: SPLASH is one discrete entry event; MOVEMENT is a run of sustained thrashing."
+        ],
+        "confusable_with": [
+          "WATRSplsh",
+          "WATRTurb",
+          "WATRUndwtr",
+          "WATRLap",
+          "LIQMvmt"
+        ]
+      }
     },
     {
       "subcategory": "PLUMBING",
@@ -341,7 +1281,73 @@
         "Trough",
         "Valve",
         "Waterworks"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.65,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 12000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.15,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 12.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "A running sink, a shower and a toilet flush are acoustically just WATER-FLOW, WATER-SPRAY and WATER-DRAIN heard in a small tiled room. Nothing in the signal says 'plumbing' — the fixture is context, not physics. Text must decide.",
+          "Priors are deliberately weak and wide: mono-ish, indoor, band-limited, continuous. Their job is to prune impulses and outdoor beds, not to assert.",
+          "UCS carves DRAIN out of PLUMBING explicitly; a gurgling suck goes to WATER-DRAIN even in a kitchen sink."
+        ],
+        "confusable_with": [
+          "WATRFlow",
+          "WATRDran",
+          "WATRSpray",
+          "WATRFoun",
+          "WATRPour"
+        ]
+      }
     },
     {
       "subcategory": "POUR",
@@ -376,7 +1382,106 @@
         "Sluice",
         "Sluicing",
         "Spill"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "length_seconds",
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 3.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.16,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.28,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 8.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A pour has a beginning and an end: a bounded, few-second run of water noise, unlike the open-ended beds of WATER-FLOW or WATER-SURF. Duration is a real discriminator here.",
+          "Pouring INTO a vessel raises the air-column resonance as the vessel fills: mildly positive pitch_slope_semitones_per_second and elevated harmonicity. Pouring onto ground has neither, so this prior carries only moderate weight.",
+          "Against WATER-SPLASH: a pour is sustained; a splash is a transient.",
+          "Overlaps FOOD & DRINK-POUR by UCS's own admission — that boundary is semantic (container and context), never signal."
+        ],
+        "confusable_with": [
+          "WATRFlow",
+          "WATRSplsh",
+          "WATRSpray",
+          "WATRPlmb",
+          "WATRFoun"
+        ]
+      }
     },
     {
       "subcategory": "SPLASH",
@@ -405,7 +1510,117 @@
         "Submerge",
         "Swim",
         "Wade"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 15.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.85
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.02,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.85
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.15,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.75
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.2,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.35,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "lufs",
+            "mean": -20.0,
+            "deviation": 7.0,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 1.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The counterpart to WATER-IMPACT's rule 'Bigger and sharper than a SPLASH': a SPLASH is SMALLER and SOFTER. Roughly half the crest_factor (8 vs 14), a 5x slower envelope_attack_seconds (20 ms vs 4 ms), half the root_mean_square_level, and much less low_band_energy.",
+          "A splash is bright: a body entering water throws spray, so high_band_energy and spectral_centroid_hz run ABOVE those of the low, thumping WATER-IMPACT.",
+          "Against WATER-DRIP: a drip is a single tiny plip with far higher crest on far lower energy; a splash displaces a real volume of water.",
+          "Against WATER-MOVEMENT: SPLASH is one discrete entry; MOVEMENT is a sustained thrash."
+        ],
+        "confusable_with": [
+          "WATRImpt",
+          "WATRDrip",
+          "WATRMvmt",
+          "WATRLap",
+          "LIQImpt"
+        ]
+      }
     },
     {
       "subcategory": "SPRAY",
@@ -427,7 +1642,106 @@
         "Sprinkle",
         "Spritz",
         "Squirt"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "high_band_energy",
+            "min": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "high_band_energy",
+            "mean": 0.52,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4200.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.68,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 7000.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.72,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.12,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -4.5,
+            "deviation": 3.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Atomised water: a high-frequency-shelved noise band, brighter and flatter than any other WATER subcategory except STEAM.",
+          "Against WATER-STEAM: nearly the same LTAS. The separators are that steam is hotter, smoother and even more stationary (lower spectral_flux, near-zero onset_rate_per_second), while a hose spray still carries droplet impacts and a sputtering nozzle. Weak axis — expect to need the filename.",
+          "Against WATER-FLOW: SPRAY is far brighter (centroid ~4 kHz vs ~2 kHz) and has less low_band_energy.",
+          "A wave-crash spray is the tail of the crash; if the transient dominates, it is WATER-IMPACT or WATER-WAVE."
+        ],
+        "confusable_with": [
+          "WATRStm",
+          "WATRFizz",
+          "WATRFlow",
+          "AIRHiss",
+          "WATRFoun"
+        ]
+      }
     },
     {
       "subcategory": "STEAM",
@@ -454,7 +1768,123 @@
         "Vapor",
         "Vaporization",
         "Wet"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          },
+          {
+            "feature": "high_band_energy",
+            "min": 0.15
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "high_band_energy",
+            "mean": 0.6,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.74,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5200.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.85
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.86,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.05,
+            "deviation": 0.04,
+            "transform": "linear",
+            "weight": 0.75
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 8500.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.65
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.8,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 0.5,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -3.0,
+            "deviation": 3.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 6.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "UCS: 'very wet hisses'. A high-frequency-shelved sustained noise — the highest spectral_flatness and highest spectral_centroid_hz in WATER, with the lowest spectral_flux. Smooth, not granular.",
+          "Against WATER-FIZZ: FIZZ resolves into thousands of micro-transients (very high onset_rate_per_second, granular); STEAM has essentially no onsets at all.",
+          "Against WATER-SPRAY: same brightness family; STEAM is smoother and more stationary, SPRAY sputters. Genuinely hard — lean on text.",
+          "Against AIR-HISS: acoustically almost identical. 'Wet' steam carries slightly more low-frequency body and gurgle from condensate, but this is not a reliable DSP call. The word 'steam', 'sauna' or 'radiator' in the name is what commits it."
+        ],
+        "confusable_with": [
+          "AIRHiss",
+          "WATRSpray",
+          "WATRFizz",
+          "GEOFuma"
+        ]
+      }
     },
     {
       "subcategory": "SURF",
@@ -481,7 +1911,124 @@
         "Wash",
         "Waves",
         "Whitecaps"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 2.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 14.0
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.8,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.95
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.09,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.62,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 45.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.75,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1900.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 700.0,
+            "deviation": 500.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.28,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "UCS: 'constant ocean roaring waves'. Long, stationary, broadband, LOW spectral_flux — the sustained_noise archetype, with a slow swell that shows up as elevated spectral_centroid_deviation_hz and wide stereo_width.",
+          "Against WATER-WAVE: UCS routes the general roar HERE and distinct, individually audible waves to WAVE. The test is whether onsets resolve: SURF has none (high stationarity), WAVE has countable crescendo-break events.",
+          "Against WATER-FLOW: same low-flux stationary bed, but SURF is wider, lower (more low_band_energy rumble) and cyclically modulated; FLOW is flat and narrow. Genuinely close — the swell modulation is the axis.",
+          "Against WATER-TURBULENT: TURBULENT churns (high spectral_flux); SURF roars steadily."
+        ],
+        "confusable_with": [
+          "WATRWave",
+          "WATRFlow",
+          "WATRTurb",
+          "WINDGust",
+          "AMBSea"
+        ]
+      }
     },
     {
       "subcategory": "TURBULENT",
@@ -522,7 +2069,107 @@
         "Whirlpool",
         "White",
         "Whitecaps"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.8
+          },
+          {
+            "feature": "spectral_flux",
+            "min": 0.1
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flux",
+            "mean": 0.36,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.3,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 18.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "lufs",
+            "mean": -14.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.3,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.52,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.5,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1900.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 15.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The flux axis is the whole separation from WATER-FLOW. Both are continuous and energetic; TURBULENT has HIGH energy AND HIGH spectral_flux (a churning, ever-changing spectrum), FLOW has high energy and LOW flux (a static one). UCS assigns rapids here and steady creeks to FLOW.",
+          "Also louder than FLOW: high root_mean_square_level and lufs. 'Dangerous water' is loud water.",
+          "Against WATER-WATERFALL: a waterfall is even louder and more low-frequency-dominated but paradoxically MORE stationary — a constant plunge rather than a chaotic roil.",
+          "Against WATER-MOVEMENT: MOVEMENT is quieter and driven by an object; TURBULENT is the water itself.",
+          "Against WATER-IMPACT: continuous bed, not one discrete transient."
+        ],
+        "confusable_with": [
+          "WATRFlow",
+          "WATRFall",
+          "WATRMvmt",
+          "WATRSurf",
+          "WATRWave"
+        ]
+      }
     },
     {
       "subcategory": "UNDERWATER",
@@ -552,7 +2199,109 @@
         "Sunken",
         "Undersea",
         "Underwater"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "band_limit_high_hz",
+            "max": 9000.0
+          },
+          {
+            "feature": "high_band_energy",
+            "max": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 2500.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.06,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.95
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 550.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 1800.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.75
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -12.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 900.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.38,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 10.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A hard low-pass signature. Water's impedance and the air/water boundary kill everything above a few kHz, so band_limit_high_hz collapses and low_band_energy dominates. This is one of the most reliably detectable subcategories in all of UCS — a hydrophone recording cannot be mistaken for an air recording.",
+          "Against WATER-MOVEMENT: UCS explicitly splits them — same gestures, but MOVEMENT is recorded in air and keeps its high frequencies. The band_limit_high_hz gate is the entire test.",
+          "Bubble and flow content may be present; the filter, not the morphology, is what defines this class.",
+          "Shares the low-pass signature with VOICES-FUTZED and VEHICLES-INTERIOR — those are separated by voicing_ratio and by engine periodicity, not by bandwidth."
+        ],
+        "confusable_with": [
+          "WATRMvmt",
+          "WATRFlow",
+          "AMBUndwtr",
+          "WATRBubl"
+        ]
+      }
     },
     {
       "subcategory": "WATERFALL",
@@ -575,7 +2324,105 @@
         "Torrent",
         "Victoria",
         "Waterfall"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.5
+          },
+          {
+            "feature": "crest_factor",
+            "max": 12.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.32,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.82,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.75
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.1,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.66,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "lufs",
+            "mean": -12.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.2,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1700.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.85,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 30.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.35
+          }
+        ],
+        "discriminators": [
+          "A waterfall is WATER-FLOW turned up: same stationary, low-flux broadband bed, but far louder (high root_mean_square_level, lufs near -12) with a heavy low-frequency plunge rumble (low_band_energy ~0.35) and the lowest crest_factor in the category — a continuous wall with no dynamic range at all.",
+          "Against WATER-TURBULENT: rapids churn (high spectral_flux, moderate stationarity); a falls is a constant roar (low flux, very high stationarity), even though both are loud.",
+          "Level and low-end can be faked by proximity or by a big river, so this is narrowable, not separable: the word 'falls' or 'cascade' should confirm.",
+          "UCS keeps WATERFALL separate from FLOW explicitly, even though the physics is a continuum."
+        ],
+        "confusable_with": [
+          "WATRFlow",
+          "WATRTurb",
+          "WATRSurf",
+          "WATRFoun"
+        ]
+      }
     },
     {
       "subcategory": "WAVE",
@@ -609,7 +2456,108 @@
         "Wave",
         "Waves",
         "Whitecap"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 0.15,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.75
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.6,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 500.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.2,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.2,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.3,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "UCS: 'distinct waves'. The signature is the individual wave ENVELOPE — a slow swell, a break, a wash — giving a long envelope_attack_seconds (hundreds of ms, unlike any impact), a low onset_rate_per_second (a wave every 5-10 s), and quasi-periodic onsets.",
+          "Against WATER-SURF: UCS routes the general undifferentiated roar to SURF. SURF is stationary with no resolvable onsets; WAVE has countable ones. The stationarity / onset_periodicity pair is the axis.",
+          "Against WATER-LAP: UCS routes tiny waves to LAP. Level is the separator — a lap is a quiet slap on a hull, a wave is a loud break.",
+          "Against WATER-IMPACT: a wave's slow rising swell is the opposite of an impact's 4 ms attack, even when both peak loud."
+        ],
+        "confusable_with": [
+          "WATRSurf",
+          "WATRLap",
+          "WATRImpt",
+          "WATRTurb"
+        ]
+      }
     }
   ]
 }

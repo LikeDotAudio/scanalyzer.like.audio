@@ -39,7 +39,105 @@
         "Throng",
         "Violent",
         "Wrathful"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.1
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.18,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1000.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.58,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 40.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Loud, wide, voiced crowd bed with strained phonation and chanting bursts. Acoustically an angry crowd and a jubilant one are near-identical energetic voiced beds — the affect is semantic, not spectral.",
+          "Louder and rougher than CROWDS-WALLA, but the boundary against CROWDS-CHEERING and CROWDS-BATTLE is carried by text, not signal.",
+          "Voiced, so it is cleanly separable from CROWDS-APPLAUSE."
+        ],
+        "confusable_with": [
+          "CRWDCheer",
+          "CRWDBatl",
+          "CRWDPanic",
+          "CRWDCele"
+        ]
+      }
     },
     {
       "subcategory": "APPLAUSE",
@@ -82,7 +180,145 @@
         "Praise",
         "Slow",
         "Throng"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "max": 0.35
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.45
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.04,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.07,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 25.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.12,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.7,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_entropy",
+            "mean": 0.82,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.7,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.46,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The flagship voicing test. UCS: 'crowds where the applause is predominantly featured' vs CROWDS-CHEERING for 'recordings that are mainly vocals'. Applause is a DENSE STOCHASTIC IMPULSE TRAIN of hand claps: voicing_ratio near ZERO, no f0, broadband and bright.",
+          "High onset_rate (tens per second) with LOW onset_periodicity — many clappers, uncorrelated, so it is irregular, not rhythmic. A synchronized slow hand-clap is the exception that raises periodicity.",
+          "Against CROWDS-CHEERING the difference is stark and reliable: cheering is voiced with mid-band vocal energy; applause has neither.",
+          "Against RAIN or FIRE (the same texture morphology) the separation is semantic, not signal — all are dense stochastic impulse trains."
+        ],
+        "confusable_with": [
+          "CRWDCheer",
+          "CRWDSprt",
+          "CRWDReac",
+          "HMNSkin"
+        ]
+      }
     },
     {
       "subcategory": "BATTLE",
@@ -125,7 +361,101 @@
         "Troops",
         "War",
         "Yells"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.2,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.58,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.42,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 40.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Massed shouting, screaming and dying: a wide, loud, rough-phonation voiced scene with high flux and low stationarity. Acoustically a battle crowd and a panicking crowd are the same object.",
+          "UCS rule: if gunfire or explosions are included it is AMBIENCE-WARFARE, not this — so a heavy impulsive/burst component should route away from CROWDS entirely.",
+          "The affect boundary against CROWDS-ANGRY and CROWDS-PANIC is text-only."
+        ],
+        "confusable_with": [
+          "CRWDPanic",
+          "CRWDAngr",
+          "CRWDCheer",
+          "CRWDMisc"
+        ]
+      }
     },
     {
       "subcategory": "CELEBRATION",
@@ -158,7 +488,98 @@
         "Rowdy",
         "Victory",
         "Years"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.08
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.58,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.42,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.15,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1300.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.54,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 45.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A mixed party scene: voiced revelry, laughter, some clapping and general chatter. UCS explicitly notes the overlap with CROWDS-CHEERING, and sends the non-clean version to AMBIENCE-CELEBRATION.",
+          "There is no acoustic feature that says 'holiday' — the occasion is semantic. Signal can only rule out non-crowds.",
+          "More heterogeneous than CROWDS-CHEERING (a sustained vocal swell) and more energetic than CROWDS-WALLA."
+        ],
+        "confusable_with": [
+          "CRWDCheer",
+          "CRWDWalla",
+          "CRWDLaff",
+          "CRWDSprt"
+        ]
+      }
     },
     {
       "subcategory": "CHEERING",
@@ -195,7 +616,127 @@
         "Swells",
         "Victory",
         "Whooping"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.2
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.72,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.62,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.2,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1100.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.2,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.2,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.42,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 25.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The other half of the flagship voicing test. UCS: 'cheering crowds where the crowd vocals are predominant' — it 'could include applause', but the VOICE must dominate. So voicing_ratio is high (>0.5) and the energy sits in the 200 Hz–2 kHz vocal band.",
+          "Against CROWDS-APPLAUSE this is the sharpest contrast in the category: applause is voicing_ratio ≈ 0, bright, broadband and impulsive; cheering is voicing_ratio ≈ 0.7, mid-band and sustained.",
+          "Wide, multi-talker and smeared, unlike the single-f0 VOICES-CHEER, which UCS reserves for one person."
+        ],
+        "confusable_with": [
+          "CRWDApls",
+          "CRWDCele",
+          "CRWDSprt",
+          "CRWDReac",
+          "VOXCheer"
+        ]
+      }
     },
     {
       "subcategory": "CHILDREN",
@@ -234,7 +775,112 @@
         "Tots",
         "Youngsters",
         "Youths"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.1
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 320.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1700.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.09,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.58,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.32,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 5.0,
+            "deviation": 3.5,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 45.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A crowd bed whose f0 population and spectral centroid sit far higher than an adult crowd — children's voices push the whole long-term average spectrum up, and the sub-200 Hz share nearly vanishes.",
+          "That brightness is a real, measurable offset against CROWDS-WALLA and CROWDS-CONVERSATION, but it overlaps a high-energy adult crowd; narrowable, not separable.",
+          "Shrieks of play blur into CROWDS-PANIC on level and roughness; the sustained playful bed is what tips it here."
+        ],
+        "confusable_with": [
+          "CRWDWalla",
+          "CRWDCheer",
+          "CRWDPanic",
+          "VOXChld"
+        ]
+      }
     },
     {
       "subcategory": "CONVERSATION",
@@ -266,7 +912,105 @@
         "Talk",
         "Verbalization",
         "Walla"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.1
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.58,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.07,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.6,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1000.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 165.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 40.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "UCS rule: 'a small enough group that you can discern words, smaller and less active than a walla'. Few talkers means the syllabic structure SURVIVES — the 3–8 Hz modulation stays sharp and the energy envelope is eventful (low stationarity, turn-taking gaps).",
+          "CROWDS-WALLA is the opposite: enough overlapping talkers that the syllabic peaks average out into a stationary bed.",
+          "Louder and more articulate than CROWDS-QUIET, which is murmuring at a very low level."
+        ],
+        "confusable_with": [
+          "CRWDWalla",
+          "CRWDQuiet",
+          "CRWDLoop",
+          "VOXMisc"
+        ]
+      }
     },
     {
       "subcategory": "LAUGHTER",
@@ -299,7 +1043,112 @@
         "Snickers",
         "Track",
         "Uproar"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.12
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 12.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1300.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.58,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.16,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 8.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Many voiced laugh-pulse trains superimposed: still strongly voiced, but the crisp ~4–6 /s periodicity of VOICES-LAUGH is washed out by uncorrelated laughers, so onset_rate rises while onset_periodicity falls.",
+          "Voiced, which cleanly separates it from CROWDS-APPLAUSE despite both being bursty.",
+          "Typically a swell — fast rise then decay over a few seconds — unlike the sustained bed of CROWDS-WALLA."
+        ],
+        "confusable_with": [
+          "VOXLaff",
+          "CRWDCheer",
+          "CRWDReac",
+          "CRWDApls"
+        ]
+      }
     },
     {
       "subcategory": "LOOP GROUP",
@@ -325,7 +1174,33 @@
         "Loop",
         "Performers",
         "Walla"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "provenance_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.1
+          }
+        ],
+        "priors": [],
+        "discriminators": [
+          "Defined by HOW it was made — 'usually performed for or to picture' by a cast of actors — not by how it sounds. A loop-group walla and a real walla are the same object to DSP. Excluded from signal scoring; text must drive.",
+          "The only weak correlates are studio provenance: drier, narrower and with a lower noise floor than a field-captured CROWDS-WALLA. That is a hint, not a decision.",
+          "See also ARCHIVED-LOOP GROUP for official loop group recordings."
+        ],
+        "confusable_with": [
+          "CRWDWalla",
+          "CRWDConv",
+          "CRWDMisc"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -336,7 +1211,56 @@
       ],
       "synonyms": [
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 3600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.45,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 40.0,
+            "deviation": 3.2,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The category's abstain target: multiple humans, but no sibling morphology (applause, cheering, laughter, walla, singing) wins clearly. See also MOVEMENT-CROWD for the non-vocal crowd-motion case."
+        ],
+        "confusable_with": [
+          "CRWDWalla",
+          "CRWDCele",
+          "CRWDReac"
+        ]
+      }
     },
     {
       "subcategory": "PANIC",
@@ -382,7 +1306,112 @@
         "Trapped",
         "Victim",
         "Yelling"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.1
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 400.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.24,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1700.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.3,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 30.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The only crowd whose voicing rides ROUGH, HIGH-f0 phonation en masse — screams and cries push the crowd's pitch population past 350 Hz with high inharmonicity, and the scene churns (low stationarity, high flux).",
+          "That distress phonation is a real measurable offset from CROWDS-CHEERING, which is voiced at ordinary pitch and much steadier — but a euphoric stadium roar can look similar, so it narrows rather than decides.",
+          "Overlaps CROWDS-BATTLE almost completely on signal; the difference is context and is carried by text."
+        ],
+        "confusable_with": [
+          "CRWDBatl",
+          "CRWDAngr",
+          "CRWDCheer",
+          "VOXScrm"
+        ]
+      }
     },
     {
       "subcategory": "QUIET",
@@ -419,7 +1448,119 @@
         "Tranquil",
         "Voices",
         "Whispering"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "root_mean_square_level",
+            "max": 0.2
+          }
+        ],
+        "priors": [
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.02,
+            "deviation": 0.018,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "lufs",
+            "mean": -38.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.72,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.28,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.32,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 45.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Mumbling and murmuring: a voiced crowd bed at a very LOW absolute level, dark (little energy above 2 kHz — no projected voice, no consonant splash) and very stationary.",
+          "The split against CROWDS-WALLA is LEVEL and BRIGHTNESS, not kind: both are stationary voiced beds of indiscernible words. That makes it narrowable, and level alone is fragile against gain staging — require text agreement.",
+          "The single-person equivalent per UCS is VOICES-WHISPER, but that one is UNVOICED; a murmuring crowd still carries voicing, so the two are not the same test."
+        ],
+        "confusable_with": [
+          "CRWDWalla",
+          "CRWDConv",
+          "VOXWhsp",
+          "CRWDMisc"
+        ]
+      }
     },
     {
       "subcategory": "REACTION",
@@ -454,7 +1595,112 @@
         "Studio",
         "Whistling",
         "Woohoo"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 300.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.12
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.68,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.18,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.25,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.6,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1000.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A collective single-syllable swell — a big 'ooo', 'aaah' or 'boo'. Strongly voiced but with LOW 3–8 Hz syllabic modulation, because the whole crowd holds one vowel; that pairing is the discriminator against CROWDS-WALLA and CROWDS-CONVERSATION, which are voiced AND syllabic.",
+          "One shaped event (rise, hold, decay) rather than a sustained bed — short, with a mid envelope centroid.",
+          "Voiced, so it separates from CROWDS-APPLAUSE; it is the group version of VOICES-REACTION, so it is wide and multi-f0 where that one is narrow and single-f0."
+        ],
+        "confusable_with": [
+          "VOXReac",
+          "CRWDCheer",
+          "CRWDApls",
+          "CRWDLaff"
+        ]
+      }
     },
     {
       "subcategory": "SINGING",
@@ -486,7 +1732,113 @@
         "Recital",
         "Vocal",
         "Vocals"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 900.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.2
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.8,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.66,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.62,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "partial_count",
+            "mean": 22.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.28,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.28,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "beats_per_minute",
+            "mean": 96.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 40.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A crowd holding pitch in unison: voicing and harmonicity go high, sustain_ratio goes high, and the syllabic modulation DROPS because notes are held — plus a metrical onset periodicity (a tempo) that no other crowd has.",
+          "That tonal-plus-metrical combination separates it from CROWDS-CHEERING and CROWDS-WALLA, which are aperiodic and far less harmonic.",
+          "UCS rule: large choral music belongs in MUSICAL, not here — very clean, well-tuned, high-partial-count choral takes should route there.",
+          "The single-voice case is VOICES-SINGING: narrow image, one f0 track."
+        ],
+        "confusable_with": [
+          "VOXSing",
+          "CRWDCheer",
+          "CRWDSprt",
+          "CRWDReac"
+        ]
+      }
     },
     {
       "subcategory": "SPORT",
@@ -537,7 +1889,94 @@
         "Tournament",
         "Victory",
         "Whistling"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.58,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.52,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.17,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1300.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 10.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.38,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 60.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A stadium crowd is a mixture — walla bed, chants, applause swells, whistles, horns — so no single morphology owns it, and nothing in the spectrum says 'baseball'.",
+          "UCS reserves the mixed-with-game-sounds version for AMBIENCE-SPORT; this is the clean crowd. The chant component gives it more onset periodicity than CROWDS-WALLA, but the label is semantic.",
+          "Cheer swells pull it toward CROWDS-CHEERING and clap sections toward CROWDS-APPLAUSE; only text (venue, sport) resolves it."
+        ],
+        "confusable_with": [
+          "CRWDCheer",
+          "CRWDApls",
+          "CRWDCele",
+          "CRWDSing"
+        ]
+      }
     },
     {
       "subcategory": "WALLA",
@@ -562,7 +2001,120 @@
         "Talk",
         "Voices",
         "Walla"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0,
+            "max": 3600.0
+          },
+          {
+            "feature": "voicing_ratio",
+            "min": 0.08
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.52,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.3,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.8,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.07,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.62,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.16,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.12,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.42,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 60.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "UCS: 'very clean crowd walla with non-discernible words'. Enough overlapping talkers that the individual syllabic trains average out — so it stays clearly VOICED (mid-band, formant-rich) while its 3–8 Hz syllabic modulation is SMEARED and the energy envelope goes flat (stationarity very high, crest low).",
+          "That is the exact inverse of CROWDS-CONVERSATION, where few talkers keep the syllabic peaks sharp and the envelope eventful.",
+          "Against CROWDS-QUIET the difference is level and brightness only — both are stationary voiced beds. Honest: narrowable.",
+          "Voiced, so it never competes with CROWDS-APPLAUSE."
+        ],
+        "confusable_with": [
+          "CRWDConv",
+          "CRWDQuiet",
+          "CRWDLoop",
+          "CRWDCele"
+        ]
+      }
     }
   ]
 }

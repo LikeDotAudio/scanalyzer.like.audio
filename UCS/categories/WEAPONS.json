@@ -47,7 +47,102 @@
         "Tabard",
         "Vambrace",
         "Visor"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "lufs",
+            "max": -8.0
+          },
+          {
+            "feature": "low_band_energy",
+            "max": 0.65
+          },
+          {
+            "feature": "length_seconds",
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3800.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "transient_count",
+            "mean": 15.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.07,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Chainmail and plate movement is a dense, bright, INHARMONIC metallic jingle — a stochastic micro-event texture, not a single event, and quiet. Shield HITS are impacts and will look like WEAPONS-BLUNT or METAL-IMPACT instead; this signature will not catch them.",
+          "Physically identical to CHAINS-MOVEMENT and METAL-MOVEMENT. Nothing in the signal says 'knight'. Text decides; the signature exists mainly to rule out impulsive, tonal and LF candidates.",
+          "Leather armour with buckles reads as LEATHER-MOVEMENT plus small metallic ticks — lower centroid still, and even more semantic."
+        ],
+        "confusable_with": [
+          "CHAINMvmt",
+          "METLMvmt",
+          "LETHRMvmt",
+          "WEAPBlnt",
+          "METLImpt"
+        ]
+      }
     },
     {
       "subcategory": "ARROW",
@@ -74,7 +169,87 @@
         "Quarrel",
         "Quiver",
         "Shaft"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0015,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 12.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.38,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.2,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.8,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Two unrelated morphologies share this one label: arrow SLIDES (a short friction gesture across the rest) and arrow IMPACTS (a thock into wood, a target or flesh). The impact case dominates and is what is modelled here; slide files will read as friction and score poorly. That split alone caps the subcategory at semantic_only.",
+          "Per the UCS note, an arrow flying past is NOT here — it is SWOOSHES-SWISH. A sweep with no terminating transient should route there.",
+          "The impact timbre is the TARGET's, not the arrow's, so it is indistinguishable from WOOD-IMPACT or GORE-STAB. See also WEAPONS-BOW for the launch."
+        ],
+        "confusable_with": [
+          "WEAPBow",
+          "SWSH",
+          "WOODImpt",
+          "GOREStab",
+          "WEAPKnif"
+        ]
+      }
     },
     {
       "subcategory": "AXE",
@@ -95,7 +270,92 @@
         "Head",
         "Throwing",
         "Tomahawk"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.28,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.3,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.9,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "UCS itself confesses the overlap: 'Possible overlap with WEAPONS-SWORD or even WEAPON-POLEARM.' That confession IS the honest tier. AXE, SWORD, POLEARM, KNIFE and BLUNT are all metallic impacts and whooshes with the same envelope. No numeric boundary between them is defensible, and none is invented here.",
+          "The one weak lean: a chop is a MASS impact into a soft target (wood, flesh) — more low-mid thud, far less sustained metallic ring than a blade-on-blade SWORD clash. If decay_time_seconds_60db is long and the spectrum is bright and inharmonic, prefer SWORD.",
+          "Text carries this. The signature exists only to prune non-impulsive candidates."
+        ],
+        "confusable_with": [
+          "WEAPSwrd",
+          "WEAPPole",
+          "WEAPBlnt",
+          "WEAPKnif",
+          "WOODImpt",
+          "TOOLHand"
+        ]
+      }
     },
     {
       "subcategory": "BLUNT",
@@ -129,7 +389,91 @@
         "Truncheon",
         "War",
         "Warhammer"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.18,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.15,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.7,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The dullest and most LF-weighted of the melee impacts: a mace, club or nightstick delivers mass with no edge and no blade to ring, so the spectral centroid is low, high_band_energy is small and the decay is SHORT. That short dark decay is the only lean separating it from WEAPONS-SWORD, which rings.",
+          "Flails and chain weapons add a metallic jingle before the strike, dragging the file toward CHAINS-MOVEMENT and WEAPONS-ARMOR.",
+          "Against FIGHT-IMPACT: a club hitting a body IS a fight impact. Only text names the weapon. semantic_only."
+        ],
+        "confusable_with": [
+          "WEAPSwrd",
+          "WEAPAxe",
+          "FGHTImpt",
+          "CHAINMvmt",
+          "WOODImpt"
+        ]
+      }
     },
     {
       "subcategory": "BOW",
@@ -156,7 +500,106 @@
         "Shortbow",
         "String",
         "Traditional"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 150.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "partial_count",
+            "mean": 6.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0015,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.1,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "One of only two WEAPONS subcategories that DSP can actually reach. A bowstring release is a DAMPED HARMONIC TWANG: a real f0 (typically 80-300 Hz), a partial series, and an exponential decay. Harmonicity is HIGH and spectral_flatness LOW — true of nothing else in this category. Every sibling (AXE, SWORD, KNIFE, POLEARM, BLUNT) is noise-plus-transient with harmonicity near zero.",
+          "Against MUSICAL-PLUCKED / MUSICAL-STRINGED: exactly the same physics — a bow twang IS a plucked string. That confusion, not the melee weapons, is why this is narrowable rather than separable; text must name the bow.",
+          "Crossbow files also carry a mechanical latch click and bolt handling. See also WEAPONS-ARROW for the flight and the impact."
+        ],
+        "confusable_with": [
+          "MUSCPluck",
+          "MUSCStr",
+          "WEAPArro",
+          "METLTonl",
+          "WEAPSiege"
+        ]
+      }
     },
     {
       "subcategory": "KNIFE",
@@ -195,7 +638,94 @@
         "Throwing",
         "Trench",
         "Utility"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0012,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 12.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.2,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.6,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The smallest and brightest of the blades: less mass than a SWORD, so a higher centroid, less low-band energy, a shorter ring and a lower absolute level. Switchblade flicks and sheath draws are small metallic frictions rather than impacts.",
+          "Same admission as the rest of WEAPONS: KNIFE vs SWORD vs AXE is a size-and-name distinction that DSP does not carry. The mass leans are real but tiny and are erased by mic distance and normalisation. semantic_only.",
+          "Per UCS, an actual STAB goes to GORE-STAB, not here: if the file is a wet crunch rather than a metallic ring, route it there."
+        ],
+        "confusable_with": [
+          "WEAPSwrd",
+          "WEAPAxe",
+          "GOREStab",
+          "METLImpt",
+          "METLFric"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -207,7 +737,42 @@
       "synonyms": [
         "Boomerang",
         "Slingshot"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 1.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.15
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 7.0,
+            "transform": "linear",
+            "weight": 0.1
+          }
+        ],
+        "discriminators": [
+          "Catch-all: boomerangs, slingshots. No coherent morphology. The ABSTAIN target for WEAPONS — and given how badly AXE / SWORD / POLEARM / KNIFE / BLUNT overlap, abstention will be a common and CORRECT outcome in this category rather than a failure."
+        ],
+        "confusable_with": [
+          "WEAPBlnt",
+          "WEAPKnif",
+          "WEAPArro",
+          "SWSH"
+        ]
+      }
     },
     {
       "subcategory": "POLEARM",
@@ -228,7 +793,91 @@
         "Poleaxe",
         "Pollaxe",
         "Spear"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1500.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.3,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.9,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A spear, pike, halberd or harpoon: a long wooden shaft with a metal head. Acoustically it is a thrust and an impact, sometimes preceded by a whoosh — which is to say, exactly WEAPONS-AXE and WEAPONS-SWORD, as UCS itself admits ('Possible overlap with WEAPONS-SWORD or even WEAPON-POLEARM').",
+          "The wooden shaft adds a slightly more damped, lower-Q ring than an all-metal blade, but the effect is far too small to gate on or to commit to.",
+          "Honestly semantic_only. Text decides."
+        ],
+        "confusable_with": [
+          "WEAPAxe",
+          "WEAPSwrd",
+          "WEAPArro",
+          "WEAPBlnt",
+          "WOODImpt"
+        ]
+      }
     },
     {
       "subcategory": "SIEGE",
@@ -260,7 +909,80 @@
         "Tower",
         "Trebuchet",
         "Warwolf"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A multi-event mechanical scene, not one morphology: rope and timber groaning under torsion, a release clacking, the throwing arm slamming into the stop, the counterweight thudding. Big, wooden, LF-weighted, several onsets, seconds long.",
+          "Against WEAPONS-BOW: a ballista IS a giant bow, but at siege scale the string twang is swamped by timber and rope, so harmonicity stays LOW where BOW's is high.",
+          "Against GUNS-CANNON: a trebuchet has NO detonation — no blast transient, no LF boom, no crest spike. The ABSENCE of an impulsive front is the cleanest thing DSP can say here. A battering ram is a WOOD-IMPACT with a name."
+        ],
+        "confusable_with": [
+          "WOODImpt",
+          "WOODCrsh",
+          "WEAPBow",
+          "GUNCano"
+        ]
+      }
     },
     {
       "subcategory": "SWORD",
@@ -297,7 +1019,106 @@
         "Sword",
         "Swords",
         "Viking"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.8,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "partial_count",
+            "mean": 8.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0012,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 12.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.4,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The one melee subcategory with a real handle on it: a blade-on-blade clash or a sword RING is a long-decaying, bright, INHARMONIC metallic resonance. decay_time_seconds_60db is the discriminator — a sword rings for the better part of a second where WEAPONS-BLUNT (a mace, a club) dies inside 150 ms, and its spectrum sits far higher and far more inharmonic.",
+          "That still only lifts it to narrowable. Against WEAPONS-AXE and WEAPONS-POLEARM — also steel, also ringing — there is no boundary at all, and UCS admits it. Against WEAPONS-KNIFE the lean is mass (a knife is brighter, quieter, shorter-ringing) and it is weak.",
+          "Per UCS: STABS belong to GORE-STAB, not here. Sword draws and 'shings' are metallic FRICTION and will look like METAL-FRICTION."
+        ],
+        "confusable_with": [
+          "WEAPAxe",
+          "WEAPPole",
+          "WEAPKnif",
+          "WEAPBlnt",
+          "METLImpt",
+          "METLTonl"
+        ]
+      }
     },
     {
       "subcategory": "WHIP",
@@ -321,7 +1142,128 @@
         "Whip",
         "Whipcord",
         "Whipcrack"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "crest_factor",
+            "min": 8.0
+          },
+          {
+            "feature": "length_seconds",
+            "min": 0.01,
+            "max": 6.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.01
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 20.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0006,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.12,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 40.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3500.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.25,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.8,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "A whip crack is a genuine SUPERSONIC SHOCK — the tip breaks the sound barrier — and it is one of the highest-crest, fastest-attack events in the entire taxonomy. crest_factor is EXTREME (routinely 15-30), envelope_attack_seconds is effectively zero, envelope_kurtosis is enormous (a single isolated spike in a field of near-silence), and the energy is violently front-loaded. signal_separable, and the crest gate does most of the work by itself.",
+          "Against every other WEAPONS subcategory: no melee impact comes close to this crest factor, and all of them carry far more low-band mass. Against GUNS: a gunshot is also impulsive but has a large LF thump and a room tail; a whip is HF-dominated and nearly LF-free.",
+          "The lead-up swish (the whip travelling before the crack) is SWOOSHES-SWISH. A file containing only the swish, with no crack, should not land here."
+        ],
+        "confusable_with": [
+          "SWSH",
+          "GUNPis",
+          "WEAPBlnt",
+          "BLLTImpt",
+          "FGHTImpt"
+        ]
+      }
     }
   ]
 }

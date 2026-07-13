@@ -39,7 +39,79 @@
         "Trowel",
         "Weed",
         "Weeder"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.15,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Hand-powered by definition: a rake, hoe or shovel is gritty friction against soil and gravel plus sparse metal clanks. It must NOT contain a sustained motor bed — that would be TOOLPowr or a MACHINES-GARDEN machine.",
+          "No DSP separates a rake from a broom, or a garden hand tool from a workshop hand tool. This is a use-context label; TOOLHand is the same physics indoors. Text decides.",
+          "Powered garden machines go to MACHINES-GARDEN per the explanation, and non-tool garden objects to OBJECTS-GARDEN."
+        ],
+        "confusable_with": [
+          "TOOLHand",
+          "TOOLMisc",
+          "TOOLPowr"
+        ]
+      }
     },
     {
       "subcategory": "HAND",
@@ -85,7 +157,105 @@
         "Utility",
         "Vise",
         "Wrench"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 60.0
+          },
+          {
+            "feature": "sustain_ratio",
+            "max": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 12.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.35,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.15,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "'Not requiring power' is a measurable claim: there is NO sustained tonal motor bed. Low harmonicity and low sustain_ratio are the near-gate priors that keep TOOLPowr and TOOLPneu out.",
+          "Morphology is impulsive metal handling: hammer strikes, ratchet clicks, plier snaps, a wrench set on a bench. Bright, spiky, moderately ringing (it is metal, so decay runs longer than wood).",
+          "A hand saw is the exception — sustained rhythmic friction — and will look like a friction file; text should still land it here.",
+          "Against TOOLGrdn: identical physics, different room. Semantic."
+        ],
+        "confusable_with": [
+          "TOOLPowr",
+          "TOOLPneu",
+          "TOOLGrdn"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -96,7 +266,26 @@
       ],
       "synonyms": [
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The abstention target for TOOLS. No gates, no morphology commitment.",
+          "Prefer TOOLHand / TOOLPowr / TOOLPneu / TOOLGrdn whenever one of them survives its gates."
+        ],
+        "confusable_with": []
+      }
     },
     {
       "subcategory": "PNEUMATIC",
@@ -130,7 +319,100 @@
         "Stapler",
         "Tool",
         "Wrench"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 20.0,
+            "deviation": 12.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Air plus hammering. Two co-present cues: a broadband exhaust hiss (high spectral_flatness, LOW harmonicity) and a fast periodic impact chatter (high onset_periodicity at tens of hits per second). A jackhammer and an air ratchet are both this.",
+          "Against TOOLPowr: this is THE split in TOOLS. An electric motor is HARMONIC — a pitched whine, high harmonicity, low spectral_flatness. A pneumatic tool is NOISY and PERCUSSIVE — high flatness, low harmonicity, high onset_periodicity. Same duration, opposite spectra.",
+          "Against TOOLHand: a hand tool has no sustained bed at all; sustain_ratio near 0.6 rules it out."
+        ],
+        "confusable_with": [
+          "TOOLPowr",
+          "TOOLHand",
+          "TOOLMisc"
+        ]
+      }
     },
     {
       "subcategory": "POWER",
@@ -168,7 +450,105 @@
         "Staple",
         "Table",
         "Tool"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 120.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 16.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 250.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 0.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A motor is a stable pitched drone: high harmonicity, low spectral_flatness, low crest factor, sustained for seconds. Drills and sanders spin up and down, so the pitch slope swings hard at the ends while the middle stays stationary.",
+          "Against TOOLPneu: harmonic versus noisy. An electric drill whines; an air ratchet rattles and hisses. harmonicity and spectral_flatness invert between them — the cleanest separation in this category.",
+          "Against TOOLHand: the sustained tonal bed is exactly what a hand tool cannot have.",
+          "A circular saw biting into wood adds a bright screaming friction layer on top of the motor whine; the motor bed underneath still holds."
+        ],
+        "confusable_with": [
+          "TOOLPneu",
+          "TOOLHand",
+          "TOOLMisc"
+        ]
+      }
     }
   ]
 }

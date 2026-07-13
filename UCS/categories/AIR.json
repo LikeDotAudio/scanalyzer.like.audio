@@ -49,7 +49,152 @@
         "Vent",
         "Waft",
         "Whiff"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 120.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "min": 0.12
+          },
+          {
+            "feature": "crest_factor",
+            "max": 14.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.06,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.8,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.16,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "lufs",
+            "mean": -20.0,
+            "deviation": 7.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 2500.0,
+            "deviation": 1800.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200.0,
+            "deviation": 1300.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 0.3,
+            "deviation": 0.6,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.7,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A held, driven flow: level and LOUD where AIR-HISS is a quiet leak. Against AIR-HISS the separation is three-fold and independent — LEVEL (root_mean_square_level ~0.16 vs ~0.03), BRIGHTNESS (spectral_centroid_hz ~2.2 kHz vs ~5.5 kHz; zero_crossings_per_second ~2500 vs ~7000), and DURATION (seconds, not tens of seconds).",
+          "Sustained where AIR-BURST is impulsive: envelope_temporal_centroid ~0.48 with a plateau, crest_factor ~4 not ~9, and envelope_attack_seconds in tens of milliseconds, not single milliseconds.",
+          "Symmetric/front-loaded where AIR-SUCTION is back-loaded: envelope_skewness is mildly POSITIVE here and negative for SUCTION, and SUCTION's envelope_temporal_centroid gate (>= 0.40, expected ~0.63) is the real boundary."
+        ],
+        "confusable_with": [
+          "AIRBrst",
+          "AIRHiss",
+          "AIRSuck",
+          "AIRMisc",
+          "WIND"
+        ]
+      }
     },
     {
       "subcategory": "BURST",
@@ -92,7 +237,130 @@
         "Spurt",
         "Surge",
         "Torrent"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "burst",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 4.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 0.45,
+            "deviation": 2.177,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.006,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.25,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 2.0,
+            "deviation": 1.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 8.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.15,
+            "deviation": 2.543,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.48,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.2,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.0,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The impulsive member of AIR. A pressure release is a single sharp broadband transient with a fast decay: envelope_attack_seconds of a few milliseconds and crest_factor ~9 or more, against ~4 for the steady AIR-BLOW and ~3.5 for AIR-HISS.",
+          "Duration is the blunt instrument, and it is decisive: gated below 4 s and expected under half a second. AIR-HISS is gated to at least 0.5 s and typically runs tens of seconds — a 0.2 s event cannot be a slow leak.",
+          "Front-loaded envelope (envelope_temporal_centroid ~0.25, envelope_skewness ~+2.0) is the exact inverse of AIR-SUCTION's inward swell."
+        ],
+        "confusable_with": [
+          "AIRBlow",
+          "AIRSuck",
+          "AIRMisc",
+          "AIRHiss"
+        ]
+      }
     },
     {
       "subcategory": "HISS",
@@ -120,7 +388,163 @@
         "Shush",
         "Sibilate",
         "Whistling"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5,
+            "max": 300.0
+          },
+          {
+            "feature": "high_band_energy",
+            "min": 0.2
+          },
+          {
+            "feature": "crest_factor",
+            "max": 12.0
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.55
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 7.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.03,
+            "deviation": 0.022,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "lufs",
+            "mean": -34.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.72,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.22,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.07,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 7000.0,
+            "deviation": 4000.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5500.0,
+            "deviation": 2600.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 11000.0,
+            "deviation": 4000.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.58,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.035,
+            "deviation": 0.03,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.86,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.5,
+            "deviation": 1.4,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.5,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -1.5,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "A slow leak. Same stationary-noise morphology as AIR-BLOW, separated on three orthogonal axes at once. LEVEL: root_mean_square_level ~0.03 and lufs ~-34, roughly a factor of five below BLOW — a flat tire is not loud. HF TILT: high_band_energy ~0.72 (gated >= 0.20), zero_crossings_per_second ~7000, spectral_centroid_hz ~5.5 kHz — about double BLOW on every brightness feature, because a small orifice leaking slowly radiates almost nothing below 1 kHz. DURATION: tens of seconds, because the reservoir empties slowly.",
+          "Not AIR-BURST: gated to at least 0.5 s with crest_factor below 12. A hiss contains no transient at all.",
+          "Not AIR-SUCTION: envelope_temporal_centroid sits flat at ~0.50 and stationarity is ~0.86; SUCTION swells and is gated at envelope_temporal_centroid >= 0.40 with an expected ~0.63.",
+          "The harmonicity ceiling (0.55) keeps a whistling leak from stealing WIND-TONAL's territory."
+        ],
+        "confusable_with": [
+          "AIRBlow",
+          "AIRSuck",
+          "AIRMisc",
+          "AIRBrst"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -144,7 +568,57 @@
         "Oxygen",
         "Sky",
         "Ventilation"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.18,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.18,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The abstention target for AIR. Claim it when the file is air-like (noisy, low harmonicity) but no sibling's morphology fits: not clearly impulsive (AIR-BURST), not quiet+HF+long (AIR-HISS), not back-loaded (AIR-SUCTION), not a level steady flow (AIR-BLOW). Deliberately flat priors and wide gates."
+        ],
+        "confusable_with": [
+          "AIRBlow",
+          "AIRBrst",
+          "AIRHiss",
+          "AIRSuck"
+        ]
+      }
     },
     {
       "subcategory": "SUCTION",
@@ -184,7 +658,145 @@
         "Vac",
         "Vacuity",
         "Vacuum"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 120.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "min": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "max": 12.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.63,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": -0.6,
+            "deviation": 0.8,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.35,
+            "deviation": 2.356,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "envelope_release_seconds",
+            "mean": 0.08,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.1,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_slope_hz_per_second",
+            "mean": 350.0,
+            "deviation": 450.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.6,
+            "deviation": 1.4,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.42,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.1,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.18,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.13,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2400.0,
+            "deviation": 1400.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The one AIR subcategory defined by envelope DIRECTION rather than by spectrum. Air drawn INWARD swells: the energy arrives late, so envelope_temporal_centroid runs ~0.63 (gated at 0.40 minimum) against ~0.48 for AIR-BLOW and ~0.25 for AIR-BURST, and envelope_skewness goes NEGATIVE (~-0.6) where every outward air event is positive. The attack is slow (envelope_attack_seconds ~0.35 s) and the release is abrupt — a decay run backwards.",
+          "Spectrally it is nearly a twin of AIR-BLOW: same flatness, same centroid, same level, same noise morphology. Do NOT try to separate them on timbre — that comparison carries no information. The entire discrimination lives in four envelope features (envelope_temporal_centroid, envelope_skewness, envelope_attack_seconds, envelope_release_seconds) plus a POSITIVE spectral_centroid_slope_hz_per_second as the intake accelerates and the flow gets brighter.",
+          "Not AIR-HISS: far shorter, roughly four times louder, and non-stationary.",
+          "Not AIR-BURST: the crest_factor ceiling of 12 and the envelope_temporal_centroid floor of 0.40 both exclude a front-loaded transient."
+        ],
+        "confusable_with": [
+          "AIRBlow",
+          "AIRHiss",
+          "AIRMisc",
+          "AIRBrst"
+        ]
+      }
     }
   ]
 }

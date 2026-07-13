@@ -29,7 +29,112 @@
         "Snowball",
         "Snowfall",
         "Wreckage"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "burst",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "length_seconds",
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.42,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.85
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -11.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.75
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.08,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.18,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.22,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.03,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 12.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A mass of snow collapsing is a WHUMP, not a crash: snow is a porous absorber, so the event is low (centroid ~900 Hz), steeply rolled off (-11 dB/oct), and essentially ringless (decay ~80 ms).",
+          "Against ICE-CRASH & DEBRIS: the material-impedance axis at its widest. Ice debris clatters brightly (centroid ~3.2 kHz, bright shards, high transient count); snow debris has almost no high-frequency content and no resolvable shards. An octave and a half of centroid separates them — one of the more reliable material calls in this set.",
+          "Against SNOW-IMPACT: a matter of scale and debris. UCS points the extreme version at NATURAL DISASTER-AVALANCHE; a discrete thud with no aftermath is SNOW-IMPACT.",
+          "Softer attack than any hard-material crash: snow compresses before it fails."
+        ],
+        "confusable_with": [
+          "SNOWImpt",
+          "ICECrsh",
+          "SNOWMvmt",
+          "NATDAval"
+        ]
+      }
     },
     {
       "subcategory": "FRICTION",
@@ -59,7 +164,120 @@
         "Squeak",
         "Stress",
         "Wear"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "crest_factor",
+            "max": 12.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.75
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 55.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.62,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.65
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.22,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.01,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 3500.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.35,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.1,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Skiing, sledding or a shovel dragging: sustained contact with a GRANULAR medium. The signature is a continuous crunch — a dense micro-texture (very high onset_rate_per_second) rather than the smooth squeal of a hard-surface scrape, with a low crest_factor and a long sustain_ratio.",
+          "Snow squeak (packed snow at low temperature) is the one place this can go quasi-tonal; the priors stay broad enough not to gate it out.",
+          "Against ICE-FRICTION: the material axis. Ice scrapes are brighter (~3.8 kHz vs ~2.6 kHz), can ring or squeal, and have a wandering centroid; snow is darker, denser, granular and dead (decay ~10 ms, the shortest in the set).",
+          "Against SNOW-MOVEMENT: FRICTION is a sustained surface drag; MOVEMENT is a slower, chunkier displacement of snow with resolvable strokes. Genuinely close — UCS overlaps them itself.",
+          "Against SNOW-IMPACT: no discrete transient; sustained and low-crest."
+        ],
+        "confusable_with": [
+          "SNOWMvmt",
+          "ICEFric",
+          "SNOWHndl",
+          "DIRTMvmt"
+        ]
+      }
     },
     {
       "subcategory": "HANDLE",
@@ -96,7 +314,105 @@
         "Throw",
         "Toss",
         "Use"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15
+          },
+          {
+            "feature": "length_seconds",
+            "max": 30.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 45.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.5,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.65
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.65
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.012,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.36,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.08,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.25,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Compacting a snowball is the purest CRUNCH in the taxonomy: a dense stochastic micro-texture of thousands of ice-grain fractures. Very high onset_rate_per_second, low crest_factor, near-zero ring — and quiet (low root_mean_square_level), because it is a hand-scale gesture.",
+          "Level and duration are what separate it from SNOW-FRICTION and SNOW-MOVEMENT, which share the identical crunch texture at larger scale. UCS admits the SNOW-MOVEMENT overlap outright, so treat this as narrowable at best and let the filename commit.",
+          "Against ICE-HANDLE: the material axis. Ice handling clinks and rattles (bright, high-crest, sparse); snow handling crunches (dark, low-crest, dense).",
+          "Against SNOW-IMPACT: HANDLE has no dominant transient — it is texture without an event."
+        ],
+        "confusable_with": [
+          "SNOWMvmt",
+          "SNOWFric",
+          "ICEHndl",
+          "SNOWImpt"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -140,7 +456,112 @@
         "Striking",
         "Thrust",
         "Topple"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 10.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 800.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.15,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.05,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.75
+          },
+          {
+            "feature": "spectral_slope_db_per_octave",
+            "mean": -12.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.65
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.01,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.25,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 1.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.15,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A snowball hit or a body landing in a drift: a DULL, DARK, DEAD thud. Snow's porosity absorbs the high frequencies at the moment of impact, giving the lowest spectral_centroid_hz (~800 Hz) and the steepest spectral_slope_db_per_octave of any impact in this file set, with essentially no ring (decay ~50 ms).",
+          "Against ICE-IMPACT: the cleanest material-impedance contrast available here. Ice clinks bright and brittle at ~3.6 kHz; snow thuds dark at ~0.8 kHz — over two octaves apart, plus a much softer attack (snow compresses, ice does not). This one really is separable on spectrum alone.",
+          "Against SNOW-CRASH & DEBRIS: a crash is bigger, longer and leaves a debris tail; an impact is one discrete event.",
+          "Against SNOW-HANDLE: HANDLE is a sustained crunch texture with no dominant transient."
+        ],
+        "confusable_with": [
+          "SNOWCrsh",
+          "ICEImpt",
+          "SNOWHndl",
+          "SNOWMvmt"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -161,7 +582,18 @@
         "Snowdrift",
         "Snowflakes",
         "Snowpack"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [],
+        "discriminators": [
+          "Catch-all. No gates, no priors: neutral likelihood, the SNOW abstention target (spec section 6).",
+          "Never assert from signal."
+        ],
+        "confusable_with": []
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -185,7 +617,113 @@
         "Slush",
         "Snowfall",
         "Wade"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "crest_factor",
+            "max": 14.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 40.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.75
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2400.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.012,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.32,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.24,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.24,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.11,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Dragging or wading through snow: a sustained granular crunch with more low-frequency body than SNOW-HANDLE (whole-mass displacement, not just grain fracture) and a longer, more stationary run.",
+          "Against SNOW-FRICTION and SNOW-HANDLE: all three are the same crunch texture at different scales and intents. UCS explicitly cross-references HANDLE and MOVEMENT. DSP can only rank them by level, duration and low-frequency content; the filename must commit.",
+          "Against ICE-MOVEMENT: the material axis. Ice slides and rattles brightly (~3.8 kHz, high crest, discrete clatters); snow movement is a dark, dense, low-crest crunch.",
+          "Against SNOW-IMPACT: no dominant transient."
+        ],
+        "confusable_with": [
+          "SNOWFric",
+          "SNOWHndl",
+          "ICEMvmt",
+          "SNOWImpt",
+          "SNOWCrsh"
+        ]
+      }
     }
   ]
 }

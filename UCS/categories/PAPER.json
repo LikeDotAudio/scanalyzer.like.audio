@@ -33,7 +33,114 @@
         "Tissue",
         "Vellum",
         "Waving"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 40.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 14.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.22,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.06,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5500.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4400.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.42,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.025,
+            "deviation": 0.025,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.28,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Pages or confetti falling through air: the same crackly paper texture as PAPER-HANDLE but spread thinner in time — lower onset_rate, lower level, more air between events, and no grab or set-down transient.",
+          "Distinguished from CLOTH-FLAP by centroid and periodicity: cloth flapping is a low/mid quasi-periodic whip train; paper flutter is a bright stochastic crackle.",
+          "No ring whatsoever — paper has no resonant body, unlike METAL or even WOOD."
+        ],
+        "confusable_with": [
+          "PAPRHndl",
+          "CLOTHFlp",
+          "PAPRFric"
+        ]
+      }
     },
     {
       "subcategory": "FRICTION",
@@ -61,7 +168,128 @@
         "Sliding",
         "Tissue",
         "Vellum"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.08,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 22.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.5,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4830.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.868,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 9000.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.06,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.28,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.0225,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Paper friction: sustained contact noise — high sustain_ratio, low crest, continuous flux, no single onset.",
+          "Never front-loaded like IMPACT; more continuous and higher-centroid than MOVEMENT.",
+          "Sliding or scraping paper: a continuous bright hiss-rasp, the softest and highest-centroid friction in the material set.",
+          "Lower onset_rate and much smoother than PAPER-HANDLE's crumple crackle; lower level and shorter than PAPER-RIP's tear.",
+          "Compare METAL-FRICTION (a screech with ringing partials) and WOOD-FRICTION (mid-centroid, gritty): paper friction is pure high-frequency noise with harmonicity near zero."
+        ],
+        "confusable_with": [
+          "PAPRHndl",
+          "PAPRRip",
+          "OBJWrite",
+          "CLOTHMvmt"
+        ]
+      }
     },
     {
       "subcategory": "HANDLE",
@@ -101,7 +329,138 @@
         "Toss",
         "Turn",
         "Vellum"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 40.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 25.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.66,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.05,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 7000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5000.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 11000.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.03,
+            "deviation": 0.03,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.03,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.45,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Crumple / crinkle / page-turn: dense stochastic micro-onsets — the highest onset_rate and the most extreme high_band_energy in the whole material axis. This is what 'crackly' measures as.",
+          "Near-zero ring and almost no energy below 200 Hz separate it from CLOTH-MOVEMENT (mid/low, damped, far fewer micro-onsets) and from PLASTIC-MOVEMENT (brighter than cloth but with real ring and a rattly, lower onset_rate).",
+          "Nothing like METAL (ring) or WOOD (thud): paper has no resonant body at all.",
+          "Overlaps OBJECTS-BOOK by definition in the UCS explanation; text must break the tie."
+        ],
+        "confusable_with": [
+          "PAPRFltr",
+          "PAPRFric",
+          "OBJBook",
+          "CLOTHMvmt",
+          "PLASMvmt"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -134,7 +493,119 @@
         "Tissue",
         "Vellum",
         "Whack"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 8.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.22,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.08,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.03,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.12,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4200.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.045,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.5,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.5,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Paper impact: soft-to-moderate attack, low crest relative to hard materials, and a decay of about 30 ms.",
+          "Ring time is essentially zero and level is low: nothing like METAL-IMPACT (long inharmonic ring), and brighter and thinner than a WOOD thud.",
+          "A rolled newspaper thwack: a broadband slap with essentially no ring — high crest, near-zero decay_time_seconds_60db, and the energy centre of mass above 2 kHz."
+        ],
+        "confusable_with": [
+          "PAPRHndl",
+          "PAPRFltr",
+          "CLOTHImpt",
+          "PLASImpt"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -175,7 +646,57 @@
         "Tracing",
         "Vellum",
         "Writing"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3780.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.0315,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.12,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Catch-all for paper sounds with no clear morphology. Nothing in the signal identifies it; the gates only assert that it is a paper-scale handling event, not a ringing or explosive one.",
+          "Emitted by abstention when the sibling morphologies are all weak or tied."
+        ],
+        "confusable_with": [
+          "PAPRHndl",
+          "PAPRFric",
+          "PAPRFltr"
+        ]
+      }
     },
     {
       "subcategory": "RIP",
@@ -202,7 +723,127 @@
         "Tissue",
         "Tore",
         "Vellum"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.08,
+            "max": 20.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 25.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.68,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.04,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5200.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 12000.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 8000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.05,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 40.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.02,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.9,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "A sustained high-frequency rip: a fibre-by-fibre fracture cascade, so it reads as a granular friction event, not an impulse. The brightest sustained noise in this material set.",
+          "Against CLOTH-RIP: paper is far brighter (centroid ~5 kHz vs ~1.5 kHz) and has almost no energy below 200 Hz; cloth rips are dull, mid-band and damped.",
+          "Against PLASTIC-BREAK: plastic snaps as one sharp transient with a short ring; paper tears continuously with a low crest factor.",
+          "Not METAL (no ring, no partials) and not WOOD (a wood tear is a low crack)."
+        ],
+        "confusable_with": [
+          "CLOTHRip",
+          "PAPRFric",
+          "OBJTape",
+          "PLASBrk"
+        ]
+      }
     },
     {
       "subcategory": "TONAL",
@@ -236,7 +877,94 @@
         "Tonal",
         "Tone",
         "Vellum"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 60.0
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.25
+          },
+          {
+            "feature": "pitch_hz",
+            "min": 50.0,
+            "max": 2000.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "partial_count",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 350.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3360.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Rare: paper excited into a pitched, sustained note. Requires a stable f0 and real harmonic energy — the one place a paper recording looks tonal.",
+          "Any file with harmonicity this high is by definition not the material's IMPACT, MOVEMENT or FRICTION sibling. Still far less inharmonic-ringing than METAL-TONAL.",
+          "The UCS explanation says this is 'not very common' — treat a tonal hit as suspicious and require text agreement. Paper has no resonator, so any true pitch here is bowed or blown, never struck."
+        ],
+        "confusable_with": [
+          "PAPRMisc",
+          "PLASTonl"
+        ]
+      }
     }
   ]
 }

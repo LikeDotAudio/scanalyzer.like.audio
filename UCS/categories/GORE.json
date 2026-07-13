@@ -43,7 +43,104 @@
         "Vascular",
         "White",
         "Wound"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "lufs",
+            "max": -8.0
+          },
+          {
+            "feature": "low_band_energy",
+            "max": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.07,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Dripping, flowing, gushing, spurting — this is LIQUID, and liquid is liquid. UCS says as much itself: 'Likely some overlap with LIQUID & MUD, but this for particularly gory versions.' Gore-ness is a NARRATIVE property, not a spectral one.",
+          "Physically indistinguishable from LIQUID & MUD-MOVEMENT and WATER-DRIP / WATER-FLOW. The only lean is viscosity: blood is thicker than water, so expect a slightly lower centroid and heavier, lower-crest globby onsets than a clean water drip.",
+          "Against GORE-OOZE: dripping and flowing (this) vs slow viscous seeping and burbling (OOZE). No boundary. Against GORE-SPLAT: a splat is an IMPACT; this is a flow."
+        ],
+        "confusable_with": [
+          "GOREOoze",
+          "LIQMvmt",
+          "LIQImpt",
+          "WATRDrip",
+          "WATRFlow",
+          "GORESplt"
+        ]
+      }
     },
     {
       "subcategory": "BONE",
@@ -88,7 +185,115 @@
         "Spine",
         "Tibia",
         "Tooth"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.005,
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 14.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0008,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.08,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.38,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.14,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.2,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 4000.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.6,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The DRY member of the GORE family, and that is the whole discriminator. A snap or crunch is sharp, brittle and bright: high crest_factor, near-zero attack, a fast dry decay and real high-band energy. Everything else in GORE is WET and damped.",
+          "Against GORE-SQUISH and GORE-SPLAT: those are LF, low-centroid, heavily damped, low-crest wet events. BONE is the opposite on every one of those axes. This is the most reliable split inside GORE.",
+          "Against GORE-STAB, which UCS defines as 'more crunchy than a SQUISH': a STAB is a wet/dry HYBRID — a crunch embedded in a squish — so it sits numerically between BONE and SQUISH and files will straddle the two. That is what keeps this narrowable rather than separable.",
+          "A crunch (as opposed to a clean snap) is a burst of many micro-fractures, so transient_count well above 1 is normal here."
+        ],
+        "confusable_with": [
+          "GOREStab",
+          "GORESqsh",
+          "GORESplt",
+          "WOODBrk",
+          "FGHTImpt",
+          "GORESrce"
+        ]
+      }
     },
     {
       "subcategory": "BURN",
@@ -118,7 +323,113 @@
         "Singe",
         "Singed",
         "Sizzle"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 300.0
+          },
+          {
+            "feature": "low_band_energy",
+            "max": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "high_band_energy",
+            "mean": 0.62,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.75,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 8000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.04,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.06,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 11000.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Flesh sizzling: a sustained, stationary, HF-dominated stochastic hiss with a very LOW crest factor. Morphologically it is the exact opposite of every impact in GORE — it does not spike, it sustains. Separable from the rest of the category on centroid, crest and sustain alone.",
+          "Against FIRE-SIZZLE, per the UCS note ('possible overlap with FIRE-SIZZLING, but this more exaggerated for flesh burning'): identical physics. The stated difference is EXAGGERATION — a gore sizzle is hotter, wetter and more aggressive, with more spitting transients riding on the hiss. That is a production choice, not a measurement, and text must carry it.",
+          "Acid burns add a wet, bubbling low-mid layer that pulls the file toward GORE-OOZE."
+        ],
+        "confusable_with": [
+          "FIRESizz",
+          "FIREBurn",
+          "GOREOoze",
+          "WATRFizz",
+          "GOREFlsh"
+        ]
+      }
     },
     {
       "subcategory": "FLESH",
@@ -161,7 +472,109 @@
         "Tear",
         "Tissue",
         "Wound"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2500.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.06,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.15,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Tearing and ripping: a SUSTAINED, unstable, high-flux friction gesture, not an impact. It has duration and a churning spectrum where a splat has neither. Low crest, high spectral_flux, real sustain_ratio — that trio is the morphology, and it cleanly separates FLESH from SPLAT, SQUISH, STAB and BONE, all of which are impulsive.",
+          "Against CLOTH-RIP: physically the same event, a fibrous material being torn. Nothing in the signal says 'flesh'. That confusion is why this stays narrowable.",
+          "Against GORE-SQUISH: a tear is drier, brighter and more sustained; a squish is wetter, darker and shorter. Real but soft."
+        ],
+        "confusable_with": [
+          "CLOTHRip",
+          "GORESqsh",
+          "GOREOoze",
+          "GOREStab",
+          "GORESrce"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -191,7 +604,44 @@
         "Scalpings",
         "Slaughter",
         "Viscera"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.15
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 7.0,
+            "transform": "linear",
+            "weight": 0.1
+          }
+        ],
+        "discriminators": [
+          "Catch-all: beheadings, dismemberments, general carnage. These are almost always COMPOSITES — a whoosh, a crunch, a squish and a splat layered together — so no single morphology applies and the individual GORE detectors will each fire partially.",
+          "The ABSTAIN target for GORE, and a frequently correct one, given how heavily SPLAT, SQUISH, STAB and FLESH overlap one another."
+        ],
+        "confusable_with": [
+          "GORESplt",
+          "GORESqsh",
+          "GOREStab",
+          "GOREFlsh",
+          "GOREBone"
+        ]
+      }
     },
     {
       "subcategory": "OOZE",
@@ -256,7 +706,110 @@
         "Suppurating",
         "Syrup",
         "Viscous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "lufs",
+            "max": -8.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 25.0
+          },
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1100.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.28,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Slow viscous liquid: burbling, seeping, gushing, congealing. Wet, dark, sustained, low-crest — a TEXTURE, not an event. Higher viscosity than GORE-BLOOD means a lower centroid and heavier, slower burbles.",
+          "UCS itself says 'possible overlap with LIQUID categories, but this hyperreal and over the top'. That is a HYPERREALITY claim, not an acoustic one — it describes a mixing and layering decision. semantic_only, and the honest answer is that no DSP will find the difference between a gore ooze and LIQUID & MUD-BUBBLES.",
+          "Against GORE-SQUISH: an ooze flows on its own; a squish is a compression EVENT with a clear onset. Onset structure is the only real difference."
+        ],
+        "confusable_with": [
+          "GOREBlood",
+          "LIQBubl",
+          "LIQMvmt",
+          "GORESqsh",
+          "LIQSuct"
+        ]
+      }
     },
     {
       "subcategory": "SOURCE",
@@ -291,7 +844,32 @@
         "Teeth",
         "Tendons",
         "Veins"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "provenance_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 300.0
+          }
+        ],
+        "priors": [],
+        "discriminators": [
+          "Defined entirely by INTENT, not by sound: 'recordings meant as source for GORE sounds' — smashing a watermelon, stabbing a pumpkin, wringing a wet cloth. The recording IS a watermelon; it is not gore, it is raw material FOR gore.",
+          "provenance_only, so it is excluded from signal scoring altogether (alpha = 0) and carries no priors. Every file here is acoustically a legitimate member of some other subcategory — a melon smash is a genuine impact, a pumpkin stab a genuine crunch. Nothing in the waveform marks it as source material.",
+          "The word 'source' in the filename or metadata is the only evidence that exists. Let text decide entirely."
+        ],
+        "confusable_with": [
+          "GORESplt",
+          "GORESqsh",
+          "GOREStab",
+          "GOREBone",
+          "GOREFlsh",
+          "CREASrce",
+          "FOODIngr"
+        ]
+      }
     },
     {
       "subcategory": "SPLAT",
@@ -334,7 +912,119 @@
         "Splotches",
         "Splotching",
         "Squish"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.01,
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.08
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.65
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.12,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.18,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.6,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.07,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A WET IMPACT: a body or a head hitting a wall. Fast attack, LF and low-mid dominated, heavily damped and essentially RINGLESS — soft wet tissue is a near-perfect absorber, so decay_time_seconds_60db collapses and high_band_energy stays low. Low centroid plus fast attack plus no ring is the wet-impact signature.",
+          "Against GORE-BONE: BONE is DRY, bright, brittle and high-crest; SPLAT is dark, dull and low-crest. The cleanest split in GORE.",
+          "Against GORE-SQUISH: a splat is a fast violent IMPACT (front-loaded, sharp onset); a squish is a slower CRUSH with a sustained wet body. envelope_temporal_centroid and attack time separate them, but they blur badly in practice and many files are genuinely both.",
+          "Against FIGHT-IMPACT: physically the same damped body impact, only wetter — more mid-band burble and a messier tail. Not a boundary DSP can hold."
+        ],
+        "confusable_with": [
+          "GORESqsh",
+          "FGHTImpt",
+          "GOREBone",
+          "GORESrce",
+          "LIQImpt",
+          "FGHTBf"
+        ]
+      }
     },
     {
       "subcategory": "SQUISH",
@@ -375,7 +1065,115 @@
         "Squish",
         "Squishing",
         "Squishy"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 30.0
+          },
+          {
+            "feature": "high_band_energy",
+            "max": 0.6
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 800.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.38,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.18,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.35,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.012,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.15,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A slow wet CRUSH — flesh and organs compressing — not a strike. Compared with GORE-SPLAT the attack is SLOWER, the crest LOWER, and the body of the sound SUSTAINS, because the event is a squelching compression over time rather than a single moment of contact. Dark, wet, mushy, with a gritty micro-texture of bursting fluid.",
+          "Against GORE-SPLAT: attack time and envelope_temporal_centroid are the leans (splat fast and front-loaded, squish slower and spread). They blur badly; many files are honestly both.",
+          "Against GORE-STAB, mining the UCS rule directly — a stab is 'more crunchy than a SQUISH': a STAB carries brittle high-frequency crunch that a pure squish lacks. Test high_band_energy and crest_factor; if they are up, it is a STAB.",
+          "Against GORE-BONE: BONE is dry, bright and high-crest. SQUISH is the wettest, dullest, lowest-crest event in the category."
+        ],
+        "confusable_with": [
+          "GORESplt",
+          "GOREStab",
+          "GOREOoze",
+          "FGHTImpt",
+          "LIQImpt",
+          "GORESrce"
+        ]
+      }
     },
     {
       "subcategory": "STAB",
@@ -422,7 +1220,114 @@
         "Syringe",
         "Thrust",
         "Vorpal"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.01,
+            "max": 20.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.08
+          }
+        ],
+        "priors": [
+          {
+            "feature": "high_band_energy",
+            "mean": 0.32,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.25,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.25,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.12,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.8,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The rule is lifted straight from UCS: a stab is 'more crunchy than a SQUISH'. That is a real, testable statement — crunch means brittle cartilage and bone fracturing inside the wet penetration, which raises high_band_energy, spectral_centroid, spectral_flux and crest_factor above a pure squish while the damped wet body remains underneath. This subcategory is the WET/DRY HYBRID and sits numerically BETWEEN GORE-SQUISH and GORE-BONE.",
+          "Sword pulls (the blade withdrawing) add a metallic friction and schwing layer that will drag the file toward WEAPONS-SWORD. Per UCS the stab itself stays here and does not go to WEAPONS.",
+          "Against GORE-BONE: a stab still has the wet low-mid body a clean bone snap lacks. Against GORE-SPLAT: a stab is brighter and crunchier, a splat darker and duller. Both leans are real; neither is a gate."
+        ],
+        "confusable_with": [
+          "GORESqsh",
+          "GOREBone",
+          "GORESplt",
+          "WEAPKnif",
+          "WEAPSwrd",
+          "GOREFlsh"
+        ]
+      }
     }
   ]
 }

@@ -35,7 +35,103 @@
         "Tam-Tam",
         "Tintinnabulum",
         "Tubular"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.25
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.2
+          }
+        ],
+        "priors": [
+          {
+            "feature": "inharmonicity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.01,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.5,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "partial_count",
+            "mean": 12,
+            "deviation": 6,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A single struck body: sharp attack then a very long ring. HIGH inharmonicity (a bell is the textbook inharmonic resonator) plus a long decay_time_seconds_60db is the split from MUSICAL-PERCUSSION TUNED, which is equally impulsive but strongly harmonic and dies far sooner.",
+          "One onset, not many: unlike MUSICAL-CHIME, which is a stochastic cluster of dozens of small strikes with high transient_count and almost no low_band_energy.",
+          "Pitched enough to have partials, unlike MUSICAL-PERCUSSION membranes (near-zero harmonicity)."
+        ],
+        "confusable_with": [
+          "MUSCChim",
+          "MUSCTnprc",
+          "MUSCPerc"
+        ]
+      }
     },
     {
       "subcategory": "BRASS",
@@ -64,7 +160,103 @@
         "Trombone",
         "Trumpet",
         "Tuba"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.8,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1500,
+            "deviation": 900,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "partial_count",
+            "mean": 16,
+            "deviation": 7,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.08,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.05,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.08,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 300,
+            "deviation": 200,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Continuously blown, so the note is held: high envelope_sustain_level and a non-instant envelope_attack_seconds rule out MUSICAL-PLUCKED and MUSICAL-PERCUSSION TUNED.",
+          "Brighter and richer than MUSICAL-WOODWIND: lip-buzz excitation puts far more energy in the upper partials, so spectral_centroid_hz, partial_count and high_band_energy all run higher. That brightness axis is the boundary.",
+          "Harmonic and stable, unlike MUSICAL-EXPERIMENTAL."
+        ],
+        "confusable_with": [
+          "MUSCWind",
+          "MUSCStr",
+          "MUSCSynth"
+        ]
+      }
     },
     {
       "subcategory": "CHIME",
@@ -87,7 +279,99 @@
         "Tree",
         "Twinkle",
         "Wind"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4500,
+            "deviation": 2000,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 12,
+            "deviation": 8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 2.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Many small strikes, not one: high transient_count with LOW onset_periodicity (wind is stochastic, not metered) is the split from MUSICAL-BELLS (one onset) and from MUSICAL-LOOP (periodic).",
+          "Tiny radiating bodies: very high spectral_centroid_hz and almost no low_band_energy, where BELLS and PERCUSSION carry real bass.",
+          "Metallic and inharmonic, unlike the clean harmonic bars of MUSICAL-PERCUSSION TUNED."
+        ],
+        "confusable_with": [
+          "MUSCBell",
+          "MUSCTnprc",
+          "MUSCPerc"
+        ]
+      }
     },
     {
       "subcategory": "CHORAL",
@@ -127,7 +411,92 @@
         "Vocal",
         "Vocalist",
         "Vocals"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.85,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.75,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900,
+            "deviation": 500,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 15,
+            "deviation": 12,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.1,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.12,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Voicing is the whole test: a very high voicing_ratio with formant structure separates a choir from every instrumental sustain (MUSICAL-STRINGED, MUSICAL-BRASS, MUSICAL-WOODWIND), which have none.",
+          "Sung, not spoken: vowels are held, so envelope_sustain_level and harmonicity are higher and syllabic_modulation_energy lower than in speech.",
+          "No periodic instrumental bed, so beats_per_minute stays quiet - unlike MUSICAL-SONG & PHRASE, and unlike MUSICAL-PERFORMANCE, which is a mixed ensemble scene in a room."
+        ],
+        "confusable_with": [
+          "MUSCSong",
+          "MUSCPrfm",
+          "MUSCStr"
+        ]
+      }
     },
     {
       "subcategory": "EXPERIMENTAL",
@@ -159,7 +528,57 @@
         "Stylophone",
         "Unconventional",
         "Wind"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          }
+        ],
+        "priors": [
+          {
+            "feature": "inharmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 8.0,
+            "deviation": 8.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A style label over prepared and exotic instruments; no morphology is shared across the class, so signal must never assert it.",
+          "The only weak cue is a violated expectation: an instrument-like sound that is unusually inharmonic or unstable for its apparent family. Use it to rank, never to decide.",
+          "Prefer MUSICAL-INSTRUMENT or MUSICAL-MISC when the text does not say prepared, exotic or experimental."
+        ],
+        "confusable_with": [
+          "MUSCInst",
+          "MUSCMisc",
+          "MUSCSynth"
+        ]
+      }
     },
     {
       "subcategory": "INSTRUMENT",
@@ -170,7 +589,42 @@
       ],
       "synonyms": [
         "Instrument"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Residual bucket for instruments with no home in the other MUSICAL subcategories: it asserts nothing from signal.",
+          "Only claim when the text names an instrument that matches no specific sibling (KEYED, PLUCKED, STRINGED, BRASS, WOODWIND, PERCUSSION, PERCUSSION TUNED, BELLS, CHIME, SHAKEN)."
+        ],
+        "confusable_with": [
+          "MUSCMisc",
+          "MUSCExpr",
+          "MUSCKeyd"
+        ]
+      }
     },
     {
       "subcategory": "KEYED",
@@ -201,7 +655,89 @@
         "Spinet",
         "Virginal",
         "Wurlitzer"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.1
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.8,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.12,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.01,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 2.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "partial_count",
+            "mean": 14,
+            "deviation": 6,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 2.0,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 300,
+            "deviation": 220,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Hammer-struck strings: fast attack, long harmonic decay, and only SLIGHT inharmonicity (stretched piano partials) - an order of magnitude less than MUSICAL-BELLS.",
+          "Signal barely separates a piano from MUSICAL-PLUCKED (same attack/decay shape); text is decisive. An organ instead reads as sustained_tonal, so a high envelope_sustain_level here does not disqualify.",
+          "Against MUSICAL-SYNTHESIZED there is no reliable DSP boundary once a sampler is involved - lean on text."
+        ],
+        "confusable_with": [
+          "MUSCPluck",
+          "MUSCSynth",
+          "MUSCTnprc"
+        ]
+      }
     },
     {
       "subcategory": "LOOP",
@@ -222,7 +758,89 @@
         "Sample",
         "Sampled",
         "Sounds"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 2.0
+          },
+          {
+            "feature": "transient_count",
+            "min": 4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.8,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "beats_per_minute",
+            "mean": 110,
+            "deviation": 35,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 12,
+            "deviation": 10,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "transient_count",
+            "mean": 32,
+            "deviation": 24,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 3.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The one trivially separable MUSICAL subcategory: a periodic onset train sustained over bars, so beats_per_minute fires and onset_periodicity is high.",
+          "One-shots cannot do this - MUSICAL-SAMPLE, MUSICAL-STINGER and MUSICAL-PERCUSSION have too few onsets and no periodicity.",
+          "MUSICAL-PERFORMANCE is also long but is a room capture with rubato and low stationarity, not a tight metered cell."
+        ],
+        "confusable_with": [
+          "MUSCSmpl",
+          "MUSCPrfm",
+          "MUSCPerc"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -235,7 +853,34 @@
         "Harmonica",
         "Kazoo",
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.3,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Abstain target for MUSICAL. Emit when the file is clearly musical but no sibling's gates and priors dominate.",
+          "Never assert from signal; this exists so the classifier can decline rather than guess."
+        ],
+        "confusable_with": [
+          "MUSCInst",
+          "MUSCExpr"
+        ]
+      }
     },
     {
       "subcategory": "PERCUSSION",
@@ -275,7 +920,111 @@
         "Tympani",
         "War",
         "Wood"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.08
+          },
+          {
+            "feature": "length_seconds",
+            "max": 30
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 2.117,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 12,
+            "deviation": 5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.06,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.2,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 3.0,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.8,
+            "deviation": 2.117,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Impulsive AND inharmonic: a struck membrane has no harmonic series, so harmonicity is low, inharmonicity is high, and pitch_hz is unstable or absent.",
+          "That inharmonicity axis is the entire boundary against MUSICAL-PERCUSSION TUNED, which shares the identical impulsive envelope but is strongly pitched (high harmonicity, low inharmonicity, a clear pitch_hz).",
+          "Short ring on a bass-heavy body: much higher low_band_energy and a far smaller decay_time_seconds_60db than MUSICAL-BELLS.",
+          "A single strike, not a grain train: higher crest_factor and lower spectral_flatness than MUSICAL-SHAKEN."
+        ],
+        "confusable_with": [
+          "MUSCTnprc",
+          "MUSCBell",
+          "MUSCShake"
+        ]
+      }
     },
     {
       "subcategory": "PERCUSSION TUNED",
@@ -312,7 +1061,103 @@
         "Steel",
         "Vibraphone",
         "Xylophone"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.1
+          },
+          {
+            "feature": "inharmonicity",
+            "max": 0.55
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.75,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 700,
+            "deviation": 450,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.2,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.12,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 2.5,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200,
+            "deviation": 1300,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "partial_count",
+            "mean": 8,
+            "deviation": 4,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Mallet-struck bars and plates: impulsive like MUSICAL-PERCUSSION but HARMONIC. High harmonicity, LOW inharmonicity and a clear pitch_hz is the exact axis that separates the two - same envelope, opposite spectrum.",
+          "Against MUSICAL-BELLS: a bell is also struck and pitched but is strongly inharmonic and rings far longer; a mallet bar has a much smaller decay_time_seconds_60db and near-harmonic partials.",
+          "A stable pitch and low spectral_flatness rule out MUSICAL-SHAKEN and MUSICAL-CHIME."
+        ],
+        "confusable_with": [
+          "MUSCPerc",
+          "MUSCBell",
+          "MUSCChim"
+        ]
+      }
     },
     {
       "subcategory": "PERFORMANCE",
@@ -369,7 +1214,85 @@
         "Symphony",
         "Theatrically",
         "Vocalists"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 5.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 60,
+            "deviation": 50,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "transient_count",
+            "mean": 60,
+            "deviation": 50,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "lufs",
+            "mean": -20.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A long, multi-instrument musical scene captured in a room: wide stereo_width, low stationarity, minutes rather than seconds.",
+          "Less metered than MUSICAL-LOOP (onset_periodicity well below a loop's) and not a mastered mix like MUSICAL-SONG & PHRASE - it carries room tone and audience.",
+          "If crowd and room dominate the music, the UCS text sends it to AMBIENCE (PUBLIC PLACE), not here."
+        ],
+        "confusable_with": [
+          "MUSCSong",
+          "MUSCLoop",
+          "MUSCChor"
+        ]
+      }
     },
     {
       "subcategory": "PLUCKED",
@@ -424,7 +1347,103 @@
         "Uke",
         "Ukulele",
         "Zither"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.06
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.006,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.82,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.1,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.5,
+            "deviation": 1.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.25,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 2.2,
+            "deviation": 1.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "partial_count",
+            "mean": 14,
+            "deviation": 6,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 220,
+            "deviation": 150,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Impulse excitation of a harmonic string: a tiny envelope_attack_seconds followed by a clean harmonic exponential decay, so envelope_sustain_level is LOW and envelope_temporal_centroid is front-loaded.",
+          "That attack/sustain pair is the whole boundary against MUSICAL-STRINGED (bowed: slow attack, high sustain, energy held through the note).",
+          "Harmonic decay with low inharmonicity rules out MUSICAL-PERCUSSION; the ring is far shorter and far less inharmonic than MUSICAL-BELLS."
+        ],
+        "confusable_with": [
+          "MUSCStr",
+          "MUSCKeyd",
+          "MUSCTnprc"
+        ]
+      }
     },
     {
       "subcategory": "SAMPLE",
@@ -450,7 +1469,63 @@
         "Slice",
         "Snippet",
         "Sound"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 30
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 1.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "beats_per_minute",
+            "mean": 0.0,
+            "deviation": 40.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2,
+            "deviation": 2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A single triggered musical one-shot: the ABSENCE of a periodic onset train (no beats_per_minute, low onset_periodicity) plus a short length is exactly what the UCS text means by 'not loops' - that is the whole boundary against MUSICAL-LOOP.",
+          "Otherwise semantic: prefer the specific instrument subcategory whenever the text names one, and MUSICAL-STINGER when the one-shot is a musical accent."
+        ],
+        "confusable_with": [
+          "MUSCLoop",
+          "MUSCStngr",
+          "MUSCInst"
+        ]
+      }
     },
     {
       "subcategory": "SHAKEN",
@@ -481,7 +1556,92 @@
         "Sistrum",
         "Stick",
         "Tambourine"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5000,
+            "deviation": 2500,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 6000,
+            "deviation": 3500,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Dense stochastic grain rather than a single strike: hundreds of tiny seed/bead collisions, so spectral_flatness is high, crest_factor is LOW, and there is no pitch at all.",
+          "Against MUSICAL-PERCUSSION: a drum is one high-crest impulse with real low_band_energy; a shaker is a bright, bass-free noise burst with a micro-onset train.",
+          "Zero harmonicity rules out MUSICAL-PERCUSSION TUNED and MUSICAL-CHIME, which are clustered but pitched."
+        ],
+        "confusable_with": [
+          "MUSCPerc",
+          "MUSCChim",
+          "MUSCTnprc"
+        ]
+      }
     },
     {
       "subcategory": "SONG & PHRASE",
@@ -520,7 +1680,86 @@
         "Strain",
         "Tune",
         "Verse"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 2.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "beats_per_minute",
+            "mean": 110,
+            "deviation": 35,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 25,
+            "deviation": 20,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.28,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A complete produced piece: sung vocal (voicing_ratio) sitting on a metered instrumental bed (beats_per_minute, high onset_periodicity) - both together.",
+          "Not a bar-length cell, so it is longer and less seamlessly periodic than MUSICAL-LOOP.",
+          "A mix, not a room: narrower stereo_width and higher stationarity than MUSICAL-PERFORMANCE, which is a live capture.",
+          "Unaccompanied voices with no beat go to MUSICAL-CHORAL."
+        ],
+        "confusable_with": [
+          "MUSCPrfm",
+          "MUSCLoop",
+          "MUSCChor"
+        ]
+      }
     },
     {
       "subcategory": "STINGER",
@@ -542,7 +1781,89 @@
         "Stab",
         "Sting",
         "Title"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "length_seconds",
+            "max": 15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_release_seconds",
+            "mean": 1.5,
+            "deviation": 1.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "beats_per_minute",
+            "mean": 0.0,
+            "deviation": 40.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A musical accent: a front-loaded hit or swell that rings out and stops, a few seconds long and unmetered - no beats_per_minute, which separates it from MUSICAL-LOOP and MUSICAL-SONG & PHRASE.",
+          "Musical and harmonic where MUSICAL-PERCUSSION and CARTOON-IMPACT are inharmonic broadband hits.",
+          "A stinger is an accent with intent; a bare triggered note is MUSICAL-SAMPLE."
+        ],
+        "confusable_with": [
+          "MUSCSmpl",
+          "MUSCSong",
+          "MUSCPerc"
+        ]
+      }
     },
     {
       "subcategory": "STRINGED",
@@ -569,7 +1890,103 @@
         "Viola",
         "Violin",
         "Violoncello"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.09,
+            "deviation": 1.948,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.72,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.85,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.08,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200,
+            "deviation": 700,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "partial_count",
+            "mean": 18,
+            "deviation": 7,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 400,
+            "deviation": 280,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Bowed means continuously excited: a slow envelope_attack_seconds and a HIGH envelope_sustain_level held for the length of the note, with envelope_temporal_centroid near the middle rather than the front.",
+          "That attack/sustain pair is precisely the axis against MUSICAL-PLUCKED (instant attack, decaying tail, near-zero sustain) - the same string, a different excitation.",
+          "Darker and denser in partials than MUSICAL-BRASS, and bow-noise rather than breath-noise in the attack, unlike MUSICAL-WOODWIND."
+        ],
+        "confusable_with": [
+          "MUSCPluck",
+          "MUSCBrass",
+          "MUSCWind"
+        ]
+      }
     },
     {
       "subcategory": "SYNTHESIZED",
@@ -604,7 +2021,85 @@
         "Virtual",
         "Vocoder",
         "Yamaha"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.35,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 400,
+            "deviation": 300,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 250,
+            "deviation": 200,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Electronically generated: an unnaturally stable spectrum (high stationarity, low spectral_flux) with no bow, breath or strike noise in the attack, often on a hard-edged waveform (elevated total_harmonic_distortion).",
+          "DSP rarely proves synthesis outright - a sampled emulation is indistinguishable - so text is decisive against MUSICAL-KEYED, MUSICAL-BRASS and MUSICAL-STRINGED.",
+          "A synth playing a metered pattern over bars is MUSICAL-LOOP; a single triggered note is MUSICAL-SAMPLE."
+        ],
+        "confusable_with": [
+          "MUSCKeyd",
+          "MUSCBrass",
+          "MUSCExpr"
+        ]
+      }
     },
     {
       "subcategory": "TOY",
@@ -619,7 +2114,92 @@
         "Jack-in-the-box",
         "Music",
         "Musicbox"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000,
+            "deviation": 1500,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 900,
+            "deviation": 500,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "band_limit_high_hz",
+            "mean": 9000,
+            "deviation": 4000,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 8.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A music box: a metered train of pitched, plucked-tine plinks with almost no low_band_energy - a tiny comb and body cannot radiate bass.",
+          "Same plucked-bar physics as MUSICAL-PERCUSSION TUNED, but thin, band-limited and clockwork-regular; the missing bass narrows it and text (box, musicbox, jack-in-the-box) commits it.",
+          "If the mechanism rattles rather than plays a tune, it is TOYS-MECHANICAL."
+        ],
+        "confusable_with": [
+          "MUSCTnprc",
+          "MUSCKeyd",
+          "TOYMech"
+        ]
+      }
     },
     {
       "subcategory": "WOODWIND",
@@ -662,7 +2242,103 @@
         "Tarogato",
         "Xaphoon",
         "Xiao"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.85,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 800,
+            "deviation": 450,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_sustain_level",
+            "mean": 0.7,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "partial_count",
+            "mean": 8,
+            "deviation": 4,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.06,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.06,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.06,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Sustained, breath-excited and DARK: the reed/edge tone sits close to a pure harmonic series, so spectral_centroid_hz, partial_count and high_band_energy all fall well below MUSICAL-BRASS. That brightness axis is the boundary.",
+          "A held note with a non-instant attack rules out MUSICAL-PLUCKED and MUSICAL-PERCUSSION TUNED.",
+          "A near-sinusoidal, very high, gliding tone with almost no partials is a whistle (CARTOON-WHISTLE), not a woodwind."
+        ],
+        "confusable_with": [
+          "MUSCBrass",
+          "MUSCStr",
+          "TOONWhis"
+        ]
+      }
     }
   ]
 }

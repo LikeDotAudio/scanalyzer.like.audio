@@ -55,7 +55,116 @@
         "Structure",
         "Tinder",
         "Wildfire"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.65
+          },
+          {
+            "feature": "spectral_flatness",
+            "min": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.75,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.12,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.4,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.5,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The roar, not the crackle. The explanation is explicit: 'mostly roars', 'not isolate fire crackle'. That maps onto one axis — BURNING is broadband and STATIONARY (high stationarity, low spectral_flux, low crest_factor); CRACKLE is the same burning material but eventful (high flux, spiky crest, sparse resolvable transients). Score that axis, not the timbre.",
+          "Lower spectral_centroid_hz, far lower onset_rate_per_second and much more low_band_energy than SIZZLE, which is a dense high-frequency fizz.",
+          "Less low-frequency weight, lower spectral_flux and much lower level than TURBULENT, which is the same physics driven violently. The explanation's own cross-reference to FIRE-TURBULENT is exactly this boundary."
+        ],
+        "confusable_with": [
+          "FIRECrkl",
+          "FIRETurb",
+          "FIREGas",
+          "FIRETrch",
+          "FIRESizz"
+        ]
+      }
     },
     {
       "subcategory": "BURST",
@@ -90,7 +199,118 @@
         "Outburst",
         "Over",
         "Release"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "burst",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 15.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.6
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.28,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 2.0,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "lufs",
+            "mean": -14.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.02,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "'A sharp and loud release of fire... Usually a single event.' A backdraft: one large front-loaded broadband transient. Fast envelope_attack_seconds, high crest_factor, low envelope_temporal_centroid, near-zero sustain_ratio.",
+          "Against WHOOSH — the load-bearing sibling boundary: WHOOSH swells (envelope_attack_seconds one to two orders slower, roughly half the crest_factor, a swept centroid trajectory). BURST detonates.",
+          "Against BURNING: BURNING has no dominant transient and is stationary. Against IGNITE: same shape, but IGNITE is orders of magnitude quieter, shorter and brighter — a match strike, not a fireball, so it lacks the low-frequency combustion body.",
+          "Against EXPLOSIONS-REAL: identical morphology, and DSP does not separate them. The fire timbre (a sustained combustion roar in the tail rather than a debris field) plus name evidence is all there is."
+        ],
+        "confusable_with": [
+          "FIREWhsh",
+          "FIREIgn",
+          "FIRETurb",
+          "EXPLReal",
+          "EXPLDsgn"
+        ]
+      }
     },
     {
       "subcategory": "CRACKLE",
@@ -114,7 +334,124 @@
         "Snappy",
         "Sparkle",
         "Spit"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.55
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 8.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.06,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "transient_count",
+            "mean": 40.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 8.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A SPARSE, IRREGULAR impulse train. Two features define it: a moderate onset_rate_per_second (single digits per second, not tens) and a LOW onset_periodicity — fire pops are stochastic. A high onset_periodicity at this onset rate is a clock, a machine or an engine idle, never a fire. That is the single most diagnostic pairing in the category.",
+          "The transients are high-frequency-weighted (dry fibre snapping) and the file is quiet between them: high crest_factor, high envelope_kurtosis, low sustain_ratio, low absolute level.",
+          "Against BURNING — the flux/stationarity axis, read the other way: CRACKLE = high spectral_flux, low stationarity, resolvable events. BURNING = low flux, high stationarity, no events. The explanation writes this boundary itself ('not isolate fire crackle... which have their own category').",
+          "Against SIZZLE: SIZZLE's onset_rate_per_second is an order of magnitude higher (tens to hundreds per second), dense enough to fuse into a continuous hiss, with far more high_band_energy. CRACKLE's pops are individually countable."
+        ],
+        "confusable_with": [
+          "FIREBurn",
+          "FIRESizz",
+          "GEOLava",
+          "ELECSprk",
+          "FIREIgn"
+        ]
+      }
     },
     {
       "subcategory": "GAS",
@@ -149,7 +486,117 @@
         "Propane",
         "Range",
         "Stove"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.55
+          },
+          {
+            "feature": "spectral_flatness",
+            "min": 0.25
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.8,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.08,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.7,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 6000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.5,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 0.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 15.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "'That sort of hissy or airy fire burn.' Physically a premixed-flame jet: stationary broadband noise with the energy shifted upward — high high_band_energy, high spectral_centroid_hz, high spectral_flatness, near-zero spectral_flux. It is BURNING with the crackle and most of the low-frequency roar removed.",
+          "THE BOUNDARY WITH AIR-HISS IS THE HARD ONE, AND DSP LOSES IT. A propane burner and a compressed-air leak are both stationary high-frequency noise; on flatness, centroid, crest and stationarity they are the same object. The only signal cue is a residual low-frequency combustion rumble under the hiss (low_band_energy meaningfully above zero, where a pure pneumatic hiss has almost none), and it is weak. With no low-frequency component and no name evidence (Propane, Burner, Stove, Blowtorch, Furnace, Bunsen), prefer AIRHiss. Never assert FIREGas on hiss alone.",
+          "The same boundary and the same verdict apply against WATER-STEAM and GEOTHERMAL-FUMAROLE — all four are one stationary hiss wearing different labels.",
+          "Against SIZZLE: SIZZLE retains resolvable micro-transients (higher crest_factor, higher spectral_flux). A gas jet is smooth."
+        ],
+        "confusable_with": [
+          "AIRHiss",
+          "WATRStm",
+          "GEOFuma",
+          "FIRESizz",
+          "FIREBurn"
+        ]
+      }
     },
     {
       "subcategory": "IGNITE",
@@ -197,7 +644,98 @@
         "Trigger",
         "Up",
         "Zippo"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 10.0
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.6
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.01,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "'That initial spark of ignition of a fire.' A match or a lighter is a short, quiet, high-frequency-weighted front-loaded event: a friction scrape or a flint click, then a small gas whoof. Low envelope_temporal_centroid, high crest_factor, high high_band_energy, very low absolute level.",
+          "Against BURST: the same morphology, but BURST is a fireball — orders of magnitude louder and longer, with real low_band_energy. Level and low-frequency weight are the separator.",
+          "Honest limit: a match strike is acoustically a small bright friction transient and is not reliably separable from a generic small strike, an electrical spark or a wood snap. The signature narrows the field to short bright transients; the synonyms (Match, Lighter, Zippo, Ignite, Spark) must commit it."
+        ],
+        "confusable_with": [
+          "FIREBrst",
+          "FIRECrkl",
+          "ELECSprk",
+          "FIRETrch",
+          "FIREGas"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -211,7 +749,23 @@
         "Cinders",
         "Extinguisher",
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [],
+        "discriminators": [
+          "Catch-all / abstention target. It has no morphology of its own: it is the answer when no sibling in this category wins decisively (spec section 6). No gates and no priors — asserting MISC from positive signal evidence would be incoherent.",
+          "'Fire sounds not fitting another category in this list.' Reached through the FIRE category axis (timbre or text) followed by a failure to commit to any FIRE sibling — not by positive evidence of its own."
+        ],
+        "confusable_with": [
+          "FIREBurn",
+          "FIRECrkl",
+          "FIREGas",
+          "FIRETrch"
+        ]
+      }
     },
     {
       "subcategory": "SIZZLE",
@@ -240,7 +794,110 @@
         "Sizzled",
         "Sizzling",
         "Sparkling"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          },
+          {
+            "feature": "high_band_energy",
+            "min": 0.15
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.55
+          }
+        ],
+        "priors": [
+          {
+            "feature": "high_band_energy",
+            "mean": 0.65,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.2,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 60.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5000.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 9000.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 8.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "DENSE high-frequency crackle. The one number that matters: onset_rate_per_second is an order of magnitude above CRACKLE — tens to hundreds of micro-events per second, dense enough that they fuse into a bright continuous fizz (stationarity climbs, crest_factor falls). CRACKLE's pops are countable; SIZZLE's are not.",
+          "Spectrally the brightest thing in FIRE: high_band_energy dominant, low_band_energy near zero, spectral_centroid_hz up in the kilohertz. Water flashing off a hot surface, a burning fuse, a quenching ember.",
+          "Against GAS and AIR-HISS: those are smooth jets with no micro-transient structure. SIZZLE keeps a measurably higher crest_factor and spectral_flux than a pure hiss — that residual spikiness is the only thing separating a dense texture from a noise bed.",
+          "Against BURNING: BURNING is low-centroid and low-flux. There is no overlap in the high/low band ratio."
+        ],
+        "confusable_with": [
+          "FIRECrkl",
+          "FIREGas",
+          "WATRFizz",
+          "AIRHiss",
+          "FIREBurn"
+        ]
+      }
     },
     {
       "subcategory": "TORCH",
@@ -274,7 +931,97 @@
         "Torching",
         "Torchlight",
         "Wick"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.6
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flux",
+            "mean": 0.25,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 500.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 10.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "'That phasey fire sound as a torch is moved around.' A small BURNING with a strong flame-flap modulation: mid-range spectral_flux and a high spectral_centroid_deviation_hz — the spectrum wobbles as the flame is dragged through the air — where BURNING's centroid sits still.",
+          "It lives between BURNING (static, larger, more low-frequency) and TURBULENT (violent, far louder). Scale is the only separator from BURNING and it is weak: a torch is a small fire. Requires name evidence (Torch, Brazier, Flambeau, Sconce, Wick) to commit.",
+          "The movement is modulation, not events: onset_rate_per_second stays low, unlike CRACKLE, whose energy arrives as discrete impulses."
+        ],
+        "confusable_with": [
+          "FIREBurn",
+          "FIRETurb",
+          "FIREWhsh",
+          "FIREGas"
+        ]
+      }
     },
     {
       "subcategory": "TURBULENT",
@@ -299,7 +1046,105 @@
         "Tornado",
         "Violence",
         "Violent"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.6
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flux",
+            "mean": 0.4,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.5,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 1200.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.2,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "lufs",
+            "mean": -12.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 20.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "'Wildly whooshing turbulent violent fire. Larger than just burning.' Loud, low-frequency-heavy, high-flux, NON-stationary roar. Against BURNING this is the same axis read the other way: BURNING sits at high stationarity and low flux; TURBULENT sits at low stationarity and high flux, with far more low_band_energy and level.",
+          "Honest limit: a fire tornado and a wind tornado are the same broadband low-frequency churn. WIND-TURBULENT, the NATURAL DISASTER composites and this are not separable by DSP — the combustion crackle layer is the only cue and it is usually buried. Text decides.",
+          "Against BURST: BURST is a single front-loaded event. TURBULENT is a sustained scene of many swells — no dominant transient, envelope_temporal_centroid near the middle."
+        ],
+        "confusable_with": [
+          "FIREBurn",
+          "FIREWhsh",
+          "WINDTurb",
+          "NATDTorn",
+          "FIREBrst"
+        ]
+      }
     },
     {
       "subcategory": "WHOOSH",
@@ -317,7 +1162,106 @@
         "Rush",
         "Whooshed",
         "Whooshing"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sweep",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 25.0
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.6
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 1400.0,
+            "deviation": 700.0,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.45,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.25,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          }
+        ],
+        "discriminators": [
+          "'Big whooshy fire events like a fireball through the air.' A SWEPT broadband noise: the centroid traces a monotonic trajectory (spectral_centroid_slope_hz_per_second — up on approach, down on departure) and the envelope SWELLS rather than detonating.",
+          "Against BURST — this is the load-bearing boundary: envelope_attack_seconds is one to two orders of magnitude slower and crest_factor roughly half. A burst is a transient; a whoosh is a trajectory.",
+          "Against SWOOSHES-WHOOSH and DESIGNED-WHOOSH: identical morphology, and DSP cannot separate them on shape. Only the fire timbre — a broadband combustion roar with real low_band_energy, not a filtered noise sweep — plus name evidence (Fireball, Molotov, Backdraft) distinguishes them."
+        ],
+        "confusable_with": [
+          "FIREBrst",
+          "FIRETurb",
+          "WHSH",
+          "SWSH",
+          "DSGNWhsh"
+        ]
+      }
     }
   ]
 }

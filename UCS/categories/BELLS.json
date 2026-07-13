@@ -18,7 +18,114 @@
         "Hawkbell",
         "Sheep",
         "Sleigh"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.85
+          }
+        ],
+        "priors": [
+          {
+            "feature": "inharmonicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.75
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.35,
+            "deviation": 2.356,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3500,
+            "deviation": 2000,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 900,
+            "deviation": 500,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 8,
+            "deviation": 7,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Small, bright and heavily damped: a collar, sheep or sleigh bell is tiny, so its pitch and spectral_centroid_hz are high and its decay_time_seconds_60db is far SHORTER than any other bell here — the strap and the animal's body damp the ring.",
+          "It is worn on something moving, so it usually arrives as a repeated jingle (a rhythmic onset train) rather than a single deliberate strike. That combination — bright, short-ringing, repeated — separates it from BELLS-HANDBELL, which is bigger, darker and rung on purpose.",
+          "BELLS-LARGE is the opposite extreme: low, and ringing for many seconds.",
+          "Orchestral sleigh bells or a kit cowbell are MUSICAL-PERCUSSION / MUSICAL-SHAKEN."
+        ],
+        "confusable_with": [
+          "BELLHand",
+          "BELLMisc",
+          "MUSCShake",
+          "MUSCPerc",
+          "METLImpt",
+          "ANMLFarm"
+        ]
+      }
     },
     {
       "subcategory": "DOORBELL",
@@ -35,7 +142,106 @@
         "Door",
         "Doorbell",
         "Ring"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.75
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.2,
+            "deviation": 2.117,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "transient_count",
+            "mean": 2,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 550,
+            "deviation": 300,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600,
+            "deviation": 900,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The classic ding-dong is two struck chime bars, so expect transient_count near 2 with a clean ring under and after them — a distinctive count for a bell.",
+          "Tuned bars are less inharmonic than a cast bell, so inharmonicity sits below BELLS-LARGE and BELLS-HANDBELL, and the ring is shorter than a tower bell but much longer than a tiny BELLS-ANIMAL.",
+          "A rasping door BUZZER is not a bell at all — that is ALARMS-BUZZER: sustained, distorted, no decay. The presence or absence of a decaying tail decides it outright.",
+          "UCS keeps electronic doorbell chimes here too, which is what caps this at narrowable: a synthesized ding-dong has the envelope but not the inharmonic partials."
+        ],
+        "confusable_with": [
+          "ALRMBuzr",
+          "BELLHand",
+          "BELLMisc",
+          "MUSCChim",
+          "CLOCKChim"
+        ]
+      }
     },
     {
       "subcategory": "GONG",
@@ -54,7 +260,114 @@
         "Tam-Tam",
         "Temple",
         "Tibetan"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.8
+          }
+        ],
+        "priors": [
+          {
+            "feature": "inharmonicity",
+            "mean": 0.75,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 8.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.85
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 150,
+            "deviation": 90,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "partial_count",
+            "mean": 30,
+            "deviation": 15,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_slope_hz_per_second",
+            "mean": 60.0,
+            "deviation": 80.0,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.02,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 12.0,
+            "deviation": 8.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "complexity",
+            "mean": 2500,
+            "deviation": 1500,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The longest and most inharmonic ring in the whole taxonomy: a struck disc whose partials are so dense and so detuned that it barely reads as pitched at all — very high inharmonicity with LOW harmonicity, decaying over many seconds.",
+          "A gong blooms. Energy migrates upward after the strike through nonlinear coupling, so spectral_centroid_slope_hz_per_second is positive; a cast bell (BELLS-LARGE) rings out with a flat or falling centroid. That bloom, plus the low harmonicity, is the real gong/bell boundary.",
+          "Struck with a soft mallet, so the attack is slower than a metal clapper strike.",
+          "UCS v8.2 redirects most musical gongs, tam-tams and singing bowls to MUSICAL-BELLS, so this is a shrinking category and text should be trusted over signal when the two disagree."
+        ],
+        "confusable_with": [
+          "MUSCBell",
+          "MUSCPerc",
+          "MUSCTnprc",
+          "BELLLrg",
+          "METLTonl",
+          "BELLMisc"
+        ]
+      }
     },
     {
       "subcategory": "HANDBELL",
@@ -73,7 +386,106 @@
         "Jingle",
         "School",
         "Service"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.08
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.8
+          }
+        ],
+        "priors": [
+          {
+            "feature": "inharmonicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.2,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 850,
+            "deviation": 450,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800,
+            "deviation": 1500,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5,
+            "deviation": 4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "The middle of the bell size ladder, and size is the only real axis: brighter and shorter-ringing than BELLS-LARGE, darker and longer-ringing than the tiny BELLS-ANIMAL. Rung by hand, so several clapper strikes usually appear in one file.",
+          "Strong metallic inharmonicity is what makes any of these a bell and not a mallet instrument — MUSICAL-PERCUSSION TUNED bars (glockenspiel, marimba, vibraphone) are tuned to near-INTEGER harmonic ratios, so their inharmonicity is low. High inharmonicity plus a long ring is the archetypal bell.",
+          "Handbell choirs and carillons were moved to MUSICAL-BELLS in v8.2; this is the dinner, school and service bell."
+        ],
+        "confusable_with": [
+          "BELLAnml",
+          "BELLDoor",
+          "BELLMisc",
+          "MUSCBell",
+          "ALRMBell",
+          "MUSCTnprc"
+        ]
+      }
     },
     {
       "subcategory": "LARGE",
@@ -93,7 +505,114 @@
         "Peal",
         "Temple",
         "Tower"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.75
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 10.0,
+            "deviation": 7.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 180,
+            "deviation": 110,
+            "transform": "log",
+            "weight": 0.75
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 800,
+            "deviation": 500,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "partial_count",
+            "mean": 22,
+            "deviation": 10,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 15.0,
+            "deviation": 10.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.012,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.3,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Mass sets the pitch. A church or tower bell is LOW (hum well under ~300 Hz), rings for many seconds, and carries the famous inharmonic partial set — roughly 2.0, 2.4, 3.0 and 4.2 times the hum, nowhere near integers. High inharmonicity plus a very long decay_time_seconds_60db plus a low f0 is one of the strongest single signatures in UCS.",
+          "Every other bell is smaller, hence higher and shorter: BELLS-HANDBELL and especially BELLS-ANIMAL sit far up in pitch with a fraction of the ring time.",
+          "BELLS-GONG rings just as long but is a disc, not a cast bell: much less pitched (low harmonicity) and its brightness RISES after the strike instead of decaying flat.",
+          "Peals and tolling give a slow periodic onset train; a single toll is equally valid."
+        ],
+        "confusable_with": [
+          "BELLGong",
+          "BELLHand",
+          "BELLMisc",
+          "MUSCBell",
+          "ALRMBell",
+          "AMBRlgn"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -109,7 +628,70 @@
         "Train",
         "Tram",
         "Trolley"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.85
+          }
+        ],
+        "priors": [
+          {
+            "feature": "inharmonicity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.5,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200,
+            "deviation": 1500,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Unmistakably bell morphology — struck, inharmonic, ringing — but attached to an object the siblings do not name: bicycle, tram, trolley, fire and train bells. The object is not recoverable from DSP, only from the name.",
+          "Keeps the family gates (it still rings and is still inharmonic), so it prunes non-bells while never out-asserting a named sibling."
+        ],
+        "confusable_with": [
+          "BELLHand",
+          "BELLLrg",
+          "BELLAnml",
+          "ALRMBell",
+          "METLImpt",
+          "TRNMisc"
+        ]
+      }
     }
   ]
 }

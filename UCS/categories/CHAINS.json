@@ -23,7 +23,97 @@
         "Snap",
         "Splinter",
         "Split"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 20.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 4.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0015,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 15.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4500.0,
+            "deviation": 2000.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.14,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.45,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.9,
+            "deviation": 2.432,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "UCS: 'that sharp sound of a chain failing'. The sharpest transient in CHAINS - a link snapping under load: extreme crest_factor, extremely fast envelope_attack_seconds, very front-loaded, a bright HF crack, then the released links jangling.",
+          "Against CHAINS-IMPACT: a slam is loud but not this sharp; crest_factor and attack time are the discriminators.",
+          "Against METAL-BREAK: same failure physics, brighter and smaller (a link, not a plate) - higher centroid, less body."
+        ],
+        "confusable_with": [
+          "CHAINImpt",
+          "METLBrk",
+          "CHAINMvmt"
+        ]
+      }
     },
     {
       "subcategory": "HANDLE",
@@ -54,7 +144,84 @@
         "Throw",
         "Toss",
         "Use"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 25.0,
+            "deviation": 18.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 8.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.045,
+            "deviation": 2.432,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3800.0,
+            "deviation": 1800.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.28,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Intent, not morphology: repairing a bike chain, a prisoner shifting in manacles. Acoustically identical to CHAINS-MOVEMENT (UCS admits it); DSP only asserts 'dense bright metallic jingle, nothing snapped'."
+        ],
+        "confusable_with": [
+          "CHAINMvmt",
+          "CHAINImpt",
+          "CHAINMisc"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -85,7 +252,105 @@
         "Strike",
         "Striking",
         "Thrust"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 30.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 4.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.6,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3600.0,
+            "deviation": 1800.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.2,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 1.1,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "A big chain slam, or the tension SNAP of a chain pulled taut: one dominant transient (high crest_factor, front-loaded) with a bright metallic jangle tail as the links settle.",
+          "Against CHAINS-MOVEMENT: MOVEMENT has no dominant transient - it is a steady dense jingle bed (much higher onset_rate_per_second, much lower crest_factor).",
+          "Against METAL-IMPACT: brighter, shorter-ringing, and its tail is a cluster of small link onsets rather than one clean ring."
+        ],
+        "confusable_with": [
+          "CHAINMvmt",
+          "METLImpt",
+          "CHAINBrk",
+          "CHAINHndl"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -101,7 +366,57 @@
         "Miscellaneous",
         "Restraints",
         "Shackles"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3800.0,
+            "deviation": 2000.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 8.0,
+            "deviation": 7.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Residual class: chain-timbred (dense, bright, inharmonic, low-band-poor jingle) but matching no other CHAINS morphology. Abstention target for the category."
+        ],
+        "confusable_with": [
+          "CHAINMvmt",
+          "CHAINHndl",
+          "CHAINImpt",
+          "METLMisc"
+        ]
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -122,7 +437,119 @@
         "Shackled",
         "Shake",
         "Vibrate"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 120.0
+          },
+          {
+            "feature": "transient_count",
+            "min": 3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 40.0,
+            "deviation": 25.0,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 15.0,
+            "deviation": 9.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.12,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4000.0,
+            "deviation": 1800.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.52,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.3,
+            "deviation": 2.543,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.5,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Chain jingle is one of the most distinctive textures in UCS: a VERY dense train of tiny bright metallic onsets (the highest onset_rate_per_second of any metal class, transient_count in the tens), each with a short inharmonic ring, and IRREGULAR - onset_periodicity stays low even when the chain is dragged steadily.",
+          "Almost no low_band_energy: links are small and stiff. That, plus onset density, is the boundary against METAL-MOVEMENT (fewer, bigger, lower onsets) and METAL-CRASH & DEBRIS (loud, destructive, front-weighted).",
+          "Against CHAINS-IMPACT: MOVEMENT is a sustained jingle bed with no dominant transient; IMPACT is one big hit or a taut snap."
+        ],
+        "confusable_with": [
+          "METLMvmt",
+          "CHAINHndl",
+          "METLCrsh",
+          "CHAINImpt"
+        ]
+      }
     }
   ]
 }

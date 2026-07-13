@@ -39,7 +39,119 @@
         "Snap",
         "Splinter",
         "Split"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 12.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 16.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.2,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 12.0,
+            "deviation": 10.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 12.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3400.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.52,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.2,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.7,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Fracture: a sharp snap or crack with a short splinter cascade — higher crest and higher transient_count than PLASTIC-IMPACT (where the item survives), but still a single dominant event, unlike PLASTIC-CRASH & DEBRIS.",
+          "Brighter and shorter-ringing than METAL-BREAK; harder and more impulsive than PAPER-RIP, which is a sustained low-crest friction event, not a snap.",
+          "Less high-frequency shatter and lower inharmonicity than breaking GLASS."
+        ],
+        "confusable_with": [
+          "PLASImpt",
+          "PLASCrsh",
+          "PAPRRip",
+          "PLASFric"
+        ]
+      }
     },
     {
       "subcategory": "CRASH & DEBRIS",
@@ -78,7 +190,108 @@
         "Shatter",
         "Smash",
         "Wreckage"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 40.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 20.0,
+            "deviation": 15.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 10.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.12,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.35,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_skewness",
+            "mean": 1.8,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.46,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 13.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.15,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          }
+        ],
+        "discriminators": [
+          "A multi-event scene: many plastic pieces landing and scattering. Diagnosed by transient_count and onset_rate, both far above PLASTIC-BREAK or PLASTIC-IMPACT, with a front-loaded, decaying train of onsets.",
+          "Onset spacing is stochastic (low onset_periodicity), which separates it from any rhythmic sibling.",
+          "Against a METAL crash: plastic debris has short decay and lower inharmonicity — no sustained ringing bed after the last piece lands."
+        ],
+        "confusable_with": [
+          "PLASBrk",
+          "PLASImpt",
+          "PLASMvmt",
+          "RUBRCrsh"
+        ]
+      }
     },
     {
       "subcategory": "FRICTION",
@@ -126,7 +339,127 @@
         "Squeaks",
         "Stress",
         "Wear"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.08,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 22.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.5,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3250.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.616,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 4800.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.22,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.28,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.045,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Plastic friction: sustained contact noise — high sustain_ratio, low crest, continuous flux, no single onset.",
+          "Never front-loaded like IMPACT; more continuous and higher-centroid than MOVEMENT.",
+          "Plastic scrape / creak / squeak: bright, rasping, and often near-tonal at the squeak extreme — harmonicity can rise well above the noise floor while staying unstable, which is why that prior is loose.",
+          "Higher-centroid and grittier than RUBBER-FRICTION (a lower, rubbery squeal) and much brighter than LEATHER-CREAK.",
+          "Not METAL-FRICTION: no long ringing partials, no sustained inharmonic screech tail."
+        ],
+        "confusable_with": [
+          "PLASMvmt",
+          "RUBRFric",
+          "PLASBrk"
+        ]
+      }
     },
     {
       "subcategory": "HANDLE",
@@ -169,7 +502,108 @@
         "Throw",
         "Toss",
         "Use"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 30.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 4.0,
+            "deviation": 3.5,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.5,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.15,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.4,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.2,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2340.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.44,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 3200.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.8,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.063,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Plastic handling: a short multi-event scene — a grab or set-down transient wrapped in plastic rustle. Morphology is a mixture, so the tier is honest about it.",
+          "Separated from MOVEMENT only by having one or two dominant transients rather than a continuous bed; the material priors are identical.",
+          "Handling a toy or a remote: a couple of clicks and body knocks over a bright, hollow, short-ringing body. UCS explicitly notes overlap with PLASTIC-MOVEMENT — expect the two to tie often, and abstain to PLASTIC-MISC when they do."
+        ],
+        "confusable_with": [
+          "PLASMvmt",
+          "PLASImpt",
+          "OBJCont",
+          "OBJPack"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -220,7 +654,120 @@
         "Striking",
         "Thrust",
         "Thump"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 8.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.22,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.08,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.09,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.36,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.44,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.14,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.09,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.5,
+            "deviation": 1.5,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.5,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Plastic impact: soft-to-moderate attack, low crest relative to hard materials, and a decay of about 90 ms.",
+          "Short hollow ring only — far shorter decay and lower inharmonicity than METAL-IMPACT, brighter and longer-ringing than a WOOD-IMPACT thud, and less high-frequency shatter than GLASS.",
+          "A dropped plastic object: bright, hollow, with a short but real ring (~0.1-0.4 s to -60 dB) — longer than PAPER or CLOTH, far shorter than METAL, and brighter and hollower than a WOOD thud.",
+          "The item does not break: crest is high but there is no fracture cascade, so transient_count stays near 1 and onset_rate stays low — that is the boundary against PLASTIC-BREAK."
+        ],
+        "confusable_with": [
+          "PLASHndl",
+          "PLASBrk",
+          "PLASCrsh",
+          "PAPRImpt"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -256,7 +803,57 @@
         "PVC",
         "Resin",
         "Synthetic"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2340.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.063,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.36,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Catch-all for plastic sounds with no clear morphology. Nothing in the signal identifies it; the gates only assert that it is a plastic-scale handling event, not a ringing or explosive one.",
+          "Emitted by abstention when the sibling morphologies are all weak or tied."
+        ],
+        "confusable_with": [
+          "PLASHndl",
+          "PLASMvmt",
+          "PLASImpt"
+        ]
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -296,7 +893,116 @@
         "Sway",
         "Vibrate",
         "Wobble"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 90.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.45,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.3,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.050000000000001,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2340.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.44,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 3200.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.0495,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Plastic movement: a sustained-but-eventful drag/rustle bed — many low-level micro-onsets, no single dominant transient, sustain_ratio well above IMPACT.",
+          "Longer and far less front-loaded than the same material's IMPACT; less continuous and less high-centroid than its FRICTION.",
+          "Rattles, clatters and shakes: a mid-density onset train with a real (if short) ring behind each hit, which is what separates it from PAPER-HANDLE's ringless crackle and CLOTH-MOVEMENT's dead rustle.",
+          "Bright and hollow — between paper and glass on the material axis, and nothing like the sustained ring of METAL-MOVEMENT."
+        ],
+        "confusable_with": [
+          "PLASHndl",
+          "PLASCrsh",
+          "OBJPack",
+          "PAPRHndl"
+        ]
+      }
     },
     {
       "subcategory": "TONAL",
@@ -335,7 +1041,95 @@
         "Timbre",
         "Tonal",
         "Tone"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 60.0
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.25
+          },
+          {
+            "feature": "pitch_hz",
+            "min": 50.0,
+            "max": 2000.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.15,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "partial_count",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 350.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2080.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Rare: plastic excited into a pitched, sustained note. Requires a stable f0 and real harmonic energy — the one place a plastic recording looks tonal.",
+          "Any file with harmonicity this high is by definition not the material's IMPACT, MOVEMENT or FRICTION sibling. Still far less inharmonic-ringing than METAL-TONAL.",
+          "UCS calls this 'probably pretty rare'. A plastic body does ring briefly, so a bowed or struck-and-held plastic note is physically possible — but the pitch will be poorly sustained and the partials mildly inharmonic, unlike a METAL-TONAL bell."
+        ],
+        "confusable_with": [
+          "PLASMisc",
+          "PLASFric",
+          "RUBRTonl"
+        ]
+      }
     }
   ]
 }

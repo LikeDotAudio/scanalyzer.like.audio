@@ -28,7 +28,21 @@
         "Machines",
         "Mechs",
         "Synthetic"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [],
+        "discriminators": [
+          "Catch-all / abstention target for ROBOTS. No gates, no priors.",
+          "Wins only when MOVEMENT and VOCAL both fail."
+        ],
+        "confusable_with": [
+          "ROBTMvmt",
+          "ROBTVox"
+        ]
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -60,7 +74,88 @@
         "Servo",
         "Solenoid",
         "Synthetic"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 2.1,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 400.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 3.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.18,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 0.0,
+            "deviation": 10.0,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Servo motion: a short mid-band TONAL whine (the motor) that ramps in pitch with the gesture, bracketed by mechanical start/stop transients. Whine + bookend transients is the morphology.",
+          "Explanation defers to MOTORS-SERVO for the bare motor; ROBOTS-MOVEMENT is the COMPOSITE ('complex robot movement'), so expect more transients and layers than a single servo pass.",
+          "Not vocal: no syllabic modulation, unlike ROBOTS-VOCAL."
+        ],
+        "confusable_with": [
+          "MOTRSrvo",
+          "MECHHydr",
+          "SCIMech",
+          "ROBTMisc",
+          "MACHMech"
+        ]
+      }
     },
     {
       "subcategory": "VOCAL",
@@ -91,7 +186,89 @@
         "Mechs",
         "R2D2",
         "Synthetic"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.7,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 1500.0,
+            "deviation": 2.1,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 4.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 0.0,
+            "deviation": 25.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.35,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "R2D2: pitched warbles with speech-like 3-8 Hz syllabic rhythm but WILDLY swinging pitch (huge pitch-slope variance, large centroid deviation) — expression without formants.",
+          "Explanation gives the rule outright: 'more expressive than a beep/UI'. A BEEPS/UI tone holds a FIXED pitch; a robot vocal never does. Pitch-slope variance and centroid deviation are the test.",
+          "Lower voicing_ratio than true speech (VOICES-*), because there is no vocal tract."
+        ],
+        "confusable_with": [
+          "BEEP",
+          "UIBeep",
+          "SCICmpt",
+          "VOXAlien",
+          "TOONVox",
+          "TOONWarb"
+        ]
+      }
     }
   ]
 }

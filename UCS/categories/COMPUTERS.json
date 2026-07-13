@@ -33,7 +33,117 @@
         "Storage",
         "Terabytes",
         "Thunderbolt"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 8.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2500.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "transient_count",
+            "mean": 15.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "TWO LAYERS AT ONCE, and the DUALITY is the signature: (1) a steady, quiet SPINDLE WHINE — a weak harmonic component from the platter motor (5400 rpm = 90 Hz, 7200 rpm = 120 Hz, plus pole harmonics) — underneath (2) an IRREGULAR CHATTER of head-seek clicks. A record showing BOTH a faint tonal floor AND sparse, aperiodic bright transients is a mechanical drive.",
+          "Seek chatter is APERIODIC — data access is not a rhythm, it follows the file system. onset_periodicity stays LOW, which separates a drive from CMPTKey (typing has a loose but real cadence) and from any motor-driven machine (which has a hard cycle).",
+          "Everything about it is QUIET: root_mean_square_level is low and it is always close-mic'd. A loud grinding version means a FAILING drive — still CMPTDriv, and the grind pushes flatness and flux up.",
+          "An SSD is SILENT. If the text says SSD and the file has content, the content is something else (fan, coil whine). Coil whine in particular is an ELECBuzz-shaped harmonic comb, not a drive sound.",
+          "Against MACHOffc: printers and copiers are far louder, longer, and driven by a strongly PERIODIC transport cycle."
+        ],
+        "confusable_with": [
+          "CMPTKey",
+          "CMPTMisc",
+          "MACHOffc",
+          "MOTRElec",
+          "MECHClik"
+        ]
+      }
     },
     {
       "subcategory": "KEYBOARD & MOUSE",
@@ -67,7 +177,117 @@
         "Typing",
         "Wired",
         "Wireless"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 5.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 12.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "transient_count",
+            "mean": 12.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3500.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.04,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 8.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "AN IMPULSE TRAIN OF PLASTIC CLICKS. Typing is a sequence of very sharp, unpitched, short-decay transients at 3-8 keystrokes/second. Each keystroke is a COMPOUND event — a key-down thock plus a key-up release click — so transient_count typically runs at roughly TWICE the number of characters typed. That 2:1 structure is itself a small piece of evidence.",
+          "SEMI-periodic, not periodic: human typing has cadence but not a clock's regularity. onset_periodicity ~0.2-0.5 is the sweet spot — higher than a stochastic texture like SPARKS, far lower than a machine cycle like MACHInd.",
+          "Mouse CLICKS are the same object with transient_count 1-2. Mouse and trackpad MOVEMENT is near-silent friction and will often gate out of everything — expect (and accept) a low-confidence call there.",
+          "Against COMType (typewriter) — the sharpest boundary available in this neighbourhood, and it is a MATERIAL-IMPEDANCE test, exactly the axis decay_time_seconds_60db exists to measure. A typewriter is METAL striking a platen: it RINGS (decay ~100-200 ms, high inharmonicity), it is loud, and it has a margin BELL. A computer keyboard is PLASTIC on plastic: it does NOT ring (decay under ~50 ms) and has no bell. DSP genuinely decides this one.",
+          "Against UIClick: a synthetic UI click is band-limited and single; a keyboard is broadband, multi-transient, and has a mechanical body with a real decay."
+        ],
+        "confusable_with": [
+          "COMType",
+          "UIClick",
+          "CMPTDriv",
+          "MECHClik",
+          "CMPTMisc"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -96,7 +316,85 @@
         "Supercomputer",
         "Tablet",
         "Tech"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.8,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 10.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.8,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The COMPUTERS catch-all — and in practice it is dominated by ONE real sound: the machine's IDLE BED. Case, CPU and PSU fans produce a quiet, STATIONARY, broadband hiss with a faint blade-passing tone from the rotor. Hence the sustained_noise morphology and the stationarity prior, held at deliberately LOW weight so it never over-asserts over a genuine sibling.",
+          "The subcategory is nonetheless semantic_only, and honestly so: a computer's fan bed is acoustically INDISTINGUISHABLE from MACHFan or an AMBOffc room tone. It is the same fan. Only text ('PC', 'laptop', 'CPU', 'desktop', 'mainframe') can commit it.",
+          "Coil whine is the other real inhabitant: a high, thin, unstable harmonic tone from switching supplies — which looks like ELECBuzz, not like a fan.",
+          "UCS routes printers away explicitly: 'Printers would go to MACHINES-OFFICE.'",
+          "Un-gated so it stays reachable as this small category's abstention target."
+        ],
+        "confusable_with": [
+          "MACHFan",
+          "MACHOffc",
+          "AMBOffc",
+          "CMPTDriv",
+          "MOTRElec",
+          "ELECBuzz"
+        ]
+      }
     }
   ]
 }

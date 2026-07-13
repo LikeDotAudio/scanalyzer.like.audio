@@ -16,7 +16,125 @@
         "Signal",
         "Whistle",
         "Wolf"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.08
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.2
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.55
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.93,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.03,
+            "deviation": 0.03,
+            "transform": "linear",
+            "weight": 0.85
+          },
+          {
+            "feature": "partial_count",
+            "mean": 2,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 1200,
+            "deviation": 600,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.04,
+            "deviation": 2.117,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 4.0,
+            "deviation": 8.0,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 350,
+            "deviation": 300,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.0,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 2.8,
+            "deviation": 1.429,
+            "transform": "log",
+            "weight": 0.35
+          }
+        ],
+        "discriminators": [
+          "The purest tone in the taxonomy: essentially a sinusoid. partial_count of 1-2, spectral_flatness near zero, harmonicity near 1, and almost no distortion. Nothing else in UCS is this clean.",
+          "It is also the most pitch-MOBILE. A human glides: a wolf whistle is literally a sweep up and then back down, so expect a large pitch_slope magnitude and a big spectral_centroid_deviation_hz on an otherwise perfect tone.",
+          "WHISTLES-MECHANICAL sits higher (2-4 kHz), starts harder as pressure snaps the resonator into oscillation, and holds its pitch; a pea whistle also warbles fast, which a human cannot do.",
+          "Any horn is far lower with far more partials. Stylized whistles go to CARTOON-WHISTLE."
+        ],
+        "confusable_with": [
+          "WHSTMech",
+          "WHSTMisc",
+          "TOONWhis",
+          "VOXMisc",
+          "BIRDSong",
+          "MUSCMisc"
+        ]
+      }
     },
     {
       "subcategory": "MECHANICAL",
@@ -43,7 +161,123 @@
         "Teapot",
         "Toot",
         "Train"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000,
+            "deviation": 1600,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.72,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.75
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.8,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.08,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.65
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 500,
+            "deviation": 380,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "partial_count",
+            "mean": 4,
+            "deviation": 3,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.008,
+            "deviation": 2.399,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 1800,
+            "deviation": 700,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.0,
+            "deviation": 1.2,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Shrill and HIGH: a near-pure tone with the overwhelming majority of its energy above 2 kHz and almost nothing below 200 Hz. Few partials, very low spectral_flatness.",
+          "The pea is the real cue. A referee or police whistle has a cork or plastic pea rattling inside the chamber, which chops the tone into a fast warble — a large spectral_centroid_deviation_hz riding on an otherwise steady, sustained pitch. Nothing else in UCS produces that combination, and a human whistle certainly cannot.",
+          "Harder onset and far less pitch-glide than WHISTLES-HUMAN, which drifts and swoops.",
+          "Steam kettle and train whistles carry audible breath/steam noise (raised spectral_flatness) and often sound two pitches at once; a locomotive whistle captured as part of the train belongs to TRAINS-HORN.",
+          "Every horn is an octave or more below this with a dense partial comb — pitch and partial_count separate the two families outright."
+        ],
+        "confusable_with": [
+          "WHSTHmn",
+          "WHSTMisc",
+          "TRNHorn",
+          "WATRStm",
+          "BIRDSong",
+          "TOONWhis",
+          "SPRTMisc"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -54,7 +288,68 @@
       ],
       "synonyms": [
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.8
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.75,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600,
+            "deviation": 1600,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "partial_count",
+            "mean": 4,
+            "deviation": 3,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Fallback: a whistle that is neither clearly human-blown nor a recognisable mechanical whistle.",
+          "Keeps the family shape — high, tonal, few partials — so it still prunes everything that is not a whistle, but it must never out-assert WHISTLES-HUMAN or WHISTLES-MECHANICAL, both of which have real signatures."
+        ],
+        "confusable_with": [
+          "WHSTHmn",
+          "WHSTMech",
+          "TOONWhis",
+          "UIBeep"
+        ]
+      }
     }
   ]
 }

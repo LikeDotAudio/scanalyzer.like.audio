@@ -32,7 +32,94 @@
         "Shine",
         "Spark",
         "Stream"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.25
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.5,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": 0.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.5,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Explanation is explicit: 'STEADY laser beams, not a laser gun'. So it is SUSTAINED — flat envelope, high sustain_ratio, centred temporal centroid, low flux, and NO pitch trajectory.",
+          "That is the exact inverse of LASERS-GUN, which is a sub-second front-loaded descending zap. Sustain is the whole boundary.",
+          "Nearly identical to SCIFI-WEAPON (lightsaber hum) and SCIFI-ENERGY on signal; text decides."
+        ],
+        "confusable_with": [
+          "LASRGun",
+          "SCIWeap",
+          "SCIEnrg",
+          "ELECBuzz",
+          "DSGNTonl"
+        ]
+      }
     },
     {
       "subcategory": "GUN",
@@ -51,7 +138,95 @@
         "Plasma",
         "Ray",
         "Weapon"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sweep",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 4.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 0.45,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "pitch_slope_semitones_per_second",
+            "mean": -40.0,
+            "deviation": 30.0,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_slope_hz_per_second",
+            "mean": -3000.0,
+            "deviation": 2500.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.3,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The Ben Burtt 'pew': a SHORT (~0.3-0.6 s), front-loaded transient whose pitch and centroid fall off a cliff — a steeply DESCENDING sweep. Steeper in semitones/second than DESIGNED-BASS DIVE because the whole event lasts under a second.",
+          "The hard length gate separates it from the sustained LASERS-BEAM and SCIFI-WEAPON; SCIFI's own explanation reinforces this by sending 'blaster' here.",
+          "Has a downward glide, unlike LASERS-IMPACT, which is a hit plus sizzle with no trajectory."
+        ],
+        "confusable_with": [
+          "LASRBeam",
+          "LASRImpt",
+          "SCIWeap",
+          "DSGNBass",
+          "TOONZip"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -72,7 +247,91 @@
         "Ray",
         "Sizzle",
         "Strike"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 8.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.9,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.4,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.25,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "A blaster hit: a sharp transient with a bright NOISY sizzle tail (high flatness, HF-weighted) and — critically — no pitch glide, which is what separates it from LASERS-GUN, the outgoing shot.",
+          "Smaller, brighter and shorter than DESIGNED-IMPACT or SCIFI-IMPACT, which carry serious low-end weight."
+        ],
+        "confusable_with": [
+          "LASRGun",
+          "SCIImpt",
+          "DSGNImpt",
+          "ELECZap",
+          "LASRMisc"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -85,7 +344,22 @@
         "Beam",
         "Miscellaneous",
         "Ray"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [],
+        "discriminators": [
+          "Catch-all / abstention target for LASERS. No gates, no priors.",
+          "Wins only when BEAM, GUN and IMPACT all fail to clear threshold."
+        ],
+        "confusable_with": [
+          "LASRBeam",
+          "LASRGun",
+          "LASRImpt"
+        ]
+      }
     }
   ]
 }

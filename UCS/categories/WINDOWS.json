@@ -28,7 +28,97 @@
         "Valances",
         "Veils",
         "Venetian"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4000.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.03,
+            "deviation": 0.03,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The covering, not the window: fabric swish and slat rattle. Very bright, very quiet, almost no low_band_energy, high spectral_flatness — a soft noise texture with no structural thud anywhere.",
+          "That absence of a heavy low-frequency frame impact is the whole separation from WNDWWood / WNDWMetl / WNDWPlas, which all end in a sash thump.",
+          "Venetian slats add a dense clattering transient train; a curtain drag is pure friction. Both stay light and high-centroid."
+        ],
+        "confusable_with": [
+          "WNDWHdwr",
+          "WNDWWood",
+          "WNDWMisc"
+        ]
+      }
     },
     {
       "subcategory": "HARDWARE",
@@ -54,7 +144,97 @@
         "Sash",
         "Slides",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 20.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 12.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3600.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.07,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.7,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.03,
+            "deviation": 0.03,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Small bright metal fittings — latch, crank, catch. Spiky, high-centroid, negligible low_band_energy, short. A crank adds a slow ratcheting transient train.",
+          "Acoustically indistinguishable from DOORHdwr: identical brass and steel parts at identical scale. Both are narrowable at best; the filename decides which fixture.",
+          "Against WNDWKnck: hardware is metal-on-metal with no pane resonance; a knock excites the glass, giving a ringing, tuned rattle."
+        ],
+        "confusable_with": [
+          "DOORHdwr",
+          "WNDWKnck",
+          "WNDWMetl"
+        ]
+      }
     },
     {
       "subcategory": "KNOCK",
@@ -78,7 +258,108 @@
         "Tap",
         "Tapping",
         "Thump"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.08,
+            "max": 15.0
+          },
+          {
+            "feature": "transient_count",
+            "min": 2
+          },
+          {
+            "feature": "sustain_ratio",
+            "max": 0.35
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 3.5,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 13.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.42,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.2,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Same rhythmic morphology as DOORKnck — a periodic train of 2-4 sharp impulses — but struck on GLASS. The pane rings: the centroid sits near 2.5-3 kHz with a bright ~0.2 s rattle, where a wooden door knock sits near 1.2 kHz and dies in ~0.1 s. That spectral offset is the only measurable separation, hence narrowable, not separable.",
+          "Against WNDWHdwr: a knock excites the pane and is periodic; latch clicks are aperiodic and metal-only.",
+          "A tap that shatters the pane is a GLASS break, not WNDWKnck: burst morphology plus a dense high-frequency debris texture tail."
+        ],
+        "confusable_with": [
+          "DOORKnck",
+          "WNDWHdwr",
+          "WNDWMetl"
+        ]
+      }
     },
     {
       "subcategory": "METAL",
@@ -92,7 +373,90 @@
         "Frame",
         "Metal",
         "Panes"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 22.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.45,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.65,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2900.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.8,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "A window's open/close is friction (sash glide, hinge, or crank travel) terminated by a frame thump — the same two-part gesture as a drawer, at lower level. The frame material is the only axis separating the three material subcategories, and it is a colour cue, not a proof.",
+          "Aluminium frames ring and squeal: a bright rail scrape and a ~0.4-0.5 s metallic ring after the sash lands. Contrast WNDWWood, whose thump dies inside ~0.15 s with no ring at all."
+        ],
+        "confusable_with": [
+          "WNDWWood",
+          "WNDWPlas",
+          "DOORSlid",
+          "WNDWHdwr"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -104,7 +468,26 @@
       "synonyms": [
         "Miscellaneous",
         "Panes"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The abstention target for WINDOWS. No gates, no committed morphology.",
+          "Prefer a material or morphology sibling whenever one survives its gates."
+        ],
+        "confusable_with": []
+      }
     },
     {
       "subcategory": "PLASTIC",
@@ -120,7 +503,97 @@
         "Panes",
         "Plastic",
         "Vinyl"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 22.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.06,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2300.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.18,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.6,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.04,
+            "deviation": 0.04,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "A window's open/close is friction (sash glide, hinge, or crank travel) terminated by a frame thump — the same two-part gesture as a drawer, at lower level. The frame material is the only axis separating the three material subcategories, and it is a colour cue, not a proof.",
+          "Vinyl and plexiglass are dead: essentially no ring (decay_time_seconds_60db under 0.1 s), thin low end, a squeaky-dry glide. Deader than WNDWWood and far deader than WNDWMetl.",
+          "Plexiglass lacks the bright shimmering pane resonance of real glass, so it should not steal WNDWKnck."
+        ],
+        "confusable_with": [
+          "WNDWWood",
+          "WNDWMetl",
+          "DRWRPlas"
+        ]
+      }
     },
     {
       "subcategory": "WOOD",
@@ -134,7 +607,91 @@
         "Frame",
         "Panes",
         "Wood"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 60.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 22.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.13,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1500.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.8,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.38,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 800.0,
+            "deviation": 550.0,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "A window's open/close is friction (sash glide, hinge, or crank travel) terminated by a frame thump — the same two-part gesture as a drawer, at lower level. The frame material is the only axis separating the three material subcategories, and it is a colour cue, not a proof.",
+          "Wood damps: a sticky, groaning sash drag in the mid band with a thump that dies in ~0.1-0.2 s. State the boundary from this side: a METAL-framed window rings for ~0.5 s and scrapes bright near 3 kHz; wood does neither.",
+          "Old wooden sashes creak, so this overlaps WOODFric and DOORCreak; the terminal frame thump is what keeps it a window rather than a pure friction file."
+        ],
+        "confusable_with": [
+          "WNDWMetl",
+          "WNDWPlas",
+          "WOODFric",
+          "DOORCreak"
+        ]
+      }
     }
   ]
 }

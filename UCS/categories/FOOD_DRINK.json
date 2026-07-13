@@ -64,7 +64,102 @@
         "Stir",
         "Stovetop",
         "Whisking"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 40.0,
+            "deviation": 35.0,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 7000,
+            "deviation": 5000,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 6.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "The SIZZLE of frying is the dominant real morphology: a dense, near-stationary high-frequency crackle texture — a very high onset_rate_per_second of micro-events, high high_band_energy, essentially no pitch, low crest. It is the same physical event as FIRE-SIZZLE (steam bursting out of oil) and signal analysis cannot separate the two; only the kitchen context in the name can.",
+          "Chopping is the other half of the subcategory: hard, roughly periodic impulses with a board resonance under them — a completely different morphology, which caps this at narrowable. Boiling is bubbling and will score toward WATER-BUBBLES.",
+          "A recording of the pan or pot itself being moved or set down is FOOD & DRINK-KITCHENWARE, not COOKING."
+        ],
+        "confusable_with": [
+          "FIRESizz",
+          "FIRECrkl",
+          "FOODKware",
+          "WATRBubl",
+          "FOODIngr",
+          "FOODMisc"
+        ]
+      }
     },
     {
       "subcategory": "DRINKING",
@@ -137,7 +232,95 @@
         "Vodka",
         "Whiskey",
         "Wine"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 800,
+            "deviation": 600,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.5,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.0,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.2,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Ingestion, not liquid in free air. The liquid is inside a body, so everything is DARK, wet and damped: a gulp is a short low thump plus a throat click, and chugging is a periodic train of them at roughly one to three per second. Low spectral centroid with real low_band_energy is the cue.",
+          "FOOD & DRINK-POUR is the exact opposite — a bright, sustained, continuous liquid flow. The test is simple: if the liquid is falling into a vessel it is POUR, if it is going into a person or an animal it is DRINKING.",
+          "A slurp is noisy suction and will look like sustained noise; a swallow overlaps VOICES-EFFORTS. Animals lapping also live here, which pulls scoring toward the ANIMALS categories by name."
+        ],
+        "confusable_with": [
+          "FOODPour",
+          "FOODEat",
+          "WATRMvmt",
+          "VOXEfrt",
+          "ANMLDog",
+          "FOODMisc"
+        ]
+      }
     },
     {
       "subcategory": "EATING",
@@ -201,7 +384,101 @@
         "Supper",
         "Swallow",
         "Swallowing"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.05,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.5,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2500,
+            "deviation": 1600,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Mastication. Short, broadband, granular, COMPLETELY damped impacts — a crunch is a burst of micro-fractures, so spectral_flatness is high and harmonicity is near zero — repeating at the roughly 2-4 Hz chewing rhythm, which gives it real onset_periodicity.",
+          "The absence of ring is the discriminator. Food and flesh have no decay time at all, unlike the ceramic and metal clinks of FOOD & DRINK-TABLEWARE, which ring audibly. A damped impulse train with zero decay is eating.",
+          "Wetter, darker and slower than the dry granular rattle of FOOD & DRINK-INGREDIENTS. Swallowing genuinely overlaps FOOD & DRINK-DRINKING and the two cannot be split on signal."
+        ],
+        "confusable_with": [
+          "FOODDrnk",
+          "FOODIngr",
+          "FOODMisc",
+          "FOODTware",
+          "ANMLDog"
+        ]
+      }
     },
     {
       "subcategory": "GLASSWARE",
@@ -246,7 +523,106 @@
         "Wine",
         "Wineglass",
         "Wineglasses"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.85
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4000,
+            "deviation": 2200,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.65
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 2.46,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 12.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.06,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "partial_count",
+            "mean": 8,
+            "deviation": 5,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4,
+            "deviation": 5,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "The glass clink: an extremely fast attack, a very bright spectrum (most energy above 2 kHz, almost none below 200 Hz), a high crest_factor, and a clear ringing tail. Stemware rings noticeably longer than a thick tumbler, and a bottle rings lower than a wine glass.",
+          "This is signal-IDENTICAL to GLASS-IMPACT, GLASS-HANDLE and GLASS-MOVEMENT. The only thing placing it in FOOD & DRINK is the bar or restaurant context in the name.",
+          "Duller, darker clinks with a much shorter ring are ceramic or metal — FOOD & DRINK-TABLEWARE. Glass is the brightest and longest-ringing of the three tableware materials."
+        ],
+        "confusable_with": [
+          "GLASImpt",
+          "GLASHndl",
+          "GLASMvmt",
+          "FOODTware",
+          "FOODKware",
+          "CERMImpt"
+        ]
+      }
     },
     {
       "subcategory": "INGREDIENTS",
@@ -301,7 +677,80 @@
         "Vanilla",
         "Vegetables",
         "Yeast"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 25.0,
+            "deviation": 22.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.04,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000,
+            "deviation": 2000,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Raw food material recorded as sound-design source. The only physics the whole subcategory shares is that food does not ring: everything here is broadband, damped and unpitched, with essentially zero decay time.",
+          "Beyond that it splits in two. Dry ingredients (rice, nuts, seeds, grain, cereal) read as a granular texture with a very high micro-onset rate; wet ingredients (meat, batter, eggs, preserves) read as damped squelches. No single prior covers both, so this must never be asserted from signal.",
+          "The same wet material is deliberately shared with GORE-SOURCE, and dry-pour rattle overlaps FOOD & DRINK-COOKING."
+        ],
+        "confusable_with": [
+          "FOODEat",
+          "FOODCook",
+          "FOODMisc",
+          "FOODKware",
+          "PLASMvmt"
+        ]
+      }
     },
     {
       "subcategory": "KITCHENWARE",
@@ -367,7 +816,99 @@
         "Vegetable",
         "Whisk",
         "Wooden"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.9
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.2,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600,
+            "deviation": 1600,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "partial_count",
+            "mean": 15,
+            "deviation": 9,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5,
+            "deviation": 6,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Metal cookware: a hard, fast attack followed by a LONG, strongly inharmonic ring. Pots, pans and big metal bowls are thin resonant shells, so decay_time_seconds_60db is the longest in FOOD & DRINK apart from stemware, and the partials are metallically detuned.",
+          "Ring time is the material axis across this whole category: pans ring long, glass rings bright and medium, ceramic plates tick and die, and food itself does not ring at all.",
+          "Signal-identical to METAL-IMPACT, METAL-HANDLE and METAL-MOVEMENT; only the kitchen context in the name places it here. Cutting-board and knife work will also drag toward WOOD-IMPACT and FOOD & DRINK-COOKING."
+        ],
+        "confusable_with": [
+          "METLImpt",
+          "METLHndl",
+          "METLMvmt",
+          "FOODTware",
+          "FOODGware",
+          "FOODCook"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -385,7 +926,51 @@
         "Garnish",
         "Meal",
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.25,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.15
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.2,
+            "deviation": 3.49,
+            "transform": "log",
+            "weight": 0.15
+          }
+        ],
+        "discriminators": [
+          "Fallback for food and drink sounds the siblings do not name. Assert only when no sibling matches by name.",
+          "Almost uninformative by construction: the category spans everything from a banquet ambience to a garnish being placed, so the priors are near-flat and text must carry the decision."
+        ],
+        "confusable_with": [
+          "FOODCook",
+          "FOODEat",
+          "FOODDrnk",
+          "FOODIngr",
+          "FOODTware"
+        ]
+      }
     },
     {
       "subcategory": "POUR",
@@ -434,7 +1019,125 @@
         "Vodka",
         "Whiskey",
         "Wine"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15
+          },
+          {
+            "feature": "harmonicity",
+            "max": 0.75
+          },
+          {
+            "feature": "spectral_flatness",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.65
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.18,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 30.0,
+            "deviation": 25.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 4500,
+            "deviation": 3200,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2400,
+            "deviation": 1500,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_centroid_slope_hz_per_second",
+            "mean": 80.0,
+            "deviation": 120.0,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Sustained liquid flow: a stationary, unpitched, bright noise bed threaded with bubbles and glugs. High sustain_ratio, low crest_factor, high spectral_flatness, near-zero harmonicity — this is a noise process, not an event.",
+          "Filling a vessel has a real and pretty signature: as the liquid rises the air column above it SHORTENS, so its resonance climbs and spectral_centroid_slope_hz_per_second comes out positive over the pour. A free pour onto a surface does not do this, and no other FOOD & DRINK subcategory does it at all.",
+          "Acoustically the same as WATER-POUR. UCS splits them purely on whether the liquid is a consumption drink, which only the filename can say — hence narrowable, not separable.",
+          "FOOD & DRINK-DRINKING is the dark, damped, bodily counterpart; carbonation fizz after the pour will pull toward WATER-FIZZ."
+        ],
+        "confusable_with": [
+          "WATRPour",
+          "WATRFlow",
+          "WATRBubl",
+          "WATRFizz",
+          "FOODDrnk",
+          "FOODMisc"
+        ]
+      }
     },
     {
       "subcategory": "TABLEWARE",
@@ -484,7 +1187,106 @@
         "Trays",
         "Tureens",
         "Utensils"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.9
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0015,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4500,
+            "deviation": 2400,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.25,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 13.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.55
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.68,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 8,
+            "deviation": 8,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Cutlery and crockery: very sharp, very bright, very high-crest ticks and clinks, usually several in a row as a place setting is handled or a drawer of silverware is moved.",
+          "Ring time is the material axis. Ceramic plates are internally damped and die fast; small metal cutlery rings only briefly because it is small. Both fall well short of the long ring of a big pan (FOOD & DRINK-KITCHENWARE) or the bright sustained ring of stemware (FOOD & DRINK-GLASSWARE). Short decay plus very high centroid is the tableware fingerprint.",
+          "Signal-identical to CERAMICS-IMPACT and METAL-IMPACT; the dining context in the name is what places it here."
+        ],
+        "confusable_with": [
+          "CERMImpt",
+          "METLImpt",
+          "FOODGware",
+          "FOODKware",
+          "CERMHndl",
+          "CERMMvmt"
+        ]
+      }
     }
   ]
 }

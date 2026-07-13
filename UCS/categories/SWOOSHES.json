@@ -34,7 +34,120 @@
         "Whooshy",
         "Zip",
         "Zoom"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sweep",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 3.0
+          },
+          {
+            "feature": "transient_count",
+            "max": 8
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 0.35,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3500.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.48,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 9000.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.45,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.25,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "UCS states the rule outright: 'a swish is smaller than a whoosh. Small objects make swishes.' Small object, less air moved: shorter, brighter, thinner.",
+          "Versus SWOOSHES-WHOOSH: roughly a quarter the duration (~0.35 s vs ~1.5 s), roughly three times the spectral centroid (~3.5 kHz vs ~1.2 kHz), and a third the sub-200 Hz energy. A swish that is a second long with a chest-thumping low end is a whoosh.",
+          "Versus DESIGNED-WHOOSH: same morphology, but designed whooshes are stylised -- heavier processing, more extreme centroid slope, often synthetic low end."
+        ],
+        "confusable_with": [
+          "WHSH",
+          "DSGNWhsh",
+          "TOONSwsh",
+          "TOONZip",
+          "WINDGust"
+        ]
+      }
     },
     {
       "subcategory": "WHOOSH",
@@ -64,7 +177,120 @@
         "Woosh",
         "Zip",
         "Zoom"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sweep",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 20.0
+          },
+          {
+            "feature": "transient_count",
+            "max": 12
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.32,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.18,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 4500.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 1600.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 700.0,
+            "deviation": 500.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.48,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "UCS: 'a whoosh is larger than a swish. A large object would make a whoosh. Tanks flying over your head, or an asteroid by.' Large object, more air moved: longer, darker, with real low-frequency weight.",
+          "Versus SWOOSHES-SWISH: about four times longer, about a third the spectral centroid, about three times the sub-200 Hz energy fraction. Duration and low_band_energy together carry the decision.",
+          "UCS: 'see also DESIGNED-WHOOSH for very stylized whooshes' -- provenance, not physics."
+        ],
+        "confusable_with": [
+          "SWSH",
+          "DSGNWhsh",
+          "WINDGust",
+          "DSGNRise",
+          "MOVEActv"
+        ]
+      }
     }
   ]
 }

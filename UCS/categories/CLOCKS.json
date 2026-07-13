@@ -24,7 +24,122 @@
         "Striker",
         "Toll",
         "Tolling"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 600.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "max": 0.55
+          }
+        ],
+        "priors": [
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 3.0,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "partial_count",
+            "mean": 10.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.006,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 500.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 0.3,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 8.0,
+            "deviation": 3.2,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "A struck bell: a hard transient followed by a LONG, strongly pitched, inharmonic metallic ring. A long decay_time_seconds_60db with high harmonicity AND high inharmonicity together is the bell fingerprint - a clock tick has neither.",
+          "Westminster sequences and hour strikes are widely spaced, so onset_rate stays well under one per second.",
+          "Against BELLS-LARGE, BELLS-HANDBELL and METAL-TONAL: exactly the same physics. Only text ('clock', 'grandfather', 'toll', 'strike') puts it here.",
+          "Alarm clocks are ALARMS-CLOCK, by UCS decree, not this."
+        ],
+        "confusable_with": [
+          "BELLLrg",
+          "BELLHand",
+          "METLTonl",
+          "ALRMBell",
+          "ALRMClok",
+          "BELLGong"
+        ]
+      }
     },
     {
       "subcategory": "MECHANICS",
@@ -59,7 +174,115 @@
         "Winder",
         "Winding",
         "Workings"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 600.0
+          },
+          {
+            "feature": "low_band_energy",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 8.0,
+            "deviation": 3.2,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 20.0,
+            "deviation": 15.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.09,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.18,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.25,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.22,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 6.0,
+            "deviation": 3.2,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The whole movement, not just the escapement: winding a mainspring (a fast ratcheting click train), the gear train whirring, the pendulum, cuckoo mechanics. Denser and less regular than CLOCKS-TICK, and almost entirely high-frequency - a clock movement is tiny, so it has essentially no low-band energy, which is the strongest cue here.",
+          "Against CLOCKS-TICK: a tick is one sparse periodic impulse per second; MECHANICS is many overlapping small events with a lower onset_periodicity.",
+          "Against MECHANICAL-GEARS: UCS routes small clock gears here and big ones there. That is a size call - but size shows up as low_band_energy, so it is at least partly measurable.",
+          "Against MECHANICAL-RATCHET: winding IS a ratchet. Text decides."
+        ],
+        "confusable_with": [
+          "CLOCKTick",
+          "MECHGear",
+          "MECHRtch",
+          "TOYMech",
+          "MACHMech",
+          "MECHClik"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -75,7 +298,24 @@
         "Timepieces",
         "Timers",
         "Watches"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": [],
+        "discriminators": [
+          "The abstention target for CLOCKS. No gates and no priors - it must never exclude anything.",
+          "Emit when the sound is clockish but is neither a periodic tick, a strike, nor an identifiable movement. Also see ALARMS-CLOCK."
+        ],
+        "confusable_with": [
+          "CLOCKTick",
+          "CLOCKChim",
+          "CLOCKMech",
+          "ALRMClok",
+          "BEEPTimer"
+        ]
+      }
     },
     {
       "subcategory": "TICK",
@@ -108,7 +348,141 @@
         "Tock",
         "Tocking",
         "Watch"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 1.2,
+            "max": 3600.0
+          },
+          {
+            "feature": "onset_periodicity",
+            "min": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "min": 0.2,
+            "max": 12.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "max": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.93,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 1.6,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0015,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.04,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.05,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "beats_per_minute",
+            "mean": 90.0,
+            "deviation": 45.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 9.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The textbook rhythmic case and the most confidently separable entry in this batch: SPARSE, PERFECTLY PERIODIC, dry impulses. onset_periodicity sits near 1.0 at an onset_rate of about 1-2 per second (a 1 Hz seconds hand, a 2 Hz tick-tock, a 4-6 Hz watch balance at the fast end), with near-silence between events and a very high crest factor.",
+          "Against MECHANICAL-RATCHET: identical impulse, an order of magnitude faster and driven by a single hand motion. onset_rate_per_second alone separates them.",
+          "Against MECHANICAL-CLICK: one click, not a train. Against dense textures such as RAIN: rain is STOCHASTIC and onset_periodicity collapses. This is the feature the whole spec was built around.",
+          "Against CLOCKS-MECHANICS: a bare tick is just the escapement; MECHANICS is the whole gear train, winding and pendulum, which is far denser and less periodic."
+        ],
+        "confusable_with": [
+          "MECHRtch",
+          "MECHClik",
+          "CLOCKMech",
+          "ALRMClok",
+          "MECHRelay"
+        ]
+      }
     }
   ]
 }

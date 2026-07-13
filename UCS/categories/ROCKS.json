@@ -69,7 +69,105 @@
         "Splinter",
         "Split",
         "Stones"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 30.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800.0,
+            "deviation": 1000.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.06,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.42,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.22,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.0,
+            "deviation": 2.46,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "An isolated crack/crumble: broadband, unpitched fracture noise - brighter and noisier than ROCKS-IMPACT (higher spectral_flatness, more mid/HF grit) but still with NO ring. Nothing in rock sustains.",
+          "Against GLASS-BREAK and CERAMICS-BREAK: no bright tinkling shard tail, far lower centroid, far lower high_band_energy.",
+          "Against ROCKS-CRASH & DEBRIS: singular and front-loaded; CRASH is a collapse/slide with dozens of onsets over seconds."
+        ],
+        "confusable_with": [
+          "ROCKCrsh",
+          "ROCKImpt",
+          "ROCKFric",
+          "CERMBrk"
+        ]
+      }
     },
     {
       "subcategory": "CRASH & DEBRIS",
@@ -139,7 +237,121 @@
         "Stones",
         "Up",
         "Wreckage"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3,
+            "max": 120.0
+          },
+          {
+            "feature": "transient_count",
+            "min": 3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 30.0,
+            "deviation": 20.0,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 12.0,
+            "deviation": 8.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.08,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1500.0,
+            "deviation": 900.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.38,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.06,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.45,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "A rockslide or collapse: a dense, dull, LOW-centroid multi-onset texture - dozens of unpitched thuds and tumbles, highly irregular (very low onset_periodicity), rumbling underneath (high low_band_energy).",
+          "Against ROCKS-IMPACT: onset count is the axis - a slide is not a hit.",
+          "Against DIRT & SAND-CRASH & DEBRIS: rocks are discrete and thuddy (resolvable onsets, low centroid); dirt and sand is a continuous granular hiss with unresolvable micro-onsets and much higher spectral_flatness.",
+          "Against METAL-CRASH & DEBRIS: no ring, no inharmonic partials, far darker."
+        ],
+        "confusable_with": [
+          "ROCKBrk",
+          "ROCKMvmt",
+          "DIRTCrsh",
+          "METLCrsh",
+          "ROCKImpt"
+        ]
+      }
     },
     {
       "subcategory": "FRICTION",
@@ -204,7 +416,106 @@
         "Wear",
         "Whet",
         "Whetstone"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 120.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 25.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800.0,
+            "deviation": 1000.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.3,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 4000.0,
+            "deviation": 2500.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 700.0,
+            "deviation": 450.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.3,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Grinding stone on stone, or the groaning stress of rock about to give: sustained, DULL, granular friction - low centroid, high spectral_flatness, no pitch.",
+          "Against METAL-FRICTION and GLASS-FRICTION: those squeal and screech with a high, wandering centroid and audible partials; rock friction is a low broadband grind.",
+          "Against DIRT & SAND: sand scraping is flatter, hissier and HIGHER in centroid (fine grains); rock friction retains body and low_band_energy."
+        ],
+        "confusable_with": [
+          "METLFric",
+          "CERMFric",
+          "DIRTMvmt",
+          "ROCKMvmt",
+          "ROCKBrk"
+        ]
+      }
     },
     {
       "subcategory": "HANDLE",
@@ -266,7 +577,78 @@
         "Take",
         "Throw",
         "Toss"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.04,
+            "deviation": 2.399,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 900.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.05,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.11,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.5,
+            "deviation": 3.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Intent, not morphology: picking up rocks or bricks, digging through them. UCS admits the overlap with ROCKS-MOVEMENT; the signature only asserts 'dull unpitched stone contact, quiet, no ring, no collapse'."
+        ],
+        "confusable_with": [
+          "ROCKMvmt",
+          "ROCKImpt",
+          "DIRTHndl",
+          "ROCKMisc"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -341,7 +723,118 @@
         "Striking",
         "Thrust",
         "Thud"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 20.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.08
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 2.117,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.05,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1100.0,
+            "deviation": 700.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.18,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 4.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.14,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.5,
+            "deviation": 1.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.5,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "A dull broadband THUD with essentially NO ring (decay_time_seconds_60db ~0.01-0.15 s) - the damped end of the impedance axis, the opposite of METAL-IMPACT.",
+          "Low spectral_centroid_hz and high low_band_energy: rock puts its energy DOWN, not up. That is the boundary against GLASS-IMPACT and CERAMICS-IMPACT, which are bright and still ring.",
+          "Near-zero harmonicity: a rock hit has no pitch to speak of.",
+          "Against ROCKS-CRASH & DEBRIS: one onset, not a slide of many."
+        ],
+        "confusable_with": [
+          "ROCKCrsh",
+          "ROCKBrk",
+          "ROCKMvmt",
+          "DIRTImpt",
+          "CERMImpt"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -381,7 +874,57 @@
         "Slates",
         "Specimens",
         "Stones"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 950.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.06,
+            "deviation": 3.794,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.15,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Residual class: rock-timbred (dull, unpitched, no ring, low centroid) but matching no other ROCKS morphology. Abstention target for the category."
+        ],
+        "confusable_with": [
+          "ROCKImpt",
+          "ROCKMvmt",
+          "ROCKHndl",
+          "DIRTMisc"
+        ]
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -450,7 +993,101 @@
         "Tumble",
         "Vibrate",
         "Wobble"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 12.0,
+            "deviation": 9.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 5.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 850.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.05,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.045,
+            "deviation": 2.432,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Rocks dragged, shifted or rattled: a dull, quiet, unpitched multi-contact texture with no ring at all.",
+          "Against ROCKS-CRASH & DEBRIS: far quieter, fewer onsets, no destructive front - a slide is loud and dense, moving rocks is not.",
+          "Against ROCKS-HANDLE: not separable by signal; UCS concedes the overlap."
+        ],
+        "confusable_with": [
+          "ROCKHndl",
+          "ROCKCrsh",
+          "ROCKFric",
+          "DIRTMvmt"
+        ]
+      }
     },
     {
       "subcategory": "TONAL",
@@ -507,7 +1144,105 @@
         "Timbre",
         "Tonal",
         "Tone"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.25,
+            "max": 120.0
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.15
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.12,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.8,
+            "deviation": 3.08,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 350.0,
+            "deviation": 250.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200.0,
+            "deviation": 800.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "partial_count",
+            "mean": 8.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 4.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "UCS itself says 'probably pretty rare' - lithophones, singing rocks, bowed slate. The only way a rock holds pitch is if it is driven, so expect a sustained, low, dark tone: harmonicity high, but pitch_hz and spectral_centroid_hz far BELOW every other TONAL class.",
+          "Against ROCKS-IMPACT and ROCKS-FRICTION: those have near-zero harmonicity. Any rock file with real harmonicity and sustain belongs here.",
+          "The darkest TONAL class in the taxonomy; METAL-TONAL and GLASS-TONAL sit far above it in spectral_centroid_hz."
+        ],
+        "confusable_with": [
+          "METLTonl",
+          "CERMTonl",
+          "ROCKFric",
+          "ROCKMisc"
+        ]
+      }
     }
   ]
 }

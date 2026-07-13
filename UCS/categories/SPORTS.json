@@ -3,6 +3,122 @@
   "category": "SPORTS",
   "subcategories": [
     {
+      "subcategory": "CLIMBING",
+      "category_id": "SPRTClimb",
+      "category_short": "SPRT",
+      "explanation": [
+        "Rock and wall climbing",
+        "bouldering and mountaineering",
+        "including the hardware: carabiners",
+        "pitons",
+        "rope and belay gear."
+      ],
+      "synonyms": [
+        "Abseil",
+        "Anchor",
+        "Ascender",
+        "Belay",
+        "Bolt",
+        "Bouldering",
+        "Carabiner",
+        "Chalk",
+        "Chock",
+        "Climb",
+        "Climber",
+        "Climbing",
+        "Crag",
+        "Crampon",
+        "Descender",
+        "Harness",
+        "Karabiner",
+        "Mountaineer",
+        "Mountaineering",
+        "Piton",
+        "Quickdraw",
+        "Rappel",
+        "Rock",
+        "Rope",
+        "Scramble",
+        "Summit"
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2500,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.18,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5,
+            "deviation": 2.7,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.2,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Sparse, irregular events: a bright inharmonic carabiner or piton clink, a gritty scuff of boot and hand on rock, rope running through gear, and breathy effort. Sparse and aperiodic is the contrast with SPORTS-EQUESTRIAN, whose hoofbeats are a fast periodic train.",
+          "SPORTS-WINTER already claims 'Climbing' among its synonyms, which is really ice climbing and mountaineering. Snow and ice underfoot, crampons, a bright hissy ski or blade scrape — that stays WINTER. Bare rock, chalk, bouldering and gym walls come here. Both are legitimate; the surface named in the file decides.",
+          "The component sounds all have homes of their own: the clink is METAL-IMPACT, the scrape is ROCKS-FRICTION, the rope is ROPE-MOVEMENT and the rack is EQUIPMENT-RECREATIONAL. Use this only when the climb is the subject."
+        ],
+        "confusable_with": [
+          "SPRTWntr",
+          "SPRTMisc",
+          "SPRTGym",
+          "ROCKFric",
+          "ROPEMvmt",
+          "EQUIPRec",
+          "METLImpt",
+          "AMBAlpn"
+        ]
+      }
+    },
+    {
       "subcategory": "COURT",
       "category_id": "SPRTCourt",
       "category_short": "SPRT",
@@ -29,7 +145,206 @@
         "Table",
         "Tennis",
         "Volleyball"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 2.226,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "transient_count",
+            "mean": 6,
+            "deviation": 6,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800,
+            "deviation": 1200,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Court sport: sharp ball and racket impacts inside a REVERBERANT hall, plus shoe squeak (a short, high-centroid friction chirp) and dribbling, which reads as a periodic onset train. The reverberant tail on each impact is the only reliable indoor cue, and it is shared with every other indoor sport.",
+          "Be honest: a tennis hit and a baseball hit are the same physics — a sharp impulsive impact. DSP cannot separate SPORTS-COURT from SPORTS-FIELD. Only the sport named in the file (badminton, basketball, squash, volleyball) decides.",
+          "The crowd bed, if present, is CROWDS-SPORT and the venue tone is AMBIENCE-SPORT; isolated shoe squeak is FOLEY-FEET."
+        ],
+        "confusable_with": [
+          "SPRTField",
+          "SPRTIndor",
+          "SPRTGym",
+          "SPRTMisc",
+          "CRWDSprt",
+          "AMBSprt",
+          "FOLYFeet"
+        ]
+      }
+    },
+    {
+      "subcategory": "EQUESTRIAN",
+      "category_id": "SPRTEqus",
+      "category_short": "SPRT",
+      "explanation": [
+        "Horse sports and the events around them",
+        "such as racing",
+        "show jumping",
+        "dressage",
+        "polo",
+        "eventing and the hunt."
+      ],
+      "synonyms": [
+        "Canter",
+        "Cross-Country",
+        "Derby",
+        "Dressage",
+        "Equestrian",
+        "Eventing",
+        "Farrier",
+        "Gallop",
+        "Gymkhana",
+        "Harness",
+        "Hoof",
+        "Hoofbeat",
+        "Horseback",
+        "Hunt",
+        "Hunting",
+        "Jockey",
+        "Paddock",
+        "Polo",
+        "Pony",
+        "Racecourse",
+        "Racetrack",
+        "Riding",
+        "Rodeo",
+        "Saddle",
+        "Showjumping",
+        "Stable",
+        "Starting Gate",
+        "Steeplechase",
+        "Stirrup",
+        "Tack",
+        "Trot",
+        "Vaulting"
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 4.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.25,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.25,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The scene, not the animal. A periodic hoof onset train (a gallop is roughly 4 beats per stride, a trot 2) over a turf or sand bed, layered with tack jingle, rider efforts, a starting-gate clang and a crowd. The periodicity plus the damped, low-heavy thud of hoof on ground is the only signal cue, and it belongs to the hooves, not to the sport.",
+          "Be honest: DSP cannot tell a race from a hack down a lane. Isolated hooves are FOOTSTEPS-HORSE, the whinny is ANIMALS-HORSE, and the saddle and bridle are EQUIPMENT-BRIDLE & TACK. This subcategory is earned only by the words — derby, dressage, polo, jockey, showjumping, steeplechase.",
+          "The crowd bed is CROWDS-SPORT and the venue tone is AMBIENCE-SPORT; use those when the horses are incidental rather than the subject."
+        ],
+        "confusable_with": [
+          "FEETHors",
+          "ANMLHors",
+          "EQUIPBridle",
+          "SPRTTrck",
+          "SPRTField",
+          "SPRTMisc",
+          "CRWDSprt",
+          "AMBSprt",
+          "MOVEAnml"
+        ]
+      }
     },
     {
       "subcategory": "FIELD",
@@ -60,7 +375,81 @@
         "Soccer",
         "Softball",
         "Ultimate"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.12,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4,
+            "deviation": 5,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.3,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.25
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200,
+            "deviation": 900,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Outdoor field sport. The impacts — a kick, a bat, a stick, a caught ball — are the SAME impulsive morphology as SPORTS-COURT, but outdoors: almost no reverberant decay and a wider, more open stereo field. That reverb difference is the entire signal-side handle, and it is weak.",
+          "Which sport it is (soccer, baseball, cricket, rugby, lacrosse) is not recoverable from DSP at all. The synonym list is the classifier here, not the spectrum.",
+          "Kicks and bat hits are thumpier than racket hits, so low_band_energy runs a little higher than SPORTS-COURT — a tendency, never a gate."
+        ],
+        "confusable_with": [
+          "SPRTCourt",
+          "SPRTTrck",
+          "SPRTMisc",
+          "CRWDSprt",
+          "AMBSprt",
+          "WEAPBlnt"
+        ]
+      }
     },
     {
       "subcategory": "GYM",
@@ -98,7 +487,81 @@
         "Weightlifting",
         "Wrestling",
         "Yoga"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.25,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.3,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900,
+            "deviation": 700,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4,
+            "deviation": 4,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "Gym and ring: DULL impacts. A punch or a takedown is a flesh impact — fast attack, essentially no ring, energy piled into the low band — mixed with metal weight clanks and vocal efforts. Darker and duller than the bright ball and racket impacts of SPORTS-COURT.",
+          "Boxing, wrestling, martial arts, weightlifting, gymnastics and yoga share nothing acoustically. This is a VENUE label, not a morphology, so it must never be asserted from signal.",
+          "Gym equipment machinery is MACHINES-GYM; isolated grunts and exertions are VOICES-EFFORTS; a dropped barbell alone is METAL-IMPACT."
+        ],
+        "confusable_with": [
+          "SPRTIndor",
+          "SPRTCourt",
+          "SPRTMisc",
+          "MACHGym",
+          "VOXEfrt",
+          "METLImpt"
+        ]
+      }
     },
     {
       "subcategory": "INDOOR",
@@ -113,7 +576,74 @@
         "Darts",
         "Ping",
         "Pong"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.6,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5,
+            "deviation": 6,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200,
+            "deviation": 1500,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A grab-bag, and the priors are deliberately coarse because the real morphologies here CONFLICT: a billiard click is a tiny, hard, very bright impulse; a bowling delivery is a low sustained roll followed by a broadband pin crash; a dart is a soft thud. No single Gaussian fits all three.",
+          "Long, live indoor reverb (a bowling alley) is the one thing they tend to share, which is exactly what SPORTS-COURT and SPORTS-GYM also share — so venue reverb cannot separate them.",
+          "The pin crash taken alone scores as WOOD-CRASH & DEBRIS; the game named in the filename is the only decisive evidence."
+        ],
+        "confusable_with": [
+          "SPRTCourt",
+          "SPRTGym",
+          "SPRTMisc",
+          "WOODImpt",
+          "WOODCrsh",
+          "PLASImpt"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -136,7 +666,59 @@
         "Training",
         "Velodrome",
         "Well-Being"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4,
+            "deviation": 5,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.15
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.25,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.15
+          }
+        ],
+        "discriminators": [
+          "Fallback for sports the siblings do not name — golf, cycling, velodrome, general athletics and fitness.",
+          "It shares the family's only common morphology (sharp impacts over a crowd or venue bed) and has no distinguishing feature of its own, so it must be driven entirely by the name."
+        ],
+        "confusable_with": [
+          "SPRTCourt",
+          "SPRTField",
+          "SPRTGym",
+          "SPRTIndor",
+          "SPRTTrck",
+          "CRWDSprt"
+        ]
+      }
     },
     {
       "subcategory": "SKATE",
@@ -158,7 +740,106 @@
         "Skater",
         "Skating",
         "X-Games"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1
+          },
+          {
+            "feature": "spectral_flatness",
+            "min": 0.02
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.42,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600,
+            "deviation": 1000,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "transient_count",
+            "mean": 5,
+            "deviation": 5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 2500,
+            "deviation": 1800,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The one SPORTS subcategory with a genuine, assertable morphology. Urethane wheels on concrete produce a SUSTAINED broadband rolling friction bed — noisy, unpitched, near-stationary, low-to-mid heavy — punctuated by hard wooden board slaps at take-off and landing.",
+          "The roll is the discriminator against every impact-only sibling: SPORTS-COURT, FIELD, GYM and INDOOR are all onset trains with silence between. This one has a continuous floor of noise.",
+          "SPORTS-WINTER's blade-on-ice scrape is the same idea but far BRIGHTER and hissier; the urethane rumble here is comparatively low and dark. The words skateboard, roller, inline and scooter pin it here, while ice, ski, snow and hockey pull it to WINTER."
+        ],
+        "confusable_with": [
+          "SPRTWntr",
+          "SPRTMisc",
+          "WOODImpt",
+          "METLFric",
+          "VEHBike",
+          "SPRTIndor"
+        ]
+      }
     },
     {
       "subcategory": "TRACK & FIELD",
@@ -195,7 +876,80 @@
         "Throw",
         "Triple",
         "Vault"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.6,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.006,
+            "deviation": 2.301,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.1,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400,
+            "deviation": 1000,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.2,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Track events are dominated by RUNNING: a periodic footfall train on a hard synthetic surface at a few strides per second, outdoors and therefore dead (near-zero decay time). onset_periodicity is the strongest real cue in this subcategory.",
+          "But the field events bundled in with it — shot put, javelin, discus, hammer — are single dull outdoor impacts with no periodicity whatsoever. The subcategory holds two unrelated morphologies, which is exactly why it cannot be asserted from signal.",
+          "Isolated running footsteps are FOLEY-FEET; the crowd is CROWDS-SPORT; a starting pistol reads as a gunshot."
+        ],
+        "confusable_with": [
+          "SPRTField",
+          "SPRTMisc",
+          "FOLYFeet",
+          "CRWDSprt",
+          "AMBSprt"
+        ]
+      }
     },
     {
       "subcategory": "WATER",
@@ -228,7 +982,88 @@
         "Wakeboarding",
         "Water",
         "Windsurfing"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.15,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 4000,
+            "deviation": 2800,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "transient_count",
+            "mean": 6,
+            "deviation": 6,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "Water is the medium, so the bed is noisy and unpitched throughout: splashes are broadband bursts with a wet, noisy, non-ringing tail, and a swimming stroke is a periodic splash train. High spectral_flatness with near-zero harmonicity reliably says WATER.",
+          "That is as far as DSP goes. SPORTS-WATER and WATER-SPLASH are the same signal; only the sport word in the name (swimming, diving, rowing, surfing, kayak) makes this a sport rather than a water recording. Narrowable, never separable.",
+          "Rowing and sailing add rowlock creak and rigging; a jet-ski adds a combustion motor, which will drag scoring toward MOTORS-COMBUSTION."
+        ],
+        "confusable_with": [
+          "WATRSplsh",
+          "WATRMvmt",
+          "WATRFlow",
+          "SPRTMisc",
+          "BOATMotr",
+          "AMBSea"
+        ]
+      }
     },
     {
       "subcategory": "WINTER",
@@ -263,7 +1098,88 @@
         "Snowmobiling",
         "Snowshoeing",
         "Speed"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.55
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.45
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000,
+            "deviation": 3500,
+            "transform": "log",
+            "weight": 0.45
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3000,
+            "deviation": 1900,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4,
+            "deviation": 5,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "Steel on ice and ski on snow is a BRIGHT, hissy, high-centroid friction — a sustained scrape with most of its energy up top. That brightness is what separates it from SPORTS-SKATE, whose urethane wheel roll is comparatively low and rumbling.",
+          "Hockey layers hard puck and board impacts on top of the blade scrape; curling is a long slide plus the brush of sweeping brooms.",
+          "Ice skating is genuinely shared with SPORTS-SKATE, whose explanation claims wheeled skating but whose synonyms list 'Ice'. The words ski, snow, hockey, luge and sled resolve it; the signal cannot."
+        ],
+        "confusable_with": [
+          "SPRTSkate",
+          "SPRTMisc",
+          "SPRTField",
+          "METLFric",
+          "FOLYFeet",
+          "AMBAlpn"
+        ]
+      }
     }
   ]
 }

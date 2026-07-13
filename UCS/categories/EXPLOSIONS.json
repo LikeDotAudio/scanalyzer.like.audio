@@ -44,7 +44,99 @@
         "Stylized",
         "Sweetener",
         "Thermonuclear"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "burst",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 120.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.62,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.5,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 500.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.28,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.2
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "clipping_density",
+            "mean": 0.01,
+            "deviation": 0.02,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "DESIGNED vs REAL is a PRODUCTION distinction, not an acoustic one — it is the same detonation morphology either way — so this is semantic_only however it is dressed up.",
+          "The tendencies are real but soft, and are PRIORS, never gates: a designed explosion is usually LONGER, carries a deliberately exaggerated sub-100 Hz layer, has an engineered tail, and is WIDE in stereo because it was mixed rather than captured on a single mic. A field recording of real ordnance is narrower, shorter and less sub-heavy.",
+          "No gate can honestly separate this from EXPLOSIONS-REAL. Text decides; where text is silent, prefer EXPLOSIONS-MISC over guessing."
+        ],
+        "confusable_with": [
+          "EXPLReal",
+          "EXPLMisc",
+          "DESTRClpse",
+          "GUNArtl",
+          "FRWKComr"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -55,7 +147,40 @@
       ],
       "synonyms": [
         "Miscellaneous"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "burst",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.15
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.5,
+            "deviation": 0.3,
+            "transform": "linear",
+            "weight": 0.15
+          }
+        ],
+        "discriminators": [
+          "Catch-all. The ABSTAIN target for EXPLOSIONS — and because DESIGNED vs REAL is not decidable from signal at all, abstention here is often the CORRECT answer rather than a failure."
+        ],
+        "confusable_with": [
+          "EXPLReal",
+          "EXPLDsgn"
+        ]
+      }
     },
     {
       "subcategory": "REAL",
@@ -101,7 +226,113 @@
         "Plastic",
         "Pop",
         "Pyrotechnic"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "burst",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 120.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "max": 0.7
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.2,
+            "deviation": 0.13,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 14.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.2
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.0,
+            "deviation": 2.0,
+            "transform": "linear",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A detonation: broadband, violently front-loaded, LF-dominated, with a long decaying tail as the shockwave slaps off the terrain. It is a BURST, not a clean impulse — the front is loud and fast but not the single needle-sharp transient of a whip crack.",
+          "Against DESTRUCTION-COLLAPSE and DESTRUCTION-CRASH & DEBRIS, and this is the boundary worth trusting: an explosion is ONE event with its energy in the first moment (envelope_temporal_centroid LOW, few discrete onsets afterwards). Destruction is MANY events spread across the file (high transient_count, energy spread out). That comparison is genuinely measurable.",
+          "Against GUNS-ARTILLERY / GUNS-CANNON: acoustically the same event — a cannon report IS a detonation. Only text decides.",
+          "Against FIREWORKS-COMMERCIAL: a mortar is an explosion, usually with a launch thump before it and a crackle train after it. If a multi-onset crackle tail is present, prefer FIREWORKS.",
+          "Against EXPLOSIONS-DESIGNED: not decidable. See that entry."
+        ],
+        "confusable_with": [
+          "EXPLDsgn",
+          "GUNArtl",
+          "GUNCano",
+          "FRWKComr",
+          "DESTRClpse",
+          "DESTRCrsh"
+        ]
+      }
     }
   ]
 }

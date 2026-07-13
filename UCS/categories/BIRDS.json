@@ -44,7 +44,106 @@
         "Verreaux",
         "Vulture",
         "White-Tailed"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 1600.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "This subcategory is BIMODAL and therefore not narrowable by a single Gaussian: a hawk or eagle screech is a harsh, broadband, high-flatness scream, while an owl hoot is the opposite - a low (300-600 Hz), pure, near-sinusoidal tone with very little HF energy. Averaging them produces priors that describe neither. Marked semantic_only for that reason, and the pitch prior is deliberately weak and wide.",
+          "An owl hoot is the one bird call that can be mistaken for a low tonal drone or a blown-bottle tone; the bird class gates barely hold it.",
+          "Against BIRDSong: a raptor screech is noisy (high spectral_flatness, low harmonicity); a songbird is tonal (the inverse). That axis is real - see BIRDCrow and BIRDSong."
+        ],
+        "confusable_with": [
+          "BIRDCrow",
+          "BIRDSea",
+          "BIRDMisc",
+          "CREAAvian"
+        ]
+      }
     },
     {
       "subcategory": "CROW",
@@ -80,7 +179,127 @@
         "Squawking",
         "Treecreeper",
         "Treepies"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 900.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.28,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.5,
+            "deviation": 0.3,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.35
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "Corvids carry a real, defensible acoustic axis: a caw is a HARSH, BROADBAND, inharmonic rasp - high spectral_flatness, low harmonicity - delivered in repeated, evenly spaced bursts (measurable onset_periodicity). That is the exact opposite of a songbird's pure narrowband whistle, and the flatness/harmonicity axis separates the two without any text. Hence signal_narrowable.",
+          "It does NOT separate a crow from a raptor screech or a parrot squawk, which are equally harsh - those need text.",
+          "Pitch is low FOR A BIRD (roughly 0.5-1.5 kHz), which is another honest nudge against BIRDSong."
+        ],
+        "confusable_with": [
+          "BIRDSong",
+          "BIRDPrey",
+          "BIRDTrop",
+          "BIRDSea"
+        ]
+      }
     },
     {
       "subcategory": "FOWL",
@@ -140,7 +359,120 @@
         "Turkies",
         "Waterfowl",
         "Woodcocks"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 1100.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.45,
+            "deviation": 0.3,
+            "transform": "linear",
+            "weight": 0.35
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "Landfowl, waterfowl and poultry - a habitat/husbandry set, not an acoustic one. A duck quack, a hen cluck, a rooster crow and a goose honk share nothing measurable that excludes the other bird subcategories. semantic_only; the synonyms decide.",
+          "Weak tendency: fowl calls are lower and harsher than a songbird (clucks and quacks are rough, mid-band, repeated), landing them nearer BIRDCrow than BIRDSong on the flatness axis. That tendency cannot tell a duck from a crow.",
+          "Farm MAMMALS go to ANIMALS-FARM; a dense barnyard bed is AMBIENCE-FARM."
+        ],
+        "confusable_with": [
+          "BIRDCrow",
+          "BIRDSea",
+          "BIRDWade",
+          "ANMLFarm"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -162,7 +494,105 @@
         "Poorwill",
         "Roadrunner",
         "Woodpecker"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 2200.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.6,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "The catch-all: it asserts only the BIRD class (it is a bird, not a mammal or a machine) and leaves the species to text. Correct destination when the bird class gates pass but no sibling's synonyms fire - i.e. the abstention target for this category.",
+          "Woodpecker material is the odd one out: a drum roll is a rhythmic IMPACT train with no vocal pitch at all, and it will fail these tonal priors. Score it as a rhythmic wood impact if the signal is what matters."
+        ],
+        "confusable_with": [
+          "BIRDSong",
+          "BIRDPrey",
+          "ANMLMisc",
+          "WINGBird"
+        ]
+      }
     },
     {
       "subcategory": "SEA",
@@ -214,7 +644,112 @@
         "Waterfowl",
         "Widowbird",
         "Yellow"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 1800.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.35
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.4,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "'Birds that live mostly near the ocean' is a habitat label. A gull cry is a harsh, mid-high, strongly modulated wail; that is not distinguishable from a tern, a crow or a raptor by DSP. semantic_only.",
+          "Beware the recording context rather than the bird: seabird material usually arrives over a surf bed, so the file may score partly as WATER/AMBIENCE. Foregrounded calls belong here; a wide, stationary surf-plus-gulls bed is AMBIENCE."
+        ],
+        "confusable_with": [
+          "BIRDCrow",
+          "BIRDWade",
+          "BIRDFowl",
+          "BIRDMisc"
+        ]
+      }
     },
     {
       "subcategory": "SONGBIRD",
@@ -298,7 +833,127 @@
         "Whitethroat",
         "Woodlark",
         "Wren"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sweep",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 3500.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 1400.0,
+            "deviation": 700.0,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.15,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.75,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.15,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "partial_count",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "Songbirds carry the one genuinely diagnostic axis inside BIRDS: their calls are PURE NARROWBAND WHISTLES - very high harmonicity, very low spectral_flatness, few partials (often a near-sinusoid, since the syrinx suppresses harmonics) - swept fast in frequency, which shows up as a large spectral_centroid_deviation_hz and high spectral_flux. The harsh-broadband siblings (BIRDCrow, BIRDPrey, BIRDTrop) sit at the opposite end of the same axis. That is a real measurement, so signal_narrowable.",
+          "It does NOT tell a robin from a wren from a warbler; species is text.",
+          "A dawn chorus of many overlapping birds is AMBIENCE, not this: expect high stationarity and no foreground event structure."
+        ],
+        "confusable_with": [
+          "BIRDTrop",
+          "BIRDMisc",
+          "BIRDCrow",
+          "WHSTMisc"
+        ]
+      }
     },
     {
       "subcategory": "TROPICAL",
@@ -347,7 +1002,105 @@
         "Toucan",
         "Trogon",
         "Tropicbird"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 2200.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 1100.0,
+            "deviation": 700.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "'Birds living in tropical locations' is a geographic label with no acoustic content whatsoever - it contains both the harshest calls in the category (macaw and cockatoo squawks: broadband, high-flatness, screaming) and some of the purest (trogons, sunbirds). Bimodal and geography-defined, so semantic_only with weak, wide priors. Text is the only route in.",
+          "A parrot squawk is essentially indistinguishable from a corvid caw on flatness/harmonicity; a kookaburra is a rhythmic laugh that reads like a monkey call. Do not assert from signal."
+        ],
+        "confusable_with": [
+          "BIRDSong",
+          "BIRDCrow",
+          "BIRDMisc",
+          "ANMLPrim"
+        ]
+      }
     },
     {
       "subcategory": "WADING",
@@ -390,7 +1143,105 @@
         "Whimbrel",
         "Wildfowl",
         "Yellowlegs"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 90.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "min": 600.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "pitch_hz",
+            "mean": 1500.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.08,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 5000.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 900.0,
+            "deviation": 600.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.2,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.25
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+          "Defined by anatomy and feeding habitat (long legs, shallow water) - about as far from an acoustic definition as UCS gets. A heron's croak, a crane's bugle and a sandpiper's peep have no common signature. semantic_only.",
+          "One notable outlier that strains the bird class gates: a bittern's boom is ~150-200 Hz with almost all energy in the low band, and reads as a low tonal drone rather than a bird. Expect the class gates, not the priors, to be the weak point there."
+        ],
+        "confusable_with": [
+          "BIRDSea",
+          "BIRDFowl",
+          "BIRDMisc",
+          "BIRDPrey"
+        ]
+      }
     }
   ]
 }

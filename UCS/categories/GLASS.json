@@ -35,7 +35,120 @@
         "Tempered",
         "Tinted",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "burst",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.08,
+            "max": 30.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0015,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 14.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.62,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 6000.0,
+            "deviation": 2500.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 13000.0,
+            "deviation": 4500.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 9000.0,
+            "deviation": 5000.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 12.0,
+            "deviation": 8.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "transient_count",
+            "mean": 20.0,
+            "deviation": 14.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.24,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 1.8,
+            "deviation": 1.5,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "The most distinctive signature in the material set: an explosive high-frequency burst (very high crest_factor, high_band_energy > 0.5, centroid often above 5 kHz) followed immediately by a DENSE tinkling debris TEXTURE - shards landing at a high onset_rate_per_second and decaying away. Burst-then-texture in one file.",
+          "Against GLASS-IMPACT: an impact leaves the object whole - one bright ring, transient_count near 1, no shard shower.",
+          "Against GLASS-CRASH & DEBRIS: BREAK is a singular failure (one bottle, one window) front-loaded on one violent burst; CRASH & DEBRIS is multiple items / loose shards with onsets spread across the file (higher envelope_temporal_centroid, lower peak crest_factor).",
+          "Against CERAMICS-BREAK: same morphology, but ceramics is duller and more damped - lower centroid, less HF shatter energy."
+        ],
+        "confusable_with": [
+          "GLASCrsh",
+          "GLASImpt",
+          "CERMBrk",
+          "GLASMvmt"
+        ]
+      }
     },
     {
       "subcategory": "CRASH & DEBRIS",
@@ -67,7 +180,105 @@
         "Tempered",
         "Tinted",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 60.0
+          },
+          {
+            "feature": "transient_count",
+            "min": 3
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 25.0,
+            "deviation": 16.0,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 9.0,
+            "deviation": 6.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.12,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5500.0,
+            "deviation": 2400.0,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.58,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.3,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.42,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Group destruction and loose shards: a bright, dense, irregular tinkle-texture (very high transient_count and onset_rate_per_second, low onset_periodicity) rather than one failure event.",
+          "Against GLASS-BREAK: BREAK is front-loaded on a single explosive burst; CRASH & DEBRIS spreads its energy across the file (envelope_temporal_centroid nearer 0.4-0.5) and may have no dominant transient.",
+          "Against METAL-CRASH & DEBRIS: glass shards are brighter and ring far shorter (decay_time_seconds_60db well under 1 s) and are far less inharmonic."
+        ],
+        "confusable_with": [
+          "GLASBrk",
+          "GLASMvmt",
+          "METLCrsh",
+          "CERMCrsh"
+        ]
+      }
     },
     {
       "subcategory": "FRICTION",
@@ -101,7 +312,105 @@
         "Tempered",
         "Tinted",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.15,
+            "max": 120.0
+          },
+          {
+            "feature": "crest_factor",
+            "max": 25.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5500.0,
+            "deviation": 2400.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_centroid_deviation_hz",
+            "mean": 1500.0,
+            "deviation": 850.0,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "zero_crossings_per_second",
+            "mean": 9000.0,
+            "deviation": 5000.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.58,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 5.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "spectral_flux",
+            "mean": 0.32,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.05,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Sustained, very-high-centroid contact: a squeak on a pane, a finger on a rim. The brightest FRICTION class in the taxonomy.",
+          "UCS warns of overlap with GLASS-TONAL; the split is STABILITY. FRICTION's centroid wanders (high spectral_centroid_deviation_hz) and harmonicity stays low; TONAL locks onto a pure pitch (harmonicity high, spectral_flatness near zero).",
+          "Not impulsive: low crest_factor and high sustain_ratio separate it from GLASS-IMPACT and GLASS-BREAK."
+        ],
+        "confusable_with": [
+          "GLASTonl",
+          "GLASMvmt",
+          "METLFric",
+          "CERMFric"
+        ]
+      }
     },
     {
       "subcategory": "HANDLE",
@@ -141,7 +450,77 @@
         "Toss",
         "Use",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.1,
+            "max": 60.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.04,
+            "deviation": 2.399,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "transient_count",
+            "mean": 4.0,
+            "deviation": 3.5,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4500.0,
+            "deviation": 2200.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.25,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.48,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 7.0,
+            "deviation": 3.5,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 2.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Intent, not morphology: grabbing and setting down a bottle or a glass. UCS admits the overlap with GLASS-MOVEMENT and DSP cannot resolve it; the signature only asserts 'bright, glassy, quiet, multi-contact, nothing broke'."
+        ],
+        "confusable_with": [
+          "GLASMvmt",
+          "GLASImpt",
+          "GLASMisc"
+        ]
+      }
     },
     {
       "subcategory": "IMPACT",
@@ -183,7 +562,125 @@
         "Thud",
         "Tinted",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.03,
+            "max": 20.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "max": 0.08
+          }
+        ],
+        "priors": [
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.0022,
+            "deviation": 2.482,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5200.0,
+            "deviation": 2400.0,
+            "transform": "log",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_rolloff_hz",
+            "mean": 11000.0,
+            "deviation": 4500.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.45,
+            "deviation": 2.432,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 11.0,
+            "deviation": 5.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.35,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "partial_count",
+            "mean": 10.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "transient_count",
+            "mean": 1.5,
+            "deviation": 1.0,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.18,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.9,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "The BRIGHTEST impact in the taxonomy: a clink whose energy sits mostly above 2 kHz (spectral_centroid_hz ~3-9 kHz).",
+          "The object does NOT break: a single clean bright ring, no shard shower. That absence of a high-onset_rate_per_second debris tail is the entire boundary against GLASS-BREAK.",
+          "Against METAL-IMPACT: glass is brighter but rings much shorter (decay_time_seconds_60db ~0.15-1 s vs metal's 0.5-3 s) and far less inharmonically.",
+          "Against CERAMICS-IMPACT: ceramics is the damped, duller cousin - lower centroid, shorter ring."
+        ],
+        "confusable_with": [
+          "GLASBrk",
+          "GLASCrsh",
+          "CERMImpt",
+          "METLImpt",
+          "GLASMvmt"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -202,7 +699,57 @@
         "Tempered",
         "Tinted",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4500.0,
+            "deviation": 2600.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.32,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.3,
+            "deviation": 3.211,
+            "transform": "log",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Residual class: glass-timbred (very bright, short bright ring, low inharmonicity) but matching no other GLASS morphology. Abstention target for the category."
+        ],
+        "confusable_with": [
+          "GLASImpt",
+          "GLASMvmt",
+          "GLASHndl",
+          "GLASTonl"
+        ]
+      }
     },
     {
       "subcategory": "MOVEMENT",
@@ -239,7 +786,101 @@
         "Tinted",
         "Vibrating",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.2,
+            "max": 120.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "transient_count",
+            "mean": 12.0,
+            "deviation": 9.0,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 4800.0,
+            "deviation": 2200.0,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.25,
+            "deviation": 2.718,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 6.5,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.045,
+            "deviation": 2.432,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.32,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "Bottles rattling in a case, a bottle rolling: a bright, quiet, multi-onset clinking texture - the brightness of GLASS-IMPACT at a fraction of the level and many times the onset count.",
+          "Against GLASS-CRASH & DEBRIS: nothing is destroyed - lower level, lower crest_factor, no HF fracture burst, steadier over time (higher stationarity).",
+          "Against GLASS-HANDLE: not separable by signal; UCS concedes the overlap. Text decides."
+        ],
+        "confusable_with": [
+          "GLASHndl",
+          "GLASCrsh",
+          "GLASImpt",
+          "CERMMvmt"
+        ]
+      }
     },
     {
       "subcategory": "TONAL",
@@ -287,7 +928,112 @@
         "Tonal",
         "Tone",
         "Window"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.3,
+            "max": 120.0
+          },
+          {
+            "feature": "harmonicity",
+            "min": 0.25
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.85,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.05,
+            "deviation": 0.04,
+            "transform": "linear",
+            "weight": 1.0
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.12,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "partial_count",
+            "mean": 6.0,
+            "deviation": 4.0,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 2.5,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 4.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 800.0,
+            "deviation": 500.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200.0,
+            "deviation": 1400.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 3.5,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5
+          }
+        ],
+        "discriminators": [
+          "A bowed crystal bowl, a glass harmonica, a rubbed wine-glass rim: the PUREST tone in the material set. Near-zero inharmonicity, very low partial_count, harmonicity near 1, spectral_flatness near 0. Glass modes are almost harmonic - that is exactly what separates GLASS-TONAL from METAL-TONAL, whose ring is rich and detuned.",
+          "Against GLASS-FRICTION (UCS flags the overlap): a rim that LOCKS is TONAL; one that squeals and slips is FRICTION - read spectral_centroid_deviation_hz and harmonicity.",
+          "Against GLASS-IMPACT: TONAL is driven and sustained (high sustain_ratio, low crest_factor), not struck-and-decaying."
+        ],
+        "confusable_with": [
+          "GLASFric",
+          "GLASImpt",
+          "METLTonl",
+          "CERMTonl"
+        ]
+      }
     }
   ]
 }

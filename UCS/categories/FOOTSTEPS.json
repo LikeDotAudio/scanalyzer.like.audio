@@ -50,7 +50,112 @@
         "Tramp",
         "Tread",
         "Walk"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 300.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.08,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "root_mean_square_level",
+            "mean": 0.03,
+            "deviation": 0.03,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2200.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.02,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 8.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "An impulsive footfall train, but the four-legged gait and claw-patter give a faster, less evenly-spaced onset train than a human's ~2 /s biped rhythm. A tendency only: a dog's paws and a person in socks are the same physics.",
+          "Species is semantic — nothing in the spectrum says 'elephant' rather than 'large dog'. The signal only confirms 'footsteps'.",
+          "UCS routes hooves to FOOTSTEPS-HORSE and herds or stampedes to MOVEMENT-ANIMALS; a very dense, non-resolvable onset train should go there."
+        ],
+        "confusable_with": [
+          "FEETHmn",
+          "FEETHors",
+          "FEETMisc",
+          "FEETCrea"
+        ]
+      }
     },
     {
       "subcategory": "CREATURE",
@@ -85,7 +190,108 @@
         "Thud",
         "Tramp",
         "Tread"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 300.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "low_band_energy",
+            "mean": 0.62,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 350.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.9,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.4,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "envelope_release_seconds",
+            "mean": 1.2,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 1.0,
+            "deviation": 1.0,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.45,
+            "deviation": 0.24,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.03,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.4
+          }
+        ],
+        "discriminators": [
+          "Designed giant/monster footfalls: the LF-heavy, long-decay end of the footstep axis — sub-heavy impacts with a rumble tail and a slow onset rate, because a big creature strides slowly.",
+          "The measurable claim is only SCALE (implied mass and decay time), never species. Small fantasy-creature feet, which UCS also puts here, collapse entirely into FOOTSTEPS-ANIMAL.",
+          "Far darker and longer-tailed than FOOTSTEPS-HUMAN, and slower than FOOTSTEPS-HORSE."
+        ],
+        "confusable_with": [
+          "FEETAnml",
+          "FEETHmn",
+          "FEETMisc",
+          "FEETHors"
+        ]
+      }
     },
     {
       "subcategory": "HORSE",
@@ -125,7 +331,111 @@
         "Trots",
         "Trotting",
         "Walk"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.05,
+            "max": 300.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 3.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 3.5,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.8
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.68,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.002,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.1,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 13.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 12.0,
+            "deviation": 6.0,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.02,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.12,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 6.0,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.3
+          }
+        ],
+        "discriminators": [
+          "The most separable footstep: a keratin hoof on a hard surface is a near-ideal impulse — very fast attack, very high crest factor, bright clop — and the walk/trot/canter gaits are strongly metrical, so onset_periodicity is the highest in the category.",
+          "Sharper, brighter and more periodic than FOOTSTEPS-HUMAN (soled shoe, ~2 /s, damped).",
+          "On soft ground the clop is damped and it collapses toward FOOTSTEPS-ANIMAL — hence narrowable, not separable."
+        ],
+        "confusable_with": [
+          "FEETAnml",
+          "FEETHmn",
+          "FEETMisc"
+        ]
+      }
     },
     {
       "subcategory": "HUMAN",
@@ -207,7 +517,131 @@
         "Walk",
         "Walking",
         "Wandering"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 600.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.5
+          },
+          {
+            "feature": "voicing_ratio",
+            "max": 0.35
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.58,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 0.09,
+            "deviation": 2.6,
+            "transform": "log",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_temporal_centroid",
+            "mean": 0.28,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 10.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200.0,
+            "deviation": 2.3,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.32,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.02,
+            "deviation": 0.05,
+            "transform": "linear",
+            "weight": 0.7
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.08,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.5
+          },
+          {
+            "feature": "envelope_kurtosis",
+            "mean": 8.0,
+            "deviation": 5.0,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "stationarity",
+            "mean": 0.3,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.3
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 6.0,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "A biped gait: an impulsive onset train at roughly 1.5–2.5 steps/s walking (up to ~3.5 running) with genuinely high onset_periodicity. That rate-plus-regularity pair is the core measurable claim.",
+          "Unvoiced and impulsive, so it never competes with VOICES or CROWDS despite the shared human context.",
+          "UCS puts EVERY surface and shoe here, so the material axis (bright slappy concrete vs damped grass vs crunchy high-frequency snow) varies wildly WITHIN the class — which is why spectral_centroid carries a wide deviation and a low weight here. Surface separates recordings, not subcategories.",
+          "Slower and duller than FOOTSTEPS-HORSE; a human running (~3 /s) is where it blurs into FOOTSTEPS-ANIMAL."
+        ],
+        "confusable_with": [
+          "FEETAnml",
+          "FEETHors",
+          "FEETMisc",
+          "FEETCrea"
+        ]
+      }
     },
     {
       "subcategory": "MISC",
@@ -234,7 +668,75 @@
         "Thud",
         "Tramp",
         "Tread"
-      ]
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "semantic_only",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.02,
+            "max": 600.0
+          },
+          {
+            "feature": "crest_factor",
+            "min": 2.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 2.2,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.006,
+            "deviation": 3.2,
+            "transform": "log",
+            "weight": 0.4
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.3
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.03,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.4
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 5.0,
+            "deviation": 3.2,
+            "transform": "log",
+            "weight": 0.2
+          }
+        ],
+        "discriminators": [
+          "The category's abstain target: a confident impulsive footfall train whose walker (human, animal, horse, creature) the signal cannot name. Emit when the footstep morphology is certain but the agent is not."
+        ],
+        "confusable_with": [
+          "FEETHmn",
+          "FEETAnml",
+          "FEETHors",
+          "FEETCrea"
+        ]
+      }
     }
   ]
 }
