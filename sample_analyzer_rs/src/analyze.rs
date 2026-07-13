@@ -21,14 +21,16 @@ use crate::sustain::sustain_ratio;
 use crate::tags::{acoustic_tags, sound_design_tags};
 use crate::transients::count_transients;
 use crate::version::ANALYZER_VERSION;
-use crate::wav::read_wav;
 
 /// STFT geometry for the frame-based features (flux, MFCC, centroid stats).
 const N_FFT: usize = 2048;
 const HOP: usize = 512;
 
 pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
-    let (data, raw_data, sr, bit_depth, channels) = crate::wav::read_wav(path)?;
+    let dec = crate::decode::read_audio(path)?;
+    let (data, raw_data, sr, bit_depth, channels) =
+        (dec.mono, dec.raw, dec.sample_rate, dec.bit_depth, dec.channels);
+    let (source_format, lossy_source) = (dec.source_format, dec.lossy);
     let sr_f = sr as f64;
     let length = data.len() as f64 / sr_f;
     if length > max_len {
@@ -158,9 +160,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         format!("3) {} · {}-band {:.0}%{}", acoustic.join("+"), band.0, band.1 * 100.0, root_part),
     ];
 
-    let (ucs_category, ucs_subcategory, ucs_id) = crate::ucs::map_to_ucs(&god_class, &l.group, &l.subgroup, &family, l.length_class == "Loop");
-
-    Some(Peak {
+    Some(finish(Peak {
         analyzer_version: ANALYZER_VERSION.to_string(),
         name,
         folder: folder.clone(),
@@ -227,14 +227,35 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         dc_offset,
         trailing_silence_ms,
         onset_envelope,
-        ucs_category,
-        ucs_subcategory,
-        ucs_id,
-    })
+        source_format,
+        lossy_source,
+        // Placeholders: finish() overwrites these once the record is complete.
+        ucs_category: String::new(),
+        ucs_subcategory: String::new(),
+        ucs_id: String::new(),
+        ucs_confidence: 0.0,
+        ucs_alternatives: Vec::new(),
+        ucs_reason: String::new(),
+    }))
+}
+
+/// Classify a finished record. UCS scoring runs LAST, against the completed
+/// `Peak`, so the classifier can read every extracted feature by its spec name
+/// rather than being handed a curated few.
+fn finish(mut p: Peak) -> Peak {
+    let v = crate::ucs::classify(&p);
+    p.ucs_category = v.category;
+    p.ucs_subcategory = v.subcategory;
+    p.ucs_id = v.id;
+    p.ucs_confidence = v.confidence;
+    p.ucs_alternatives = v.alternatives;
+    p.ucs_reason = v.reason;
+    p
 }
 
 pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> Option<Peak> {
     let (data, raw_data, sr, bit_depth, channels) = crate::wav::read_wav_buffer(buffer)?;
+    let (source_format, lossy_source) = ("WAV".to_string(), false);
     let sr_f = sr as f64;
     let length = data.len() as f64 / sr_f;
     if length > max_len {
@@ -362,9 +383,7 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
 
     let path = format!("{}/{}", folder, name);
 
-    let (ucs_category, ucs_subcategory, ucs_id) = crate::ucs::map_to_ucs(&god_class, &l.group, &l.subgroup, &family, l.length_class == "Loop");
-
-    Some(Peak {
+    Some(finish(Peak {
         analyzer_version: ANALYZER_VERSION.to_string(),
         name,
         folder: folder.clone(),
@@ -431,8 +450,14 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
         dc_offset,
         trailing_silence_ms,
         onset_envelope,
-        ucs_category,
-        ucs_subcategory,
-        ucs_id,
-    })
+        source_format,
+        lossy_source,
+        // Placeholders: finish() overwrites these once the record is complete.
+        ucs_category: String::new(),
+        ucs_subcategory: String::new(),
+        ucs_id: String::new(),
+        ucs_confidence: 0.0,
+        ucs_alternatives: Vec::new(),
+        ucs_reason: String::new(),
+    }))
 }

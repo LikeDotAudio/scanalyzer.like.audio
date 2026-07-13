@@ -74,8 +74,11 @@ pub struct Peak {
 
     // --- raw file attributes ---
     pub sample_rate: u32,
-    pub bit_depth: u16,
+    pub bit_depth: u16,           // 0 when the source format has no bit depth (MP3, AAC, Vorbis)
     pub channels: u16,
+    pub source_format: String,    // WAV / MP3 / FLAC / AIFF / OGG / M4A
+    pub lossy_source: bool,       // the encoder discarded signal: brightness and clipping
+                                  // metrics below are the CODEC's as much as the sound's
 
     // --- musical ROOT (note / key), FFT-derived (ACID takes precedence) ---
     pub root_note_name: String,   // e.g. "A3" ("" if unpitched/none)
@@ -100,7 +103,13 @@ pub struct Peak {
     pub onset_envelope: Vec<f64>,
 
     // --- Universal Category System (UCS) ---
-    pub ucs_category: String,
-    pub ucs_subcategory: String,
-    pub ucs_id: String,
+    // Scored per Documentation/ucs_signature_spec.md: acoustic gates + priors
+    // fused with IDF-weighted synonym evidence from the file and folder name.
+    pub ucs_category: String,             // the parent, e.g. DOORS  (all 82 are reachable)
+    pub ucs_subcategory: String,          // e.g. GATE
+    pub ucs_id: String,                   // e.g. DOORGate
+    pub ucs_confidence: f64,              // normalized posterior of the winner, 0..1
+    pub ucs_alternatives: Vec<String>,    // next-best ids with their posteriors
+    pub ucs_reason: String,               // WHY: name evidence, signal score, tier,
+                                          // the gate that ruled out the runner-up, any abstention
 }

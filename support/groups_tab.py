@@ -8,9 +8,13 @@ from .inspector import RecordInspector
 
 
 class GroupsMixin:
-    GROUP_COLS = ("folder", "group", "subgroup", "family", "reason", "god", "shape", "timbre", "cluster", "pitch_hz", "length_seconds", "tr")
+    GROUP_COLS = ("folder", "ucs_category", "ucs_subcategory", "ucs_confidence", "fmt",
+                  "group", "subgroup", "family", "reason", "god", "shape", "timbre", "cluster", "pitch_hz", "length_seconds", "tr")
     # Dimensions offered in the "Group by" / "then by" pickers.
-    GROUP_DIMS = ["God category", "Name group", "Timbre", "Env shape",
+    # "UCS category" is the UCS PARENT (one of the 82). It is unrelated to the
+    # "God category", which is the 6-bucket envelope taxonomy over name groups.
+    GROUP_DIMS = ["UCS category", "UCS subcategory", "Source format",
+                  "God category", "Name group", "Timbre", "Env shape",
                   "Acoustic", "Sound design", "Family", "Distortion", "Cluster"]
 
     def _build_groups_tab(self):
@@ -21,14 +25,14 @@ class GroupsMixin:
         ctl.pack(fill=tk.X)
         ttk.Label(ctl, text="Group by:").pack(side=tk.LEFT, padx=(0, 4))
         # Default: the envelope "god categories" on top, name groups nested under.
-        self.group_by = tk.StringVar(value="God category")
+        self.group_by = tk.StringVar(value="UCS category")
         cb = ttk.Combobox(ctl, textvariable=self.group_by, state="readonly", width=13,
                           values=self.GROUP_DIMS)
         cb.pack(side=tk.LEFT, padx=4)
         cb.bind("<<ComboboxSelected>>", lambda e: self._rebuild_groups())
 
         ttk.Label(ctl, text="then by:").pack(side=tk.LEFT, padx=(10, 4))
-        self.subgroup_by = tk.StringVar(value="Name group")
+        self.subgroup_by = tk.StringVar(value="UCS subcategory")
         scb = ttk.Combobox(ctl, textvariable=self.subgroup_by, state="readonly", width=13,
                            values=["(none)"] + self.GROUP_DIMS)
         scb.pack(side=tk.LEFT, padx=4)
@@ -47,7 +51,10 @@ class GroupsMixin:
         tv = ttk.Treeview(wrap, columns=self.GROUP_COLS, show="tree headings")
         tv.heading("#0", text="Group / File", command=lambda: self._sort_groups_tree(tv, "#0", False))
         tv.column("#0", width=260, stretch=True)
-        heads = {"folder": ("Folder", 160), "group": ("Group", 100), "subgroup": ("Subgroup", 100), "family": ("Instrument Family", 180), "reason": ("Reason in group", 180),
+        heads = {"folder": ("Folder", 160),
+                 "ucs_category": ("UCS category", 130), "ucs_subcategory": ("UCS subcategory", 140),
+                 "ucs_confidence": ("UCS conf", 70), "fmt": ("Format", 70),
+                 "group": ("Group", 100), "subgroup": ("Subgroup", 100), "family": ("Instrument Family", 180), "reason": ("Reason in group", 180),
                  "god": ("God category", 140), "shape": ("Envelope", 80), "timbre": ("Timbre", 90),
                  "cluster": ("Clust", 50), "pitch_hz": ("Pitch", 60), "length_seconds": ("Len s", 60), "tr": ("Trans", 50)}
         for c in self.GROUP_COLS:
@@ -83,6 +90,14 @@ class GroupsMixin:
             return rec.get("timbre") or "Other"
         if by == "Cluster":
             return "Cluster " + str(rec.get("cluster", -1))
+        if by == "UCS category":
+            return rec.get("ucs_category") or "(unclassified)"
+        if by == "UCS subcategory":
+            sub = rec.get("ucs_subcategory")
+            return f"{rec.get('ucs_category', '?')}-{sub}" if sub else "(unclassified)"
+        if by == "Source format":
+            fmt = rec.get("source_format") or "?"
+            return f"{fmt} (lossy)" if rec.get("lossy_source") else fmt
         if by == "God category":
             return rec.get("god_category") or "Unassigned"
         if by == "Env shape":
@@ -137,8 +152,15 @@ class GroupsMixin:
         family = r.get("instrument_family", [])
         if isinstance(family, list):
             family = ", ".join(family)
+        conf = r.get("ucs_confidence")
+        conf = f"{conf:.2f}" if isinstance(conf, (int, float)) else ""
+        fmt = r.get("source_format", "")
+        if r.get("lossy_source"):
+            fmt += " ~"  # lossy: the brightness and clipping metrics are partly the codec's
         iid = self.groups_tv.insert(parent, "end", text=r.get("name", ""), tags=(tint,), values=(
-            r.get("folder", ""), r.get("group", ""), r.get("subgroup", ""), family, reason,
+            r.get("folder", ""),
+            r.get("ucs_category", ""), r.get("ucs_subcategory", ""), conf, fmt,
+            r.get("group", ""), r.get("subgroup", ""), family, reason,
             r.get("god_category", ""), r.get("envelope_shape", ""), r.get("timbre", ""),
             r.get("cluster", ""), f"{r.get('pitch_hz', 0):.0f}",
             f"{r.get('length_seconds', 0):.2f}", r.get("transient_count", "")))
@@ -201,7 +223,10 @@ class GroupsMixin:
         head = ["group_dimension", "group"]
         if sub_active:
             head += ["subgroup_dimension", "subgroup"]
-        detail_cols = ["name", "folder", "reason", "god_category", "envelope_shape",
+        detail_cols = ["name", "folder",
+                       "ucs_category", "ucs_subcategory", "ucs_id", "ucs_confidence", "ucs_reason",
+                       "source_format", "lossy_source",
+                       "reason", "god_category", "envelope_shape",
                        "acoustic_types", "sound_design_roles", "instrument_family", "timbre", "cluster",
                        "pitch_hz", "complexity", "spectral_centroid_hz", "harmonicity", "attack_seconds",
                        "envelope_attack_seconds", "envelope_decay_seconds", "envelope_sustain_level", "envelope_release_seconds",

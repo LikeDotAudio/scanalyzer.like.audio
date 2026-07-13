@@ -9,7 +9,7 @@ use rayon::prelude::*;
 use crate::analyze::analyze;
 use crate::args::Config;
 use crate::cluster::cluster_samples;
-use crate::discover::discover_wavs;
+use crate::discover::discover_audio;
 use crate::emit::emit;
 use crate::pca::pca_assign;
 use crate::peak::Peak;
@@ -18,9 +18,13 @@ use crate::stream::{emit_result, emit_skip};
 use crate::version::ANALYZER_VERSION;
 
 pub fn run(cfg: &Config) {
-    let files = discover_wavs(&cfg.root);
+    let found = discover_audio(&cfg.root);
+    let files = found.files;
     let total = files.len();
+    // Report what we ignored. A silent drop is how a 94%-MP3 library came to
+    // look like a directory the walker had failed to recurse into.
     emit(&serde_json::json!({ "type": "start", "total": total, "workers": cfg.workers,
+                              "skipped": found.skipped,
                               "analyzer_version": ANALYZER_VERSION }));
     if total == 0 {
         emit(&serde_json::json!({ "type": "done", "count": 0, "out": cfg.out.to_string_lossy() }));

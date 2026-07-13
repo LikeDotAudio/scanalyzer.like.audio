@@ -1,6 +1,6 @@
 //! oa_sample_analyzer — fast, parallel audio-sample analyzer.
 //!
-//! Walks a directory for WAV files and, across a pool of worker threads (30 by
+//! Walks a directory for audio files and, across a pool of worker threads (30 by
 //! default), computes for each: length, a pitch estimate (autocorrelation), and
 //! a spectral "complexity" (centroid + spread). Streams one JSON line per file
 //! to stdout so a GUI can graph progress live, then writes the aggregate
@@ -12,7 +12,9 @@
 //!   peak         — the streamed/serialized record struct
 //!   normalize    — file-name tokenizer for keyword matching
 //!   categorize   — name/path → group + subgroup taxonomy (+ tests)
-//!   wav / acid   — WAV decode (mono f32) and ACID loop metadata
+//!   decode / wav — audio decode to mono f32 (WAV via hound; MP3/FLAC/AIFF/
+//!                  OGG/M4A via symphonia), lossy sources flagged
+//!   acid         — ACID loop metadata (BPM + root) from the WAV chunk
 //!   amplitude / pitch / spectrum / transients / sustain — feature extractors
 //!   stft / flux / mfcc / framestats — frame-based spectral features
 //!   envelope     — measured ADSR (attack/decay/sustain/release) + moments + shape
@@ -33,6 +35,7 @@ pub mod analyze;
 pub mod args;
 pub mod categorize;
 pub mod cluster;
+pub mod decode;
 pub mod discover;
 pub mod distortion;
 pub mod emit;

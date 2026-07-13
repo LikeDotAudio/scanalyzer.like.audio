@@ -21,7 +21,10 @@ impl Config {
         let root = PathBuf::from(&args[1]);
         let mut out: Option<PathBuf> = None;
         let mut workers = 30usize;
-        let mut max_len = 10.0f64;
+        // 10 s was a drum-sample-pack default: it silently discarded every SFX,
+        // ambience and weather bed, which run to minutes. The signature spec calls
+        // this out explicitly — UCS work needs the long files.
+        let mut max_len = 600.0f64;
         let mut clusters = 8usize;
         let mut per_file = true;
         let mut force = false;
@@ -32,7 +35,7 @@ impl Config {
                 "--no-per-file" => { per_file = false; i += 1; }
                 "--force" => { force = true; i += 1; }
                 "--workers" => { workers = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(30); i += 2; }
-                "--max-len" => { max_len = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(10.0); i += 2; }
+                "--max-len" => { max_len = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(600.0); i += 2; }
                 "--clusters" => { clusters = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(8); i += 2; }
                 _ => { i += 1; }
             }
