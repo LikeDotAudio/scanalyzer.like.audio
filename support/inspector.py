@@ -18,7 +18,7 @@ matplotlib.use("TkAgg")
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from .config import group_color
+from .config import group_color, ucs_sub_color
 
 class RecordInspector(ttk.Panedwindow):
     """JSON view (left) + waveform preview with a Play button (right).
@@ -100,15 +100,53 @@ class RecordInspector(ttk.Panedwindow):
             "analyzer_version"
         }
         
+        # The UCS verdict is the headline: pin it to the TOP of the table.
+        # It used to sit at the very bottom of the record, below onset_envelope
+        # — which is expanded one row per frame, so on a 40-second effect the
+        # classification was buried under ~3,400 rows of raw numbers.
+        ucat = rec.get("ucs_category")
+        if ucat:
+            ucolor = ucs_sub_color(ucat, rec.get("ucs_subcategory") or "")
+            utag = "u" + ucolor.lstrip("#")
+            self.detail.tag_configure(utag, foreground=ucolor)
+            conf = rec.get("ucs_confidence")
+            conf_str = f"{conf:.0%}" if isinstance(conf, (int, float)) else "—"
+            for label, val in (
+                ("UCS category", ucat),
+                ("UCS subcategory", rec.get("ucs_subcategory") or ""),
+                ("UCS id", rec.get("ucs_id") or ""),
+                ("UCS confidence", conf_str),
+                ("UCS why", rec.get("ucs_reason") or ""),
+            ):
+                self.detail.insert("", tk.END, values=(label, str(val)), tags=(utag,))
+            for i, alt in enumerate(rec.get("ucs_alternatives") or []):
+                self.detail.insert("", tk.END,
+                                   values=("UCS runner-up" if i == 0 else "", str(alt)), tags=(utag,))
+            self.detail.insert("", tk.END, values=("", ""), tags=(tag,))  # spacer
+
+        UCS_SHOWN = {"ucs_category", "ucs_subcategory", "ucs_id", "ucs_confidence",
+                     "ucs_reason", "ucs_alternatives"}
+
         for k, v in rec.items():
+            if k in UCS_SHOWN:
+                continue  # already pinned above
             # Omit values that are already visually represented in the graphs
             is_numeric = isinstance(v, (int, float)) and not isinstance(v, bool)
             is_bar_graphed = is_numeric and k not in OMIT_FROM_BARS
             is_env_graphed = k.startswith("envelope_") and k != "envelope_shape"
             if is_bar_graphed or is_env_graphed:
                 continue
-                
+
             if isinstance(v, list):
+                # A long numeric series (onset_envelope runs to thousands of
+                # frames) is a signal, not a field: summarize it rather than
+                # flooding the table one row per sample.
+                numeric = all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in v)
+                if numeric and len(v) > 8:
+                    lo, hi = (min(v), max(v)) if v else (0, 0)
+                    self.detail.insert("", tk.END, tags=(tag,), values=(
+                        k, f"[{len(v)} values]  min {lo:.4g}  max {hi:.4g}"))
+                    continue
                 for i, item in enumerate(v):
                     label = k if i == 0 else ""
                     self.detail.insert("", tk.END, values=(label, str(item)), tags=(tag,))
@@ -165,9 +203,12 @@ class RecordInspector(ttk.Panedwindow):
             "envelope_decay_seconds", "envelope_sustain_level", 
             "envelope_release_seconds", "envelope_temporal_centroid", 
             "envelope_skewness", "envelope_kurtosis", "envelope_shape",
-            "analyzer_version"
+            "analyzer_version",
+            # A 0..1 posterior plotted against spectral values in Hz is noise on
+            # this chart. It has its own row at the top of the field table.
+            "ucs_confidence",
         }
-        
+
         keys = []
         vals = []
         for k, v in rec.items():
