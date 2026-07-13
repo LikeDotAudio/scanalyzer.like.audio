@@ -232,6 +232,7 @@ fn feature(p: &Peak, name: &str) -> Option<f64> {
         "syllabic_modulation_energy" => p.syllabic_modulation_energy?,
         "decay_time_seconds_60db" => p.decay_time_seconds_60db?,
         "voicing_ratio" => p.voicing_ratio?,
+        "onset_periodicity" => p.onset_periodicity?,
 
         // --- derived on the fly from what the record already stores.
         "onset_rate_per_second" => {
@@ -240,10 +241,6 @@ fn feature(p: &Peak, name: &str) -> Option<f64> {
             }
             p.transient_count as f64 / p.length_seconds
         }
-        "onset_periodicity" => match onset_periodicity(&p.onset_envelope) {
-            Some(v) => v,
-            None => return None,
-        },
         "stereo_width" => p.side_rms / (p.mid_rms + 1e-9),
 
         _ => return None,
@@ -253,36 +250,6 @@ fn feature(p: &Peak, name: &str) -> Option<f64> {
     } else {
         None
     }
-}
-
-/// Peak of the normalized autocorrelation of the onset envelope: 1 = a perfectly
-/// periodic onset train (a clock, a gallop), 0 = stochastic (rain, applause).
-/// The spec calls this the single highest-value new feature; the envelope is
-/// already on the record, so it costs nothing.
-fn onset_periodicity(env: &[f64]) -> Option<f64> {
-    if env.len() < 8 {
-        return None;
-    }
-    let mean = env.iter().sum::<f64>() / env.len() as f64;
-    let x: Vec<f64> = env.iter().map(|v| v - mean).collect();
-    let denom: f64 = x.iter().map(|v| v * v).sum();
-    if denom <= 1e-12 {
-        return None;
-    }
-    let max_lag = env.len() / 2;
-    let mut best: f64 = 0.0;
-    for lag in 2..max_lag {
-        let r: f64 = x[..x.len() - lag]
-            .iter()
-            .zip(&x[lag..])
-            .map(|(a, b)| a * b)
-            .sum::<f64>()
-            / denom;
-        if r > best {
-            best = r;
-        }
-    }
-    Some(best.clamp(0.0, 1.0))
 }
 
 // -------------------------------------------------------------- lossy sources

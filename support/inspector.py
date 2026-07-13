@@ -138,9 +138,8 @@ class RecordInspector(ttk.Panedwindow):
                 continue
 
             if isinstance(v, list):
-                # A long numeric series (onset_envelope runs to thousands of
-                # frames) is a signal, not a field: summarize it rather than
-                # flooding the table one row per sample.
+                # A long numeric series is a signal, not a field: summarize it
+                # rather than flooding the table one row per sample.
                 numeric = all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in v)
                 if numeric and len(v) > 8:
                     lo, hi = (min(v), max(v)) if v else (0, 0)

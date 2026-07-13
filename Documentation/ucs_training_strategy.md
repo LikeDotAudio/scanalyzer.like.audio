@@ -111,7 +111,7 @@ features that do not exist yet. Ranked by how many of the 753 depend on them:
 |---|---|---|
 | `stationarity` | 330 | cheap — variance of frame energy over existing STFT frames |
 | `onset_rate_per_second` | 274 | trivial — `transient_count / length_seconds` |
-| `onset_periodicity` | 231 | cheap — autocorrelation peak of the existing `onset_envelope` |
+| `onset_periodicity` | 231 | cheap — autocorrelation peak of the onset envelope, reduced at analysis time and stored as a scalar |
 | `decay_time_seconds_60db` | 201 | moderate — exponential fit to the post-peak envelope |
 | `spectral_centroid_slope_hz_per_second` | — | cheap — linear regression on the existing per-frame centroid series |
 | `voicing_ratio` | — | **free** — `vad.rs` already computes it and throws it away. Just store it. |

@@ -125,7 +125,15 @@ pub struct Peak {
     pub chromagram: [f64; 12],
     pub dc_offset: f64,
     pub trailing_silence_ms: f64,
-    pub onset_envelope: Vec<f64>,
+    pub onset_periodicity: Option<f64>, // autocorrelation peak of the onset envelope: 1 = a
+                                        // periodic onset train (a clock), 0 = stochastic (rain).
+                                        // None when the file is too short, or has no onsets at all.
+                                        //
+                                        // The raw envelope used to live here — one float per 512
+                                        // samples, thousands per file. Nothing ever plotted it: the
+                                        // stream stripped it, the inspector collapsed it to a row
+                                        // count, and the only real reader reduced it to this single
+                                        // number. So we reduce it once, here, and store that.
 
     // --- Universal Category System (UCS) ---
     // Scored per Documentation/ucs_signature_spec.md: acoustic gates + priors

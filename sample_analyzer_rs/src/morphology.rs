@@ -349,7 +349,7 @@ fn parabolic_offset(frame: &[f32], k: usize) -> f64 {
 /// Speech and walla modulate at the syllable rate; a stationary crowd bed or a
 /// machine hum does not. The envelope's DC is removed first, otherwise the mean
 /// level would swamp every modulation band.
-fn syllabic_modulation(envelope: &[f64], rate_hz: f64) -> Option<f64> {
+pub(crate) fn syllabic_modulation(envelope: &[f64], rate_hz: f64) -> Option<f64> {
     const SYLLABIC_LO: f64 = 3.0;
     const SYLLABIC_HI: f64 = 8.0;
     const BAND_LO: f64 = 0.5;

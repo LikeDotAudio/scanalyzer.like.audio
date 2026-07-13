@@ -59,6 +59,10 @@ pub fn get_integrated_lufs(raw_interleaved: &[f32], channels: u16, sample_rate: 
     analyzer.loudness_global().unwrap_or(-70.0)
 }
 
+/// The onset envelope: rising energy per 512-sample frame, i.e. where the
+/// attacks are. This is an intermediate signal, not a field — it is thousands of
+/// floats per file and the record keeps only what it *asks* of it, which is the
+/// single number below.
 pub fn detect_transient_onsets(audio: &[f32], frame_size: usize) -> Vec<f64> {
     let mut onset_envelope = Vec::new();
     let mut previous_energy = 0.0;
@@ -69,8 +73,42 @@ pub fn detect_transient_onsets(audio: &[f32], frame_size: usize) -> Vec<f64> {
         onset_envelope.push(flux);
         previous_energy = current_energy;
     }
-    
+
     onset_envelope
+}
+
+/// Peak of the normalized autocorrelation of the onset envelope: 1 = a perfectly
+/// periodic onset train (a clock, a gallop, a footstep loop), 0 = stochastic
+/// (rain, applause). This is the whole of what the record wants from the
+/// envelope, so we reduce here and store the scalar.
+///
+/// None when the envelope is too short to hold a period, or is perfectly flat —
+/// and None must reach the UCS scorer as "no evidence", never as 0.0, which
+/// would be the *positive* claim that the onsets are stochastic.
+pub fn onset_periodicity(envelope: &[f64]) -> Option<f64> {
+    if envelope.len() < 8 {
+        return None;
+    }
+    let mean = envelope.iter().sum::<f64>() / envelope.len() as f64;
+    let x: Vec<f64> = envelope.iter().map(|v| v - mean).collect();
+    let denom: f64 = x.iter().map(|v| v * v).sum();
+    if denom <= 1e-12 {
+        return None;
+    }
+    let max_lag = envelope.len() / 2;
+    let mut best: f64 = 0.0;
+    for lag in 2..max_lag {
+        let r: f64 = x[..x.len() - lag]
+            .iter()
+            .zip(&x[lag..])
+            .map(|(a, b)| a * b)
+            .sum::<f64>()
+            / denom;
+        if r > best {
+            best = r;
+        }
+    }
+    Some(best.clamp(0.0, 1.0))
 }
 
 pub fn calculate_qa_metrics(samples: &[f32], sample_rate: u32) -> (f64, f64) {
@@ -85,6 +123,55 @@ pub fn calculate_qa_metrics(samples: &[f32], sample_rate: u32) -> (f64, f64) {
         .count();
         
     let trailing_silence_ms = (trailing_samples as f64 / sample_rate as f64) * 1000.0;
-    
+
     (dc_offset, trailing_silence_ms)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const FRAME: usize = 512;
+
+    fn periodicity_of(audio: &[f32]) -> Option<f64> {
+        onset_periodicity(&detect_transient_onsets(audio, FRAME))
+    }
+
+    /// The distinction the feature exists to make, and the whole reason the
+    /// record keeps this number instead of the envelope it came from: a clock is
+    /// periodic, rain is not.
+    #[test]
+    fn a_regular_onset_train_is_periodic_and_noise_is_not() {
+        // A click every 8 frames — a metronome.
+        let mut clicks = vec![0.0f32; FRAME * 200];
+        for (i, s) in clicks.iter_mut().enumerate() {
+            if i % (FRAME * 8) < 32 {
+                *s = 1.0;
+            }
+        }
+        let clock = periodicity_of(&clicks).unwrap();
+        assert!(clock > 0.8, "a metronome must read as periodic, got {clock}");
+
+        // Stochastic energy: no lag repeats.
+        let mut seed = 12_345u32;
+        let rain: Vec<f32> = (0..FRAME * 200)
+            .map(|_| {
+                seed = seed.wrapping_mul(1_103_515_245).wrapping_add(12_345);
+                ((seed >> 8) as f32 / 8_388_608.0) - 1.0
+            })
+            .collect();
+        let stochastic = periodicity_of(&rain).unwrap();
+        assert!(stochastic < 0.5, "noise must not read as periodic, got {stochastic}");
+        assert!(clock > stochastic, "the clock must outrank the noise");
+    }
+
+    /// None, not 0.0. A file with no onsets has *no evidence* about periodicity;
+    /// reporting 0.0 would be the positive claim that its onsets are stochastic,
+    /// and the UCS scorer would weigh that claim against a real prior.
+    #[test]
+    fn silence_has_no_periodicity_rather_than_zero_periodicity() {
+        assert!(periodicity_of(&vec![0.0f32; FRAME * 100]).is_none());
+        assert!(periodicity_of(&[]).is_none());
+        assert!(periodicity_of(&[0.5f32; 3]).is_none(), "too short to hold a period");
+    }
 }

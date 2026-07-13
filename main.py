@@ -41,12 +41,14 @@ from support.stats_tab import GroupStatsMixin
 from support.examiner_tab import ExaminerMixin
 from support.guess_tab import GuessMixin
 from support.rename_tab import RenameMixin
+from support.scan_tree import ScanTreeMixin
 
 # The aggregate record the Rust analyzer writes into every folder it scans.
 PEAK_BASENAME = "sample_cloud_data.PEAK"
 
 
-class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, GuessMixin, RenameMixin):
+class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, GuessMixin,
+                  RenameMixin, ScanTreeMixin):
     def __init__(self, root):
         self.root = root
         self.root.title("Scanalyzer")
@@ -117,6 +119,9 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         self.status = ttk.Label(scan_tab, text=("Rust binary: " + (self.binary or "NOT BUILT — run: cargo build --release in sample_analyzer_rs/")),
                                 foreground=("#2a7" if self.binary else "#c33"), padding=(0, 4))
         self.status.pack(fill=tk.X)
+
+        # The live scan tree: every file to be analyzed, greening as it lands.
+        self._build_scan_tree(scan_tab)
 
         self._build_cloud_tab()
         self._build_stats_tab()   # 2D stats live right beside the 3D cloud
@@ -272,6 +277,14 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         # The Start button becomes the Stop button for the duration of the run.
         self.action_btn.config(text="■ Stop Analysis", command=self.stop_analysis)
         self.set_tab_blinking("SCANALIZE", True)
+
+        # Draw what is about to happen before it happens: every file the analyzer
+        # will touch, listed, so the run is legible rather than a moving bar.
+        self.status.config(text=f"Listing audio files under {directory}…", foreground="#c47a1a")
+        self.root.update_idletasks()
+        found = self.build_scan_tree(directory)
+        self.status.config(text=f"Analyzing {found:,} file(s)…", foreground="#c47a1a")
+
         self.progress["value"] = 0
         self.d_pitch, self.d_cx, self.d_len, self.d_group, self.d_rec = [], [], [], [], []
         self.n_loops = 0
@@ -331,6 +344,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
                     self.progress.config(maximum=max(1, msg.get("total", 1)))
                 elif t in ("result", "skip"):
                     self.progress["value"] = msg.get("done", 0)
+                    self.mark_scan_file(msg.get("name", ""), skipped=(t == "skip"))
                     if t == "result":
                         self.d_pitch.append(msg.get("pitch_hz", 0.0) or 0.0)
                         self.d_cx.append(msg.get("complexity", 0.0) or 0.0)
@@ -350,6 +364,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
                     self.is_analyzing = False
                     self.action_btn.config(text="Start Analysis", command=self.start, state=tk.NORMAL)
                     self.set_tab_blinking("SCANALIZE", False)
+                    self.finish_scan_tree()
         except queue.Empty:
             pass
         if redraw and self.d_pitch:

@@ -290,7 +290,7 @@ The analyzer utilizes a suite of industry-standard measurements and machine lear
 - **Stereo Field Analysis** — Mid/Side processing computes `mid_rms` (mono compatibility) and `side_rms` (spatial width, reverb presence). 
 - **LUFS (ITU-R BS.1770)** — computes modern perceived loudness using K-Weighting and relative gating, providing a standardized `lufs` score.
 - **Chromagram** — a 12-bucket Pitch Class Profile mapping FFT magnitudes to standard Western musical notes, revealing chord structures regardless of octave.
-- **Algorithmic Rhythm** — extracts the raw `onset_envelope` tracking spectral flux (sudden bursts of high-frequency energy) to power tempograms.
+- **Algorithmic Rhythm** — tracks spectral flux (sudden bursts of energy) to find the attacks, then reduces that onset envelope to `onset_periodicity`: the autocorrelation peak that separates a periodic onset train (a clock, a gallop) from a stochastic one (rain, applause).
 - **QA Metrics** — scans for hardware faults like `dc_offset`, and wasteful dead space via `trailing_silence_ms`.
 
 ---
@@ -493,7 +493,7 @@ JSON object per file (per-file sidecars; the aggregate file is an array).
 | `mid_rms` / `side_rms` | number | Stereo field energy (mono compatibility vs spatial width) |
 | `lufs` | number | ITU-R BS.1770 perceived loudness |
 | `chromagram` | number[12] | 12-bucket pitch class profile mapping FFT energy to musical notes |
-| `onset_envelope` | number[] | Rhythmic spectral flux tracking attacks over time |
+| `onset_periodicity` | number \| null | How regular the attacks are: 1 = a periodic onset train (a clock), 0 = stochastic (rain). `null` when the file is too short or has no onsets |
 | `dc_offset` | number | Average waveform offset from zero (quality assurance) |
 | `trailing_silence_ms` | number | Milliseconds of dead space at the end of the file |
 | `ucs_category` / `ucs_subcategory` / `ucs_id` | string | Standardized Universal Category System metadata (e.g. `MUSICAL`, `PERCUSSION`, `MUSCPerc`) |

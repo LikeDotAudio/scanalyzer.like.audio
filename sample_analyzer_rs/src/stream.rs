@@ -16,10 +16,10 @@ use crate::peak::Peak;
 pub fn emit_result(p: &Peak, done: usize, total: usize) {
     let mut v = serde_json::to_value(p).unwrap_or_else(|_| serde_json::json!({}));
     if let Some(o) = v.as_object_mut() {
-        // The one field worth withholding: the onset envelope runs to thousands
-        // of floats per file, nothing plots it live, and the full record is
-        // reloaded from the .PEAK when the run completes.
-        o.remove("onset_envelope");
+        // Nothing is withheld any more. The one field that used to be — the raw
+        // onset envelope, thousands of floats nobody read — is now reduced to
+        // `onset_periodicity` before it ever reaches the record, so the stream
+        // and the .PEAK carry exactly the same thing.
         o.insert("type".into(), serde_json::json!("result"));
         o.insert("done".into(), serde_json::json!(done));
         o.insert("total".into(), serde_json::json!(total));

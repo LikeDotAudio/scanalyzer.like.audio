@@ -60,13 +60,18 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     // STFT and the amplitude envelope already computed above.
     let (amplitude_track, envelope_rate_hz) = crate::envelope::amplitude_envelope(&data, sr);
     let morph = morphology(&frames, sr_f, N_FFT, HOP, &amplitude_track, envelope_rate_hz);
-    // One VAD pass answers both "how voiced is this" and "is this a vocal".
-    let (voicing_ratio, is_vocal) = crate::vad::voice_activity(&data, sr);
+    // One pass answers both "how voiced is this" and "is this a vocal".
+    let voicing = crate::vad::voice_activity(&data, sr);
+    let (voicing_ratio, is_vocal) = (voicing.ratio, voicing.is_speech);
 
     // Advanced Stats
     let (mid_rms, side_rms) = crate::advanced_stats::analyze_stereo_width(&raw_data, channels);
     let lufs = crate::advanced_stats::get_integrated_lufs(&raw_data, channels, sr);
-    let onset_envelope = crate::advanced_stats::detect_transient_onsets(&data, 512);
+    // The envelope is thousands of floats; the record wants one. Reduce it here
+    // and let the raw series go out of scope.
+    let onset_periodicity = crate::advanced_stats::onset_periodicity(
+        &crate::advanced_stats::detect_transient_onsets(&data, 512),
+    );
     let (dc_offset, trailing_silence_ms) = crate::advanced_stats::calculate_qa_metrics(&data, sr);
 
     // ROOT note (musical key). Prefer the embedded ACID root when present,
@@ -244,7 +249,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         chromagram: spec.chromagram,
         dc_offset,
         trailing_silence_ms,
-        onset_envelope,
+        onset_periodicity,
         source_format,
         lossy_source,
         // Placeholders: finish() overwrites these once the record is complete.
@@ -303,13 +308,18 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     // STFT and the amplitude envelope already computed above.
     let (amplitude_track, envelope_rate_hz) = crate::envelope::amplitude_envelope(&data, sr);
     let morph = morphology(&frames, sr_f, N_FFT, HOP, &amplitude_track, envelope_rate_hz);
-    // One VAD pass answers both "how voiced is this" and "is this a vocal".
-    let (voicing_ratio, is_vocal) = crate::vad::voice_activity(&data, sr);
+    // One pass answers both "how voiced is this" and "is this a vocal".
+    let voicing = crate::vad::voice_activity(&data, sr);
+    let (voicing_ratio, is_vocal) = (voicing.ratio, voicing.is_speech);
 
     // Advanced Stats
     let (mid_rms, side_rms) = crate::advanced_stats::analyze_stereo_width(&raw_data, channels);
     let lufs = crate::advanced_stats::get_integrated_lufs(&raw_data, channels, sr);
-    let onset_envelope = crate::advanced_stats::detect_transient_onsets(&data, 512);
+    // The envelope is thousands of floats; the record wants one. Reduce it here
+    // and let the raw series go out of scope.
+    let onset_periodicity = crate::advanced_stats::onset_periodicity(
+        &crate::advanced_stats::detect_transient_onsets(&data, 512),
+    );
     let (dc_offset, trailing_silence_ms) = crate::advanced_stats::calculate_qa_metrics(&data, sr);
 
     // ROOT note (musical key). Prefer the embedded ACID root when present,
@@ -484,7 +494,7 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
         chromagram: spec.chromagram,
         dc_offset,
         trailing_silence_ms,
-        onset_envelope,
+        onset_periodicity,
         source_format,
         lossy_source,
         // Placeholders: finish() overwrites these once the record is complete.
