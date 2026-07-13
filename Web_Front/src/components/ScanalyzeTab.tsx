@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import initWasm, { analyze_audio_buffer } from 'wasm_analyzer';
+import initWasm, { analyze_audio_buffer, analyzer_version } from 'wasm_analyzer';
 import { filterAudioFiles } from '../audioLinking';
+
+/** The folder a record is filed under — the file's parent path. */
+const folderOf = (file: File) => {
+  const parts = (file.webkitRelativePath || file.name).split('/');
+  return parts.length > 1 ? parts.slice(0, -1).join('/') : 'folder';
+};
+
+/** A file's path with its extension removed, used to pair `kick.wav` with `kick.PEAK`. */
+const stem = (file: File) => (file.webkitRelativePath || file.name).replace(/\.[^./]+$/, '');
 
 interface ScanalyzeTabProps {
   analysisResult: any[];
@@ -31,6 +40,8 @@ export default function ScanalyzeTab({
   const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
   const [done, setDone] = useState(0);
   const [total, setTotal] = useState(0);
+  const [absorbed, setAbsorbed] = useState(0);
+  const [stale, setStale] = useState(0);
   const stopRef = useRef(false);
 
   useEffect(() => {
@@ -39,33 +50,73 @@ export default function ScanalyzeTab({
 
   // Discover WAV files in the picked folder. everyNth > 1 samples the library
   // (e.g. every 50th file) for a quick representative test scan.
-  const discover = (files: FileList | null, everyNth = 1) => {
+  //
+  // A folder that has been analyzed before carries a `.PEAK` sidecar next to
+  // each sample. The directory picker hands those to us along with the audio, so
+  // we read them: a sidecar stamped with *this* engine's version was produced by
+  // identical extractor code, and re-analyzing the file could only reproduce it.
+  // We absorb it and skip the work. Anything else — no sidecar, a sidecar from an
+  // older engine, an unreadable one — is analyzed as normal.
+  const discover = async (files: FileList | null, everyNth = 1) => {
     if (!files || !wasmReady) return;
+    const all = Array.from(files);
+    const engine = analyzer_version();
 
-    // Create a Set of already analyzed files to enable resuming
-    const existingPaths = new Set(analysisResult.map(res => res.path));
-
-    let allWavFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.wav'));
-    if (everyNth > 1) allWavFiles = allWavFiles.filter((_, i) => i % everyNth === 0);
-
-    // Only process files we haven't seen yet
-    const wavFilesToProcess = allWavFiles.filter(file => {
-        const folder = (file.webkitRelativePath || file.name).split('/')[0] || "folder";
-        const expectedPath = `${folder}/${file.name}`;
-        return !existingPaths.has(expectedPath);
-    });
-
-    if (wavFilesToProcess.length === 0) {
-        alert("All files in this folder have already been analyzed!");
-        setAudioFiles(filterAudioFiles(Array.from(files))); // Update audio files even if skipping scan
-        return;
+    // Index the sidecars the picker gave us, by the path they describe.
+    const sidecars = new Map<string, File>();
+    for (const f of all) {
+      if (/\.peak$/i.test(f.name)) sidecars.set(stem(f), f);
     }
 
-    setPendingWavFiles(wavFilesToProcess);
-    setAudioFiles(filterAudioFiles(Array.from(files))); // Link audio folder automatically when they scan
+    let wavFiles = all.filter(f => f.name.toLowerCase().endsWith('.wav'));
+    if (everyNth > 1) wavFiles = wavFiles.filter((_, i) => i % everyNth === 0);
+
+    // Already in this session's results — resume rather than redo. (This used to
+    // compare against only the *top* folder segment while the records store the
+    // full parent path, so the resume check never actually matched.)
+    const existingPaths = new Set(analysisResult.map(res => res.path));
+
+    const absorbed: any[] = [];
+    const toProcess: File[] = [];
+    let staleSidecars = 0;
+
+    for (const file of wavFiles) {
+      if (existingPaths.has(`${folderOf(file)}/${file.name}`)) continue;
+
+      const sidecar = sidecars.get(stem(file));
+      if (sidecar) {
+        try {
+          const rec = JSON.parse(await sidecar.text());
+          // Same engine and the sidecar really describes this file.
+          if (rec && rec.analyzer_version === engine && rec.name === file.name) {
+            absorbed.push(rec);
+            continue;
+          }
+          staleSidecars++;      // written by different extractor code — recompute
+        } catch {
+          /* unreadable or not JSON: fall through and analyze the file */
+        }
+      }
+      toProcess.push(file);
+    }
+
+    setAudioFiles(filterAudioFiles(all));   // link the audio either way
+    setAbsorbed(absorbed.length);
+    setStale(staleSidecars);
+
+    if (absorbed.length) setAnalysisResult([...analysisResult, ...absorbed]);
+
+    if (toProcess.length === 0) {
+      alert(absorbed.length
+        ? `Nothing to analyze — absorbed ${absorbed.length} up-to-date .PEAK sidecar(s).`
+        : "All files in this folder have already been analyzed!");
+      setPendingWavFiles([]);
+      return;
+    }
+    setPendingWavFiles(toProcess);
   };
 
-  const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => discover(e.target.files, 1);
+  const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => { void discover(e.target.files, 1); };
 
   const downloadPeak = (records: any[]) => {
     try {
@@ -171,9 +222,20 @@ export default function ScanalyzeTab({
       return (
           <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Ready to Scan</h2>
-              <p className="text-secondary" style={{ marginBottom: '2.5rem', fontSize: '1.2rem' }}>
+              <p className="text-secondary" style={{ marginBottom: '0.75rem', fontSize: '1.2rem' }}>
                   Found <strong>{pendingWavFiles.length}</strong> new .wav files to process.
               </p>
+              {(absorbed > 0 || stale > 0) && (
+                <p className="text-secondary" style={{ marginBottom: '2.5rem', fontSize: '0.95rem', textAlign: 'center', maxWidth: '640px' }}>
+                  {absorbed > 0 && (
+                    <>Absorbed <strong style={{ color: 'var(--accent-primary)' }}>{absorbed}</strong> up-to-date .PEAK sidecar{absorbed === 1 ? '' : 's'} — same engine, so those files are already done and will not be re-analyzed. </>
+                  )}
+                  {stale > 0 && (
+                    <><strong>{stale}</strong> sidecar{stale === 1 ? ' was' : 's were'} written by a different engine version and will be recomputed.</>
+                  )}
+                </p>
+              )}
+              {absorbed === 0 && stale === 0 && <div style={{ marginBottom: '2.5rem' }} />}
               <div style={{ display: 'flex', gap: '1rem' }}>
                   <button className="btn" onClick={() => setPendingWavFiles([])}>Cancel</button>
                   <button className="btn primary" onClick={startAnalysis}>Continue to Analysis</button>
@@ -218,7 +280,7 @@ export default function ScanalyzeTab({
             webkitdirectory="true"
             directory="true"
             style={{ display: 'none' }}
-            onChange={(e) => discover(e.target.files, 50)}
+            onChange={(e) => { void discover(e.target.files, 50); }}
             disabled={!wasmReady}
           />
         </label>

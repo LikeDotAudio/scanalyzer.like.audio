@@ -170,3 +170,169 @@ taxonomy the analyzer already handles best — and is absent by construction for
 `provenance_only` categories (ARCHIVED, FOLEY), which no dataset can label because
 they are workflow states, not sounds. Expect the real calibratable fraction to land
 well below the naive estimate, and to help least exactly where UCS is hardest.
+
+---
+
+## 7. Results — the calibration actually ran (July 2026)
+
+Everything above §7 was written before the data was on disk. This section is what
+happened when it was. **Three of §6.5's five preconditions were already stale:** the
+audio *is* downloaded (51,197 clips), the official `ground_truth/` *is* present, and
+`max_len` already defaults to 600 s. The two that mattered — the crosswalk and the
+PP-only filter — held up exactly as written.
+
+### 7.1 The crosswalk: the paper is real, and it is not enough
+
+`arXiv:2606.05571` exists — *Sound Effects Dataset Unification With the Universal
+Category System*, Beck & Lerch (Georgia Tech, June 2026). They publish per-file UCS
+labels for all 51,197 FSD50K clips under **CC-BY-SA 4.0**
+(`github.com/JunWooBeck/fsd50k-ucs`). §6.1 was right to send us looking.
+
+It was also right to be suspicious. Their pipeline's last resort is a *synonym
+reverse lookup* — the very mechanism §6.1 showed produces category errors — and 75
+of the 200 classes fall through to it. Audited against the taxonomy, their output
+contains:
+
+- `Tap` → **COMMUNICATIONS-MICROPHONE** (186 clips). A mic tap. This is the
+  `Siren → CREATURES-AQUATIC` failure, in the flesh.
+- `Squeak` → **FOLEY-SQUEAK**, *which is not a UCS pair*. FOLEY has five
+  subcategories and SQUEAK is not one of them.
+- `Cowbell` → ALARMS-BELL, though FSD50K files Cowbell under `Bell`.
+- **38.7 % of files resolve to a category with no subcategory at all**
+  (MUSICAL/–, FOLEY/–, VOICES/–), which is useless for calibrating a *subcategory*
+  signature. FOLEY is `provenance_only` here and cannot be signal-scored regardless.
+
+So the crosswalk in `UCS/fsd50k_crosswalk.json` is **hand-adjudicated**, with their
+labels kept as a recorded second opinion and every disagreement noted in-entry. It
+also sidesteps CC-BY-SA's ShareAlike, since it is not derived from their table.
+
+The AudioSet hierarchy needed for "most specific label" was recovered from the data
+itself — if every clip carrying `Snare_drum` also carries `Percussion`, then
+`Percussion` is an ancestor — which is why no ontology file was needed.
+
+**169 of 200 classes map to 114 distinct UCS subcategories.** The other 31 are
+refused on the record: 22 are ontology ancestors too broad to mean one thing
+(`Music`, `Vehicle`, `Domestic_sounds_and_home_sounds`), and 9 are genuinely
+ambiguous (`Crack`, `Tearing`, `Squeak`, `Tap` — the material decides, and the label
+does not name it). A refusal is a result, not a gap.
+
+### 7.2 The clip funnel
+
+| | clips |
+|---|---|
+| FSD50K total | 51,197 |
+| dropped — more than one most-specific label | 8,463 |
+| dropped — most-specific label maps to nothing | 5,567 |
+| dropped — no PP/PNP rating at all | 7,721 |
+| dropped — rated Present-but-Not-Predominant | 5,059 |
+| **eligible for calibration** | **24,362** |
+
+That is 47.6 % of the dataset, over **112 subcategories** — 97 of them with ≥50
+clips. **So the honest coverage number §6.6 could not quote is ~15 % of the 753.**
+
+### 7.3 What the data refused to calibrate — three traps, two of them new
+
+§6.2 named three features FSD50K must not touch. It was right about all three, and
+the run found **two more that it missed**:
+
+4. **`band_limit_high_hz` — do not calibrate.** **56.7 %** of FSD50K clips are
+   band-limited below 17 kHz, and 8 % sit exactly in the 15–16.5 kHz MP3 lowpass
+   band. Freesound uploads are routinely lossy-origin, transcoded to WAV for
+   release. This feature would measure *the uploader's codec*.
+5. **`voicing_ratio` — do not calibrate.** The WebRTC VAD rates **AMBIENCE-TRAFFIC
+   0.96 voiced** and CROWDS-APPLAUSE 0.79. Those are facts about the detector, not
+   the sounds. Calibrating to them would enshrine a broken feature.
+
+And one structural correction: the **envelope timings** (`envelope_attack_seconds`,
+decay, release, sustain, ring time, `crest_factor`) are calibrated **only on
+single-transient clips**. An FSD50K clip is room tone plus an event, so the
+10 %→90 % "attack" of a glass clink spans the silence in front of it — the measured
+p95 attack was **10.6 s for GLASS-IMPACT and 2.4 s for a computer keyboard**. A UCS
+library one-shot is trimmed and attacks in milliseconds. Left unfiltered, this alone
+would have wrecked every impact signature.
+
+### 7.4 What was calibrated
+
+**748 priors across 102 subcategories**, written back into `UCS/categories/*.json`.
+Policy: the mean moves to the measured median (MAD-derived, so a few mislabelled
+uploads cannot drag it); **the deviation may only widen, never tighten** — FSD50K is
+a *prior on the prior*, not the truth. Every touched prior carries a `provenance`
+block naming the dataset, the clip count, the contributing FSD50K classes, and the
+reasoned value it replaced. Untouched priors are explicitly stamped
+`{"source": "reasoned"}`, so no number in the taxonomy is now of unknown origin.
+
+Full report: `UCS/fsd50k_calibration.json`.
+
+### 7.5 The gate audit — 24 gates reject the very sounds they describe
+
+A gate encodes impossibility, so a gate that kills genuine clips is a bug, and an
+unrecoverable one: it zeroes the posterior. Scored against PP-rated ground truth:
+
+| gate | kills |
+|---|---|
+| `RAIN` · onset_rate_per_second ≥ 2.0 | **84.6 %** of real rain |
+| `WIND` · harmonicity ≤ 0.6 | **82.9 %** of real wind |
+| `FIRE-CRACKLE` · harmonicity ≤ 0.55 | 56.9 % |
+| `VOICES-WHISPER` · harmonicity ≤ 0.45 | 54.6 % |
+| `FARTS-REAL` · spectral_centroid ≤ 4000 Hz | 41.2 % |
+| `VOICES-MALE` · pitch_hz ∈ 55–350 | 37.8 % |
+
+…24 in total. **These are not calibration errors. They point at a real defect in
+`harmonicity`.**
+
+### 7.6 `harmonicity` does not measure what its name claims
+
+Run on synthetic signals, the analyzer reports:
+
+| signal | harmonicity |
+|---|---|
+| white noise | 0.011 |
+| **lowpass noise (a wind bed)** | **0.868** |
+| pure 440 Hz sine | 0.998 |
+
+Lowpass noise scores almost as "pitched" as a sine. `harmonicity` is an
+autocorrelation peak, and *any* spectrally-correlated noise autocorrelates strongly
+at short lags. It is measuring **spectral correlation, not pitchedness** — which is
+why wind (0.86), thunder (0.78), fire and breath all read as harmonic, and why every
+`harmonicity ≤ x` gate guillotines its own category.
+
+This is reproducible on clean signals, so it is a property of the DSP and not of
+FSD50K. That has two consequences, and they point in opposite directions:
+the **measured priors are trustworthy** (a clean wind SFX will read 0.86 too), while
+the **gates built on the old assumption are inverted and must be relaxed**. Fixing
+`harmonicity` properly (normalize against flatness, or use a real pitch-salience
+measure) would change the meaning of 514 priors and should be done deliberately.
+
+### 7.7 The separability tiers were too pessimistic — measured, not argued
+
+§6.4 asked for this and it is the most interesting result. A logistic probe on the
+analyzer's own feature vector (5-fold CV, majority-class baseline) over **181 sibling
+pairs**:
+
+> **51 of 66 `semantic_only` pairs (77 %) separate well above chance.** Median lift
+> across all 181 pairs: **+0.22**.
+
+The spec's own flagship example of a thing DSP can never do —
+
+- **VEHICLES-CAR vs VEHICLES-BUS: 0.86 accuracy** against a 0.51 baseline.
+- ANIMALS-CAT vs ANIMALS-DOG: 0.88 against 0.56.
+- COMMUNICATIONS-CELLPHONE vs TYPEWRITER: 0.99 against 0.53.
+
+§7 of the signature spec says "signal features cannot tell a car from a bus". They
+can, 86 % of the time. **The 38 % `semantic_only` verdict is wrong, and the tiers
+should be re-derived from this table rather than argued.**
+
+In the other direction the evidence is thin: only 6 `signal_separable` pairs show a
+lift under 0.05, and every one of them is a heavily imbalanced pair whose baseline is
+already ≥0.84 — where lift is a weak statistic. **No `signal_separable` claim is
+falsified by this data.** The tiers err in one direction only: pessimism.
+
+Full table: `UCS/fsd50k_separability.json`.
+
+### 7.8 Licensing
+
+Beck & Lerch's artifacts are **CC-BY-SA 4.0**, not the unresolved `NOASSERTION`
+GitHub reports. Their per-file labels were consulted but not vendored, and the
+crosswalk is independently adjudicated, so ShareAlike does not reach into
+`UCS/categories/`. The 6,041 CC-BY-NC clips remain a filter to apply before any
+shipped *model* is trained on this audio; summary statistics are not affected.

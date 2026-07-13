@@ -59,6 +59,73 @@ class GraphMixin:
         ("J", "RMS", "Attack", "Sustain", "Length"),                   # dynamics
     ]
 
+    # --- fold-out geometry (mirrors the web front's 280px glass panels) ---
+    FOLDOUT_WIDTH = 290
+    FOLDOUT_LIST_HEIGHT = 320
+
+    # Point shape encodes a *categorical* fact, leaving colour free for the
+    # taxonomy and size free for a feature. Same four modes and the same rules
+    # as the web front's `getShapeFor`, so a point means the same thing in both.
+    SHAPE_OPTIONS = ["Instrument", "God Category", "Timbre", "Uniform"]
+
+    # The web draws real solids; matplotlib has 2D markers, so each solid maps to
+    # the marker that reads closest to it at a glance.
+    SHAPE_MARKERS = {
+        "sphere": "o", "pyramid": "^", "cube": "s", "diamond": "D", "torus": "8",
+        "cylinder": "h", "disc": "p", "icosahedron": "*", "dodecahedron": "X",
+    }
+
+    SHAPE_LEGENDS = {
+        "Uniform": [("All", "sphere")],
+        "God Category": [("Percussive", "pyramid"), ("Impulsive with tail", "diamond"),
+                         ("Tonal", "cube"), ("Complex", "torus"), ("(other)", "sphere")],
+        "Timbre": [("Percussive", "pyramid"), ("Loop", "torus"), ("Bass", "cylinder"),
+                   ("Tonal", "cube"), ("Noise", "diamond"), ("Bright", "icosahedron"),
+                   ("Pad", "dodecahedron"), ("(other)", "sphere")],
+        "Instrument": [("Kick / Snare / Tom / Clap", "cylinder"),
+                       ("Cymbal / Hi-hat / Crash", "disc"),
+                       ("IR / impulsive tail", "diamond"), ("Perc / percussive", "pyramid"),
+                       ("Loop / FX / complex", "torus"), ("Bass / Synth / tonal", "cube"),
+                       ("Vocal / Voice", "icosahedron"), ("(other)", "sphere")],
+    }
+
+    @staticmethod
+    def _shape_for(r, mode):
+        """Which solid a record draws as. A direct port of the web front's
+        `getShapeFor` — the two must not drift, or the same sample would read as
+        a different thing in the app than on the site."""
+        if mode == "Uniform":
+            return "sphere"
+        g = (r.get("group") or "").lower()
+        god = (r.get("god_category") or "").lower()
+        t = (r.get("timbre") or "").lower()
+
+        if mode == "God Category":
+            return {"percussive": "pyramid", "impulsive with tail": "diamond",
+                    "tonal": "cube", "complex": "torus"}.get(god, "sphere")
+
+        if mode == "Timbre":
+            return {"percussive": "pyramid", "loop": "torus", "bass": "cylinder",
+                    "tonal": "cube", "noise": "diamond", "bright": "icosahedron",
+                    "pad": "dodecahedron"}.get(t, "sphere")
+
+        # Instrument (the default)
+        if any(k in g for k in ("kick", "snare", "tom", "clap")):
+            return "cylinder"
+        if any(k in g for k in ("cymbal", "hi-hat", "hihat", "ride", "crash")):
+            return "disc"
+        if g == "ir" or god == "impulsive with tail":
+            return "diamond"
+        if g == "perc" or god == "percussive":
+            return "pyramid"
+        if (r.get("transient_count") or 0) > 1 or god == "complex" or "loop" in g or g == "fx":
+            return "torus"
+        if g == "bass" or "synth" in g or god == "tonal":
+            return "cube"
+        if g == "vocal" or "voice" in g:
+            return "icosahedron"
+        return "sphere"
+
     def _build_cloud_tab(self):
         tab = ttk.Frame(self.notebook)
         self.notebook.add(tab, text="3D Cloud")
@@ -84,47 +151,21 @@ class GraphMixin:
         self.sel_label = ttk.Label(views, text="Click a point to inspect", foreground="#c47a1a")
         self.sel_label.pack(side=tk.RIGHT, padx=8)
 
-        # --- axis pickers: X / Y / Z / Size are all drop-downable ---
-        axrow = ttk.Frame(tab, padding=(10, 0, 10, 4))
-        axrow.pack(fill=tk.X)
-        xyz_opts = [lbl for lbl, _k in self.ISO_FEATURES]
-        size_opts = [lbl for lbl, k in self.ISO_FEATURES if k is not None]
-        self.axis_x = tk.StringVar(value="Pitch")
-        self.axis_y = tk.StringVar(value="Group")
-        self.axis_z = tk.StringVar(value="Complexity")
-        self.axis_size = tk.StringVar(value="Length")
-        for text, var, opts in (
-            ("X:", self.axis_x, xyz_opts), ("Y:", self.axis_y, xyz_opts),
-            ("Z:", self.axis_z, xyz_opts), ("Size:", self.axis_size, size_opts),
-        ):
-            ttk.Label(axrow, text=text, foreground="#888").pack(side=tk.LEFT, padx=(0, 3))
-            ttk.Combobox(axrow, textvariable=var, state="readonly", width=13, values=opts).pack(side=tk.LEFT, padx=(0, 10))
-            var.trace_add("write", lambda *_: self._redraw_cloud())
-
-        # --- which taxonomy drives the colours, the tree and the filters ---
-        ttk.Label(axrow, text="Taxonomy:", foreground="#888").pack(side=tk.LEFT, padx=(6, 3))
-        self.taxonomy = tk.StringVar(value="UCS")
-        ttk.Combobox(axrow, textvariable=self.taxonomy, state="readonly", width=11,
-                     values=["UCS", "Name groups"]).pack(side=tk.LEFT, padx=(0, 10))
-        self.taxonomy.trace_add("write", lambda *_: self._switch_taxonomy())
-
-        # --- one-click axis presets (A…J) ---
-        ttk.Label(axrow, text="Presets:", foreground="#888").pack(side=tk.LEFT, padx=(6, 3))
-        for name, px, py, pz, ps in self.CLOUD_PRESETS:
-            ttk.Button(axrow, text=name, width=2,
-                       command=lambda x=px, y=py, z=pz, s=ps: self._apply_cloud_preset(x, y, z, s)
-                       ).pack(side=tk.LEFT, padx=1)
-
-        # --- Mono/Stereo signing: flip the chosen axis negative for mono
-        # files, positive for stereo — on whichever axis the dropdown says
-        # (complexity isn't always the thing that should carry the sign).
-        self.ms_sign = tk.BooleanVar(value=False)
-        ttk.Checkbutton(axrow, text="Mono/Stereo", variable=self.ms_sign,
-                        command=self._redraw_cloud).pack(side=tk.LEFT, padx=(10, 2))
-        self.ms_axis = tk.StringVar(value="Z")
-        ttk.Combobox(axrow, textvariable=self.ms_axis, state="readonly", width=3,
-                     values=["X", "Y", "Z"]).pack(side=tk.LEFT)
-        self.ms_axis.trace_add("write", lambda *_: self._redraw_cloud())
+        # --- the three fold-outs, as on the web front. The controls used to be
+        # a permanent two-row toolbar plus a permanent sidebar, which spent a
+        # third of the tab on widgets nobody touches once the view is set. They
+        # now fold away and give the cloud the room.
+        self._cloud_state_vars()
+        menubar = ttk.Frame(tab, padding=(10, 0, 10, 4))
+        menubar.pack(fill=tk.X)
+        self.open_foldout = tk.StringVar(value="")
+        for key, label in (("options", "Graph Options"), ("groups", "Groups"), ("shapes", "Shapes")):
+            ttk.Radiobutton(menubar, text=f"▾ {label}", value=key, variable=self.open_foldout,
+                            style="Toolbutton", command=self._sync_foldouts).pack(side=tk.LEFT, padx=(0, 4))
+        ttk.Radiobutton(menubar, text="✕ Close", value="", variable=self.open_foldout,
+                        style="Toolbutton", command=self._sync_foldouts).pack(side=tk.LEFT, padx=(8, 0))
+        self.foldout_hint = ttk.Label(menubar, text="", foreground="#555")
+        self.foldout_hint.pack(side=tk.LEFT, padx=10)
 
         pane = ttk.Panedwindow(tab, orient=tk.VERTICAL)
         pane.pack(fill=tk.BOTH, expand=True)
@@ -135,41 +176,14 @@ class GraphMixin:
         self.cloud_inspector = RecordInspector(pane, play_cb=lambda p: self._play_file(p), height=7)
         pane.add(self.cloud_inspector, weight=1)
 
-        # --- left sidebar: show/hide groups ---
-        side = ttk.Frame(body, width=196)
-        side.pack(side=tk.LEFT, fill=tk.Y)
-        side.pack_propagate(False)
-
-        ttk.Label(side, text="Groups (show / hide)", font=("Helvetica", 9, "bold")).pack(anchor=tk.W, padx=6, pady=(4, 0))
-        ttk.Label(side, text="hide all but one to deep-dive it", foreground="#888", font=("Helvetica", 8)).pack(anchor=tk.W, padx=6)
-        btns = ttk.Frame(side)
-        btns.pack(fill=tk.X, padx=6, pady=(2, 4))
-        ttk.Button(btns, text="All", width=5, command=lambda: self._set_all_groups(True)).pack(side=tk.LEFT)
-        ttk.Button(btns, text="None", width=5, command=lambda: self._set_all_groups(False)).pack(side=tk.LEFT, padx=3)
-
-        # Scrollable checkbox list fills the rest (canvas + scrollbar in their
-        # own container so LEFT/RIGHT packing never collides with the sidebar).
-        listwrap = ttk.Frame(side)
-        listwrap.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=6, pady=(2, 4))
-        gc = tk.Canvas(listwrap, highlightthickness=0, bg="#1e1e1e")
-        gsb = ttk.Scrollbar(listwrap, orient=tk.VERTICAL, command=gc.yview)
-        gc.configure(yscrollcommand=gsb.set)
-        gsb.pack(side=tk.RIGHT, fill=tk.Y)
-        gc.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.group_box = ttk.Frame(gc)
-        self._gc_win = gc.create_window((0, 0), window=self.group_box, anchor="nw")
-        self.group_box.bind("<Configure>", lambda e: gc.configure(scrollregion=gc.bbox("all")))
-        gc.bind("<Configure>", lambda e: gc.itemconfigure(self._gc_win, width=e.width))
-
-        # --- right: the 3D cloud, fills the rest ---
+        # --- the 3D cloud now fills the whole body; the panels float over it ---
         right = ttk.Frame(body)
         right.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.fig = Figure(figsize=(7, 4.4), dpi=100, facecolor="#1b1b1b")
         self.ax = self.fig.add_subplot(111, projection="3d", facecolor="#0f0f0f")
         self.fig.subplots_adjust(left=0.0, right=1.0, bottom=0.0, top=1.0)
         self._style_axes()
-        self.scatter = self.ax.scatter([], [], [], depthshade=True)
-        self.scatter.set_clip_on(False)
+        self._scatters = []
         self.canvas = FigureCanvasTkAgg(self.fig, master=right)
         cw = self.canvas.get_tk_widget()
         cw.pack(fill=tk.BOTH, expand=True, padx=0, pady=0)
@@ -183,6 +197,145 @@ class GraphMixin:
         cw.bind("<Up>", lambda e: self._orbit(0, 12))
         cw.bind("<Down>", lambda e: self._orbit(0, -12))
         self.selected_rec = None
+
+        self._build_foldouts(body)
+
+    # ---- fold-out panels --------------------------------------------------
+    def _cloud_state_vars(self):
+        """The Tk variables the fold-outs bind to. Created before the panels so
+        a redraw triggered while one is being built still finds them."""
+        self.axis_x = tk.StringVar(value="Pitch")
+        self.axis_y = tk.StringVar(value="Group")
+        self.axis_z = tk.StringVar(value="Complexity")
+        self.axis_size = tk.StringVar(value="Length")
+        self.taxonomy = tk.StringVar(value="UCS")
+        self.shape_by = tk.StringVar(value="Instrument")
+        self.ms_sign = tk.BooleanVar(value=False)
+        self.ms_axis = tk.StringVar(value="Z")
+        for v in (self.axis_x, self.axis_y, self.axis_z, self.axis_size, self.ms_axis):
+            v.trace_add("write", lambda *_: self._redraw_cloud())
+        self.taxonomy.trace_add("write", lambda *_: self._switch_taxonomy())
+        self.shape_by.trace_add("write", lambda *_: self._on_shape_change())
+
+    def _panel(self, host, title):
+        """One floating panel, styled like the web front's glass menus: same
+        top-right corner, same fixed width, scroll when taller than the cloud."""
+        outer = tk.Frame(host, bg="#111318", highlightthickness=1,
+                         highlightbackground="#333", width=self.FOLDOUT_WIDTH)
+        head = tk.Frame(outer, bg="#111318")
+        head.pack(fill=tk.X, padx=8, pady=(6, 4))
+        tk.Label(head, text=title, bg="#111318", fg="#eee",
+                 font=("Helvetica", 9, "bold")).pack(side=tk.LEFT)
+        tk.Button(head, text="✕", bg="#111318", fg="#888", bd=0, highlightthickness=0,
+                  activebackground="#111318", activeforeground="#fff",
+                  command=lambda: (self.open_foldout.set(""), self._sync_foldouts())
+                  ).pack(side=tk.RIGHT)
+        tk.Frame(outer, bg="#333", height=1).pack(fill=tk.X, padx=8)
+        inner = ttk.Frame(outer, padding=8)
+        inner.pack(fill=tk.BOTH, expand=True)
+        return outer, inner
+
+    def _build_foldouts(self, host):
+        self._foldouts = {}
+
+        # ---- Graph Options
+        outer, p = self._panel(host, "Graph Options")
+        self._foldouts["options"] = outer
+        xyz_opts = [lbl for lbl, _k in self.ISO_FEATURES]
+        size_opts = [lbl for lbl, k in self.ISO_FEATURES if k is not None]
+        for text, var, opts in (("X Axis", self.axis_x, xyz_opts), ("Y Axis", self.axis_y, xyz_opts),
+                                ("Z Axis", self.axis_z, xyz_opts), ("Size", self.axis_size, size_opts),
+                                ("Taxonomy", self.taxonomy, ["UCS", "Name groups"])):
+            row = ttk.Frame(p)
+            row.pack(fill=tk.X, pady=2)
+            ttk.Label(row, text=text, foreground="#888", width=9).pack(side=tk.LEFT)
+            ttk.Combobox(row, textvariable=var, state="readonly", width=15,
+                         values=opts).pack(side=tk.RIGHT)
+
+        ttk.Separator(p).pack(fill=tk.X, pady=6)
+        # Mono/Stereo signing: flip the chosen axis negative for mono files,
+        # positive for stereo — on whichever axis the dropdown says.
+        ms = ttk.Frame(p)
+        ms.pack(fill=tk.X)
+        ttk.Checkbutton(ms, text="Mono / Stereo sign", variable=self.ms_sign,
+                        command=self._redraw_cloud).pack(side=tk.LEFT)
+        ttk.Combobox(ms, textvariable=self.ms_axis, state="readonly", width=3,
+                     values=["X", "Y", "Z"]).pack(side=tk.RIGHT)
+
+        ttk.Separator(p).pack(fill=tk.X, pady=6)
+        ttk.Label(p, text="Presets", foreground="#888").pack(anchor=tk.W)
+        grid = ttk.Frame(p)
+        grid.pack(fill=tk.X, pady=(3, 0))
+        for i, (name, px, py, pz, ps) in enumerate(self.CLOUD_PRESETS):
+            ttk.Button(grid, text=name, width=3,
+                       command=lambda x=px, y=py, z=pz, s=ps: self._apply_cloud_preset(x, y, z, s)
+                       ).grid(row=i // 5, column=i % 5, padx=1, pady=1)
+
+        # ---- Groups
+        outer, p = self._panel(host, "Groups (show / hide)")
+        self._foldouts["groups"] = outer
+        ttk.Label(p, text="hide all but one to deep-dive it",
+                  foreground="#888", font=("Helvetica", 8)).pack(anchor=tk.W)
+        btns = ttk.Frame(p)
+        btns.pack(fill=tk.X, pady=(3, 4))
+        ttk.Button(btns, text="All", width=5, command=lambda: self._set_all_groups(True)).pack(side=tk.LEFT)
+        ttk.Button(btns, text="None", width=5, command=lambda: self._set_all_groups(False)).pack(side=tk.LEFT, padx=3)
+        listwrap = ttk.Frame(p, height=self.FOLDOUT_LIST_HEIGHT)
+        listwrap.pack(fill=tk.BOTH, expand=True)
+        listwrap.pack_propagate(False)
+        gc = tk.Canvas(listwrap, highlightthickness=0, bg="#1e1e1e")
+        gsb = ttk.Scrollbar(listwrap, orient=tk.VERTICAL, command=gc.yview)
+        gc.configure(yscrollcommand=gsb.set)
+        gsb.pack(side=tk.RIGHT, fill=tk.Y)
+        gc.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.group_box = ttk.Frame(gc)
+        self._gc_win = gc.create_window((0, 0), window=self.group_box, anchor="nw")
+        self.group_box.bind("<Configure>", lambda e: gc.configure(scrollregion=gc.bbox("all")))
+        gc.bind("<Configure>", lambda e: gc.itemconfigure(self._gc_win, width=e.width))
+
+        # ---- Shapes
+        outer, p = self._panel(host, "Shapes")
+        self._foldouts["shapes"] = outer
+        row = ttk.Frame(p)
+        row.pack(fill=tk.X, pady=2)
+        ttk.Label(row, text="Shape by", foreground="#888", width=9).pack(side=tk.LEFT)
+        ttk.Combobox(row, textvariable=self.shape_by, state="readonly", width=15,
+                     values=self.SHAPE_OPTIONS).pack(side=tk.RIGHT)
+        ttk.Separator(p).pack(fill=tk.X, pady=6)
+        ttk.Label(p, text="Mapping", foreground="#888").pack(anchor=tk.W)
+        self.shape_legend = ttk.Frame(p)
+        self.shape_legend.pack(fill=tk.X, pady=(3, 0))
+        self._sync_shape_legend()
+
+        self._sync_foldouts()
+
+    def _sync_foldouts(self):
+        """Show the selected panel and hide the others. They share one corner,
+        as on the site, so opening one closes the last."""
+        want = self.open_foldout.get()
+        for key, panel in self._foldouts.items():
+            if key == want:
+                panel.place(relx=1.0, y=8, x=-10, anchor="ne")
+                panel.lift()
+            else:
+                panel.place_forget()
+        self.foldout_hint.config(
+            text="" if want else "the cloud has the floor — open a panel to change it")
+
+    def _on_shape_change(self):
+        self._sync_shape_legend()
+        self._redraw_cloud()
+
+    def _sync_shape_legend(self):
+        for w in self.shape_legend.winfo_children():
+            w.destroy()
+        for label, shape in self.SHAPE_LEGENDS.get(self.shape_by.get(), []):
+            row = ttk.Frame(self.shape_legend)
+            row.pack(fill=tk.X)
+            ttk.Label(row, text=label, foreground="#888",
+                      font=("Helvetica", 8)).pack(side=tk.LEFT)
+            ttk.Label(row, text=shape, foreground="#ddd",
+                      font=("Helvetica", 8)).pack(side=tk.RIGHT)
 
     def _export_cloud_png(self, path=None):
         """Save the current cloud view as a 3000×3000 PNG (10 in² at 300 dpi).
@@ -574,7 +727,7 @@ class GraphMixin:
         recs = [r for r in self.d_rec if self._rec_visible(r)]
 
         if not recs:
-            self.scatter._offsets3d = ([], [], [])
+            self._clear_scatters()
             self._pts = (np.array([]), np.array([]), np.array([]))
             self._pt_recs = []
             self.ax.set_title("(all groups hidden)", color="#888", fontsize=9)
@@ -635,10 +788,7 @@ class GraphMixin:
 
         self._pts = (xs, ys, zs)
         self._pt_recs = recs
-        self.scatter._offsets3d = (xs, ys, zs)
-        self.scatter.set_sizes(sizes)
-        self.scatter.set_color(colors)
-        self.scatter.set_edgecolor("none")
+        self._draw_points(recs, xs, ys, zs, sizes, colors)
 
         self._apply_axis(self.ax.set_xlim, self.ax.set_xticks, self.ax.set_xticklabels,
                          self.ax.set_xlabel, xs, p["x"]["label"], self._ticks_tuple(p["x"].get("ticks")))
@@ -662,6 +812,36 @@ class GraphMixin:
         # Keep the 2D-Stats group picker in sync with what's been analyzed.
         if hasattr(self, "_refresh_stats_groups"):
             self._refresh_stats_groups()
+
+    def _clear_scatters(self):
+        for sc in getattr(self, "_scatters", []):
+            try:
+                sc.remove()
+            except Exception:
+                pass
+        self._scatters = []
+
+    def _draw_points(self, recs, xs, ys, zs, sizes, colors):
+        """Draw the cloud as one scatter per marker shape.
+
+        A single matplotlib scatter carries a single marker, so shape-coding means
+        splitting the points into one collection per shape. Picking is unaffected:
+        `_pts` and `_pt_recs` stay in record order and the hit test runs against
+        those, not against the collections.
+        """
+        self._clear_scatters()
+        mode = self.shape_by.get()
+        buckets = {}
+        for i, r in enumerate(recs):
+            buckets.setdefault(self._shape_for(r, mode), []).append(i)
+        for shape, idx in buckets.items():
+            marker = self.SHAPE_MARKERS.get(shape, "o")
+            sc = self.ax.scatter(
+                xs[idx], ys[idx], zs[idx],
+                s=sizes[idx], c=[colors[i] for i in idx],
+                marker=marker, edgecolors="none", depthshade=True)
+            sc.set_clip_on(False)
+            self._scatters.append(sc)
 
     def _apply_mono_stereo_sign(self, recs, p, x_key, y_key, z_key, xs, ys, zs):
         """When the Mono/Stereo box is ticked, sign the chosen axis by channel

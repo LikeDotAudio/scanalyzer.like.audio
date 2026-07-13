@@ -42,6 +42,9 @@ from support.examiner_tab import ExaminerMixin
 from support.guess_tab import GuessMixin
 from support.rename_tab import RenameMixin
 
+# The aggregate record the Rust analyzer writes into every folder it scans.
+PEAK_BASENAME = "sample_cloud_data.PEAK"
+
 
 class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, GuessMixin, RenameMixin):
     def __init__(self, root):
@@ -126,6 +129,18 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         if self.binary and os.path.isdir(self.directory.get()):
             self.action_btn.config(state=tk.NORMAL)
 
+        # Say whether the startup folder already has a .PEAK, but do NOT parse it
+        # here: the default library's is 84 MB / 35k records, and loading it
+        # eagerly cost 30 s of frozen window before the app was even usable.
+        # Loading is an explicit act — Browse, Refresh, or Start Analysis.
+        startup_peak = self.default_peak_path()
+        if startup_peak and os.path.isfile(startup_peak):
+            mb = os.path.getsize(startup_peak) / 1e6
+            self.status.config(
+                text=f"Found {os.path.basename(startup_peak)} ({mb:.0f} MB) in this folder — "
+                     f"press ⟳ Refresh .PEAK to load it, or Start Analysis to re-scan.",
+                foreground="#c47a1a")
+
     # ---- shared: file resolution + playback -------------------------------
     def _resolve_path(self, rec):
         if rec.get("path") and os.path.isfile(rec["path"]):
@@ -208,6 +223,42 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         if d:
             self.directory.set(d)
             self.action_btn.config(state=(tk.NORMAL if self.binary else tk.DISABLED))
+            self._autoload_peak(d)
+
+    def default_peak_path(self, directory=None):
+        """Where the analyzer writes its aggregate record for a folder."""
+        d = directory or self.directory.get()
+        return os.path.join(d, PEAK_BASENAME) if d and os.path.isdir(d) else None
+
+    def _autoload_peak(self, directory):
+        """A folder that already carries a .PEAK has already been analyzed, so
+        show it the moment the folder is picked. Making the user hunt for the
+        file by hand — in the directory they just chose — was busywork."""
+        self.root_dir = directory
+        peak = self.default_peak_path(directory)
+        if peak and os.path.isfile(peak):
+            self._load_records(peak)
+            self.status.config(
+                text=f"Loaded {len(self.records)} records from {os.path.basename(peak)} — "
+                     f"Start Analysis to re-scan.", foreground="#2a7")
+        else:
+            self._clear_records()
+            self.status.config(text="No .PEAK in this folder yet — press Start Analysis.",
+                               foreground="#c47a1a")
+
+    def _clear_records(self):
+        """Drop the previous folder's records. Without this, picking an
+        un-analyzed folder would leave the last folder's rows on screen, which
+        reads as though they belong to the new one."""
+        self.records = []
+        self.records_by_path = {}
+        self.peak_path = None
+        self.exam_records = []
+        self.exam_path = None
+        if hasattr(self, "exam_tv"):
+            self._populate_examiner()
+        if hasattr(self, "_rebuild_groups"):
+            self._rebuild_groups()
 
     def start(self):
         if self.is_analyzing or not self.binary:
@@ -231,8 +282,7 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
         self._sel_marker = None
         self.play_btn.config(state=tk.DISABLED)
         self.ax.clear(); self._style_axes()
-        self.scatter = self.ax.scatter([], [], [], depthshade=True)
-        self.scatter.set_clip_on(False)
+        self._scatters = []   # ax.clear() already dropped the collections
         if self.ax.get_legend():
             self.ax.get_legend().remove()
         self.canvas.draw_idle()
@@ -315,6 +365,16 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
     def _load_records(self, out_path):
         """Load the full .PEAK records (all fields) for the Groups + Examiner tabs."""
         try:
+            # A big library's .PEAK is tens of MB and takes seconds to parse and
+            # lay out. Say so before the window stops responding, rather than
+            # after — an unexplained freeze reads as a crash.
+            try:
+                mb = os.path.getsize(out_path) / 1e6
+                self.status.config(text=f"Loading {os.path.basename(out_path)} ({mb:.0f} MB)…",
+                                   foreground="#c47a1a")
+                self.root.update_idletasks()
+            except OSError:
+                pass
             with open(out_path, encoding="utf-8") as f:
                 data = json.load(f)
             self.records = data if isinstance(data, list) else []
@@ -327,6 +387,17 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
             # use it.
             if self.records:
                 self.d_rec = self.records
+                # Rebuild the cloud from the records too, so a .PEAK loaded
+                # without a run (a folder analyzed earlier) draws its cloud
+                # instead of leaving an empty plot behind the populated tabs.
+                self.d_pitch = [r.get("pitch_hz") or 0.0 for r in self.records]
+                self.d_cx = [r.get("complexity") or 0.0 for r in self.records]
+                self.d_len = [r.get("length_seconds") or 0.1 for r in self.records]
+                self.d_group = [r.get("group") or "Other" for r in self.records]
+                self.n_loops = sum(1 for r in self.records
+                                   if (r.get("transient_count") or 1) > 1)
+                self._legend_groups = None
+                self._redraw_cloud()
             self._rebuild_groups()
             # Auto-load the same file into the examiner.
             self.exam_records = self.records

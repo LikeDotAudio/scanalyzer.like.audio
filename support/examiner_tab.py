@@ -1,5 +1,5 @@
 """PEAK Examiner tab for the Sample Analyzer (ExaminerMixin)."""
-import json
+import os
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
@@ -17,7 +17,11 @@ class ExaminerMixin:
 
         ctl = ttk.Frame(tab, padding=6)
         ctl.pack(fill=tk.X)
-        ttk.Button(ctl, text="Open .PEAK…", command=self._open_peak_file).pack(side=tk.LEFT)
+        # Refresh, not Open. The examiner auto-populates from the .PEAK of
+        # whichever directory is chosen, so the action anyone actually wants
+        # here is "re-read the latest analysis", not "go find the file I just
+        # pointed the app at".
+        ttk.Button(ctl, text="⟳ Refresh .PEAK", command=self._refresh_peak).pack(side=tk.LEFT)
         ttk.Label(ctl, text="Filter:").pack(side=tk.LEFT, padx=(12, 4))
         self.exam_filter = tk.StringVar()
         ent = ttk.Entry(ctl, textvariable=self.exam_filter, width=24)
@@ -53,6 +57,25 @@ class ExaminerMixin:
         self.exam_inspector = RecordInspector(body, play_cb=lambda p: self._play_file(p))
         body.add(self.exam_inspector, weight=1)
 
+    def _refresh_peak(self):
+        """Re-read the .PEAK of the directory currently selected on SCANALIZE.
+
+        Falls back to a file picker only when there is nothing to refresh — a
+        folder that has never been analyzed — so the dialog appears when it is
+        genuinely the only way forward, and never as a routine step.
+        """
+        path = getattr(self, "peak_path", None) or self.default_peak_path()
+        if path and os.path.isfile(path):
+            self._load_records(path)
+            return
+        if not messagebox.askyesno(
+                "Refresh .PEAK",
+                "This folder has no .PEAK yet.\n\n"
+                "Run Start Analysis on the SCANALIZE tab to create one, "
+                "or open a .PEAK from somewhere else?"):
+            return
+        self._open_peak_file()
+
     def _open_peak_file(self):
         path = filedialog.askopenfilename(
             title="Open .PEAK file",
@@ -60,11 +83,7 @@ class ExaminerMixin:
         if not path:
             return
         try:
-            with open(path, encoding="utf-8") as f:
-                data = json.load(f)
-            self.exam_records = data if isinstance(data, list) else []
-            self.exam_path = path
-            self._populate_examiner()
+            self._load_records(path)
         except Exception as e:
             messagebox.showerror("Open PEAK", str(e))
 
