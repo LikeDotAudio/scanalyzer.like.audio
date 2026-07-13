@@ -175,3 +175,34 @@ pub fn read_audio(path: &Path) -> Option<Decoded> {
         lossy: is_lossy(&ext),
     })
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Every extension we advertise must actually decode. AIFF was listed here
+    /// while symphonia's `aiff` feature was off, so AIFF files were discovered
+    /// and then silently dropped — the exact failure this crate exists to avoid.
+    #[test]
+    fn every_advertised_extension_is_classifiable() {
+        for ext in AUDIO_EXTENSIONS {
+            let p = std::path::PathBuf::from(format!("x.{ext}"));
+            assert!(is_audio(&p), "{ext} advertised but is_audio() rejects it");
+            assert_ne!(
+                format_name(ext),
+                "UNKNOWN",
+                "{ext} advertised but has no format name"
+            );
+        }
+    }
+
+    #[test]
+    fn lossy_formats_are_flagged_and_lossless_ones_are_not() {
+        for ext in ["mp3", "ogg", "oga", "m4a", "mp4", "aac"] {
+            assert!(is_lossy(ext), "{ext} should be flagged lossy");
+        }
+        for ext in ["wav", "wave", "flac", "aif", "aiff", "aifc"] {
+            assert!(!is_lossy(ext), "{ext} is lossless and must not be flagged");
+        }
+    }
+}
