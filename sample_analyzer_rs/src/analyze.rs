@@ -21,14 +21,14 @@ use crate::sustain::sustain_ratio;
 use crate::tags::{acoustic_tags, sound_design_tags};
 use crate::transients::count_transients;
 use crate::version::ANALYZER_VERSION;
-use crate::wav::read_wav_mono;
+use crate::wav::read_wav;
 
 /// STFT geometry for the frame-based features (flux, MFCC, centroid stats).
 const N_FFT: usize = 2048;
 const HOP: usize = 512;
 
 pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
-    let (data, sr, bit_depth, channels) = read_wav_mono(path)?;
+    let (data, raw_data, sr, bit_depth, channels) = crate::wav::read_wav(path)?;
     let sr_f = sr as f64;
     let length = data.len() as f64 / sr_f;
     if length > max_len {
@@ -51,6 +51,12 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
 
     // Measured ADSR envelope + its statistical moments and shape.
     let env = envelope_analysis(&data, sr, transients);
+
+    // Advanced Stats
+    let (mid_rms, side_rms) = crate::advanced_stats::analyze_stereo_width(&raw_data, channels);
+    let lufs = crate::advanced_stats::get_integrated_lufs(&raw_data, channels, sr);
+    let onset_envelope = crate::advanced_stats::detect_transient_onsets(&data, 512);
+    let (dc_offset, trailing_silence_ms) = crate::advanced_stats::calculate_qa_metrics(&data, sr);
 
     // ROOT note (musical key). Prefer the embedded ACID root when present,
     // otherwise detect it from the spectrum (FFT + harmonic product spectrum).
@@ -116,7 +122,11 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
     }
     bpm = bpm.round();
-    let god_class = god_category(&l.group, is_loop, &env).to_string();
+    let mut god_class = god_category(&l.group, is_loop, &env).to_string();
+    
+    if crate::vad::has_voice(&data, sr) {
+        god_class = crate::god::VOCAL.to_string();
+    }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
@@ -147,6 +157,8 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         ),
         format!("3) {} · {}-band {:.0}%{}", acoustic.join("+"), band.0, band.1 * 100.0, root_part),
     ];
+
+    let (ucs_category, ucs_subcategory, ucs_id) = crate::ucs::map_to_ucs(&god_class, &l.group, &l.subgroup, &family, l.length_class == "Loop");
 
     Some(Peak {
         analyzer_version: ANALYZER_VERSION.to_string(),
@@ -208,11 +220,21 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         root_midi_note: root_note,
         cluster: -1,
         principal_components: Vec::new(),
+        mid_rms,
+        side_rms,
+        lufs,
+        chromagram: spec.chromagram,
+        dc_offset,
+        trailing_silence_ms,
+        onset_envelope,
+        ucs_category,
+        ucs_subcategory,
+        ucs_id,
     })
 }
 
 pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> Option<Peak> {
-    let (data, sr, bit_depth, channels) = crate::wav::read_wav_mono_buffer(buffer)?;
+    let (data, raw_data, sr, bit_depth, channels) = crate::wav::read_wav_buffer(buffer)?;
     let sr_f = sr as f64;
     let length = data.len() as f64 / sr_f;
     if length > max_len {
@@ -236,6 +258,12 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
 
     // Measured ADSR envelope + its statistical moments and shape.
     let env = envelope_analysis(&data, sr, transients);
+
+    // Advanced Stats
+    let (mid_rms, side_rms) = crate::advanced_stats::analyze_stereo_width(&raw_data, channels);
+    let lufs = crate::advanced_stats::get_integrated_lufs(&raw_data, channels, sr);
+    let onset_envelope = crate::advanced_stats::detect_transient_onsets(&data, 512);
+    let (dc_offset, trailing_silence_ms) = crate::advanced_stats::calculate_qa_metrics(&data, sr);
 
     // ROOT note (musical key). Prefer the embedded ACID root when present,
     // otherwise detect it from the spectrum (FFT + harmonic product spectrum).
@@ -296,7 +324,11 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
         bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
     }
     bpm = bpm.round();
-    let god_class = god_category(&l.group, is_loop, &env).to_string();
+    let mut god_class = god_category(&l.group, is_loop, &env).to_string();
+    
+    if crate::vad::has_voice(&data, sr) {
+        god_class = crate::god::VOCAL.to_string();
+    }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
@@ -329,6 +361,8 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     ];
 
     let path = format!("{}/{}", folder, name);
+
+    let (ucs_category, ucs_subcategory, ucs_id) = crate::ucs::map_to_ucs(&god_class, &l.group, &l.subgroup, &family, l.length_class == "Loop");
 
     Some(Peak {
         analyzer_version: ANALYZER_VERSION.to_string(),
@@ -390,5 +424,15 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
         root_midi_note: root_note,
         cluster: -1,
         principal_components: Vec::new(),
+        mid_rms,
+        side_rms,
+        lufs,
+        chromagram: spec.chromagram,
+        dc_offset,
+        trailing_silence_ms,
+        onset_envelope,
+        ucs_category,
+        ucs_subcategory,
+        ucs_id,
     })
 }

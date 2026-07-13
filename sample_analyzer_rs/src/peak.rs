@@ -89,4 +89,18 @@ pub struct Peak {
     // --- unsupervised grouping (assigned after all files are analyzed) ---
     pub cluster: i32,                     // K-Means cluster id, -1 until clustered
     pub principal_components: Vec<f64>,   // top-3 PCA coordinates of the feature space (2D/3D map)
+
+    // --- advanced stats ---
+    pub mid_rms: f64,
+    pub side_rms: f64,
+    pub lufs: f64,
+    pub chromagram: [f64; 12],
+    pub dc_offset: f64,
+    pub trailing_silence_ms: f64,
+    pub onset_envelope: Vec<f64>,
+
+    // --- Universal Category System (UCS) ---
+    pub ucs_category: String,
+    pub ucs_subcategory: String,
+    pub ucs_id: String,
 }

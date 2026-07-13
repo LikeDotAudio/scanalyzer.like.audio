@@ -1,7 +1,7 @@
 use std::path::Path;
 
-/// Read a WAV as mono f32 samples. Returns (samples, sample_rate, bit_depth, channels).
-pub fn read_wav_mono(path: &Path) -> Option<(Vec<f32>, u32, u16, u16)> {
+/// Read a WAV. Returns (mono_samples, raw_interleaved_samples, sample_rate, bit_depth, channels).
+pub fn read_wav(path: &Path) -> Option<(Vec<f32>, Vec<f32>, u32, u16, u16)> {
     let mut reader = hound::WavReader::open(path).ok()?;
     let spec = reader.spec();
     let ch = spec.channels.max(1) as usize;
@@ -25,15 +25,16 @@ pub fn read_wav_mono(path: &Path) -> Option<(Vec<f32>, u32, u16, u16)> {
     }
     // Downmix to mono.
     let mono: Vec<f32> = if ch <= 1 {
-        raw
+        raw.clone()
     } else {
         raw.chunks(ch).map(|frame| frame.iter().copied().sum::<f32>() / ch as f32).collect()
     };
-    Some((mono, sr, bits, ch as u16))
+    Some((mono, raw, sr, bits, ch as u16))
 }
+
 use std::io::Cursor;
 
-pub fn read_wav_mono_buffer(buffer: &[u8]) -> Option<(Vec<f32>, u32, u16, u16)> {
+pub fn read_wav_buffer(buffer: &[u8]) -> Option<(Vec<f32>, Vec<f32>, u32, u16, u16)> {
     let cursor = Cursor::new(buffer);
     let mut reader = hound::WavReader::new(cursor).ok()?;
     let spec = reader.spec();
@@ -58,9 +59,9 @@ pub fn read_wav_mono_buffer(buffer: &[u8]) -> Option<(Vec<f32>, u32, u16, u16)> 
     }
     // Downmix to mono.
     let mono: Vec<f32> = if ch <= 1 {
-        raw
+        raw.clone()
     } else {
         raw.chunks(ch).map(|frame| frame.iter().copied().sum::<f32>() / ch as f32).collect()
     };
-    Some((mono, sr, bits, ch as u16))
+    Some((mono, raw, sr, bits, ch as u16))
 }

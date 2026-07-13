@@ -22,6 +22,7 @@ pub const TONAL: &str = "Tonal";
 // tonal by nature and never falls through to the envelope guess.
 pub const KEYBOARDS: &str = "Keyboards";
 pub const COMPLEX: &str = "Complex";
+pub const VOCAL: &str = "Vocal";
 pub const UNASSIGNED: &str = "Unassigned";
 
 /// Assign the god category. `is_loop` (from the loop detector) forces

@@ -27,6 +27,7 @@
 //!   args / discover / sidecar / stream / emit / run — CLI + orchestration
 
 pub mod acid;
+pub mod advanced_stats;
 pub mod amplitude;
 pub mod analyze;
 pub mod args;
@@ -63,4 +64,6 @@ pub mod tempo;
 pub mod timbre;
 pub mod transients;
 pub mod version;
+pub mod vad;
 pub mod wav;
+pub mod ucs;

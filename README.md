@@ -2,6 +2,16 @@
 
 A self-contained audio-sample analyzer and file-management tool.
 
+### The Elevator Pitch
+At its core, **scanalyzer** is a smart, automated librarian for your audio files. If you have a massive, unorganized folder full of thousands of random audio samples, finding the exact sound you need can be a nightmare. This software "listens" to every single file, figures out what it actually sounds like, and visually organizes your entire collection so you can browse it instantly.
+
+> Stop digging through endless folders named "Kick_Final_v3_really_final.wav". 🛑
+> 
+> **scanalyzer.like.audio** actually *listens* to your audio samples, figures out what they are, and organizes your entire library into an interactive 3D cloud. Find the perfect sound in seconds, not hours. 100% private, 100% local. 🚀🎧
+> 
+> Get your library in check. 👇 
+> #MusicProduction #SoundDesign #BeatMaker #AudioEngineer #ProducerLife #MusicTech #SampleLibrary
+
 It ships as **two front-ends over one shared Rust DSP core** — a Python desktop
 GUI and a browser app — so the exact same analysis runs whether you launch the
 native app or open the web page:
@@ -272,6 +282,17 @@ the fuzz signature); else `Clean`. This gives the taxonomy its "clean vs
 dirty" branch: a clean guitar and a fuzz guitar can share an identical
 envelope, but THD + clipping pull them into different clusters.
 
+### Advanced Analytics & Voice Detection (`advanced_stats.rs`, `vad.rs`)
+
+The analyzer utilizes a suite of industry-standard measurements and machine learning models for deeper context:
+
+- **Voice Activity Detection (VAD)** — an aggressive frame-by-frame scan using the highly optimized WebRTC VAD engine. If significant speech/vocal activity is found, the file is authoritatively classified into the `Vocal` top-level god category.
+- **Stereo Field Analysis** — Mid/Side processing computes `mid_rms` (mono compatibility) and `side_rms` (spatial width, reverb presence). 
+- **LUFS (ITU-R BS.1770)** — computes modern perceived loudness using K-Weighting and relative gating, providing a standardized `lufs` score.
+- **Chromagram** — a 12-bucket Pitch Class Profile mapping FFT magnitudes to standard Western musical notes, revealing chord structures regardless of octave.
+- **Algorithmic Rhythm** — extracts the raw `onset_envelope` tracking spectral flux (sudden bursts of high-frequency energy) to power tempograms.
+- **QA Metrics** — scans for hardware faults like `dc_offset`, and wasteful dead space via `trailing_silence_ms`.
+
 ---
 
 ## Classification — how the labels are concluded
@@ -410,6 +431,10 @@ projection onto those axes is stored in **principal_components** — 3
 coordinates on which statistically similar samples land close together, the
 axes of greatest variance of the whole library.
 
+### Universal Category System (UCS) (`ucs.rs`)
+
+The **Universal Category System (UCS)** is the de facto standardized taxonomy in audio post-production (e.g., `CatID-SubCatID_Vendor_...`). The analyzer seamlessly weaves this standard into its output by mapping its deep acoustic and heuristic findings directly to official UCS v8.2 IDs. This allows independent creators and game/film studios to cleanly ingest your processed library into professional tools like Soundminer without manual categorization. It maps terms intelligently under the `MUSICAL` and `DESIGNED` hierarchies, outputting `ucs_category`, `ucs_subcategory`, and `ucs_id`.
+
 ---
 
 ## The .PEAK data model
@@ -465,6 +490,13 @@ JSON object per file (per-file sidecars; the aggregate file is an array).
 | `beats_per_minute` / `root_midi_note` | number/int | from the embedded ACID chunk (0 / −1 when absent) |
 | `cluster` | int | K-Means cluster id (−1 until clustered) |
 | `principal_components` | number[3] | PCA map coordinates |
+| `mid_rms` / `side_rms` | number | Stereo field energy (mono compatibility vs spatial width) |
+| `lufs` | number | ITU-R BS.1770 perceived loudness |
+| `chromagram` | number[12] | 12-bucket pitch class profile mapping FFT energy to musical notes |
+| `onset_envelope` | number[] | Rhythmic spectral flux tracking attacks over time |
+| `dc_offset` | number | Average waveform offset from zero (quality assurance) |
+| `trailing_silence_ms` | number | Milliseconds of dead space at the end of the file |
+| `ucs_category` / `ucs_subcategory` / `ucs_id` | string | Standardized Universal Category System metadata (e.g. `MUSICAL`, `PERCUSSION`, `MUSCPerc`) |
 
 ---
 

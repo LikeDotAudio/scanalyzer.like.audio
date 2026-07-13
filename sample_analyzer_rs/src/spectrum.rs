@@ -9,6 +9,7 @@ pub struct Spectrum {
     pub low: f64,        // fraction of energy < 200 Hz
     pub mid: f64,        // fraction 200 Hz – 2 kHz
     pub high: f64,       // fraction > 2 kHz
+    pub chromagram: [f64; 12], // 12-bucket pitch class profile
 }
 
 /// Compute the spectral features. Returns None when the file is too short for
@@ -32,6 +33,7 @@ pub fn spectral_features(data: &[f32], sr_f: f64) -> Option<Spectrum> {
     let mut low = 0.0f64;
     let mut mid = 0.0f64;
     let mut high = 0.0f64;
+    let mut chromagram = [0.0f64; 12];
     let mut mags: Vec<f64> = Vec::with_capacity(half);
     for k in 0..half {
         let m = buf[k].norm() as f64;
@@ -46,6 +48,14 @@ pub fn spectral_features(data: &[f32], sr_f: f64) -> Option<Spectrum> {
             mid += m;
         } else {
             high += m;
+        }
+        if f >= 20.0 && m >= 0.001 {
+            let midi_note = 69.0 + 12.0 * (f / 440.0).log2();
+            if !midi_note.is_nan() && !midi_note.is_infinite() {
+                let mut pitch_class = (midi_note.round() as isize) % 12;
+                if pitch_class < 0 { pitch_class += 12; }
+                chromagram[pitch_class as usize] += m;
+            }
         }
     }
     let (complexity, centroid, rolloff, flatness) = if sum_mag > 0.0 {
@@ -79,6 +89,13 @@ pub fn spectral_features(data: &[f32], sr_f: f64) -> Option<Spectrum> {
     } else {
         (0.0, 0.0, 0.0)
     };
+    
+    let max_chroma = chromagram.iter().copied().fold(0.0f64, f64::max);
+    if max_chroma > 0.0 {
+        for c in &mut chromagram {
+            *c /= max_chroma;
+        }
+    }
 
-    Some(Spectrum { complexity, centroid, rolloff, flatness, low, mid, high })
+    Some(Spectrum { complexity, centroid, rolloff, flatness, low, mid, high, chromagram })
 }
