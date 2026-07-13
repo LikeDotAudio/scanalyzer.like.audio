@@ -71,7 +71,7 @@ mod tests {
     use crate::envelope::Envelope;
 
     fn env(shape: &'static str, decay: f64, release: f64) -> Envelope {
-        Envelope { attack: 0.005, decay, sustain: 0.05, release, centroid: 0.2, skew: 0.0, kurt: 0.0, shape }
+        Envelope { attack: 0.005, decay, sustain: 0.05, release, centroid: 0.2, skew: 0.0, kurt: 0.0, shape, decay_time_60db: None }
     }
 
     #[test]

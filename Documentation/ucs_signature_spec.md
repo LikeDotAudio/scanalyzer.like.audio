@@ -54,10 +54,9 @@ is not a 0.2 s impulse," which prunes hundreds of candidates.
 
 ## 4. Feature vocabulary (closed set)
 
-`feature` must be one of these exact names. Names marked **proposed** are not yet
-computed by the analyzer — a signature may reference them, and the scorer must
-skip any prior whose feature is absent from the record (renormalizing weights),
-so signatures stay valid while the features land incrementally.
+`feature` must be one of these exact names. The scorer skips any prior whose
+feature is absent from the record (renormalizing the weights), so a signature
+stays valid even when a feature could not be measured for a given file.
 
 ### 4a. Available now — exact `Peak` struct field names
 
@@ -97,22 +96,54 @@ so signatures stay valid while the features land incrementally.
 | `beats_per_minute` | BPM | 0 if none |
 | `sample_rate` | Hz | |
 
-### 4b. Proposed — needed for UCS, not yet computed
+### 4b. The morphology axis — computed by `morphology.rs` (July 2026)
 
-| Feature | Unit | Why UCS needs it | Cheap? |
+These were the spec's "proposed" set. They are now measured and on the record.
+Until they landed, `ucs::feature()` had no field to read them from and returned
+None for every one — which silently dropped **~900 prior and gate terms** across
+the 753 signatures, including the single most heavily-weighted term in many of
+them. The signatures were being scored against a fraction of the evidence they
+were written for.
+
+Each is nullable, and `null` means **unmeasurable, not zero** — the distinction
+is load-bearing. A drone has no ring time; reporting `0.0` would assert that it
+is maximally damped, the exact opposite of the truth. Per §6, the scorer skips a
+null term and renormalizes its weight away.
+
+| Feature | Unit | What it decides | How it is measured |
 |---|---|---|---|
-| `onset_rate_per_second` | /s | separates DRIP (sparse) from FIZZ (dense); RHYTHMIC; GUNS-AUTOMATIC | trivial: `transient_count / length_seconds` |
-| `onset_periodicity` | 0..1 | **rhythmic vs stochastic** — the single highest-value new feature. Clock tick vs rain. Peak of the normalized autocorrelation of the onset envelope. | cheap; `onset_envelope` already exists |
-| `spectral_centroid_slope_hz_per_second` | Hz/s | the entire `sweep` morphology: DESIGNED-RISER (+), BASS DIVE (−), WHOOSH, SWOOSHES, sirens, doppler bys | cheap; linear regression on the existing per-frame centroid series |
-| `pitch_slope_semitones_per_second` | st/s | same, in the tonal domain (LASERS, MAGIC, CARTOON-ZIP) | needs a frame-wise pitch track |
-| `stationarity` | 0..1 | **texture vs event** — the second highest-value feature. 1 = unchanging bed (AMBIENCE, room tone, surf); 0 = eventful. `1 − normalized std of frame energy` | cheap; reuse STFT frames |
-| `voicing_ratio` | 0..1 | VOICES vs CROWDS-APPLAUSE; CHEERING vs APPLAUSE is exactly this test | the `vad` module already computes it — just *store* it |
-| `syllabic_modulation_energy` | 0..1 | speech-likeness: energy in the 3–8 Hz modulation band. Separates WALLA from a stationary crowd bed | modulation spectrum of the energy envelope |
-| `spectral_slope_db_per_octave` | dB/oct | LTAS tilt. Material brightness (RAIN-METAL vs RAIN-VEGETATION); pink noise = −3 dB/oct exactly (ARCHIVED-TEST_TONE) | cheap |
-| `decay_time_seconds_60db` | s | **ring time.** METAL-IMPACT (long) vs WOOD-IMPACT (short) — the material-impedance axis. Also detects ARCHIVED-IMPULSE_RESPONSE | moderate: fit exponential to post-peak envelope |
-| `band_limit_high_hz` | Hz | VOICES-FUTZED (telephone ~3.4 kHz), WATER-UNDERWATER, VEHICLES-INTERIOR — all are LP-filtered signatures | cheap: highest bin above noise floor |
-| `stereo_width` | 0..~1 | AMBIENCE (wide) vs FOLEY (mono/narrow). `side_rms / (mid_rms + ε)` | trivial: both terms already exist |
-| `spectral_entropy` | 0..1 | tonal-vs-noise, more robust than flatness on sparse spectra | cheap |
+| `onset_rate_per_second` | /s | DRIP (sparse) vs FIZZ (dense); GUNS-AUTOMATIC | `transient_count / length_seconds` |
+| `onset_periodicity` | 0..1 | **rhythmic vs stochastic.** Clock tick vs rain | peak of the normalized autocorrelation of the onset envelope |
+| `stationarity` | 0..1 | **texture vs event.** 1 = unchanging bed (AMBIENCE, surf, room tone); 0 = eventful | `1 − std/mean` of the per-frame RMS **amplitude**, clamped 0..1 — see the note below |
+| `spectral_entropy` | 0..1 | tonal vs noise, more robust than flatness on sparse spectra | mean per-frame Shannon entropy of the power spectrum ÷ ln(bins) |
+| `spectral_slope_db_per_octave` | dB/oct | material brightness (RAIN-METAL vs RAIN-VEGETATION); pink noise = −3.0 exactly | OLS of third-octave band level against log2(f), 50 Hz → min(0.9·Nyquist, 16 kHz) |
+| `band_limit_high_hz` | Hz | VOICES-FUTZED (telephone ≈3.4 kHz), WATER-UNDERWATER, VEHICLES-INTERIOR | highest LTAS bin within 50 dB of the loudest, median-smoothed, scanned from the top |
+| `spectral_centroid_slope_hz_per_second` | Hz/s | the `sweep` morphology: DESIGNED-RISER (+), BASS DIVE (−), WHOOSH, doppler bys | OLS of the per-frame centroid against time |
+| `pitch_slope_semitones_per_second` | st/s | the same, tonally (LASERS, MAGIC, CARTOON-ZIP) | OLS over a **dominant-partial** track; abstains unless residual scatter ≤ 2 semitones |
+| `syllabic_modulation_energy` | 0..1 | speech-likeness. Separates WALLA from a stationary crowd bed | fraction of the envelope's 0.5–30 Hz modulation spectrum falling in 3–8 Hz |
+| `decay_time_seconds_60db` | s | **ring time.** METAL-IMPACT (long) vs WOOD-IMPACT (short) — the material-impedance axis | T20-style fit: OLS of dB against time over the −5 → −25 dB window below the peak, extrapolated to 60 dB. Requires an observed fall of ≥15 dB |
+| `voicing_ratio` | 0..1 | VOICES vs CROWDS-APPLAUSE; CHEERING vs APPLAUSE | fraction of 20 ms frames the WebRTC VAD calls voiced |
+| `stereo_width` | 0..~1 | AMBIENCE (wide) vs FOLEY (mono/narrow) | `side_rms / (mid_rms + ε)`, derived at scoring time |
+
+**Two of these do not behave the way the spec assumed. Both were caught by
+measuring, not by reasoning:**
+
+1. **`stationarity` is defined over amplitude, not energy.** The original wording
+   said "normalized std of frame *energy*". Energy is quadratic, so its
+   coefficient of variation runs well past 1 on anything with dynamics and the
+   0..1 clamp then flattens it. Measured against labelled FSD50K clips, the energy
+   form returned a median of **0.000 for steady beds** (rain, wind, surf, frying)
+   *and* **0.000 for impacts** (gunshots, knocks, slams) — literally no
+   discriminative power. The amplitude form separates those same two groups
+   **0.47 to 0.00**. The fix is a square root.
+
+2. **`voicing_ratio` is much blunter than the spec hoped.** The WebRTC VAD is
+   telephony-tuned and fires on any harmonic energy: on FSD50K it scores speech at
+   0.94 but *guitar, piano, bell and rain* at 0.76. It is therefore **not** the
+   clean CHEERING-vs-APPLAUSE test §4b claimed, and the 148 priors resting on it
+   should be treated as weak evidence until a real voicing detector (autocorrelation
+   periodicity + formant structure) replaces the VAD. Calibration will report its
+   true separation rather than assume one.
 
 ## 5. The signature block
 
@@ -227,6 +258,7 @@ subcategory's `explanation` + `synonyms`, not more DSP. This spec is designed to
 compose with that: the gates prune the candidate set, and the embedding picks
 within it.
 
-Note the analyzer's current `max_len` default of **10 s** silently drops longer
-files. AMBIENCE (47 subcategories), WEATHER, and most textures are minutes long.
-UCS work requires raising that.
+~~Note the analyzer's current `max_len` default of **10 s** silently drops longer
+files.~~ Fixed: `max_len` now defaults to **600 s** (`args.rs`). The old 10 s
+default was a drum-sample-pack assumption that silently discarded every ambience,
+weather bed and texture — the categories UCS cares most about.

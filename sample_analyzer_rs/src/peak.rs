@@ -66,6 +66,31 @@ pub struct Peak {
     pub envelope_kurtosis: f64,          // 4th moment (excess); high ⇒ isolated bursts
     pub envelope_shape: String,          // Swell / Sustained / Plucky / Decaying / Multi / Silent
 
+    // --- morphology (ucs_signature_spec.md §4b) ---
+    // The measurable half of the UCS two-axis model: *how the sound behaves*,
+    // as opposed to what made it. Every one is an Option because "unmeasurable"
+    // and "zero" are different claims — a drone has no ring time, and reporting
+    // 0 s would say it is maximally damped. `null` here means the UCS scorer
+    // skips the term and renormalizes, per spec §6.
+    #[serde(default)]
+    pub stationarity: Option<f64>,                            // 0 = eventful … 1 = an unchanging bed
+    #[serde(default)]
+    pub spectral_entropy: Option<f64>,                        // 0 = tonal … 1 = noise (robust on sparse spectra)
+    #[serde(default)]
+    pub spectral_slope_db_per_octave: Option<f64>,            // LTAS tilt; pink noise = −3 exactly
+    #[serde(default)]
+    pub band_limit_high_hz: Option<f64>,                      // the lowpass: telephone futz, underwater, car interior
+    #[serde(default)]
+    pub spectral_centroid_slope_hz_per_second: Option<f64>,   // the sweep axis: risers (+), dives (−)
+    #[serde(default)]
+    pub pitch_slope_semitones_per_second: Option<f64>,        // the same, tonally: lasers, zips
+    #[serde(default)]
+    pub syllabic_modulation_energy: Option<f64>,              // 3–8 Hz envelope energy: speech-likeness
+    #[serde(default)]
+    pub decay_time_seconds_60db: Option<f64>,                 // ring time: metal rings, wood thuds
+    #[serde(default)]
+    pub voicing_ratio: Option<f64>,                           // fraction of frames the VAD calls voiced
+
     // --- multi-label timbre taxonomy (a sound can carry several tags) ---
     pub acoustic_types: Vec<String>,     // Harmonic / Inharmonic / Stochastic / Impulsive
     pub sound_design_roles: Vec<String>, // Pad / Pluck / Lead / Bass ([] for drums/FX)

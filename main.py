@@ -320,8 +320,12 @@ class AnalyzerApp(GraphMixin, GroupsMixin, GroupStatsMixin, ExaminerMixin, Guess
             self.records = data if isinstance(data, list) else []
             self.records_by_path = {r.get("path"): r for r in self.records if r.get("path")}
             self.peak_path = out_path
-            # Prefer the authoritative full records for click-inspect too.
-            if self.records and len(self.records) == len(self.d_rec):
+            # Prefer the authoritative full records for the cloud and for
+            # click-inspect. This used to be conditional on the counts matching,
+            # which meant any skipped file left the cloud on the leaner streamed
+            # records forever. The .PEAK is the source of truth; if we have it,
+            # use it.
+            if self.records:
                 self.d_rec = self.records
             self._rebuild_groups()
             # Auto-load the same file into the examiner.

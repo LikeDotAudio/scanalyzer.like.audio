@@ -1,0 +1,1419 @@
+{
+ "schema": "fsd50k-to-ucs-crosswalk/1",
+ "ucs_version": "8.2.1",
+ "fsd50k_classes": 200,
+ "mapped": 169,
+ "distinct_ucs_subcategories": 114,
+ "confidence_counts": {
+  "high": 119,
+  "medium": 49,
+  "refused": 31,
+  "low": 1
+ },
+ "calibration_policy": "Only 'high' and 'medium' entries calibrate a prior. 'none' entries are recorded so the refusal is auditable, not silent.",
+ "provenance": "Hand-adjudicated against the UCS 8.2.1 catalogue and the AudioSet hierarchy recovered from FSD50K label co-occurrence. Cross-checked against Beck & Lerch 2026 (arXiv:2606.05571, CC-BY-SA 4.0), whose published FSD50K UCS labels were consulted as a second opinion; disagreements are recorded in the per-entry notes.",
+ "entries": [
+  {
+   "fsd50k_class": "Accelerating_and_revving_and_vroom",
+   "ucs_id": "MOTRComb",
+   "ucs_category": "MOTORS",
+   "ucs_subcategory": "COMBUSTION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Accordion",
+   "ucs_id": "MUSCKeyd",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "KEYED",
+   "confidence": "medium",
+   "note": "Free reed with a keyboard; KEYED over WOODWIND is a judgement call."
+  },
+  {
+   "fsd50k_class": "Acoustic_guitar",
+   "ucs_id": "MUSCPluck",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PLUCKED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Aircraft",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: parent of Fixed-wing; jet vs prop vs heli are distinct signatures."
+  },
+  {
+   "fsd50k_class": "Alarm",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 6 descendants."
+  },
+  {
+   "fsd50k_class": "Animal",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 20 descendants."
+  },
+  {
+   "fsd50k_class": "Applause",
+   "ucs_id": "CRWDApls",
+   "ucs_category": "CROWDS",
+   "ucs_subcategory": "APPLAUSE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Bark",
+   "ucs_id": "ANMLDog",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "DOG",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Bass_drum",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Bass_guitar",
+   "ucs_id": "MUSCPluck",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PLUCKED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Bathtub_(filling_or_washing)",
+   "ucs_id": "WATRPlmb",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "PLUMBING",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Bell",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 5 descendants."
+  },
+  {
+   "fsd50k_class": "Bicycle",
+   "ucs_id": "VEHBike",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "BICYCLE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Bicycle_bell",
+   "ucs_id": "BELLMisc",
+   "ucs_category": "BELLS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Bird",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 4 descendants."
+  },
+  {
+   "fsd50k_class": "Bird_vocalization_and_bird_call_and_bird_song",
+   "ucs_id": "BIRDMisc",
+   "ucs_category": "BIRDS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Species unspecified \u2014 SONGBIRD would be a category error for the corvids and gulls in here."
+  },
+  {
+   "fsd50k_class": "Boat_and_Water_vehicle",
+   "ucs_id": "BOATMisc",
+   "ucs_category": "BOATS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Unspecified hull/propulsion."
+  },
+  {
+   "fsd50k_class": "Boiling",
+   "ucs_id": "WATRBubl",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "BUBBLES",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Boom",
+   "ucs_id": "DSGNBoom",
+   "ucs_category": "DESIGNED",
+   "ucs_subcategory": "BOOM",
+   "confidence": "medium",
+   "note": "Parent is Explosion, but Freesound 'boom' is overwhelmingly a designed hit."
+  },
+  {
+   "fsd50k_class": "Bowed_string_instrument",
+   "ucs_id": "MUSCStr",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "STRINGED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Brass_instrument",
+   "ucs_id": "MUSCBrass",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "BRASS",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Breathing",
+   "ucs_id": "HMNBrth",
+   "ucs_category": "HUMAN",
+   "ucs_subcategory": "BREATH",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Burping_and_eructation",
+   "ucs_id": "HMNBurp",
+   "ucs_category": "HUMAN",
+   "ucs_subcategory": "BURP",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Bus",
+   "ucs_id": "VEHBus",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "BUS",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Buzz",
+   "ucs_id": "ANMLInsc",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "INSECT",
+   "confidence": "medium",
+   "note": "Ontology parent is Insect, so this is an insect buzz, not an electrical one."
+  },
+  {
+   "fsd50k_class": "Camera",
+   "ucs_id": "COMCam",
+   "ucs_category": "COMMUNICATIONS",
+   "ucs_subcategory": "CAMERA",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Car",
+   "ucs_id": "VEHCar",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "CAR",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Car_passing_by",
+   "ucs_id": "VEHBy",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "GENERIC BY",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Cat",
+   "ucs_id": "ANMLCat",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "CAT DOMESTIC",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Chatter",
+   "ucs_id": "CRWDWalla",
+   "ucs_category": "CROWDS",
+   "ucs_subcategory": "WALLA",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Cheering",
+   "ucs_id": "CRWDCheer",
+   "ucs_category": "CROWDS",
+   "ucs_subcategory": "CHEERING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Chewing_and_mastication",
+   "ucs_id": "FOODEat",
+   "ucs_category": "FOOD & DRINK",
+   "ucs_subcategory": "EATING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Chicken_and_rooster",
+   "ucs_id": "BIRDFowl",
+   "ucs_category": "BIRDS",
+   "ucs_subcategory": "FOWL",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Child_speech_and_kid_speaking",
+   "ucs_id": "VOXChld",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "CHILD",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Chime",
+   "ucs_id": "MUSCChim",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "CHIME",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Chink_and_clink",
+   "ucs_id": "GLASImpt",
+   "ucs_category": "GLASS",
+   "ucs_subcategory": "IMPACT",
+   "confidence": "high",
+   "note": "Ontology parent is Glass."
+  },
+  {
+   "fsd50k_class": "Chirp_and_tweet",
+   "ucs_id": "BIRDSong",
+   "ucs_category": "BIRDS",
+   "ucs_subcategory": "SONGBIRD",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Chuckle_and_chortle",
+   "ucs_id": "VOXLaff",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "LAUGH",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Church_bell",
+   "ucs_id": "BELLLrg",
+   "ucs_category": "BELLS",
+   "ucs_subcategory": "LARGE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Clapping",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: AudioSet Clapping is one pair of hands (parent: Hands); CROWDS-APPLAUSE is a crowd. Conflating them would widen the APPLAUSE prior with a solo signature."
+  },
+  {
+   "fsd50k_class": "Clock",
+   "ucs_id": "CLOCKTick",
+   "ucs_category": "CLOCKS",
+   "ucs_subcategory": "TICK",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Coin_(dropping)",
+   "ucs_id": "OBJCoin",
+   "ucs_category": "OBJECTS",
+   "ucs_subcategory": "COIN",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Computer_keyboard",
+   "ucs_id": "CMPTKey",
+   "ucs_category": "COMPUTERS",
+   "ucs_subcategory": "KEYBOARD & MOUSE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Conversation",
+   "ucs_id": "CRWDConv",
+   "ucs_category": "CROWDS",
+   "ucs_subcategory": "CONVERSATION",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Cough",
+   "ucs_id": "HMNCough",
+   "ucs_category": "HUMAN",
+   "ucs_subcategory": "COUGH",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Cowbell",
+   "ucs_id": "BELLAnml",
+   "ucs_category": "BELLS",
+   "ucs_subcategory": "ANIMAL",
+   "confidence": "medium",
+   "note": "Ontology parent is Bell, not Percussion \u2014 so this is the animal bell, not the musical block. Beck & Lerch put it in ALARMS-BELL."
+  },
+  {
+   "fsd50k_class": "Crack",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: material unspecified \u2014 wood, ice, bone and whip all 'crack'."
+  },
+  {
+   "fsd50k_class": "Crackle",
+   "ucs_id": "FIRECrkl",
+   "ucs_category": "FIRE",
+   "ucs_subcategory": "CRACKLE",
+   "confidence": "medium",
+   "note": "Top-level in AudioSet; fire crackle is the dominant sense on Freesound."
+  },
+  {
+   "fsd50k_class": "Crash_cymbal",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Cricket",
+   "ucs_id": "ANMLInsc",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "INSECT",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Crow",
+   "ucs_id": "BIRDCrow",
+   "ucs_category": "BIRDS",
+   "ucs_subcategory": "CROW",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Crowd",
+   "ucs_id": "CRWDMisc",
+   "ucs_category": "CROWDS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Crumpling_and_crinkling",
+   "ucs_id": "PAPRHndl",
+   "ucs_category": "PAPER",
+   "ucs_subcategory": "HANDLE",
+   "confidence": "medium",
+   "note": "Paper is the dominant sense; some clips are plastic film."
+  },
+  {
+   "fsd50k_class": "Crushing",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: material unspecified."
+  },
+  {
+   "fsd50k_class": "Crying_and_sobbing",
+   "ucs_id": "VOXCry",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "CRYING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Cupboard_open_or_close",
+   "ucs_id": "DOORCab",
+   "ucs_category": "DOORS",
+   "ucs_subcategory": "CABINET",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Cutlery_and_silverware",
+   "ucs_id": "FOODTware",
+   "ucs_category": "FOOD & DRINK",
+   "ucs_subcategory": "TABLEWARE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Cymbal",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Dishes_and_pots_and_pans",
+   "ucs_id": "FOODKware",
+   "ucs_category": "FOOD & DRINK",
+   "ucs_subcategory": "KITCHENWARE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Dog",
+   "ucs_id": "ANMLDog",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "DOG",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Domestic_animals_and_pets",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 5 descendants."
+  },
+  {
+   "fsd50k_class": "Domestic_sounds_and_home_sounds",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 24 descendants, and the FSD50K docs call it out as a dumping ground for merged tiny classes."
+  },
+  {
+   "fsd50k_class": "Door",
+   "ucs_id": "DOORMisc",
+   "ucs_category": "DOORS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Material unspecified."
+  },
+  {
+   "fsd50k_class": "Doorbell",
+   "ucs_id": "BELLDoor",
+   "ucs_category": "BELLS",
+   "ucs_subcategory": "DOORBELL",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Drawer_open_or_close",
+   "ucs_id": "DRWRMisc",
+   "ucs_category": "DRAWERS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Material unspecified."
+  },
+  {
+   "fsd50k_class": "Drill",
+   "ucs_id": "TOOLPowr",
+   "ucs_category": "TOOLS",
+   "ucs_subcategory": "POWER",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Drip",
+   "ucs_id": "WATRDrip",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "DRIP",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Drum",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Drum_kit",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Electric_guitar",
+   "ucs_id": "MUSCPluck",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PLUCKED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Engine",
+   "ucs_id": "MOTRComb",
+   "ucs_category": "MOTORS",
+   "ucs_subcategory": "COMBUSTION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Engine_starting",
+   "ucs_id": "MOTRComb",
+   "ucs_category": "MOTORS",
+   "ucs_subcategory": "COMBUSTION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Explosion",
+   "ucs_id": "EXPLReal",
+   "ucs_category": "EXPLOSIONS",
+   "ucs_subcategory": "REAL",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Fart",
+   "ucs_id": "FARTReal",
+   "ucs_category": "FARTS",
+   "ucs_subcategory": "REAL",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Female_singing",
+   "ucs_id": "VOXSing",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "SINGING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Female_speech_and_woman_speaking",
+   "ucs_id": "VOXFem",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "FEMALE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Fill_(with_liquid)",
+   "ucs_id": "WATRPour",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "POUR",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Finger_snapping",
+   "ucs_id": "HMNSkin",
+   "ucs_category": "HUMAN",
+   "ucs_subcategory": "SKIN",
+   "confidence": "medium",
+   "note": "UCS routes skin-on-skin (snaps, slaps) to HUMAN-SKIN; FOLEY-HANDS is provenance_only and cannot be signal-scored."
+  },
+  {
+   "fsd50k_class": "Fire",
+   "ucs_id": "FIREBurn",
+   "ucs_category": "FIRE",
+   "ucs_subcategory": "BURNING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Fireworks",
+   "ucs_id": "FRWKRec",
+   "ucs_category": "FIREWORKS",
+   "ucs_subcategory": "RECREATIONAL",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Fixed-wing_aircraft_and_airplane",
+   "ucs_id": "AEROMisc",
+   "ucs_category": "AIRCRAFT",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Mixes jet and prop, which are different signatures."
+  },
+  {
+   "fsd50k_class": "Fowl",
+   "ucs_id": "BIRDFowl",
+   "ucs_category": "BIRDS",
+   "ucs_subcategory": "FOWL",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Frog",
+   "ucs_id": "ANMLAmph",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "AMPHIBIAN",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Frying_(food)",
+   "ucs_id": "FOODCook",
+   "ucs_category": "FOOD & DRINK",
+   "ucs_subcategory": "COOKING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Gasp",
+   "ucs_id": "HMNBrth",
+   "ucs_category": "HUMAN",
+   "ucs_subcategory": "BREATH",
+   "confidence": "medium",
+   "note": "A sharp inhale; BREATH over VOICES-EFFORTS."
+  },
+  {
+   "fsd50k_class": "Giggle",
+   "ucs_id": "VOXLaff",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "LAUGH",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Glass",
+   "ucs_id": "GLASMisc",
+   "ucs_category": "GLASS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Interaction unspecified."
+  },
+  {
+   "fsd50k_class": "Glockenspiel",
+   "ucs_id": "MUSCTnprc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION TUNED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Gong",
+   "ucs_id": "BELLGong",
+   "ucs_category": "BELLS",
+   "ucs_subcategory": "GONG",
+   "confidence": "medium",
+   "note": "UCS files the gong under BELLS, not MUSICAL-PERCUSSION."
+  },
+  {
+   "fsd50k_class": "Growling",
+   "ucs_id": "ANMLMisc",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "MISC",
+   "confidence": "low",
+   "note": "Species unspecified; could equally be CREATURES."
+  },
+  {
+   "fsd50k_class": "Guitar",
+   "ucs_id": "MUSCPluck",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PLUCKED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Gull_and_seagull",
+   "ucs_id": "BIRDSea",
+   "ucs_category": "BIRDS",
+   "ucs_subcategory": "SEA",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Gunshot_and_gunfire",
+   "ucs_id": "GUNMisc",
+   "ucs_category": "GUNS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Weapon unspecified; PISTOL vs RIFLE is signal_narrowable at best."
+  },
+  {
+   "fsd50k_class": "Gurgling",
+   "ucs_id": "WATRFlow",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "FLOW",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Hammer",
+   "ucs_id": "TOOLHand",
+   "ucs_category": "TOOLS",
+   "ucs_subcategory": "HAND",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Hands",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 2 descendants."
+  },
+  {
+   "fsd50k_class": "Harmonica",
+   "ucs_id": "MUSCWind",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "WOODWIND",
+   "confidence": "medium",
+   "note": "Free reed; UCS files reeds under WOODWIND."
+  },
+  {
+   "fsd50k_class": "Harp",
+   "ucs_id": "MUSCPluck",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PLUCKED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Hi-hat",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Hiss",
+   "ucs_id": "AIRHiss",
+   "ucs_category": "AIR",
+   "ucs_subcategory": "HISS",
+   "confidence": "medium",
+   "note": "Top-level; air/steam hiss is the dominant sense over snake."
+  },
+  {
+   "fsd50k_class": "Human_group_actions",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 4 descendants."
+  },
+  {
+   "fsd50k_class": "Human_voice",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 18 descendants."
+  },
+  {
+   "fsd50k_class": "Idling",
+   "ucs_id": "MOTRComb",
+   "ucs_category": "MOTORS",
+   "ucs_subcategory": "COMBUSTION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Insect",
+   "ucs_id": "ANMLInsc",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "INSECT",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Keyboard_(musical)",
+   "ucs_id": "MUSCKeyd",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "KEYED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Keys_jangling",
+   "ucs_id": "OBJKey",
+   "ucs_category": "OBJECTS",
+   "ucs_subcategory": "KEYS",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Knock",
+   "ucs_id": "DOORKnck",
+   "ucs_category": "DOORS",
+   "ucs_subcategory": "KNOCK",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Laughter",
+   "ucs_id": "VOXLaff",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "LAUGH",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Liquid",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 6 descendants."
+  },
+  {
+   "fsd50k_class": "Livestock_and_farm_animals_and_working_animals",
+   "ucs_id": "ANMLFarm",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "FARM",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Male_singing",
+   "ucs_id": "VOXSing",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "SINGING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Male_speech_and_man_speaking",
+   "ucs_id": "VOXMale",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "MALE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Mallet_percussion",
+   "ucs_id": "MUSCTnprc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION TUNED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Marimba_and_xylophone",
+   "ucs_id": "MUSCTnprc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION TUNED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Mechanical_fan",
+   "ucs_id": "MACHFan",
+   "ucs_category": "MACHINES",
+   "ucs_subcategory": "FAN",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Mechanisms",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 6 descendants."
+  },
+  {
+   "fsd50k_class": "Meow",
+   "ucs_id": "ANMLCat",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "CAT DOMESTIC",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Microwave_oven",
+   "ucs_id": "MACHAppl",
+   "ucs_category": "MACHINES",
+   "ucs_subcategory": "APPLIANCE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Motor_vehicle_(road)",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 8 descendants."
+  },
+  {
+   "fsd50k_class": "Motorcycle",
+   "ucs_id": "VEHMoto",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "MOTORCYCLE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Music",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: an AudioSet ancestor spanning 33 descendants."
+  },
+  {
+   "fsd50k_class": "Musical_instrument",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 32 descendants."
+  },
+  {
+   "fsd50k_class": "Ocean",
+   "ucs_id": "WATRSurf",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "SURF",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Organ",
+   "ucs_id": "MUSCKeyd",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "KEYED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Packing_tape_and_duct_tape",
+   "ucs_id": "OBJTape",
+   "ucs_category": "OBJECTS",
+   "ucs_subcategory": "TAPE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Percussion",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Piano",
+   "ucs_id": "MUSCKeyd",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "KEYED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Plucked_string_instrument",
+   "ucs_id": "MUSCPluck",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PLUCKED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Pour",
+   "ucs_id": "WATRPour",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "POUR",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Power_tool",
+   "ucs_id": "TOOLPowr",
+   "ucs_category": "TOOLS",
+   "ucs_subcategory": "POWER",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Printer",
+   "ucs_id": "MACHOffc",
+   "ucs_category": "MACHINES",
+   "ucs_subcategory": "OFFICE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Purr",
+   "ucs_id": "ANMLCat",
+   "ucs_category": "ANIMALS",
+   "ucs_subcategory": "CAT DOMESTIC",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Race_car_and_auto_racing",
+   "ucs_id": "VEHRace",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "RACING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Rail_transport",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 2 descendants."
+  },
+  {
+   "fsd50k_class": "Rain",
+   "ucs_id": "RAIN",
+   "ucs_category": "RAIN",
+   "ucs_subcategory": "GENERAL",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Raindrop",
+   "ucs_id": "RAIN",
+   "ucs_category": "RAIN",
+   "ucs_subcategory": "GENERAL",
+   "confidence": "medium",
+   "note": "Impact surface unspecified; UCS RAIN splits by surface."
+  },
+  {
+   "fsd50k_class": "Ratchet_and_pawl",
+   "ucs_id": "MECHRtch",
+   "ucs_category": "MECHANICAL",
+   "ucs_subcategory": "RATCHET",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Rattle",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: object rattle vs snake rattle vs percussion \u2014 top-level and genuinely ambiguous."
+  },
+  {
+   "fsd50k_class": "Rattle_(instrument)",
+   "ucs_id": "MUSCShake",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "SHAKEN",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Respiratory_sounds",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 4 descendants."
+  },
+  {
+   "fsd50k_class": "Ringtone",
+   "ucs_id": "COMCell",
+   "ucs_category": "COMMUNICATIONS",
+   "ucs_subcategory": "CELLPHONE",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Run",
+   "ucs_id": "FEETHmn",
+   "ucs_category": "FOOTSTEPS",
+   "ucs_subcategory": "HUMAN",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Sawing",
+   "ucs_id": "TOOLHand",
+   "ucs_category": "TOOLS",
+   "ucs_subcategory": "HAND",
+   "confidence": "medium",
+   "note": "Hand vs power saw unspecified."
+  },
+  {
+   "fsd50k_class": "Scissors",
+   "ucs_id": "TOOLHand",
+   "ucs_category": "TOOLS",
+   "ucs_subcategory": "HAND",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Scratching_(performance_technique)",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: turntablism \u2014 vinyl-scratch timbre sits between COMMUNICATIONS-PHONOGRAPH and MUSICAL-PERFORMANCE; no honest single target."
+  },
+  {
+   "fsd50k_class": "Screaming",
+   "ucs_id": "VOXScrm",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "SCREAM",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Screech",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: tyre, animal or hinge \u2014 Beck & Lerch commit to VEHICLES-BRAKE, which over-commits."
+  },
+  {
+   "fsd50k_class": "Shatter",
+   "ucs_id": "GLASBrk",
+   "ucs_category": "GLASS",
+   "ucs_subcategory": "BREAK",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Shout",
+   "ucs_id": "VOXEfrt",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "EFFORTS",
+   "confidence": "medium",
+   "note": "UCS has no SHOUT; EFFORTS is the closest exertion vocalization."
+  },
+  {
+   "fsd50k_class": "Sigh",
+   "ucs_id": "HMNBrth",
+   "ucs_category": "HUMAN",
+   "ucs_subcategory": "BREATH",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Singing",
+   "ucs_id": "VOXSing",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "SINGING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Sink_(filling_or_washing)",
+   "ucs_id": "WATRPlmb",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "PLUMBING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Siren",
+   "ucs_id": "ALRMSirn",
+   "ucs_category": "ALARMS",
+   "ucs_subcategory": "SIREN",
+   "confidence": "high",
+   "note": "The audit's canary: naive synonym matching sends this to CREATURES-AQUATIC via the mythological siren."
+  },
+  {
+   "fsd50k_class": "Skateboard",
+   "ucs_id": "SPRTSkate",
+   "ucs_category": "SPORTS",
+   "ucs_subcategory": "SKATE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Slam",
+   "ucs_id": "DOORMisc",
+   "ucs_category": "DOORS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "A door slam of unspecified material; UCS has no SLAM subcategory."
+  },
+  {
+   "fsd50k_class": "Sliding_door",
+   "ucs_id": "DOORSlid",
+   "ucs_category": "DOORS",
+   "ucs_subcategory": "SLIDING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Snare_drum",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Sneeze",
+   "ucs_id": "HMNSneez",
+   "ucs_category": "HUMAN",
+   "ucs_subcategory": "SNEEZE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Speech",
+   "ucs_id": "VOXMisc",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Speaker unspecified."
+  },
+  {
+   "fsd50k_class": "Speech_synthesizer",
+   "ucs_id": "ROBTVox",
+   "ucs_category": "ROBOTS",
+   "ucs_subcategory": "VOCAL",
+   "confidence": "medium",
+   "note": "Synthetic voice; ROBOTS-VOCAL over DESIGNED-VOCAL."
+  },
+  {
+   "fsd50k_class": "Splash_and_splatter",
+   "ucs_id": "WATRSplsh",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "SPLASH",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Squeak",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: no generic SQUEAK in UCS; the material decides (DOORS/LEATHER/ROPE-CREAK). Beck & Lerch emit FOLEY-SQUEAK, which is not a valid UCS pair."
+  },
+  {
+   "fsd50k_class": "Stream",
+   "ucs_id": "WATRFlow",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "FLOW",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Strum",
+   "ucs_id": "MUSCPluck",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PLUCKED",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Subway_and_metro_and_underground",
+   "ucs_id": "TRNSbwy",
+   "ucs_category": "TRAINS",
+   "ucs_subcategory": "SUBWAY",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Tabla",
+   "ucs_id": "MUSCPerc",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "PERCUSSION",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Tambourine",
+   "ucs_id": "MUSCShake",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "SHAKEN",
+   "confidence": "medium",
+   "note": "Both shaken and struck."
+  },
+  {
+   "fsd50k_class": "Tap",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: a light impact of unspecified material. Beck & Lerch map it to COMMUNICATIONS-MICROPHONE, which is a synonym-fallback error (mic tap)."
+  },
+  {
+   "fsd50k_class": "Tearing",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: paper or cloth; PAPER-RIP and CLOTH-RIP are different signatures."
+  },
+  {
+   "fsd50k_class": "Telephone",
+   "ucs_id": "COMTelph",
+   "ucs_category": "COMMUNICATIONS",
+   "ucs_subcategory": "TELEPHONE",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Thump_and_thud",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "low: material unspecified."
+  },
+  {
+   "fsd50k_class": "Thunder",
+   "ucs_id": "THUN",
+   "ucs_category": "WEATHER",
+   "ucs_subcategory": "THUNDER",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Thunderstorm",
+   "ucs_id": "STORM",
+   "ucs_category": "WEATHER",
+   "ucs_subcategory": "STORM",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Tick",
+   "ucs_id": "CLOCKTick",
+   "ucs_category": "CLOCKS",
+   "ucs_subcategory": "TICK",
+   "confidence": "medium",
+   "note": "Top-level; clock tick is the dominant sense."
+  },
+  {
+   "fsd50k_class": "Tick-tock",
+   "ucs_id": "CLOCKTick",
+   "ucs_category": "CLOCKS",
+   "ucs_subcategory": "TICK",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Toilet_flush",
+   "ucs_id": "WATRPlmb",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "PLUMBING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Tools",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 4 descendants."
+  },
+  {
+   "fsd50k_class": "Traffic_noise_and_roadway_noise",
+   "ucs_id": "AMBTraf",
+   "ucs_category": "AMBIENCE",
+   "ucs_subcategory": "TRAFFIC",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Train",
+   "ucs_id": "TRNMisc",
+   "ucs_category": "TRAINS",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Unspecified traction: steam/diesel/electric differ acoustically."
+  },
+  {
+   "fsd50k_class": "Trickle_and_dribble",
+   "ucs_id": "WATRFlow",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "FLOW",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Truck",
+   "ucs_id": "VEHTruck",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "TRUCK VAN & SUV",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Trumpet",
+   "ucs_id": "MUSCBrass",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "BRASS",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Typewriter",
+   "ucs_id": "COMType",
+   "ucs_category": "COMMUNICATIONS",
+   "ucs_subcategory": "TYPEWRITER",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Typing",
+   "ucs_id": "CMPTKey",
+   "ucs_category": "COMPUTERS",
+   "ucs_subcategory": "KEYBOARD & MOUSE",
+   "confidence": "medium",
+   "note": "Typewriter vs keyboard unspecified."
+  },
+  {
+   "fsd50k_class": "Vehicle",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 18 descendants."
+  },
+  {
+   "fsd50k_class": "Vehicle_horn_and_car_horn_and_honking",
+   "ucs_id": "VEHHorn",
+   "ucs_category": "VEHICLES",
+   "ucs_subcategory": "HORN",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Walk_and_footsteps",
+   "ucs_id": "FEETHmn",
+   "ucs_category": "FOOTSTEPS",
+   "ucs_subcategory": "HUMAN",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Water",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 6 descendants."
+  },
+  {
+   "fsd50k_class": "Water_tap_and_faucet",
+   "ucs_id": "WATRPlmb",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "PLUMBING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Waves_and_surf",
+   "ucs_id": "WATRSurf",
+   "ucs_category": "WATER",
+   "ucs_subcategory": "SURF",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Whispering",
+   "ucs_id": "VOXWhsp",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "WHISPER",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Whoosh_and_swoosh_and_swish",
+   "ucs_id": "WHSH",
+   "ucs_category": "SWOOSHES",
+   "ucs_subcategory": "WHOOSH",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Wild_animals",
+   "ucs_id": null,
+   "confidence": "none",
+   "reason": "broad: 9 descendants."
+  },
+  {
+   "fsd50k_class": "Wind",
+   "ucs_id": "WIND",
+   "ucs_category": "WIND",
+   "ucs_subcategory": "GENERAL",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Wind_chime",
+   "ucs_id": "MUSCChim",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "CHIME",
+   "confidence": "medium"
+  },
+  {
+   "fsd50k_class": "Wind_instrument_and_woodwind_instrument",
+   "ucs_id": "MUSCWind",
+   "ucs_category": "MUSICAL",
+   "ucs_subcategory": "WOODWIND",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Wood",
+   "ucs_id": "WOODMisc",
+   "ucs_category": "WOOD",
+   "ucs_subcategory": "MISC",
+   "confidence": "medium",
+   "note": "Interaction unspecified."
+  },
+  {
+   "fsd50k_class": "Writing",
+   "ucs_id": "OBJWrite",
+   "ucs_category": "OBJECTS",
+   "ucs_subcategory": "WRITING",
+   "confidence": "high"
+  },
+  {
+   "fsd50k_class": "Yell",
+   "ucs_id": "VOXEfrt",
+   "ucs_category": "VOICES",
+   "ucs_subcategory": "EFFORTS",
+   "confidence": "medium",
+   "note": "As Shout."
+  },
+  {
+   "fsd50k_class": "Zipper_(clothing)",
+   "ucs_id": "OBJZipr",
+   "ucs_category": "OBJECTS",
+   "ucs_subcategory": "ZIPPER",
+   "confidence": "high"
+  }
+ ]
+}

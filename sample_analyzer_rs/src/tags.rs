@@ -93,7 +93,7 @@ mod tests {
     use super::*;
 
     fn env(attack: f64, decay: f64, sustain: f64) -> Envelope {
-        Envelope { attack, decay, sustain, release: 0.1, centroid: 0.3, skew: 0.0, kurt: 0.0, shape: "" }
+        Envelope { attack, decay, sustain, release: 0.1, centroid: 0.3, skew: 0.0, kurt: 0.0, shape: "", decay_time_60db: None }
     }
 
     #[test]

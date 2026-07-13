@@ -18,6 +18,9 @@
 //!   amplitude / pitch / spectrum / transients / sustain — feature extractors
 //!   stft / flux / mfcc / framestats — frame-based spectral features
 //!   envelope     — measured ADSR (attack/decay/sustain/release) + moments + shape
+//!   morphology   — the UCS morphology axis (spec §4b): stationarity, spectral
+//!                  entropy/tilt/band-limit, centroid & pitch sweep slopes,
+//!                  syllabic modulation
 //!   partials     — overtone peak-picking → inharmonicity (harmonic vs metallic)
 //!   distortion   — THD + clipping density → Clean / Dirty / Clipped
 //!   moments      — mean / variance / skewness / kurtosis of a series
@@ -49,6 +52,7 @@ pub mod kmeans;
 pub mod label;
 pub mod mfcc;
 pub mod moments;
+pub mod morphology;
 pub mod normalize;
 pub mod partials;
 pub mod pca;

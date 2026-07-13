@@ -219,8 +219,21 @@ fn feature(p: &Peak, name: &str) -> Option<f64> {
         }
         "sample_rate" => p.sample_rate as f64,
 
-        // --- spec §4b "proposed" features that are cheap to derive from what
-        // --- we already store. The rest stay None until they are computed.
+        // --- spec §4b, the morphology axis. Measured by `morphology.rs` and
+        // --- `envelope.rs`; each is an Option on the record because the sound
+        // --- may simply not have the property (a drone has no ring time), and
+        // --- None must mean "skip this term", never "the value is 0".
+        "stationarity" => p.stationarity?,
+        "spectral_entropy" => p.spectral_entropy?,
+        "spectral_slope_db_per_octave" => p.spectral_slope_db_per_octave?,
+        "band_limit_high_hz" => p.band_limit_high_hz?,
+        "spectral_centroid_slope_hz_per_second" => p.spectral_centroid_slope_hz_per_second?,
+        "pitch_slope_semitones_per_second" => p.pitch_slope_semitones_per_second?,
+        "syllabic_modulation_energy" => p.syllabic_modulation_energy?,
+        "decay_time_seconds_60db" => p.decay_time_seconds_60db?,
+        "voicing_ratio" => p.voicing_ratio?,
+
+        // --- derived on the fly from what the record already stores.
         "onset_rate_per_second" => {
             if p.length_seconds <= 0.0 {
                 return None;

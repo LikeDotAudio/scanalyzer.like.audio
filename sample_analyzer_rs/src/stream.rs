@@ -5,27 +5,26 @@ use crate::emit::emit;
 use crate::peak::Peak;
 
 /// Emit the "result" line for one successfully analyzed file.
+///
+/// This serializes the WHOLE record rather than hand-listing fields. The old
+/// hand-written list had silently gone stale: it never carried `ucs_category`,
+/// `ucs_subcategory`, `source_format` or `lossy_source`, so those fields existed
+/// in every .PEAK on disk but were absent from the live records the GUI builds
+/// from this stream — the cloud had nothing to colour a UCS category by, and the
+/// inspector had nothing to show. Serializing the struct means the stream and
+/// the .PEAK can never disagree again.
 pub fn emit_result(p: &Peak, done: usize, total: usize) {
-    emit(&serde_json::json!({
-        "type": "result", "done": done, "total": total,
-        "name": p.name, "folder": p.folder, "group": p.group, "reason": p.reason,
-        "timbre": p.timbre, "length_class": p.length_class, "subgroup": p.subgroup,
-        "sustained": p.sustained, "sustain_ratio": p.sustain_ratio, "audit": p.audit,
-        "pitch_hz": p.pitch_hz, "complexity": p.complexity, "length_seconds": p.length_seconds,
-        "transient_count": p.transient_count, "spectral_centroid_hz": p.spectral_centroid_hz,
-        "harmonicity": p.harmonicity, "high_band_energy": p.high_band_energy,
-        "attack_seconds": p.attack_seconds, "beats_per_minute": p.beats_per_minute,
-        "root_note_name": p.root_note_name, "root_frequency_hz": p.root_frequency_hz,
-        "root_cents_offset": p.root_cents_offset,
-        "sample_rate": p.sample_rate, "bit_depth": p.bit_depth, "channels": p.channels,
-        "spectral_flux": p.spectral_flux, "inharmonicity": p.inharmonicity,
-        "total_harmonic_distortion": p.total_harmonic_distortion,
-        "clipping_density": p.clipping_density, "distortion": p.distortion,
-        "envelope_shape": p.envelope_shape, "envelope_attack_seconds": p.envelope_attack_seconds,
-        "envelope_sustain_level": p.envelope_sustain_level,
-        "acoustic_types": p.acoustic_types, "sound_design_roles": p.sound_design_roles,
-        "instrument_family": p.instrument_family, "god_category": p.god_category
-    }));
+    let mut v = serde_json::to_value(p).unwrap_or_else(|_| serde_json::json!({}));
+    if let Some(o) = v.as_object_mut() {
+        // The one field worth withholding: the onset envelope runs to thousands
+        // of floats per file, nothing plots it live, and the full record is
+        // reloaded from the .PEAK when the run completes.
+        o.remove("onset_envelope");
+        o.insert("type".into(), serde_json::json!("result"));
+        o.insert("done".into(), serde_json::json!(done));
+        o.insert("total".into(), serde_json::json!(total));
+    }
+    emit(&v);
 }
 
 /// Emit the "skip" line for a file that could not be analyzed.

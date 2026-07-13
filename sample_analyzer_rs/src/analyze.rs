@@ -12,6 +12,7 @@ use crate::framestats::centroid_stats;
 use crate::god::god_category;
 use crate::label::label_sample;
 use crate::mfcc::mfcc_mean;
+use crate::morphology::morphology;
 use crate::partials::partial_analysis;
 use crate::peak::Peak;
 use crate::pitch::pitch_features;
@@ -53,6 +54,14 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
 
     // Measured ADSR envelope + its statistical moments and shape.
     let env = envelope_analysis(&data, sr, transients);
+
+    // The morphology axis (spec §4b): stationarity, entropy, spectral tilt, band
+    // limit, the two sweep slopes, and syllabic modulation. These ride on the
+    // STFT and the amplitude envelope already computed above.
+    let (amplitude_track, envelope_rate_hz) = crate::envelope::amplitude_envelope(&data, sr);
+    let morph = morphology(&frames, sr_f, N_FFT, HOP, &amplitude_track, envelope_rate_hz);
+    // One VAD pass answers both "how voiced is this" and "is this a vocal".
+    let (voicing_ratio, is_vocal) = crate::vad::voice_activity(&data, sr);
 
     // Advanced Stats
     let (mid_rms, side_rms) = crate::advanced_stats::analyze_stereo_width(&raw_data, channels);
@@ -126,7 +135,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     bpm = bpm.round();
     let mut god_class = god_category(&l.group, is_loop, &env).to_string();
     
-    if crate::vad::has_voice(&data, sr) {
+    if is_vocal {
         god_class = crate::god::VOCAL.to_string();
     }
 
@@ -206,6 +215,15 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         envelope_skewness: env.skew,
         envelope_kurtosis: env.kurt,
         envelope_shape: env.shape.to_string(),
+        stationarity: morph.stationarity,
+        spectral_entropy: morph.spectral_entropy,
+        spectral_slope_db_per_octave: morph.spectral_slope_db_per_octave,
+        band_limit_high_hz: morph.band_limit_high_hz,
+        spectral_centroid_slope_hz_per_second: morph.spectral_centroid_slope_hz_per_second,
+        pitch_slope_semitones_per_second: morph.pitch_slope_semitones_per_second,
+        syllabic_modulation_energy: morph.syllabic_modulation_energy,
+        decay_time_seconds_60db: env.decay_time_60db,
+        voicing_ratio,
         acoustic_types: acoustic,
         sound_design_roles: sound_design,
         instrument_family: family,
@@ -280,6 +298,14 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     // Measured ADSR envelope + its statistical moments and shape.
     let env = envelope_analysis(&data, sr, transients);
 
+    // The morphology axis (spec §4b): stationarity, entropy, spectral tilt, band
+    // limit, the two sweep slopes, and syllabic modulation. These ride on the
+    // STFT and the amplitude envelope already computed above.
+    let (amplitude_track, envelope_rate_hz) = crate::envelope::amplitude_envelope(&data, sr);
+    let morph = morphology(&frames, sr_f, N_FFT, HOP, &amplitude_track, envelope_rate_hz);
+    // One VAD pass answers both "how voiced is this" and "is this a vocal".
+    let (voicing_ratio, is_vocal) = crate::vad::voice_activity(&data, sr);
+
     // Advanced Stats
     let (mid_rms, side_rms) = crate::advanced_stats::analyze_stereo_width(&raw_data, channels);
     let lufs = crate::advanced_stats::get_integrated_lufs(&raw_data, channels, sr);
@@ -347,7 +373,7 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     bpm = bpm.round();
     let mut god_class = god_category(&l.group, is_loop, &env).to_string();
     
-    if crate::vad::has_voice(&data, sr) {
+    if is_vocal {
         god_class = crate::god::VOCAL.to_string();
     }
 
@@ -429,6 +455,15 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
         envelope_skewness: env.skew,
         envelope_kurtosis: env.kurt,
         envelope_shape: env.shape.to_string(),
+        stationarity: morph.stationarity,
+        spectral_entropy: morph.spectral_entropy,
+        spectral_slope_db_per_octave: morph.spectral_slope_db_per_octave,
+        band_limit_high_hz: morph.band_limit_high_hz,
+        spectral_centroid_slope_hz_per_second: morph.spectral_centroid_slope_hz_per_second,
+        pitch_slope_semitones_per_second: morph.pitch_slope_semitones_per_second,
+        syllabic_modulation_energy: morph.syllabic_modulation_energy,
+        decay_time_seconds_60db: env.decay_time_60db,
+        voicing_ratio,
         acoustic_types: acoustic,
         sound_design_roles: sound_design,
         instrument_family: family,

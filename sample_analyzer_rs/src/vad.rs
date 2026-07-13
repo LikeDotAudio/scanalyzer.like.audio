@@ -1,11 +1,34 @@
 use webrtc_vad::{SampleRate, Vad, VadMode};
 
+/// The VAD's two answers from a single pass: the *fraction* of 20 ms frames it
+/// calls voiced (None when the file is too short for even one frame), and the
+/// boolean "this contains voice" the god-category assignment uses.
+///
+/// The ratio is the spec's `voicing_ratio` (§4b), referenced by 148 UCS priors —
+/// CROWDS-CHEERING vs CROWDS-APPLAUSE is exactly this number. The VAD was already
+/// computing it and throwing it away behind the boolean. They share a pass
+/// because resampling to 16 kHz and running WebRTC over the file is the most
+/// expensive thing in the extractor; doing it twice to get two views of the same
+/// count would be pure waste.
+pub fn voice_activity(data: &[f32], sr: u32) -> (Option<f64>, bool) {
+    let (voice_frames, total_frames) = count_voice_frames(data, sr);
+    let ratio = (total_frames > 0).then(|| voice_frames as f64 / total_frames as f64);
+    // Containing voice: >100 ms of it, or >5 % of the file.
+    let has_voice = voice_frames >= 5 || ratio.is_some_and(|r| r > 0.05);
+    (ratio, has_voice)
+}
+
 /// Returns true if significant voice activity is detected in the audio.
 pub fn has_voice(data: &[f32], sr: u32) -> bool {
+    voice_activity(data, sr).1
+}
+
+/// (voiced frames, total frames) at 20 ms per frame.
+fn count_voice_frames(data: &[f32], sr: u32) -> (usize, usize) {
     if data.is_empty() {
-        return false;
+        return (0, 0);
     }
-    
+
     // WebRTC VAD requires 8, 16, 32, or 48 kHz. We'll resample to 16 kHz.
     let target_sr = 16000;
     
@@ -42,8 +65,6 @@ pub fn has_voice(data: &[f32], sr: u32) -> bool {
             }
         }
     }
-    
-    // We consider it containing voice if at least some threshold of frames have voice.
-    // > 5 voice frames (100ms of voice) or > 5% of the file is voice.
-    voice_frames >= 5 || (total_frames > 0 && voice_frames as f64 / total_frames as f64 > 0.05)
+
+    (voice_frames, total_frames)
 }

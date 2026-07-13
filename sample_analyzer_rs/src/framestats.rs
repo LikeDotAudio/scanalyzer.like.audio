@@ -4,16 +4,21 @@
 //! average centroid; the frame-wise variance separates them.
 use crate::moments::moments;
 
-/// Mean and standard deviation of the per-frame spectral centroid (Hz).
-/// (0, 0) when there are no usable frames.
-pub fn centroid_stats(frames: &[Vec<f32>], sr_f: f64, n_fft: usize) -> (f64, f64) {
-    if frames.is_empty() || n_fft < 2 {
-        return (0.0, 0.0);
+/// The per-frame spectral centroid as a `(time_seconds, centroid_hz)` track.
+///
+/// Silent frames have no centroid and are dropped rather than reported as 0 —
+/// which is why the track carries its own timestamps instead of being a bare
+/// series: the caller cannot assume frame *i* sits at *i · hop*.
+pub fn centroid_track(frames: &[Vec<f32>], sr_f: f64, n_fft: usize, hop: usize) -> Vec<(f64, f64)> {
+    if frames.is_empty() || n_fft < 2 || sr_f <= 0.0 {
+        return Vec::new();
     }
     let bin_hz = sr_f / n_fft as f64;
-    let per_frame: Vec<f64> = frames
+    let frame_seconds = hop as f64 / sr_f;
+    frames
         .iter()
-        .filter_map(|frame| {
+        .enumerate()
+        .filter_map(|(fi, frame)| {
             let mut sum_m = 0.0f64;
             let mut sum_fm = 0.0f64;
             for (k, &m) in frame.iter().enumerate() {
@@ -22,11 +27,21 @@ pub fn centroid_stats(frames: &[Vec<f32>], sr_f: f64, n_fft: usize) -> (f64, f64
                 sum_fm += k as f64 * bin_hz * m;
             }
             if sum_m > 1e-9 {
-                Some(sum_fm / sum_m)
+                Some((fi as f64 * frame_seconds, sum_fm / sum_m))
             } else {
                 None // silent frame — no centroid
             }
         })
+        .collect()
+}
+
+/// Mean and standard deviation of the per-frame spectral centroid (Hz).
+/// (0, 0) when there are no usable frames.
+pub fn centroid_stats(frames: &[Vec<f32>], sr_f: f64, n_fft: usize) -> (f64, f64) {
+    // Hop affects only the timestamps, which this summary discards.
+    let per_frame: Vec<f64> = centroid_track(frames, sr_f, n_fft, 1)
+        .into_iter()
+        .map(|(_, centroid)| centroid)
         .collect();
     let m = moments(&per_frame);
     (m.mean, m.var.sqrt())
