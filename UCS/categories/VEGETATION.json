@@ -1,588 +1,717 @@
 {
-  "version": "8.2.1",
-  "category": "VEGETATION",
-  "subcategories": [
-    {
-      "subcategory": "GRASS",
-      "category_id": "VEGEGras",
-      "category_short": "VEGE",
-      "explanation": [
-        "Individual movement of grass elements in a studio or exterior environment."
-      ],
-      "synonyms": [
-        "Flora",
-        "Foliage",
-        "Grass",
-        "Grassland",
-        "Green",
-        "Greenery",
-        "Hay",
-        "Lawn",
-        "Meadow",
-        "Moss",
-        "Mow",
-        "Mown",
-        "Pasture",
-        "Rustle",
-        "Sod",
-        "Through",
-        "Turf",
-        "Walk",
-        "Weeds",
-        "Wheat"
-      ],
-      "acoustic_signature": {
-        "morphology": "texture",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 180.0
-          },
-          {
-            "feature": "low_band_energy",
-            "max": 0.6
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 9000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.65,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 5000.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.07,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.5,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 15.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "spectral_slope_db_per_octave",
-            "mean": -2.0,
-            "deviation": 3.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
-          "GRASS vs LEAVES is not a DSP-decidable boundary, and no honest number can be written for it. Both are the same bright, dry, stochastic rustle produced by the same mechanism - thin cellulose sheets sliding over each other - and the spectra overlap almost completely. Any threshold between them would be a fabrication. semantic_only for both; the synonyms decide.",
-          "The only whisper of a tendency - blades of grass are lighter than a dead leaf, so the micro-events are finer and the centroid sits marginally higher - is well inside the variance caused by moisture, mic distance and how hard the Foley artist grabbed the handful. It is encoded as a hair of centroid difference and is not worth trusting.",
-          "What the class priors DO buy: the rustle signature reliably rules out tonal, impulsive and low-frequency candidates. That is real pruning value even though the sibling boundary is not.",
-          "Confusable on signal with CLOTH, PAPER, DIRT_SAND and FIRE crackle - all bright, dry, dense textures."
-        ],
-        "confusable_with": [
-          "VEGELeaf",
-          "VEGEMisc",
-          "CLOTHMisc",
-          "DIRTMisc"
-        ]
+ "version": "8.2.1",
+ "category": "VEGETATION",
+ "subcategories": [
+  {
+   "subcategory": "GRASS",
+   "category_id": "VEGEGras",
+   "category_short": "VEGE",
+   "explanation": [
+    "Individual movement of grass elements in a studio or exterior environment."
+   ],
+   "synonyms": [
+    "Flora",
+    "Foliage",
+    "Grass",
+    "Grassland",
+    "Green",
+    "Greenery",
+    "Hay",
+    "Lawn",
+    "Meadow",
+    "Moss",
+    "Mow",
+    "Mown",
+    "Pasture",
+    "Rustle",
+    "Sod",
+    "Through",
+    "Turf",
+    "Walk",
+    "Weeds",
+    "Wheat"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 180.0
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "LEAVES",
-      "category_id": "VEGELeaf",
-      "category_short": "VEGE",
-      "explanation": [
-        "Individual movement of leaf elements in a studio or exterior environment. Jumping into a pile of leaves."
-      ],
-      "synonyms": [
-        "Alder",
-        "Apple",
-        "Ash",
-        "Aspen",
-        "Beech",
-        "Birch",
-        "Boxwood",
-        "Buckeye",
-        "Bushes",
-        "Cedar",
-        "Cherry",
-        "Chestnut",
-        "Cypress",
-        "Dogwood",
-        "Elm",
-        "Fall",
-        "Falling",
-        "Fern",
-        "Fir",
-        "Flora",
-        "Foliage",
-        "Fronds",
-        "Greenery",
-        "Hemlock",
-        "Hickory",
-        "Larch",
-        "Leaf",
-        "Leafage",
-        "Leaves",
-        "Magnolia",
-        "Mahogany",
-        "Maple",
-        "Oak",
-        "Petals",
-        "Pile",
-        "Pine",
-        "Poplar",
-        "Redwood",
-        "Scrub",
-        "Sequoia",
-        "Shoots",
-        "Shrub",
-        "Shrubbery",
-        "Spruce",
-        "Stems",
-        "Swirl",
-        "Sycamore",
-        "Thicket",
-        "Underbrush",
-        "Undergrowth",
-        "Willow",
-        "Yew"
-      ],
-      "acoustic_signature": {
-        "morphology": "texture",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 180.0
-          },
-          {
-            "feature": "low_band_energy",
-            "max": 0.6
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 9000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.65,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4500.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.07,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.5,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 15.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "spectral_slope_db_per_octave",
-            "mean": -2.0,
-            "deviation": 3.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
-          "The canonical rustle, and the reference point for the whole category: dry leaves are the textbook bright broadband dense texture. But LEAVES vs GRASS vs the rustling half of TREE is botany, not acoustics - the same physics, the same spectrum. semantic_only; the synonyms decide.",
-          "A jump into a leaf pile (from the explanation) is a single big burst of the same texture: expect a fast attack and a long decaying tail on top of the texture priors, which stretches crest_factor upward.",
-          "Confusable on signal with CLOTH, PAPER and FIRE crackle. FIRE is distinguished by sparse, sharp, high-crest pops on top of a HISS floor; a rustle has no hiss bed."
-        ],
-        "confusable_with": [
-          "VEGEGras",
-          "VEGETree",
-          "PAPRMisc",
-          "FIREMisc"
-        ]
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 9000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "VEGEMisc",
-      "category_short": "VEGE",
-      "explanation": [
-        "Vegetation and Foliage sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Botanical",
-        "Flora",
-        "Foliage",
-        "Greenery",
-        "Plant",
-        "Shrub",
-        "Shrubs"
-      ],
-      "acoustic_signature": {
-        "morphology": "texture",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 180.0
-          },
-          {
-            "feature": "low_band_energy",
-            "max": 0.6
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 9000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.65,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4500.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.07,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.5,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 15.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "spectral_slope_db_per_octave",
-            "mean": -2.0,
-            "deviation": 3.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          }
-        ],
-        "discriminators": [
-          "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
-          "The catch-all: it asserts only the rustle class and leaves the plant to text. Abstention target for this category, and the right answer more often here than elsewhere, because the siblings are genuinely indistinguishable from each other on signal.",
-          "Deliberately no distinguishing priors beyond the class - anything more would be invented."
-        ],
-        "confusable_with": [
-          "VEGEGras",
-          "VEGELeaf",
-          "VEGETree",
-          "DIRTMisc"
-        ]
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "TREE",
-      "category_id": "VEGETree",
-      "category_short": "VEGE",
-      "explanation": [
-        "Individual movement of tree and branch elements in a studio or exterior environment."
-      ],
-      "synonyms": [
-        "Alder",
-        "Apple",
-        "Ash",
-        "Aspen",
-        "Bark",
-        "Beech",
-        "Birch",
-        "Boughs",
-        "Boxwood",
-        "Branch",
-        "Branches",
-        "Break",
-        "Buckeye",
-        "Canopy",
-        "Cedar",
-        "Cherry",
-        "Chestnut",
-        "Conifer",
-        "Crown",
-        "Cypress",
-        "Dogwood",
-        "Elm",
-        "Eucalyptus",
-        "Fall",
-        "Fir",
-        "Foliage",
-        "Forest",
-        "Greenery",
-        "Hemlock",
-        "Hickory",
-        "Larch",
-        "Magnolia",
-        "Mahogany",
-        "Maple",
-        "Oak",
-        "Palm",
-        "Pine",
-        "Poplar",
-        "Redwood",
-        "Sequoia",
-        "Snap",
-        "Spruce",
-        "Sycamore",
-        "Timber",
-        "Tree",
-        "Trunk",
-        "Twig",
-        "Willow",
-        "Wood",
-        "Yew"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.02,
-            "max": 180.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 5000.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3000.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.15,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 7.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
-          "TREE is genuinely BIMODAL, and that is why its priors are looser than its siblings': it holds both the branch/canopy RUSTLE (the VEGETATION texture, indistinguishable from LEAVES) and the branch/twig SNAP - a sharp, high-crest, impulsive WOOD break with a fast attack and a short decay, which is a completely different morphology and is acoustically a WOOD event, not a vegetation texture. No single Gaussian covers both, so the priors are wide and weighted low, and crest_factor is left permissive to admit the snaps.",
-          "If the file is a clean single crack with a high crest factor and a woody resonance, it will and should score against WOOD-BREAK; only the filename makes it vegetation.",
-          "Against LEAVES/GRASS: no acoustic boundary at all for the rustle half. Text decides."
-        ],
-        "confusable_with": [
-          "VEGELeaf",
-          "VEGEGras",
-          "WOODBrk",
-          "VEGEMisc"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.07,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 15.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -2.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
+     "GRASS vs LEAVES is not a DSP-decidable boundary, and no honest number can be written for it. Both are the same bright, dry, stochastic rustle produced by the same mechanism - thin cellulose sheets sliding over each other - and the spectra overlap almost completely. Any threshold between them would be a fabrication. semantic_only for both; the synonyms decide.",
+     "The only whisper of a tendency - blades of grass are lighter than a dead leaf, so the micro-events are finer and the centroid sits marginally higher - is well inside the variance caused by moisture, mic distance and how hard the Foley artist grabbed the handful. It is encoded as a hair of centroid difference and is not worth trusting.",
+     "What the class priors DO buy: the rustle signature reliably rules out tonal, impulsive and low-frequency candidates. That is real pruning value even though the sibling boundary is not.",
+     "Confusable on signal with CLOTH, PAPER, DIRT_SAND and FIRE crackle - all bright, dry, dense textures."
+    ],
+    "confusable_with": [
+     "VEGELeaf",
+     "VEGEMisc",
+     "CLOTHMisc",
+     "DIRTMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "LEAVES",
+   "category_id": "VEGELeaf",
+   "category_short": "VEGE",
+   "explanation": [
+    "Individual movement of leaf elements in a studio or exterior environment. Jumping into a pile of leaves."
+   ],
+   "synonyms": [
+    "Alder",
+    "Apple",
+    "Ash",
+    "Aspen",
+    "Beech",
+    "Birch",
+    "Boxwood",
+    "Buckeye",
+    "Bushes",
+    "Cedar",
+    "Cherry",
+    "Chestnut",
+    "Cypress",
+    "Dogwood",
+    "Elm",
+    "Fall",
+    "Falling",
+    "Fern",
+    "Fir",
+    "Flora",
+    "Foliage",
+    "Fronds",
+    "Greenery",
+    "Hemlock",
+    "Hickory",
+    "Larch",
+    "Leaf",
+    "Leafage",
+    "Leaves",
+    "Magnolia",
+    "Mahogany",
+    "Maple",
+    "Oak",
+    "Petals",
+    "Pile",
+    "Pine",
+    "Poplar",
+    "Redwood",
+    "Scrub",
+    "Sequoia",
+    "Shoots",
+    "Shrub",
+    "Shrubbery",
+    "Spruce",
+    "Stems",
+    "Swirl",
+    "Sycamore",
+    "Thicket",
+    "Underbrush",
+    "Undergrowth",
+    "Willow",
+    "Yew"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 180.0
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 9000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4500.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.07,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 15.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -2.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
+     "The canonical rustle, and the reference point for the whole category: dry leaves are the textbook bright broadband dense texture. But LEAVES vs GRASS vs the rustling half of TREE is botany, not acoustics - the same physics, the same spectrum. semantic_only; the synonyms decide.",
+     "A jump into a leaf pile (from the explanation) is a single big burst of the same texture: expect a fast attack and a long decaying tail on top of the texture priors, which stretches crest_factor upward.",
+     "Confusable on signal with CLOTH, PAPER and FIRE crackle. FIRE is distinguished by sparse, sharp, high-crest pops on top of a HISS floor; a rustle has no hiss bed."
+    ],
+    "confusable_with": [
+     "VEGEGras",
+     "VEGETree",
+     "PAPRMisc",
+     "FIREMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "VEGEMisc",
+   "category_short": "VEGE",
+   "explanation": [
+    "Vegetation and Foliage sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Botanical",
+    "Flora",
+    "Foliage",
+    "Greenery",
+    "Plant",
+    "Shrub",
+    "Shrubs"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 180.0
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 9000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4500.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.07,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 15.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -2.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
+     "The catch-all: it asserts only the rustle class and leaves the plant to text. Abstention target for this category, and the right answer more often here than elsewhere, because the siblings are genuinely indistinguishable from each other on signal.",
+     "Deliberately no distinguishing priors beyond the class - anything more would be invented."
+    ],
+    "confusable_with": [
+     "VEGEGras",
+     "VEGELeaf",
+     "VEGETree",
+     "DIRTMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TREE",
+   "category_id": "VEGETree",
+   "category_short": "VEGE",
+   "explanation": [
+    "Individual movement of tree and branch elements in a studio or exterior environment."
+   ],
+   "synonyms": [
+    "Alder",
+    "Apple",
+    "Ash",
+    "Aspen",
+    "Bark",
+    "Beech",
+    "Birch",
+    "Boughs",
+    "Boxwood",
+    "Branch",
+    "Branches",
+    "Break",
+    "Buckeye",
+    "Canopy",
+    "Cedar",
+    "Cherry",
+    "Chestnut",
+    "Conifer",
+    "Crown",
+    "Cypress",
+    "Dogwood",
+    "Elm",
+    "Eucalyptus",
+    "Fall",
+    "Fir",
+    "Foliage",
+    "Forest",
+    "Greenery",
+    "Hemlock",
+    "Hickory",
+    "Larch",
+    "Magnolia",
+    "Mahogany",
+    "Maple",
+    "Oak",
+    "Palm",
+    "Pine",
+    "Poplar",
+    "Redwood",
+    "Sequoia",
+    "Snap",
+    "Spruce",
+    "Sycamore",
+    "Timber",
+    "Tree",
+    "Trunk",
+    "Twig",
+    "Willow",
+    "Wood",
+    "Yew"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 180.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "VEGETATION as a CLASS has a real signature - a dry, bright, broadband, HF-dominated stochastic RUSTLE: dense unresolvable micro-events, very high zero_crossings_per_second, high spectral_flatness, high centroid, almost no energy below 200 Hz, low crest factor. That is measurable, and it usefully rules out tonal, impulsive and low-frequency material. The SUBCATEGORIES, however, are botany.",
+     "TREE is genuinely BIMODAL, and that is why its priors are looser than its siblings': it holds both the branch/canopy RUSTLE (the VEGETATION texture, indistinguishable from LEAVES) and the branch/twig SNAP - a sharp, high-crest, impulsive WOOD break with a fast attack and a short decay, which is a completely different morphology and is acoustically a WOOD event, not a vegetation texture. No single Gaussian covers both, so the priors are wide and weighted low, and crest_factor is left permissive to admit the snaps.",
+     "If the file is a clean single crack with a high crest factor and a woody resonance, it will and should score against WOOD-BREAK; only the filename makes it vegetation.",
+     "Against LEAVES/GRASS: no acoustic boundary at all for the rustle half. Text decides."
+    ],
+    "confusable_with": [
+     "VEGELeaf",
+     "VEGEGras",
+     "WOODBrk",
+     "VEGEMisc"
+    ]
+   }
+  }
+ ]
 }

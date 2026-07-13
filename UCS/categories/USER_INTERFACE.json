@@ -1,904 +1,1117 @@
 {
-  "version": "8.2.1",
-  "category": "USER INTERFACE",
-  "subcategories": [
-    {
-      "subcategory": "ALERT",
-      "category_id": "UIAlert",
-      "category_short": "UI",
-      "explanation": [
-        "An alert tone or chime or notification. Something that gets Attention of User",
-        "startup chimes."
-      ],
-      "synonyms": [
-        "Advisory",
-        "Alarm",
-        "Alert",
-        "Alertness",
-        "Attention",
-        "Blip",
-        "Caution",
-        "GUI",
-        "Message",
-        "Notice",
-        "Notification",
-        "Pop-Up",
-        "Prompt",
-        "Signal",
-        "Sound",
-        "Startup",
-        "Text",
-        "Tone",
-        "UI",
-        "UX",
-        "Warning"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "max": 8.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.6
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.8,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.08,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "envelope_decay_seconds",
-            "mean": 0.6,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.2,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.006,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.3,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "transient_count",
-            "mean": 2.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 700.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.22,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.15,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "partial_count",
-            "mean": 6.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A TONAL CHIME THAT DECAYS. The morphology is impulsive_with_tail: an attack into a harmonic body that then RINGS DOWN FREELY (long envelope_decay_seconds, low sustain_ratio). Startup chimes, notification dings, pop-up alerts.",
-          "Against UIBeep — the key boundary in this category, and it is an ENVELOPE test, not a spectral one. Both are harmonic and non-noisy, so flatness and harmonicity are useless here. A BEEP is a GATED tone: it holds level and then STOPS (sustain_ratio ~0.75, high envelope_sustain_level, short decay). An ALERT RINGS OUT (sustain_ratio ~0.2, envelope_decay ~0.6 s). Only the envelope decides.",
-          "Alerts are frequently MULTI-NOTE (a chime arpeggio, a two-tone notification), so transient_count 2-4 over a stable harmonic spectrum leans ALERT over BEEP.",
-          "Against ALRMElec / ALRMBuzr: an ALARM REPEATS AND INSISTS — long, cyclic, high onset_periodicity, designed to be unignorable. An alert fires ONCE and gets out of the way. Duration and periodicity separate them.",
-          "Against BELLS: physically the same struck-and-ringing object. Semantically not. Text ('UI', 'notification', 'startup', 'GUI') is required to commit."
-        ],
-        "confusable_with": [
-          "UIBeep",
-          "UIMisc",
-          "ALRMElec",
-          "BEEP",
-          "BEEPAppl"
-        ]
+ "version": "8.2.1",
+ "category": "USER INTERFACE",
+ "subcategories": [
+  {
+   "subcategory": "ALERT",
+   "category_id": "UIAlert",
+   "category_short": "UI",
+   "explanation": [
+    "An alert tone or chime or notification. Something that gets Attention of User",
+    "startup chimes."
+   ],
+   "synonyms": [
+    "Advisory",
+    "Alarm",
+    "Alert",
+    "Alertness",
+    "Attention",
+    "Blip",
+    "Caution",
+    "GUI",
+    "Message",
+    "Notice",
+    "Notification",
+    "Pop-Up",
+    "Prompt",
+    "Signal",
+    "Sound",
+    "Startup",
+    "Text",
+    "Tone",
+    "UI",
+    "UX",
+    "Warning"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 8.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "BEEP",
-      "category_id": "UIBeep",
-      "category_short": "UI",
-      "explanation": [
-        "Interface beeps",
-        "beeps while interacting with various technology",
-        "phones",
-        "computers. Also see BEEPS category."
-      ],
-      "synonyms": [
-        "Alert",
-        "Audible",
-        "Audio",
-        "Beep",
-        "Bleep",
-        "Boop",
-        "Chime",
-        "Computer",
-        "GUI",
-        "Notification",
-        "Phone",
-        "Prompt",
-        "Signal",
-        "Sound",
-        "Tone",
-        "UI",
-        "UX",
-        "Warning"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "max": 4.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "min": 0.2
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.93,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.04,
-            "deviation": 0.03,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.75,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.06,
-            "deviation": 0.05,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.2,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "partial_count",
-            "mean": 3.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_sustain_level",
-            "mean": 0.85,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 1000.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.08,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.004,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "transient_count",
-            "mean": 1.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 2000.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A SHORT, NEAR-PURE TONE — the purest tonal object in the entire ontology. harmonicity approaching 1.0, spectral_flatness approaching 0.0, a rock-stable f0 that does not drift, and very FEW partials (a piezo sounder or a square-wave generator: partial_count 1-5).",
-          "Against UIGlitch and COMStatic: the exact opposite pole of the tonal/noise axis. spectral_flatness alone separates them with a huge margin — this is as easy as classification gets.",
-          "Against UIAlert: the ENVELOPE, and only the envelope. A beep is GATED (holds, then stops); an alert RINGS OUT. See UIAlert.",
-          "Against UIClick: a click has neither pitch nor sustain; a beep has both, and is 5-10x longer.",
-          "Against the BEEPS category: identical physics — UCS itself concedes it, 'Also see BEEPS category.' NOTHING in DSP separates a UI beep from a BEEPS-GENERAL beep; they are the same waveform filed under different intent. Text ('UI', 'interface', 'menu', 'UX') must commit, and where it does not, defer to BEEPS."
-        ],
-        "confusable_with": [
-          "UIAlert",
-          "UIClick",
-          "BEEP",
-          "BEEPAppl",
-          "UIMisc"
-        ]
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "CLICK",
-      "category_id": "UIClick",
-      "category_short": "UI",
-      "explanation": [
-        "Typing clicks",
-        "button press clicks",
-        "response to input."
-      ],
-      "synonyms": [
-        "Button",
-        "Choose",
-        "Click",
-        "GUI",
-        "Interaction",
-        "Interface",
-        "Menu",
-        "Navigation",
-        "Pick",
-        "Press",
-        "Select",
-        "Tap",
-        "Type",
-        "UI",
-        "UX"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "max": 0.2
-          },
-          {
-            "feature": "crest_factor",
-            "min": 3.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.04,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.001,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 10.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.1,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "envelope_decay_seconds",
-            "mean": 0.025,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.22,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.18,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "transient_count",
-            "mean": 1.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.6,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.03,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "A SUB-50 ms TRANSIENT. That is the entire definition. The gate length_seconds <= 0.2 does most of the work and it is a TRUE physical bound, not a tendency: a UI click that lasts a quarter of a second is not a click, it is something else.",
-          "Attack under ~2 ms, high crest factor, no sustain, no pitch, sharply front-loaded envelope (envelope_temporal_centroid ~0.2).",
-          "Against UIBeep: no pitch, no sustain. harmonicity < 0.35 combined with sustain_ratio < 0.25 rules out a beep outright.",
-          "Against CMPTKey and MECHClik: physically the same event, and DSP can only narrow, not finish. A UI click is a SYNTHETIC, usually band-limited, single-transient event; a keyboard is a MECHANICAL, broadband, MULTI-transient train (key-down thock + key-up release). transient_count and onset_rate lean the call; text commits it.",
-          "A dense STREAM of clicks (a scroll detent, a spinner, a counter) still gates on per-event length — but if the events are continuous and dense, check UIData instead."
-        ],
-        "confusable_with": [
-          "UIBeep",
-          "UIData",
-          "CMPTKey",
-          "MECHClik",
-          "UIMisc"
-        ]
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.6,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "DATA",
-      "category_id": "UIData",
-      "category_short": "UI",
-      "explanation": [
-        "User interface calculations",
-        "scanning",
-        "thinking",
-        "text displayed on screen. Screen gak or garble."
-      ],
-      "synonyms": [
-        "Buffer",
-        "Bytes",
-        "Content",
-        "Data",
-        "Document",
-        "Download",
-        "File",
-        "GUI",
-        "Information",
-        "Input",
-        "Network",
-        "Processing",
-        "Record",
-        "Resource",
-        "Thinking",
-        "Transfer",
-        "UI",
-        "Upload",
-        "UX"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 12.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "transient_count",
-            "mean": 20.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.35,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 7.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 4000.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "'SCREEN GAK OR GARBLE' — a DENSE STREAM of micro-blips standing in for computation: scanning, thinking, calculating, text spitting onto a display. The morphology is a fast EVENT TRAIN, never a single event.",
-          "The defining measurement is onset_rate_per_second — roughly 5-30/s, SUSTAINED for the length of the file. One blip is a UIBeep; one tick is a UIClick; MANY of them in a continuous stream is UIData. Count, not timbre.",
-          "Partially PITCHED: the blips usually carry tone (harmonicity ~0.45), and that residual tonality is what separates data chatter from a glitch burst.",
-          "Against UIGlitch: DATA is ORDERED and EVENT-LIKE (resolvable onsets, some periodicity, some tonality). GLITCH is DISORDERED and NOISY (high spectral_flatness, high flux, low harmonicity, no resolvable event grid). Order versus disorder is the axis.",
-          "Against COMTelm: telemetry is the same idea for a REAL device, and the tell is bandwidth — telemetry is band-limited to the telephone channel (~3.4 kHz), UI data is full-bandwidth. If the file is a fax, modem or telegraph, prefer COMTelm."
-        ],
-        "confusable_with": [
-          "UIGlitch",
-          "UIBeep",
-          "UIClick",
-          "COMTelm",
-          "SCICmpt"
-        ]
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "GLITCH",
-      "category_id": "UIGlitch",
-      "category_short": "UI",
-      "explanation": [
-        "On Screen Glitches or Static. Malfunctioning computer or OS."
-      ],
-      "synonyms": [
-        "Abnormality",
-        "Anomaly",
-        "Bug",
-        "Corrupt",
-        "Corruption",
-        "Crash",
-        "Defect",
-        "Distortion",
-        "Error",
-        "Failure",
-        "Fault",
-        "Flaw",
-        "Glitch",
-        "Glitchiness",
-        "GUI",
-        "Interference",
-        "Issue",
-        "Kernel",
-        "Malfunction",
-        "Message",
-        "Noise",
-        "Panic",
-        "Problem",
-        "Report",
-        "Static",
-        "UI",
-        "UX"
-      ],
-      "acoustic_signature": {
-        "morphology": "granular",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "spectral_flatness",
-            "min": 0.15
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.8
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flux",
-            "mean": 0.55,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.65,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.3,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.7,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.2,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 6000.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.8,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 6.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "'ON SCREEN GLITCHES OR STATIC' — NOISY AND APERIODIC. The signature is HIGH spectral_flatness (noise-like) combined with HIGH spectral_flux (the spectrum churns, tears, jumps frame to frame). That FLUX is precisely what makes it a glitch rather than a bed of static.",
-          "Against COMStatic — the crucial pair, and the one that shows why flatness alone is not enough. STATIC is STATIONARY noise: a flat spectrum that DOES NOT CHANGE (stationarity ~0.9, spectral_flux ~0.08). GLITCH is UNSTABLE noise: EQUALLY flat, but violently NON-stationary (stationarity ~0.3, flux ~0.55). The flatness axis cannot separate them. The flux/stationarity axis separates them cleanly.",
-          "Against UIBeep and UIAlert: the tonal versus noise poles of the same category. Trivially separable on flatness and harmonicity.",
-          "Against UIData: data is ordered and pitched; glitch is disordered and unpitched. See UIData.",
-          "Digital-artefact glitches (bit-crush, buffer repeat, sample-rate tearing) additionally push inharmonicity and total_harmonic_distortion high — a useful secondary confirmation."
-        ],
-        "confusable_with": [
-          "COMStatic",
-          "UIData",
-          "DSGNDist",
-          "DSGNGran",
-          "UIMisc"
-        ]
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "UIMisc",
-      "category_short": "UI",
-      "explanation": [
-        "User Interface sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "GUI",
-        "Miscellaneous",
-        "UI",
-        "UX"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 1.0,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Catch-all for the UI category. Un-gated on purpose: MISC must survive when every sibling gate fires, because abstention into MISC is a correct answer, not a failure.",
-          "Claim UIMisc only when the file is a UI sound by text but is NONE of: a sub-50 ms CLICK, a gated pure BEEP, a decaying ALERT chime, a churning noisy GLITCH, a dense DATA chatter, or a swept MOTION."
-        ],
-        "confusable_with": [
-          "UIClick",
-          "UIBeep",
-          "UIAlert",
-          "UIData",
-          "UIGlitch",
-          "UIMvmt"
-        ]
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MOTION",
-      "category_id": "UIMvmt",
-      "category_short": "UI",
-      "explanation": [
-        "User interface slides",
-        "swipes",
-        "scrolls. Open",
-        "Close",
-        "Appear",
-        "DIsappear."
-      ],
-      "synonyms": [
-        "Action",
-        "Activity",
-        "Animation",
-        "Choose",
-        "Confirm",
-        "Drag",
-        "Dynamics",
-        "Flick",
-        "GUI",
-        "Motion",
-        "Movement",
-        "Navigation",
-        "Page",
-        "Scroll",
-        "Swipe",
-        "Transition",
-        "UI",
-        "UX",
-        "Zoom"
-      ],
-      "acoustic_signature": {
-        "morphology": "sweep",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "max": 6.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 1500.0,
-            "deviation": 800.0,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.4,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.5,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "transient_count",
-            "mean": 1.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.04,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.3,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_slope_hz_per_second",
-            "mean": 1500.0,
-            "deviation": 3000.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.15,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "SWEPT, NOT STRUCK. Slides, swipes, scrolls, opens, closes, appears, disappears — a UI motion is a single CONTINUOUS GESTURE whose spectrum MOVES. The measurable core is a monotonic spectral trajectory: large spectral_centroid_deviation_hz and a clearly non-zero spectral_centroid_slope_hz_per_second across a single, un-transient-ed event.",
-          "The SIGN of that slope carries the open/close, appear/disappear polarity: rising centroid = open / appear / zoom-in, falling = close / disappear / zoom-out. Do NOT gate on sign — the subcategory contains both directions — but a slope of ~0 with no centroid movement argues against UIMvmt entirely, which is why the prior is kept broad and low-weight.",
-          "Against UIClick: a click is one transient with NO spectral travel. Motion is the mirror image — spectral travel with (typically) no sharp transient.",
-          "Against DSGNWhsh and SWOOSHES: identical morphology, different intent and scale. A UI motion is SHORT (~0.2-1 s), quiet and band-limited; a designed whoosh is longer, bigger and full-range. Text must commit.",
-          "Miniature swipes can be so short they resemble clicks — check for centroid movement before falling back to UIClick."
-        ],
-        "confusable_with": [
-          "UIClick",
-          "DSGNWhsh",
-          "UIData",
-          "UIMisc"
-        ]
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 700.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.22,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A TONAL CHIME THAT DECAYS. The morphology is impulsive_with_tail: an attack into a harmonic body that then RINGS DOWN FREELY (long envelope_decay_seconds, low sustain_ratio). Startup chimes, notification dings, pop-up alerts.",
+     "Against UIBeep — the key boundary in this category, and it is an ENVELOPE test, not a spectral one. Both are harmonic and non-noisy, so flatness and harmonicity are useless here. A BEEP is a GATED tone: it holds level and then STOPS (sustain_ratio ~0.75, high envelope_sustain_level, short decay). An ALERT RINGS OUT (sustain_ratio ~0.2, envelope_decay ~0.6 s). Only the envelope decides.",
+     "Alerts are frequently MULTI-NOTE (a chime arpeggio, a two-tone notification), so transient_count 2-4 over a stable harmonic spectrum leans ALERT over BEEP.",
+     "Against ALRMElec / ALRMBuzr: an ALARM REPEATS AND INSISTS — long, cyclic, high onset_periodicity, designed to be unignorable. An alert fires ONCE and gets out of the way. Duration and periodicity separate them.",
+     "Against BELLS: physically the same struck-and-ringing object. Semantically not. Text ('UI', 'notification', 'startup', 'GUI') is required to commit."
+    ],
+    "confusable_with": [
+     "UIBeep",
+     "UIMisc",
+     "ALRMElec",
+     "BEEP",
+     "BEEPAppl"
+    ]
+   }
+  },
+  {
+   "subcategory": "BEEP",
+   "category_id": "UIBeep",
+   "category_short": "UI",
+   "explanation": [
+    "Interface beeps",
+    "beeps while interacting with various technology",
+    "phones",
+    "computers. Also see BEEPS category."
+   ],
+   "synonyms": [
+    "Alert",
+    "Audible",
+    "Audio",
+    "Beep",
+    "Bleep",
+    "Boop",
+    "Chime",
+    "Computer",
+    "GUI",
+    "Notification",
+    "Phone",
+    "Prompt",
+    "Signal",
+    "Sound",
+    "Tone",
+    "UI",
+    "UX",
+    "Warning"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 4.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.4
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.93,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.04,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.75,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.06,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.2,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 3.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.85,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A SHORT, NEAR-PURE TONE — the purest tonal object in the entire ontology. harmonicity approaching 1.0, spectral_flatness approaching 0.0, a rock-stable f0 that does not drift, and very FEW partials (a piezo sounder or a square-wave generator: partial_count 1-5).",
+     "Against UIGlitch and COMStatic: the exact opposite pole of the tonal/noise axis. spectral_flatness alone separates them with a huge margin — this is as easy as classification gets.",
+     "Against UIAlert: the ENVELOPE, and only the envelope. A beep is GATED (holds, then stops); an alert RINGS OUT. See UIAlert.",
+     "Against UIClick: a click has neither pitch nor sustain; a beep has both, and is 5-10x longer.",
+     "Against the BEEPS category: identical physics — UCS itself concedes it, 'Also see BEEPS category.' NOTHING in DSP separates a UI beep from a BEEPS-GENERAL beep; they are the same waveform filed under different intent. Text ('UI', 'interface', 'menu', 'UX') must commit, and where it does not, defer to BEEPS."
+    ],
+    "confusable_with": [
+     "UIAlert",
+     "UIClick",
+     "BEEP",
+     "BEEPAppl",
+     "UIMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CLICK",
+   "category_id": "UIClick",
+   "category_short": "UI",
+   "explanation": [
+    "Typing clicks",
+    "button press clicks",
+    "response to input."
+   ],
+   "synonyms": [
+    "Button",
+    "Choose",
+    "Click",
+    "GUI",
+    "Interaction",
+    "Interface",
+    "Menu",
+    "Navigation",
+    "Pick",
+    "Press",
+    "Select",
+    "Tap",
+    "Type",
+    "UI",
+    "UX"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 0.2
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.04,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.001,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.025,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.22,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.03,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A SUB-50 ms TRANSIENT. That is the entire definition. The gate length_seconds <= 0.2 does most of the work and it is a TRUE physical bound, not a tendency: a UI click that lasts a quarter of a second is not a click, it is something else.",
+     "Attack under ~2 ms, high crest factor, no sustain, no pitch, sharply front-loaded envelope (envelope_temporal_centroid ~0.2).",
+     "Against UIBeep: no pitch, no sustain. harmonicity < 0.35 combined with sustain_ratio < 0.25 rules out a beep outright.",
+     "Against CMPTKey and MECHClik: physically the same event, and DSP can only narrow, not finish. A UI click is a SYNTHETIC, usually band-limited, single-transient event; a keyboard is a MECHANICAL, broadband, MULTI-transient train (key-down thock + key-up release). transient_count and onset_rate lean the call; text commits it.",
+     "A dense STREAM of clicks (a scroll detent, a spinner, a counter) still gates on per-event length — but if the events are continuous and dense, check UIData instead."
+    ],
+    "confusable_with": [
+     "UIBeep",
+     "UIData",
+     "CMPTKey",
+     "MECHClik",
+     "UIMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "DATA",
+   "category_id": "UIData",
+   "category_short": "UI",
+   "explanation": [
+    "User interface calculations",
+    "scanning",
+    "thinking",
+    "text displayed on screen. Screen gak or garble."
+   ],
+   "synonyms": [
+    "Buffer",
+    "Bytes",
+    "Content",
+    "Data",
+    "Document",
+    "Download",
+    "File",
+    "GUI",
+    "Information",
+    "Input",
+    "Network",
+    "Processing",
+    "Record",
+    "Resource",
+    "Thinking",
+    "Transfer",
+    "UI",
+    "Upload",
+    "UX"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 12.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 20.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'SCREEN GAK OR GARBLE' — a DENSE STREAM of micro-blips standing in for computation: scanning, thinking, calculating, text spitting onto a display. The morphology is a fast EVENT TRAIN, never a single event.",
+     "The defining measurement is onset_rate_per_second — roughly 5-30/s, SUSTAINED for the length of the file. One blip is a UIBeep; one tick is a UIClick; MANY of them in a continuous stream is UIData. Count, not timbre.",
+     "Partially PITCHED: the blips usually carry tone (harmonicity ~0.45), and that residual tonality is what separates data chatter from a glitch burst.",
+     "Against UIGlitch: DATA is ORDERED and EVENT-LIKE (resolvable onsets, some periodicity, some tonality). GLITCH is DISORDERED and NOISY (high spectral_flatness, high flux, low harmonicity, no resolvable event grid). Order versus disorder is the axis.",
+     "Against COMTelm: telemetry is the same idea for a REAL device, and the tell is bandwidth — telemetry is band-limited to the telephone channel (~3.4 kHz), UI data is full-bandwidth. If the file is a fax, modem or telegraph, prefer COMTelm."
+    ],
+    "confusable_with": [
+     "UIGlitch",
+     "UIBeep",
+     "UIClick",
+     "COMTelm",
+     "SCICmpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "GLITCH",
+   "category_id": "UIGlitch",
+   "category_short": "UI",
+   "explanation": [
+    "On Screen Glitches or Static. Malfunctioning computer or OS."
+   ],
+   "synonyms": [
+    "Abnormality",
+    "Anomaly",
+    "Bug",
+    "Corrupt",
+    "Corruption",
+    "Crash",
+    "Defect",
+    "Distortion",
+    "Error",
+    "Failure",
+    "Fault",
+    "Flaw",
+    "Glitch",
+    "Glitchiness",
+    "GUI",
+    "Interference",
+    "Issue",
+    "Kernel",
+    "Malfunction",
+    "Message",
+    "Noise",
+    "Panic",
+    "Problem",
+    "Report",
+    "Static",
+    "UI",
+    "UX"
+   ],
+   "acoustic_signature": {
+    "morphology": "granular",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "spectral_flatness",
+      "min": 0.15
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flux",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.65,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'ON SCREEN GLITCHES OR STATIC' — NOISY AND APERIODIC. The signature is HIGH spectral_flatness (noise-like) combined with HIGH spectral_flux (the spectrum churns, tears, jumps frame to frame). That FLUX is precisely what makes it a glitch rather than a bed of static.",
+     "Against COMStatic — the crucial pair, and the one that shows why flatness alone is not enough. STATIC is STATIONARY noise: a flat spectrum that DOES NOT CHANGE (stationarity ~0.9, spectral_flux ~0.08). GLITCH is UNSTABLE noise: EQUALLY flat, but violently NON-stationary (stationarity ~0.3, flux ~0.55). The flatness axis cannot separate them. The flux/stationarity axis separates them cleanly.",
+     "Against UIBeep and UIAlert: the tonal versus noise poles of the same category. Trivially separable on flatness and harmonicity.",
+     "Against UIData: data is ordered and pitched; glitch is disordered and unpitched. See UIData.",
+     "Digital-artefact glitches (bit-crush, buffer repeat, sample-rate tearing) additionally push inharmonicity and total_harmonic_distortion high — a useful secondary confirmation."
+    ],
+    "confusable_with": [
+     "COMStatic",
+     "UIData",
+     "DSGNDist",
+     "DSGNGran",
+     "UIMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "UIMisc",
+   "category_short": "UI",
+   "explanation": [
+    "User Interface sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "GUI",
+    "Miscellaneous",
+    "UI",
+    "UX"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Catch-all for the UI category. Un-gated on purpose: MISC must survive when every sibling gate fires, because abstention into MISC is a correct answer, not a failure.",
+     "Claim UIMisc only when the file is a UI sound by text but is NONE of: a sub-50 ms CLICK, a gated pure BEEP, a decaying ALERT chime, a churning noisy GLITCH, a dense DATA chatter, or a swept MOTION."
+    ],
+    "confusable_with": [
+     "UIClick",
+     "UIBeep",
+     "UIAlert",
+     "UIData",
+     "UIGlitch",
+     "UIMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MOTION",
+   "category_id": "UIMvmt",
+   "category_short": "UI",
+   "explanation": [
+    "User interface slides",
+    "swipes",
+    "scrolls. Open",
+    "Close",
+    "Appear",
+    "DIsappear."
+   ],
+   "synonyms": [
+    "Action",
+    "Activity",
+    "Animation",
+    "Choose",
+    "Confirm",
+    "Drag",
+    "Dynamics",
+    "Flick",
+    "GUI",
+    "Motion",
+    "Movement",
+    "Navigation",
+    "Page",
+    "Scroll",
+    "Swipe",
+    "Transition",
+    "UI",
+    "UX",
+    "Zoom"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 6.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1500.0,
+      "deviation": 800.0,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.04,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 1500.0,
+      "deviation": 3000.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "SWEPT, NOT STRUCK. Slides, swipes, scrolls, opens, closes, appears, disappears — a UI motion is a single CONTINUOUS GESTURE whose spectrum MOVES. The measurable core is a monotonic spectral trajectory: large spectral_centroid_deviation_hz and a clearly non-zero spectral_centroid_slope_hz_per_second across a single, un-transient-ed event.",
+     "The SIGN of that slope carries the open/close, appear/disappear polarity: rising centroid = open / appear / zoom-in, falling = close / disappear / zoom-out. Do NOT gate on sign — the subcategory contains both directions — but a slope of ~0 with no centroid movement argues against UIMvmt entirely, which is why the prior is kept broad and low-weight.",
+     "Against UIClick: a click is one transient with NO spectral travel. Motion is the mirror image — spectral travel with (typically) no sharp transient.",
+     "Against DSGNWhsh and SWOOSHES: identical morphology, different intent and scale. A UI motion is SHORT (~0.2-1 s), quiet and band-limited; a designed whoosh is longer, bigger and full-range. Text must commit.",
+     "Miniature swipes can be so short they resemble clicks — check for centroid movement before falling back to UIClick."
+    ],
+    "confusable_with": [
+     "UIClick",
+     "DSGNWhsh",
+     "UIData",
+     "UIMisc"
+    ]
+   }
+  }
+ ]
 }

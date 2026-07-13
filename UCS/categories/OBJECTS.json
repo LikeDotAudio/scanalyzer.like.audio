@@ -1,2319 +1,3054 @@
 {
-  "version": "8.2.1",
-  "category": "OBJECTS",
-  "subcategories": [
-    {
-      "subcategory": "BAG",
-      "category_id": "OBJBag",
-      "category_short": "OBJ",
-      "explanation": [
-        "Bags and purses",
-        "shopping bags",
-        "lunch bags. Really any bag",
-        "except Luggage which would go to OBJECTS-LUGGAGE."
-      ],
-      "synonyms": [
-        "Back",
-        "Backpack",
-        "Briefcase",
-        "Camera",
-        "Carryall",
-        "Clutch",
-        "Courier",
-        "Drawstring",
-        "Duffel",
-        "Fanny",
-        "Handbag",
-        "Knapsack",
-        "Messenger",
-        "Pack",
-        "Pocketbook",
-        "Portfolio",
-        "Pouch",
-        "Purse",
-        "Rucksack",
-        "Sac",
-        "Sachet",
-        "Sack",
-        "Saddlebag",
-        "Satchel",
-        "Schoolbag",
-        "Shoulder",
-        "Sling",
-        "Tote"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "A bag is a soft-material handling scene: cloth, leather, plastic or paper rustle plus a few dull thumps. Which material it is may be measurable; that it is a BAG rather than a suitcase or a purse is not.",
-          "UCS rule: anything that is Luggage goes to OBJECTS-LUGGAGE, not here — a purely lexical split."
-        ],
-        "confusable_with": [
-          "OBJLug",
-          "OBJFash",
-          "CLOTHHndl",
-          "LETHRHndl",
-          "PLASHndl"
-        ]
+ "version": "8.2.1",
+ "category": "OBJECTS",
+ "subcategories": [
+  {
+   "subcategory": "BAG",
+   "category_id": "OBJBag",
+   "category_short": "OBJ",
+   "explanation": [
+    "Bags and purses",
+    "shopping bags",
+    "lunch bags. Really any bag",
+    "except Luggage which would go to OBJECTS-LUGGAGE."
+   ],
+   "synonyms": [
+    "Back",
+    "Backpack",
+    "Briefcase",
+    "Camera",
+    "Carryall",
+    "Clutch",
+    "Courier",
+    "Drawstring",
+    "Duffel",
+    "Fanny",
+    "Handbag",
+    "Knapsack",
+    "Messenger",
+    "Pack",
+    "Pocketbook",
+    "Portfolio",
+    "Pouch",
+    "Purse",
+    "Rucksack",
+    "Sac",
+    "Sachet",
+    "Sack",
+    "Saddlebag",
+    "Satchel",
+    "Schoolbag",
+    "Shoulder",
+    "Sling",
+    "Tote"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "BOOK",
-      "category_id": "OBJBook",
-      "category_short": "OBJ",
-      "explanation": [
-        "Books",
-        "magazines",
-        "sounds relating to these. Handling particularly. Some overlap or confusion with PAPER-HANDLE."
-      ],
-      "synonyms": [
-        "Autobiography",
-        "Bible",
-        "Biography",
-        "Book",
-        "Bookkeeper",
-        "Bookkeeping",
-        "Booklet",
-        "Bookshop",
-        "Bookstore",
-        "Brochure",
-        "Catalog",
-        "Catalogue",
-        "Chapter",
-        "Codex",
-        "Compendium",
-        "Compilation",
-        "Cookbook",
-        "Cover",
-        "Daybook",
-        "Diary",
-        "Dictionary",
-        "Directory",
-        "Edition",
-        "Encyclopedia",
-        "Fiction",
-        "Guidebook",
-        "Handbook",
-        "Hardcover",
-        "Inventory",
-        "Journal",
-        "Ledger",
-        "Leger",
-        "Letters",
-        "Literary",
-        "Literature",
-        "Magazine",
-        "Manuscript",
-        "Memoir",
-        "Non-Fiction",
-        "Notebook",
-        "Novel",
-        "Page",
-        "Pamphlet",
-        "Paperback",
-        "Portfolio",
-        "Publication",
-        "Publishing",
-        "Read",
-        "Reading",
-        "Scrapbook",
-        "Script",
-        "Scroll",
-        "Sketchbook",
-        "Story",
-        "Synopsis",
-        "Textbook",
-        "Tome",
-        "Volume",
-        "Workbook",
-        "Works",
-        "Worksheet",
-        "Writer",
-        "Yearbook"
-      ],
-      "acoustic_signature": {
-        "morphology": "texture",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "high_band_energy",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 5000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 12.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.04,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.04,
-            "deviation": 0.05,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "The one semantic_only OBJECTS subcategory with a real acoustic profile: page-turn crackle, which IS PAPER-HANDLE (bright, dense micro-onsets, no ring). UCS itself admits the overlap. DSP can say 'this is paper'; it cannot say 'this is a book'.",
-          "A dropped hardcover adds a dull mid/low thump, and that thump is indistinguishable from any other object drop."
-        ],
-        "confusable_with": [
-          "PAPRHndl",
-          "PAPRFltr",
-          "PAPRImpt",
-          "OBJOffc"
-        ]
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "COIN",
-      "category_id": "OBJCoin",
-      "category_short": "OBJ",
-      "explanation": [
-        "Coins land",
-        "toss",
-        "drop",
-        "handle. Coins being counted",
-        "sorted. A bag of coins."
-      ],
-      "synonyms": [
-        "Bank",
-        "Cent",
-        "Change",
-        "Clink",
-        "Coinage",
-        "Currency",
-        "Dime",
-        "Dollar",
-        "Doubloon",
-        "Dump",
-        "Euro",
-        "Flip",
-        "Half-Dollar",
-        "Loose",
-        "Money",
-        "Nickel",
-        "Penny",
-        "Piggy",
-        "Ping",
-        "Pound",
-        "Quarter",
-        "Rouble",
-        "Rupee",
-        "Shekel",
-        "Silver",
-        "Spin",
-        "Token",
-        "Toss",
-        "Yen"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 30.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 3.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 5500.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_rolloff_hz",
-            "mean": 12000.0,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.65,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.05,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.7,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.25,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "partial_count",
-            "mean": 8.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.45,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "transient_count",
-            "mean": 6.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 6.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.15,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 14.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.28,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "NOT hopeless, unlike its OBJECTS siblings: coins are small METAL plates. The jingle signature is a bright, inharmonic, multi-onset ring — high spectral_centroid, high inharmonicity, a real decay tail, and transient_count well above one. DSP can narrow to 'small bright ringing metal'.",
-          "It cannot finish the job: OBJECTS-KEYS is the same physics (as are OBJECTS-JEWELRY and CHAINS). The coin-vs-keys call is lexical.",
-          "Against the soft materials this is unmistakable: PLASTIC, RUBBER, CLOTH, LEATHER and PAPER all have decay_time_seconds_60db an order of magnitude shorter and much lower centroids. Against METAL-IMPACT proper: coins are small, so the ring is shorter and far brighter."
-        ],
-        "confusable_with": [
-          "OBJKey",
-          "OBJJewl",
-          "GLASImpt"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "CONTAINER",
-      "category_id": "OBJCont",
-      "category_short": "OBJ",
-      "explanation": [
-        "Boxes",
-        "tupperware",
-        "jewelry boxes",
-        "things that hold things",
-        "lids",
-        "handling",
-        "opens and closes."
-      ],
-      "synonyms": [
-        "Aquarium",
-        "Baggie",
-        "Barrel",
-        "Basket",
-        "Bin",
-        "Box",
-        "Breadbox",
-        "Canister",
-        "Canisters",
-        "Capsule",
-        "Cardboard",
-        "Carton",
-        "Case",
-        "Casket",
-        "Chest",
-        "Cistern",
-        "Contain",
-        "Crate",
-        "Dispenser",
-        "Dumpster",
-        "Enclosure",
-        "Flask",
-        "Holder",
-        "Jar",
-        "Jars",
-        "Jewelry",
-        "Lid",
-        "Locker",
-        "Package",
-        "Pill",
-        "Plastic",
-        "Receptacle",
-        "Receptacles",
-        "Reliquary",
-        "Toolbox",
-        "Tray",
-        "Trunk",
-        "Tupperware",
-        "Vase",
-        "Vial"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Boxes, tupperware, lids opening and closing. The material (cardboard vs plastic vs glass) is somewhat measurable; that the object is a CONTAINER is not. Expect a lid click plus a body rattle.",
-          "Massively overlaps OBJECTS-PACKAGING, PLASTIC-HANDLE and PAPER-HANDLE."
-        ],
-        "confusable_with": [
-          "OBJPack",
-          "PLASHndl",
-          "PAPRHndl",
-          "OBJHsehld"
-        ]
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "FASHION",
-      "category_id": "OBJFash",
-      "category_short": "OBJ",
-      "explanation": [
-        "Shoes",
-        "belts",
-        "clothes",
-        "actions involding fashion objects. Makeup",
-        "lipstick",
-        "etc. Some overlap possible with CLOTH categories. See also OBJECTS-JEWELRY. And OBJECTS-BAG."
-      ],
-      "synonyms": [
-        "Apparel",
-        "Attire",
-        "Bandana",
-        "Belt",
-        "Boots",
-        "Brush",
-        "Clothing",
-        "Clutch",
-        "Comb",
-        "Couture",
-        "Eyeliner",
-        "Garment",
-        "Glasses",
-        "Gloves",
-        "Handkerchief",
-        "Hat",
-        "Headband",
-        "High-Heels",
-        "Lipstick",
-        "Makeup",
-        "Mascara",
-        "Muffs",
-        "Outfit",
-        "Robe",
-        "Sash",
-        "Scarf",
-        "Shawl",
-        "Shoes",
-        "Sneakers",
-        "Socks",
-        "Sunglasses",
-        "Suspenders",
-        "Ties",
-        "Wallet",
-        "Wardrobe",
-        "Watches"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Shoes, belts, clothes, makeup. Nothing links these acoustically — they are cloth rustle, leather creak, plastic clicks or small taps depending on the item. UCS explicitly flags overlap with the CLOTH categories, OBJECTS-JEWELRY and OBJECTS-BAG."
-        ],
-        "confusable_with": [
-          "CLOTHHndl",
-          "OBJJewl",
-          "OBJBag",
-          "LETHRHndl"
-        ]
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "FURNITURE",
-      "category_id": "OBJFurn",
-      "category_short": "OBJ",
-      "explanation": [
-        "Chairs movement",
-        "couch movement",
-        "things like that. Wood chair creaks could go in WOOD-FRICTION."
-      ],
-      "synonyms": [
-        "Antiques",
-        "Armoires",
-        "Bed",
-        "Bedframe",
-        "Bench",
-        "Bookcase",
-        "Bookcases",
-        "Bookshelf",
-        "Buffet",
-        "Cabinet",
-        "Cabinets",
-        "Chair",
-        "Chest",
-        "Coffee",
-        "Console",
-        "Couch",
-        "Couches",
-        "Credenza",
-        "Crib",
-        "Desk",
-        "Dining",
-        "Dresser",
-        "Dressers",
-        "End",
-        "Footlocker",
-        "Futon",
-        "Hutch",
-        "Loveseat",
-        "Mattress",
-        "Mattresses",
-        "Nightstand",
-        "Ottoman",
-        "Rocking",
-        "Rugs",
-        "Shelf",
-        "Shelving",
-        "Sideboard",
-        "Sofa",
-        "Sofas",
-        "Stool",
-        "Table",
-        "Upholstery",
-        "Wardrobe"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Chair and couch movement: a scrape or drag plus upholstery rustle and body creaks. UCS rule mined from the explanation: a wood chair CREAK belongs in WOOD-FRICTION, not here — so a strongly pitched stick-slip creak should be handed to the WOOD sibling.",
-          "Otherwise indistinguishable from any other large-object drag."
-        ],
-        "confusable_with": [
-          "CLOTHMvmt",
-          "LETHRCreak",
-          "OBJHsehld"
-        ]
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "A bag is a soft-material handling scene: cloth, leather, plastic or paper rustle plus a few dull thumps. Which material it is may be measurable; that it is a BAG rather than a suitcase or a purse is not.",
+     "UCS rule: anything that is Luggage goes to OBJECTS-LUGGAGE, not here — a purely lexical split."
+    ],
+    "confusable_with": [
+     "OBJLug",
+     "OBJFash",
+     "CLOTHHndl",
+     "LETHRHndl",
+     "PLASHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "BOOK",
+   "category_id": "OBJBook",
+   "category_short": "OBJ",
+   "explanation": [
+    "Books",
+    "magazines",
+    "sounds relating to these. Handling particularly. Some overlap or confusion with PAPER-HANDLE."
+   ],
+   "synonyms": [
+    "Autobiography",
+    "Bible",
+    "Biography",
+    "Book",
+    "Bookkeeper",
+    "Bookkeeping",
+    "Booklet",
+    "Bookshop",
+    "Bookstore",
+    "Brochure",
+    "Catalog",
+    "Catalogue",
+    "Chapter",
+    "Codex",
+    "Compendium",
+    "Compilation",
+    "Cookbook",
+    "Cover",
+    "Daybook",
+    "Diary",
+    "Dictionary",
+    "Directory",
+    "Edition",
+    "Encyclopedia",
+    "Fiction",
+    "Guidebook",
+    "Handbook",
+    "Hardcover",
+    "Inventory",
+    "Journal",
+    "Ledger",
+    "Leger",
+    "Letters",
+    "Literary",
+    "Literature",
+    "Magazine",
+    "Manuscript",
+    "Memoir",
+    "Non-Fiction",
+    "Notebook",
+    "Novel",
+    "Page",
+    "Pamphlet",
+    "Paperback",
+    "Portfolio",
+    "Publication",
+    "Publishing",
+    "Read",
+    "Reading",
+    "Scrapbook",
+    "Script",
+    "Scroll",
+    "Sketchbook",
+    "Story",
+    "Synopsis",
+    "Textbook",
+    "Tome",
+    "Volume",
+    "Workbook",
+    "Works",
+    "Worksheet",
+    "Writer",
+    "Yearbook"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "GARDEN",
-      "category_id": "OBJGrdn",
-      "category_short": "OBJ",
-      "explanation": [
-        "Flower pots",
-        "bird feeders",
-        "things that you might find and use in a garden. See also TOOLS-GARDEN and MACHINES-GARDEN."
-      ],
-      "synonyms": [
-        "Bath",
-        "Bin",
-        "Bird",
-        "Can",
-        "Compost",
-        "Composter",
-        "Faucet",
-        "Feeder",
-        "Flower",
-        "Gloves",
-        "Greenhouse",
-        "Hose",
-        "Killer",
-        "Labels",
-        "Plant",
-        "Pot",
-        "Sculpture",
-        "Stake",
-        "Stakes",
-        "Trellis",
-        "Watering",
-        "Weed"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Flower pots, bird feeders, watering cans: ceramic, metal and plastic objects with nothing acoustic in common. UCS cross-references TOOLS-GARDEN and MACHINES-GARDEN — the split is by object type, not by sound."
-        ],
-        "confusable_with": [
-          "OBJHsehld",
-          "OBJCont",
-          "CERMImpt"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "GYM",
-      "category_id": "OBJGym",
-      "category_short": "OBJ",
-      "explanation": [
-        "Objects found in a fitness center or school gym",
-        "maybe a yoga mat",
-        "dumbells. See also MACHINES-GYM."
-      ],
-      "synonyms": [
-        "Ball",
-        "Band",
-        "Bar",
-        "Barbell",
-        "Bench",
-        "Boxing",
-        "Dumbbell",
-        "Exercise",
-        "Fitness",
-        "Foam",
-        "Gloves",
-        "Jump",
-        "Kettlebell",
-        "Mat",
-        "Medicine",
-        "Pull-Up",
-        "Rack",
-        "Resistance",
-        "Roller",
-        "Rope",
-        "Stepper",
-        "Weight",
-        "Yoga"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Dumbbells, mats, ropes, medicine balls. A dumbbell is METAL-IMPACT physics; a yoga mat is RUBBER-MOVEMENT physics. The category is a location, not a sound. UCS cross-references MACHINES-GYM."
-        ],
-        "confusable_with": [
-          "OBJHsehld",
-          "RUBRMvmt",
-          "METLImpt"
-        ]
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "HOUSEHOLD",
-      "category_id": "OBJHsehld",
-      "category_short": "OBJ",
-      "explanation": [
-        "Cleaning products",
-        "hangers",
-        "towel racks",
-        "things around the house that don't fit somewhere else."
-      ],
-      "synonyms": [
-        "Broom",
-        "Can",
-        "Cleaning",
-        "Domestic",
-        "Home",
-        "House",
-        "Mirror",
-        "Mop",
-        "Rug",
-        "Soap",
-        "Sponge",
-        "Supplies",
-        "Trash"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "The residual bin for domestic objects — cleaning products, hangers, towel racks. Defined by what it is NOT, so no acoustic prior can be honest beyond 'a handled object'."
-        ],
-        "confusable_with": [
-          "OBJMisc",
-          "OBJCont",
-          "OBJFurn",
-          "OBJOffc"
-        ]
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 12.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "JEWELRY",
-      "category_id": "OBJJewl",
-      "category_short": "OBJ",
-      "explanation": [
-        "Bracelets",
-        "necklaces",
-        "rings."
-      ],
-      "synonyms": [
-        "Accessories",
-        "Adornment",
-        "Adornments",
-        "Anklet",
-        "Bangles",
-        "Baubles",
-        "Bead",
-        "Beaded",
-        "Beads",
-        "Beadwork",
-        "Bling",
-        "Bracelet",
-        "Bracelets",
-        "Bridal",
-        "Brooch",
-        "Brooches",
-        "Cabochons",
-        "Charm",
-        "Choker",
-        "Crown",
-        "Cufflink",
-        "Cufflinks",
-        "Diamond",
-        "Diamonds",
-        "Earing",
-        "Earring",
-        "Earrings",
-        "Gem",
-        "Gemstone",
-        "Gemstones",
-        "Hairpin",
-        "Jewel",
-        "Jeweled",
-        "Jeweler",
-        "Jewelers",
-        "Jewelery",
-        "Jeweller",
-        "Jewellery",
-        "Jewels",
-        "Locket",
-        "Necklace",
-        "Necklaces",
-        "Nose",
-        "Ornament",
-        "Ornaments",
-        "Pendant",
-        "Pendants",
-        "Pin",
-        "Ring",
-        "Tiara",
-        "Tie",
-        "Trinkets",
-        "Watch"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Bracelets, necklaces, rings are often small ringing metal, which puts a genuinely bright, inharmonic, multi-onset file in the same place as OBJECTS-COIN and OBJECTS-KEYS. But jewelry is also beads, leather cord and fabric, so the acoustic prior is not reliable enough to lift the tier the way it is for COIN and KEYS.",
-          "If a file really does read as bright ringing metal, treat COIN / KEYS / JEWELRY as one shortlist and let the synonyms pick."
-        ],
-        "confusable_with": [
-          "OBJCoin",
-          "OBJKey",
-          "OBJFash",
-          "CHAINMvmt"
-        ]
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.04,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "KEYS",
-      "category_id": "OBJKey",
-      "category_short": "OBJ",
-      "explanation": [
-        "Keys jingling",
-        "keys movement in lock."
-      ],
-      "synonyms": [
-        "Bicycle",
-        "Car",
-        "Card",
-        "Fob",
-        "House",
-        "Key",
-        "Keychain",
-        "Keyes",
-        "Keyholes",
-        "Keylock",
-        "Keyring",
-        "Keys",
-        "Keyset",
-        "Lanyard",
-        "Lock",
-        "Locker",
-        "Mailbox",
-        "Master",
-        "Office",
-        "Padlock",
-        "Safe",
-        "Skeleton",
-        "Unlock",
-        "Unlocking",
-        "Unlocks"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 40.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 5000.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_rolloff_hz",
-            "mean": 11000.0,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.62,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.72,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "partial_count",
-            "mean": 9.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.3,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "transient_count",
-            "mean": 15.0,
-            "deviation": 12.0,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 12.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 11.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "Like OBJECTS-COIN this is small ringing metal, and therefore signal_narrowable rather than semantic_only: a jingle is a dense, bright, inharmonic multi-onset cascade. A shaken keyring produces a markedly higher onset_rate than a coin drop — that is the only weak DSP lever between them, and it is not enough to commit on.",
-          "Keys-in-a-lock is a different scene: a few sharp metallic clicks with a short ring. Both readings stay inside the metal cluster.",
-          "Ruled out against every soft material by decay_time_seconds_60db and spectral_centroid: no plastic, rubber, cloth, leather or paper event rings this long this brightly."
-        ],
-        "confusable_with": [
-          "OBJCoin",
-          "OBJJewl",
-          "CHAINMvmt",
-          "METLMvmt"
-        ]
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "LUGGAGE",
-      "category_id": "OBJLug",
-      "category_short": "OBJ",
-      "explanation": [
-        "Suitcases",
-        "luggage related sounds",
-        "handling",
-        "opening",
-        "packing."
-      ],
-      "synonyms": [
-        "Backpack",
-        "Bag",
-        "Baggage",
-        "Baggages",
-        "Bagroom",
-        "Bellhop",
-        "Carry-On",
-        "Carryon",
-        "Checked",
-        "Cubes",
-        "Duffel",
-        "Duffels",
-        "Duffle",
-        "Garment",
-        "Knapsack",
-        "Knapsacks",
-        "Luggage",
-        "Packing",
-        "Rolling",
-        "Rucksack",
-        "Samsonite",
-        "Satchel",
-        "Scale",
-        "Skycap",
-        "Stow",
-        "Stowing",
-        "Suitcase",
-        "Suitcases",
-        "Tag",
-        "Toiletry",
-        "Trolley",
-        "Trunks"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Suitcases: zippers, wheels, handles, thumps. Each of those is a different morphology, and each is claimed by a better-specified subcategory — a suitcase zipper is OBJECTS-ZIPPER's signature, a rolling suitcase is OBJECTS-WHEELED's. LUGGAGE itself is purely lexical.",
-          "UCS rule: OBJECTS-BAG explicitly excludes luggage, so the two are separated by the word, not the waveform."
-        ],
-        "confusable_with": [
-          "OBJBag",
-          "OBJZipr",
-          "OBJWhled",
-          "CLOTHHndl"
-        ]
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MEDICAL",
-      "category_id": "OBJMed",
-      "category_short": "OBJ",
-      "explanation": [
-        "Common objects in hospital or medical office."
-      ],
-      "synonyms": [
-        "Aid",
-        "Bandage",
-        "Blood",
-        "Brace",
-        "Cast",
-        "Clamp",
-        "Crutches",
-        "Cuff",
-        "Epipen",
-        "Forceps",
-        "Gauss",
-        "Gauze",
-        "Gloves",
-        "Hearing",
-        "Mask",
-        "Meter",
-        "Pills",
-        "Pressure",
-        "Rubber",
-        "Scalpel",
-        "Specimen",
-        "Stethoscope",
-        "Surgical",
-        "Swab",
-        "Syringe",
-        "Thermometer"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Objects in a hospital or medical office — gloves, syringes, pill bottles. Latex glove snaps are RUBBER physics; pill bottles are PLASTIC physics. The category is a setting."
-        ],
-        "confusable_with": [
-          "RUBRHndl",
-          "PLASHndl",
-          "OBJHsehld",
-          "OBJCont"
-        ]
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "The one semantic_only OBJECTS subcategory with a real acoustic profile: page-turn crackle, which IS PAPER-HANDLE (bright, dense micro-onsets, no ring). UCS itself admits the overlap. DSP can say 'this is paper'; it cannot say 'this is a book'.",
+     "A dropped hardcover adds a dull mid/low thump, and that thump is indistinguishable from any other object drop."
+    ],
+    "confusable_with": [
+     "PAPRHndl",
+     "PAPRFltr",
+     "PAPRImpt",
+     "OBJOffc"
+    ]
+   }
+  },
+  {
+   "subcategory": "COIN",
+   "category_id": "OBJCoin",
+   "category_short": "OBJ",
+   "explanation": [
+    "Coins land",
+    "toss",
+    "drop",
+    "handle. Coins being counted",
+    "sorted. A bag of coins."
+   ],
+   "synonyms": [
+    "Bank",
+    "Cent",
+    "Change",
+    "Clink",
+    "Coinage",
+    "Currency",
+    "Dime",
+    "Dollar",
+    "Doubloon",
+    "Dump",
+    "Euro",
+    "Flip",
+    "Half-Dollar",
+    "Loose",
+    "Money",
+    "Nickel",
+    "Penny",
+    "Piggy",
+    "Ping",
+    "Pound",
+    "Quarter",
+    "Rouble",
+    "Rupee",
+    "Shekel",
+    "Silver",
+    "Spin",
+    "Token",
+    "Toss",
+    "Yen"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 8300.22387,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 1.67371,
+       "reasoned_mean": 5500.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "OBJMisc",
-      "category_short": "OBJ",
-      "explanation": [
-        "Object sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Miscellaneous"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "The residual of a residual. Emitted by abstention whenever the OBJECTS siblings tie — which, given that almost the whole category is semantic_only, is the expected outcome for any un-named object-handling file."
-        ],
-        "confusable_with": [
-          "OBJHsehld",
-          "OBJCont",
-          "OBJFash"
-        ]
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 13727.98186,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 1.45073,
+       "reasoned_mean": 12000.0,
+       "reasoned_deviation": 1.7,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "OFFICE",
-      "category_id": "OBJOffc",
-      "category_short": "OBJ",
-      "explanation": [
-        "Things found in an office",
-        "staplers",
-        "paper cutter etc. Not machines like a printer which would go in MACHINES-OFFICE."
-      ],
-      "synonyms": [
-        "Binder",
-        "Business",
-        "Calculator",
-        "Calendar",
-        "Can",
-        "Card",
-        "Chair",
-        "Cutter",
-        "Desk",
-        "Envelope",
-        "Folder",
-        "Hole",
-        "Notepad",
-        "Office",
-        "Paper",
-        "Paperweight",
-        "Post-It",
-        "Punch",
-        "Report",
-        "Scissors",
-        "Stapler",
-        "Supplies",
-        "Trash",
-        "Tray",
-        "Whiteboard"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Staplers, hole punches, paper cutters, scissors: small sharp metal-and-plastic clicks over paper rustle. UCS rule: a printer is a MACHINE, not an OBJECT.",
-          "A stapler click is a bright short impact, indistinguishable from a hundred other small mechanisms."
-        ],
-        "confusable_with": [
-          "OBJHsehld",
-          "OBJWrite",
-          "PAPRHndl",
-          "PLASHndl"
-        ]
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.9004,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 0.10622,
+       "reasoned_mean": 0.65,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "PACKAGING",
-      "category_id": "OBJPack",
-      "category_short": "OBJ",
-      "explanation": [
-        "Items commonly used in packaging or packing",
-        "so bubblewrap",
-        "styrofoam",
-        "labels",
-        "food packaging."
-      ],
-      "synonyms": [
-        "Bag",
-        "Box",
-        "Bubble",
-        "Cardboard",
-        "Corrugated",
-        "Crate",
-        "Envelope",
-        "Foam",
-        "Label",
-        "Labeling",
-        "Labelling",
-        "Labels",
-        "Mailing",
-        "Overwrap",
-        "Package",
-        "Packagings",
-        "Packed",
-        "Packing",
-        "Padding",
-        "Pallet",
-        "Paper",
-        "Parcel",
-        "Peanuts",
-        "Shipment",
-        "Shipping",
-        "Shrink",
-        "Strapping",
-        "Stretch",
-        "Styrofoam",
-        "Unwrapping",
-        "Wrap",
-        "Wrapper",
-        "Wrappers",
-        "Wrapping",
-        "Wrappings"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Bubblewrap, styrofoam, labels, food packaging. Bubblewrap pops are a distinctive dense impulsive train and styrofoam squeaks are a bright friction — but both morphologies are already owned by PLASTIC, and 'packaging' itself is a use, not a sound.",
-          "Heavily overlaps PLASTIC-MOVEMENT, PLASTIC-HANDLE, PAPER-HANDLE (cardboard) and OBJECTS-CONTAINER."
-        ],
-        "confusable_with": [
-          "PLASMvmt",
-          "PLASHndl",
-          "PAPRHndl",
-          "OBJCont",
-          "OBJTape"
-        ]
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.00626,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 0.00564,
+       "reasoned_mean": 0.05,
+       "reasoned_deviation": 0.06,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "TAPE",
-      "category_id": "OBJTape",
-      "category_short": "OBJ",
-      "explanation": [
-        "Tape and other tacky sticky type sounds as well. Velcro probably better into CLOTH-RIP as that matches the 'sound' better."
-      ],
-      "synonyms": [
-        "Adhesive",
-        "Cellophane",
-        "Double",
-        "Double-Sided",
-        "Duct",
-        "Electrical",
-        "Flypaper",
-        "Gaffer",
-        "Glue",
-        "Masking",
-        "Medical",
-        "Packing",
-        "Scotch",
-        "Sellotape",
-        "Stick",
-        "Sticky",
-        "Transparent",
-        "Velcro"
-      ],
-      "acoustic_signature": {
-        "morphology": "friction",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          },
-          {
-            "feature": "crest_factor",
-            "max": 25.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.5,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4200.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.58,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 6.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.08,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Physically this is friction — a sustained, low-crest, bright rasp as adhesive peels — so the morphology is real even though the object identity is not measurable. It looks almost exactly like PAPER-RIP and CLOTH-RIP.",
-          "UCS rule mined from the explanation: Velcro belongs in CLOTH-RIP, not here.",
-          "A tape-gun pull has a rising buzz that can approach OBJECTS-ZIPPER, but its onset_periodicity stays far lower."
-        ],
-        "confusable_with": [
-          "PAPRRip",
-          "CLOTHRip",
-          "OBJPack",
-          "OBJZipr"
-        ]
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.39985,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 0.15073,
+       "reasoned_mean": 0.7,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "UMBRELLA",
-      "category_id": "OBJUmbr",
-      "category_short": "OBJ",
-      "explanation": [
-        "Umbrella opens and closes. Not for rain on umbrella",
-        "which would go in RAIN-CLOTH."
-      ],
-      "synonyms": [
-        "Beach",
-        "Brolly",
-        "Broly",
-        "Bumbershoot",
-        "Canopy",
-        "Compact",
-        "Gamp",
-        "Golf",
-        "Pagoda",
-        "Parasol",
-        "Patio",
-        "Rain",
-        "Sunshade",
-        "Travel",
-        "Umbrella"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "An umbrella open/close is a real composite event — a metal ratchet click, a spring pop, and a nylon canopy whoosh — but every component belongs to another subcategory and no single feature says 'umbrella'.",
-          "UCS rule mined from the explanation: rain ON an umbrella is RAIN-CLOTH, not here. That is a hard semantic redirect, not an acoustic one."
-        ],
-        "confusable_with": [
-          "CLOTHFlp",
-          "CLOTHMvmt",
-          "OBJHsehld"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.30155,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 0.17395,
+       "reasoned_mean": 0.25,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "WHEELED",
-      "category_id": "OBJWhled",
-      "category_short": "OBJ",
-      "explanation": [
-        "Non-motorized wheeled carts and dollies. Shopping cart",
-        "food cart",
-        "baggage cart",
-        "baby stroller",
-        "dolly",
-        "wheelchairs."
-      ],
-      "synonyms": [
-        "Baby",
-        "Barrow",
-        "Caddie",
-        "Carriage",
-        "Cart",
-        "Caster",
-        "Dolly",
-        "Gurney",
-        "Hand",
-        "Handcart",
-        "Luggage",
-        "Perambulator",
-        "Pram",
-        "Pushcart",
-        "Rolled",
-        "Rolling",
-        "Shopping",
-        "Skateboard",
-        "Stroller",
-        "Suitcase",
-        "Truck",
-        "Wagon",
-        "Walker",
-        "Wheelbarrow",
-        "Wheelchair"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.3,
-            "max": 300.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.4,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 6.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Physically the only sustained-noise object here: a cart, dolly, stroller or wheelchair rolling produces a continuous rumble-and-caster-rattle bed, often many seconds long, with high stationarity and a low crest factor. That much is measurable.",
-          "The identity is not: a shopping cart, a gurney and a baggage cart are the same physics. And a stopped cart being handled collapses back into the generic handling scene.",
-          "Its long, stationary, sustained character is what separates it from every other OBJECTS subcategory, which are all short transient scenes."
-        ],
-        "confusable_with": [
-          "OBJLug",
-          "OBJGym",
-          "OBJFurn"
-        ]
+     },
+     {
+      "feature": "partial_count",
+      "mean": 12.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 3.96955,
+       "reasoned_mean": 8.0,
+       "reasoned_deviation": 5.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "WRITING",
-      "category_id": "OBJWrite",
-      "category_short": "OBJ",
-      "explanation": [
-        "Any writing object or performance of writing on any surface. Pens",
-        "pencils",
-        "crayons",
-        "markers."
-      ],
-      "synonyms": [
-        "Blotter",
-        "Blotting",
-        "Board",
-        "Calligraphy",
-        "Chalk",
-        "Charcoal",
-        "Crayon",
-        "Drafting",
-        "Drawing",
-        "Dry",
-        "Erase",
-        "Eraser",
-        "Fountain",
-        "Handwriting",
-        "Highlighter",
-        "Ink",
-        "Inscription",
-        "Lettering",
-        "Letters",
-        "Marker",
-        "Pen",
-        "Pencil",
-        "Penned",
-        "Penning",
-        "Print",
-        "Printed",
-        "Quill",
-        "Script",
-        "Sharpie",
-        "Signature",
-        "Spelled",
-        "Spelling",
-        "Writer",
-        "Written"
-      ],
-      "acoustic_signature": {
-        "morphology": "friction",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 120.0
-          },
-          {
-            "feature": "crest_factor",
-            "max": 25.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4500.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 7000.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.012,
-            "deviation": 0.015,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 6.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
-          "Physically a friction texture — pen, pencil or chalk scratching a surface: quiet, bright, sustained, low-crest, with a dense stochastic micro-onset structure. The morphology is measurable; that the implement is a pen rather than a fingernail is not.",
-          "It looks like a soft PAPER-FRICTION and will collide with it constantly. It is quieter than almost anything else in the taxonomy, so a very low root_mean_square_level is the one weak hint."
-        ],
-        "confusable_with": [
-          "PAPRFric",
-          "OBJOffc",
-          "PAPRHndl"
-        ]
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.49186,
+      "deviation": 2.71166,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 79,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 2.71166,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 2.6,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "ZIPPER",
-      "category_id": "OBJZipr",
-      "category_short": "OBJ",
-      "explanation": [
-        "Pant zippers",
-        "bag zippers",
-        "luggage zippers."
-      ],
-      "synonyms": [
-        "Bag",
-        "Closure",
-        "Closures",
-        "Fastener",
-        "Jacket",
-        "Pants",
-        "Slider",
-        "Tent",
-        "Zip",
-        "Zipper",
-        "Zips"
-      ],
-      "acoustic_signature": {
-        "morphology": "friction",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 20.0
-          },
-          {
-            "feature": "crest_factor",
-            "max": 20.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 90.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.72,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.48,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4000.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 5000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.5,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_slope_hz_per_second",
-            "mean": 0.0,
-            "deviation": 3000.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.8,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "The one unmistakable OBJECTS subcategory, and the reason this file is not entirely semantic_only. A zipper is a mechanical comb: every tooth passing the slider is an onset, so the signal is a buzz-rasp with a VERY high onset_rate (tens to hundreds per second) AND a HIGH onset_periodicity. That combination — dense AND periodic — occurs nowhere else in this material/object set.",
-          "Every other rasp is stochastic: PAPER-RIP, CLOTH-RIP, PLASTIC-FRICTION and RUBBER-FRICTION are all dense but have onset_periodicity near zero. Periodicity is the entire discriminator.",
-          "Zip speed modulates the buzz rate within a single file, so the periodicity prior is deliberately loose on the low side; a slow zip degrades toward a rasp.",
-          "Against CLOTH-RIP specifically (UCS sends Velcro there): Velcro is a stochastic tear, a zipper is a periodic buzz."
-        ],
-        "confusable_with": [
-          "CLOTHRip",
-          "OBJBag",
-          "OBJLug",
-          "OBJFash"
-        ]
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 2.9652,
+       "reasoned_mean": 6.0,
+       "reasoned_deviation": 5.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    }
-  ]
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.553,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 341,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 2.38206,
+       "reasoned_mean": 6.0,
+       "reasoned_deviation": 2.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 17.09989,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 97,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 1.72029,
+       "reasoned_mean": 14.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.18538,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 97,
+       "fsd50k_classes": [
+        "Coin_(dropping)"
+       ],
+       "measured_deviation": 0.13357,
+       "reasoned_mean": 0.28,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "NOT hopeless, unlike its OBJECTS siblings: coins are small METAL plates. The jingle signature is a bright, inharmonic, multi-onset ring — high spectral_centroid, high inharmonicity, a real decay tail, and transient_count well above one. DSP can narrow to 'small bright ringing metal'.",
+     "It cannot finish the job: OBJECTS-KEYS is the same physics (as are OBJECTS-JEWELRY and CHAINS). The coin-vs-keys call is lexical.",
+     "Against the soft materials this is unmistakable: PLASTIC, RUBBER, CLOTH, LEATHER and PAPER all have decay_time_seconds_60db an order of magnitude shorter and much lower centroids. Against METAL-IMPACT proper: coins are small, so the ring is shorter and far brighter."
+    ],
+    "confusable_with": [
+     "OBJKey",
+     "OBJJewl",
+     "GLASImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "CONTAINER",
+   "category_id": "OBJCont",
+   "category_short": "OBJ",
+   "explanation": [
+    "Boxes",
+    "tupperware",
+    "jewelry boxes",
+    "things that hold things",
+    "lids",
+    "handling",
+    "opens and closes."
+   ],
+   "synonyms": [
+    "Aquarium",
+    "Baggie",
+    "Barrel",
+    "Basket",
+    "Bin",
+    "Box",
+    "Breadbox",
+    "Canister",
+    "Canisters",
+    "Capsule",
+    "Cardboard",
+    "Carton",
+    "Case",
+    "Casket",
+    "Chest",
+    "Cistern",
+    "Contain",
+    "Crate",
+    "Dispenser",
+    "Dumpster",
+    "Enclosure",
+    "Flask",
+    "Holder",
+    "Jar",
+    "Jars",
+    "Jewelry",
+    "Lid",
+    "Locker",
+    "Package",
+    "Pill",
+    "Plastic",
+    "Receptacle",
+    "Receptacles",
+    "Reliquary",
+    "Toolbox",
+    "Tray",
+    "Trunk",
+    "Tupperware",
+    "Vase",
+    "Vial"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Boxes, tupperware, lids opening and closing. The material (cardboard vs plastic vs glass) is somewhat measurable; that the object is a CONTAINER is not. Expect a lid click plus a body rattle.",
+     "Massively overlaps OBJECTS-PACKAGING, PLASTIC-HANDLE and PAPER-HANDLE."
+    ],
+    "confusable_with": [
+     "OBJPack",
+     "PLASHndl",
+     "PAPRHndl",
+     "OBJHsehld"
+    ]
+   }
+  },
+  {
+   "subcategory": "FASHION",
+   "category_id": "OBJFash",
+   "category_short": "OBJ",
+   "explanation": [
+    "Shoes",
+    "belts",
+    "clothes",
+    "actions involding fashion objects. Makeup",
+    "lipstick",
+    "etc. Some overlap possible with CLOTH categories. See also OBJECTS-JEWELRY. And OBJECTS-BAG."
+   ],
+   "synonyms": [
+    "Apparel",
+    "Attire",
+    "Bandana",
+    "Belt",
+    "Boots",
+    "Brush",
+    "Clothing",
+    "Clutch",
+    "Comb",
+    "Couture",
+    "Eyeliner",
+    "Garment",
+    "Glasses",
+    "Gloves",
+    "Handkerchief",
+    "Hat",
+    "Headband",
+    "High-Heels",
+    "Lipstick",
+    "Makeup",
+    "Mascara",
+    "Muffs",
+    "Outfit",
+    "Robe",
+    "Sash",
+    "Scarf",
+    "Shawl",
+    "Shoes",
+    "Sneakers",
+    "Socks",
+    "Sunglasses",
+    "Suspenders",
+    "Ties",
+    "Wallet",
+    "Wardrobe",
+    "Watches"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Shoes, belts, clothes, makeup. Nothing links these acoustically — they are cloth rustle, leather creak, plastic clicks or small taps depending on the item. UCS explicitly flags overlap with the CLOTH categories, OBJECTS-JEWELRY and OBJECTS-BAG."
+    ],
+    "confusable_with": [
+     "CLOTHHndl",
+     "OBJJewl",
+     "OBJBag",
+     "LETHRHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "FURNITURE",
+   "category_id": "OBJFurn",
+   "category_short": "OBJ",
+   "explanation": [
+    "Chairs movement",
+    "couch movement",
+    "things like that. Wood chair creaks could go in WOOD-FRICTION."
+   ],
+   "synonyms": [
+    "Antiques",
+    "Armoires",
+    "Bed",
+    "Bedframe",
+    "Bench",
+    "Bookcase",
+    "Bookcases",
+    "Bookshelf",
+    "Buffet",
+    "Cabinet",
+    "Cabinets",
+    "Chair",
+    "Chest",
+    "Coffee",
+    "Console",
+    "Couch",
+    "Couches",
+    "Credenza",
+    "Crib",
+    "Desk",
+    "Dining",
+    "Dresser",
+    "Dressers",
+    "End",
+    "Footlocker",
+    "Futon",
+    "Hutch",
+    "Loveseat",
+    "Mattress",
+    "Mattresses",
+    "Nightstand",
+    "Ottoman",
+    "Rocking",
+    "Rugs",
+    "Shelf",
+    "Shelving",
+    "Sideboard",
+    "Sofa",
+    "Sofas",
+    "Stool",
+    "Table",
+    "Upholstery",
+    "Wardrobe"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Chair and couch movement: a scrape or drag plus upholstery rustle and body creaks. UCS rule mined from the explanation: a wood chair CREAK belongs in WOOD-FRICTION, not here — so a strongly pitched stick-slip creak should be handed to the WOOD sibling.",
+     "Otherwise indistinguishable from any other large-object drag."
+    ],
+    "confusable_with": [
+     "CLOTHMvmt",
+     "LETHRCreak",
+     "OBJHsehld"
+    ]
+   }
+  },
+  {
+   "subcategory": "GARDEN",
+   "category_id": "OBJGrdn",
+   "category_short": "OBJ",
+   "explanation": [
+    "Flower pots",
+    "bird feeders",
+    "things that you might find and use in a garden. See also TOOLS-GARDEN and MACHINES-GARDEN."
+   ],
+   "synonyms": [
+    "Bath",
+    "Bin",
+    "Bird",
+    "Can",
+    "Compost",
+    "Composter",
+    "Faucet",
+    "Feeder",
+    "Flower",
+    "Gloves",
+    "Greenhouse",
+    "Hose",
+    "Killer",
+    "Labels",
+    "Plant",
+    "Pot",
+    "Sculpture",
+    "Stake",
+    "Stakes",
+    "Trellis",
+    "Watering",
+    "Weed"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Flower pots, bird feeders, watering cans: ceramic, metal and plastic objects with nothing acoustic in common. UCS cross-references TOOLS-GARDEN and MACHINES-GARDEN — the split is by object type, not by sound."
+    ],
+    "confusable_with": [
+     "OBJHsehld",
+     "OBJCont",
+     "CERMImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "GYM",
+   "category_id": "OBJGym",
+   "category_short": "OBJ",
+   "explanation": [
+    "Objects found in a fitness center or school gym",
+    "maybe a yoga mat",
+    "dumbells. See also MACHINES-GYM."
+   ],
+   "synonyms": [
+    "Ball",
+    "Band",
+    "Bar",
+    "Barbell",
+    "Bench",
+    "Boxing",
+    "Dumbbell",
+    "Exercise",
+    "Fitness",
+    "Foam",
+    "Gloves",
+    "Jump",
+    "Kettlebell",
+    "Mat",
+    "Medicine",
+    "Pull-Up",
+    "Rack",
+    "Resistance",
+    "Roller",
+    "Rope",
+    "Stepper",
+    "Weight",
+    "Yoga"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Dumbbells, mats, ropes, medicine balls. A dumbbell is METAL-IMPACT physics; a yoga mat is RUBBER-MOVEMENT physics. The category is a location, not a sound. UCS cross-references MACHINES-GYM."
+    ],
+    "confusable_with": [
+     "OBJHsehld",
+     "RUBRMvmt",
+     "METLImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "HOUSEHOLD",
+   "category_id": "OBJHsehld",
+   "category_short": "OBJ",
+   "explanation": [
+    "Cleaning products",
+    "hangers",
+    "towel racks",
+    "things around the house that don't fit somewhere else."
+   ],
+   "synonyms": [
+    "Broom",
+    "Can",
+    "Cleaning",
+    "Domestic",
+    "Home",
+    "House",
+    "Mirror",
+    "Mop",
+    "Rug",
+    "Soap",
+    "Sponge",
+    "Supplies",
+    "Trash"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "The residual bin for domestic objects — cleaning products, hangers, towel racks. Defined by what it is NOT, so no acoustic prior can be honest beyond 'a handled object'."
+    ],
+    "confusable_with": [
+     "OBJMisc",
+     "OBJCont",
+     "OBJFurn",
+     "OBJOffc"
+    ]
+   }
+  },
+  {
+   "subcategory": "JEWELRY",
+   "category_id": "OBJJewl",
+   "category_short": "OBJ",
+   "explanation": [
+    "Bracelets",
+    "necklaces",
+    "rings."
+   ],
+   "synonyms": [
+    "Accessories",
+    "Adornment",
+    "Adornments",
+    "Anklet",
+    "Bangles",
+    "Baubles",
+    "Bead",
+    "Beaded",
+    "Beads",
+    "Beadwork",
+    "Bling",
+    "Bracelet",
+    "Bracelets",
+    "Bridal",
+    "Brooch",
+    "Brooches",
+    "Cabochons",
+    "Charm",
+    "Choker",
+    "Crown",
+    "Cufflink",
+    "Cufflinks",
+    "Diamond",
+    "Diamonds",
+    "Earing",
+    "Earring",
+    "Earrings",
+    "Gem",
+    "Gemstone",
+    "Gemstones",
+    "Hairpin",
+    "Jewel",
+    "Jeweled",
+    "Jeweler",
+    "Jewelers",
+    "Jewelery",
+    "Jeweller",
+    "Jewellery",
+    "Jewels",
+    "Locket",
+    "Necklace",
+    "Necklaces",
+    "Nose",
+    "Ornament",
+    "Ornaments",
+    "Pendant",
+    "Pendants",
+    "Pin",
+    "Ring",
+    "Tiara",
+    "Tie",
+    "Trinkets",
+    "Watch"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Bracelets, necklaces, rings are often small ringing metal, which puts a genuinely bright, inharmonic, multi-onset file in the same place as OBJECTS-COIN and OBJECTS-KEYS. But jewelry is also beads, leather cord and fabric, so the acoustic prior is not reliable enough to lift the tier the way it is for COIN and KEYS.",
+     "If a file really does read as bright ringing metal, treat COIN / KEYS / JEWELRY as one shortlist and let the synonyms pick."
+    ],
+    "confusable_with": [
+     "OBJCoin",
+     "OBJKey",
+     "OBJFash",
+     "CHAINMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "KEYS",
+   "category_id": "OBJKey",
+   "category_short": "OBJ",
+   "explanation": [
+    "Keys jingling",
+    "keys movement in lock."
+   ],
+   "synonyms": [
+    "Bicycle",
+    "Car",
+    "Card",
+    "Fob",
+    "House",
+    "Key",
+    "Keychain",
+    "Keyes",
+    "Keyholes",
+    "Keylock",
+    "Keyring",
+    "Keys",
+    "Keyset",
+    "Lanyard",
+    "Lock",
+    "Locker",
+    "Mailbox",
+    "Master",
+    "Office",
+    "Padlock",
+    "Safe",
+    "Skeleton",
+    "Unlock",
+    "Unlocking",
+    "Unlocks"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 40.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 10891.03849,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 1.20794,
+       "reasoned_mean": 5000.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 16298.65316,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 1.11825,
+       "reasoned_mean": 11000.0,
+       "reasoned_deviation": 1.7,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.96736,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 0.02694,
+       "reasoned_mean": 0.62,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.00846,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 0.00758,
+       "reasoned_mean": 0.06,
+       "reasoned_deviation": 0.07,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.38556,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 0.16297,
+       "reasoned_mean": 0.72,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 9.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 4.4478,
+       "reasoned_mean": 9.0,
+       "reasoned_deviation": 5.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.3,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 12.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 5.9304,
+       "reasoned_mean": 15.0,
+       "reasoned_deviation": 12.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.47394,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 2.06608,
+       "reasoned_mean": 12.0,
+       "reasoned_deviation": 2.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 17.64824,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 33,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 1.58648,
+       "reasoned_mean": 11.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.23968,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 143,
+       "fsd50k_classes": [
+        "Keys_jangling"
+       ],
+       "measured_deviation": 0.00834,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Like OBJECTS-COIN this is small ringing metal, and therefore signal_narrowable rather than semantic_only: a jingle is a dense, bright, inharmonic multi-onset cascade. A shaken keyring produces a markedly higher onset_rate than a coin drop — that is the only weak DSP lever between them, and it is not enough to commit on.",
+     "Keys-in-a-lock is a different scene: a few sharp metallic clicks with a short ring. Both readings stay inside the metal cluster.",
+     "Ruled out against every soft material by decay_time_seconds_60db and spectral_centroid: no plastic, rubber, cloth, leather or paper event rings this long this brightly."
+    ],
+    "confusable_with": [
+     "OBJCoin",
+     "OBJJewl",
+     "CHAINMvmt",
+     "METLMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "LUGGAGE",
+   "category_id": "OBJLug",
+   "category_short": "OBJ",
+   "explanation": [
+    "Suitcases",
+    "luggage related sounds",
+    "handling",
+    "opening",
+    "packing."
+   ],
+   "synonyms": [
+    "Backpack",
+    "Bag",
+    "Baggage",
+    "Baggages",
+    "Bagroom",
+    "Bellhop",
+    "Carry-On",
+    "Carryon",
+    "Checked",
+    "Cubes",
+    "Duffel",
+    "Duffels",
+    "Duffle",
+    "Garment",
+    "Knapsack",
+    "Knapsacks",
+    "Luggage",
+    "Packing",
+    "Rolling",
+    "Rucksack",
+    "Samsonite",
+    "Satchel",
+    "Scale",
+    "Skycap",
+    "Stow",
+    "Stowing",
+    "Suitcase",
+    "Suitcases",
+    "Tag",
+    "Toiletry",
+    "Trolley",
+    "Trunks"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Suitcases: zippers, wheels, handles, thumps. Each of those is a different morphology, and each is claimed by a better-specified subcategory — a suitcase zipper is OBJECTS-ZIPPER's signature, a rolling suitcase is OBJECTS-WHEELED's. LUGGAGE itself is purely lexical.",
+     "UCS rule: OBJECTS-BAG explicitly excludes luggage, so the two are separated by the word, not the waveform."
+    ],
+    "confusable_with": [
+     "OBJBag",
+     "OBJZipr",
+     "OBJWhled",
+     "CLOTHHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "MEDICAL",
+   "category_id": "OBJMed",
+   "category_short": "OBJ",
+   "explanation": [
+    "Common objects in hospital or medical office."
+   ],
+   "synonyms": [
+    "Aid",
+    "Bandage",
+    "Blood",
+    "Brace",
+    "Cast",
+    "Clamp",
+    "Crutches",
+    "Cuff",
+    "Epipen",
+    "Forceps",
+    "Gauss",
+    "Gauze",
+    "Gloves",
+    "Hearing",
+    "Mask",
+    "Meter",
+    "Pills",
+    "Pressure",
+    "Rubber",
+    "Scalpel",
+    "Specimen",
+    "Stethoscope",
+    "Surgical",
+    "Swab",
+    "Syringe",
+    "Thermometer"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Objects in a hospital or medical office — gloves, syringes, pill bottles. Latex glove snaps are RUBBER physics; pill bottles are PLASTIC physics. The category is a setting."
+    ],
+    "confusable_with": [
+     "RUBRHndl",
+     "PLASHndl",
+     "OBJHsehld",
+     "OBJCont"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "OBJMisc",
+   "category_short": "OBJ",
+   "explanation": [
+    "Object sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "The residual of a residual. Emitted by abstention whenever the OBJECTS siblings tie — which, given that almost the whole category is semantic_only, is the expected outcome for any un-named object-handling file."
+    ],
+    "confusable_with": [
+     "OBJHsehld",
+     "OBJCont",
+     "OBJFash"
+    ]
+   }
+  },
+  {
+   "subcategory": "OFFICE",
+   "category_id": "OBJOffc",
+   "category_short": "OBJ",
+   "explanation": [
+    "Things found in an office",
+    "staplers",
+    "paper cutter etc. Not machines like a printer which would go in MACHINES-OFFICE."
+   ],
+   "synonyms": [
+    "Binder",
+    "Business",
+    "Calculator",
+    "Calendar",
+    "Can",
+    "Card",
+    "Chair",
+    "Cutter",
+    "Desk",
+    "Envelope",
+    "Folder",
+    "Hole",
+    "Notepad",
+    "Office",
+    "Paper",
+    "Paperweight",
+    "Post-It",
+    "Punch",
+    "Report",
+    "Scissors",
+    "Stapler",
+    "Supplies",
+    "Trash",
+    "Tray",
+    "Whiteboard"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Staplers, hole punches, paper cutters, scissors: small sharp metal-and-plastic clicks over paper rustle. UCS rule: a printer is a MACHINE, not an OBJECT.",
+     "A stapler click is a bright short impact, indistinguishable from a hundred other small mechanisms."
+    ],
+    "confusable_with": [
+     "OBJHsehld",
+     "OBJWrite",
+     "PAPRHndl",
+     "PLASHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "PACKAGING",
+   "category_id": "OBJPack",
+   "category_short": "OBJ",
+   "explanation": [
+    "Items commonly used in packaging or packing",
+    "so bubblewrap",
+    "styrofoam",
+    "labels",
+    "food packaging."
+   ],
+   "synonyms": [
+    "Bag",
+    "Box",
+    "Bubble",
+    "Cardboard",
+    "Corrugated",
+    "Crate",
+    "Envelope",
+    "Foam",
+    "Label",
+    "Labeling",
+    "Labelling",
+    "Labels",
+    "Mailing",
+    "Overwrap",
+    "Package",
+    "Packagings",
+    "Packed",
+    "Packing",
+    "Padding",
+    "Pallet",
+    "Paper",
+    "Parcel",
+    "Peanuts",
+    "Shipment",
+    "Shipping",
+    "Shrink",
+    "Strapping",
+    "Stretch",
+    "Styrofoam",
+    "Unwrapping",
+    "Wrap",
+    "Wrapper",
+    "Wrappers",
+    "Wrapping",
+    "Wrappings"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Bubblewrap, styrofoam, labels, food packaging. Bubblewrap pops are a distinctive dense impulsive train and styrofoam squeaks are a bright friction — but both morphologies are already owned by PLASTIC, and 'packaging' itself is a use, not a sound.",
+     "Heavily overlaps PLASTIC-MOVEMENT, PLASTIC-HANDLE, PAPER-HANDLE (cardboard) and OBJECTS-CONTAINER."
+    ],
+    "confusable_with": [
+     "PLASMvmt",
+     "PLASHndl",
+     "PAPRHndl",
+     "OBJCont",
+     "OBJTape"
+    ]
+   }
+  },
+  {
+   "subcategory": "TAPE",
+   "category_id": "OBJTape",
+   "category_short": "OBJ",
+   "explanation": [
+    "Tape and other tacky sticky type sounds as well. Velcro probably better into CLOTH-RIP as that matches the 'sound' better."
+   ],
+   "synonyms": [
+    "Adhesive",
+    "Cellophane",
+    "Double",
+    "Double-Sided",
+    "Duct",
+    "Electrical",
+    "Flypaper",
+    "Gaffer",
+    "Glue",
+    "Masking",
+    "Medical",
+    "Packing",
+    "Scotch",
+    "Sellotape",
+    "Stick",
+    "Sticky",
+    "Transparent",
+    "Velcro"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6638.58454,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 96,
+       "fsd50k_classes": [
+        "Packing_tape_and_duct_tape"
+       ],
+       "measured_deviation": 1.39493,
+       "reasoned_mean": 4200.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.82944,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 96,
+       "fsd50k_classes": [
+        "Packing_tape_and_duct_tape"
+       ],
+       "measured_deviation": 0.10057,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.13409,
+      "deviation": 0.11151,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 96,
+       "fsd50k_classes": [
+        "Packing_tape_and_duct_tape"
+       ],
+       "measured_deviation": 0.11151,
+       "reasoned_mean": 0.08,
+       "reasoned_deviation": 0.1,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Physically this is friction — a sustained, low-crest, bright rasp as adhesive peels — so the morphology is real even though the object identity is not measurable. It looks almost exactly like PAPER-RIP and CLOTH-RIP.",
+     "UCS rule mined from the explanation: Velcro belongs in CLOTH-RIP, not here.",
+     "A tape-gun pull has a rising buzz that can approach OBJECTS-ZIPPER, but its onset_periodicity stays far lower."
+    ],
+    "confusable_with": [
+     "PAPRRip",
+     "CLOTHRip",
+     "OBJPack",
+     "OBJZipr"
+    ]
+   }
+  },
+  {
+   "subcategory": "UMBRELLA",
+   "category_id": "OBJUmbr",
+   "category_short": "OBJ",
+   "explanation": [
+    "Umbrella opens and closes. Not for rain on umbrella",
+    "which would go in RAIN-CLOTH."
+   ],
+   "synonyms": [
+    "Beach",
+    "Brolly",
+    "Broly",
+    "Bumbershoot",
+    "Canopy",
+    "Compact",
+    "Gamp",
+    "Golf",
+    "Pagoda",
+    "Parasol",
+    "Patio",
+    "Rain",
+    "Sunshade",
+    "Travel",
+    "Umbrella"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "An umbrella open/close is a real composite event — a metal ratchet click, a spring pop, and a nylon canopy whoosh — but every component belongs to another subcategory and no single feature says 'umbrella'.",
+     "UCS rule mined from the explanation: rain ON an umbrella is RAIN-CLOTH, not here. That is a hard semantic redirect, not an acoustic one."
+    ],
+    "confusable_with": [
+     "CLOTHFlp",
+     "CLOTHMvmt",
+     "OBJHsehld"
+    ]
+   }
+  },
+  {
+   "subcategory": "WHEELED",
+   "category_id": "OBJWhled",
+   "category_short": "OBJ",
+   "explanation": [
+    "Non-motorized wheeled carts and dollies. Shopping cart",
+    "food cart",
+    "baggage cart",
+    "baby stroller",
+    "dolly",
+    "wheelchairs."
+   ],
+   "synonyms": [
+    "Baby",
+    "Barrow",
+    "Caddie",
+    "Carriage",
+    "Cart",
+    "Caster",
+    "Dolly",
+    "Gurney",
+    "Hand",
+    "Handcart",
+    "Luggage",
+    "Perambulator",
+    "Pram",
+    "Pushcart",
+    "Rolled",
+    "Rolling",
+    "Shopping",
+    "Skateboard",
+    "Stroller",
+    "Suitcase",
+    "Truck",
+    "Wagon",
+    "Walker",
+    "Wheelbarrow",
+    "Wheelchair"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Physically the only sustained-noise object here: a cart, dolly, stroller or wheelchair rolling produces a continuous rumble-and-caster-rattle bed, often many seconds long, with high stationarity and a low crest factor. That much is measurable.",
+     "The identity is not: a shopping cart, a gurney and a baggage cart are the same physics. And a stopped cart being handled collapses back into the generic handling scene.",
+     "Its long, stationary, sustained character is what separates it from every other OBJECTS subcategory, which are all short transient scenes."
+    ],
+    "confusable_with": [
+     "OBJLug",
+     "OBJGym",
+     "OBJFurn"
+    ]
+   }
+  },
+  {
+   "subcategory": "WRITING",
+   "category_id": "OBJWrite",
+   "category_short": "OBJ",
+   "explanation": [
+    "Any writing object or performance of writing on any surface. Pens",
+    "pencils",
+    "crayons",
+    "markers."
+   ],
+   "synonyms": [
+    "Blotter",
+    "Blotting",
+    "Board",
+    "Calligraphy",
+    "Chalk",
+    "Charcoal",
+    "Crayon",
+    "Drafting",
+    "Drawing",
+    "Dry",
+    "Erase",
+    "Eraser",
+    "Fountain",
+    "Handwriting",
+    "Highlighter",
+    "Ink",
+    "Inscription",
+    "Lettering",
+    "Letters",
+    "Marker",
+    "Pen",
+    "Pencil",
+    "Penned",
+    "Penning",
+    "Print",
+    "Printed",
+    "Quill",
+    "Script",
+    "Sharpie",
+    "Signature",
+    "Spelled",
+    "Spelling",
+    "Writer",
+    "Written"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5171.23191,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 291,
+       "fsd50k_classes": [
+        "Writing"
+       ],
+       "measured_deviation": 1.63335,
+       "reasoned_mean": 4500.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.6213,
+      "deviation": 0.26989,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 291,
+       "fsd50k_classes": [
+        "Writing"
+       ],
+       "measured_deviation": 0.26989,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4703.68576,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 291,
+       "fsd50k_classes": [
+        "Writing"
+       ],
+       "measured_deviation": 2.49445,
+       "reasoned_mean": 7000.0,
+       "reasoned_deviation": 2.6,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.012,
+      "deviation": 0.015,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "This is object IDENTITY, not morphology. Acoustically it is a short handling / impact / rattle scene indistinguishable from a dozen sibling OBJECTS subcategories — DSP must never assert it. The gates only rule out things that are physically not a handled object (a 10 ms click, a ten-minute bed); the synonyms carry all the real evidence.",
+     "Physically a friction texture — pen, pencil or chalk scratching a surface: quiet, bright, sustained, low-crest, with a dense stochastic micro-onset structure. The morphology is measurable; that the implement is a pen rather than a fingernail is not.",
+     "It looks like a soft PAPER-FRICTION and will collide with it constantly. It is quieter than almost anything else in the taxonomy, so a very low root_mean_square_level is the one weak hint."
+    ],
+    "confusable_with": [
+     "PAPRFric",
+     "OBJOffc",
+     "PAPRHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "ZIPPER",
+   "category_id": "OBJZipr",
+   "category_short": "OBJ",
+   "explanation": [
+    "Pant zippers",
+    "bag zippers",
+    "luggage zippers."
+   ],
+   "synonyms": [
+    "Bag",
+    "Closure",
+    "Closures",
+    "Fastener",
+    "Jacket",
+    "Pants",
+    "Slider",
+    "Tent",
+    "Zip",
+    "Zipper",
+    "Zips"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 20.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.15396,
+      "deviation": 2.25019,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 315,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 2.25019,
+       "reasoned_mean": 90.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.72,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.11842,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 41,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 0.10289,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.44966,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 41,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 0.1224,
+       "reasoned_mean": 0.48,
+       "reasoned_deviation": 0.14,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4561.11407,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 315,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 1.47065,
+       "reasoned_mean": 4000.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.56556,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 315,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 0.19151,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2917.63826,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 315,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 1.94752,
+       "reasoned_mean": 5000.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.38078,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 315,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 0.18584,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.11581,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 41,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 1.88499,
+       "reasoned_mean": 5.5,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 1.47144,
+      "deviation": 3000.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 315,
+       "fsd50k_classes": [
+        "Zipper_(clothing)"
+       ],
+       "measured_deviation": 248.87408,
+       "reasoned_mean": 0.0,
+       "reasoned_deviation": 3000.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The one unmistakable OBJECTS subcategory, and the reason this file is not entirely semantic_only. A zipper is a mechanical comb: every tooth passing the slider is an onset, so the signal is a buzz-rasp with a VERY high onset_rate (tens to hundreds per second) AND a HIGH onset_periodicity. That combination — dense AND periodic — occurs nowhere else in this material/object set.",
+     "Every other rasp is stochastic: PAPER-RIP, CLOTH-RIP, PLASTIC-FRICTION and RUBBER-FRICTION are all dense but have onset_periodicity near zero. Periodicity is the entire discriminator.",
+     "Zip speed modulates the buzz rate within a single file, so the periodicity prior is deliberately loose on the low side; a slow zip degrades toward a rasp.",
+     "Against CLOTH-RIP specifically (UCS sends Velcro there): Velcro is a stochastic tear, a zipper is a periodic buzz."
+    ],
+    "confusable_with": [
+     "CLOTHRip",
+     "OBJBag",
+     "OBJLug",
+     "OBJFash"
+    ]
+   }
+  }
+ ]
 }

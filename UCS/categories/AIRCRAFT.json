@@ -1,1596 +1,1968 @@
 {
-  "version": "8.2.1",
-  "category": "AIRCRAFT",
-  "subcategories": [
-    {
-      "subcategory": "BALLOON",
-      "category_id": "AEROBaln",
-      "category_short": "AERO",
-      "explanation": [
-        "Lighter-than-air craft: hot air balloons",
-        "airships and blimps.",
-        "The propane burner",
-        "the envelope",
-        "the inflation fan and the basket."
-      ],
-      "synonyms": [
-        "Aerostat",
-        "Airship",
-        "Balloon",
-        "Ballooning",
-        "Basket",
-        "Blimp",
-        "Burner",
-        "Dirigible",
-        "Envelope",
-        "Gasbag",
-        "Gondola",
-        "Hot Air",
-        "Inflation",
-        "Lighter-Than-Air",
-        "Propane",
-        "Zeppelin"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.55
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.45
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.05,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 5.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 900,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.5,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.25
-          }
-        ],
-        "discriminators": [
-          "Nothing else in AIRCRAFT sounds like this. There is no engine and no rotor: the burner is a turbulent, unpitched propane roar of a few seconds, then near-silence as the balloon drifts. That silence between burns is as diagnostic as the burn.",
-          "Acoustically the burner IS a FIRE-TURBULENT blast — same physics, same statistics. DSP will narrow to 'turbulent gas roar' and stop there; only the words balloon, burner, propane, airship or blimp commit it to AIRCRAFT. Never assert this from signal alone.",
-          "Separate it from AIRCRAFT-JET and MOTORS-TURBINE by the absence of any sustained tonal core — a jet has a screaming harmonic whine riding on its noise, a burner has none. The envelope flapping in the wind is CLOTH-FLAP; the inflation fan is MACHINES-FAN."
-        ],
-        "confusable_with": [
-          "AEROMisc",
-          "AEROProp",
-          "AEROJet",
-          "FIRETurb",
-          "FIREBrst",
-          "MOTRTurb",
-          "AIRBlow",
-          "CLOTHFlp"
-        ]
+ "version": "8.2.1",
+ "category": "AIRCRAFT",
+ "subcategories": [
+  {
+   "subcategory": "BALLOON",
+   "category_id": "AEROBaln",
+   "category_short": "AERO",
+   "explanation": [
+    "Lighter-than-air craft: hot air balloons",
+    "airships and blimps.",
+    "The propane burner",
+    "the envelope",
+    "the inflation fan and the basket."
+   ],
+   "synonyms": [
+    "Aerostat",
+    "Airship",
+    "Balloon",
+    "Ballooning",
+    "Basket",
+    "Blimp",
+    "Burner",
+    "Dirigible",
+    "Envelope",
+    "Gasbag",
+    "Gondola",
+    "Hot Air",
+    "Inflation",
+    "Lighter-Than-Air",
+    "Propane",
+    "Zeppelin"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "DOOR",
-      "category_id": "AERODoor",
-      "category_short": "AERO",
-      "explanation": [
-        "Aircraft doors",
-        "some possible overlap with other DOOR categories",
-        "or VEHICLES-DOOR."
-      ],
-      "synonyms": [
-        "Airplane",
-        "Aviation",
-        "Boarding",
-        "Cabin",
-        "Cargo",
-        "Cockpit",
-        "Emergency",
-        "Entrance",
-        "Entryway",
-        "Exit",
-        "Fuselage",
-        "Hatch",
-        "Helicopter",
-        "Jet",
-        "Panel",
-        "Passenger",
-        "Ports",
-        "Trapdoor",
-        "Wing"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 30.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.01,
-            "deviation": 2.718,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 8.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.32,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_skewness",
-            "mean": 1.4,
-            "deviation": 1.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 1.5,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "transient_count",
-            "mean": 3.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.35,
-            "deviation": 2.356,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.45,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.3,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A door is a door. An aircraft hatch, a car door and a ship's bulkhead share one impulsive-mechanism morphology, and UCS itself flags the overlap with the general DOOR categories and VEHICLES-DOOR. Only the filename says which vehicle.",
-          "The gates still earn their keep: this is a transient event of seconds, never a minutes-long bed, which prunes it cleanly against AIRCRAFT-INTERIOR and AIRCRAFT-JET."
-        ],
-        "confusable_with": [
-          "AEROMech",
-          "AEROInt",
-          "BOATDoor",
-          "TRNDoor"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "HELICOPTER",
-      "category_id": "AEROHeli",
-      "category_short": "AERO",
-      "explanation": [
-        "For all manner of helicopters",
-        "gyrocopters."
-      ],
-      "synonyms": [
-        "Aerochopper",
-        "Aircraft",
-        "Apache",
-        "Autogiro",
-        "Autogyro",
-        "Bird",
-        "Blackhawk",
-        "Chopper",
-        "Choppers",
-        "Copter",
-        "Copters",
-        "Ghetto",
-        "Gyrocopter",
-        "Gyroplane",
-        "Heli",
-        "Helichopper",
-        "Helicopter",
-        "Helicopteron",
-        "Helicoptor",
-        "Helijet",
-        "Helipad",
-        "Helipilot",
-        "Heliport",
-        "Helo",
-        "Helos",
-        "Huey",
-        "Jetcopter",
-        "Lift",
-        "Medevac",
-        "Medivac",
-        "Multirotor",
-        "Ornithopter",
-        "Police",
-        "Rotary-Wing",
-        "Rotodyne",
-        "Rotorcraft",
-        "Sar",
-        "Sikorsky",
-        "Skyhook",
-        "Tailwheel",
-        "Tiltrotor",
-        "Tricopter",
-        "Vertical",
-        "VTOL",
-        "Whirlybird"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 900.0
-          },
-          {
-            "feature": "onset_periodicity",
-            "min": 0.35
-          },
-          {
-            "feature": "low_band_energy",
-            "min": 0.2
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.78,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 12.0,
-            "deviation": 6.0,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.55,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 550.0,
-            "deviation": 400.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "beats_per_minute",
-            "mean": 660.0,
-            "deviation": 350.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "transient_count",
-            "mean": 120.0,
-            "deviation": 100.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.45,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.5,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.16,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 25.0,
-            "deviation": 25.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.62,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.2,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "The most distinctive vehicle in the taxonomy, and it is pure physics. A main rotor turns at roughly 5 revolutions per second with 2-5 blades, so BLADE-PASS lands at about 10-20 events per second — slow enough that both the ear and an onset detector resolve them as DISCRETE, LOW-FREQUENCY THUMPS rather than a pitch. Hence a very high onset_periodicity (~0.78, gated >= 0.35), an onset_rate_per_second in the 5-20 band, and dominant low_band_energy (gated >= 0.20). Nothing else in AIRCRAFT does this, and it is genuinely signal_separable.",
-          "Against AIRCRAFT-JET: a jet is broadband roaring noise with NO periodic blade thump whatsoever. The onset_periodicity axis alone separates them — this subcategory's floor of 0.35 and JET's ceiling of 0.55 do not meet in practice.",
-          "Against AIRCRAFT-PROP: the SAME blade-pass mechanism an order of magnitude faster. A propeller at ~40 rev/s with 2-3 blades puts blade-pass at 80-120 Hz, above the ~20 Hz limit of event resolution, so it FUSES into a pitched buzz — sustained_tonal with a measurable pitch_hz. The onset_rate_per_second axis is therefore the discriminator: ~12 discrete thumps per second here, versus a pitch there.",
-          "Against AIRCRAFT-RADIO CONTROLLED: an RC quadcopter's small, fast rotors push blade-pass into the hundreds of hertz with an HF-tilted spectrum. It whines; it does not thump. The low_band_energy gate usually rejects it outright."
-        ],
-        "confusable_with": [
-          "AEROProp",
-          "AEROJet",
-          "AERORadio",
-          "AEROMil",
-          "AEROMisc"
-        ]
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "INTERIOR",
-      "category_id": "AEROInt",
-      "category_short": "AERO",
-      "explanation": [
-        "Interior recordings (mainly complex ambiences) of aircraft",
-        "from cockpit interiors",
-        "to passenger jet interiors."
-      ],
-      "synonyms": [
-        "737",
-        "747",
-        "777",
-        "A310",
-        "A330",
-        "A350",
-        "A380",
-        "Aboard",
-        "Aeroplane",
-        "Airbus",
-        "Aircraft",
-        "Airliner",
-        "Airplane",
-        "Aisle",
-        "Avionics",
-        "Bay",
-        "Belly",
-        "Bins",
-        "Boeing",
-        "Bombardier",
-        "Bowels",
-        "Cabin",
-        "Cargo",
-        "Cockpit",
-        "Compartment",
-        "Crew",
-        "DC-10",
-        "Deck",
-        "Fighter",
-        "Flight",
-        "Fuselage",
-        "Galley",
-        "Glider",
-        "Hold",
-        "Inside",
-        "Interior",
-        "Jet",
-        "Jetliner",
-        "Jumbo",
-        "Lavatory",
-        "Learjet",
-        "Midflight",
-        "Flight",
-        "Overhead",
-        "Passenger",
-        "Zeppelin"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 2.0,
-            "max": 1800.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "band_limit_high_hz",
-            "mean": 5000.0,
-            "deviation": 2800.0,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.62,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.08,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 350.0,
-            "deviation": 250.0,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_rolloff_hz",
-            "mean": 1800.0,
-            "deviation": 1200.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_slope_db_per_octave",
-            "mean": -11.0,
-            "deviation": 4.0,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.85,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.05,
-            "deviation": 0.04,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 60.0,
-            "deviation": 60.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 3.6,
-            "deviation": 1.3,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.12,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.2,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "An LP-filtered rumble bed. The fuselage is a low-pass filter: band_limit_high_hz falls to a few kHz, low_band_energy dominates at ~0.62, spectral_slope_db_per_octave is steeply negative, and stationarity is very high because a cruising cabin is essentially room tone. LP + stationary is a real measurement and it prunes hard.",
-          "Against AIRCRAFT-JET (exterior): the exterior jet keeps its full broadband HF roar and is far brighter (spectral_centroid_hz ~1.4 kHz vs ~350 Hz here). This boundary is genuinely measurable.",
-          "Against BOATS-INTERIOR / TRAINS-INTERIOR: identical morphology — which vehicle you are inside is semantic. The one honest physical tell is that a TRAIN interior carries the wheel clack through the floor (onset_periodicity rises to ~0.45), while an aircraft cabin has no periodic component at all."
-        ],
-        "confusable_with": [
-          "AEROJet",
-          "AEROProp",
-          "BOATInt",
-          "TRNInt",
-          "AEROMisc"
-        ]
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "JET",
-      "category_id": "AEROJet",
-      "category_short": "AERO",
-      "explanation": [
-        "All commercial and private jet powered aircraft",
-        "military jets would go under AIRCRAFT-MILITARY."
-      ],
-      "synonyms": [
-        "737",
-        "747",
-        "777",
-        "A310",
-        "A330",
-        "A350",
-        "A380",
-        "Aeroplane",
-        "Afterburner",
-        "Airbus",
-        "Aircraft",
-        "Airliner",
-        "Airplane",
-        "Boeing",
-        "Bombardier",
-        "Cargo",
-        "Commercial",
-        "DC-10",
-        "Jet",
-        "Jetliner",
-        "Jumbo",
-        "Learjet",
-        "Passenger",
-        "Plane",
-        "Private",
-        "Ramjet",
-        "Regional",
-        "Scramjet",
-        "Supersonic",
-        "Turbojet",
-        "Twinjet",
-        "Unducted"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 1.0,
-            "max": 900.0
-          },
-          {
-            "feature": "onset_periodicity",
-            "max": 0.55
-          },
-          {
-            "feature": "spectral_flatness",
-            "min": 0.2
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.62,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.13,
-            "deviation": 0.11,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "complexity",
-            "mean": 3200.0,
-            "deviation": 1600.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1400.0,
-            "deviation": 900.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.38,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.28,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.68,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.11,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.25,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "lufs",
-            "mean": -15.0,
-            "deviation": 6.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 3.8,
-            "deviation": 1.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 25.0,
-            "deviation": 25.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_slope_hz_per_second",
-            "mean": 0.0,
-            "deviation": 300.0,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A turbine is a BROADBAND ROAR: jet efflux is turbulent mixing noise, which is stochastic by nature. High spectral_flatness (~0.62, gated >= 0.20), low harmonicity, wide complexity — and, decisively, NO blade-pass periodicity. onset_periodicity is gated at a maximum of 0.55 and expected near 0.13.",
-          "That periodicity axis is what genuinely separates JET from PROP and HELICOPTER, and it deserves stating plainly: prop and rotor aircraft stamp a MECHANICAL REPETITION RATE onto the noise (a blade sweeping past, over and over); a jet does not, because nothing about it repeats. Every other property of these three — loud, long, LF-weighted, noisy — is shared.",
-          "Against AIRCRAFT-MILITARY and AIRCRAFT-ROCKET: the same broadband-roar morphology, so DSP cannot finish. A rocket is louder, lower and flatter still; a military jet is acoustically just a jet. Text decides.",
-          "A pass-by adds doppler — spectral_centroid_slope_hz_per_second crossing through zero with a rise-fall envelope — but that identifies a PERSPECTIVE, not a different aircraft."
-        ],
-        "confusable_with": [
-          "AEROProp",
-          "AEROHeli",
-          "AEROMil",
-          "AERORckt",
-          "AEROInt",
-          "AEROMisc"
-        ]
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.05,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MECHANISM",
-      "category_id": "AEROMech",
-      "category_short": "AERO",
-      "explanation": [
-        "Mechanical components of aircraft",
-        "for example landing gear",
-        "or levers and switches."
-      ],
-      "synonyms": [
-        "Actuators",
-        "Aerofoil",
-        "Aeroplane",
-        "Aileron",
-        "Ailerons",
-        "Airbrake",
-        "Aircraft",
-        "Airplane",
-        "Apron",
-        "Arrester",
-        "Autopilot",
-        "Avionics",
-        "Bombsight",
-        "Brakes",
-        "Cockpit",
-        "Column",
-        "Control",
-        "Cowl",
-        "Cowling",
-        "Devices",
-        "Doors",
-        "Elevator",
-        "Elevators",
-        "Fin",
-        "Flap",
-        "Flaps",
-        "Flight",
-        "Gear",
-        "Gimbals",
-        "Gyroscope",
-        "Hook",
-        "Hydraulic",
-        "Instrument",
-        "Landing",
-        "Lever",
-        "Pedal",
-        "Propellers",
-        "Reversers",
-        "Rudder",
-        "Slats",
-        "Spoilers",
-        "Surfaces",
-        "Systems",
-        "Throttle",
-        "Thrust",
-        "Turbines",
-        "Yoke"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 60.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "transient_count",
-            "mean": 4.0,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 7.5,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.012,
-            "deviation": 2.718,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.35,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.5,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.45,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.25,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Landing gear, levers, switches, hydraulics: mechanical transients. Morphologically indistinguishable from BOATS-MECHANISM, TRAINS-MECHANISM or a plain METAL impact — the 'aircraft' part lives entirely in the filename.",
-          "Hydraulic actuator runs read as sustained rather than impulsive, so the length gate is deliberately loose (up to 60 s) and the morphology is a prior, not a wall.",
-          "The gates do rule out the beds: a mechanism is an event, never a stationary minutes-long rumble, which prunes it against AIRCRAFT-INTERIOR and AIRCRAFT-JET."
-        ],
-        "confusable_with": [
-          "AERODoor",
-          "TRNMech",
-          "BOATMech",
-          "AEROMisc"
-        ]
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MILITARY",
-      "category_id": "AEROMil",
-      "category_short": "AERO",
-      "explanation": [
-        "Military aircraft",
-        "military fighter jets",
-        "stealth bombers",
-        "but any military aircraft goes here. Also military drones. Military helicopters could go here or in AIRCRAFT-HELICOPTER."
-      ],
-      "synonyms": [
-        "A10",
-        "Aeroplane",
-        "Air",
-        "Aircraft",
-        "Airplane",
-        "Angels",
-        "Army",
-        "Attack",
-        "Blue",
-        "Bogey",
-        "Bomber",
-        "Combat",
-        "Drone",
-        "F16",
-        "F18",
-        "F22",
-        "F35",
-        "Fighter",
-        "Force",
-        "Gunship",
-        "Interceptor",
-        "Jet",
-        "Lockheed",
-        "Mig",
-        "Military",
-        "Mustang",
-        "Navy",
-        "P51",
-        "P52",
-        "Plane",
-        "Reconnaissance",
-        "Sortie",
-        "Spy",
-        "Squadron",
-        "Stealth",
-        "Strike",
-        "Surveillance",
-        "Thunderbirds",
-        "Trainer",
-        "Transport",
-        "Warbird",
-        "Warplane"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 900.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.58,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.28,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "lufs",
-            "mean": -13.0,
-            "deviation": 6.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.42,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.18,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 20.0,
-            "deviation": 20.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A fighter jet is a jet. No acoustic feature reports 'military' — and UCS concedes the point itself by saying military helicopters may go HERE or in AIRCRAFT-HELICOPTER. This is the vehicle-identity problem in its purest form.",
-          "Weak, honest tendencies only: military aircraft tend to be recorded loud, and afterburner passes are extreme in level. Use the signature to rule out non-aircraft morphologies and let the synonyms (F16, Mig, Stealth, Squadron) carry the decision.",
-          "If a strong rotor blade-pass is present (onset_periodicity high at 5-20/s), AIRCRAFT-HELICOPTER is the better SIGNAL answer even for a gunship. Defer to text."
-        ],
-        "confusable_with": [
-          "AEROJet",
-          "AEROHeli",
-          "AERORckt",
-          "AEROMisc",
-          "AEROProp"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "AEROMisc",
-      "category_short": "AERO",
-      "explanation": [
-        "Aircraft not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Aeroplane",
-        "Air",
-        "Aircraft",
-        "Airplane",
-        "Balloon",
-        "Blimp",
-        "Dirigible",
-        "Flyer",
-        "Flyover",
-        "Glider",
-        "Hang",
-        "Hang-Glider",
-        "Hot",
-        "Land",
-        "Liftoff",
-        "Parachute",
-        "Piloting",
-        "Runway",
-        "Ultralight",
-        "Zeppelin"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 1800.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.5,
-            "deviation": 0.24,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 12.0,
-            "deviation": 15.0,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.22,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "The abstention target for AIRCRAFT — balloons, blimps, gliders, parachutes, flyovers. Near-open gates and flat priors by design, so it wins when nothing else does.",
-          "Worth noting physically: a glider or a balloon has NO engine, so it will look like WIND, not like an aircraft. None of the engine-bearing siblings' priors will fit it, which is exactly the intended behaviour."
-        ],
-        "confusable_with": [
-          "AEROJet",
-          "AEROProp",
-          "AEROHeli",
-          "AEROMil",
-          "AERORadio"
-        ]
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "PROP",
-      "category_id": "AEROProp",
-      "category_short": "AERO",
-      "explanation": [
-        "Aircraft using props as means of propulsion. A propeller airplane."
-      ],
-      "synonyms": [
-        "Aeroplane",
-        "Aircraft",
-        "Airplane",
-        "Airscrew",
-        "Amphibious",
-        "Antique",
-        "Beechcraft",
-        "Biplane",
-        "Bombardier",
-        "Bushplane",
-        "Cesna",
-        "Cherokee",
-        "Crop",
-        "Cub",
-        "Duster",
-        "Floatplane",
-        "Piper",
-        "Plane",
-        "Prop",
-        "Propeller",
-        "Propjet",
-        "Seaplane",
-        "STOL",
-        "Stunt",
-        "Triplane",
-        "Turboprop",
-        "Twin-Prop",
-        "Vintage"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 900.0
-          },
-          {
-            "feature": "harmonicity",
-            "min": 0.15
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 95.0,
-            "deviation": 55.0,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.48,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "partial_count",
-            "mean": 10.0,
-            "deviation": 6.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.48,
-            "deviation": 0.17,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.35,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.25,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.3,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 900.0,
-            "deviation": 600.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.72,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 25.0,
-            "deviation": 25.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.2,
-            "deviation": 1.6,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "Blade-pass again, but FUSED. A propeller at ~2400 rpm with 2-3 blades puts the blade-pass fundamental at 80-120 Hz — above the ~20 Hz ceiling at which the ear resolves separate events — so it is heard as a PITCHED BUZZ with a HARMONIC COMB rather than a train of thumps. Hence sustained_tonal, a measurable pitch_hz near 95 Hz, a high partial_count (the comb), and harmonicity well off the noise floor.",
-          "Against AIRCRAFT-JET: the jet has no blade-pass structure at all. spectral_flatness ~0.62 and harmonicity ~0.15 there against ~0.35 and ~0.48 here. The harmonicity/periodicity axis is the genuine, physical separator between jet and prop — not a semantic one.",
-          "Against AIRCRAFT-HELICOPTER: identical mechanism, an order of magnitude apart in rate. The rotor's 10-20 Hz blade-pass resolves into discrete onsets (onset_rate_per_second ~12, onset_periodicity ~0.78 and a hard LF gate); the propeller's does not.",
-          "Against AIRCRAFT-RADIO CONTROLLED: pitch_hz is the whole story — ~95 Hz here against several hundred Hz for a small, fast RC rotor, with the spectral tilt inverted."
-        ],
-        "confusable_with": [
-          "AEROJet",
-          "AEROHeli",
-          "AERORadio",
-          "AEROMil",
-          "AEROMisc"
-        ]
+     }
+    ],
+    "discriminators": [
+     "Nothing else in AIRCRAFT sounds like this. There is no engine and no rotor: the burner is a turbulent, unpitched propane roar of a few seconds, then near-silence as the balloon drifts. That silence between burns is as diagnostic as the burn.",
+     "Acoustically the burner IS a FIRE-TURBULENT blast — same physics, same statistics. DSP will narrow to 'turbulent gas roar' and stop there; only the words balloon, burner, propane, airship or blimp commit it to AIRCRAFT. Never assert this from signal alone.",
+     "Separate it from AIRCRAFT-JET and MOTORS-TURBINE by the absence of any sustained tonal core — a jet has a screaming harmonic whine riding on its noise, a burner has none. The envelope flapping in the wind is CLOTH-FLAP; the inflation fan is MACHINES-FAN."
+    ],
+    "confusable_with": [
+     "AEROMisc",
+     "AEROProp",
+     "AEROJet",
+     "FIRETurb",
+     "FIREBrst",
+     "MOTRTurb",
+     "AIRBlow",
+     "CLOTHFlp"
+    ]
+   }
+  },
+  {
+   "subcategory": "DOOR",
+   "category_id": "AERODoor",
+   "category_short": "AERO",
+   "explanation": [
+    "Aircraft doors",
+    "some possible overlap with other DOOR categories",
+    "or VEHICLES-DOOR."
+   ],
+   "synonyms": [
+    "Airplane",
+    "Aviation",
+    "Boarding",
+    "Cabin",
+    "Cargo",
+    "Cockpit",
+    "Emergency",
+    "Entrance",
+    "Entryway",
+    "Exit",
+    "Fuselage",
+    "Hatch",
+    "Helicopter",
+    "Jet",
+    "Panel",
+    "Passenger",
+    "Ports",
+    "Trapdoor",
+    "Wing"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.01,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "RADIO CONTROLLED",
-      "category_id": "AERORadio",
-      "category_short": "AERO",
-      "explanation": [
-        "Toy hobby radio controlled",
-        "UAV",
-        "quadcopters",
-        "RC jets and RC helicopters."
-      ],
-      "synonyms": [
-        "Aerial",
-        "Airplane",
-        "Control",
-        "Controlled",
-        "Drone",
-        "Helicopter",
-        "Jet",
-        "Model",
-        "Quadcopters",
-        "Radio",
-        "RC",
-        "Remote",
-        "RPA",
-        "RPV",
-        "Scale",
-        "UAS",
-        "UAV",
-        "Unmanned"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 600.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 420.0,
-            "deviation": 260.0,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3200.0,
-            "deviation": 1700.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.45,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.1,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.08,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "lufs",
-            "mean": -26.0,
-            "deviation": 8.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.3,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "pitch_slope_semitones_per_second",
-            "mean": 0.0,
-            "deviation": 6.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "partial_count",
-            "mean": 6.0,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 20.0,
-            "deviation": 20.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "Small rotors turn FAST. The same blade-pass physics that gives a helicopter a 12 Hz thump gives a quadcopter a high WHINE: pitch_hz ~420 (against ~95 for AIRCRAFT-PROP), spectral_centroid_hz ~3.2 kHz, high_band_energy dominant and low_band_energy near zero. That is a real, measurable INVERSION of the spectral tilt of every full-size aircraft — not a guess.",
-          "The pitch also moves constantly, because a multirotor holds attitude by continuously modulating rotor RPM: |pitch_slope_semitones_per_second| is large and restless, where a cruising full-size aircraft holds a steady note.",
-          "It is quiet and close-miked: root_mean_square_level ~0.08, far below the big-aircraft subcategories.",
-          "Against AIRCRAFT-HELICOPTER: no LF thump train at all — HELICOPTER's low_band_energy gate (>= 0.20) usually rejects an RC drone outright."
-        ],
-        "confusable_with": [
-          "AEROHeli",
-          "AEROProp",
-          "AEROMisc",
-          "AEROJet"
-        ]
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "ROCKET",
-      "category_id": "AERORckt",
-      "category_short": "AERO",
-      "explanation": [
-        "Jet powered rockets and rocket engines.",
-        "missiles."
-      ],
-      "synonyms": [
-        "Blastoff",
-        "Booster",
-        "Hypersonic",
-        "ICBM",
-        "Jet",
-        "Jetpack",
-        "Launch",
-        "Launchers",
-        "Launching",
-        "Launchpad",
-        "Missile",
-        "Missiles",
-        "Missle",
-        "NASA",
-        "Nuclear",
-        "Nuke",
-        "Orbit",
-        "Payload",
-        "Propellant",
-        "Propelled",
-        "Propellent",
-        "Ramjet",
-        "Ramjets",
-        "Retrorocket",
-        "Retrorockets",
-        "Rocketeer",
-        "Rocketeers",
-        "Rocketman",
-        "Rocketplane",
-        "Rocketry",
-        "Rocketship",
-        "Shuttle",
-        "Skyrocket",
-        "Soyuz",
-        "Space",
-        "Spacelab",
-        "Spaceman",
-        "Spaceplane",
-        "Spaceplanes",
-        "Spacex",
-        "Sputniks",
-        "Suborbital",
-        "Thruster",
-        "Warhead"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.3,
-            "max": 900.0
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.45
-          }
-        ],
-        "priors": [
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.38,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "lufs",
-            "mean": -9.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.6,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.66,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 700.0,
-            "deviation": 500.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_slope_db_per_octave",
-            "mean": -9.0,
-            "deviation": 4.0,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.1,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 3.4,
-            "deviation": 1.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.7,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.6,
-            "deviation": 2.718,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 30.0,
-            "deviation": 30.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "clipping_density",
-            "mean": 0.01,
-            "deviation": 0.015,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "The extreme end of the broadband-roar family: everything AIRCRAFT-JET is, but louder, lower and flatter. root_mean_square_level ~0.38, low_band_energy ~0.60, and crest_factor down at ~3.4 because a saturated roar has almost no peak-to-RMS headroom left. Combustion instability is stochastic, so onset_periodicity stays near zero exactly as it does for a jet.",
-          "Against AIRCRAFT-JET: a matter of degree on level and LF weight, not a change of morphology — narrowable, not separable. Most library rockets are designed/processed anyway, which further erodes any physical claim.",
-          "Against a true EXPLOSION burst: a rocket SUSTAINS. A slow envelope_attack_seconds (~0.6 s) held over tens of seconds rules out a single transient, and the length gate enforces it."
-        ],
-        "confusable_with": [
-          "AEROJet",
-          "AEROMil",
-          "AEROMisc"
-        ]
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.32,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 1.4,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.35,
+      "deviation": 2.356,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.3,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A door is a door. An aircraft hatch, a car door and a ship's bulkhead share one impulsive-mechanism morphology, and UCS itself flags the overlap with the general DOOR categories and VEHICLES-DOOR. Only the filename says which vehicle.",
+     "The gates still earn their keep: this is a transient event of seconds, never a minutes-long bed, which prunes it cleanly against AIRCRAFT-INTERIOR and AIRCRAFT-JET."
+    ],
+    "confusable_with": [
+     "AEROMech",
+     "AEROInt",
+     "BOATDoor",
+     "TRNDoor"
+    ]
+   }
+  },
+  {
+   "subcategory": "HELICOPTER",
+   "category_id": "AEROHeli",
+   "category_short": "AERO",
+   "explanation": [
+    "For all manner of helicopters",
+    "gyrocopters."
+   ],
+   "synonyms": [
+    "Aerochopper",
+    "Aircraft",
+    "Apache",
+    "Autogiro",
+    "Autogyro",
+    "Bird",
+    "Blackhawk",
+    "Chopper",
+    "Choppers",
+    "Copter",
+    "Copters",
+    "Ghetto",
+    "Gyrocopter",
+    "Gyroplane",
+    "Heli",
+    "Helichopper",
+    "Helicopter",
+    "Helicopteron",
+    "Helicoptor",
+    "Helijet",
+    "Helipad",
+    "Helipilot",
+    "Heliport",
+    "Helo",
+    "Helos",
+    "Huey",
+    "Jetcopter",
+    "Lift",
+    "Medevac",
+    "Medivac",
+    "Multirotor",
+    "Ornithopter",
+    "Police",
+    "Rotary-Wing",
+    "Rotodyne",
+    "Rotorcraft",
+    "Sar",
+    "Sikorsky",
+    "Skyhook",
+    "Tailwheel",
+    "Tiltrotor",
+    "Tricopter",
+    "Vertical",
+    "VTOL",
+    "Whirlybird"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 900.0
+     },
+     {
+      "feature": "onset_periodicity",
+      "min": 0.35
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.78,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 12.0,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 550.0,
+      "deviation": 400.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 660.0,
+      "deviation": 350.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 120.0,
+      "deviation": 100.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.16,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 25.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.2,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The most distinctive vehicle in the taxonomy, and it is pure physics. A main rotor turns at roughly 5 revolutions per second with 2-5 blades, so BLADE-PASS lands at about 10-20 events per second — slow enough that both the ear and an onset detector resolve them as DISCRETE, LOW-FREQUENCY THUMPS rather than a pitch. Hence a very high onset_periodicity (~0.78, gated >= 0.35), an onset_rate_per_second in the 5-20 band, and dominant low_band_energy (gated >= 0.20). Nothing else in AIRCRAFT does this, and it is genuinely signal_separable.",
+     "Against AIRCRAFT-JET: a jet is broadband roaring noise with NO periodic blade thump whatsoever. The onset_periodicity axis alone separates them — this subcategory's floor of 0.35 and JET's ceiling of 0.55 do not meet in practice.",
+     "Against AIRCRAFT-PROP: the SAME blade-pass mechanism an order of magnitude faster. A propeller at ~40 rev/s with 2-3 blades puts blade-pass at 80-120 Hz, above the ~20 Hz limit of event resolution, so it FUSES into a pitched buzz — sustained_tonal with a measurable pitch_hz. The onset_rate_per_second axis is therefore the discriminator: ~12 discrete thumps per second here, versus a pitch there.",
+     "Against AIRCRAFT-RADIO CONTROLLED: an RC quadcopter's small, fast rotors push blade-pass into the hundreds of hertz with an HF-tilted spectrum. It whines; it does not thump. The low_band_energy gate usually rejects it outright."
+    ],
+    "confusable_with": [
+     "AEROProp",
+     "AEROJet",
+     "AERORadio",
+     "AEROMil",
+     "AEROMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "INTERIOR",
+   "category_id": "AEROInt",
+   "category_short": "AERO",
+   "explanation": [
+    "Interior recordings (mainly complex ambiences) of aircraft",
+    "from cockpit interiors",
+    "to passenger jet interiors."
+   ],
+   "synonyms": [
+    "737",
+    "747",
+    "777",
+    "A310",
+    "A330",
+    "A350",
+    "A380",
+    "Aboard",
+    "Aeroplane",
+    "Airbus",
+    "Aircraft",
+    "Airliner",
+    "Airplane",
+    "Aisle",
+    "Avionics",
+    "Bay",
+    "Belly",
+    "Bins",
+    "Boeing",
+    "Bombardier",
+    "Bowels",
+    "Cabin",
+    "Cargo",
+    "Cockpit",
+    "Compartment",
+    "Crew",
+    "DC-10",
+    "Deck",
+    "Fighter",
+    "Flight",
+    "Fuselage",
+    "Galley",
+    "Glider",
+    "Hold",
+    "Inside",
+    "Interior",
+    "Jet",
+    "Jetliner",
+    "Jumbo",
+    "Lavatory",
+    "Learjet",
+    "Midflight",
+    "Flight",
+    "Overhead",
+    "Passenger",
+    "Zeppelin"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 2.0,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 5000.0,
+      "deviation": 2800.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.62,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.08,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 350.0,
+      "deviation": 250.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 1800.0,
+      "deviation": 1200.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -11.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.85,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.05,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 60.0,
+      "deviation": 60.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.6,
+      "deviation": 1.3,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "An LP-filtered rumble bed. The fuselage is a low-pass filter: band_limit_high_hz falls to a few kHz, low_band_energy dominates at ~0.62, spectral_slope_db_per_octave is steeply negative, and stationarity is very high because a cruising cabin is essentially room tone. LP + stationary is a real measurement and it prunes hard.",
+     "Against AIRCRAFT-JET (exterior): the exterior jet keeps its full broadband HF roar and is far brighter (spectral_centroid_hz ~1.4 kHz vs ~350 Hz here). This boundary is genuinely measurable.",
+     "Against BOATS-INTERIOR / TRAINS-INTERIOR: identical morphology — which vehicle you are inside is semantic. The one honest physical tell is that a TRAIN interior carries the wheel clack through the floor (onset_periodicity rises to ~0.45), while an aircraft cabin has no periodic component at all."
+    ],
+    "confusable_with": [
+     "AEROJet",
+     "AEROProp",
+     "BOATInt",
+     "TRNInt",
+     "AEROMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "JET",
+   "category_id": "AEROJet",
+   "category_short": "AERO",
+   "explanation": [
+    "All commercial and private jet powered aircraft",
+    "military jets would go under AIRCRAFT-MILITARY."
+   ],
+   "synonyms": [
+    "737",
+    "747",
+    "777",
+    "A310",
+    "A330",
+    "A350",
+    "A380",
+    "Aeroplane",
+    "Afterburner",
+    "Airbus",
+    "Aircraft",
+    "Airliner",
+    "Airplane",
+    "Boeing",
+    "Bombardier",
+    "Cargo",
+    "Commercial",
+    "DC-10",
+    "Jet",
+    "Jetliner",
+    "Jumbo",
+    "Learjet",
+    "Passenger",
+    "Plane",
+    "Private",
+    "Ramjet",
+    "Regional",
+    "Scramjet",
+    "Supersonic",
+    "Turbojet",
+    "Twinjet",
+    "Unducted"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 900.0
+     },
+     {
+      "feature": "onset_periodicity",
+      "max": 0.55
+     },
+     {
+      "feature": "spectral_flatness",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.13,
+      "deviation": 0.11,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "complexity",
+      "mean": 3200.0,
+      "deviation": 1600.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 900.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.38,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.68,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.11,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.25,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -15.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.8,
+      "deviation": 1.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 25.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 0.0,
+      "deviation": 300.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A turbine is a BROADBAND ROAR: jet efflux is turbulent mixing noise, which is stochastic by nature. High spectral_flatness (~0.62, gated >= 0.20), low harmonicity, wide complexity — and, decisively, NO blade-pass periodicity. onset_periodicity is gated at a maximum of 0.55 and expected near 0.13.",
+     "That periodicity axis is what genuinely separates JET from PROP and HELICOPTER, and it deserves stating plainly: prop and rotor aircraft stamp a MECHANICAL REPETITION RATE onto the noise (a blade sweeping past, over and over); a jet does not, because nothing about it repeats. Every other property of these three — loud, long, LF-weighted, noisy — is shared.",
+     "Against AIRCRAFT-MILITARY and AIRCRAFT-ROCKET: the same broadband-roar morphology, so DSP cannot finish. A rocket is louder, lower and flatter still; a military jet is acoustically just a jet. Text decides.",
+     "A pass-by adds doppler — spectral_centroid_slope_hz_per_second crossing through zero with a rise-fall envelope — but that identifies a PERSPECTIVE, not a different aircraft."
+    ],
+    "confusable_with": [
+     "AEROProp",
+     "AEROHeli",
+     "AEROMil",
+     "AERORckt",
+     "AEROInt",
+     "AEROMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MECHANISM",
+   "category_id": "AEROMech",
+   "category_short": "AERO",
+   "explanation": [
+    "Mechanical components of aircraft",
+    "for example landing gear",
+    "or levers and switches."
+   ],
+   "synonyms": [
+    "Actuators",
+    "Aerofoil",
+    "Aeroplane",
+    "Aileron",
+    "Ailerons",
+    "Airbrake",
+    "Aircraft",
+    "Airplane",
+    "Apron",
+    "Arrester",
+    "Autopilot",
+    "Avionics",
+    "Bombsight",
+    "Brakes",
+    "Cockpit",
+    "Column",
+    "Control",
+    "Cowl",
+    "Cowling",
+    "Devices",
+    "Doors",
+    "Elevator",
+    "Elevators",
+    "Fin",
+    "Flap",
+    "Flaps",
+    "Flight",
+    "Gear",
+    "Gimbals",
+    "Gyroscope",
+    "Hook",
+    "Hydraulic",
+    "Instrument",
+    "Landing",
+    "Lever",
+    "Pedal",
+    "Propellers",
+    "Reversers",
+    "Rudder",
+    "Slats",
+    "Spoilers",
+    "Surfaces",
+    "Systems",
+    "Throttle",
+    "Thrust",
+    "Turbines",
+    "Yoke"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.5,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.012,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Landing gear, levers, switches, hydraulics: mechanical transients. Morphologically indistinguishable from BOATS-MECHANISM, TRAINS-MECHANISM or a plain METAL impact — the 'aircraft' part lives entirely in the filename.",
+     "Hydraulic actuator runs read as sustained rather than impulsive, so the length gate is deliberately loose (up to 60 s) and the morphology is a prior, not a wall.",
+     "The gates do rule out the beds: a mechanism is an event, never a stationary minutes-long rumble, which prunes it against AIRCRAFT-INTERIOR and AIRCRAFT-JET."
+    ],
+    "confusable_with": [
+     "AERODoor",
+     "TRNMech",
+     "BOATMech",
+     "AEROMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MILITARY",
+   "category_id": "AEROMil",
+   "category_short": "AERO",
+   "explanation": [
+    "Military aircraft",
+    "military fighter jets",
+    "stealth bombers",
+    "but any military aircraft goes here. Also military drones. Military helicopters could go here or in AIRCRAFT-HELICOPTER."
+   ],
+   "synonyms": [
+    "A10",
+    "Aeroplane",
+    "Air",
+    "Aircraft",
+    "Airplane",
+    "Angels",
+    "Army",
+    "Attack",
+    "Blue",
+    "Bogey",
+    "Bomber",
+    "Combat",
+    "Drone",
+    "F16",
+    "F18",
+    "F22",
+    "F35",
+    "Fighter",
+    "Force",
+    "Gunship",
+    "Interceptor",
+    "Jet",
+    "Lockheed",
+    "Mig",
+    "Military",
+    "Mustang",
+    "Navy",
+    "P51",
+    "P52",
+    "Plane",
+    "Reconnaissance",
+    "Sortie",
+    "Spy",
+    "Squadron",
+    "Stealth",
+    "Strike",
+    "Surveillance",
+    "Thunderbirds",
+    "Trainer",
+    "Transport",
+    "Warbird",
+    "Warplane"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 900.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.58,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.28,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -13.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 20.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A fighter jet is a jet. No acoustic feature reports 'military' — and UCS concedes the point itself by saying military helicopters may go HERE or in AIRCRAFT-HELICOPTER. This is the vehicle-identity problem in its purest form.",
+     "Weak, honest tendencies only: military aircraft tend to be recorded loud, and afterburner passes are extreme in level. Use the signature to rule out non-aircraft morphologies and let the synonyms (F16, Mig, Stealth, Squadron) carry the decision.",
+     "If a strong rotor blade-pass is present (onset_periodicity high at 5-20/s), AIRCRAFT-HELICOPTER is the better SIGNAL answer even for a gunship. Defer to text."
+    ],
+    "confusable_with": [
+     "AEROJet",
+     "AEROHeli",
+     "AERORckt",
+     "AEROMisc",
+     "AEROProp"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "AEROMisc",
+   "category_short": "AERO",
+   "explanation": [
+    "Aircraft not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Aeroplane",
+    "Air",
+    "Aircraft",
+    "Airplane",
+    "Balloon",
+    "Blimp",
+    "Dirigible",
+    "Flyer",
+    "Flyover",
+    "Glider",
+    "Hang",
+    "Hang-Glider",
+    "Hot",
+    "Land",
+    "Liftoff",
+    "Parachute",
+    "Piloting",
+    "Runway",
+    "Ultralight",
+    "Zeppelin"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.05783,
+      "deviation": 0.24,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 74,
+       "fsd50k_classes": [
+        "Fixed-wing_aircraft_and_airplane"
+       ],
+       "measured_deviation": 0.04308,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.24,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.14416,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 74,
+       "fsd50k_classes": [
+        "Fixed-wing_aircraft_and_airplane"
+       ],
+       "measured_deviation": 0.10503,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 15.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.42632,
+      "deviation": 0.27327,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 74,
+       "fsd50k_classes": [
+        "Fixed-wing_aircraft_and_airplane"
+       ],
+       "measured_deviation": 0.27327,
+       "reasoned_mean": 0.22,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "The abstention target for AIRCRAFT — balloons, blimps, gliders, parachutes, flyovers. Near-open gates and flat priors by design, so it wins when nothing else does.",
+     "Worth noting physically: a glider or a balloon has NO engine, so it will look like WIND, not like an aircraft. None of the engine-bearing siblings' priors will fit it, which is exactly the intended behaviour."
+    ],
+    "confusable_with": [
+     "AEROJet",
+     "AEROProp",
+     "AEROHeli",
+     "AEROMil",
+     "AERORadio"
+    ]
+   }
+  },
+  {
+   "subcategory": "PROP",
+   "category_id": "AEROProp",
+   "category_short": "AERO",
+   "explanation": [
+    "Aircraft using props as means of propulsion. A propeller airplane."
+   ],
+   "synonyms": [
+    "Aeroplane",
+    "Aircraft",
+    "Airplane",
+    "Airscrew",
+    "Amphibious",
+    "Antique",
+    "Beechcraft",
+    "Biplane",
+    "Bombardier",
+    "Bushplane",
+    "Cesna",
+    "Cherokee",
+    "Crop",
+    "Cub",
+    "Duster",
+    "Floatplane",
+    "Piper",
+    "Plane",
+    "Prop",
+    "Propeller",
+    "Propjet",
+    "Seaplane",
+    "STOL",
+    "Stunt",
+    "Triplane",
+    "Turboprop",
+    "Twin-Prop",
+    "Vintage"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 900.0
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 95.0,
+      "deviation": 55.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.48,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 10.0,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.48,
+      "deviation": 0.17,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.72,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 25.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.2,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Blade-pass again, but FUSED. A propeller at ~2400 rpm with 2-3 blades puts the blade-pass fundamental at 80-120 Hz — above the ~20 Hz ceiling at which the ear resolves separate events — so it is heard as a PITCHED BUZZ with a HARMONIC COMB rather than a train of thumps. Hence sustained_tonal, a measurable pitch_hz near 95 Hz, a high partial_count (the comb), and harmonicity well off the noise floor.",
+     "Against AIRCRAFT-JET: the jet has no blade-pass structure at all. spectral_flatness ~0.62 and harmonicity ~0.15 there against ~0.35 and ~0.48 here. The harmonicity/periodicity axis is the genuine, physical separator between jet and prop — not a semantic one.",
+     "Against AIRCRAFT-HELICOPTER: identical mechanism, an order of magnitude apart in rate. The rotor's 10-20 Hz blade-pass resolves into discrete onsets (onset_rate_per_second ~12, onset_periodicity ~0.78 and a hard LF gate); the propeller's does not.",
+     "Against AIRCRAFT-RADIO CONTROLLED: pitch_hz is the whole story — ~95 Hz here against several hundred Hz for a small, fast RC rotor, with the spectral tilt inverted."
+    ],
+    "confusable_with": [
+     "AEROJet",
+     "AEROHeli",
+     "AERORadio",
+     "AEROMil",
+     "AEROMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "RADIO CONTROLLED",
+   "category_id": "AERORadio",
+   "category_short": "AERO",
+   "explanation": [
+    "Toy hobby radio controlled",
+    "UAV",
+    "quadcopters",
+    "RC jets and RC helicopters."
+   ],
+   "synonyms": [
+    "Aerial",
+    "Airplane",
+    "Control",
+    "Controlled",
+    "Drone",
+    "Helicopter",
+    "Jet",
+    "Model",
+    "Quadcopters",
+    "Radio",
+    "RC",
+    "Remote",
+    "RPA",
+    "RPV",
+    "Scale",
+    "UAS",
+    "UAV",
+    "Unmanned"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 420.0,
+      "deviation": 260.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 1700.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -26.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 20.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Small rotors turn FAST. The same blade-pass physics that gives a helicopter a 12 Hz thump gives a quadcopter a high WHINE: pitch_hz ~420 (against ~95 for AIRCRAFT-PROP), spectral_centroid_hz ~3.2 kHz, high_band_energy dominant and low_band_energy near zero. That is a real, measurable INVERSION of the spectral tilt of every full-size aircraft — not a guess.",
+     "The pitch also moves constantly, because a multirotor holds attitude by continuously modulating rotor RPM: |pitch_slope_semitones_per_second| is large and restless, where a cruising full-size aircraft holds a steady note.",
+     "It is quiet and close-miked: root_mean_square_level ~0.08, far below the big-aircraft subcategories.",
+     "Against AIRCRAFT-HELICOPTER: no LF thump train at all — HELICOPTER's low_band_energy gate (>= 0.20) usually rejects an RC drone outright."
+    ],
+    "confusable_with": [
+     "AEROHeli",
+     "AEROProp",
+     "AEROMisc",
+     "AEROJet"
+    ]
+   }
+  },
+  {
+   "subcategory": "ROCKET",
+   "category_id": "AERORckt",
+   "category_short": "AERO",
+   "explanation": [
+    "Jet powered rockets and rocket engines.",
+    "missiles."
+   ],
+   "synonyms": [
+    "Blastoff",
+    "Booster",
+    "Hypersonic",
+    "ICBM",
+    "Jet",
+    "Jetpack",
+    "Launch",
+    "Launchers",
+    "Launching",
+    "Launchpad",
+    "Missile",
+    "Missiles",
+    "Missle",
+    "NASA",
+    "Nuclear",
+    "Nuke",
+    "Orbit",
+    "Payload",
+    "Propellant",
+    "Propelled",
+    "Propellent",
+    "Ramjet",
+    "Ramjets",
+    "Retrorocket",
+    "Retrorockets",
+    "Rocketeer",
+    "Rocketeers",
+    "Rocketman",
+    "Rocketplane",
+    "Rocketry",
+    "Rocketship",
+    "Shuttle",
+    "Skyrocket",
+    "Soyuz",
+    "Space",
+    "Spacelab",
+    "Spaceman",
+    "Spaceplane",
+    "Spaceplanes",
+    "Spacex",
+    "Sputniks",
+    "Suborbital",
+    "Thruster",
+    "Warhead"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 900.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.45
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.38,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -9.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.6,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.66,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 700.0,
+      "deviation": 500.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -9.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.4,
+      "deviation": 1.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.6,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 30.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "clipping_density",
+      "mean": 0.01,
+      "deviation": 0.015,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The extreme end of the broadband-roar family: everything AIRCRAFT-JET is, but louder, lower and flatter. root_mean_square_level ~0.38, low_band_energy ~0.60, and crest_factor down at ~3.4 because a saturated roar has almost no peak-to-RMS headroom left. Combustion instability is stochastic, so onset_periodicity stays near zero exactly as it does for a jet.",
+     "Against AIRCRAFT-JET: a matter of degree on level and LF weight, not a change of morphology — narrowable, not separable. Most library rockets are designed/processed anyway, which further erodes any physical claim.",
+     "Against a true EXPLOSION burst: a rocket SUSTAINS. A slow envelope_attack_seconds (~0.6 s) held over tens of seconds rules out a single transient, and the length gate enforces it."
+    ],
+    "confusable_with": [
+     "AEROJet",
+     "AEROMil",
+     "AEROMisc"
+    ]
+   }
+  }
+ ]
 }

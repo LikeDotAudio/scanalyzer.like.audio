@@ -1,2084 +1,2879 @@
 {
-  "version": "8.2.1",
-  "category": "ANIMALS",
-  "subcategories": [
-    {
-      "subcategory": "AMPHIBIAN",
-      "category_id": "ANMLAmph",
-      "category_short": "ANML",
-      "explanation": [
-        "Technically any amphibian",
-        "but most likely used for frogs and toads."
-      ],
-      "synonyms": [
-        "American",
-        "Amniotes",
-        "Amphibia",
-        "Axolotl",
-        "Axolotls",
-        "Bullfrog",
-        "Caecilian",
-        "Cane",
-        "Chorus",
-        "Croaker",
-        "Dart",
-        "Eastern",
-        "Fire-Bellied",
-        "Frog",
-        "Frogs",
-        "Leopard",
-        "Marbled",
-        "Mudfish",
-        "Mudpuppies",
-        "Newt",
-        "Northern",
-        "Peeper",
-        "Poison",
-        "Red-Eyed",
-        "Salamander",
-        "Salamanders",
-        "Spotted",
-        "Spring",
-        "Tadpole",
-        "Tadpoles",
-        "Terrapins",
-        "Toad",
-        "Toads",
-        "Tree",
-        "Western",
-        "Yellow-Bellied"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 500.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.2,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 3.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "transient_count",
-            "mean": 12.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "The one honest DSP handle is repetition: frog and toad calls are pulse trains, so onset_periodicity and onset_rate run higher than for a one-shot mammal call. That narrows nothing about the species.",
-          "A dense multi-animal frog chorus belongs to AMBIENCE, not here; this subcategory expects foregrounded individual calls."
-        ],
-        "confusable_with": [
-          "ANMLInsc",
-          "ANMLRept",
-          "ANMLMisc",
-          "BIRDMisc"
-        ]
+ "version": "8.2.1",
+ "category": "ANIMALS",
+ "subcategories": [
+  {
+   "subcategory": "AMPHIBIAN",
+   "category_id": "ANMLAmph",
+   "category_short": "ANML",
+   "explanation": [
+    "Technically any amphibian",
+    "but most likely used for frogs and toads."
+   ],
+   "synonyms": [
+    "American",
+    "Amniotes",
+    "Amphibia",
+    "Axolotl",
+    "Axolotls",
+    "Bullfrog",
+    "Caecilian",
+    "Cane",
+    "Chorus",
+    "Croaker",
+    "Dart",
+    "Eastern",
+    "Fire-Bellied",
+    "Frog",
+    "Frogs",
+    "Leopard",
+    "Marbled",
+    "Mudfish",
+    "Mudpuppies",
+    "Newt",
+    "Northern",
+    "Peeper",
+    "Poison",
+    "Red-Eyed",
+    "Salamander",
+    "Salamanders",
+    "Spotted",
+    "Spring",
+    "Tadpole",
+    "Tadpoles",
+    "Terrapins",
+    "Toad",
+    "Toads",
+    "Tree",
+    "Western",
+    "Yellow-Bellied"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.7307,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 0.19324,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.3,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "AQUATIC",
-      "category_id": "ANMLAqua",
-      "category_short": "ANML",
-      "explanation": [
-        "All manner of marine and sea animals",
-        "not just mammals",
-        "but anything that lives in water."
-      ],
-      "synonyms": [
-        "Angelfish",
-        "Aquatic",
-        "Barracuda",
-        "Beluga",
-        "Cetacean",
-        "Clam",
-        "Clownfish",
-        "Crab",
-        "Crabs",
-        "Crustacean",
-        "Cuttlefish",
-        "Dolphin",
-        "Dugong",
-        "Eel",
-        "Eels",
-        "Elephant",
-        "Fish",
-        "Jellyfish",
-        "Killer",
-        "Lamprey",
-        "Lion",
-        "Lobster",
-        "Lobsters",
-        "Manatee",
-        "Manta",
-        "Marine",
-        "Narwhal",
-        "Ocean",
-        "Octopus",
-        "Orca",
-        "Otter",
-        "Porpoise",
-        "Ray",
-        "Scallop",
-        "Sea",
-        "Seahorse",
-        "Seal",
-        "Shark",
-        "Shrimp",
-        "Squid",
-        "Starfish",
-        "Stingray",
-        "Turtle",
-        "Urchin",
-        "Walrus",
-        "Whale"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 180.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 4.0,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "band_limit_high_hz",
-            "mean": 8000.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.5,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.25
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 600.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1500.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.4,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "This subcategory is acoustically incoherent by construction ('anything that lives in water'): it spans whale song (long tonal sweeps), dolphin click trains (impulsive, ultrasonic-adjacent), seal barks (voiced) and crustacean snaps (impulsive). No single Gaussian describes it, so the priors here are deliberately wide and weak and the tier is semantic_only. Text decides.",
-          "Underwater/hydrophone material is often band-limited; band_limit_high_hz is a weak nudge, nothing more."
-        ],
-        "confusable_with": [
-          "ANMLWild",
-          "ANMLMisc",
-          "CREAAqua",
-          "WATRMisc"
-        ]
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.06442,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 0.04313,
+       "reasoned_mean": 0.25,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "BAT",
-      "category_id": "ANMLBat",
-      "category_short": "ANML",
-      "explanation": [
-        "Bat chirps",
-        "echolocation and communicative vocalization. Wings would go under WINGS-MISC."
-      ],
-      "synonyms": [
-        "Bat",
-        "Belfry",
-        "Brown",
-        "Chiropteran",
-        "Echolocation",
-        "Flying",
-        "Fox",
-        "Fruit",
-        "Mammal",
-        "Nocturnal",
-        "Roosting",
-        "Roosts",
-        "Vampire",
-        "Winged"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.02,
-            "max": 90.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 1400.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 5000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.7,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.04,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 9000.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 8.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 8.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.004,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "Bat material is a fast train of very short, very high-frequency clicks/chirps, so the priors skew hard to high spectral_centroid, high high_band_energy and high onset_rate. That is a real morphological tendency, but it does not distinguish a bat from a rodent squeak, an insect stridulation or a high bird chirp - all of which land in the same corner of the feature space. Hence semantic_only.",
-          "Native echolocation is ultrasonic and only exists in a library after heterodyning or time-expansion, which destroys the original spectral statistics; do not trust frequency priors on such files.",
-          "Wing flaps belong to WINGS-MISC per the explanation, not here."
-        ],
-        "confusable_with": [
-          "ANMLRdnt",
-          "ANMLInsc",
-          "BIRDMisc",
-          "WINGMisc"
-        ]
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22415,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 0.01068,
+       "reasoned_mean": 0.28,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "CAT DOMESTIC",
-      "category_id": "ANMLCat",
-      "category_short": "ANML",
-      "explanation": [
-        "Domesticated house cats. See also ANIMALS-CAT WILD."
-      ],
-      "synonyms": [
-        "Abyssinian",
-        "Alley",
-        "Burmese",
-        "Calico",
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2530.13314,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 1.32219,
+       "reasoned_mean": 1200.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.28396,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 0.13455,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.29959,
+      "deviation": 0.41392,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 0.41392,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1160.52632,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 31,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 1.23265,
+       "reasoned_mean": 500.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.01765,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 0.02228,
+       "reasoned_mean": 0.2,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.6499,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 1.99218,
+       "reasoned_mean": 3.0,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 21.44761,
+      "deviation": 3.61778,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Frog"
+       ],
+       "measured_deviation": 3.61778,
+       "reasoned_mean": 12.0,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "The one honest DSP handle is repetition: frog and toad calls are pulse trains, so onset_periodicity and onset_rate run higher than for a one-shot mammal call. That narrows nothing about the species.",
+     "A dense multi-animal frog chorus belongs to AMBIENCE, not here; this subcategory expects foregrounded individual calls."
+    ],
+    "confusable_with": [
+     "ANMLInsc",
+     "ANMLRept",
+     "ANMLMisc",
+     "BIRDMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "AQUATIC",
+   "category_id": "ANMLAqua",
+   "category_short": "ANML",
+   "explanation": [
+    "All manner of marine and sea animals",
+    "not just mammals",
+    "but anything that lives in water."
+   ],
+   "synonyms": [
+    "Angelfish",
+    "Aquatic",
+    "Barracuda",
+    "Beluga",
+    "Cetacean",
+    "Clam",
+    "Clownfish",
+    "Crab",
+    "Crabs",
+    "Crustacean",
+    "Cuttlefish",
+    "Dolphin",
+    "Dugong",
+    "Eel",
+    "Eels",
+    "Elephant",
+    "Fish",
+    "Jellyfish",
+    "Killer",
+    "Lamprey",
+    "Lion",
+    "Lobster",
+    "Lobsters",
+    "Manatee",
+    "Manta",
+    "Marine",
+    "Narwhal",
+    "Ocean",
+    "Octopus",
+    "Orca",
+    "Otter",
+    "Porpoise",
+    "Ray",
+    "Scallop",
+    "Sea",
+    "Seahorse",
+    "Seal",
+    "Shark",
+    "Shrimp",
+    "Squid",
+    "Starfish",
+    "Stingray",
+    "Turtle",
+    "Urchin",
+    "Walrus",
+    "Whale"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 180.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 8000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 600.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "This subcategory is acoustically incoherent by construction ('anything that lives in water'): it spans whale song (long tonal sweeps), dolphin click trains (impulsive, ultrasonic-adjacent), seal barks (voiced) and crustacean snaps (impulsive). No single Gaussian describes it, so the priors here are deliberately wide and weak and the tier is semantic_only. Text decides.",
+     "Underwater/hydrophone material is often band-limited; band_limit_high_hz is a weak nudge, nothing more."
+    ],
+    "confusable_with": [
+     "ANMLWild",
+     "ANMLMisc",
+     "CREAAqua",
+     "WATRMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "BAT",
+   "category_id": "ANMLBat",
+   "category_short": "ANML",
+   "explanation": [
+    "Bat chirps",
+    "echolocation and communicative vocalization. Wings would go under WINGS-MISC."
+   ],
+   "synonyms": [
+    "Bat",
+    "Belfry",
+    "Brown",
+    "Chiropteran",
+    "Echolocation",
+    "Flying",
+    "Fox",
+    "Fruit",
+    "Mammal",
+    "Nocturnal",
+    "Roosting",
+    "Roosts",
+    "Vampire",
+    "Winged"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1400.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.04,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 9000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "Bat material is a fast train of very short, very high-frequency clicks/chirps, so the priors skew hard to high spectral_centroid, high high_band_energy and high onset_rate. That is a real morphological tendency, but it does not distinguish a bat from a rodent squeak, an insect stridulation or a high bird chirp - all of which land in the same corner of the feature space. Hence semantic_only.",
+     "Native echolocation is ultrasonic and only exists in a library after heterodyning or time-expansion, which destroys the original spectral statistics; do not trust frequency priors on such files.",
+     "Wing flaps belong to WINGS-MISC per the explanation, not here."
+    ],
+    "confusable_with": [
+     "ANMLRdnt",
+     "ANMLInsc",
+     "BIRDMisc",
+     "WINGMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CAT DOMESTIC",
+   "category_id": "ANMLCat",
+   "category_short": "ANML",
+   "explanation": [
+    "Domesticated house cats. See also ANIMALS-CAT WILD."
+   ],
+   "synonyms": [
+    "Abyssinian",
+    "Alley",
+    "Burmese",
+    "Calico",
+    "Cat",
+    "Catfight",
+    "Coon",
+    "Egyptian",
+    "Fat",
+    "Felidae",
+    "Feline",
+    "Felines",
+    "Felis",
+    "Hairball",
+    "Himalayan",
+    "Hiss",
+    "Housecat",
+    "Kitten",
+    "Kittens",
+    "Kitties",
+    "Kitty",
+    "Maine",
+    "Meow",
+    "Persian",
+    "Purr",
+    "Pussycat",
+    "Siamese",
+    "Tabby",
+    "Tomcat",
+    "Tomcats",
+    "Whiskers"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.77923,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
         "Cat",
-        "Catfight",
-        "Coon",
-        "Egyptian",
-        "Fat",
-        "Felidae",
-        "Feline",
-        "Felines",
-        "Felis",
-        "Hairball",
-        "Himalayan",
-        "Hiss",
-        "Housecat",
-        "Kitten",
-        "Kittens",
-        "Kitties",
-        "Kitty",
-        "Maine",
         "Meow",
-        "Persian",
-        "Purr",
-        "Pussycat",
-        "Siamese",
-        "Tabby",
-        "Tomcat",
-        "Tomcats",
-        "Whiskers"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.8,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 500.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.15,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "CAT DOMESTIC vs CAT WILD is the clearest example in UCS of a boundary DSP cannot draw. 'Domesticated' is not an acoustic property. A house-cat yowl and a leopard call are the same physics with different vocal-tract lengths, and the ranges overlap so heavily that any numeric boundary would be a fabrication. The body-size pitch prior below is a WEAK nudge (small cat -> somewhat higher f0) and must never be read as species identification.",
-          "Purr is an exception with real structure - a low, ~25 Hz amplitude-modulated rumble - but WILD cats purr too, so it still does not settle the boundary."
-        ],
-        "confusable_with": [
-          "ANMLWcat",
-          "ANMLDog",
-          "ANMLMisc",
-          "CREASmall"
-        ]
+        "Purr"
+       ],
+       "measured_deviation": 0.23306,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.3,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "CAT WILD",
-      "category_id": "ANMLWcat",
-      "category_short": "ANML",
-      "explanation": [
-        "Wild cats as opposed to domesticated cats. Tigers and Lions."
-      ],
-      "synonyms": [
-        "Bengal",
-        "Big",
-        "Bobcat",
-        "Caracal",
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.10963,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
         "Cat",
-        "Cheetah",
-        "Cheetahs",
-        "Civet",
-        "Civets",
-        "Cougar",
-        "Cougars",
-        "Hiss",
-        "Jaguar",
-        "Leopard",
-        "Leopards",
-        "Lion",
-        "Lioness",
-        "Lionesses",
-        "Lions",
-        "Lynx",
-        "Lynxes",
-        "Manx",
-        "Ocelot",
-        "Ocelots",
-        "Panther",
-        "Polecats",
-        "Puma",
-        "Purr",
-        "Serval",
-        "Snow",
-        "Tiger",
-        "Tigers",
-        "Wildcat",
-        "Wildcats"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 220.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.35
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "'Wild cats as opposed to domesticated cats' is a semantic distinction, not an acoustic one. The only defensible signal correlate is body size: a lion or tiger has a far longer vocal tract than a house cat, so f0 and formants sit lower and low_band_energy is higher. That is a WEAK, wide prior - a big-cat purr or hiss overlaps a house cat completely. Do not assert this subcategory from signal.",
-          "A big-cat roar is loud, low, rough and long; if pitch is above ~600 Hz the file is more likely ANMLCat, but this is a tendency, not a gate."
-        ],
-        "confusable_with": [
-          "ANMLCat",
-          "ANMLWild",
-          "CREABeast",
-          "CREAMnstr"
-        ]
+        "Meow",
+        "Purr"
+       ],
+       "measured_deviation": 0.09553,
+       "reasoned_mean": 0.25,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "DOG",
-      "category_id": "ANMLDog",
-      "category_short": "ANML",
-      "explanation": [
-        "All Domesticated dogs",
-        "excluding wild dogs. Pet dogs. See also ANIMALS-WILD DOG for non-domesticated dogs."
-      ],
-      "synonyms": [
-        "UCS marke"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.6,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 350.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.3,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 6.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.02,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "DOG vs DOG WILD (wolves, foxes, coyotes) is pure taxonomy. A bark and a wolf howl are both animal vocalizations; nothing in a spectral feature set says 'domesticated'. A fabricated numeric boundary here would be worse than none, because someone would trust it. semantic_only, and the synonyms carry the decision.",
-          "The only weak, honest tendency: pet-dog material is bark-dominated (short, percussive, high crest_factor) while wild-canid material is howl-dominated (long, sustained, tonal, low crest_factor). Both animals do both. Treat as a nudge only.",
-          "NOTE: this subcategory's synonyms list in UCS 8.2.1 is corrupt ('UCS marke'), so text matching cannot fire for it. Until that is fixed, DOG is effectively unreachable by the classifier - flag it rather than compensating with invented priors."
-        ],
-        "confusable_with": [
-          "ANMLWdog",
-          "ANMLFarm",
-          "ANMLMisc",
-          "ANMLWild"
-        ]
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.21933,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
+        "Cat",
+        "Meow",
+        "Purr"
+       ],
+       "measured_deviation": 0.01666,
+       "reasoned_mean": 0.28,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "DOG WILD",
-      "category_id": "ANMLWdog",
-      "category_short": "ANML",
-      "explanation": [
-        "Wild dogs and canines like Wolves",
-        "Foxes",
-        "Coyotes etc."
-      ],
-      "synonyms": [
-        "African",
-        "Arctic",
-        "Bush",
-        "Canid",
-        "Canids",
-        "Canines",
-        "Corsac",
-        "Coyote",
-        "Dhole",
-        "Dingo",
-        "Dingoes",
-        "Dog",
-        "Ethiopian",
-        "Fennec",
-        "Fox",
-        "Foxes",
-        "Gray",
-        "Hyaena",
-        "Hyena",
-        "Hyenas",
-        "Indian",
-        "Island",
-        "Jackal",
-        "Jackals",
-        "Lupus",
-        "Maned",
-        "Red",
-        "Wild",
-        "Wolf",
-        "Wolfish",
-        "Wolflike",
-        "Wolfs",
-        "Wolves"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 320.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.3,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "Wolves, foxes, coyotes, jackals, hyenas. Acoustically these ARE domestic dogs - the same larynx, the same call repertoire. No DSP feature separates them. semantic_only, decided by synonyms.",
-          "Weak tendency only: howl-type material is longer, more sustained and more harmonic than a bark, so length_seconds and sustain_ratio lean higher than ANMLDog. A fox scream or a coyote yip is short and destroys even that tendency."
-        ],
-        "confusable_with": [
-          "ANMLDog",
-          "ANMLWild",
-          "ANMLWcat",
-          "CREAHmn"
-        ]
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "FARM",
-      "category_id": "ANMLFarm",
-      "category_short": "ANML",
-      "explanation": [
-        "Domesticated mammals you'd find on a farm. For farm birds see BIRDS-FOWL. See also AMBIENCE-FARM."
-      ],
-      "synonyms": [
-        "Alpaca",
-        "Angus",
-        "Barnyard",
-        "Beef",
-        "Bison",
-        "Bovine",
-        "Bovines",
-        "Buffaloes",
-        "Bullocks",
-        "Bulls",
-        "Cattle",
-        "Cattlemen",
-        "Cow",
-        "Domesticated",
-        "Domesticates",
-        "Donkey",
-        "Eew",
-        "Farms",
-        "Farmsteads",
-        "Farmyard",
-        "Feedlot",
-        "Goat",
-        "Goats",
-        "Hereford",
-        "Hogs",
-        "Holstein",
-        "Jersey",
-        "Lamb",
-        "Llama",
-        "Mule",
-        "Pig",
-        "Piggery",
-        "Piggies",
-        "Piglets",
-        "Ram",
-        "Reindeer",
-        "Ruminant",
-        "Ruminants",
-        "Sheep",
-        "Steer",
-        "Wagyu"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 190.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "'Domesticated mammals you'd find on a farm' is a semantic set, not an acoustic one: it lumps a cow (very low, sustained), a pig (mid, rough, squealing), a goat and a sheep (mid, bleating, strongly modulated). No unified signature exists. semantic_only.",
-          "Legitimate weak prior: cattle are large, so f0 and centroid sit low and low_band_energy is high. That correlate is real physics (vocal-tract length) but it is shared with HORSE and with big wild mammals, so it is body size, never species.",
-          "Farm BIRDS go to BIRDS-FOWL; dense yard scenes go to AMBIENCE-FARM. If the file is a stationary multi-source bed rather than a foregrounded call, it is an ambience."
-        ],
-        "confusable_with": [
-          "ANMLHors",
-          "ANMLWild",
-          "BIRDFowl",
-          "ANMLMisc"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2631.98848,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
+        "Cat",
+        "Meow",
+        "Purr"
+       ],
+       "measured_deviation": 1.38007,
+       "reasoned_mean": 1200.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "HORSE",
-      "category_id": "ANMLHors",
-      "category_short": "ANML",
-      "explanation": [
-        "All members of the horse family",
-        "including donkeys and mules. See also FOOTSTEPS-HORSE and EQUIPMENT-BRIDLE."
-      ],
-      "synonyms": [
-        "Arabian",
-        "Arabians",
-        "Ass",
-        "Clydesdale",
-        "Colt",
-        "Donkey",
-        "Donkeys",
-        "Equestrian",
-        "Equestrians",
-        "Equid",
-        "Equids",
-        "Equine",
-        "Equines",
-        "Equus",
-        "Filly",
-        "Foal",
-        "Foals",
-        "Gelding",
-        "Geldings",
-        "Hoofs",
-        "Horse",
-        "Horseback",
-        "Horseflesh",
-        "Horseman",
-        "Horsemanship",
-        "Horsemen",
-        "Horseraces",
-        "Horsewoman",
-        "Horsey",
-        "Horsy",
-        "Jockeys",
-        "Mare",
-        "Mares",
-        "Mule",
-        "Mules",
-        "Mustang",
-        "Mustangs",
-        "Packhorses",
-        "Palominos",
-        "Ponies",
-        "Pony",
-        "Quarter",
-        "Racehorse",
-        "Racehorses",
-        "Riders",
-        "Saddles",
-        "Sawbuck",
-        "Shetland",
-        "Stables",
-        "Stallion",
-        "Stallions",
-        "Standardbreds",
-        "Steeds",
-        "Thoroughbred",
-        "Thoroughbreds",
-        "Zebra"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 240.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.35
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "'All members of the horse family, including donkeys and mules' - explicitly a taxonomic set. A whinny, a bray and a nicker share nothing that DSP could bind together and separate from cattle. semantic_only.",
-          "Body-size prior only: a horse is large, so f0 skews low. A whinny is a strongly frequency-modulated harmonic call (high spectral_flux with high harmonicity), which is a mild tendency, not an identifier.",
-          "Hoofbeats are FOOTSTEPS-HORSE and tack is EQUIPMENT-BRIDLE, per the explanation. A file that is a rhythmic impact train with no vocalization should be scored there, not here - and THAT split IS DSP-decidable."
-        ],
-        "confusable_with": [
-          "ANMLFarm",
-          "ANMLWild",
-          "FEETHors",
-          "ANMLMisc"
-        ]
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.42531,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
+        "Cat",
+        "Meow",
+        "Purr"
+       ],
+       "measured_deviation": 0.18746,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "INSECT",
-      "category_id": "ANMLInsc",
-      "category_short": "ANML",
-      "explanation": [
-        "All manner of traditional insect sounds",
-        "crickets",
-        "cicada",
-        "flies and bees. And singular insect recordings. See also AMBIENCE-INSECT now for dense ambience style recordings."
-      ],
-      "synonyms": [
-        "Ant",
-        "Aphid",
-        "Bee",
-        "Bees",
-        "Beetle",
-        "Beetles",
-        "Budgie",
-        "Bugs",
-        "Butterfly",
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.1843,
+      "deviation": 0.27324,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
+        "Cat",
+        "Meow",
+        "Purr"
+       ],
+       "measured_deviation": 0.27324,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 591.95964,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 218,
+       "fsd50k_classes": [
+        "Cat",
+        "Meow",
+        "Purr"
+       ],
+       "measured_deviation": 1.36731,
+       "reasoned_mean": 500.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.03323,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
+        "Cat",
+        "Meow",
+        "Purr"
+       ],
+       "measured_deviation": 0.04598,
+       "reasoned_mean": 0.15,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "CAT DOMESTIC vs CAT WILD is the clearest example in UCS of a boundary DSP cannot draw. 'Domesticated' is not an acoustic property. A house-cat yowl and a leopard call are the same physics with different vocal-tract lengths, and the ranges overlap so heavily that any numeric boundary would be a fabrication. The body-size pitch prior below is a WEAK nudge (small cat -> somewhat higher f0) and must never be read as species identification.",
+     "Purr is an exception with real structure - a low, ~25 Hz amplitude-modulated rumble - but WILD cats purr too, so it still does not settle the boundary."
+    ],
+    "confusable_with": [
+     "ANMLWcat",
+     "ANMLDog",
+     "ANMLMisc",
+     "CREASmall"
+    ]
+   }
+  },
+  {
+   "subcategory": "CAT WILD",
+   "category_id": "ANMLWcat",
+   "category_short": "ANML",
+   "explanation": [
+    "Wild cats as opposed to domesticated cats. Tigers and Lions."
+   ],
+   "synonyms": [
+    "Bengal",
+    "Big",
+    "Bobcat",
+    "Caracal",
+    "Cat",
+    "Cheetah",
+    "Cheetahs",
+    "Civet",
+    "Civets",
+    "Cougar",
+    "Cougars",
+    "Hiss",
+    "Jaguar",
+    "Leopard",
+    "Leopards",
+    "Lion",
+    "Lioness",
+    "Lionesses",
+    "Lions",
+    "Lynx",
+    "Lynxes",
+    "Manx",
+    "Ocelot",
+    "Ocelots",
+    "Panther",
+    "Polecats",
+    "Puma",
+    "Purr",
+    "Serval",
+    "Snow",
+    "Tiger",
+    "Tigers",
+    "Wildcat",
+    "Wildcats"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 220.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "'Wild cats as opposed to domesticated cats' is a semantic distinction, not an acoustic one. The only defensible signal correlate is body size: a lion or tiger has a far longer vocal tract than a house cat, so f0 and formants sit lower and low_band_energy is higher. That is a WEAK, wide prior - a big-cat purr or hiss overlaps a house cat completely. Do not assert this subcategory from signal.",
+     "A big-cat roar is loud, low, rough and long; if pitch is above ~600 Hz the file is more likely ANMLCat, but this is a tendency, not a gate."
+    ],
+    "confusable_with": [
+     "ANMLCat",
+     "ANMLWild",
+     "CREABeast",
+     "CREAMnstr"
+    ]
+   }
+  },
+  {
+   "subcategory": "DOG",
+   "category_id": "ANMLDog",
+   "category_short": "ANML",
+   "explanation": [
+    "All Domesticated dogs",
+    "excluding wild dogs. Pet dogs. See also ANIMALS-WILD DOG for non-domesticated dogs."
+   ],
+   "synonyms": [
+    "UCS marke"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.53543,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 401,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 0.22251,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.3,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.08161,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 401,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 0.04512,
+       "reasoned_mean": 0.25,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22431,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 401,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 0.01523,
+       "reasoned_mean": 0.28,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.6,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1855.01159,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 401,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 1.47077,
+       "reasoned_mean": 1200.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.74887,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 401,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 0.15361,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 401,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 0.15422,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 558.22785,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 381,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 1.50361,
+       "reasoned_mean": 350.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.01759,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 401,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 0.01515,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.98042,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 110,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 1.26244,
+       "reasoned_mean": 6.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.06485,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 110,
+       "fsd50k_classes": [
+        "Bark",
+        "Dog"
+       ],
+       "measured_deviation": 1.54609,
+       "reasoned_mean": 0.02,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "DOG vs DOG WILD (wolves, foxes, coyotes) is pure taxonomy. A bark and a wolf howl are both animal vocalizations; nothing in a spectral feature set says 'domesticated'. A fabricated numeric boundary here would be worse than none, because someone would trust it. semantic_only, and the synonyms carry the decision.",
+     "The only weak, honest tendency: pet-dog material is bark-dominated (short, percussive, high crest_factor) while wild-canid material is howl-dominated (long, sustained, tonal, low crest_factor). Both animals do both. Treat as a nudge only.",
+     "NOTE: this subcategory's synonyms list in UCS 8.2.1 is corrupt ('UCS marke'), so text matching cannot fire for it. Until that is fixed, DOG is effectively unreachable by the classifier - flag it rather than compensating with invented priors."
+    ],
+    "confusable_with": [
+     "ANMLWdog",
+     "ANMLFarm",
+     "ANMLMisc",
+     "ANMLWild"
+    ]
+   }
+  },
+  {
+   "subcategory": "DOG WILD",
+   "category_id": "ANMLWdog",
+   "category_short": "ANML",
+   "explanation": [
+    "Wild dogs and canines like Wolves",
+    "Foxes",
+    "Coyotes etc."
+   ],
+   "synonyms": [
+    "African",
+    "Arctic",
+    "Bush",
+    "Canid",
+    "Canids",
+    "Canines",
+    "Corsac",
+    "Coyote",
+    "Dhole",
+    "Dingo",
+    "Dingoes",
+    "Dog",
+    "Ethiopian",
+    "Fennec",
+    "Fox",
+    "Foxes",
+    "Gray",
+    "Hyaena",
+    "Hyena",
+    "Hyenas",
+    "Indian",
+    "Island",
+    "Jackal",
+    "Jackals",
+    "Lupus",
+    "Maned",
+    "Red",
+    "Wild",
+    "Wolf",
+    "Wolfish",
+    "Wolflike",
+    "Wolfs",
+    "Wolves"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 320.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "Wolves, foxes, coyotes, jackals, hyenas. Acoustically these ARE domestic dogs - the same larynx, the same call repertoire. No DSP feature separates them. semantic_only, decided by synonyms.",
+     "Weak tendency only: howl-type material is longer, more sustained and more harmonic than a bark, so length_seconds and sustain_ratio lean higher than ANMLDog. A fox scream or a coyote yip is short and destroys even that tendency."
+    ],
+    "confusable_with": [
+     "ANMLDog",
+     "ANMLWild",
+     "ANMLWcat",
+     "CREAHmn"
+    ]
+   }
+  },
+  {
+   "subcategory": "FARM",
+   "category_id": "ANMLFarm",
+   "category_short": "ANML",
+   "explanation": [
+    "Domesticated mammals you'd find on a farm. For farm birds see BIRDS-FOWL. See also AMBIENCE-FARM."
+   ],
+   "synonyms": [
+    "Alpaca",
+    "Angus",
+    "Barnyard",
+    "Beef",
+    "Bison",
+    "Bovine",
+    "Bovines",
+    "Buffaloes",
+    "Bullocks",
+    "Bulls",
+    "Cattle",
+    "Cattlemen",
+    "Cow",
+    "Domesticated",
+    "Domesticates",
+    "Donkey",
+    "Eew",
+    "Farms",
+    "Farmsteads",
+    "Farmyard",
+    "Feedlot",
+    "Goat",
+    "Goats",
+    "Hereford",
+    "Hogs",
+    "Holstein",
+    "Jersey",
+    "Lamb",
+    "Llama",
+    "Mule",
+    "Pig",
+    "Piggery",
+    "Piggies",
+    "Piglets",
+    "Ram",
+    "Reindeer",
+    "Ruminant",
+    "Ruminants",
+    "Sheep",
+    "Steer",
+    "Wagyu"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 190.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "'Domesticated mammals you'd find on a farm' is a semantic set, not an acoustic one: it lumps a cow (very low, sustained), a pig (mid, rough, squealing), a goat and a sheep (mid, bleating, strongly modulated). No unified signature exists. semantic_only.",
+     "Legitimate weak prior: cattle are large, so f0 and centroid sit low and low_band_energy is high. That correlate is real physics (vocal-tract length) but it is shared with HORSE and with big wild mammals, so it is body size, never species.",
+     "Farm BIRDS go to BIRDS-FOWL; dense yard scenes go to AMBIENCE-FARM. If the file is a stationary multi-source bed rather than a foregrounded call, it is an ambience."
+    ],
+    "confusable_with": [
+     "ANMLHors",
+     "ANMLWild",
+     "BIRDFowl",
+     "ANMLMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "HORSE",
+   "category_id": "ANMLHors",
+   "category_short": "ANML",
+   "explanation": [
+    "All members of the horse family",
+    "including donkeys and mules. See also FOOTSTEPS-HORSE and EQUIPMENT-BRIDLE."
+   ],
+   "synonyms": [
+    "Arabian",
+    "Arabians",
+    "Ass",
+    "Clydesdale",
+    "Colt",
+    "Donkey",
+    "Donkeys",
+    "Equestrian",
+    "Equestrians",
+    "Equid",
+    "Equids",
+    "Equine",
+    "Equines",
+    "Equus",
+    "Filly",
+    "Foal",
+    "Foals",
+    "Gelding",
+    "Geldings",
+    "Hoofs",
+    "Horse",
+    "Horseback",
+    "Horseflesh",
+    "Horseman",
+    "Horsemanship",
+    "Horsemen",
+    "Horseraces",
+    "Horsewoman",
+    "Horsey",
+    "Horsy",
+    "Jockeys",
+    "Mare",
+    "Mares",
+    "Mule",
+    "Mules",
+    "Mustang",
+    "Mustangs",
+    "Packhorses",
+    "Palominos",
+    "Ponies",
+    "Pony",
+    "Quarter",
+    "Racehorse",
+    "Racehorses",
+    "Riders",
+    "Saddles",
+    "Sawbuck",
+    "Shetland",
+    "Stables",
+    "Stallion",
+    "Stallions",
+    "Standardbreds",
+    "Steeds",
+    "Thoroughbred",
+    "Thoroughbreds",
+    "Zebra"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 240.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "'All members of the horse family, including donkeys and mules' - explicitly a taxonomic set. A whinny, a bray and a nicker share nothing that DSP could bind together and separate from cattle. semantic_only.",
+     "Body-size prior only: a horse is large, so f0 skews low. A whinny is a strongly frequency-modulated harmonic call (high spectral_flux with high harmonicity), which is a mild tendency, not an identifier.",
+     "Hoofbeats are FOOTSTEPS-HORSE and tack is EQUIPMENT-BRIDLE, per the explanation. A file that is a rhythmic impact train with no vocalization should be scored there, not here - and THAT split IS DSP-decidable."
+    ],
+    "confusable_with": [
+     "ANMLFarm",
+     "ANMLWild",
+     "FEETHors",
+     "ANMLMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "INSECT",
+   "category_id": "ANMLInsc",
+   "category_short": "ANML",
+   "explanation": [
+    "All manner of traditional insect sounds",
+    "crickets",
+    "cicada",
+    "flies and bees. And singular insect recordings. See also AMBIENCE-INSECT now for dense ambience style recordings."
+   ],
+   "synonyms": [
+    "Ant",
+    "Aphid",
+    "Bee",
+    "Bees",
+    "Beetle",
+    "Beetles",
+    "Budgie",
+    "Bugs",
+    "Butterfly",
+    "Buzz",
+    "Caterpillar",
+    "Cicada",
+    "Cockroach",
+    "Conehead",
+    "Cricket",
+    "Damselfly",
+    "Dragonfly",
+    "Entomology",
+    "Firefly",
+    "Flea",
+    "Fly",
+    "Gnat",
+    "Grasshopper",
+    "Hornet",
+    "Katydid",
+    "Ladybug",
+    "Locust",
+    "Mantis",
+    "Monarch",
+    "Mosquito",
+    "Mosquitoes",
+    "Moth",
+    "Pests",
+    "Praying",
+    "Spider",
+    "Termite",
+    "Tick",
+    "Wasp",
+    "Weta"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 180.0
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5633.91855,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
         "Buzz",
-        "Caterpillar",
-        "Cicada",
-        "Cockroach",
-        "Conehead",
         "Cricket",
-        "Damselfly",
-        "Dragonfly",
-        "Entomology",
-        "Firefly",
-        "Flea",
-        "Fly",
-        "Gnat",
-        "Grasshopper",
-        "Hornet",
-        "Katydid",
-        "Ladybug",
-        "Locust",
-        "Mantis",
-        "Monarch",
-        "Mosquito",
-        "Mosquitoes",
-        "Moth",
-        "Pests",
-        "Praying",
-        "Spider",
-        "Termite",
-        "Tick",
-        "Wasp",
-        "Weta"
-      ],
-      "acoustic_signature": {
-        "morphology": "texture",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 180.0
-          },
-          {
-            "feature": "low_band_energy",
-            "max": 0.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 4500.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.65,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.06,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 8000.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 1600.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.6,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 8.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 5.0,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Unlike the rest of ANIMALS, this one has a genuine acoustic identity rather than a taxonomic one: stridulation and wingbeat are mechanical oscillators, so insect material is a high-frequency, near-stationary, strongly periodic texture (cricket chirp trains, cicada buzz) with almost no energy below 200 Hz. That is measurable and prunes hard against every mammal vocalization - hence signal_narrowable, not semantic_only.",
-          "It does NOT identify the insect: cricket vs cicada vs katydid vs mosquito is text.",
-          "A bee or mosquito flight tone is a sustained_tonal buzz whose pitch IS the wingbeat rate; that material overlaps WINGS-INSECT, and the split is editorial (is the subject the animal, or its wings?), not acoustic.",
-          "Dense continuous night-field beds belong to AMBIENCE-INSECT per the explanation; use stationarity and length to prefer AMBIENCE when the file is a minutes-long unchanging bed."
-        ],
-        "confusable_with": [
-          "WINGInsc",
-          "AMBInsc",
-          "ANMLBat",
-          "BIRDMisc"
-        ]
+        "Insect"
+       ],
+       "measured_deviation": 1.80296,
+       "reasoned_mean": 4500.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "ANMLMisc",
-      "category_short": "ANML",
-      "explanation": [
-        "Other animals not finding a clear category."
-      ],
-      "synonyms": [
-        "Miscellaneous",
-        "Zoology"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 400.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.15
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.3,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "The catch-all. It carries the ANIMALS class gates (it is a vocalization, not a drone or an impact) and nothing more. It should win only by abstention, when the file is clearly an animal but no sibling's text evidence fires.",
-          "Deliberately given weak, wide priors so it never out-scores a sibling that has real text support."
-        ],
-        "confusable_with": [
-          "ANMLWild",
-          "ANMLAqua",
-          "ANMLRept",
-          "CREAMisc"
-        ]
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.85216,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
+        "Buzz",
+        "Cricket",
+        "Insect"
+       ],
+       "measured_deviation": 0.20865,
+       "reasoned_mean": 0.65,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "PRIMATE",
-      "category_id": "ANMLPrim",
-      "category_short": "ANML",
-      "explanation": [
-        "All members of the primate family except humans. Apes",
-        "Chimps",
-        "etc."
-      ],
-      "synonyms": [
-        "Ape",
-        "Apes",
-        "Baboon",
-        "Baboons",
-        "Bonobo",
-        "Bonobos",
-        "Bushbaby",
-        "Capuchin",
-        "Chimpanzee",
-        "Chimpanzees",
-        "Chimps",
-        "Colobus",
-        "Gibbon",
-        "Gibbons",
-        "Gorilla",
-        "Gorillas",
-        "Great",
-        "Langur",
-        "Langurs",
-        "Lemur",
-        "Lemurs",
-        "Macaque",
-        "Macaques",
-        "Marmoset",
-        "Marmosets",
-        "Monkey",
-        "Monkeys",
-        "Orangutan",
-        "Orangutans",
-        "Primates",
-        "Prosimians",
-        "Squirrel",
-        "Tarsier",
-        "Tarsiers"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 420.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.25,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "'All members of the primate family except humans' - taxonomy. A chimp pant-hoot, a gorilla grunt, a gibbon whoop and a lemur call have no shared signature that excludes other mammals. semantic_only.",
-          "The one interesting (and still weak) cue: primates are the closest non-human match to the HUMAN vocal apparatus, so voicing_ratio and syllabic_modulation_energy run high - primate material is the most speech-like of all animal material. That is exactly why it is confusable with HUMAN and with CREATURES-HUMANOID (which is often built from primate or human source), and why it cannot be asserted from signal."
-        ],
-        "confusable_with": [
-          "HMNMisc",
-          "CREAHmn",
-          "ANMLWild",
-          "CREASrce"
-        ]
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.02033,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
+        "Buzz",
+        "Cricket",
+        "Insect"
+       ],
+       "measured_deviation": 0.02874,
+       "reasoned_mean": 0.06,
+       "reasoned_deviation": 0.09,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "REPTILE",
-      "category_id": "ANMLRept",
-      "category_short": "ANML",
-      "explanation": [
-        "All reptiles including snakes",
-        "turtles and lizzards."
-      ],
-      "synonyms": [
-        "Alligator",
-        "Alligators",
-        "Bearded",
-        "Boas",
-        "Caiman",
-        "Chameleon",
-        "Chameleons",
-        "Cobras",
-        "Crocodile",
-        "Crocodiles",
-        "Dragon",
-        "Dragons",
-        "Gecko",
-        "Geckos",
-        "Gharial",
-        "Gila",
-        "Iguana",
-        "Iguanas",
-        "Komodo",
-        "Lizard",
-        "Lizards",
-        "Monitor",
-        "Monitors",
-        "Monsters",
-        "Pythons",
-        "Rattlesnake",
-        "Reptiles",
-        "Serpents",
-        "Skink",
-        "Skinks",
-        "Snake",
-        "Snakes",
-        "Terrapin",
-        "Tortoise",
-        "Tortoises",
-        "Turtle",
-        "Turtles",
-        "Vipers"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.45
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.25,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.5,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.35
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3000.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.35
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 6000.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.45,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.25
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.25
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.45,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.25
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "Reptiles are the one ANIMALS subcategory whose typical morphology is NOT voiced: a snake hiss is sustained broadband noise (high spectral_flatness, near-zero harmonicity) and a rattle is a dry high-frequency buzz. That pushes the priors toward the noise corner and is a real tendency - but a crocodile bellow is a low voiced roar, so the class is bimodal and no single set of priors covers it. semantic_only, honestly.",
-          "A hiss here is indistinguishable from a cat hiss (ANMLCat/ANMLWcat), from AIR-HISS and from a steam leak. Only text can settle it.",
-          "Snakes, turtles and lizards are largely SILENT animals; much 'reptile' library material is actually body movement over substrate, which is closer to VEGETATION/DIRT_SAND friction than to a vocalization."
-        ],
-        "confusable_with": [
-          "ANMLAmph",
-          "ANMLWcat",
-          "AIRHiss",
-          "CREARept"
-        ]
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6696.15326,
+      "deviation": 2.5987,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
+        "Buzz",
+        "Cricket",
+        "Insect"
+       ],
+       "measured_deviation": 2.5987,
+       "reasoned_mean": 8000.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "RODENT",
-      "category_id": "ANMLRdnt",
-      "category_short": "ANML",
-      "explanation": [
-        "All manner 'gnawing' animals like rats and mice. Rodents."
-      ],
-      "synonyms": [
-        "Beaver",
-        "Capybara",
-        "Chinchilla",
-        "Chipmunk",
-        "Chipmunks",
-        "Dog",
-        "Dormice",
-        "Gerbil",
-        "Gerbils",
-        "Gnawing",
-        "Gopher",
-        "Gophers",
-        "Groundhog",
-        "Guinea",
-        "Hamster",
-        "Hamsters",
-        "Jerboa",
-        "Jerboas",
-        "Kangaroo",
-        "Lemming",
-        "Marmot",
-        "Marmots",
-        "Mice",
-        "Mole",
-        "Mouse",
-        "Muskrat",
-        "Nutria",
-        "Opossums",
-        "Packrat",
-        "Pig",
-        "Porcupine",
-        "Possums",
-        "Prairie",
-        "Rat",
-        "Rats",
-        "Rodent",
-        "Rodents",
-        "Shrew",
-        "Squirrel",
-        "Vermin",
-        "Vole",
-        "Voles"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.3,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 1100.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.06,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 6000.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "Taxonomy again ('gnawing animals'). What IS defensible is the body-size correlate at its strongest: rodents are the smallest mammals in this category, so squeaks sit at the top of the pitch range (often 1-4 kHz, and much rat/mouse vocalization is genuinely ultrasonic and only present in a library after pitch-shifting). Short, high, bright events. That is a real WEAK prior, and it is the opposite pole from HORSE/FARM.",
-          "It still does not identify a rodent: a bat chirp, a small bird call and a fledgling squeak occupy the same region. semantic_only.",
-          "Gnawing/scratching material is a friction/impact texture, not a vocalization, and will fail the voiced priors - expect it to abstain toward ANMLMisc or to score against WOOD/PAPER friction instead."
-        ],
-        "confusable_with": [
-          "ANMLBat",
-          "BIRDMisc",
-          "ANMLMisc",
-          "CREASmall"
-        ]
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1470.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 181,
+       "fsd50k_classes": [
+        "Buzz",
+        "Cricket",
+        "Insect"
+       ],
+       "measured_deviation": 1.41973,
+       "reasoned_mean": 1600.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "WILD",
-      "category_id": "ANMLWild",
-      "category_short": "ANML",
-      "explanation": [
-        "Any wild animal not explicitly defined by the list",
-        "and not domesticated. Wolves and Coyotes now to go ANIMALS-DOG WILD"
-      ],
-      "synonyms": [
-        "Aardvark",
-        "Animalism",
-        "Animalistic",
-        "Anteater",
-        "Antelope",
-        "Badger",
-        "Bear",
-        "Bison",
-        "Boar",
-        "Buffalo",
-        "Caribou",
-        "Carnivores",
-        "Creatures",
-        "Critters",
-        "Deer",
-        "Devil",
-        "Elephant",
-        "Elk",
-        "Endangered",
-        "Gazelle",
-        "Giraffe",
-        "Grisly",
-        "Hippo",
-        "Hippopotamus",
-        "Impala",
-        "Kangaroo",
-        "Koala",
-        "Mammals",
-        "Moose",
-        "Ox",
-        "Panda",
-        "Platypus",
-        "Polar",
-        "Predators",
-        "Predatory",
-        "Quadrupeds",
-        "Raccoon",
-        "Red",
-        "Reindeer",
-        "Rhino",
-        "Rhinoceros",
-        "Sloth",
-        "Tapir",
-        "Tasmanian",
-        "Wallaby",
-        "Warthog",
-        "Wildebeest",
-        "Wildness",
-        "Wolverine",
-        "Wombat"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 90.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.92
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.28,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 300.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.15
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
-          "Explicitly a residual set ('any wild animal not explicitly defined by the list'), spanning a bear, an elephant, a deer and a raccoon. It has no signature, only the class gates. semantic_only, and it should generally lose to any sibling with a text hit.",
-          "Per the explanation, wolves and coyotes moved OUT of here to ANIMALS-DOG WILD; do not let this subcategory absorb canid material on signal grounds - it cannot tell the difference anyway."
-        ],
-        "confusable_with": [
-          "ANMLMisc",
-          "ANMLFarm",
-          "ANMLWcat",
-          "ANMLWdog"
-        ]
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.41512,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
+        "Buzz",
+        "Cricket",
+        "Insect"
+       ],
+       "measured_deviation": 3.24049,
+       "reasoned_mean": 8.0,
+       "reasoned_deviation": 3.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.41197,
+      "deviation": 0.4423,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
+        "Buzz",
+        "Cricket",
+        "Insect"
+       ],
+       "measured_deviation": 0.4423,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.22402,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
+        "Buzz",
+        "Cricket",
+        "Insect"
+       ],
+       "measured_deviation": 0.18533,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Unlike the rest of ANIMALS, this one has a genuine acoustic identity rather than a taxonomic one: stridulation and wingbeat are mechanical oscillators, so insect material is a high-frequency, near-stationary, strongly periodic texture (cricket chirp trains, cicada buzz) with almost no energy below 200 Hz. That is measurable and prunes hard against every mammal vocalization - hence signal_narrowable, not semantic_only.",
+     "It does NOT identify the insect: cricket vs cicada vs katydid vs mosquito is text.",
+     "A bee or mosquito flight tone is a sustained_tonal buzz whose pitch IS the wingbeat rate; that material overlaps WINGS-INSECT, and the split is editorial (is the subject the animal, or its wings?), not acoustic.",
+     "Dense continuous night-field beds belong to AMBIENCE-INSECT per the explanation; use stationarity and length to prefer AMBIENCE when the file is a minutes-long unchanging bed."
+    ],
+    "confusable_with": [
+     "WINGInsc",
+     "AMBInsc",
+     "ANMLBat",
+     "BIRDMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "ANMLMisc",
+   "category_short": "ANML",
+   "explanation": [
+    "Other animals not finding a clear category."
+   ],
+   "synonyms": [
+    "Miscellaneous",
+    "Zoology"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 400.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.15,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "The catch-all. It carries the ANIMALS class gates (it is a vocalization, not a drone or an impact) and nothing more. It should win only by abstention, when the file is clearly an animal but no sibling's text evidence fires.",
+     "Deliberately given weak, wide priors so it never out-scores a sibling that has real text support."
+    ],
+    "confusable_with": [
+     "ANMLWild",
+     "ANMLAqua",
+     "ANMLRept",
+     "CREAMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "PRIMATE",
+   "category_id": "ANMLPrim",
+   "category_short": "ANML",
+   "explanation": [
+    "All members of the primate family except humans. Apes",
+    "Chimps",
+    "etc."
+   ],
+   "synonyms": [
+    "Ape",
+    "Apes",
+    "Baboon",
+    "Baboons",
+    "Bonobo",
+    "Bonobos",
+    "Bushbaby",
+    "Capuchin",
+    "Chimpanzee",
+    "Chimpanzees",
+    "Chimps",
+    "Colobus",
+    "Gibbon",
+    "Gibbons",
+    "Gorilla",
+    "Gorillas",
+    "Great",
+    "Langur",
+    "Langurs",
+    "Lemur",
+    "Lemurs",
+    "Macaque",
+    "Macaques",
+    "Marmoset",
+    "Marmosets",
+    "Monkey",
+    "Monkeys",
+    "Orangutan",
+    "Orangutans",
+    "Primates",
+    "Prosimians",
+    "Squirrel",
+    "Tarsier",
+    "Tarsiers"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 420.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.25,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "'All members of the primate family except humans' - taxonomy. A chimp pant-hoot, a gorilla grunt, a gibbon whoop and a lemur call have no shared signature that excludes other mammals. semantic_only.",
+     "The one interesting (and still weak) cue: primates are the closest non-human match to the HUMAN vocal apparatus, so voicing_ratio and syllabic_modulation_energy run high - primate material is the most speech-like of all animal material. That is exactly why it is confusable with HUMAN and with CREATURES-HUMANOID (which is often built from primate or human source), and why it cannot be asserted from signal."
+    ],
+    "confusable_with": [
+     "HMNMisc",
+     "CREAHmn",
+     "ANMLWild",
+     "CREASrce"
+    ]
+   }
+  },
+  {
+   "subcategory": "REPTILE",
+   "category_id": "ANMLRept",
+   "category_short": "ANML",
+   "explanation": [
+    "All reptiles including snakes",
+    "turtles and lizzards."
+   ],
+   "synonyms": [
+    "Alligator",
+    "Alligators",
+    "Bearded",
+    "Boas",
+    "Caiman",
+    "Chameleon",
+    "Chameleons",
+    "Cobras",
+    "Crocodile",
+    "Crocodiles",
+    "Dragon",
+    "Dragons",
+    "Gecko",
+    "Geckos",
+    "Gharial",
+    "Gila",
+    "Iguana",
+    "Iguanas",
+    "Komodo",
+    "Lizard",
+    "Lizards",
+    "Monitor",
+    "Monitors",
+    "Monsters",
+    "Pythons",
+    "Rattlesnake",
+    "Reptiles",
+    "Serpents",
+    "Skink",
+    "Skinks",
+    "Snake",
+    "Snakes",
+    "Terrapin",
+    "Tortoise",
+    "Tortoises",
+    "Turtle",
+    "Turtles",
+    "Vipers"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "Reptiles are the one ANIMALS subcategory whose typical morphology is NOT voiced: a snake hiss is sustained broadband noise (high spectral_flatness, near-zero harmonicity) and a rattle is a dry high-frequency buzz. That pushes the priors toward the noise corner and is a real tendency - but a crocodile bellow is a low voiced roar, so the class is bimodal and no single set of priors covers it. semantic_only, honestly.",
+     "A hiss here is indistinguishable from a cat hiss (ANMLCat/ANMLWcat), from AIR-HISS and from a steam leak. Only text can settle it.",
+     "Snakes, turtles and lizards are largely SILENT animals; much 'reptile' library material is actually body movement over substrate, which is closer to VEGETATION/DIRT_SAND friction than to a vocalization."
+    ],
+    "confusable_with": [
+     "ANMLAmph",
+     "ANMLWcat",
+     "AIRHiss",
+     "CREARept"
+    ]
+   }
+  },
+  {
+   "subcategory": "RODENT",
+   "category_id": "ANMLRdnt",
+   "category_short": "ANML",
+   "explanation": [
+    "All manner 'gnawing' animals like rats and mice. Rodents."
+   ],
+   "synonyms": [
+    "Beaver",
+    "Capybara",
+    "Chinchilla",
+    "Chipmunk",
+    "Chipmunks",
+    "Dog",
+    "Dormice",
+    "Gerbil",
+    "Gerbils",
+    "Gnawing",
+    "Gopher",
+    "Gophers",
+    "Groundhog",
+    "Guinea",
+    "Hamster",
+    "Hamsters",
+    "Jerboa",
+    "Jerboas",
+    "Kangaroo",
+    "Lemming",
+    "Marmot",
+    "Marmots",
+    "Mice",
+    "Mole",
+    "Mouse",
+    "Muskrat",
+    "Nutria",
+    "Opossums",
+    "Packrat",
+    "Pig",
+    "Porcupine",
+    "Possums",
+    "Prairie",
+    "Rat",
+    "Rats",
+    "Rodent",
+    "Rodents",
+    "Shrew",
+    "Squirrel",
+    "Vermin",
+    "Vole",
+    "Voles"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.3,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1100.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.06,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "Taxonomy again ('gnawing animals'). What IS defensible is the body-size correlate at its strongest: rodents are the smallest mammals in this category, so squeaks sit at the top of the pitch range (often 1-4 kHz, and much rat/mouse vocalization is genuinely ultrasonic and only present in a library after pitch-shifting). Short, high, bright events. That is a real WEAK prior, and it is the opposite pole from HORSE/FARM.",
+     "It still does not identify a rodent: a bat chirp, a small bird call and a fledgling squeak occupy the same region. semantic_only.",
+     "Gnawing/scratching material is a friction/impact texture, not a vocalization, and will fail the voiced priors - expect it to abstain toward ANMLMisc or to score against WOOD/PAPER friction instead."
+    ],
+    "confusable_with": [
+     "ANMLBat",
+     "BIRDMisc",
+     "ANMLMisc",
+     "CREASmall"
+    ]
+   }
+  },
+  {
+   "subcategory": "WILD",
+   "category_id": "ANMLWild",
+   "category_short": "ANML",
+   "explanation": [
+    "Any wild animal not explicitly defined by the list",
+    "and not domesticated. Wolves and Coyotes now to go ANIMALS-DOG WILD"
+   ],
+   "synonyms": [
+    "Aardvark",
+    "Animalism",
+    "Animalistic",
+    "Anteater",
+    "Antelope",
+    "Badger",
+    "Bear",
+    "Bison",
+    "Boar",
+    "Buffalo",
+    "Caribou",
+    "Carnivores",
+    "Creatures",
+    "Critters",
+    "Deer",
+    "Devil",
+    "Elephant",
+    "Elk",
+    "Endangered",
+    "Gazelle",
+    "Giraffe",
+    "Grisly",
+    "Hippo",
+    "Hippopotamus",
+    "Impala",
+    "Kangaroo",
+    "Koala",
+    "Mammals",
+    "Moose",
+    "Ox",
+    "Panda",
+    "Platypus",
+    "Polar",
+    "Predators",
+    "Predatory",
+    "Quadrupeds",
+    "Raccoon",
+    "Red",
+    "Reindeer",
+    "Rhino",
+    "Rhinoceros",
+    "Sloth",
+    "Tapir",
+    "Tasmanian",
+    "Wallaby",
+    "Warthog",
+    "Wildebeest",
+    "Wildness",
+    "Wolverine",
+    "Wombat"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.92
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 300.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.15,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Signal analysis can establish that this is an ANIMAL VOCALIZATION (voiced/harmonic-with-noise, non-stationary, 0.1-3 s events, formant-ish mid-band structure) and can therefore rule out drones, impacts, machines and stationary ambiences. It cannot establish the SPECIES. No spectral-centroid/MFCC feature says 'domesticated'. Species identity here is carried by synonyms text, not by DSP.",
+     "Explicitly a residual set ('any wild animal not explicitly defined by the list'), spanning a bear, an elephant, a deer and a raccoon. It has no signature, only the class gates. semantic_only, and it should generally lose to any sibling with a text hit.",
+     "Per the explanation, wolves and coyotes moved OUT of here to ANIMALS-DOG WILD; do not let this subcategory absorb canid material on signal grounds - it cannot tell the difference anyway."
+    ],
+    "confusable_with": [
+     "ANMLMisc",
+     "ANMLFarm",
+     "ANMLWcat",
+     "ANMLWdog"
+    ]
+   }
+  }
+ ]
 }

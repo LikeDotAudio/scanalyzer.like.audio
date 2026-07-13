@@ -1,255 +1,300 @@
 {
-  "version": "8.2.1",
-  "category": "TOYS",
-  "subcategories": [
-    {
-      "subcategory": "ELECTRONIC",
-      "category_id": "TOYElec",
-      "category_short": "TOY",
-      "explanation": [
-        "Remote controlled car",
-        "slot cars. Any kids toy that required power. See also AIRCRAFT-REMOTE CONTROLLED."
-      ],
-      "synonyms": [
-        "Car",
-        "Controlled",
-        "Device",
-        "Digital",
-        "Entertainment",
-        "Furby",
-        "Gadget",
-        "Game",
-        "Gizmo",
-        "Interactive",
-        "Play",
-        "Remote",
-        "Screen",
-        "Slot",
-        "Tech",
-        "Toy",
-        "Train",
-        "Virtual"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000,
-            "deviation": 1200,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.5,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.1,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Object identity: a powered toy is any mixture of small motor whine, electronic beeps and canned speech - no single morphology, so signal must not assert it.",
-          "The only real cues are negative: it is not a minutes-long bed, and small plastic bodies and small motors leave little low_band_energy.",
-          "Tonal beeps and continuous motor whine lean electronic; a dry periodic click train leans TOYS-MECHANICAL. Console audio is GAMES-VIDEO. Text (remote, controlled, slot, furby) decides."
-        ],
-        "confusable_with": [
-          "TOYMech",
-          "TOYMisc",
-          "GAMEVideo"
-        ]
+ "version": "8.2.1",
+ "category": "TOYS",
+ "subcategories": [
+  {
+   "subcategory": "ELECTRONIC",
+   "category_id": "TOYElec",
+   "category_short": "TOY",
+   "explanation": [
+    "Remote controlled car",
+    "slot cars. Any kids toy that required power. See also AIRCRAFT-REMOTE CONTROLLED."
+   ],
+   "synonyms": [
+    "Car",
+    "Controlled",
+    "Device",
+    "Digital",
+    "Entertainment",
+    "Furby",
+    "Gadget",
+    "Game",
+    "Gizmo",
+    "Interactive",
+    "Play",
+    "Remote",
+    "Screen",
+    "Slot",
+    "Tech",
+    "Toy",
+    "Train",
+    "Virtual"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000,
+      "deviation": 1200,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MECHANICAL",
-      "category_id": "TOYMech",
-      "category_short": "TOY",
-      "explanation": [
-        "Wind up robots",
-        "things like that. Toys with some mechanism or mechanical component."
-      ],
-      "synonyms": [
-        "Box",
-        "Erector",
-        "Jack-in-the-Box",
-        "Kaleidoscope",
-        "Music",
-        "Robot",
-        "Slinky",
-        "Spring-Loaded",
-        "Tops",
-        "Toy",
-        "Wind-Up",
-        "Winding",
-        "Windup",
-        "Yo-Yo"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.65,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 10.0,
-            "deviation": 8.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 9.0,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.08,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2500,
-            "deviation": 1400,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.003,
-            "deviation": 1.948,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Ratchets, springs and clockwork: a PERIODIC train of small dry clicks - unpitched, high-crest and bass-free, because a small plastic body radiates no low end.",
-          "That click train narrows it against TOYS-ELECTRONIC (tonal beeps, continuous motor whine), but object identity still needs text.",
-          "A wind-up mechanism that plays a TUNE (pitched harmonic plinks) is MUSICAL-TOY, not this."
-        ],
-        "confusable_with": [
-          "TOYElec",
-          "TOYMisc",
-          "MUSCToy"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "TOYMisc",
-      "category_short": "TOY",
-      "explanation": [
-        "Toy sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Action",
-        "Animal",
-        "Ball",
-        "Blocks",
-        "Building",
-        "Construction",
-        "Doll",
-        "Figure",
-        "Legos",
-        "Model",
-        "Plaything",
-        "Plushie",
-        "Puppet",
-        "Puzzle",
-        "Set",
-        "Stuffed"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.02
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.1,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.0,
-            "deviation": 2.718,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Abstain target for TOYS: dolls, blocks, plushies, puzzles. Small, light objects, so low_band_energy is minimal, but the identity is text-only.",
-          "Never assert from signal."
-        ],
-        "confusable_with": [
-          "TOYMech",
-          "TOYElec"
-        ]
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Object identity: a powered toy is any mixture of small motor whine, electronic beeps and canned speech - no single morphology, so signal must not assert it.",
+     "The only real cues are negative: it is not a minutes-long bed, and small plastic bodies and small motors leave little low_band_energy.",
+     "Tonal beeps and continuous motor whine lean electronic; a dry periodic click train leans TOYS-MECHANICAL. Console audio is GAMES-VIDEO. Text (remote, controlled, slot, furby) decides."
+    ],
+    "confusable_with": [
+     "TOYMech",
+     "TOYMisc",
+     "GAMEVideo"
+    ]
+   }
+  },
+  {
+   "subcategory": "MECHANICAL",
+   "category_id": "TOYMech",
+   "category_short": "TOY",
+   "explanation": [
+    "Wind up robots",
+    "things like that. Toys with some mechanism or mechanical component."
+   ],
+   "synonyms": [
+    "Box",
+    "Erector",
+    "Jack-in-the-Box",
+    "Kaleidoscope",
+    "Music",
+    "Robot",
+    "Slinky",
+    "Spring-Loaded",
+    "Tops",
+    "Toy",
+    "Wind-Up",
+    "Winding",
+    "Windup",
+    "Yo-Yo"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 10.0,
+      "deviation": 8.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.08,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500,
+      "deviation": 1400,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 1.948,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Ratchets, springs and clockwork: a PERIODIC train of small dry clicks - unpitched, high-crest and bass-free, because a small plastic body radiates no low end.",
+     "That click train narrows it against TOYS-ELECTRONIC (tonal beeps, continuous motor whine), but object identity still needs text.",
+     "A wind-up mechanism that plays a TUNE (pitched harmonic plinks) is MUSICAL-TOY, not this."
+    ],
+    "confusable_with": [
+     "TOYElec",
+     "TOYMisc",
+     "MUSCToy"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "TOYMisc",
+   "category_short": "TOY",
+   "explanation": [
+    "Toy sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Action",
+    "Animal",
+    "Ball",
+    "Blocks",
+    "Building",
+    "Construction",
+    "Doll",
+    "Figure",
+    "Legos",
+    "Model",
+    "Plaything",
+    "Plushie",
+    "Puppet",
+    "Puzzle",
+    "Set",
+    "Stuffed"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Abstain target for TOYS: dolls, blocks, plushies, puzzles. Small, light objects, so low_band_energy is minimal, but the identity is text-only.",
+     "Never assert from signal."
+    ],
+    "confusable_with": [
+     "TOYMech",
+     "TOYElec"
+    ]
+   }
+  }
+ ]
 }

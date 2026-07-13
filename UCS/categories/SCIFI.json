@@ -1,1182 +1,1422 @@
 {
-  "version": "8.2.1",
-  "category": "SCIFI",
-  "subcategories": [
-    {
-      "subcategory": "ALARM",
-      "category_id": "SCIAlrm",
-      "category_short": "SCI",
-      "explanation": [
-        "Overly futuristic alarms",
-        "the kind you're hear on a spaceship"
-      ],
-      "synonyms": [
-        "Alarm",
-        "Alert",
-        "Buzzer",
-        "Fiction",
-        "Indicator",
-        "Notification",
-        "Sci-Fi",
-        "Science",
-        "Signal",
-        "Warning"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.2
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.8,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.75,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.8,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 800.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "transient_count",
-            "mean": 8.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 5.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A repeating tonal alert: strongly periodic onset train of pitched pulses. Morphologically identical to ALARMS-ELECTRONIC and UI-ALERT — the 'spaceship' part is pure semantics.",
-          "More harmonic and more periodic than SCIFI-COMPUTER's aperiodic data chatter.",
-          "Longer and more repetitive than a single BEEPS event."
-        ],
-        "confusable_with": [
-          "ALRMElec",
-          "ALRMBuzr",
-          "UIAlert",
-          "BEEP",
-          "SCICmpt",
-          "BEEPMed"
-        ]
+ "version": "8.2.1",
+ "category": "SCIFI",
+ "subcategories": [
+  {
+   "subcategory": "ALARM",
+   "category_id": "SCIAlrm",
+   "category_short": "SCI",
+   "explanation": [
+    "Overly futuristic alarms",
+    "the kind you're hear on a spaceship"
+   ],
+   "synonyms": [
+    "Alarm",
+    "Alert",
+    "Buzzer",
+    "Fiction",
+    "Indicator",
+    "Notification",
+    "Sci-Fi",
+    "Science",
+    "Signal",
+    "Warning"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "COMPUTER",
-      "category_id": "SCICmpt",
-      "category_short": "SCI",
-      "explanation": [
-        "Use Sci-Fi for overtly 'science fiction' type computer sounds",
-        "a very futuristic computer. Some overlap with USER INTERFACE."
-      ],
-      "synonyms": [
-        "9000",
-        "Accumulator",
-        "AI",
-        "Binary",
-        "Borg",
-        "Center",
-        "Command",
-        "Computer",
-        "Console",
-        "Fiction",
-        "HAL",
-        "Holoscreen",
-        "Interface",
-        "Matrix",
-        "MCU",
-        "Quantum",
-        "Sci-Fi",
-        "Science",
-        "Skynet",
-        "Touchscreen",
-        "WOPR"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 8.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "transient_count",
-            "mean": 15.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2200.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 7.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Futuristic data chatter: a dense burble of short pitched blips, brighter and busier than an alarm but only LOOSELY periodic (onset_periodicity ~0.45) — it is a data stream, not a metronome.",
-          "Explanation concedes overlap with USER INTERFACE; sci-fi framing is semantic, so require text ('computer', 'console', 'HAL', 'sci-fi') to commit.",
-          "Almost no low-band energy — that is the split against SCIFI-MACHINE."
-        ],
-        "confusable_with": [
-          "UIData",
-          "UIBeep",
-          "SCIAlrm",
-          "CMPTMisc",
-          "ROBTVox",
-          "SCIMech"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.75,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "DOOR",
-      "category_id": "SCIDoor",
-      "category_short": "SCI",
-      "explanation": [
-        "That Star-Trek type door. Spaceship doors."
-      ],
-      "synonyms": [
-        "Access",
-        "Airlock",
-        "Bay",
-        "Blast",
-        "Doorway",
-        "Entrance",
-        "Exit",
-        "Fiction",
-        "Gateway",
-        "Hatch",
-        "Hatchbay",
-        "Opening",
-        "Passage",
-        "Pod",
-        "Portal",
-        "Sci-Fi",
-        "Science",
-        "Teleporter"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.15,
-            "max": 30.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 1.6,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 900.0,
-            "deviation": 2.3,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "transient_count",
-            "mean": 3.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.5,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.35,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.4,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.15,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A compound gesture, ~1-3 s: pneumatic swish (noise, moving centroid) bracketed by mechanical seat/latch transients. That swish+clunk pairing is the morphology; the 'spaceship' part is semantic.",
-          "Distinguished from DESIGNED-WHOOSH by its terminal transient and short, bounded duration.",
-          "Distinguished from DOORS-* only by timbre and text."
-        ],
-        "confusable_with": [
-          "DSGNWhsh",
-          "SCIMech",
-          "SCIMach",
-          "MECHLtch",
-          "VEHDoor"
-        ]
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "ENERGY",
-      "category_id": "SCIEnrg",
-      "category_short": "SCI",
-      "explanation": [
-        "Energy particles",
-        "vortexes",
-        "transporters",
-        "holograms",
-        "force fields."
-      ],
-      "synonyms": [
-        "Atomic",
-        "Fiction",
-        "Field",
-        "Flux",
-        "Force",
-        "Forcefield",
-        "Hologram",
-        "Impulse",
-        "Particle",
-        "Power",
-        "Propulsion",
-        "Sci-Fi",
-        "Science",
-        "Shield",
-        "Solar",
-        "Transporter",
-        "Vortex"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.2,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2400.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 1200.0,
-            "deviation": 2.3,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "pitch_slope_semitones_per_second",
-            "mean": 2.0,
-            "deviation": 6.0,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Force fields, transporters, holograms: a SUSTAINED shimmering tone — pitched but detuned (high inharmonicity), bright, and constantly modulating (moderate flux, large centroid deviation).",
-          "Sustained where SCIFI-IMPACT is a hit; more tonal and less noisy than DESIGNED-WHOOSH.",
-          "MAGIC-SHIMMER is the same brightness but is a granular chime field with a dense onset train; ENERGY is continuous."
-        ],
-        "confusable_with": [
-          "SCIImpt",
-          "SCIWeap",
-          "MAGShim",
-          "ELECArc",
-          "DSGNTonl",
-          "LASRBeam"
-        ]
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.8,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "IMPACT",
-      "category_id": "SCIImpt",
-      "category_short": "SCI",
-      "explanation": [
-        "A bolt of SciFi energy",
-        "a hi-tech energy impact",
-        "more futuristic than just an explosion. Overlap with DESIGNED-IMPACT."
-      ],
-      "synonyms": [
-        "Blast",
-        "Collision",
-        "Energy",
-        "Fiction",
-        "Field",
-        "Force",
-        "Hit",
-        "Jolt",
-        "Photon",
-        "Sci-Fi",
-        "Science",
-        "Shield",
-        "Strike",
-        "Wave"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 20.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.005,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.28,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 9.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.3,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_decay_seconds",
-            "mean": 1.2,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 2.3,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "'A hi-tech energy impact, more futuristic than just an explosion.' Morphologically it IS DESIGNED-IMPACT — same attack, crest and temporal centroid. The lean is a brighter, more electric, more tonal tail (zap/sizzle) over the low-end body.",
-          "Explanation concedes the overlap; do not assert from signal alone."
-        ],
-        "confusable_with": [
-          "DSGNImpt",
-          "LASRImpt",
-          "DSGNStngr",
-          "EXPLDsgn",
-          "ELECZap"
-        ]
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 800.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MACHINE",
-      "category_id": "SCIMach",
-      "category_short": "SCI",
-      "explanation": [
-        "Future technology machines",
-        "transporters",
-        "food replicators."
-      ],
-      "synonyms": [
-        "Beam",
-        "Drive",
-        "Exosuit",
-        "Fiction",
-        "Food",
-        "Holodeck",
-        "Hologram",
-        "Machine",
-        "Replicator",
-        "Replicators",
-        "Sci-Fi",
-        "Science",
-        "Screwdriver",
-        "Sonic",
-        "Teleporter",
-        "Time",
-        "Tractor",
-        "Warp"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.15,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Replicators, transporters, warp drives: a machine CYCLE — some whirring/tonal body with start and end events. No DSP test distinguishes it from MACHINES-* or MOTORS-*; the sci-fi framing is entirely semantic.",
-          "Gates only prune the impossible (a machine cycle is not a 30 ms click); let synonyms drive."
-        ],
-        "confusable_with": [
-          "MACHMisc",
-          "MACHTech",
-          "SCIMech",
-          "SCIShip",
-          "MOTRSrvo",
-          "ROBTMvmt"
-        ]
+     },
+     {
+      "feature": "transient_count",
+      "mean": 8.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MECHANISM",
-      "category_id": "SCIMech",
-      "category_short": "SCI",
-      "explanation": [
-        "An overly sci-fi sounding gizmo or mechanism. Little unfolding robot or something like that. Similar to MACHINE-MECHANISM but more SciFi."
-      ],
-      "synonyms": [
-        "Contraption",
-        "Device",
-        "Fiction",
-        "Gadget",
-        "Gizmo",
-        "Implement",
-        "Sci-Fi",
-        "Science",
-        "Scifi",
-        "Tricorder"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03,
-            "max": 30.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "transient_count",
-            "mean": 5.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 3.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 8.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.8,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.35,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "'A little unfolding robot' — a SHORT compound gizmo gesture: a handful of bright clicky transients plus servo. Shorter and clickier than SCIFI-MACHINE (a full machine cycle), and far more transient-driven than SCIFI-ENERGY.",
-          "Explanation says: same as MACHINES-MECHANISM but more sci-fi. That 'more sci-fi' is not measurable — semantics decide."
-        ],
-        "confusable_with": [
-          "MACHMech",
-          "SCIMach",
-          "ROBTMvmt",
-          "MECHRtch",
-          "SCIDoor"
-        ]
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "SCIMisc",
-      "category_short": "SCI",
-      "explanation": [
-        "SCI-FI sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Fiction",
-        "Miscellaneous",
-        "Sci-Fi",
-        "Science"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "Catch-all / abstention target for SCIFI. No morphology commitment, no priors, no gates.",
-          "Selected only when no sibling clears threshold or the top two tie."
-        ],
-        "confusable_with": [
-          "SCIEnrg",
-          "SCIMach"
-        ]
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "RETRO",
-      "category_id": "SCIRetro",
-      "category_short": "SCI",
-      "explanation": [
-        "Cheesy sci-fi sounds",
-        "like from The Jetsons",
-        "The Day the Earth Stood Still. Old TV or film sci-fi sounds."
-      ],
-      "synonyms": [
-        "Cheesy",
-        "Classic",
-        "Dr",
-        "Fiction",
-        "Nostalgic",
-        "Old",
-        "Old-School",
-        "Retro",
-        "Retrofuturistic",
-        "School",
-        "Sci-Fi",
-        "Science",
-        "Theremin",
-        "Throwback",
-        "Vintage",
-        "Who"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.03
-          }
-        ],
-        "priors": [
-          {
-            "feature": "band_limit_high_hz",
-            "mean": 6000.0,
-            "deviation": 1.6,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_rolloff_hz",
-            "mean": 5000.0,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.12,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.12,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "pitch_slope_semitones_per_second",
-            "mean": 0.0,
-            "deviation": 8.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.3,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Retro is a FIDELITY signature, and fidelity is measurable: an aggressively low band_limit_high_hz (optical-track / early-tape / theremin-era), little energy above 2 kHz, and audible harmonic grunge.",
-          "The tonal, hand-swept theremin glide (non-zero pitch slope with wide variance) is the classic case.",
-          "A modern sci-fi sound with full 20 kHz bandwidth is NOT retro, whatever the synonyms say — this is the rare case where signal can overrule text."
-        ],
-        "confusable_with": [
-          "SCIMisc",
-          "SCIEnrg",
-          "BEEPLofi",
-          "SCIWeap",
-          "MUSCSynth"
-        ]
+     }
+    ],
+    "discriminators": [
+     "A repeating tonal alert: strongly periodic onset train of pitched pulses. Morphologically identical to ALARMS-ELECTRONIC and UI-ALERT — the 'spaceship' part is pure semantics.",
+     "More harmonic and more periodic than SCIFI-COMPUTER's aperiodic data chatter.",
+     "Longer and more repetitive than a single BEEPS event."
+    ],
+    "confusable_with": [
+     "ALRMElec",
+     "ALRMBuzr",
+     "UIAlert",
+     "BEEP",
+     "SCICmpt",
+     "BEEPMed"
+    ]
+   }
+  },
+  {
+   "subcategory": "COMPUTER",
+   "category_id": "SCICmpt",
+   "category_short": "SCI",
+   "explanation": [
+    "Use Sci-Fi for overtly 'science fiction' type computer sounds",
+    "a very futuristic computer. Some overlap with USER INTERFACE."
+   ],
+   "synonyms": [
+    "9000",
+    "Accumulator",
+    "AI",
+    "Binary",
+    "Borg",
+    "Center",
+    "Command",
+    "Computer",
+    "Console",
+    "Fiction",
+    "HAL",
+    "Holoscreen",
+    "Interface",
+    "Matrix",
+    "MCU",
+    "Quantum",
+    "Sci-Fi",
+    "Science",
+    "Skynet",
+    "Touchscreen",
+    "WOPR"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "SPACESHIP",
-      "category_id": "SCIShip",
-      "category_short": "SCI",
-      "explanation": [
-        "Spaceships here",
-        "your best Enterprise and Tie Fighter rip-offs! See also SCIFI-VEHICLE for non-spaceships."
-      ],
-      "synonyms": [
-        "Airship",
-        "Apollo",
-        "Astronaut",
-        "Battlecruiser",
-        "Cruiser",
-        "Destroyer",
-        "Enterprise",
-        "Extraterrestrial",
-        "Falcon",
-        "Fiction",
-        "Fighter",
-        "Galactica",
-        "Interstellar",
-        "LEM",
-        "Millenium",
-        "Mothership",
-        "Sci-Fi",
-        "Science",
-        "Shuttle",
-        "Space",
-        "Spacecraft",
-        "Spaceship",
-        "Spaceships",
-        "Star",
-        "Starcruiser",
-        "Starship",
-        "Tie",
-        "Transport",
-        "UFO",
-        "Vessel",
-        "X-Wing",
-        "Y-Wing"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.3
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.5,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 15.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.1,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A spaceship engine bed or fly-by. Physically indistinguishable from AIRCRAFT-JET, VEHICLES-BY or a designed drone; 'Enterprise vs Tie Fighter vs airliner' is a text problem, not a DSP one.",
-          "Gates prune only impossibilities (a ship bed is not a 100 ms click). Explanation itself defers to text: 'see SCIFI-VEHICLE for non-spaceships'."
-        ],
-        "confusable_with": [
-          "SCIVeh",
-          "AEROJet",
-          "AERORckt",
-          "DSGNDron",
-          "DSGNRmbl",
-          "SCIMach"
-        ]
+     },
+     {
+      "feature": "transient_count",
+      "mean": 15.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "VEHICLE",
-      "category_id": "SCIVeh",
-      "category_short": "SCI",
-      "explanation": [
-        "Various sci-fi vehicles",
-        "like a moon rover",
-        "landspeeder",
-        "speeder bike",
-        "hoverboard",
-        "podracer. See also SCIFI-SPACESHIP."
-      ],
-      "synonyms": [
-        "Bike",
-        "Buggy",
-        "Fiction",
-        "Hoverboard",
-        "Hovercraft",
-        "Landspeeder",
-        "Moon",
-        "Podracer",
-        "Rover",
-        "Sci-Fi",
-        "Science",
-        "Speeder"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.3
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 10.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.12,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Landspeeder/hoverboard/podracer: an engine or hover bed. The SCIFI-VEHICLE vs SCIFI-SPACESHIP split is exactly VEHICLES-CAR vs VEHICLES-BUS — same physics, different word. Never assert from signal.",
-          "Only text ('speeder', 'rover', 'hoverboard', 'podracer') can separate it from SCIFI-SPACESHIP."
-        ],
-        "confusable_with": [
-          "SCIShip",
-          "VEHElec",
-          "VEHBy",
-          "SCIMach",
-          "DSGNDron"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "WEAPON",
-      "category_id": "SCIWeap",
-      "category_short": "SCI",
-      "explanation": [
-        "Lightsabers",
-        "exotic sci-fi weapons. Not a 'blaster' which would go in LASERS-GUN."
-      ],
-      "synonyms": [
-        "Advanced",
-        "Arm",
-        "Armament",
-        "Artillery",
-        "Blaster",
-        "Energy",
-        "Exotic",
-        "Fiction",
-        "Firearm",
-        "Futuristic",
-        "High-Tech",
-        "Intergalactic",
-        "Lightsaber",
-        "Lightsabers",
-        "Munition",
-        "Plasma",
-        "Sci-Fi",
-        "Science",
-        "Space-Age"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.18,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.5,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.3,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 800.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Lightsabers and exotic energy weapons: a HELD, detuned, beating hum that swells and moves — sustained, unlike LASERS-GUN's 0.3 s zap.",
-          "The explanation draws the line explicitly: a 'blaster' is NOT here, it is LASERS-GUN. So a short descending pew must never land in SCIFI-WEAPON.",
-          "Very close to SCIFI-ENERGY and LASERS-BEAM; text decides."
-        ],
-        "confusable_with": [
-          "LASRBeam",
-          "SCIEnrg",
-          "LASRGun",
-          "DSGNTonl",
-          "ELECBuzz"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Futuristic data chatter: a dense burble of short pitched blips, brighter and busier than an alarm but only LOOSELY periodic (onset_periodicity ~0.45) — it is a data stream, not a metronome.",
+     "Explanation concedes overlap with USER INTERFACE; sci-fi framing is semantic, so require text ('computer', 'console', 'HAL', 'sci-fi') to commit.",
+     "Almost no low-band energy — that is the split against SCIFI-MACHINE."
+    ],
+    "confusable_with": [
+     "UIData",
+     "UIBeep",
+     "SCIAlrm",
+     "CMPTMisc",
+     "ROBTVox",
+     "SCIMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "DOOR",
+   "category_id": "SCIDoor",
+   "category_short": "SCI",
+   "explanation": [
+    "That Star-Trek type door. Spaceship doors."
+   ],
+   "synonyms": [
+    "Access",
+    "Airlock",
+    "Bay",
+    "Blast",
+    "Doorway",
+    "Entrance",
+    "Exit",
+    "Fiction",
+    "Gateway",
+    "Hatch",
+    "Hatchbay",
+    "Opening",
+    "Passage",
+    "Pod",
+    "Portal",
+    "Sci-Fi",
+    "Science",
+    "Teleporter"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A compound gesture, ~1-3 s: pneumatic swish (noise, moving centroid) bracketed by mechanical seat/latch transients. That swish+clunk pairing is the morphology; the 'spaceship' part is semantic.",
+     "Distinguished from DESIGNED-WHOOSH by its terminal transient and short, bounded duration.",
+     "Distinguished from DOORS-* only by timbre and text."
+    ],
+    "confusable_with": [
+     "DSGNWhsh",
+     "SCIMech",
+     "SCIMach",
+     "MECHLtch",
+     "VEHDoor"
+    ]
+   }
+  },
+  {
+   "subcategory": "ENERGY",
+   "category_id": "SCIEnrg",
+   "category_short": "SCI",
+   "explanation": [
+    "Energy particles",
+    "vortexes",
+    "transporters",
+    "holograms",
+    "force fields."
+   ],
+   "synonyms": [
+    "Atomic",
+    "Fiction",
+    "Field",
+    "Flux",
+    "Force",
+    "Forcefield",
+    "Hologram",
+    "Impulse",
+    "Particle",
+    "Power",
+    "Propulsion",
+    "Sci-Fi",
+    "Science",
+    "Shield",
+    "Solar",
+    "Transporter",
+    "Vortex"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.2,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1200.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 2.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Force fields, transporters, holograms: a SUSTAINED shimmering tone — pitched but detuned (high inharmonicity), bright, and constantly modulating (moderate flux, large centroid deviation).",
+     "Sustained where SCIFI-IMPACT is a hit; more tonal and less noisy than DESIGNED-WHOOSH.",
+     "MAGIC-SHIMMER is the same brightness but is a granular chime field with a dense onset train; ENERGY is continuous."
+    ],
+    "confusable_with": [
+     "SCIImpt",
+     "SCIWeap",
+     "MAGShim",
+     "ELECArc",
+     "DSGNTonl",
+     "LASRBeam"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "SCIImpt",
+   "category_short": "SCI",
+   "explanation": [
+    "A bolt of SciFi energy",
+    "a hi-tech energy impact",
+    "more futuristic than just an explosion. Overlap with DESIGNED-IMPACT."
+   ],
+   "synonyms": [
+    "Blast",
+    "Collision",
+    "Energy",
+    "Fiction",
+    "Field",
+    "Force",
+    "Hit",
+    "Jolt",
+    "Photon",
+    "Sci-Fi",
+    "Science",
+    "Shield",
+    "Strike",
+    "Wave"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.005,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.28,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.3,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 1.2,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'A hi-tech energy impact, more futuristic than just an explosion.' Morphologically it IS DESIGNED-IMPACT — same attack, crest and temporal centroid. The lean is a brighter, more electric, more tonal tail (zap/sizzle) over the low-end body.",
+     "Explanation concedes the overlap; do not assert from signal alone."
+    ],
+    "confusable_with": [
+     "DSGNImpt",
+     "LASRImpt",
+     "DSGNStngr",
+     "EXPLDsgn",
+     "ELECZap"
+    ]
+   }
+  },
+  {
+   "subcategory": "MACHINE",
+   "category_id": "SCIMach",
+   "category_short": "SCI",
+   "explanation": [
+    "Future technology machines",
+    "transporters",
+    "food replicators."
+   ],
+   "synonyms": [
+    "Beam",
+    "Drive",
+    "Exosuit",
+    "Fiction",
+    "Food",
+    "Holodeck",
+    "Hologram",
+    "Machine",
+    "Replicator",
+    "Replicators",
+    "Sci-Fi",
+    "Science",
+    "Screwdriver",
+    "Sonic",
+    "Teleporter",
+    "Time",
+    "Tractor",
+    "Warp"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Replicators, transporters, warp drives: a machine CYCLE — some whirring/tonal body with start and end events. No DSP test distinguishes it from MACHINES-* or MOTORS-*; the sci-fi framing is entirely semantic.",
+     "Gates only prune the impossible (a machine cycle is not a 30 ms click); let synonyms drive."
+    ],
+    "confusable_with": [
+     "MACHMisc",
+     "MACHTech",
+     "SCIMech",
+     "SCIShip",
+     "MOTRSrvo",
+     "ROBTMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MECHANISM",
+   "category_id": "SCIMech",
+   "category_short": "SCI",
+   "explanation": [
+    "An overly sci-fi sounding gizmo or mechanism. Little unfolding robot or something like that. Similar to MACHINE-MECHANISM but more SciFi."
+   ],
+   "synonyms": [
+    "Contraption",
+    "Device",
+    "Fiction",
+    "Gadget",
+    "Gizmo",
+    "Implement",
+    "Sci-Fi",
+    "Science",
+    "Scifi",
+    "Tricorder"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.8,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'A little unfolding robot' — a SHORT compound gizmo gesture: a handful of bright clicky transients plus servo. Shorter and clickier than SCIFI-MACHINE (a full machine cycle), and far more transient-driven than SCIFI-ENERGY.",
+     "Explanation says: same as MACHINES-MECHANISM but more sci-fi. That 'more sci-fi' is not measurable — semantics decide."
+    ],
+    "confusable_with": [
+     "MACHMech",
+     "SCIMach",
+     "ROBTMvmt",
+     "MECHRtch",
+     "SCIDoor"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "SCIMisc",
+   "category_short": "SCI",
+   "explanation": [
+    "SCI-FI sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Fiction",
+    "Miscellaneous",
+    "Sci-Fi",
+    "Science"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "Catch-all / abstention target for SCIFI. No morphology commitment, no priors, no gates.",
+     "Selected only when no sibling clears threshold or the top two tie."
+    ],
+    "confusable_with": [
+     "SCIEnrg",
+     "SCIMach"
+    ]
+   }
+  },
+  {
+   "subcategory": "RETRO",
+   "category_id": "SCIRetro",
+   "category_short": "SCI",
+   "explanation": [
+    "Cheesy sci-fi sounds",
+    "like from The Jetsons",
+    "The Day the Earth Stood Still. Old TV or film sci-fi sounds."
+   ],
+   "synonyms": [
+    "Cheesy",
+    "Classic",
+    "Dr",
+    "Fiction",
+    "Nostalgic",
+    "Old",
+    "Old-School",
+    "Retro",
+    "Retrofuturistic",
+    "School",
+    "Sci-Fi",
+    "Science",
+    "Theremin",
+    "Throwback",
+    "Vintage",
+    "Who"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03
+     }
+    ],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 6000.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 5000.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Retro is a FIDELITY signature, and fidelity is measurable: an aggressively low band_limit_high_hz (optical-track / early-tape / theremin-era), little energy above 2 kHz, and audible harmonic grunge.",
+     "The tonal, hand-swept theremin glide (non-zero pitch slope with wide variance) is the classic case.",
+     "A modern sci-fi sound with full 20 kHz bandwidth is NOT retro, whatever the synonyms say — this is the rare case where signal can overrule text."
+    ],
+    "confusable_with": [
+     "SCIMisc",
+     "SCIEnrg",
+     "BEEPLofi",
+     "SCIWeap",
+     "MUSCSynth"
+    ]
+   }
+  },
+  {
+   "subcategory": "SPACESHIP",
+   "category_id": "SCIShip",
+   "category_short": "SCI",
+   "explanation": [
+    "Spaceships here",
+    "your best Enterprise and Tie Fighter rip-offs! See also SCIFI-VEHICLE for non-spaceships."
+   ],
+   "synonyms": [
+    "Airship",
+    "Apollo",
+    "Astronaut",
+    "Battlecruiser",
+    "Cruiser",
+    "Destroyer",
+    "Enterprise",
+    "Extraterrestrial",
+    "Falcon",
+    "Fiction",
+    "Fighter",
+    "Galactica",
+    "Interstellar",
+    "LEM",
+    "Millenium",
+    "Mothership",
+    "Sci-Fi",
+    "Science",
+    "Shuttle",
+    "Space",
+    "Spacecraft",
+    "Spaceship",
+    "Spaceships",
+    "Star",
+    "Starcruiser",
+    "Starship",
+    "Tie",
+    "Transport",
+    "UFO",
+    "Vessel",
+    "X-Wing",
+    "Y-Wing"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 15.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A spaceship engine bed or fly-by. Physically indistinguishable from AIRCRAFT-JET, VEHICLES-BY or a designed drone; 'Enterprise vs Tie Fighter vs airliner' is a text problem, not a DSP one.",
+     "Gates prune only impossibilities (a ship bed is not a 100 ms click). Explanation itself defers to text: 'see SCIFI-VEHICLE for non-spaceships'."
+    ],
+    "confusable_with": [
+     "SCIVeh",
+     "AEROJet",
+     "AERORckt",
+     "DSGNDron",
+     "DSGNRmbl",
+     "SCIMach"
+    ]
+   }
+  },
+  {
+   "subcategory": "VEHICLE",
+   "category_id": "SCIVeh",
+   "category_short": "SCI",
+   "explanation": [
+    "Various sci-fi vehicles",
+    "like a moon rover",
+    "landspeeder",
+    "speeder bike",
+    "hoverboard",
+    "podracer. See also SCIFI-SPACESHIP."
+   ],
+   "synonyms": [
+    "Bike",
+    "Buggy",
+    "Fiction",
+    "Hoverboard",
+    "Hovercraft",
+    "Landspeeder",
+    "Moon",
+    "Podracer",
+    "Rover",
+    "Sci-Fi",
+    "Science",
+    "Speeder"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 10.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.12,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Landspeeder/hoverboard/podracer: an engine or hover bed. The SCIFI-VEHICLE vs SCIFI-SPACESHIP split is exactly VEHICLES-CAR vs VEHICLES-BUS — same physics, different word. Never assert from signal.",
+     "Only text ('speeder', 'rover', 'hoverboard', 'podracer') can separate it from SCIFI-SPACESHIP."
+    ],
+    "confusable_with": [
+     "SCIShip",
+     "VEHElec",
+     "VEHBy",
+     "SCIMach",
+     "DSGNDron"
+    ]
+   }
+  },
+  {
+   "subcategory": "WEAPON",
+   "category_id": "SCIWeap",
+   "category_short": "SCI",
+   "explanation": [
+    "Lightsabers",
+    "exotic sci-fi weapons. Not a 'blaster' which would go in LASERS-GUN."
+   ],
+   "synonyms": [
+    "Advanced",
+    "Arm",
+    "Armament",
+    "Artillery",
+    "Blaster",
+    "Energy",
+    "Exotic",
+    "Fiction",
+    "Firearm",
+    "Futuristic",
+    "High-Tech",
+    "Intergalactic",
+    "Lightsaber",
+    "Lightsabers",
+    "Munition",
+    "Plasma",
+    "Sci-Fi",
+    "Science",
+    "Space-Age"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.18,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 800.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Lightsabers and exotic energy weapons: a HELD, detuned, beating hum that swells and moves — sustained, unlike LASERS-GUN's 0.3 s zap.",
+     "The explanation draws the line explicitly: a 'blaster' is NOT here, it is LASERS-GUN. So a short descending pew must never land in SCIFI-WEAPON.",
+     "Very close to SCIFI-ENERGY and LASERS-BEAM; text decides."
+    ],
+    "confusable_with": [
+     "LASRBeam",
+     "SCIEnrg",
+     "LASRGun",
+     "DSGNTonl",
+     "ELECBuzz"
+    ]
+   }
+  }
+ ]
 }

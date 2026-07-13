@@ -1,686 +1,923 @@
 {
-  "version": "8.2.1",
-  "category": "MOTORS",
-  "subcategories": [
-    {
-      "subcategory": "ANTIQUE",
-      "category_id": "MOTRAntq",
-      "category_short": "MOTR",
-      "explanation": [
-        "Old motors",
-        "usually combustion",
-        "so old oil pump engines",
-        "old compressors. An antique gas pump for example."
-      ],
-      "synonyms": [
-        "Aged",
-        "Ancient",
-        "Antiquated",
-        "Bygone",
-        "Classic",
+ "version": "8.2.1",
+ "category": "MOTORS",
+ "subcategories": [
+  {
+   "subcategory": "ANTIQUE",
+   "category_id": "MOTRAntq",
+   "category_short": "MOTR",
+   "explanation": [
+    "Old motors",
+    "usually combustion",
+    "so old oil pump engines",
+    "old compressors. An antique gas pump for example."
+   ],
+   "synonyms": [
+    "Aged",
+    "Ancient",
+    "Antiquated",
+    "Bygone",
+    "Classic",
+    "Engine",
+    "Historic",
+    "Kerosene",
+    "Old-Fashioned",
+    "Paraffin",
+    "Retro",
+    "Steam",
+    "Traditional",
+    "Vintage",
+    "Windmill"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 650.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Old oil-pump engines, one-lung hit-and-miss motors, antique compressors, an antique gas pump. A slow single-cylinder engine genuinely does fire only a few times a second rather than tens of times, which nudges onset_rate down - but a modern engine at cranking speed does the same.",
+     "'Antique' is a fact about the object's date, not about its waveform. Semantic only; text decides it against MOTORS-COMBUSTION."
+    ],
+    "confusable_with": [
+     "MOTRComb",
+     "MACHAntq",
+     "VEHAntq",
+     "VEHJalop",
+     "MOTRMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "COMBUSTION",
+   "category_id": "MOTRComb",
+   "category_short": "MOTR",
+   "explanation": [
+    "Non-vehicle combustion engines. Combustion motors",
+    "generators. Isolated engine recordings."
+   ],
+   "synonyms": [
+    "Backfire",
+    "Carburation",
+    "Carburetor",
+    "Combustion",
+    "Combustor",
+    "Compression",
+    "Diesel",
+    "Engine",
+    "Ethanol",
+    "Four-Stroke",
+    "Gas",
+    "Gasoline",
+    "Generator",
+    "Internal",
+    "Manifold",
+    "Mechanic",
+    "Misfire",
+    "Motor",
+    "Outboard",
+    "Petrol",
+    "Rotary",
+    "Turboshaft",
+    "Two-Stroke"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.68,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.52572,
+      "deviation": 3.30933,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Accelerating_and_revving_and_vroom",
         "Engine",
-        "Historic",
-        "Kerosene",
-        "Old-Fashioned",
-        "Paraffin",
-        "Retro",
-        "Steam",
-        "Traditional",
-        "Vintage",
-        "Windmill"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 1800.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 6.0,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.5,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 6.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 650.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.3,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 20.0,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Old oil-pump engines, one-lung hit-and-miss motors, antique compressors, an antique gas pump. A slow single-cylinder engine genuinely does fire only a few times a second rather than tens of times, which nudges onset_rate down - but a modern engine at cranking speed does the same.",
-          "'Antique' is a fact about the object's date, not about its waveform. Semantic only; text decides it against MOTORS-COMBUSTION."
-        ],
-        "confusable_with": [
-          "MOTRComb",
-          "MACHAntq",
-          "VEHAntq",
-          "VEHJalop",
-          "MOTRMisc"
-        ]
+        "Engine_starting",
+        "Idling"
+       ],
+       "measured_deviation": 3.30933,
+       "reasoned_mean": 25.0,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "COMBUSTION",
-      "category_id": "MOTRComb",
-      "category_short": "MOTR",
-      "explanation": [
-        "Non-vehicle combustion engines. Combustion motors",
-        "generators. Isolated engine recordings."
-      ],
-      "synonyms": [
-        "Backfire",
-        "Carburation",
-        "Carburetor",
-        "Combustion",
-        "Combustor",
-        "Compression",
-        "Diesel",
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.14586,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Accelerating_and_revving_and_vroom",
         "Engine",
-        "Ethanol",
-        "Four-Stroke",
-        "Gas",
-        "Gasoline",
-        "Generator",
-        "Internal",
-        "Manifold",
-        "Mechanic",
-        "Misfire",
-        "Motor",
-        "Outboard",
-        "Petrol",
-        "Rotary",
-        "Turboshaft",
-        "Two-Stroke"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 1800.0
-          },
-          {
-            "feature": "low_band_energy",
-            "min": 0.05
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.68,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 25.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.38,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 700.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.7,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.72,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.2,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 90.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "beats_per_minute",
-            "mean": 900.0,
-            "deviation": 600.0,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 20.0,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A four-stroke firing order is a periodic impulse train: at idle roughly 12-30 firings per second, which puts a strong peak in the onset autocorrelation AND a harmonic comb whose fundamental is the firing frequency. On a steady idle even beats_per_minute can fire.",
-          "Against MOTORS-ELECTRIC: combustion is much noisier and much more low-band, and it has that periodic impulse train. An electric motor is a clean tone with NO impulse train - onset_periodicity is the discriminator.",
-          "Against MOTORS-TURBINE: a turbine is a smooth high-frequency whine with no discrete firing events.",
-          "Non-vehicle engines only - generators, compressors, isolated engine recordings. If it is mounted in something that drives, it belongs in VEHICLES, and only text knows."
-        ],
-        "confusable_with": [
-          "MOTRAntq",
-          "MOTRElec",
-          "MOTRTurb",
-          "VEHCar",
-          "MACHInd",
-          "BOATMotr"
-        ]
+        "Engine_starting",
+        "Idling"
+       ],
+       "measured_deviation": 0.15693,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "ELECTRIC",
-      "category_id": "MOTRElec",
-      "category_short": "MOTR",
-      "explanation": [
-        "Non-vehicle electric motors. Any motor that runs on electricity. An isolated electric motor. See also TOOLS-POWER."
-      ],
-      "synonyms": [
-        "AC",
-        "DC",
-        "Dentist",
-        "Disposal",
-        "Drill",
-        "Dynamotor",
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.56921,
+      "deviation": 0.38119,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Accelerating_and_revving_and_vroom",
         "Engine",
-        "Garbage",
-        "Magneto",
-        "Motor",
-        "Razor",
-        "Stepper",
-        "Toothbrush",
-        "Volt",
-        "Watt",
-        "Wheelchair"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1,
-            "max": 1800.0
-          },
-          {
-            "feature": "spectral_flatness",
-            "max": 0.8
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.65,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.12,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 0.4,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.78,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 250.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "partial_count",
-            "mean": 8.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1600.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.25,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.8,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 3.4,
-            "deviation": 1.6,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.28,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Any electric motor: a steady, strongly harmonic whine or hum, usually with a commutator or slot-passing overtone series. Stationary, high sustain, and with NO periodic impulse train - the absence of a firing order is what separates it from MOTORS-COMBUSTION.",
-          "Against MOTORS-SERVO: a servo is short, discrete and start-stop, and it sweeps in pitch as it seeks position. This is a steady continuous run.",
-          "Against MOTORS-TURBINE: a turbine sits far higher in frequency and sweeps on spool-up. See also TOOLS-POWER, which is the same motor plus a cutting load."
-        ],
-        "confusable_with": [
-          "MOTRSrvo",
-          "MOTRTurb",
-          "MOTRComb",
-          "TOOLPowr",
-          "MACHFan",
-          "ELECBuzz"
-        ]
+        "Engine_starting",
+        "Idling"
+       ],
+       "measured_deviation": 0.38119,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "MOTRMisc",
-      "category_short": "MOTR",
-      "explanation": [
-        "Motor sounds not fitting another category in this list."
-      ],
-      "synonyms": [
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.15735,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Accelerating_and_revving_and_vroom",
         "Engine",
-        "Miscellaneous"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "The abstention target for MOTORS. No gates and no priors by construction - it must never exclude anything.",
-          "Emit when the sound is plainly a motor but combustion / electric / turbine / servo cannot be told apart, or none of them fits."
-        ],
-        "confusable_with": [
-          "MOTRComb",
-          "MOTRElec",
-          "MOTRTurb",
-          "MOTRSrvo",
-          "MOTRAntq"
-        ]
+        "Engine_starting",
+        "Idling"
+       ],
+       "measured_deviation": 0.1419,
+       "reasoned_mean": 0.38,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "SERVO",
-      "category_id": "MOTRSrvo",
-      "category_short": "MOTR",
-      "explanation": [
-        "Specifically servo motors",
-        "from robot",
-        "to radio controlled servos. Clean isolated servos."
-      ],
-      "synonyms": [
-        "3D",
-        "Actuator",
-        "Antenna",
-        "Camera",
-        "Car",
-        "Drive",
-        "Focus",
-        "Motor",
-        "Printer",
-        "RC",
-        "Robot"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.02,
-            "max": 60.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.6,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 600.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2600.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "pitch_slope_semitones_per_second",
-            "mean": 0.0,
-            "deviation": 20.0,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 600.0,
-            "deviation": 500.0,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.02,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "transient_count",
-            "mean": 3.0,
-            "deviation": 3.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.28,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "Clean isolated servos: SHORT bursts of high-pitched geared-motor whine with hard start and stop edges, usually sweeping in pitch as the servo accelerates and brakes into position. Length is the strongest cue - a servo move lasts a fraction of a second to a couple of seconds, not a continuous run.",
-          "Almost no low-band energy: a servo is a small motor with no mass behind it.",
-          "Against MOTORS-ELECTRIC: that is a steady continuous run. Against ROBOTS-MOVEMENT: identical sound, different intent - text decides."
-        ],
-        "confusable_with": [
-          "MOTRElec",
-          "ROBTMvmt",
-          "MACHMech",
-          "CMPTDriv",
-          "VEHWndw"
-        ]
-      }
-    },
-    {
-      "subcategory": "TURBINE",
-      "category_id": "MOTRTurb",
-      "category_short": "MOTR",
-      "explanation": [
-        "Turbines",
-        "water or air. That classic 'whine' power up and down are usually turbines. A jet engine is a turbine."
-      ],
-      "synonyms": [
-        "Aircraft",
-        "Airplane",
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2851.55387,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Accelerating_and_revving_and_vroom",
         "Engine",
-        "Generator",
-        "Hydro",
-        "Steam",
-        "Turbomachinery",
-        "Wind",
-        "Windmill"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_tonal",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 1800.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3200.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 900.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_slope_hz_per_second",
-            "mean": 60.0,
-            "deviation": 300.0,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "pitch_slope_semitones_per_second",
-            "mean": 1.5,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.5,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.1,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.7,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.8,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 25.0,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 3.4,
-            "deviation": 1.6,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "The classic power-up / power-down WHINE. A turbine is a smooth high-frequency tone riding a broadband jet of noise, with a monotonic pitch and centroid trajectory through spool-up and spool-down (positive spectral_centroid_slope on start, negative on shutdown) and NO discrete firing events at all.",
-          "Much brighter than any piston engine - high_band_energy dominates - and onset_periodicity collapses to near zero, which is the clean split from MOTORS-COMBUSTION.",
-          "A jet engine is a turbine, but a recording of an aircraft belongs to AIRCRAFT-JET. Only text knows the mount."
-        ],
-        "confusable_with": [
-          "AEROJet",
-          "MOTRElec",
-          "MOTRComb",
-          "MACHInd",
-          "AIRHiss"
-        ]
+        "Engine_starting",
+        "Idling"
+       ],
+       "measured_deviation": 1.97367,
+       "reasoned_mean": 700.0,
+       "reasoned_deviation": 2.6,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    }
-  ]
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.52234,
+      "deviation": 0.32904,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Accelerating_and_revving_and_vroom",
+        "Engine",
+        "Engine_starting",
+        "Idling"
+       ],
+       "measured_deviation": 0.32904,
+       "reasoned_mean": 0.7,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.72,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.2,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 90.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A four-stroke firing order is a periodic impulse train: at idle roughly 12-30 firings per second, which puts a strong peak in the onset autocorrelation AND a harmonic comb whose fundamental is the firing frequency. On a steady idle even beats_per_minute can fire.",
+     "Against MOTORS-ELECTRIC: combustion is much noisier and much more low-band, and it has that periodic impulse train. An electric motor is a clean tone with NO impulse train - onset_periodicity is the discriminator.",
+     "Against MOTORS-TURBINE: a turbine is a smooth high-frequency whine with no discrete firing events.",
+     "Non-vehicle engines only - generators, compressors, isolated engine recordings. If it is mounted in something that drives, it belongs in VEHICLES, and only text knows."
+    ],
+    "confusable_with": [
+     "MOTRAntq",
+     "MOTRElec",
+     "MOTRTurb",
+     "VEHCar",
+     "MACHInd",
+     "BOATMotr"
+    ]
+   }
+  },
+  {
+   "subcategory": "ELECTRIC",
+   "category_id": "MOTRElec",
+   "category_short": "MOTR",
+   "explanation": [
+    "Non-vehicle electric motors. Any motor that runs on electricity. An isolated electric motor. See also TOOLS-POWER."
+   ],
+   "synonyms": [
+    "AC",
+    "DC",
+    "Dentist",
+    "Disposal",
+    "Drill",
+    "Dynamotor",
+    "Engine",
+    "Garbage",
+    "Magneto",
+    "Motor",
+    "Razor",
+    "Stepper",
+    "Toothbrush",
+    "Volt",
+    "Watt",
+    "Wheelchair"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 1800.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.4,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.78,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 250.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 8.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.4,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.28,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Any electric motor: a steady, strongly harmonic whine or hum, usually with a commutator or slot-passing overtone series. Stationary, high sustain, and with NO periodic impulse train - the absence of a firing order is what separates it from MOTORS-COMBUSTION.",
+     "Against MOTORS-SERVO: a servo is short, discrete and start-stop, and it sweeps in pitch as it seeks position. This is a steady continuous run.",
+     "Against MOTORS-TURBINE: a turbine sits far higher in frequency and sweeps on spool-up. See also TOOLS-POWER, which is the same motor plus a cutting load."
+    ],
+    "confusable_with": [
+     "MOTRSrvo",
+     "MOTRTurb",
+     "MOTRComb",
+     "TOOLPowr",
+     "MACHFan",
+     "ELECBuzz"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "MOTRMisc",
+   "category_short": "MOTR",
+   "explanation": [
+    "Motor sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Engine",
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "The abstention target for MOTORS. No gates and no priors by construction - it must never exclude anything.",
+     "Emit when the sound is plainly a motor but combustion / electric / turbine / servo cannot be told apart, or none of them fits."
+    ],
+    "confusable_with": [
+     "MOTRComb",
+     "MOTRElec",
+     "MOTRTurb",
+     "MOTRSrvo",
+     "MOTRAntq"
+    ]
+   }
+  },
+  {
+   "subcategory": "SERVO",
+   "category_id": "MOTRSrvo",
+   "category_short": "MOTR",
+   "explanation": [
+    "Specifically servo motors",
+    "from robot",
+    "to radio controlled servos. Clean isolated servos."
+   ],
+   "synonyms": [
+    "3D",
+    "Actuator",
+    "Antenna",
+    "Camera",
+    "Car",
+    "Drive",
+    "Focus",
+    "Motor",
+    "Printer",
+    "RC",
+    "Robot"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.6,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 600.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 20.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 600.0,
+      "deviation": 500.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.02,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.28,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Clean isolated servos: SHORT bursts of high-pitched geared-motor whine with hard start and stop edges, usually sweeping in pitch as the servo accelerates and brakes into position. Length is the strongest cue - a servo move lasts a fraction of a second to a couple of seconds, not a continuous run.",
+     "Almost no low-band energy: a servo is a small motor with no mass behind it.",
+     "Against MOTORS-ELECTRIC: that is a steady continuous run. Against ROBOTS-MOVEMENT: identical sound, different intent - text decides."
+    ],
+    "confusable_with": [
+     "MOTRElec",
+     "ROBTMvmt",
+     "MACHMech",
+     "CMPTDriv",
+     "VEHWndw"
+    ]
+   }
+  },
+  {
+   "subcategory": "TURBINE",
+   "category_id": "MOTRTurb",
+   "category_short": "MOTR",
+   "explanation": [
+    "Turbines",
+    "water or air. That classic 'whine' power up and down are usually turbines. A jet engine is a turbine."
+   ],
+   "synonyms": [
+    "Aircraft",
+    "Airplane",
+    "Engine",
+    "Generator",
+    "Hydro",
+    "Steam",
+    "Turbomachinery",
+    "Wind",
+    "Windmill"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 900.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 60.0,
+      "deviation": 300.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 1.5,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.4,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The classic power-up / power-down WHINE. A turbine is a smooth high-frequency tone riding a broadband jet of noise, with a monotonic pitch and centroid trajectory through spool-up and spool-down (positive spectral_centroid_slope on start, negative on shutdown) and NO discrete firing events at all.",
+     "Much brighter than any piston engine - high_band_energy dominates - and onset_periodicity collapses to near zero, which is the clean split from MOTORS-COMBUSTION.",
+     "A jet engine is a turbine, but a recording of an aircraft belongs to AIRCRAFT-JET. Only text knows the mount."
+    ],
+    "confusable_with": [
+     "AEROJet",
+     "MOTRElec",
+     "MOTRComb",
+     "MACHInd",
+     "AIRHiss"
+    ]
+   }
+  }
+ ]
 }

@@ -1,368 +1,545 @@
 {
-  "version": "8.2.1",
-  "category": "FARTS",
-  "subcategories": [
-    {
-      "subcategory": "DESIGNED",
-      "category_id": "FARTDsgn",
-      "category_short": "FART",
-      "explanation": [
-        "Fake or designed farts",
-        "whoopie cushion",
-        "flarp",
-        "mouth farts."
-      ],
-      "synonyms": [
-        "Armpit",
-        "Balloon",
-        "Cushion",
-        "Fart",
-        "Fartbag",
-        "Flarp",
-        "Flatulence",
-        "Poot",
-        "Putty",
-        "Raspberry",
-        "Razzberry",
-        "Sludge",
-        "Toot",
-        "Whoopie"
-      ],
-      "acoustic_signature": {
-        "morphology": "burst",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "max": 4000.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 1.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.48,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.42,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 480.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 95.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.5,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.2,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A whoopee cushion, a raspberry or a flarp is a buzzing reed: low, harmonic-rich, sustained and steadier in pitch than the real thing — a slightly more tonal, more periodic buzz than FARTS-REAL.",
-          "That is a tendency, not a test. A mouth fart and a real fart are the same physics — a slack aperture buzzing under pressure — so the real/fake split is semantic. Let the filename decide.",
-          "Against HUMAN-BURP: farts sit lower and carry no vocal-tract formant structure."
-        ],
-        "confusable_with": [
-          "FARTReal",
-          "FARTMisc",
-          "HMNBurp"
-        ]
+ "version": "8.2.1",
+ "category": "FARTS",
+ "subcategories": [
+  {
+   "subcategory": "DESIGNED",
+   "category_id": "FARTDsgn",
+   "category_short": "FART",
+   "explanation": [
+    "Fake or designed farts",
+    "whoopie cushion",
+    "flarp",
+    "mouth farts."
+   ],
+   "synonyms": [
+    "Armpit",
+    "Balloon",
+    "Cushion",
+    "Fart",
+    "Fartbag",
+    "Flarp",
+    "Flatulence",
+    "Poot",
+    "Putty",
+    "Raspberry",
+    "Razzberry",
+    "Sludge",
+    "Toot",
+    "Whoopie"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 4000.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "FARTMisc",
-      "category_short": "FART",
-      "explanation": [
-        "Fart sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Animal",
-        "Breaking",
-        "Fart",
-        "Farting",
-        "Flatulence",
-        "Flatus",
-        "Gas",
-        "Passing",
-        "Poot",
-        "Toot",
-        "Wind"
-      ],
-      "acoustic_signature": {
-        "morphology": "burst",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "max": 4000.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.9,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 450.0,
-            "deviation": 2.1,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.12,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "The category's abstain target: low buzzy flatulence that is neither clearly a real recording nor clearly a designed prop."
-        ],
-        "confusable_with": [
-          "FARTReal",
-          "FARTDsgn"
-        ]
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.48,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "REAL",
-      "category_id": "FARTReal",
-      "category_short": "FART",
-      "explanation": [
-        "Real recordings of farts."
-      ],
-      "synonyms": [
-        "Breaking",
-        "Fart",
-        "Farting",
-        "Flatulence",
-        "Flatus",
-        "Gas",
-        "Human",
-        "Passing",
-        "Poot",
-        "Toot",
-        "Wind"
-      ],
-      "acoustic_signature": {
-        "morphology": "burst",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "max": 4000.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.7,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.52,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.38,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.09,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 420.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 85.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.62,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.32,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 6.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Short, low, buzzy and IRREGULAR: an unstable aperture, so the pitch wanders and the buzz is rougher (higher inharmonicity, higher flux) than a designed prop's steady reed tone.",
-          "Real vs designed is not decidable from the signal — the physics is identical. This tier is honest about that; the filename decides.",
-          "Lower and formant-free compared with HUMAN-BURP; far shorter and more impulsive than a sustained air hiss."
-        ],
-        "confusable_with": [
-          "FARTDsgn",
-          "FARTMisc",
-          "HMNBurp"
-        ]
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 480.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 95.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A whoopee cushion, a raspberry or a flarp is a buzzing reed: low, harmonic-rich, sustained and steadier in pitch than the real thing — a slightly more tonal, more periodic buzz than FARTS-REAL.",
+     "That is a tendency, not a test. A mouth fart and a real fart are the same physics — a slack aperture buzzing under pressure — so the real/fake split is semantic. Let the filename decide.",
+     "Against HUMAN-BURP: farts sit lower and carry no vocal-tract formant structure."
+    ],
+    "confusable_with": [
+     "FARTReal",
+     "FARTMisc",
+     "HMNBurp"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "FARTMisc",
+   "category_short": "FART",
+   "explanation": [
+    "Fart sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Animal",
+    "Breaking",
+    "Fart",
+    "Farting",
+    "Flatulence",
+    "Flatus",
+    "Gas",
+    "Passing",
+    "Poot",
+    "Toot",
+    "Wind"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 4000.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 450.0,
+      "deviation": 2.1,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.12,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The category's abstain target: low buzzy flatulence that is neither clearly a real recording nor clearly a designed prop."
+    ],
+    "confusable_with": [
+     "FARTReal",
+     "FARTDsgn"
+    ]
+   }
+  },
+  {
+   "subcategory": "REAL",
+   "category_id": "FARTReal",
+   "category_short": "FART",
+   "explanation": [
+    "Real recordings of farts."
+   ],
+   "synonyms": [
+    "Breaking",
+    "Fart",
+    "Farting",
+    "Flatulence",
+    "Flatus",
+    "Gas",
+    "Human",
+    "Passing",
+    "Poot",
+    "Toot",
+    "Wind"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 4000.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.7,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.03693,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 580,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 0.02935,
+       "reasoned_mean": 0.52,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.39188,
+      "deviation": 0.1878,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 580,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 0.1878,
+       "reasoned_mean": 0.38,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.54568,
+      "deviation": 0.2102,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 580,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 0.2102,
+       "reasoned_mean": 0.09,
+       "reasoned_deviation": 0.09,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3635.6536,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 580,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 1.56036,
+       "reasoned_mean": 420.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 245.0,
+      "deviation": 3.30338,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 467,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 3.30338,
+       "reasoned_mean": 85.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.40577,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 580,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 0.13887,
+       "reasoned_mean": 0.62,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25943,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 580,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 0.16645,
+       "reasoned_mean": 0.32,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.219,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 580,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 0.011,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.34001,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 216,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 0.15338,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.10317,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 216,
+       "fsd50k_classes": [
+        "Fart"
+       ],
+       "measured_deviation": 1.64322,
+       "reasoned_mean": 6.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Short, low, buzzy and IRREGULAR: an unstable aperture, so the pitch wanders and the buzz is rougher (higher inharmonicity, higher flux) than a designed prop's steady reed tone.",
+     "Real vs designed is not decidable from the signal — the physics is identical. This tier is honest about that; the filename decides.",
+     "Lower and formant-free compared with HUMAN-BURP; far shorter and more impulsive than a sustained air hiss."
+    ],
+    "confusable_with": [
+     "FARTDsgn",
+     "FARTMisc",
+     "HMNBurp"
+    ]
+   }
+  }
+ ]
 }

@@ -1,1531 +1,1951 @@
 {
-  "version": "8.2.1",
-  "category": "MECHANICAL",
-  "subcategories": [
-    {
-      "subcategory": "CLICK",
-      "category_id": "MECHClik",
-      "category_short": "MECH",
-      "explanation": [
-        "Short clicks",
-        "could be from button presses",
-        "things like that. Some confusion and overlap with MECHANICAL-SWITCH."
-      ],
-      "synonyms": [
-        "Button",
-        "Clack",
-        "Click",
-        "Clicker",
-        "Snap",
-        "Tick",
-        "Toggle"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.005,
-            "max": 5.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 3.0
-          },
-          {
-            "feature": "sustain_ratio",
-            "max": 0.35
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.12,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.0015,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.03,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 12.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.2,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3500.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.06,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "transient_count",
-            "mean": 1.5,
-            "deviation": 1.0,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "The shortest, driest impulse in MECHANICAL: a single bright click of a few tens of milliseconds with essentially no ring. Very high crest factor, near-zero sustain, front-loaded envelope.",
-          "Against MECHANICAL-SWITCH: UCS itself admits the overlap. A switch tends to be a heavier two-part event - a throw and a detent, so transient_count near 2 - with more low-mid body; a click is one small bright event. Signal narrows the pair, text must settle it.",
-          "Against CLOCKS-TICK: the same impulse, but REPEATED periodically. If onset_periodicity is high and the train runs for seconds, it is a clock, not a click.",
-          "Against MECHANICAL-RATCHET: a ratchet is a dense burst of many clicks, not one."
-        ],
-        "confusable_with": [
-          "MECHSwtch",
-          "MECHRtch",
-          "MECHLtch",
-          "CLOCKTick",
-          "MECHRelay",
-          "CMPTKey"
-        ]
+ "version": "8.2.1",
+ "category": "MECHANICAL",
+ "subcategories": [
+  {
+   "subcategory": "CLICK",
+   "category_id": "MECHClik",
+   "category_short": "MECH",
+   "explanation": [
+    "Short clicks",
+    "could be from button presses",
+    "things like that. Some confusion and overlap with MECHANICAL-SWITCH."
+   ],
+   "synonyms": [
+    "Button",
+    "Clack",
+    "Click",
+    "Clicker",
+    "Snap",
+    "Tick",
+    "Toggle"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.005,
+      "max": 5.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "sustain_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.12,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "GEARS",
-      "category_id": "MECHGear",
-      "category_short": "MECH",
-      "explanation": [
-        "A toothed cog",
-        "turning or grinding gears",
-        "complex gear mechanisms. Small clock gears would go in CLOCKS-MECHANICS."
-      ],
-      "synonyms": [
-        "Axle",
-        "Bevel",
-        "Cam",
-        "Chain",
-        "Cluster",
-        "Cog",
-        "Cogs",
-        "Cogwheels",
-        "Coupling",
-        "Crown",
-        "Derailleur",
-        "Differential",
-        "Drive",
-        "Flywheel",
-        "Flywheels",
-        "Gear",
-        "Gearbox",
-        "Geared",
-        "Gearing",
-        "Geartrain",
-        "Helical",
-        "Herringbone",
-        "Hypoid",
-        "Idler",
-        "Mesh",
-        "Meshing",
-        "Pinion",
-        "Pinions",
-        "Planetary",
-        "Rack",
-        "Reducer",
-        "Shaft",
-        "Shifter",
-        "Silent",
-        "Spiral",
-        "Sprocket",
-        "Sprockets",
-        "Spur",
-        "Straight-Cut",
-        "Synchromesh",
-        "Tooth",
-        "Transmission",
-        "Wheels",
-        "Worm"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1,
-            "max": 600.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 30.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2200.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.62,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.22,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 5.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Meshing cogs: a CONTINUOUS bed, not discrete events. The tooth-passing frequency lays a strong tonal comb over a grinding broadband floor, so gears read as sustained and stationary, with a high onset_periodicity but a far higher onset_rate than a ratchet.",
-          "Grinding gears push spectral_flux and inharmonicity up; a clean gearbox stays tonal and steady.",
-          "Against MECHANICAL-RATCHET: a ratchet is silent between clicks (low sustain_ratio); gears never go silent.",
-          "Small clock gears go to CLOCKS-MECHANICS - a size judgement, though size does show up as low_band_energy."
-        ],
-        "confusable_with": [
-          "MECHRtch",
-          "CLOCKMech",
-          "MECHRolr",
-          "MOTRElec",
-          "MACHInd",
-          "METLFric"
-        ]
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0015,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "HYDRAULIC & PNEUMATIC",
-      "category_id": "MECHHydr",
-      "category_short": "MECH",
-      "explanation": [
-        "Various hydraulic or pneumatic sounds",
-        "like on a self-closing door. Isolated hydraulics and pneumatics. See also DOORS-HYDRAULIC & PNEUMATIC for a complete door."
-      ],
-      "synonyms": [
-        "Actuator",
-        "Brake",
-        "Clutch",
-        "Compressor",
-        "Conveyor",
-        "Cylinder",
-        "Damper",
-        "Hydraulic",
-        "Jack",
-        "Pneumatic",
-        "Press",
-        "Pressurized",
-        "Ram",
-        "System",
-        "Valve"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.08,
-            "max": 300.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.62,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3800.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 8000.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 3.6,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_release_seconds",
-            "mean": 0.6,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.5,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "transient_count",
-            "mean": 2.0,
-            "deviation": 2.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.15,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "Pressurized gas or fluid through a restriction: a broadband HISS with a decaying pressure tail, usually bracketed by a valve click and a cylinder thunk. Very high spectral_flatness with very low harmonicity and a high centroid - a noise source, not an impact and not a tone.",
-          "Hydraulic rams add a low groan under the hiss; a pneumatic damper on a self-closing door is pure hiss with a long release.",
-          "Against AIR-HISS: acoustically the SAME sound. What makes it MECHANICAL is the machine around it - the valve click, the ram thunk. Text decides.",
-          "A complete door goes to DOORS-HYDRAULIC & PNEUMATIC; this is the isolated mechanism."
-        ],
-        "confusable_with": [
-          "AIRHiss",
-          "DOORHydr",
-          "AIRBrst",
-          "TOOLPneu",
-          "MACHPump",
-          "AIRSuck"
-        ]
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.03,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "LATCH",
-      "category_id": "MECHLtch",
-      "category_short": "MECH",
-      "explanation": [
-        "Latch",
-        "as in a briefcase latch",
-        "or a luggage latch."
-      ],
-      "synonyms": [
-        "Barrel",
-        "Bolt",
-        "Cabinet",
-        "Cam",
-        "Catch",
-        "Clasp",
-        "Deadlatch",
-        "Drawer",
-        "Fastener",
-        "Gate",
-        "Hardware",
-        "Hasp",
-        "Hook",
-        "Interlock",
-        "Latch",
-        "Lock",
-        "Magnetic",
-        "Night",
-        "Safety",
-        "Slam",
-        "Slide",
-        "Spring",
-        "Thumb",
-        "Toggle",
-        "Toolbox",
-        "Window"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.01,
-            "max": 10.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "crest_factor",
-            "mean": 11.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.002,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.1,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "transient_count",
-            "mean": 2.5,
-            "deviation": 2.0,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3000.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.5,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.65,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 0.5,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.14,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "A briefcase or luggage latch: a spring-loaded metallic snap - bright, sharp, slightly RINGING (metal, so inharmonic partials and a real decay tail rather than the dead thock of a plastic click), often a two-part release-then-open or close-then-catch.",
-          "Against MECHANICAL-LOCK: a lock has a key and tumbler stage - a rasping multi-click sequence before the bolt throws. A latch is just the snap.",
-          "Against MECHANICAL-CLICK: brighter metallic ring and a longer decay.",
-          "Door hardware belongs to DOORS-HARDWARE; this is cases, luggage, toolboxes, gates."
-        ],
-        "confusable_with": [
-          "MECHLock",
-          "MECHClik",
-          "MECHSwtch",
-          "DOORHdwr",
-          "METLImpt",
-          "VEHMech"
-        ]
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "LEVER",
-      "category_id": "MECHLvr",
-      "category_short": "MECH",
-      "explanation": [
-        "A sliding or switching lever. Train track lever",
-        "lever to turn on an electric chair. Old Frankenstein machine levers",
-        "breaker levers."
-      ],
-      "synonyms": [
-        "Brake",
-        "Cam",
-        "Clank",
-        "Clunk",
-        "Control",
-        "Joystick",
-        "Lever",
-        "Locking",
-        "Pedal",
-        "Push-Pull",
-        "Quick-Release",
-        "Rocker",
-        "Switch",
-        "Trigger"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.02,
-            "max": 20.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "transient_count",
-            "mean": 2.5,
-            "deviation": 1.8,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 9.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1400.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.25,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.003,
-            "deviation": 4.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.2,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.15,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A big lever: heavy metal-on-metal CLANK and CLUNK, with audible travel and a solid end stop. Much lower and heavier than MECHANICAL-CLICK or MECHANICAL-SWITCH - low_band_energy and a long metallic decay are the cue. Frankenstein knife switches, breaker levers, track levers.",
-          "Against MECHANICAL-SWITCH: a switch is small and bright, a lever is large and low. Same event class, different mass - and mass IS audible, so this pair is genuinely narrowable.",
-          "Against METAL-IMPACT: a lever is an actuation with a throw, not a bare strike."
-        ],
-        "confusable_with": [
-          "MECHSwtch",
-          "MECHRtch",
-          "METLImpt",
-          "MECHLock",
-          "TRNMech"
-        ]
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "LOCK",
-      "category_id": "MECHLock",
-      "category_short": "MECH",
-      "explanation": [
-        "A padlock",
-        "bicycle lock",
-        "or a locking mechanism. Door locks to go into DOORS-HARDWARE."
-      ],
-      "synonyms": [
-        "Biometric",
-        "Bolt",
-        "Cam",
-        "Catch",
-        "Clasp",
-        "Combination",
-        "Cylinder",
-        "Deadbolt",
-        "Electronic",
-        "Fastener",
-        "Hasp",
-        "Keyless",
-        "Latch",
-        "Lock",
-        "Mortise",
-        "Padlock",
-        "Pin",
-        "Security",
-        "Tumbler"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.02,
-            "max": 30.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "transient_count",
-            "mean": 6.0,
-            "deviation": 4.0,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 5.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.3,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 8.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2800.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.62,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.12,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.14,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.48,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "A padlock or bicycle lock: a SEQUENCE - key insertion rasp, tumbler clicks, the bolt or shackle throw, the shackle clank. Multi-transient over a second or two, irregular rather than periodic, metallic and bright.",
-          "Against MECHANICAL-LATCH: a latch is a single spring snap with no key stage - far fewer transients.",
-          "Against MECHANICAL-RATCHET: a combination dial and a ratchet both give click trains, but a ratchet's is fast and regular while a lock's is slow and irregular.",
-          "Door locks go to DOORS-HARDWARE by UCS decree, not by any acoustic difference."
-        ],
-        "confusable_with": [
-          "MECHLtch",
-          "MECHRtch",
-          "DOORHdwr",
-          "MECHClik",
-          "METLMvmt"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "MECHMisc",
-      "category_short": "MECH",
-      "explanation": [
-        "Mechanical sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Miscellaneous"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "The abstention target for MECHANICAL. No gates and no priors - it must never exclude anything.",
-          "Emit when the sound is plainly a mechanism but no specific morphology in this category wins."
-        ],
-        "confusable_with": [
-          "MECHClik",
-          "MECHSwtch",
-          "MECHGear",
-          "MECHLvr",
-          "MACHMech"
-        ]
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "PULLEY",
-      "category_id": "MECHPuly",
-      "category_short": "MECH",
-      "explanation": [
-        "An isolated recording of a pulley",
-        "or system of pulleys."
-      ],
-      "synonyms": [
-        "And",
-        "Belt",
-        "Block",
-        "Chain",
-        "Chirp",
-        "Hoist",
-        "Pulley",
-        "Pulley-Block",
-        "Roll",
-        "Rope",
-        "Sheave",
-        "Squeak",
-        "Tackle",
-        "Winch"
-      ],
-      "acoustic_signature": {
-        "morphology": "friction",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1,
-            "max": 300.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2400.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 900.0,
-            "deviation": 700.0,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 900.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "pitch_slope_semitones_per_second",
-            "mean": 0.0,
-            "deviation": 12.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.45,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.25,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 5.0,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A pulley squeals and chirps: unstable, wandering-pitch stick-slip squeak from an unlubricated sheave, often recurring once per revolution, over rope or chain movement noise. High spectral_centroid_deviation with low stationarity is the friction signature.",
-          "Against MECHANICAL-GEARS: gears hold a stable tooth-passing comb; a pulley's pitch wanders.",
-          "Against MECHANICAL-ROLLER: a roller is a smooth rumbling bed, a pulley is the squeak on top of it.",
-          "Against DOORS-CREAK: identical stick-slip physics on a hinge. Text decides."
-        ],
-        "confusable_with": [
-          "MECHRolr",
-          "DOORCreak",
-          "MECHGear",
-          "METLFric",
-          "VEHSusp"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "RATCHET",
-      "category_id": "MECHRtch",
-      "category_short": "MECH",
-      "explanation": [
-        "That sound a ratchet makes."
-      ],
-      "synonyms": [
-        "Click",
-        "Crank",
-        "Detent",
-        "Pawl",
-        "Ratchet",
-        "Snap",
-        "Socket",
-        "Strap",
-        "Tie-Down",
-        "Winch",
-        "Wind",
-        "Wrench"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 3.0
-          },
-          {
-            "feature": "sustain_ratio",
-            "max": 0.45
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 14.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.72,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "transient_count",
-            "mean": 12.0,
-            "deviation": 8.0,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 8.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.002,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 3200.0,
-            "deviation": 2.3,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.52,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.12,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.12,
-            "deviation": 0.11,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.5,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.02,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "The pawl-over-teeth click train: FAST - roughly 6 to 40 clicks per second - and near-regular. onset_rate plus onset_periodicity make this one of the more separable entries in MECHANICAL; a ratchet is defined by its rate.",
-          "Against CLOCKS-TICK: the same impulse, an order of magnitude apart in rate. A clock ticks once or twice a second, a ratchet buzzes. onset_rate_per_second is the whole test.",
-          "Against MECHANICAL-CLICK: a train, not a single click. Against MECHANICAL-GEARS: gears mesh continuously into a noisy sustained bed with a tonal comb; a ratchet is discrete and dry, and silent between clicks.",
-          "A bicycle freewheel IS acoustically a ratchet - VEHICLES-BICYCLE takes it on text."
-        ],
-        "confusable_with": [
-          "CLOCKTick",
-          "MECHGear",
-          "MECHClik",
-          "MECHLock",
-          "VEHBike",
-          "MECHRelay"
-        ]
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.06,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "RELAY",
-      "category_id": "MECHRelay",
-      "category_short": "MECH",
-      "explanation": [
-        "Old train station counting board flipping. A old communications relay board."
-      ],
-      "synonyms": [
-        "Arc",
-        "Breaker",
-        "Clack",
-        "Coil",
-        "Contact",
-        "Control",
-        "Electromagnetic",
-        "Flip",
-        "Lamp",
-        "Solenoid",
-        "Switch",
-        "Toggle"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.01,
-            "max": 120.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 8.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.5,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 9.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.002,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.04,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2600.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "transient_count",
-            "mean": 15.0,
-            "deviation": 12.0,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.12,
-            "deviation": 0.11,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.18,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A solenoid clack: a hard electromagnetic snap. Old split-flap counting boards and relay banks give a dense cascading burst of them - many clacks, roughly but not perfectly regular, with a rippling flutter as the board settles.",
-          "Against MECHANICAL-SWITCH: a switch is one deliberate human throw; a relay fires itself, and usually in numbers.",
-          "Against MECHANICAL-RATCHET: a ratchet's train is faster and far more regular, and comes from one continuous motion.",
-          "Against COMPUTERS-KEYBOARD & MOUSE: a similar clatter of keyswitch clacks - text decides."
-        ],
-        "confusable_with": [
-          "MECHSwtch",
-          "MECHClik",
-          "MECHRtch",
-          "CMPTKey",
-          "ELECBuzz"
-        ]
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.5,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "ROLLER",
-      "category_id": "MECHRolr",
-      "category_short": "MECH",
-      "explanation": [
-        "Like a rolling conveyor belt",
-        "or something on a roller."
-      ],
-      "synonyms": [
-        "Bearing",
-        "Belt",
-        "Dynamo",
-        "Line",
-        "Roll",
-        "Shaft"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.2,
-            "max": 600.0
-          },
-          {
-            "feature": "crest_factor",
-            "max": 20.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "stationarity",
-            "mean": 0.75,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.75,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.5,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1100.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.4,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 3.6,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.1,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.4,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 10.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A conveyor or a loaded bearing: a continuous, stationary, low-mid rumbling bed with almost no event structure. Low crest factor and low spectral_flux are the whole point - nothing happens, it just rolls.",
-          "Against MECHANICAL-GEARS: gears carry a strong tooth-passing comb and much more high-frequency mesh noise; a roller is broadband and dull.",
-          "Against MECHANICAL-PULLEY: a pulley is defined by its squeak; a roller has none - add one and it becomes a pulley.",
-          "Against VEHICLES-TIRE: the same rolling-contact noise. Text decides."
-        ],
-        "confusable_with": [
-          "MECHGear",
-          "MECHPuly",
-          "MACHInd",
-          "VEHTire",
-          "MACHEscl",
-          "MOTRElec"
-        ]
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "SWITCH",
-      "category_id": "MECHSwtch",
-      "category_short": "MECH",
-      "explanation": [
-        "Basic and heavy switches",
-        "light switches",
-        "power switches. Some overlap or confusion with MECHANICAL-CLICK."
-      ],
-      "synonyms": [
-        "Button",
-        "Circuit",
-        "Clack",
-        "Click",
-        "Dimmer",
-        "Light",
-        "Limit",
-        "Micro",
-        "Push-Button",
-        "Rocker",
-        "Rotary",
-        "Safety",
-        "Selector",
-        "Slide",
-        "Switch",
-        "Switchgear",
-        "Toggle",
-        "Wall"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.01,
-            "max": 8.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "max": 0.4
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.25,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.002,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "decay_time_seconds_60db",
-            "mean": 0.06,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 10.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "transient_count",
-            "mean": 2.2,
-            "deviation": 1.5,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2400.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.2,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.25,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.1,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Light switches, power switches, toggles, heavy switchgear. A throw plus a detent: usually TWO transients tens of milliseconds apart, with more body and a lower centroid than a bare MECHANICAL-CLICK. Heavy switchgear adds a low clunk and a longer decay.",
-          "UCS explicitly flags the overlap with MECHANICAL-CLICK; treat transient_count and low_band_energy as nudges only and let text decide.",
-          "Against MECHANICAL-RELAY: a relay board is many clacks in rapid succession, not a single deliberate throw.",
-          "Against MECHANICAL-LEVER: a lever is bigger and heavier, with audible travel between the end stops."
-        ],
-        "confusable_with": [
-          "MECHClik",
-          "MECHLvr",
-          "MECHRelay",
-          "MECHLtch",
-          "DOORHdwr"
-        ]
+     }
+    ],
+    "discriminators": [
+     "The shortest, driest impulse in MECHANICAL: a single bright click of a few tens of milliseconds with essentially no ring. Very high crest factor, near-zero sustain, front-loaded envelope.",
+     "Against MECHANICAL-SWITCH: UCS itself admits the overlap. A switch tends to be a heavier two-part event - a throw and a detent, so transient_count near 2 - with more low-mid body; a click is one small bright event. Signal narrows the pair, text must settle it.",
+     "Against CLOCKS-TICK: the same impulse, but REPEATED periodically. If onset_periodicity is high and the train runs for seconds, it is a clock, not a click.",
+     "Against MECHANICAL-RATCHET: a ratchet is a dense burst of many clicks, not one."
+    ],
+    "confusable_with": [
+     "MECHSwtch",
+     "MECHRtch",
+     "MECHLtch",
+     "CLOCKTick",
+     "MECHRelay",
+     "CMPTKey"
+    ]
+   }
+  },
+  {
+   "subcategory": "GEARS",
+   "category_id": "MECHGear",
+   "category_short": "MECH",
+   "explanation": [
+    "A toothed cog",
+    "turning or grinding gears",
+    "complex gear mechanisms. Small clock gears would go in CLOCKS-MECHANICS."
+   ],
+   "synonyms": [
+    "Axle",
+    "Bevel",
+    "Cam",
+    "Chain",
+    "Cluster",
+    "Cog",
+    "Cogs",
+    "Cogwheels",
+    "Coupling",
+    "Crown",
+    "Derailleur",
+    "Differential",
+    "Drive",
+    "Flywheel",
+    "Flywheels",
+    "Gear",
+    "Gearbox",
+    "Geared",
+    "Gearing",
+    "Geartrain",
+    "Helical",
+    "Herringbone",
+    "Hypoid",
+    "Idler",
+    "Mesh",
+    "Meshing",
+    "Pinion",
+    "Pinions",
+    "Planetary",
+    "Rack",
+    "Reducer",
+    "Shaft",
+    "Shifter",
+    "Silent",
+    "Spiral",
+    "Sprocket",
+    "Sprockets",
+    "Spur",
+    "Straight-Cut",
+    "Synchromesh",
+    "Tooth",
+    "Transmission",
+    "Wheels",
+    "Worm"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 30.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.62,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Meshing cogs: a CONTINUOUS bed, not discrete events. The tooth-passing frequency lays a strong tonal comb over a grinding broadband floor, so gears read as sustained and stationary, with a high onset_periodicity but a far higher onset_rate than a ratchet.",
+     "Grinding gears push spectral_flux and inharmonicity up; a clean gearbox stays tonal and steady.",
+     "Against MECHANICAL-RATCHET: a ratchet is silent between clicks (low sustain_ratio); gears never go silent.",
+     "Small clock gears go to CLOCKS-MECHANICS - a size judgement, though size does show up as low_band_energy."
+    ],
+    "confusable_with": [
+     "MECHRtch",
+     "CLOCKMech",
+     "MECHRolr",
+     "MOTRElec",
+     "MACHInd",
+     "METLFric"
+    ]
+   }
+  },
+  {
+   "subcategory": "HYDRAULIC & PNEUMATIC",
+   "category_id": "MECHHydr",
+   "category_short": "MECH",
+   "explanation": [
+    "Various hydraulic or pneumatic sounds",
+    "like on a self-closing door. Isolated hydraulics and pneumatics. See also DOORS-HYDRAULIC & PNEUMATIC for a complete door."
+   ],
+   "synonyms": [
+    "Actuator",
+    "Brake",
+    "Clutch",
+    "Compressor",
+    "Conveyor",
+    "Cylinder",
+    "Damper",
+    "Hydraulic",
+    "Jack",
+    "Pneumatic",
+    "Press",
+    "Pressurized",
+    "Ram",
+    "System",
+    "Valve"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3800.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 8000.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.6,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 0.6,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Pressurized gas or fluid through a restriction: a broadband HISS with a decaying pressure tail, usually bracketed by a valve click and a cylinder thunk. Very high spectral_flatness with very low harmonicity and a high centroid - a noise source, not an impact and not a tone.",
+     "Hydraulic rams add a low groan under the hiss; a pneumatic damper on a self-closing door is pure hiss with a long release.",
+     "Against AIR-HISS: acoustically the SAME sound. What makes it MECHANICAL is the machine around it - the valve click, the ram thunk. Text decides.",
+     "A complete door goes to DOORS-HYDRAULIC & PNEUMATIC; this is the isolated mechanism."
+    ],
+    "confusable_with": [
+     "AIRHiss",
+     "DOORHydr",
+     "AIRBrst",
+     "TOOLPneu",
+     "MACHPump",
+     "AIRSuck"
+    ]
+   }
+  },
+  {
+   "subcategory": "LATCH",
+   "category_id": "MECHLtch",
+   "category_short": "MECH",
+   "explanation": [
+    "Latch",
+    "as in a briefcase latch",
+    "or a luggage latch."
+   ],
+   "synonyms": [
+    "Barrel",
+    "Bolt",
+    "Cabinet",
+    "Cam",
+    "Catch",
+    "Clasp",
+    "Deadlatch",
+    "Drawer",
+    "Fastener",
+    "Gate",
+    "Hardware",
+    "Hasp",
+    "Hook",
+    "Interlock",
+    "Latch",
+    "Lock",
+    "Magnetic",
+    "Night",
+    "Safety",
+    "Slam",
+    "Slide",
+    "Spring",
+    "Thumb",
+    "Toggle",
+    "Toolbox",
+    "Window"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 10.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.1,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.14,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A briefcase or luggage latch: a spring-loaded metallic snap - bright, sharp, slightly RINGING (metal, so inharmonic partials and a real decay tail rather than the dead thock of a plastic click), often a two-part release-then-open or close-then-catch.",
+     "Against MECHANICAL-LOCK: a lock has a key and tumbler stage - a rasping multi-click sequence before the bolt throws. A latch is just the snap.",
+     "Against MECHANICAL-CLICK: brighter metallic ring and a longer decay.",
+     "Door hardware belongs to DOORS-HARDWARE; this is cases, luggage, toolboxes, gates."
+    ],
+    "confusable_with": [
+     "MECHLock",
+     "MECHClik",
+     "MECHSwtch",
+     "DOORHdwr",
+     "METLImpt",
+     "VEHMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "LEVER",
+   "category_id": "MECHLvr",
+   "category_short": "MECH",
+   "explanation": [
+    "A sliding or switching lever. Train track lever",
+    "lever to turn on an electric chair. Old Frankenstein machine levers",
+    "breaker levers."
+   ],
+   "synonyms": [
+    "Brake",
+    "Cam",
+    "Clank",
+    "Clunk",
+    "Control",
+    "Joystick",
+    "Lever",
+    "Locking",
+    "Pedal",
+    "Push-Pull",
+    "Quick-Release",
+    "Rocker",
+    "Switch",
+    "Trigger"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 2.5,
+      "deviation": 1.8,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.25,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A big lever: heavy metal-on-metal CLANK and CLUNK, with audible travel and a solid end stop. Much lower and heavier than MECHANICAL-CLICK or MECHANICAL-SWITCH - low_band_energy and a long metallic decay are the cue. Frankenstein knife switches, breaker levers, track levers.",
+     "Against MECHANICAL-SWITCH: a switch is small and bright, a lever is large and low. Same event class, different mass - and mass IS audible, so this pair is genuinely narrowable.",
+     "Against METAL-IMPACT: a lever is an actuation with a throw, not a bare strike."
+    ],
+    "confusable_with": [
+     "MECHSwtch",
+     "MECHRtch",
+     "METLImpt",
+     "MECHLock",
+     "TRNMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "LOCK",
+   "category_id": "MECHLock",
+   "category_short": "MECH",
+   "explanation": [
+    "A padlock",
+    "bicycle lock",
+    "or a locking mechanism. Door locks to go into DOORS-HARDWARE."
+   ],
+   "synonyms": [
+    "Biometric",
+    "Bolt",
+    "Cam",
+    "Catch",
+    "Clasp",
+    "Combination",
+    "Cylinder",
+    "Deadbolt",
+    "Electronic",
+    "Fastener",
+    "Hasp",
+    "Keyless",
+    "Latch",
+    "Lock",
+    "Mortise",
+    "Padlock",
+    "Pin",
+    "Security",
+    "Tumbler"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.62,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.14,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.48,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A padlock or bicycle lock: a SEQUENCE - key insertion rasp, tumbler clicks, the bolt or shackle throw, the shackle clank. Multi-transient over a second or two, irregular rather than periodic, metallic and bright.",
+     "Against MECHANICAL-LATCH: a latch is a single spring snap with no key stage - far fewer transients.",
+     "Against MECHANICAL-RATCHET: a combination dial and a ratchet both give click trains, but a ratchet's is fast and regular while a lock's is slow and irregular.",
+     "Door locks go to DOORS-HARDWARE by UCS decree, not by any acoustic difference."
+    ],
+    "confusable_with": [
+     "MECHLtch",
+     "MECHRtch",
+     "DOORHdwr",
+     "MECHClik",
+     "METLMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "MECHMisc",
+   "category_short": "MECH",
+   "explanation": [
+    "Mechanical sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "The abstention target for MECHANICAL. No gates and no priors - it must never exclude anything.",
+     "Emit when the sound is plainly a mechanism but no specific morphology in this category wins."
+    ],
+    "confusable_with": [
+     "MECHClik",
+     "MECHSwtch",
+     "MECHGear",
+     "MECHLvr",
+     "MACHMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "PULLEY",
+   "category_id": "MECHPuly",
+   "category_short": "MECH",
+   "explanation": [
+    "An isolated recording of a pulley",
+    "or system of pulleys."
+   ],
+   "synonyms": [
+    "And",
+    "Belt",
+    "Block",
+    "Chain",
+    "Chirp",
+    "Hoist",
+    "Pulley",
+    "Pulley-Block",
+    "Roll",
+    "Rope",
+    "Sheave",
+    "Squeak",
+    "Tackle",
+    "Winch"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 900.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 12.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.25,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A pulley squeals and chirps: unstable, wandering-pitch stick-slip squeak from an unlubricated sheave, often recurring once per revolution, over rope or chain movement noise. High spectral_centroid_deviation with low stationarity is the friction signature.",
+     "Against MECHANICAL-GEARS: gears hold a stable tooth-passing comb; a pulley's pitch wanders.",
+     "Against MECHANICAL-ROLLER: a roller is a smooth rumbling bed, a pulley is the squeak on top of it.",
+     "Against DOORS-CREAK: identical stick-slip physics on a hinge. Text decides."
+    ],
+    "confusable_with": [
+     "MECHRolr",
+     "DOORCreak",
+     "MECHGear",
+     "METLFric",
+     "VEHSusp"
+    ]
+   }
+  },
+  {
+   "subcategory": "RATCHET",
+   "category_id": "MECHRtch",
+   "category_short": "MECH",
+   "explanation": [
+    "That sound a ratchet makes."
+   ],
+   "synonyms": [
+    "Click",
+    "Crank",
+    "Detent",
+    "Pawl",
+    "Ratchet",
+    "Snap",
+    "Socket",
+    "Strap",
+    "Tie-Down",
+    "Winch",
+    "Wind",
+    "Wrench"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "sustain_ratio",
+      "max": 0.45
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.00775,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 50,
+       "fsd50k_classes": [
+        "Ratchet_and_pawl"
+       ],
+       "measured_deviation": 2.06705,
+       "reasoned_mean": 14.0,
+       "reasoned_deviation": 2.4,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.72,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 16.0,
+      "deviation": 19.2738,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 50,
+       "fsd50k_classes": [
+        "Ratchet_and_pawl"
+       ],
+       "measured_deviation": 19.2738,
+       "reasoned_mean": 12.0,
+       "reasoned_deviation": 8.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 8838.00894,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 50,
+       "fsd50k_classes": [
+        "Ratchet_and_pawl"
+       ],
+       "measured_deviation": 1.41403,
+       "reasoned_mean": 3200.0,
+       "reasoned_deviation": 2.3,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.94735,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 50,
+       "fsd50k_classes": [
+        "Ratchet_and_pawl"
+       ],
+       "measured_deviation": 0.06352,
+       "reasoned_mean": 0.52,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.20018,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 50,
+       "fsd50k_classes": [
+        "Ratchet_and_pawl"
+       ],
+       "measured_deviation": 0.11738,
+       "reasoned_mean": 0.12,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.00381,
+      "deviation": 0.11,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 50,
+       "fsd50k_classes": [
+        "Ratchet_and_pawl"
+       ],
+       "measured_deviation": 0.00455,
+       "reasoned_mean": 0.12,
+       "reasoned_deviation": 0.11,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.02,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The pawl-over-teeth click train: FAST - roughly 6 to 40 clicks per second - and near-regular. onset_rate plus onset_periodicity make this one of the more separable entries in MECHANICAL; a ratchet is defined by its rate.",
+     "Against CLOCKS-TICK: the same impulse, an order of magnitude apart in rate. A clock ticks once or twice a second, a ratchet buzzes. onset_rate_per_second is the whole test.",
+     "Against MECHANICAL-CLICK: a train, not a single click. Against MECHANICAL-GEARS: gears mesh continuously into a noisy sustained bed with a tonal comb; a ratchet is discrete and dry, and silent between clicks.",
+     "A bicycle freewheel IS acoustically a ratchet - VEHICLES-BICYCLE takes it on text."
+    ],
+    "confusable_with": [
+     "CLOCKTick",
+     "MECHGear",
+     "MECHClik",
+     "MECHLock",
+     "VEHBike",
+     "MECHRelay"
+    ]
+   }
+  },
+  {
+   "subcategory": "RELAY",
+   "category_id": "MECHRelay",
+   "category_short": "MECH",
+   "explanation": [
+    "Old train station counting board flipping. A old communications relay board."
+   ],
+   "synonyms": [
+    "Arc",
+    "Breaker",
+    "Clack",
+    "Coil",
+    "Contact",
+    "Control",
+    "Electromagnetic",
+    "Flip",
+    "Lamp",
+    "Solenoid",
+    "Switch",
+    "Toggle"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.04,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 15.0,
+      "deviation": 12.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.12,
+      "deviation": 0.11,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A solenoid clack: a hard electromagnetic snap. Old split-flap counting boards and relay banks give a dense cascading burst of them - many clacks, roughly but not perfectly regular, with a rippling flutter as the board settles.",
+     "Against MECHANICAL-SWITCH: a switch is one deliberate human throw; a relay fires itself, and usually in numbers.",
+     "Against MECHANICAL-RATCHET: a ratchet's train is faster and far more regular, and comes from one continuous motion.",
+     "Against COMPUTERS-KEYBOARD & MOUSE: a similar clatter of keyswitch clacks - text decides."
+    ],
+    "confusable_with": [
+     "MECHSwtch",
+     "MECHClik",
+     "MECHRtch",
+     "CMPTKey",
+     "ELECBuzz"
+    ]
+   }
+  },
+  {
+   "subcategory": "ROLLER",
+   "category_id": "MECHRolr",
+   "category_short": "MECH",
+   "explanation": [
+    "Like a rolling conveyor belt",
+    "or something on a roller."
+   ],
+   "synonyms": [
+    "Bearing",
+    "Belt",
+    "Dynamo",
+    "Line",
+    "Roll",
+    "Shaft"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 20.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "stationarity",
+      "mean": 0.75,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.75,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.6,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.4,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 10.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A conveyor or a loaded bearing: a continuous, stationary, low-mid rumbling bed with almost no event structure. Low crest factor and low spectral_flux are the whole point - nothing happens, it just rolls.",
+     "Against MECHANICAL-GEARS: gears carry a strong tooth-passing comb and much more high-frequency mesh noise; a roller is broadband and dull.",
+     "Against MECHANICAL-PULLEY: a pulley is defined by its squeak; a roller has none - add one and it becomes a pulley.",
+     "Against VEHICLES-TIRE: the same rolling-contact noise. Text decides."
+    ],
+    "confusable_with": [
+     "MECHGear",
+     "MECHPuly",
+     "MACHInd",
+     "VEHTire",
+     "MACHEscl",
+     "MOTRElec"
+    ]
+   }
+  },
+  {
+   "subcategory": "SWITCH",
+   "category_id": "MECHSwtch",
+   "category_short": "MECH",
+   "explanation": [
+    "Basic and heavy switches",
+    "light switches",
+    "power switches. Some overlap or confusion with MECHANICAL-CLICK."
+   ],
+   "synonyms": [
+    "Button",
+    "Circuit",
+    "Clack",
+    "Click",
+    "Dimmer",
+    "Light",
+    "Limit",
+    "Micro",
+    "Push-Button",
+    "Rocker",
+    "Rotary",
+    "Safety",
+    "Selector",
+    "Slide",
+    "Switch",
+    "Switchgear",
+    "Toggle",
+    "Wall"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 8.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     },
+     {
+      "feature": "sustain_ratio",
+      "max": 0.4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.25,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.06,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.2,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.2,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Light switches, power switches, toggles, heavy switchgear. A throw plus a detent: usually TWO transients tens of milliseconds apart, with more body and a lower centroid than a bare MECHANICAL-CLICK. Heavy switchgear adds a low clunk and a longer decay.",
+     "UCS explicitly flags the overlap with MECHANICAL-CLICK; treat transient_count and low_band_energy as nudges only and let text decide.",
+     "Against MECHANICAL-RELAY: a relay board is many clacks in rapid succession, not a single deliberate throw.",
+     "Against MECHANICAL-LEVER: a lever is bigger and heavier, with audible travel between the end stops."
+    ],
+    "confusable_with": [
+     "MECHClik",
+     "MECHLvr",
+     "MECHRelay",
+     "MECHLtch",
+     "DOORHdwr"
+    ]
+   }
+  }
+ ]
 }

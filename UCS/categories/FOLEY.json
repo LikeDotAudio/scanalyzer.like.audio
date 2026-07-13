@@ -1,198 +1,198 @@
 {
-  "version": "8.2.1",
-  "category": "FOLEY",
-  "subcategories": [
-    {
-      "subcategory": "CLOTH",
-      "category_id": "FOLYClth",
-      "category_short": "FOLY",
-      "explanation": [
-        "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
-      ],
-      "synonyms": [
-        "Cape",
-        "Clothing",
-        "Dress",
-        "Fabric",
-        "Flap",
-        "Flutter",
-        "Jacket",
-        "Movement",
-        "Pants",
-        "Rustle",
-        "Shirt",
-        "Shorts",
-        "Skirt",
-        "Textile",
-        "Zuzz"
-      ],
-      "acoustic_signature": {
-        "morphology": "friction",
-        "separability": "provenance_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
-          "Content is cloth rustle and movement — acoustically the same object as CLOTH-MOVEMENT, CLOTH-FLAP and CLOTH-HANDLE, where a wild recording of the identical performance would be filed. The morphology field describes that content; it says nothing about the FOLEY label.",
-          "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
-          "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
-        ],
-        "confusable_with": [
-          "CLOTHMvmt",
-          "CLOTHFlp",
-          "CLOTHHndl",
-          "MOVEHmn",
-          "FOLYProp"
-        ]
-      }
-    },
-    {
-      "subcategory": "FEET",
-      "category_id": "FOLYFeet",
-      "category_short": "FOLY",
-      "explanation": [
-        "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
-      ],
-      "synonyms": [
-        "Foot",
-        "Footstep",
-        "Footsteps",
-        "Marching",
-        "Running",
-        "Scuff",
-        "Scuffling",
-        "Shoe",
-        "Sneaking",
-        "Sprinting",
-        "Step",
-        "Stomping",
-        "Surface",
-        "Tiptoeing",
-        "Trudging",
-        "Walking"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "provenance_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
-          "Content is footsteps — indistinguishable from FOOTSTEPS-HUMAN, which the explanation itself points you to for wild recordings. A Foley walker on a stage and a person walking on location produce the same impulse train; only the room and the intent differ.",
-          "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
-          "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
-        ],
-        "confusable_with": [
-          "FEETHmn",
-          "FEETMisc",
-          "MOVEHmn",
-          "FOLYProp"
-        ]
-      }
-    },
-    {
-      "subcategory": "HANDS",
-      "category_id": "FOLYHand",
-      "category_short": "FOLY",
-      "explanation": [
-        "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
-      ],
-      "synonyms": [
-        "Clapping",
-        "Flicking",
-        "Grab",
-        "Grasping",
-        "Handle",
-        "Pat",
-        "Patting",
-        "Rubbing",
-        "Scratching",
-        "Set",
-        "Shaking",
-        "Slapping",
-        "Snapping",
-        "Touching"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "provenance_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
-          "Content is hand contact — pats, slaps, grabs, rubs, claps. Acoustically HUMAN-SKIN, OBJECTS handling and CLOTH-HANDLE. No feature separates a performed hand pat from a real one.",
-          "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
-          "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
-        ],
-        "confusable_with": [
-          "HMNSkin",
-          "CLOTHHndl",
-          "OBJHsehld",
-          "MOVEHmn",
-          "FOLYProp"
-        ]
-      }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "FOLYMisc",
-      "category_short": "FOLY",
-      "explanation": [
-        "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
-      ],
-      "synonyms": [
-        "Miscellaneous"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "provenance_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
-          "Content is arbitrary — a catch-all inside a provenance bucket, and therefore doubly unassertable. Its only synonym is 'Miscellaneous'. It is reached by abstention within FOLEY, and FOLEY itself is reached only by text.",
-          "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
-          "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
-        ],
-        "confusable_with": [
-          "OBJMisc",
-          "FOLYProp",
-          "MOVEMisc",
-          "FOLYHand"
-        ]
-      }
-    },
-    {
-      "subcategory": "PROP",
-      "category_id": "FOLYProp",
-      "category_short": "FOLY",
-      "explanation": [
-        "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
-      ],
-      "synonyms": [
-        "Objects",
-        "Prop",
-        "Props"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "provenance_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
-          "Content is object handling and impacts — acoustically the OBJECTS category (and WOOD / METAL / GLASS handling), which the explanation points you to for wild recordings. A performed prop set-down is a set-down.",
-          "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
-          "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
-        ],
-        "confusable_with": [
-          "OBJMisc",
-          "OBJHsehld",
-          "WOODHndl",
-          "METLHndl",
-          "FOLYHand"
-        ]
-      }
-    }
-  ]
+ "version": "8.2.1",
+ "category": "FOLEY",
+ "subcategories": [
+  {
+   "subcategory": "CLOTH",
+   "category_id": "FOLYClth",
+   "category_short": "FOLY",
+   "explanation": [
+    "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
+   ],
+   "synonyms": [
+    "Cape",
+    "Clothing",
+    "Dress",
+    "Fabric",
+    "Flap",
+    "Flutter",
+    "Jacket",
+    "Movement",
+    "Pants",
+    "Rustle",
+    "Shirt",
+    "Shorts",
+    "Skirt",
+    "Textile",
+    "Zuzz"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
+     "Content is cloth rustle and movement — acoustically the same object as CLOTH-MOVEMENT, CLOTH-FLAP and CLOTH-HANDLE, where a wild recording of the identical performance would be filed. The morphology field describes that content; it says nothing about the FOLEY label.",
+     "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
+     "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
+    ],
+    "confusable_with": [
+     "CLOTHMvmt",
+     "CLOTHFlp",
+     "CLOTHHndl",
+     "MOVEHmn",
+     "FOLYProp"
+    ]
+   }
+  },
+  {
+   "subcategory": "FEET",
+   "category_id": "FOLYFeet",
+   "category_short": "FOLY",
+   "explanation": [
+    "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
+   ],
+   "synonyms": [
+    "Foot",
+    "Footstep",
+    "Footsteps",
+    "Marching",
+    "Running",
+    "Scuff",
+    "Scuffling",
+    "Shoe",
+    "Sneaking",
+    "Sprinting",
+    "Step",
+    "Stomping",
+    "Surface",
+    "Tiptoeing",
+    "Trudging",
+    "Walking"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
+     "Content is footsteps — indistinguishable from FOOTSTEPS-HUMAN, which the explanation itself points you to for wild recordings. A Foley walker on a stage and a person walking on location produce the same impulse train; only the room and the intent differ.",
+     "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
+     "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
+    ],
+    "confusable_with": [
+     "FEETHmn",
+     "FEETMisc",
+     "MOVEHmn",
+     "FOLYProp"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDS",
+   "category_id": "FOLYHand",
+   "category_short": "FOLY",
+   "explanation": [
+    "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
+   ],
+   "synonyms": [
+    "Clapping",
+    "Flicking",
+    "Grab",
+    "Grasping",
+    "Handle",
+    "Pat",
+    "Patting",
+    "Rubbing",
+    "Scratching",
+    "Set",
+    "Shaking",
+    "Slapping",
+    "Snapping",
+    "Touching"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
+     "Content is hand contact — pats, slaps, grabs, rubs, claps. Acoustically HUMAN-SKIN, OBJECTS handling and CLOTH-HANDLE. No feature separates a performed hand pat from a real one.",
+     "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
+     "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
+    ],
+    "confusable_with": [
+     "HMNSkin",
+     "CLOTHHndl",
+     "OBJHsehld",
+     "MOVEHmn",
+     "FOLYProp"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "FOLYMisc",
+   "category_short": "FOLY",
+   "explanation": [
+    "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
+     "Content is arbitrary — a catch-all inside a provenance bucket, and therefore doubly unassertable. Its only synonym is 'Miscellaneous'. It is reached by abstention within FOLEY, and FOLEY itself is reached only by text.",
+     "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
+     "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
+    ],
+    "confusable_with": [
+     "OBJMisc",
+     "FOLYProp",
+     "MOVEMisc",
+     "FOLYHand"
+    ]
+   }
+  },
+  {
+   "subcategory": "PROP",
+   "category_id": "FOLYProp",
+   "category_short": "FOLY",
+   "explanation": [
+    "Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories."
+   ],
+   "synonyms": [
+    "Objects",
+    "Prop",
+    "Props"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "RECORDING-TECHNIQUE LABEL, not an acoustic class. All five FOLEY subcategories carry one identical explanation — \"Used for 'performed' official and very clean Foley done to picture. For your own wild recordings use FOOTSTEPS and OBJECT categories.\" — so FOLEY is defined by where and why a sound was recorded, never by what it sounds like.",
+     "Content is object handling and impacts — acoustically the OBJECTS category (and WOOD / METAL / GLASS handling), which the explanation points you to for wild recordings. A performed prop set-down is a set-down.",
+     "One real but weak cue exists, and it identifies a Foley STAGE, not a subcategory: stage recordings have an unusually low noise floor, a dead room (very short decay_time_seconds_60db, minimal reverb tail) and near-mono / narrow imaging (low stereo_width). When those three co-occur the file was probably shot on a Foley stage — but they say nothing about whether it is CLOTH, FEET, HANDS, MISC or PROP. No priors are declared: the tier is provenance_only, so the signal weight is zero by construction, and encoding a stage cue as a subcategory prior would misrepresent a recording condition as a content claim.",
+     "Routing among the five is carried entirely by synonyms plus the FOOTSTEPS / OBJECTS cross-reference in the explanation. Signal analysis must never assert this subcategory."
+    ],
+    "confusable_with": [
+     "OBJMisc",
+     "OBJHsehld",
+     "WOODHndl",
+     "METLHndl",
+     "FOLYHand"
+    ]
+   }
+  }
+ ]
 }

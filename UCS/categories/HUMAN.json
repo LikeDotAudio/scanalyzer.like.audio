@@ -1,2004 +1,2859 @@
 {
-  "version": "8.2.1",
-  "category": "HUMAN",
-  "subcategories": [
-    {
-      "subcategory": "BLOW",
-      "category_id": "HMNBlow",
-      "category_short": "HMN",
-      "explanation": [
-        "Blowing air",
-        "blowing up a balloon",
-        "blowing out candles",
-        "etc. See also HUMAN-BREATH for less forceful breathing."
-      ],
-      "synonyms": [
-        "Adult",
-        "Blow",
-        "Child",
-        "Female",
-        "Male",
-        "Man",
-        "Person",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.08,
-            "max": 60.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.45
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.6
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 1.2,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.62,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.05,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.48,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.18,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 3800.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.06,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "Forceful directed air: louder, brighter and more sustained than HUMAN-BREATH, which UCS defines as the less forceful case.",
-          "Unvoiced throughout — voicing_ratio near zero separates it from every VOICES subcategory.",
-          "Longer and flatter-enveloped than HUMAN-SPIT or HUMAN-SNEEZE, which are impulsive."
-        ],
-        "confusable_with": [
-          "HMNBrth",
-          "HMNSniff",
-          "HMNSpit",
-          "AIRBlow"
-        ]
+ "version": "8.2.1",
+ "category": "HUMAN",
+ "subcategories": [
+  {
+   "subcategory": "BLOW",
+   "category_id": "HMNBlow",
+   "category_short": "HMN",
+   "explanation": [
+    "Blowing air",
+    "blowing up a balloon",
+    "blowing out candles",
+    "etc. See also HUMAN-BREATH for less forceful breathing."
+   ],
+   "synonyms": [
+    "Adult",
+    "Blow",
+    "Child",
+    "Female",
+    "Male",
+    "Man",
+    "Person",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 60.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.45
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "BREATH",
-      "category_id": "HMNBrth",
-      "category_short": "HMN",
-      "explanation": [
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.48,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.06,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Forceful directed air: louder, brighter and more sustained than HUMAN-BREATH, which UCS defines as the less forceful case.",
+     "Unvoiced throughout — voicing_ratio near zero separates it from every VOICES subcategory.",
+     "Longer and flatter-enveloped than HUMAN-SPIT or HUMAN-SNEEZE, which are impulsive."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "HMNSniff",
+     "HMNSpit",
+     "AIRBlow"
+    ]
+   }
+  },
+  {
+   "subcategory": "BREATH",
+   "category_id": "HMNBrth",
+   "category_short": "HMN",
+   "explanation": [
+    "Breathing",
+    "normal to heavy",
+    "big inhales",
+    "sighs."
+   ],
+   "synonyms": [
+    "Adult",
+    "Asphyxiate",
+    "Asthma",
+    "Breath",
+    "Breathing",
+    "Breaths",
+    "Child",
+    "Exhalation",
+    "Exhale",
+    "Exhaled",
+    "Exhales",
+    "Exhaling",
+    "Female",
+    "Gasp",
+    "Gasping",
+    "Heave",
+    "Huff",
+    "Huffing",
+    "Hyperventilate",
+    "Hyperventilating",
+    "Inhalation",
+    "Inhale",
+    "Inhaled",
+    "Inhales",
+    "Inhaling",
+    "Labored",
+    "Male",
+    "Man",
+    "Meditation",
+    "Pant",
+    "Panting",
+    "Person",
+    "Puffing",
+    "Respiration",
+    "Sigh",
+    "Suffocate",
+    "Suffocates",
+    "Suffocating",
+    "Wheeze",
+    "Wheezing",
+    "Whoop",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 120.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.5
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.17354,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 343,
+       "fsd50k_classes": [
         "Breathing",
-        "normal to heavy",
-        "big inhales",
-        "sighs."
-      ],
-      "synonyms": [
-        "Adult",
-        "Asphyxiate",
-        "Asthma",
-        "Breath",
-        "Breathing",
-        "Breaths",
-        "Child",
-        "Exhalation",
-        "Exhale",
-        "Exhaled",
-        "Exhales",
-        "Exhaling",
-        "Female",
         "Gasp",
-        "Gasping",
-        "Heave",
-        "Huff",
-        "Huffing",
-        "Hyperventilate",
-        "Hyperventilating",
-        "Inhalation",
-        "Inhale",
-        "Inhaled",
-        "Inhales",
-        "Inhaling",
-        "Labored",
-        "Male",
-        "Man",
-        "Meditation",
-        "Pant",
-        "Panting",
-        "Person",
-        "Puffing",
-        "Respiration",
-        "Sigh",
-        "Suffocate",
-        "Suffocates",
-        "Suffocating",
-        "Wheeze",
-        "Wheezing",
-        "Whoop",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.15,
-            "max": 120.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.6
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.5,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.58,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.08,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.14,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.05,
-            "deviation": 0.05,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.38,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.42,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 3000.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.12,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.4,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 0.6,
-            "deviation": 0.7,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "Unvoiced airy noise with a soft, rounded attack — quieter and gentler than HUMAN-BLOW, which UCS explicitly reserves for the forceful case.",
-          "Panting and hyperventilating give a slow inhale/exhale onset train (~0.3–1.5 /s); slower and far less pitched than HUMAN-SNORE, which is voiced-buzzy and strongly periodic.",
-          "No glottal impulse — separates it from HUMAN-COUGH and HUMAN-SNEEZE, which are impulsive bursts."
-        ],
-        "confusable_with": [
-          "HMNBlow",
-          "HMNSniff",
-          "HMNSnor",
-          "VOXEfrt"
-        ]
+        "Sigh"
+       ],
+       "measured_deviation": 0.11482,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "BURP",
-      "category_id": "HMNBurp",
-      "category_short": "HMN",
-      "explanation": [
-        "Human belches",
-        "burps."
-      ],
-      "synonyms": [
-        "Adult",
-        "Belch",
-        "Belching",
-        "Burp",
-        "Burping",
-        "Child",
-        "Female",
-        "Hiccup",
-        "Male",
-        "Man",
-        "Person",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "burst",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 20.0
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "max": 4000.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.8,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.42,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.42,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.14,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 550.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.02,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.35,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.35,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Low, buzzy, gurgling eructation: a dark centroid and a strong sub-200 Hz share, unlike the bright unvoiced bursts of HUMAN-COUGH and HUMAN-SNEEZE.",
-          "Same low buzzy family as FARTS but with vocal-tract formants and a higher mid-band share; the FARTS bands sit lower still.",
-          "Longer and less sharply front-loaded than HUMAN-SPIT."
-        ],
-        "confusable_with": [
-          "HMNVomit",
-          "FARTReal",
-          "FARTDsgn",
-          "HMNCough"
-        ]
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.08,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "COUGH",
-      "category_id": "HMNCough",
-      "category_short": "HMN",
-      "explanation": [
-        "Human coughs and coughing."
-      ],
-      "synonyms": [
-        "Adult",
-        "Ahem",
-        "Bronchitis",
-        "Child",
-        "Choking",
-        "Clear",
-        "Clearing",
-        "Convulse",
-        "Coughing",
-        "Covid",
-        "Expectoration",
-        "Female",
-        "Gag",
-        "Hack",
-        "Hacking",
-        "Hiccough",
-        "Hiccoughing",
-        "Hiccoughs",
-        "Hoarse",
-        "Male",
-        "Man",
-        "Person",
-        "Throat",
-        "Wet",
-        "Whooping",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.7,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.008,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "envelope_decay_seconds",
-            "mean": 0.2,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 9.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_skewness",
-            "mean": 2.2,
-            "deviation": 1.5,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.3,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 900.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.18,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.46,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.2,
-            "deviation": 1.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.3,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.22,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "Explosive glottal release: near-instant attack on top of an unvoiced noisy body, with a short throaty tail. Bursts often repeat in irregular fits, unlike the single event of HUMAN-SNEEZE.",
-          "Darker and more throat-centred than HUMAN-SNEEZE, whose nasal release pushes energy above 2 kHz.",
-          "Far spikier (high crest, high envelope skewness) than HUMAN-BREATH or HUMAN-BLOW."
-        ],
-        "confusable_with": [
-          "HMNSneez",
-          "HMNSpit",
-          "HMNVomit",
-          "HMNBrth",
-          "VOXEfrt"
-        ]
-      }
-    },
-    {
-      "subcategory": "HEARTBEAT",
-      "category_id": "HMNHart",
-      "category_short": "HMN",
-      "explanation": [
-        "Heartbeats",
-        "both literal as in a Dr. office",
-        "and stylized or designed heartbeats."
-      ],
-      "synonyms": [
-        "Adult",
-        "Arrhythmia",
-        "Arrhythmic",
-        "Arrythmia",
-        "Beating",
-        "Cardiac",
-        "Child",
-        "Coronary",
-        "EKG",
-        "Female",
-        "Fetal",
-        "Fibrillation",
-        "Heart",
-        "Male",
-        "Man",
-        "Palpitate",
-        "Palpitates",
-        "Palpitating",
-        "Palpitation",
-        "Palpitations",
-        "Person",
-        "Pulsate",
-        "Pulsated",
-        "Pulsates",
-        "Pulsating",
-        "Pulse",
-        "Rate",
-        "Rhythm",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.25,
-            "max": 600.0
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "max": 1500.0
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "max": 6.0
-          },
-          {
-            "feature": "high_band_energy",
-            "max": 0.35
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 8.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.3,
-            "deviation": 0.7,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.8,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.8,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.16,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.03,
-            "deviation": 0.05,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 120.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_rolloff_hz",
-            "mean": 400.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 260.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "beats_per_minute",
-            "mean": 72.0,
-            "deviation": 1.35,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.05,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.02,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_kurtosis",
-            "mean": 6.0,
-            "deviation": 4.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "The cleanest case in HUMAN: a slow, strongly periodic train of very low-frequency thumps at roughly 1–1.5 /s (60–90 BPM), with almost no energy above 2 kHz.",
-          "Periodicity plus the sub-200 Hz concentration separates it from every other HUMAN subcategory; onset_periodicity near 0.8 with onset_rate near 1 /s is diagnostic.",
-          "Slower and much darker than HUMAN-SNORE, which cycles at ~0.2–0.4 /s but carries buzzy mid-band harmonics."
-        ],
-        "confusable_with": [
-          "HMNSnor",
-          "HMNMisc"
-        ]
-      }
-    },
-    {
-      "subcategory": "KISS",
-      "category_id": "HMNKiss",
-      "category_short": "HMN",
-      "explanation": [
-        "Human kissing."
-      ],
-      "synonyms": [
-        "Adult",
-        "Child",
-        "Female",
-        "French",
-        "Hickey",
-        "Kiss",
-        "Lips",
-        "Make",
-        "Male",
-        "Man",
-        "Necking",
-        "Out",
-        "Peck",
-        "Person",
-        "Smooch",
-        "Smooching",
-        "Snog",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.01,
-            "max": 30.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.35,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.004,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_decay_seconds",
-            "mean": 0.06,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 11.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.25,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.03,
-            "deviation": 0.03,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2200.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.42,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.06,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.0,
-            "deviation": 1.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Small, quiet, bright wet clicks — a suction transient, not a vocalization: voicing_ratio near zero and a very low absolute level.",
-          "Much shorter and quieter than HUMAN-BLOW; brighter and far less energetic than HUMAN-SPIT.",
-          "Sparser and wetter-sounding than HUMAN-SKIN friction, which is sustained rather than impulsive."
-        ],
-        "confusable_with": [
-          "HMNSkin",
-          "HMNSpit",
-          "HMNMisc"
-        ]
-      }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "HMNMisc",
-      "category_short": "HMN",
-      "explanation": [
-        "Human sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Adult",
-        "Child",
-        "Female",
-        "Male",
-        "Man",
-        "Miscellaneous",
-        "Person",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.01,
-            "max": 600.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.2,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "The category's abstain target: a human-produced sound that fits no sibling. Assert only when the signal is human-plausible but no sibling's morphology wins clearly."
-        ],
-        "confusable_with": [
-          "HMNSkin",
-          "HMNBrth",
-          "VOXMisc"
-        ]
-      }
-    },
-    {
-      "subcategory": "PEE",
-      "category_id": "HMNPee",
-      "category_short": "HMN",
-      "explanation": [
-        "Human urinating."
-      ],
-      "synonyms": [
-        "Adult",
-        "Child",
-        "Female",
-        "Male",
-        "Man",
-        "Micturition",
-        "Peeing",
-        "Person",
-        "Piss",
-        "Tinkle",
-        "Urinate",
-        "Urinating",
-        "Urination",
-        "Wee",
-        "Wizz",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "texture",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.5,
-            "max": 300.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.35
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 9.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.62,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.68,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.62,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2600.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 5200.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 12.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.15,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.03,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.5,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A liquid stream: a dense, stationary, bright stochastic texture — physically a WATER trickle, and only the human context puts it here.",
-          "Unvoiced and stationary, unlike anything in VOICES; longer and steadier than HUMAN-SPIT.",
-          "Denser and higher-onset-rate than HUMAN-BREATH, and with no inhale/exhale cycling."
-        ],
-        "confusable_with": [
-          "HMNSpit",
-          "HMNMisc",
-          "WATRTrkl",
-          "WATRPour"
-        ]
-      }
-    },
-    {
-      "subcategory": "SKIN",
-      "category_id": "HMNSkin",
-      "category_short": "HMN",
-      "explanation": [
-        "Human skin",
-        "Scratching",
-        "handshakes",
-        "skin on skin action",
-        "back rubbing",
-        "etc."
-      ],
-      "synonyms": [
-        "Adult",
-        "Backrub",
-        "Brush",
-        "Caress",
-        "Child",
-        "Clap",
-        "Dermis",
-        "Female",
-        "Flick",
-        "Grab",
-        "Hand",
-        "Handshake",
-        "Itch",
-        "Male",
-        "Man",
-        "Massage",
-        "Pat",
-        "Person",
-        "Pores",
-        "Rash",
-        "Rub",
-        "Rubbing",
-        "Scratch",
-        "Scratching",
-        "Skin",
-        "Slap",
-        "Tap",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "friction",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.01,
-            "max": 300.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.35
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 1.6,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.6,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.35,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2800.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 1100.0,
-            "deviation": 800.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.46,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 5500.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.03,
-            "deviation": 0.03,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.02,
-            "deviation": 0.05,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.08,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.4,
-            "deviation": 0.24,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Quiet, dry, high-centroid contact noise with an unstable envelope — the friction morphology, not an impulse. Rubbing, scratching and back-rubs dominate the class.",
-          "Slaps and pats are the impulsive tail of this class and blur into HUMAN-KISS; the sustained, flux-heavy rubs are what make it separable.",
-          "Unvoiced throughout, which excludes all of VOICES; drier and less bright-crackly than CROWDS-APPLAUSE, which is a dense multi-source impulse train."
-        ],
-        "confusable_with": [
-          "HMNKiss",
-          "HMNMisc",
-          "CRWDApls",
-          "CLTHMovm"
-        ]
-      }
-    },
-    {
-      "subcategory": "SNEEZE",
-      "category_id": "HMNSneez",
-      "category_short": "HMN",
-      "explanation": [
-        "Human sneezing."
-      ],
-      "synonyms": [
-        "Achoo",
-        "Adult",
-        "Ah-Choo",
-        "Ahchoo",
-        "Allergic",
-        "Allergy",
-        "Child",
-        "Female",
-        "Fever",
-        "Hay",
-        "Male",
-        "Man",
-        "Nasal",
-        "Person",
-        "Sinus",
-        "Sneeze",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive_with_tail",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.08,
-            "max": 30.0
-          },
-          {
-            "feature": "crest_factor",
-            "min": 2.5
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.9,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.01,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_decay_seconds",
-            "mean": 0.3,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 8.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_skewness",
-            "mean": 1.8,
-            "deviation": 1.4,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1800.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.42,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.58,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.15,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.1,
-            "deviation": 0.9,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 4200.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.18,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "One-shot: a short voiced/held pre-phase then a bright, nasal, hissy explosive release. The release is the brightest thing in HUMAN — high_band_energy and centroid sit above HUMAN-COUGH.",
-          "A sneeze is a single event; a cough recording usually contains an irregular fit of several. Higher onset counts favour HUMAN-COUGH.",
-          "Sharper and much louder than HUMAN-SNIFF, which is the quiet inhale with no explosive release."
-        ],
-        "confusable_with": [
-          "HMNCough",
-          "HMNSniff",
-          "HMNBlow"
-        ]
-      }
-    },
-    {
-      "subcategory": "SNIFF",
-      "category_id": "HMNSniff",
-      "category_short": "HMN",
-      "explanation": [
-        "Human sniffing",
-        "smelling."
-      ],
-      "synonyms": [
-        "Adult",
-        "Child",
-        "Female",
-        "Inhalation",
-        "Inhale",
-        "Male",
-        "Man",
-        "Nose",
-        "Odor",
-        "Person",
-        "Smell",
-        "Sniff",
-        "Sniffing",
-        "Sniffle",
-        "Snivel",
-        "Snort",
-        "Snorting",
-        "Snuffle",
-        "Whiff",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "sustained_noise",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.4
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.55,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.62,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2400.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.44,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.04,
-            "deviation": 0.04,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.05,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.05,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.2,
-            "deviation": 1.1,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 4800.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "A short, quiet, bright nasal inrush — a sharply time-limited unvoiced noise burst, typically repeating a few times.",
-          "Shorter, quieter and more nasal-bright than HUMAN-BREATH; no explosive release, which is what separates it from HUMAN-SNEEZE.",
-          "Direction is inward, so it lacks the long forceful outflow of HUMAN-BLOW."
-        ],
-        "confusable_with": [
-          "HMNBrth",
-          "HMNSneez",
-          "HMNBlow"
-        ]
-      }
-    },
-    {
-      "subcategory": "SNORE",
-      "category_id": "HMNSnor",
-      "category_short": "HMN",
-      "explanation": [
-        "Human snoring."
-      ],
-      "synonyms": [
-        "Adult",
-        "Apnea",
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.46886,
+      "deviation": 0.2749,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 343,
+       "fsd50k_classes": [
         "Breathing",
-        "Child",
-        "Congested",
-        "Doze",
-        "Dozing",
-        "Female",
-        "Heavy",
-        "Male",
-        "Man",
-        "Person",
-        "Slumber",
-        "Snooze",
-        "Snore",
-        "Snoring",
-        "Woman",
-        "ZZZ"
-      ],
-      "acoustic_signature": {
-        "morphology": "rhythmic",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.4,
-            "max": 600.0
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "max": 3500.0
-          },
-          {
-            "feature": "high_band_energy",
-            "max": 0.4
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 12.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.72,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 0.3,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 110.0,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.52,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.38,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 480.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A very slow, strongly periodic breath cycle (~0.2–0.4 /s, one snore per respiratory cycle) carrying a low, buzzy, rough voiced rasp around 80–150 Hz.",
-          "Periodicity plus low pitch separates it from HUMAN-BREATH, which is aperiodic and unvoiced.",
-          "Much slower and far more harmonic/mid-band than HUMAN-HEARTBEAT, which is ~1 /s and almost purely sub-200 Hz.",
-          "Lacks the 3–8 Hz syllabic modulation of speech, so it never wins against VOICES."
-        ],
-        "confusable_with": [
-          "HMNBrth",
-          "HMNHart",
-          "FARTReal"
-        ]
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 0.2749,
+       "reasoned_mean": 0.14,
+       "reasoned_deviation": 0.13,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "SPIT",
-      "category_id": "HMNSpit",
-      "category_short": "HMN",
-      "explanation": [
-        "Human spits."
-      ],
-      "synonyms": [
-        "Adult",
-        "Child",
-        "Drool",
-        "Expectoration",
-        "Female",
-        "Gob",
-        "Hawk",
-        "Hock",
-        "Male",
-        "Man",
-        "Mucus",
-        "Person",
-        "Phlegm",
-        "Saliva",
-        "Slobber",
-        "Spew",
-        "Spit",
-        "Spitoon",
-        "Spitting",
-        "Spittle",
-        "Spittoon",
-        "Sputum",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "impulsive",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.02,
-            "max": 30.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.5,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.006,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "envelope_decay_seconds",
-            "mean": 0.1,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 10.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "envelope_skewness",
-            "mean": 2.2,
-            "deviation": 1.5,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.28,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2200.0,
-            "deviation": 2.1,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.4,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.6,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.06,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.0,
-            "deviation": 0.9,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "A wet, bright, front-loaded expulsion: a sharp unvoiced transient often followed by a small liquid splat.",
-          "Shorter and spikier than HUMAN-BLOW; unvoiced and much shorter than HUMAN-VOMIT, which is a long voiced retch plus liquid.",
-          "Louder and less nasal than HUMAN-KISS."
-        ],
-        "confusable_with": [
-          "HMNKiss",
-          "HMNBlow",
-          "HMNVomit",
-          "HMNCough"
-        ]
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "VOMIT",
-      "category_id": "HMNVomit",
-      "category_short": "HMN",
-      "explanation": [
-        "Human vomiting."
-      ],
-      "synonyms": [
-        "Adult",
-        "Barf",
-        "Barfing",
-        "Child",
-        "Chunder",
-        "Expunge",
-        "Female",
-        "Gag",
-        "Gagging",
-        "Heave",
-        "Hurl",
-        "Male",
-        "Man",
-        "Nausea",
-        "Nauseous",
-        "Person",
-        "Puke",
-        "Pukes",
-        "Reflex",
-        "Reflux",
-        "Regurgitate",
-        "Regurgitated",
-        "Regurgitation",
-        "Retch",
-        "Retched",
-        "Retching",
-        "Seasick",
-        "Spew",
-        "Throwing",
-        "Up",
-        "Upchuck",
-        "Vomit",
-        "Vomitus",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.2,
-            "max": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 150.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.34,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.44,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1100.0,
-            "deviation": 2.1,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.42,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.48,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 2.0,
-            "deviation": 2.0,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.25,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A two-part scene: a rough, low, voiced retch/heave followed by a wet liquid splatter — high spectral flux across a single event, with rough (inharmonic) phonation.",
-          "Longer and wetter than HUMAN-COUGH, and it carries voicing that HUMAN-SPIT does not.",
-          "The gag/heave overlaps VOICES-EFFORTS; the liquid splatter component is what tips it here."
-        ],
-        "confusable_with": [
-          "HMNCough",
-          "HMNSpit",
-          "HMNBurp",
-          "VOXEfrt"
-        ]
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.44263,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 343,
+       "fsd50k_classes": [
+        "Breathing",
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 0.19031,
+       "reasoned_mean": 0.38,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    }
-  ]
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.44127,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 343,
+       "fsd50k_classes": [
+        "Breathing",
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 0.18419,
+       "reasoned_mean": 0.42,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2945.37125,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 343,
+       "fsd50k_classes": [
+        "Breathing",
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 1.86262,
+       "reasoned_mean": 3000.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0898,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 136,
+       "fsd50k_classes": [
+        "Breathing",
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 1.8242,
+       "reasoned_mean": 0.12,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.20678,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 136,
+       "fsd50k_classes": [
+        "Breathing",
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 0.17595,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.14233,
+      "deviation": 0.85348,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 343,
+       "fsd50k_classes": [
+        "Breathing",
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 0.85348,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.7,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.10562,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 290,
+       "fsd50k_classes": [
+        "Breathing",
+        "Gasp",
+        "Sigh"
+       ],
+       "measured_deviation": 0.09585,
+       "reasoned_mean": 0.15,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Unvoiced airy noise with a soft, rounded attack — quieter and gentler than HUMAN-BLOW, which UCS explicitly reserves for the forceful case.",
+     "Panting and hyperventilating give a slow inhale/exhale onset train (~0.3–1.5 /s); slower and far less pitched than HUMAN-SNORE, which is voiced-buzzy and strongly periodic.",
+     "No glottal impulse — separates it from HUMAN-COUGH and HUMAN-SNEEZE, which are impulsive bursts."
+    ],
+    "confusable_with": [
+     "HMNBlow",
+     "HMNSniff",
+     "HMNSnor",
+     "VOXEfrt"
+    ]
+   }
+  },
+  {
+   "subcategory": "BURP",
+   "category_id": "HMNBurp",
+   "category_short": "HMN",
+   "explanation": [
+    "Human belches",
+    "burps."
+   ],
+   "synonyms": [
+    "Adult",
+    "Belch",
+    "Belching",
+    "Burp",
+    "Burping",
+    "Child",
+    "Female",
+    "Hiccup",
+    "Male",
+    "Man",
+    "Person",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 20.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 4000.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.0666,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 0.04624,
+       "reasoned_mean": 0.42,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.48398,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 0.15021,
+       "reasoned_mean": 0.42,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.42394,
+      "deviation": 0.15288,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 0.15288,
+       "reasoned_mean": 0.14,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2990.92807,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 1.4145,
+       "reasoned_mean": 550.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5026,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 0.14393,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.36767,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 0.17153,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.19301,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 0.11278,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.42785,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 97,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 1.59721,
+       "reasoned_mean": 5.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.05986,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 97,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 2.2926,
+       "reasoned_mean": 0.02,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.21374,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 260,
+       "fsd50k_classes": [
+        "Burping_and_eructation"
+       ],
+       "measured_deviation": 0.01568,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Low, buzzy, gurgling eructation: a dark centroid and a strong sub-200 Hz share, unlike the bright unvoiced bursts of HUMAN-COUGH and HUMAN-SNEEZE.",
+     "Same low buzzy family as FARTS but with vocal-tract formants and a higher mid-band share; the FARTS bands sit lower still.",
+     "Longer and less sharply front-loaded than HUMAN-SPIT."
+    ],
+    "confusable_with": [
+     "HMNVomit",
+     "FARTReal",
+     "FARTDsgn",
+     "HMNCough"
+    ]
+   }
+  },
+  {
+   "subcategory": "COUGH",
+   "category_id": "HMNCough",
+   "category_short": "HMN",
+   "explanation": [
+    "Human coughs and coughing."
+   ],
+   "synonyms": [
+    "Adult",
+    "Ahem",
+    "Bronchitis",
+    "Child",
+    "Choking",
+    "Clear",
+    "Clearing",
+    "Convulse",
+    "Coughing",
+    "Covid",
+    "Expectoration",
+    "Female",
+    "Gag",
+    "Hack",
+    "Hacking",
+    "Hiccough",
+    "Hiccoughing",
+    "Hiccoughs",
+    "Hoarse",
+    "Male",
+    "Man",
+    "Person",
+    "Throat",
+    "Wet",
+    "Whooping",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.7,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.008,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.2,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.2,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3507.72214,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 225,
+       "fsd50k_classes": [
+        "Cough"
+       ],
+       "measured_deviation": 1.37861,
+       "reasoned_mean": 900.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.21836,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 225,
+       "fsd50k_classes": [
+        "Cough"
+       ],
+       "measured_deviation": 0.14289,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.18,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.46846,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 225,
+       "fsd50k_classes": [
+        "Cough"
+       ],
+       "measured_deviation": 0.119,
+       "reasoned_mean": 0.46,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.59248,
+      "deviation": 1.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 225,
+       "fsd50k_classes": [
+        "Cough"
+       ],
+       "measured_deviation": 0.99783,
+       "reasoned_mean": 1.2,
+       "reasoned_deviation": 1.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.37988,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 225,
+       "fsd50k_classes": [
+        "Cough"
+       ],
+       "measured_deviation": 0.13657,
+       "reasoned_mean": 0.22,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Explosive glottal release: near-instant attack on top of an unvoiced noisy body, with a short throaty tail. Bursts often repeat in irregular fits, unlike the single event of HUMAN-SNEEZE.",
+     "Darker and more throat-centred than HUMAN-SNEEZE, whose nasal release pushes energy above 2 kHz.",
+     "Far spikier (high crest, high envelope skewness) than HUMAN-BREATH or HUMAN-BLOW."
+    ],
+    "confusable_with": [
+     "HMNSneez",
+     "HMNSpit",
+     "HMNVomit",
+     "HMNBrth",
+     "VOXEfrt"
+    ]
+   }
+  },
+  {
+   "subcategory": "HEARTBEAT",
+   "category_id": "HMNHart",
+   "category_short": "HMN",
+   "explanation": [
+    "Heartbeats",
+    "both literal as in a Dr. office",
+    "and stylized or designed heartbeats."
+   ],
+   "synonyms": [
+    "Adult",
+    "Arrhythmia",
+    "Arrhythmic",
+    "Arrythmia",
+    "Beating",
+    "Cardiac",
+    "Child",
+    "Coronary",
+    "EKG",
+    "Female",
+    "Fetal",
+    "Fibrillation",
+    "Heart",
+    "Male",
+    "Man",
+    "Palpitate",
+    "Palpitates",
+    "Palpitating",
+    "Palpitation",
+    "Palpitations",
+    "Person",
+    "Pulsate",
+    "Pulsated",
+    "Pulsates",
+    "Pulsating",
+    "Pulse",
+    "Rate",
+    "Rhythm",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25,
+      "max": 600.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 1500.0
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "max": 6.0
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.3,
+      "deviation": 0.7,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.16,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.03,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 120.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 400.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 260.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 72.0,
+      "deviation": 1.35,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.02,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The cleanest case in HUMAN: a slow, strongly periodic train of very low-frequency thumps at roughly 1–1.5 /s (60–90 BPM), with almost no energy above 2 kHz.",
+     "Periodicity plus the sub-200 Hz concentration separates it from every other HUMAN subcategory; onset_periodicity near 0.8 with onset_rate near 1 /s is diagnostic.",
+     "Slower and much darker than HUMAN-SNORE, which cycles at ~0.2–0.4 /s but carries buzzy mid-band harmonics."
+    ],
+    "confusable_with": [
+     "HMNSnor",
+     "HMNMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "KISS",
+   "category_id": "HMNKiss",
+   "category_short": "HMN",
+   "explanation": [
+    "Human kissing."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "French",
+    "Hickey",
+    "Kiss",
+    "Lips",
+    "Make",
+    "Male",
+    "Man",
+    "Necking",
+    "Out",
+    "Peck",
+    "Person",
+    "Smooch",
+    "Smooching",
+    "Snog",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.35,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.06,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.06,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Small, quiet, bright wet clicks — a suction transient, not a vocalization: voicing_ratio near zero and a very low absolute level.",
+     "Much shorter and quieter than HUMAN-BLOW; brighter and far less energetic than HUMAN-SPIT.",
+     "Sparser and wetter-sounding than HUMAN-SKIN friction, which is sustained rather than impulsive."
+    ],
+    "confusable_with": [
+     "HMNSkin",
+     "HMNSpit",
+     "HMNMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "HMNMisc",
+   "category_short": "HMN",
+   "explanation": [
+    "Human sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "Male",
+    "Man",
+    "Miscellaneous",
+    "Person",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.2,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The category's abstain target: a human-produced sound that fits no sibling. Assert only when the signal is human-plausible but no sibling's morphology wins clearly."
+    ],
+    "confusable_with": [
+     "HMNSkin",
+     "HMNBrth",
+     "VOXMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "PEE",
+   "category_id": "HMNPee",
+   "category_short": "HMN",
+   "explanation": [
+    "Human urinating."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "Male",
+    "Man",
+    "Micturition",
+    "Peeing",
+    "Person",
+    "Piss",
+    "Tinkle",
+    "Urinate",
+    "Urinating",
+    "Urination",
+    "Wee",
+    "Wizz",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 9.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.68,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.62,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 12.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A liquid stream: a dense, stationary, bright stochastic texture — physically a WATER trickle, and only the human context puts it here.",
+     "Unvoiced and stationary, unlike anything in VOICES; longer and steadier than HUMAN-SPIT.",
+     "Denser and higher-onset-rate than HUMAN-BREATH, and with no inhale/exhale cycling."
+    ],
+    "confusable_with": [
+     "HMNSpit",
+     "HMNMisc",
+     "WATRTrkl",
+     "WATRPour"
+    ]
+   }
+  },
+  {
+   "subcategory": "SKIN",
+   "category_id": "HMNSkin",
+   "category_short": "HMN",
+   "explanation": [
+    "Human skin",
+    "Scratching",
+    "handshakes",
+    "skin on skin action",
+    "back rubbing",
+    "etc."
+   ],
+   "synonyms": [
+    "Adult",
+    "Backrub",
+    "Brush",
+    "Caress",
+    "Child",
+    "Clap",
+    "Dermis",
+    "Female",
+    "Flick",
+    "Grab",
+    "Hand",
+    "Handshake",
+    "Itch",
+    "Male",
+    "Man",
+    "Massage",
+    "Pat",
+    "Person",
+    "Pores",
+    "Rash",
+    "Rub",
+    "Rubbing",
+    "Scratch",
+    "Scratching",
+    "Skin",
+    "Slap",
+    "Tap",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.48811,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 173,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 0.17561,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22527,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 173,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 0.0087,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6282.34333,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 173,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 1.32374,
+       "reasoned_mean": 2800.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1599.04103,
+      "deviation": 847.49796,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 173,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 847.49796,
+       "reasoned_mean": 1100.0,
+       "reasoned_deviation": 800.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.8661,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 173,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 0.0545,
+       "reasoned_mean": 0.46,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2055.65761,
+      "deviation": 4.71172,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 173,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 4.71172,
+       "reasoned_mean": 5500.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.02,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.31559,
+      "deviation": 0.21835,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 173,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 0.21835,
+       "reasoned_mean": 0.08,
+       "reasoned_deviation": 0.09,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.02064,
+      "deviation": 0.24,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 126,
+       "fsd50k_classes": [
+        "Finger_snapping"
+       ],
+       "measured_deviation": 0.01962,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.24,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Quiet, dry, high-centroid contact noise with an unstable envelope — the friction morphology, not an impulse. Rubbing, scratching and back-rubs dominate the class.",
+     "Slaps and pats are the impulsive tail of this class and blur into HUMAN-KISS; the sustained, flux-heavy rubs are what make it separable.",
+     "Unvoiced throughout, which excludes all of VOICES; drier and less bright-crackly than CROWDS-APPLAUSE, which is a dense multi-source impulse train."
+    ],
+    "confusable_with": [
+     "HMNKiss",
+     "HMNMisc",
+     "CRWDApls",
+     "CLTHMovm"
+    ]
+   }
+  },
+  {
+   "subcategory": "SNEEZE",
+   "category_id": "HMNSneez",
+   "category_short": "HMN",
+   "explanation": [
+    "Human sneezing."
+   ],
+   "synonyms": [
+    "Achoo",
+    "Adult",
+    "Ah-Choo",
+    "Ahchoo",
+    "Allergic",
+    "Allergy",
+    "Child",
+    "Female",
+    "Fever",
+    "Hay",
+    "Male",
+    "Man",
+    "Nasal",
+    "Person",
+    "Sinus",
+    "Sneeze",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.01,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.3,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 1.8,
+      "deviation": 1.4,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4286.36066,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Sneeze"
+       ],
+       "measured_deviation": 1.53821,
+       "reasoned_mean": 1800.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.58123,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Sneeze"
+       ],
+       "measured_deviation": 0.18344,
+       "reasoned_mean": 0.42,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.30144,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Sneeze"
+       ],
+       "measured_deviation": 0.17531,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.82627,
+      "deviation": 0.9,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Sneeze"
+       ],
+       "measured_deviation": 0.50962,
+       "reasoned_mean": 1.1,
+       "reasoned_deviation": 0.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3218.58247,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Sneeze"
+       ],
+       "measured_deviation": 1.72572,
+       "reasoned_mean": 4200.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.31209,
+      "deviation": 0.1638,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Sneeze"
+       ],
+       "measured_deviation": 0.1638,
+       "reasoned_mean": 0.18,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "One-shot: a short voiced/held pre-phase then a bright, nasal, hissy explosive release. The release is the brightest thing in HUMAN — high_band_energy and centroid sit above HUMAN-COUGH.",
+     "A sneeze is a single event; a cough recording usually contains an irregular fit of several. Higher onset counts favour HUMAN-COUGH.",
+     "Sharper and much louder than HUMAN-SNIFF, which is the quiet inhale with no explosive release."
+    ],
+    "confusable_with": [
+     "HMNCough",
+     "HMNSniff",
+     "HMNBlow"
+    ]
+   }
+  },
+  {
+   "subcategory": "SNIFF",
+   "category_id": "HMNSniff",
+   "category_short": "HMN",
+   "explanation": [
+    "Human sniffing",
+    "smelling."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "Inhalation",
+    "Inhale",
+    "Male",
+    "Man",
+    "Nose",
+    "Odor",
+    "Person",
+    "Smell",
+    "Sniff",
+    "Sniffing",
+    "Sniffle",
+    "Snivel",
+    "Snort",
+    "Snorting",
+    "Snuffle",
+    "Whiff",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.55,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.44,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.05,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2,
+      "deviation": 1.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A short, quiet, bright nasal inrush — a sharply time-limited unvoiced noise burst, typically repeating a few times.",
+     "Shorter, quieter and more nasal-bright than HUMAN-BREATH; no explosive release, which is what separates it from HUMAN-SNEEZE.",
+     "Direction is inward, so it lacks the long forceful outflow of HUMAN-BLOW."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "HMNSneez",
+     "HMNBlow"
+    ]
+   }
+  },
+  {
+   "subcategory": "SNORE",
+   "category_id": "HMNSnor",
+   "category_short": "HMN",
+   "explanation": [
+    "Human snoring."
+   ],
+   "synonyms": [
+    "Adult",
+    "Apnea",
+    "Breathing",
+    "Child",
+    "Congested",
+    "Doze",
+    "Dozing",
+    "Female",
+    "Heavy",
+    "Male",
+    "Man",
+    "Person",
+    "Slumber",
+    "Snooze",
+    "Snore",
+    "Snoring",
+    "Woman",
+    "ZZZ"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4,
+      "max": 600.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 3500.0
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.72,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.3,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 110.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.52,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.38,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 480.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A very slow, strongly periodic breath cycle (~0.2–0.4 /s, one snore per respiratory cycle) carrying a low, buzzy, rough voiced rasp around 80–150 Hz.",
+     "Periodicity plus low pitch separates it from HUMAN-BREATH, which is aperiodic and unvoiced.",
+     "Much slower and far more harmonic/mid-band than HUMAN-HEARTBEAT, which is ~1 /s and almost purely sub-200 Hz.",
+     "Lacks the 3–8 Hz syllabic modulation of speech, so it never wins against VOICES."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "HMNHart",
+     "FARTReal"
+    ]
+   }
+  },
+  {
+   "subcategory": "SPIT",
+   "category_id": "HMNSpit",
+   "category_short": "HMN",
+   "explanation": [
+    "Human spits."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Drool",
+    "Expectoration",
+    "Female",
+    "Gob",
+    "Hawk",
+    "Hock",
+    "Male",
+    "Man",
+    "Mucus",
+    "Person",
+    "Phlegm",
+    "Saliva",
+    "Slobber",
+    "Spew",
+    "Spit",
+    "Spitoon",
+    "Spitting",
+    "Spittle",
+    "Spittoon",
+    "Sputum",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.1,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.2,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.1,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.06,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0,
+      "deviation": 0.9,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A wet, bright, front-loaded expulsion: a sharp unvoiced transient often followed by a small liquid splat.",
+     "Shorter and spikier than HUMAN-BLOW; unvoiced and much shorter than HUMAN-VOMIT, which is a long voiced retch plus liquid.",
+     "Louder and less nasal than HUMAN-KISS."
+    ],
+    "confusable_with": [
+     "HMNKiss",
+     "HMNBlow",
+     "HMNVomit",
+     "HMNCough"
+    ]
+   }
+  },
+  {
+   "subcategory": "VOMIT",
+   "category_id": "HMNVomit",
+   "category_short": "HMN",
+   "explanation": [
+    "Human vomiting."
+   ],
+   "synonyms": [
+    "Adult",
+    "Barf",
+    "Barfing",
+    "Child",
+    "Chunder",
+    "Expunge",
+    "Female",
+    "Gag",
+    "Gagging",
+    "Heave",
+    "Hurl",
+    "Male",
+    "Man",
+    "Nausea",
+    "Nauseous",
+    "Person",
+    "Puke",
+    "Pukes",
+    "Reflex",
+    "Reflux",
+    "Regurgitate",
+    "Regurgitated",
+    "Regurgitation",
+    "Retch",
+    "Retched",
+    "Retching",
+    "Seasick",
+    "Spew",
+    "Throwing",
+    "Up",
+    "Upchuck",
+    "Vomit",
+    "Vomitus",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 150.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.34,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.44,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 2.1,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.42,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.48,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A two-part scene: a rough, low, voiced retch/heave followed by a wet liquid splatter — high spectral flux across a single event, with rough (inharmonic) phonation.",
+     "Longer and wetter than HUMAN-COUGH, and it carries voicing that HUMAN-SPIT does not.",
+     "The gag/heave overlaps VOICES-EFFORTS; the liquid splatter component is what tips it here."
+    ],
+    "confusable_with": [
+     "HMNCough",
+     "HMNSpit",
+     "HMNBurp",
+     "VOXEfrt"
+    ]
+   }
+  }
+ ]
 }

@@ -1,2033 +1,3108 @@
 {
-  "version": "8.2.1",
-  "category": "VOICES",
-  "subcategories": [
-    {
-      "subcategory": "ALIEN",
-      "category_id": "VOXAlien",
-      "category_short": "VOX",
-      "explanation": [
-        "Weird alien vocals here."
-      ],
-      "synonyms": [
-        "Alien",
-        "Chewbacca",
-        "Cosmic",
-        "ET",
-        "Extraterrestrial",
-        "Language",
-        "Vocal",
-        "Vocalization"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 300.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 2.5,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.55,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.4,
-            "deviation": 0.3,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1600.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "A designed/processed vocal: pitch-shifted, formant-warped or layered, so it can land anywhere in feature space. No DSP prior can own it.",
-          "Tends to be more inharmonic and higher-flux than a natural human vocal, but that is a tendency only — the label is authorial intent, not acoustics."
-        ],
-        "confusable_with": [
-          "VOXMisc",
-          "VOXScrm",
-          "VOXFutz",
-          "CRTNVoc"
-        ]
+ "version": "8.2.1",
+ "category": "VOICES",
+ "subcategories": [
+  {
+   "subcategory": "ALIEN",
+   "category_id": "VOXAlien",
+   "category_short": "VOX",
+   "explanation": [
+    "Weird alien vocals here."
+   ],
+   "synonyms": [
+    "Alien",
+    "Chewbacca",
+    "Cosmic",
+    "ET",
+    "Extraterrestrial",
+    "Language",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "BABY",
-      "category_id": "VOXBaby",
-      "category_short": "VOX",
-      "explanation": [
-        "Very young babies through toddler",
-        "non-word vocals",
-        "cut vocals."
-      ],
-      "synonyms": [
-        "Baba",
-        "Babble",
-        "Bambino",
-        "Coo",
-        "Cooing",
-        "Dada",
-        "Fuss",
-        "Gaga",
-        "Infant",
-        "Infantile",
-        "Little",
-        "Mama",
-        "Newborn",
-        "Nursing",
-        "Nursling",
-        "One",
-        "Snuffle",
-        "Toddler",
-        "Tot",
-        "Tyke",
-        "Vocal",
-        "Vocalization",
-        "Wean"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 300.0
-          },
-          {
-            "feature": "pitch_hz",
-            "min": 150.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 450.0,
-            "deviation": 1.35,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1500.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.42,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 900.0,
-            "deviation": 600.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Highest fundamental in the human taxonomy: infant cry f0 typically 400–600 Hz, babble and coos somewhat lower. Pitch above ~350 Hz with strong voicing is the core cue.",
-          "Non-lexical: babble lacks the regular ~4 Hz syllabic train of adult speech, so syllabic_modulation_energy sits below VOICES-MALE/FEMALE.",
-          "f0 distributions genuinely overlap VOICES-CHILD at the boundary — this narrows, it does not decide. Prefer text agreement."
-        ],
-        "confusable_with": [
-          "VOXChld",
-          "VOXCry",
-          "VOXScrm",
-          "CRWDChld"
-        ]
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "CHEER",
-      "category_id": "VOXCheer",
-      "category_short": "VOX",
-      "explanation": [
-        "A single person cheering. For a group use CROWDS-CHEERING."
-      ],
-      "synonyms": [
-        "Acclaim",
-        "Acclamation",
-        "Bravo",
-        "Celebrating",
-        "Cheer",
-        "Cheering",
-        "Commendation",
-        "Encouraging",
-        "Holler",
-        "Hollering",
-        "Horray",
-        "Hurrah",
-        "Huzzah",
-        "Kudos",
-        "Ovation",
-        "Rooting",
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.4,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A designed/processed vocal: pitch-shifted, formant-warped or layered, so it can land anywhere in feature space. No DSP prior can own it.",
+     "Tends to be more inharmonic and higher-flux than a natural human vocal, but that is a tendency only — the label is authorial intent, not acoustics."
+    ],
+    "confusable_with": [
+     "VOXMisc",
+     "VOXScrm",
+     "VOXFutz",
+     "CRTNVoc"
+    ]
+   }
+  },
+  {
+   "subcategory": "BABY",
+   "category_id": "VOXBaby",
+   "category_short": "VOX",
+   "explanation": [
+    "Very young babies through toddler",
+    "non-word vocals",
+    "cut vocals."
+   ],
+   "synonyms": [
+    "Baba",
+    "Babble",
+    "Bambino",
+    "Coo",
+    "Cooing",
+    "Dada",
+    "Fuss",
+    "Gaga",
+    "Infant",
+    "Infantile",
+    "Little",
+    "Mama",
+    "Newborn",
+    "Nursing",
+    "Nursling",
+    "One",
+    "Snuffle",
+    "Toddler",
+    "Tot",
+    "Tyke",
+    "Vocal",
+    "Vocalization",
+    "Wean"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 150.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 450.0,
+      "deviation": 1.35,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Highest fundamental in the human taxonomy: infant cry f0 typically 400–600 Hz, babble and coos somewhat lower. Pitch above ~350 Hz with strong voicing is the core cue.",
+     "Non-lexical: babble lacks the regular ~4 Hz syllabic train of adult speech, so syllabic_modulation_energy sits below VOICES-MALE/FEMALE.",
+     "f0 distributions genuinely overlap VOICES-CHILD at the boundary — this narrows, it does not decide. Prefer text agreement."
+    ],
+    "confusable_with": [
+     "VOXChld",
+     "VOXCry",
+     "VOXScrm",
+     "CRWDChld"
+    ]
+   }
+  },
+  {
+   "subcategory": "CHEER",
+   "category_id": "VOXCheer",
+   "category_short": "VOX",
+   "explanation": [
+    "A single person cheering. For a group use CROWDS-CHEERING."
+   ],
+   "synonyms": [
+    "Acclaim",
+    "Acclamation",
+    "Bravo",
+    "Celebrating",
+    "Cheer",
+    "Cheering",
+    "Commendation",
+    "Encouraging",
+    "Holler",
+    "Hollering",
+    "Horray",
+    "Hurrah",
+    "Huzzah",
+    "Kudos",
+    "Ovation",
+    "Rooting",
+    "Shout",
+    "Supporting",
+    "Vocal",
+    "Vocalization",
+    "Woohoo",
+    "Yay",
+    "Yelling"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 120.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 260.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.16,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.56,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS rule: a SINGLE person cheering; the group is CROWDS-CHEERING. The signal cue for 'single' is a clean single-f0 track with a narrow stereo image, not the smeared multi-talker bed of a crowd.",
+     "Loud and voiced but shorter and less strained than VOICES-SCREAM, which shows rough phonation (high inharmonicity) and a higher f0.",
+     "Contains no dense unvoiced impulse train, which is what distinguishes it from CROWDS-APPLAUSE."
+    ],
+    "confusable_with": [
+     "CRWDCheer",
+     "VOXScrm",
+     "VOXReac",
+     "VOXEfrt"
+    ]
+   }
+  },
+  {
+   "subcategory": "CHILD",
+   "category_id": "VOXChld",
+   "category_short": "VOX",
+   "explanation": [
+    "Various vocals for a child or a teenager. For non-discernible vocals for a very young child use VOICES-BABY."
+   ],
+   "synonyms": [
+    "Adolescent",
+    "Child",
+    "Children",
+    "Juvenile",
+    "Kid",
+    "Minor",
+    "One",
+    "Preteen",
+    "Pubescent",
+    "Teen",
+    "Toddler",
+    "Tween",
+    "Vocal",
+    "Vocalization",
+    "Young",
+    "Youngling",
+    "Youngster",
+    "Youth"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 600.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 324.26471,
+      "deviation": 1.3,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 126,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 1.29018,
+       "reasoned_mean": 300.0,
+       "reasoned_deviation": 1.3,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.21043,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 122,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.15715,
+       "reasoned_mean": 0.52,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.61733,
+      "deviation": 0.24644,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.24644,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2653.49459,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 1.37098,
+       "reasoned_mean": 1400.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.59153,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.14018,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.01057,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.00891,
+       "reasoned_mean": 0.1,
+       "reasoned_deviation": 0.1,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Pre-pubescent and teen f0 ≈ 250–400 Hz — above adult female, below infant cry — carried on the ~4 Hz syllabic modulation of real speech.",
+     "UCS rule: non-discernible vocals from a very young child go to VOICES-BABY. The presence of a lexical syllabic train is the cue that favours CHILD.",
+     "f0 overlaps VOICES-FEMALE at the top of the female range and VOICES-BABY at the bottom of the infant range; treat as a shortlist, not a verdict."
+    ],
+    "confusable_with": [
+     "VOXBaby",
+     "VOXFem",
+     "CRWDChld",
+     "VOXMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CRYING",
+   "category_id": "VOXCry",
+   "category_short": "VOX",
+   "explanation": [
+    "A single person crying."
+   ],
+   "synonyms": [
+    "Bawl",
+    "Bawling",
+    "Bemoan",
+    "Blubber",
+    "Blubbering",
+    "Cry",
+    "Fuss",
+    "Howling",
+    "Lamenting",
+    "Pout",
+    "Sniffling",
+    "Sniveling",
+    "Sob",
+    "Sobbing",
+    "Vocal",
+    "Vocalization",
+    "Wail",
+    "Wailing",
+    "Weep",
+    "Weeping",
+    "Whimper",
+    "Whimpering",
+    "Whining",
+    "Wounded"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 471.6645,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 38,
+       "fsd50k_classes": [
+        "Crying_and_sobbing"
+       ],
+       "measured_deviation": 1.51987,
+       "reasoned_mean": 330.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.50016,
+      "deviation": 0.22685,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 42,
+       "fsd50k_classes": [
+        "Crying_and_sobbing"
+       ],
+       "measured_deviation": 0.22685,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1131.45678,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 42,
+       "fsd50k_classes": [
+        "Crying_and_sobbing"
+       ],
+       "measured_deviation": 467.20493,
+       "reasoned_mean": 1000.0,
+       "reasoned_deviation": 600.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.28084,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 42,
+       "fsd50k_classes": [
+        "Crying_and_sobbing"
+       ],
+       "measured_deviation": 0.15329,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.36443,
+      "deviation": 1.3,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 42,
+       "fsd50k_classes": [
+        "Crying_and_sobbing"
+       ],
+       "measured_deviation": 0.6527,
+       "reasoned_mean": 1.5,
+       "reasoned_deviation": 1.3,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.19486,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 42,
+       "fsd50k_classes": [
+        "Crying_and_sobbing"
+       ],
+       "measured_deviation": 0.13603,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.56195,
+      "deviation": 0.18369,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 42,
+       "fsd50k_classes": [
+        "Crying_and_sobbing"
+       ],
+       "measured_deviation": 0.18369,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Voiced wailing: a strongly modulated pitch contour (large slow f0 excursions) with sobbing breath-catches, giving high brightness and pitch deviation over a long-ish take.",
+     "Less brief and less consistently loud than VOICES-SCREAM, and not the rhythmic pulse train of VOICES-LAUGH, which pulses at ~4–6 /s.",
+     "Whimpering and sniffling drag voicing_ratio down toward HUMAN-SNIFF; the wailing pitch contour is the tiebreak."
+    ],
+    "confusable_with": [
+     "VOXScrm",
+     "VOXBaby",
+     "VOXLaff",
+     "HMNSniff"
+    ]
+   }
+  },
+  {
+   "subcategory": "EFFORTS",
+   "category_id": "VOXEfrt",
+   "category_short": "VOX",
+   "explanation": [
+    "A single fight and vocal efforts",
+    "single grunts",
+    "and things like that. Boxing match vocals",
+    "tennis grunts."
+   ],
+   "synonyms": [
+    "Effort",
+    "Exert",
+    "Exertion",
+    "Exhale",
+    "Gasping",
+    "Grunt",
+    "Grunting",
+    "Heaving",
+    "Inhale",
+    "Panting",
+    "Pushing",
+    "Strain",
+    "Struggle",
+    "Struggling",
+    "Vocal",
+    "Vocalization",
+    "Wheezing"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 464.21053,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 115,
+       "fsd50k_classes": [
         "Shout",
-        "Supporting",
-        "Vocal",
-        "Vocalization",
-        "Woohoo",
-        "Yay",
-        "Yelling"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1,
-            "max": 120.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "min": 0.15
-          }
-        ],
-        "priors": [
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.7,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 260.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.16,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.56,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 2.0,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.2,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.4,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "UCS rule: a SINGLE person cheering; the group is CROWDS-CHEERING. The signal cue for 'single' is a clean single-f0 track with a narrow stereo image, not the smeared multi-talker bed of a crowd.",
-          "Loud and voiced but shorter and less strained than VOICES-SCREAM, which shows rough phonation (high inharmonicity) and a higher f0.",
-          "Contains no dense unvoiced impulse train, which is what distinguishes it from CROWDS-APPLAUSE."
-        ],
-        "confusable_with": [
-          "CRWDCheer",
-          "VOXScrm",
-          "VOXReac",
-          "VOXEfrt"
-        ]
+        "Yell"
+       ],
+       "measured_deviation": 1.716,
+       "reasoned_mean": 160.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "CHILD",
-      "category_id": "VOXChld",
-      "category_short": "VOX",
-      "explanation": [
-        "Various vocals for a child or a teenager. For non-discernible vocals for a very young child use VOICES-BABY."
-      ],
-      "synonyms": [
-        "Adolescent",
-        "Child",
-        "Children",
-        "Juvenile",
-        "Kid",
-        "Minor",
-        "One",
-        "Preteen",
-        "Pubescent",
-        "Teen",
-        "Toddler",
-        "Tween",
-        "Vocal",
-        "Vocalization",
-        "Young",
-        "Youngling",
-        "Youngster",
-        "Youth"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 600.0
-          },
-          {
-            "feature": "pitch_hz",
-            "min": 120.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 300.0,
-            "deviation": 1.3,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.62,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.52,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.58,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1400.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.58,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 4.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.15,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Pre-pubescent and teen f0 ≈ 250–400 Hz — above adult female, below infant cry — carried on the ~4 Hz syllabic modulation of real speech.",
-          "UCS rule: non-discernible vocals from a very young child go to VOICES-BABY. The presence of a lexical syllabic train is the cue that favours CHILD.",
-          "f0 overlaps VOICES-FEMALE at the top of the female range and VOICES-BABY at the bottom of the infant range; treat as a shortlist, not a verdict."
-        ],
-        "confusable_with": [
-          "VOXBaby",
-          "VOXFem",
-          "CRWDChld",
-          "VOXMisc"
-        ]
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.26534,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Shout",
+        "Yell"
+       ],
+       "measured_deviation": 0.2092,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "CRYING",
-      "category_id": "VOXCry",
-      "category_short": "VOX",
-      "explanation": [
-        "A single person crying."
-      ],
-      "synonyms": [
-        "Bawl",
-        "Bawling",
-        "Bemoan",
-        "Blubber",
-        "Blubbering",
-        "Cry",
-        "Fuss",
-        "Howling",
-        "Lamenting",
-        "Pout",
-        "Sniffling",
-        "Sniveling",
-        "Sob",
-        "Sobbing",
-        "Vocal",
-        "Vocalization",
-        "Wail",
-        "Wailing",
-        "Weep",
-        "Weeping",
-        "Whimper",
-        "Whimpering",
-        "Whining",
-        "Wounded"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.15,
-            "max": 300.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "min": 0.1
-          }
-        ],
-        "priors": [
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.6,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 330.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_deviation_hz",
-            "mean": 1000.0,
-            "deviation": 600.0,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 6.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.42,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.5,
-            "deviation": 1.3,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.35,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.3,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.55,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Voiced wailing: a strongly modulated pitch contour (large slow f0 excursions) with sobbing breath-catches, giving high brightness and pitch deviation over a long-ish take.",
-          "Less brief and less consistently loud than VOICES-SCREAM, and not the rhythmic pulse train of VOICES-LAUGH, which pulses at ~4–6 /s.",
-          "Whimpering and sniffling drag voicing_ratio down toward HUMAN-SNIFF; the wailing pitch contour is the tiebreak."
-        ],
-        "confusable_with": [
-          "VOXScrm",
-          "VOXBaby",
-          "VOXLaff",
-          "HMNSniff"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.48036,
+      "deviation": 0.23211,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Shout",
+        "Yell"
+       ],
+       "measured_deviation": 0.23211,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "EFFORTS",
-      "category_id": "VOXEfrt",
-      "category_short": "VOX",
-      "explanation": [
-        "A single fight and vocal efforts",
-        "single grunts",
-        "and things like that. Boxing match vocals",
-        "tennis grunts."
-      ],
-      "synonyms": [
-        "Effort",
-        "Exert",
-        "Exertion",
-        "Exhale",
-        "Gasping",
-        "Grunt",
-        "Grunting",
-        "Heaving",
-        "Inhale",
-        "Panting",
-        "Pushing",
-        "Strain",
-        "Struggle",
-        "Struggling",
-        "Vocal",
-        "Vocalization",
-        "Wheezing"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 0.9,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.45,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 160.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.4,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_attack_seconds",
-            "mean": 0.03,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.35,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.2,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 900.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.52,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 1.0,
-            "deviation": 1.0,
-            "transform": "linear",
-            "weight": 0.4
-          }
-        ],
-        "discriminators": [
-          "Short single grunts, exertions and strained exhales: voiced but non-lexical, so voicing is present while the ~4 Hz syllabic train is weak or absent — the opposite of VOICES-MALE dialog.",
-          "Rougher (higher inharmonicity) and much shorter than VOICES-SINGING; lower and less sustained than VOICES-SCREAM.",
-          "Heavy breathing components blur into HUMAN-BREATH; the presence of voicing is the tiebreak."
-        ],
-        "confusable_with": [
-          "HMNBrth",
-          "VOXScrm",
-          "VOXMale",
-          "VOXReac"
-        ]
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.03,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "FEMALE",
-      "category_id": "VOXFem",
-      "category_short": "VOX",
-      "explanation": [
-        "Any generic female vocal or dialog or misc vocal that doesn't fit somewhere else."
-      ],
-      "synonyms": [
-        "Chick",
-        "Dame",
-        "Female",
-        "Feminine",
-        "Gal",
-        "Girl",
-        "Lady",
-        "Lass",
-        "Madam",
-        "Miss",
-        "Person",
-        "Vocal",
-        "Vocalization",
-        "Woman"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1,
-            "max": 900.0
-          },
-          {
-            "feature": "pitch_hz",
-            "min": 90.0,
-            "max": 500.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 205.0,
-            "deviation": 1.28,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.62,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.58,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.58,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1100.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.6,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.14,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "band_limit_high_hz",
-            "mean": 16000.0,
-            "deviation": 1.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 6.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.3,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Adult female f0 ≈ 165–255 Hz with the canonical ~4 Hz syllabic modulation of connected speech — the strongest 'this is speech' cue available anywhere in audio.",
-          "The male and female f0 distributions genuinely overlap (a low alto against a high tenor), so this narrows the field and must not be asserted alone; require text agreement.",
-          "Above VOICES-MALE and below VOICES-CHILD on pitch; full-bandwidth and undistorted, unlike VOICES-FUTZED."
-        ],
-        "confusable_with": [
-          "VOXMale",
-          "VOXChld",
-          "VOXMisc",
-          "VOXSing"
-        ]
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "FUTZED",
-      "category_id": "VOXFutz",
-      "category_short": "VOX",
-      "explanation": [
-        "P.A. Speakers",
-        "Airport announcements",
-        "Hospital announcements."
-      ],
-      "synonyms": [
-        "Address",
-        "Altered",
-        "Announcement",
-        "Distorted",
-        "Manipulated",
-        "Megaphone",
-        "Modified",
-        "PA",
-        "Phone",
-        "Processed",
-        "Public",
-        "Radio",
-        "Speaker",
-        "Telephone",
-        "TV",
-        "Vocal",
-        "Vocalization",
-        "Walkie-Talkie"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.2,
-            "max": 900.0
-          },
-          {
-            "feature": "band_limit_high_hz",
-            "max": 8000.0
-          },
-          {
-            "feature": "high_band_energy",
-            "max": 0.35
-          }
-        ],
-        "priors": [
-          {
-            "feature": "band_limit_high_hz",
-            "mean": 3400.0,
-            "deviation": 1.5,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "spectral_rolloff_hz",
-            "mean": 3000.0,
-            "deviation": 1.6,
-            "transform": "log",
-            "weight": 0.8
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.06,
-            "deviation": 0.07,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.86,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.12,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1100.0,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "clipping_density",
-            "mean": 0.02,
-            "deviation": 0.03,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.05,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 6.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "A PROCESSING label, not a source: speech that has been band-limited and distorted. The telephone/PA band (roughly 300 Hz–3.4 kHz) is directly visible as a hard band_limit_high_hz with a hollowed low end and near-zero energy above 4 kHz. Catch it confidently.",
-          "It is still speech — voicing and ~4 Hz syllabic modulation stay high — so the band limit plus THD, not the voice itself, is what selects it over VOICES-MALE/FEMALE.",
-          "Distinguish from VOICES-HISTORICAL: archival recordings are also band-limited, but they roll off gradually with a high noise floor rather than showing a clean modern LP-and-distortion chain."
-        ],
-        "confusable_with": [
-          "VOXHist",
-          "VOXMale",
-          "VOXFem",
-          "VOXAlien"
-        ]
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.15883,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 109,
+       "fsd50k_classes": [
+        "Shout",
+        "Yell"
+       ],
+       "measured_deviation": 0.10673,
+       "reasoned_mean": 0.2,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "HISTORICAL",
-      "category_id": "VOXHist",
-      "category_short": "VOX",
-      "explanation": [
-        "For storing famous speeches",
-        "famous news broadcasts",
-        "presidential speeches."
-      ],
-      "synonyms": [
-        "Annoucement",
-        "Broadcast",
-        "Decree",
-        "Edict",
-        "Historical",
-        "Lecture",
-        "Manifesto",
-        "News",
-        "Period",
-        "Proclamation",
-        "Pronouncement",
-        "Speech",
-        "Statement",
-        "Vintage",
-        "Vocal",
-        "Vocalization"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "provenance_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 1.0,
-            "max": 3600.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "band_limit_high_hz",
-            "mean": 5000.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_rolloff_hz",
-            "mean": 4000.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.58,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 30.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.08,
-            "deviation": 0.08,
-            "transform": "linear",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Defined by provenance — 'famous speeches, famous news broadcasts, presidential speeches' — not by sound. Nothing in the signal says a speech is famous. Excluded from signal scoring; text must drive.",
-          "The only honest signal correlate is the era of the medium: reduced bandwidth (often a 4–6 kHz ceiling), a raised noise floor and mild distortion. A weak hint, never a decision.",
-          "If the band limit is a hard, modern ~3.4 kHz telephone/PA notch with clean distortion, prefer VOICES-FUTZED."
-        ],
-        "confusable_with": [
-          "VOXFutz",
-          "VOXMale",
-          "VOXFem"
-        ]
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2799.49349,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Shout",
+        "Yell"
+       ],
+       "measured_deviation": 1.38174,
+       "reasoned_mean": 900.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "LAUGH",
-      "category_id": "VOXLaff",
-      "category_short": "VOX",
-      "explanation": [
-        "A single person laughing."
-      ],
-      "synonyms": [
-        "Belly",
-        "Cackle",
-        "Cackling",
-        "Chortle",
-        "Chortling",
-        "Chuckle",
-        "Chuckling",
-        "Funny",
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.556,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Shout",
+        "Yell"
+       ],
+       "measured_deviation": 0.14252,
+       "reasoned_mean": 0.52,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.41858,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 116,
+       "fsd50k_classes": [
+        "Shout",
+        "Yell"
+       ],
+       "measured_deviation": 0.78371,
+       "reasoned_mean": 1.0,
+       "reasoned_deviation": 1.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Short single grunts, exertions and strained exhales: voiced but non-lexical, so voicing is present while the ~4 Hz syllabic train is weak or absent — the opposite of VOICES-MALE dialog.",
+     "Rougher (higher inharmonicity) and much shorter than VOICES-SINGING; lower and less sustained than VOICES-SCREAM.",
+     "Heavy breathing components blur into HUMAN-BREATH; the presence of voicing is the tiebreak."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "VOXScrm",
+     "VOXMale",
+     "VOXReac"
+    ]
+   }
+  },
+  {
+   "subcategory": "FEMALE",
+   "category_id": "VOXFem",
+   "category_short": "VOX",
+   "explanation": [
+    "Any generic female vocal or dialog or misc vocal that doesn't fit somewhere else."
+   ],
+   "synonyms": [
+    "Chick",
+    "Dame",
+    "Female",
+    "Feminine",
+    "Gal",
+    "Girl",
+    "Lady",
+    "Lass",
+    "Madam",
+    "Miss",
+    "Person",
+    "Vocal",
+    "Vocalization",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 900.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 90.0,
+      "max": 500.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 195.56589,
+      "deviation": 1.28,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 304,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 1.21743,
+       "reasoned_mean": 205.0,
+       "reasoned_deviation": 1.28,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.27485,
+      "deviation": 0.18642,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.18642,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.61342,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.18938,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4141.39472,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 1.86604,
+       "reasoned_mean": 1100.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.39408,
+      "deviation": 0.24636,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.24636,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.05954,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.04149,
+       "reasoned_mean": 0.14,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 16000.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.27831,
+      "deviation": 0.21049,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.21049,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Adult female f0 ≈ 165–255 Hz with the canonical ~4 Hz syllabic modulation of connected speech — the strongest 'this is speech' cue available anywhere in audio.",
+     "The male and female f0 distributions genuinely overlap (a low alto against a high tenor), so this narrows the field and must not be asserted alone; require text agreement.",
+     "Above VOICES-MALE and below VOICES-CHILD on pitch; full-bandwidth and undistorted, unlike VOICES-FUTZED."
+    ],
+    "confusable_with": [
+     "VOXMale",
+     "VOXChld",
+     "VOXMisc",
+     "VOXSing"
+    ]
+   }
+  },
+  {
+   "subcategory": "FUTZED",
+   "category_id": "VOXFutz",
+   "category_short": "VOX",
+   "explanation": [
+    "P.A. Speakers",
+    "Airport announcements",
+    "Hospital announcements."
+   ],
+   "synonyms": [
+    "Address",
+    "Altered",
+    "Announcement",
+    "Distorted",
+    "Manipulated",
+    "Megaphone",
+    "Modified",
+    "PA",
+    "Phone",
+    "Processed",
+    "Public",
+    "Radio",
+    "Speaker",
+    "Telephone",
+    "TV",
+    "Vocal",
+    "Vocalization",
+    "Walkie-Talkie"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 900.0
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "max": 8000.0
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 3400.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 3000.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.86,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "clipping_density",
+      "mean": 0.02,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A PROCESSING label, not a source: speech that has been band-limited and distorted. The telephone/PA band (roughly 300 Hz–3.4 kHz) is directly visible as a hard band_limit_high_hz with a hollowed low end and near-zero energy above 4 kHz. Catch it confidently.",
+     "It is still speech — voicing and ~4 Hz syllabic modulation stay high — so the band limit plus THD, not the voice itself, is what selects it over VOICES-MALE/FEMALE.",
+     "Distinguish from VOICES-HISTORICAL: archival recordings are also band-limited, but they roll off gradually with a high noise floor rather than showing a clean modern LP-and-distortion chain."
+    ],
+    "confusable_with": [
+     "VOXHist",
+     "VOXMale",
+     "VOXFem",
+     "VOXAlien"
+    ]
+   }
+  },
+  {
+   "subcategory": "HISTORICAL",
+   "category_id": "VOXHist",
+   "category_short": "VOX",
+   "explanation": [
+    "For storing famous speeches",
+    "famous news broadcasts",
+    "presidential speeches."
+   ],
+   "synonyms": [
+    "Annoucement",
+    "Broadcast",
+    "Decree",
+    "Edict",
+    "Historical",
+    "Lecture",
+    "Manifesto",
+    "News",
+    "Period",
+    "Proclamation",
+    "Pronouncement",
+    "Speech",
+    "Statement",
+    "Vintage",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "provenance_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 3600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 5000.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 4000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.58,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Defined by provenance — 'famous speeches, famous news broadcasts, presidential speeches' — not by sound. Nothing in the signal says a speech is famous. Excluded from signal scoring; text must drive.",
+     "The only honest signal correlate is the era of the medium: reduced bandwidth (often a 4–6 kHz ceiling), a raised noise floor and mild distortion. A weak hint, never a decision.",
+     "If the band limit is a hard, modern ~3.4 kHz telephone/PA notch with clean distortion, prefer VOICES-FUTZED."
+    ],
+    "confusable_with": [
+     "VOXFutz",
+     "VOXMale",
+     "VOXFem"
+    ]
+   }
+  },
+  {
+   "subcategory": "LAUGH",
+   "category_id": "VOXLaff",
+   "category_short": "VOX",
+   "explanation": [
+    "A single person laughing."
+   ],
+   "synonyms": [
+    "Belly",
+    "Cackle",
+    "Cackling",
+    "Chortle",
+    "Chortling",
+    "Chuckle",
+    "Chuckling",
+    "Funny",
+    "Giggle",
+    "Giggling",
+    "Guffaw",
+    "Guffawing",
+    "Haha",
+    "Holler",
+    "Hoot",
+    "Humor",
+    "Humour",
+    "Hysterical",
+    "Joke",
+    "Laugh",
+    "Laughing",
+    "Maniacal",
+    "Snicker",
+    "Snickering",
+    "Snigger",
+    "Sniggering",
+    "Titter",
+    "Tittering",
+    "Twitter",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.33925,
+      "deviation": 1.77978,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 764,
+       "fsd50k_classes": [
+        "Chuckle_and_chortle",
         "Giggle",
-        "Giggling",
-        "Guffaw",
-        "Guffawing",
-        "Haha",
-        "Holler",
-        "Hoot",
-        "Humor",
-        "Humour",
-        "Hysterical",
-        "Joke",
-        "Laugh",
-        "Laughing",
-        "Maniacal",
-        "Snicker",
-        "Snickering",
-        "Snigger",
-        "Sniggering",
-        "Titter",
-        "Tittering",
-        "Twitter",
-        "Vocal",
-        "Vocalization"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.15,
-            "max": 300.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "min": 0.1
-          }
-        ],
-        "priors": [
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 5.0,
-            "deviation": 1.7,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "onset_periodicity",
-            "mean": 0.62,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 250.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.55,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.48,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_kurtosis",
-            "mean": 5.0,
-            "deviation": 3.5,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 3.0,
-            "deviation": 2.6,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 1200.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 7.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "The one genuinely measurable vocal rhythm: a periodic train of voiced 'ha' pulses at roughly 4–6 /s. High onset_rate AND high voicing_ratio together is the signature — nothing else in the taxonomy has both.",
-          "CROWDS-APPLAUSE has the onset train but no voicing; VOICES-MALE/FEMALE have the voicing but no impulsive pulse train.",
-          "Single voice: a narrow stereo image and one coherent f0 track, unlike the smeared multi-talker CROWDS-LAUGHTER, whose per-laugher periodicity averages away."
-        ],
-        "confusable_with": [
-          "CRWDLaff",
-          "VOXCry",
-          "VOXReac",
-          "VOXCheer"
-        ]
+        "Laughter"
+       ],
+       "measured_deviation": 1.77978,
+       "reasoned_mean": 5.0,
+       "reasoned_deviation": 1.7,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "MALE",
-      "category_id": "VOXMale",
-      "category_short": "VOX",
-      "explanation": [
-        "Any generic male vocal or dialog or misc vocal that doesn't fit somewhere else."
-      ],
-      "synonyms": [
-        "Bloke",
-        "Boy",
-        "Brother",
-        "Chap",
-        "Dude",
-        "Fellow",
-        "Gentleman",
-        "Guy",
-        "Male",
-        "Man",
-        "Masculine",
-        "Person",
-        "Vocal",
-        "Vocalization"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1,
-            "max": 900.0
-          },
-          {
-            "feature": "pitch_hz",
-            "min": 55.0,
-            "max": 350.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 118.0,
-            "deviation": 1.28,
-            "transform": "log",
-            "weight": 1.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.64,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.58,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.58,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 750.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "mid_band_energy",
-            "mean": 0.58,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.24,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "band_limit_high_hz",
-            "mean": 16000.0,
-            "deviation": 1.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 6.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.28,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "Adult male f0 ≈ 85–155 Hz, with the ~4 Hz syllabic modulation that marks connected speech; a lower spectral centroid and a bigger sub-200 Hz share than VOICES-FEMALE.",
-          "The male and female f0 distributions overlap in reality — this is a shortlist, not a verdict. Require text agreement before committing.",
-          "Full-bandwidth: a hard ~3.4 kHz ceiling means VOICES-FUTZED instead, whatever the talker."
-        ],
-        "confusable_with": [
-          "VOXFem",
-          "VOXMisc",
-          "VOXEfrt",
-          "VOXSing"
-        ]
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "VOXMisc",
-      "category_short": "VOX",
-      "explanation": [
-        "The Voice category is for single voices. Groups of people go into the CROWDS categories."
-      ],
-      "synonyms": [
-        "Miscellaneous",
-        "Vocal",
-        "Vocalization"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 900.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.5,
-            "deviation": 0.28,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.4,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.14,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 4.0,
-            "deviation": 3.2,
-            "transform": "log",
-            "weight": 0.2
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 180.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "The category's abstain target. UCS rule: VOICES is for SINGLE voices — groups belong to CROWDS. A narrow stereo image and a single coherent f0 track are the 'single voice' evidence; a smeared multi-talker bed should route to CROWDS instead.",
-          "Assert only when the file is clearly one human voice but no sibling morphology (laugh, scream, whisper, cry, song) wins."
-        ],
-        "confusable_with": [
-          "VOXMale",
-          "VOXFem",
-          "VOXReac",
-          "CRWDMisc"
-        ]
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "REACTION",
-      "category_id": "VOXReac",
-      "category_short": "VOX",
-      "explanation": [
-        "A single Ooo or Aah and things of that nature."
-      ],
-      "synonyms": [
-        "Aahs",
-        "Acknowledgement",
-        "Ah",
-        "Ahh",
-        "Ahhh",
-        "Answer",
-        "Applause",
-        "Booing",
-        "Boos",
-        "Chanting",
-        "Cheers",
-        "Comeback",
-        "Counter",
-        "Em",
-        "Er",
-        "Excited",
-        "Feedback",
-        "Gasps",
-        "Hm",
-        "Hmm",
-        "Hollers",
-        "Hoots",
-        "Laughter",
-        "Murmurs",
-        "Oh",
-        "Ooh",
-        "Oohs",
-        "Ooo",
-        "Reaction",
-        "Rejoinder",
-        "Reply",
-        "Response",
-        "Retort",
-        "Sighs",
-        "Vocal",
-        "Vocalization",
-        "Whistling"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.05,
-            "max": 60.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "length_seconds",
-            "mean": 1.2,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.62,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.18,
-            "deviation": 0.14,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.58,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 200.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 900.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 0.8,
-            "deviation": 0.8,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "A single sustained interjection — 'ooo', 'aah', 'hmm'. Held and voiced: high sustain_ratio with LOW 3–8 Hz syllabic modulation, because there is only one syllable. That voiced-but-unsyllabic pairing is the discriminator against VOICES-MALE/FEMALE dialog.",
-          "Quieter and less strained than VOICES-CHEER; not the rhythmic pulse train of VOICES-LAUGH.",
-          "Single voice: the group version is CROWDS-REACTION, which is wide, dense and multi-f0."
-        ],
-        "confusable_with": [
-          "CRWDReac",
-          "VOXCheer",
-          "VOXEfrt",
-          "VOXMisc"
-        ]
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 464.21053,
+      "deviation": 1.91026,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 693,
+       "fsd50k_classes": [
+        "Chuckle_and_chortle",
+        "Giggle",
+        "Laughter"
+       ],
+       "measured_deviation": 1.91026,
+       "reasoned_mean": 250.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "SCREAM",
-      "category_id": "VOXScrm",
-      "category_short": "VOX",
-      "explanation": [
-        "A single scream or yell",
-        "battle cry",
-        "agonizing death."
-      ],
-      "synonyms": [
-        "Bellow",
-        "Clamour",
-        "Death",
-        "Fall",
-        "Hollar",
-        "Holler",
-        "Howl",
-        "Outcry",
-        "Scream",
-        "Screech",
-        "Shout",
-        "Shriek",
-        "Squeal",
-        "Vocal",
-        "Vocalization",
-        "Wail",
-        "Wilhelm",
-        "Yell",
-        "Yelp",
-        "Yowl"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.1,
-            "max": 60.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "min": 0.1
-          },
-          {
-            "feature": "pitch_hz",
-            "min": 130.0
-          }
-        ],
-        "priors": [
-          {
-            "feature": "pitch_hz",
-            "mean": 550.0,
-            "deviation": 1.6,
-            "transform": "log",
-            "weight": 0.9
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.28,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "lufs",
-            "mean": -12.0,
-            "deviation": 7.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.62,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.7,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.45,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2000.0,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.34,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.55,
-            "deviation": 0.22,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 1.8,
-            "deviation": 2.4,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "total_harmonic_distortion",
-            "mean": 0.1,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.2,
-            "deviation": 0.16,
-            "transform": "linear",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "Three cues fire together and nothing else in the taxonomy has all three: a very high f0 (typically 400–1000 Hz, well above the talker's speaking range), a very high absolute level, and ROUGH phonation — inharmonicity and noise inside the harmonic structure from vocal-fold chaos.",
-          "Rougher and louder than VOICES-SINGING at the same pitch, and far louder and higher than VOICES-EFFORTS.",
-          "Single voice; the group is CROWDS-PANIC or CROWDS-BATTLE, which are wide and multi-f0."
-        ],
-        "confusable_with": [
-          "VOXCheer",
-          "VOXCry",
-          "VOXEfrt",
-          "CRWDPanic"
-        ]
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.49277,
+      "deviation": 0.21197,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 737,
+       "fsd50k_classes": [
+        "Chuckle_and_chortle",
+        "Giggle",
+        "Laughter"
+       ],
+       "measured_deviation": 0.21197,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "SINGING",
-      "category_id": "VOXSing",
-      "category_short": "VOX",
-      "explanation": [
-        "A single voice singing",
-        "a child singing. For a crowd",
-        "use CROWDS-SINGING"
-      ],
-      "synonyms": [
-        "A",
-        "Cappella",
-        "Caroling",
-        "Chanting",
-        "Chorusing",
-        "Crooning",
-        "Ditty",
-        "Hum",
-        "Hymning",
-        "Melodizing",
-        "Performing",
-        "Serenading",
-        "Sing",
-        "Vocal",
-        "Vocalization",
-        "Vocalizing"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_narrowable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.3,
-            "max": 900.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "min": 0.2
-          }
-        ],
-        "priors": [
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.82,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.75,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "inharmonicity",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.62,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "partial_count",
-            "mean": 18.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "pitch_hz",
-            "mean": 260.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.3,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.2,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 12.0,
-            "deviation": 2.8,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "beats_per_minute",
-            "mean": 100.0,
-            "deviation": 1.5,
-            "transform": "log",
-            "weight": 0.2
-          }
-        ],
-        "discriminators": [
-          "Sung voice holds pitch: far higher voicing_ratio, harmonicity and sustain_ratio than spoken VOICES-MALE/FEMALE, and a much LOWER 3–8 Hz syllabic modulation because notes are held rather than delivered at syllable rate.",
-          "Clean harmonic phonation — the opposite of VOICES-SCREAM's rough, inharmonic strain, even at the same f0.",
-          "Single voice: for a group use CROWDS-SINGING, which is wide and multi-f0 with chorus-smeared partials."
-        ],
-        "confusable_with": [
-          "CRWDSing",
-          "VOXMale",
-          "VOXFem",
-          "VOXCheer"
-        ]
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.44733,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 764,
+       "fsd50k_classes": [
+        "Chuckle_and_chortle",
+        "Giggle",
+        "Laughter"
+       ],
+       "measured_deviation": 0.21505,
+       "reasoned_mean": 0.48,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
       }
-    },
-    {
-      "subcategory": "WHISPER",
-      "category_id": "VOXWhsp",
-      "category_short": "VOX",
-      "explanation": [
-        "A single whispering voice. The crowd equivalent would be CROWDS-QUIET."
-      ],
-      "synonyms": [
-        "Faint",
-        "Gossip",
-        "Grumble",
-        "Grumbling",
-        "Hush",
-        "Hushed",
-        "Mumble",
-        "Murmur",
-        "Mutter",
-        "Muttering",
-        "Quietly",
-        "Secret",
-        "Softly",
-        "Speak",
-        "Subdued",
-        "Susurration",
-        "Undertones",
-        "Vocal",
-        "Vocalization",
-        "Whisper"
-      ],
-      "acoustic_signature": {
-        "morphology": "voiced",
-        "separability": "signal_separable",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 0.15,
-            "max": 600.0
-          },
-          {
-            "feature": "voicing_ratio",
-            "max": 0.25
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.45
-          }
-        ],
-        "priors": [
-          {
-            "feature": "voicing_ratio",
-            "mean": 0.03,
-            "deviation": 0.06,
-            "transform": "linear",
-            "weight": 1.0
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.08,
-            "deviation": 0.09,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.68,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_entropy",
-            "mean": 0.8,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "root_mean_square_level",
-            "mean": 0.02,
-            "deviation": 0.02,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "lufs",
-            "mean": -36.0,
-            "deviation": 8.0,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "syllabic_modulation_energy",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 2600.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "zero_crossings_per_second",
-            "mean": 5500.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "stereo_width",
-            "mean": 0.1,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.3
-          }
-        ],
-        "discriminators": [
-          "One of the cleanest cases in the whole taxonomy: whispering is UNVOICED speech. The vocal folds never engage, so voicing_ratio collapses to ~0 and harmonicity with it, spectral_flatness goes high and the level goes very low — yet the 3–8 Hz syllabic modulation of speech SURVIVES.",
-          "That combination — speech-rate modulation with zero voicing — belongs to nothing else. It separates WHISPER from every other VOICES subcategory (all voiced) and from HUMAN-BREATH (also unvoiced, but with no syllabic structure).",
-          "Single voice; the crowd equivalent is CROWDS-QUIET per the UCS explanation — but a murmuring crowd is still voiced, so that is a different test."
-        ],
-        "confusable_with": [
-          "CRWDQuiet",
-          "HMNBrth",
-          "VOXMale",
-          "VOXFem"
-        ]
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2351.81995,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 764,
+       "fsd50k_classes": [
+        "Chuckle_and_chortle",
+        "Giggle",
+        "Laughter"
+       ],
+       "measured_deviation": 1.38113,
+       "reasoned_mean": 1200.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The one genuinely measurable vocal rhythm: a periodic train of voiced 'ha' pulses at roughly 4–6 /s. High onset_rate AND high voicing_ratio together is the signature — nothing else in the taxonomy has both.",
+     "CROWDS-APPLAUSE has the onset train but no voicing; VOICES-MALE/FEMALE have the voicing but no impulsive pulse train.",
+     "Single voice: a narrow stereo image and one coherent f0 track, unlike the smeared multi-talker CROWDS-LAUGHTER, whose per-laugher periodicity averages away."
+    ],
+    "confusable_with": [
+     "CRWDLaff",
+     "VOXCry",
+     "VOXReac",
+     "VOXCheer"
+    ]
+   }
+  },
+  {
+   "subcategory": "MALE",
+   "category_id": "VOXMale",
+   "category_short": "VOX",
+   "explanation": [
+    "Any generic male vocal or dialog or misc vocal that doesn't fit somewhere else."
+   ],
+   "synonyms": [
+    "Bloke",
+    "Boy",
+    "Brother",
+    "Chap",
+    "Dude",
+    "Fellow",
+    "Gentleman",
+    "Guy",
+    "Male",
+    "Man",
+    "Masculine",
+    "Person",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 900.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 55.0,
+      "max": 350.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 187.65957,
+      "deviation": 2.46617,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 185,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 2.46617,
+       "reasoned_mean": 118.0,
+       "reasoned_deviation": 1.28,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.64,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.25074,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 223,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.17239,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.49833,
+      "deviation": 0.22328,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.22328,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2312.98361,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 1.76437,
+       "reasoned_mean": 750.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.55306,
+      "deviation": 0.18189,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.18189,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.0982,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.06805,
+       "reasoned_mean": 0.24,
+       "reasoned_deviation": 0.14,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 16000.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.11092,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.08291,
+       "reasoned_mean": 0.28,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Adult male f0 ≈ 85–155 Hz, with the ~4 Hz syllabic modulation that marks connected speech; a lower spectral centroid and a bigger sub-200 Hz share than VOICES-FEMALE.",
+     "The male and female f0 distributions overlap in reality — this is a shortlist, not a verdict. Require text agreement before committing.",
+     "Full-bandwidth: a hard ~3.4 kHz ceiling means VOICES-FUTZED instead, whatever the talker."
+    ],
+    "confusable_with": [
+     "VOXFem",
+     "VOXMisc",
+     "VOXEfrt",
+     "VOXSing"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "VOXMisc",
+   "category_short": "VOX",
+   "explanation": [
+    "The Voice category is for single voices. Groups of people go into the CROWDS categories."
+   ],
+   "synonyms": [
+    "Miscellaneous",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 900.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.23495,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 187,
+       "fsd50k_classes": [
+        "Speech"
+       ],
+       "measured_deviation": 0.17306,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.14,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 183.7516,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Speech"
+       ],
+       "measured_deviation": 1.97262,
+       "reasoned_mean": 180.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "The category's abstain target. UCS rule: VOICES is for SINGLE voices — groups belong to CROWDS. A narrow stereo image and a single coherent f0 track are the 'single voice' evidence; a smeared multi-talker bed should route to CROWDS instead.",
+     "Assert only when the file is clearly one human voice but no sibling morphology (laugh, scream, whisper, cry, song) wins."
+    ],
+    "confusable_with": [
+     "VOXMale",
+     "VOXFem",
+     "VOXReac",
+     "CRWDMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "REACTION",
+   "category_id": "VOXReac",
+   "category_short": "VOX",
+   "explanation": [
+    "A single Ooo or Aah and things of that nature."
+   ],
+   "synonyms": [
+    "Aahs",
+    "Acknowledgement",
+    "Ah",
+    "Ahh",
+    "Ahhh",
+    "Answer",
+    "Applause",
+    "Booing",
+    "Boos",
+    "Chanting",
+    "Cheers",
+    "Comeback",
+    "Counter",
+    "Em",
+    "Er",
+    "Excited",
+    "Feedback",
+    "Gasps",
+    "Hm",
+    "Hmm",
+    "Hollers",
+    "Hoots",
+    "Laughter",
+    "Murmurs",
+    "Oh",
+    "Ooh",
+    "Oohs",
+    "Ooo",
+    "Reaction",
+    "Rejoinder",
+    "Reply",
+    "Response",
+    "Retort",
+    "Sighs",
+    "Vocal",
+    "Vocalization",
+    "Whistling"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.58,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.8,
+      "deviation": 0.8,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A single sustained interjection — 'ooo', 'aah', 'hmm'. Held and voiced: high sustain_ratio with LOW 3–8 Hz syllabic modulation, because there is only one syllable. That voiced-but-unsyllabic pairing is the discriminator against VOICES-MALE/FEMALE dialog.",
+     "Quieter and less strained than VOICES-CHEER; not the rhythmic pulse train of VOICES-LAUGH.",
+     "Single voice: the group version is CROWDS-REACTION, which is wide, dense and multi-f0."
+    ],
+    "confusable_with": [
+     "CRWDReac",
+     "VOXCheer",
+     "VOXEfrt",
+     "VOXMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "SCREAM",
+   "category_id": "VOXScrm",
+   "category_short": "VOX",
+   "explanation": [
+    "A single scream or yell",
+    "battle cry",
+    "agonizing death."
+   ],
+   "synonyms": [
+    "Bellow",
+    "Clamour",
+    "Death",
+    "Fall",
+    "Hollar",
+    "Holler",
+    "Howl",
+    "Outcry",
+    "Scream",
+    "Screech",
+    "Shout",
+    "Shriek",
+    "Squeal",
+    "Vocal",
+    "Vocalization",
+    "Wail",
+    "Wilhelm",
+    "Yell",
+    "Yelp",
+    "Yowl"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.1
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 130.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 918.75,
+      "deviation": 1.8242,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 233,
+       "fsd50k_classes": [
+        "Screaming"
+       ],
+       "measured_deviation": 1.8242,
+       "reasoned_mean": 550.0,
+       "reasoned_deviation": 1.6,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.28,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -12.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.20143,
+      "deviation": 0.22304,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 240,
+       "fsd50k_classes": [
+        "Screaming"
+       ],
+       "measured_deviation": 0.22304,
+       "reasoned_mean": 0.62,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.67271,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 240,
+       "fsd50k_classes": [
+        "Screaming"
+       ],
+       "measured_deviation": 0.21804,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2700.68155,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 240,
+       "fsd50k_classes": [
+        "Screaming"
+       ],
+       "measured_deviation": 1.29953,
+       "reasoned_mean": 2000.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.43136,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 240,
+       "fsd50k_classes": [
+        "Screaming"
+       ],
+       "measured_deviation": 0.16933,
+       "reasoned_mean": 0.34,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55351,
+      "deviation": 0.27694,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Screaming"
+       ],
+       "measured_deviation": 0.27694,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.8,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.11136,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 235,
+       "fsd50k_classes": [
+        "Screaming"
+       ],
+       "measured_deviation": 0.08235,
+       "reasoned_mean": 0.2,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Three cues fire together and nothing else in the taxonomy has all three: a very high f0 (typically 400–1000 Hz, well above the talker's speaking range), a very high absolute level, and ROUGH phonation — inharmonicity and noise inside the harmonic structure from vocal-fold chaos.",
+     "Rougher and louder than VOICES-SINGING at the same pitch, and far louder and higher than VOICES-EFFORTS.",
+     "Single voice; the group is CROWDS-PANIC or CROWDS-BATTLE, which are wide and multi-f0."
+    ],
+    "confusable_with": [
+     "VOXCheer",
+     "VOXCry",
+     "VOXEfrt",
+     "CRWDPanic"
+    ]
+   }
+  },
+  {
+   "subcategory": "SINGING",
+   "category_id": "VOXSing",
+   "category_short": "VOX",
+   "explanation": [
+    "A single voice singing",
+    "a child singing. For a crowd",
+    "use CROWDS-SINGING"
+   ],
+   "synonyms": [
+    "A",
+    "Cappella",
+    "Caroling",
+    "Chanting",
+    "Chorusing",
+    "Crooning",
+    "Ditty",
+    "Hum",
+    "Hymning",
+    "Melodizing",
+    "Performing",
+    "Serenading",
+    "Sing",
+    "Vocal",
+    "Vocalization",
+    "Vocalizing"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 900.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.82,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.68464,
+      "deviation": 0.31605,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 340,
+       "fsd50k_classes": [
+        "Female_singing",
+        "Male_singing",
+        "Singing"
+       ],
+       "measured_deviation": 0.31605,
+       "reasoned_mean": 0.75,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.07017,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 340,
+       "fsd50k_classes": [
+        "Female_singing",
+        "Male_singing",
+        "Singing"
+       ],
+       "measured_deviation": 0.09758,
+       "reasoned_mean": 0.15,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.66102,
+      "deviation": 0.32667,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 35,
+       "fsd50k_classes": [
+        "Female_singing",
+        "Male_singing",
+        "Singing"
+       ],
+       "measured_deviation": 0.32667,
+       "reasoned_mean": 0.62,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 2.28874,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 340,
+       "fsd50k_classes": [
+        "Female_singing",
+        "Male_singing",
+        "Singing"
+       ],
+       "measured_deviation": 2.28874,
+       "reasoned_mean": 18.0,
+       "reasoned_deviation": 1.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 292.05298,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 326,
+       "fsd50k_classes": [
+        "Female_singing",
+        "Male_singing",
+        "Singing"
+       ],
+       "measured_deviation": 1.84226,
+       "reasoned_mean": 260.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.19742,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 340,
+       "fsd50k_classes": [
+        "Female_singing",
+        "Male_singing",
+        "Singing"
+       ],
+       "measured_deviation": 0.13054,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.11516,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 340,
+       "fsd50k_classes": [
+        "Female_singing",
+        "Male_singing",
+        "Singing"
+       ],
+       "measured_deviation": 0.07583,
+       "reasoned_mean": 0.2,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 100.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Sung voice holds pitch: far higher voicing_ratio, harmonicity and sustain_ratio than spoken VOICES-MALE/FEMALE, and a much LOWER 3–8 Hz syllabic modulation because notes are held rather than delivered at syllable rate.",
+     "Clean harmonic phonation — the opposite of VOICES-SCREAM's rough, inharmonic strain, even at the same f0.",
+     "Single voice: for a group use CROWDS-SINGING, which is wide and multi-f0 with chorus-smeared partials."
+    ],
+    "confusable_with": [
+     "CRWDSing",
+     "VOXMale",
+     "VOXFem",
+     "VOXCheer"
+    ]
+   }
+  },
+  {
+   "subcategory": "WHISPER",
+   "category_id": "VOXWhsp",
+   "category_short": "VOX",
+   "explanation": [
+    "A single whispering voice. The crowd equivalent would be CROWDS-QUIET."
+   ],
+   "synonyms": [
+    "Faint",
+    "Gossip",
+    "Grumble",
+    "Grumbling",
+    "Hush",
+    "Hushed",
+    "Mumble",
+    "Murmur",
+    "Mutter",
+    "Muttering",
+    "Quietly",
+    "Secret",
+    "Softly",
+    "Speak",
+    "Subdued",
+    "Susurration",
+    "Undertones",
+    "Vocal",
+    "Vocalization",
+    "Whisper"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 600.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.25
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.45
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.52837,
+      "deviation": 0.3751,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 141,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 0.3751,
+       "reasoned_mean": 0.08,
+       "reasoned_deviation": 0.09,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.28991,
+      "deviation": 0.15413,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 141,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 0.15413,
+       "reasoned_mean": 0.68,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_entropy",
+      "mean": 0.45618,
+      "deviation": 0.17239,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 141,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 0.17239,
+       "reasoned_mean": 0.8,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.02,
+      "deviation": 0.02,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -36.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.3174,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 92,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 0.1846,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4096.67531,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 141,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 1.76811,
+       "reasoned_mean": 2600.0,
+       "reasoned_deviation": 1.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.61376,
+      "deviation": 0.25223,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 141,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 0.25223,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3607.72343,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 141,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 1.79711,
+       "reasoned_mean": 5500.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.5178,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 45,
+       "fsd50k_classes": [
+        "Whispering"
+       ],
+       "measured_deviation": 1.40414,
+       "reasoned_mean": 5.0,
+       "reasoned_deviation": 1.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "One of the cleanest cases in the whole taxonomy: whispering is UNVOICED speech. The vocal folds never engage, so voicing_ratio collapses to ~0 and harmonicity with it, spectral_flatness goes high and the level goes very low — yet the 3–8 Hz syllabic modulation of speech SURVIVES.",
+     "That combination — speech-rate modulation with zero voicing — belongs to nothing else. It separates WHISPER from every other VOICES subcategory (all voiced) and from HUMAN-BREATH (also unvoiced, but with no syllabic structure).",
+     "Single voice; the crowd equivalent is CROWDS-QUIET per the UCS explanation — but a murmuring crowd is still voiced, so that is a different test."
+    ],
+    "confusable_with": [
+     "CRWDQuiet",
+     "HMNBrth",
+     "VOXMale",
+     "VOXFem"
+    ]
+   }
+  }
+ ]
 }

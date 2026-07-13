@@ -1,875 +1,1049 @@
 {
-  "version": "8.2.1",
-  "category": "NATURAL DISASTER",
-  "subcategories": [
-    {
-      "subcategory": "AVALANCHE",
-      "category_id": "NATDAval",
-      "category_short": "NATD",
-      "explanation": [
-        "Composite big movements of sliding",
-        "falling earth",
-        "landslides",
-        "mudslides. This category often for big hollywood versions of these types of sound."
-      ],
-      "synonyms": [
-        "Cascades",
-        "Crevasse",
-        "Earth",
-        "Earthslide",
-        "Icefall",
-        "Icefalls",
-        "Landslide",
-        "Landslides",
-        "Landsliding",
-        "Landslip",
-        "Lavafall",
-        "Mudflow",
-        "Mudslide",
-        "Rockfall",
-        "Rockfalls",
-        "Rockslide",
-        "Rockslides",
-        "Slide",
-        "Snow"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 2.0
-          },
-          {
-            "feature": "low_band_energy",
-            "min": 0.12
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.65
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.3,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.35,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.65,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.2,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.5,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "lufs",
-            "mean": -13.0,
-            "deviation": 6.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 8.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 5.0,
-            "deviation": 2.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 25.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "'Composite big movements of sliding, falling earth, landslides, mudslides.' A long, loud, low-frequency-dominant roar carrying a dense granular debris layer.",
-          "The one weak cue against EARTHQUAKE: an avalanche is made of tumbling matter, so it carries a granular mid/high texture — a higher onset_rate_per_second and less extreme low-frequency dominance than a pure quake rumble. A nudge, never a decision.",
-          "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
-        ],
-        "confusable_with": [
-          "NATDQuak",
-          "NATDVolc",
-          "DESTRClpse",
-          "ROCKCrsh",
-          "SNOWCrsh"
-        ]
+ "version": "8.2.1",
+ "category": "NATURAL DISASTER",
+ "subcategories": [
+  {
+   "subcategory": "AVALANCHE",
+   "category_id": "NATDAval",
+   "category_short": "NATD",
+   "explanation": [
+    "Composite big movements of sliding",
+    "falling earth",
+    "landslides",
+    "mudslides. This category often for big hollywood versions of these types of sound."
+   ],
+   "synonyms": [
+    "Cascades",
+    "Crevasse",
+    "Earth",
+    "Earthslide",
+    "Icefall",
+    "Icefalls",
+    "Landslide",
+    "Landslides",
+    "Landsliding",
+    "Landslip",
+    "Lavafall",
+    "Mudflow",
+    "Mudslide",
+    "Rockfall",
+    "Rockfalls",
+    "Rockslide",
+    "Rockslides",
+    "Slide",
+    "Snow"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 2.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.12
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.65
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "EARTHQUAKE",
-      "category_id": "NATDQuak",
-      "category_short": "NATD",
-      "explanation": [
-        "Composite and complex earthquake rumbles and rattles. This category often for big hollywood versions of these types of sound."
-      ],
-      "synonyms": [
-        "Activity",
-        "Aftershock",
-        "Aftershocks",
-        "Disasters",
-        "Earth",
-        "Epicenter",
-        "Event",
-        "Fissure",
-        "Foreshock",
-        "Foreshocks",
-        "Ground",
-        "Hypocenter",
-        "Hypocentre",
-        "LFE",
-        "Quake",
-        "Quakes",
-        "Rattle",
-        "Rumble",
-        "Seism",
-        "Seismic",
-        "Seismism",
-        "Seismogram",
-        "Seismograms",
-        "Seismograph",
-        "Seismographic",
-        "Seismographs",
-        "Seismological",
-        "Seismologist",
-        "Seismologists",
-        "Seismology",
-        "Seismometer",
-        "Shake",
-        "Shakes",
-        "Shock",
-        "Tectonic",
-        "Temblor",
-        "Temblors",
-        "Tremor",
-        "Tremoring",
-        "Tremors"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 2.0
-          },
-          {
-            "feature": "low_band_energy",
-            "min": 0.2
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.65
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.65,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.9
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.12,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.2,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "lufs",
-            "mean": -12.0,
-            "deviation": 6.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.5,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.2
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 250.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.7
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.5,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 3.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 25.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "'Composite and complex earthquake rumbles and rattles.' The most low-frequency-dominant object in the taxonomy: a sub-200 Hz bed with the lowest spectral_centroid_hz of any NATURAL DISASTER sibling, punctuated by intermittent mid-band object rattles.",
-          "That extreme low-frequency weight is a TENDENCY against AVALANCHE, VOLCANO and DESIGNED-RUMBLE, not a boundary. It is a prior, and it must never be promoted to an assertion.",
-          "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
-        ],
-        "confusable_with": [
-          "NATDAval",
-          "NATDVolc",
-          "DSGNRmbl",
-          "DESTRClpse",
-          "EXPLDsgn"
-        ]
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "MISC",
-      "category_id": "NATDMisc",
-      "category_short": "NATD",
-      "explanation": [
-        "Natural Disaster sounds not fitting another category in this list."
-      ],
-      "synonyms": [
-        "Act",
-        "Apocalypse",
-        "Armageddon",
-        "Calamity",
-        "Cataclysm",
-        "Catastrophe",
-        "Disaster",
-        "Doomsdate",
-        "Doomsday",
-        "Drought",
-        "Famine",
-        "Flood",
-        "Force",
-        "God",
-        "Majeure",
-        "Megastorm",
-        "Meltdown",
-        "Miscellaneous",
-        "Of",
-        "Superstorm"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [],
-        "priors": [],
-        "discriminators": [
-          "Catch-all / abstention target. It has no morphology of its own: it is the answer when no sibling in this category wins decisively (spec section 6). No gates and no priors — asserting MISC from positive signal evidence would be incoherent.",
-          "Read the synonym list: Apocalypse, Armageddon, Doomsday, Act of God, Famine, Drought. These are not sounds. The bucket is purely semantic, and several members (Drought, Famine) have no acoustic realisation at all."
-        ],
-        "confusable_with": [
-          "NATDQuak",
-          "NATDTorn",
-          "NATDTsun",
-          "NATDThyp",
-          "NATDVolc"
-        ]
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "TORNADO",
-      "category_id": "NATDTorn",
-      "category_short": "NATD",
-      "explanation": [
-        "Composite tornado sounds",
-        "layered and created massive tornadoes. This category often for big hollywood versions of these types of sound."
-      ],
-      "synonyms": [
-        "Cloud",
-        "Cyclone",
-        "Devil",
-        "Downburst",
-        "Downbursts",
-        "Dust",
-        "Duststorm",
-        "Duststorms",
-        "Eyewall",
-        "Funnel",
-        "Microburst",
-        "Supercell",
-        "Twister",
-        "Twisters",
-        "Updraft",
-        "Vortex",
-        "Waterspout",
-        "Waterspouts",
-        "Whirlwind",
-        "Whirlwinds",
-        "Windstorm"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 2.0
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.7
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.7,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.25,
-            "deviation": 0.13,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.2,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "sustain_ratio",
-            "mean": 0.6,
-            "deviation": 0.25,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 500.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 40.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "A broadband, low-frequency-weighted wind roar with a slow swirl modulation (spectral_centroid_deviation_hz rising and falling with the vortex).",
-          "Signal-identical to WIND-TURBULENT, to WIND-GUST at scale, and to TYPHOON. Nothing in DSP knows that a wind is rotating. Never assert from signal.",
-          "The only tendency separating it from TYPHOON: a tornado is shorter and gustier (lower stationarity); a typhoon is a long stationary bed. That is a nudge, and it is all there is.",
-          "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
-        ],
-        "confusable_with": [
-          "NATDThyp",
-          "WINDTurb",
-          "WINDGust",
-          "FIRETurb",
-          "STORM"
-        ]
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "TSUNAMI",
-      "category_id": "NATDTsun",
-      "category_short": "NATD",
-      "explanation": [
-        "Composite tidal wave or tsunami scenes",
-        "layered and created. This category often for big hollywood versions of these types of sound."
-      ],
-      "synonyms": [
-        "Catastrophic",
-        "Earthquake",
-        "Flood",
-        "Floods",
-        "Giant",
-        "Mega",
-        "Megatsunami",
-        "Sea",
-        "Sunami",
-        "Supertide",
-        "Surge",
-        "Tidal",
-        "Tsunami",
-        "Tsunamigenic",
-        "Underwater",
-        "Wave"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 2.0
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.7
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.5,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.7
-          },
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.7,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.3,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "envelope_temporal_centroid",
-            "mean": 0.55,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.25,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 700.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.5,
-            "deviation": 1.9,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 30.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "A BUILDING broadband water surge: a low-frequency roar under a broadband hiss, with an envelope that swells toward the impact (envelope_temporal_centroid past the midpoint — the one shape cue in this set).",
-          "Signal-identical to WATER-WAVE and WATER-SURF at scale. Nothing in DSP knows that a wave is a tsunami; the difference is one of narrative scale. Text only.",
-          "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
-        ],
-        "confusable_with": [
-          "WATRWave",
-          "WATRSurf",
-          "WATRTurb",
-          "NATDThyp",
-          "NATDAval"
-        ]
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "TYPHOON",
-      "category_id": "NATDThyp",
-      "category_short": "NATD",
-      "explanation": [
-        "Composite typhoons",
-        "cyclones or hurricanes. Massive swirling storms. This category often for big hollywood versions of these types of sound."
-      ],
-      "synonyms": [
-        "Cyclone",
-        "Cyclones",
-        "Cyclonic",
-        "Eyewall",
-        "Flood",
-        "Floods",
-        "Hurricane",
-        "Hurricanes",
-        "Monsoon",
-        "Monsoonal",
-        "Monsoons",
-        "Severe",
-        "Storm",
-        "Storm.",
-        "Storms",
-        "Strong",
-        "Surge",
-        "Tempest",
-        "Tropical",
-        "Tyfoon",
-        "Typhon",
-        "Wind",
-        "Windstorm"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 2.0
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.7
-          }
-        ],
-        "priors": [
-          {
-            "feature": "spectral_flatness",
-            "mean": 0.72,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "low_band_energy",
-            "mean": 0.45,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.6
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.18,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.3,
-            "deviation": 0.18,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "harmonicity",
-            "mean": 0.12,
-            "deviation": 0.1,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 4.0,
-            "deviation": 1.8,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 5.0,
-            "deviation": 3.5,
-            "transform": "log",
-            "weight": 0.3
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 60.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "'Massive swirling storms.' A long, near-stationary storm bed: wind noise with a rain texture on top. Longer, flatter and more stationary than TORNADO's gusting vortex — a tendency, not a boundary.",
-          "Overlaps WEATHER-STORM, WIND-TURBULENT and RAIN completely. There is no signal fact that makes a storm bed a typhoon rather than a storm. Text only.",
-          "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
-        ],
-        "confusable_with": [
-          "NATDTorn",
-          "STORM",
-          "WINDTurb",
-          "RAIN",
-          "WTHR"
-        ]
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    },
-    {
-      "subcategory": "VOLCANO",
-      "category_id": "NATDVolc",
-      "category_short": "NATD",
-      "explanation": [
-        "Composite big volcano eruptions. Lava",
-        "lava bombs",
-        "eruptions. This category often for big hollywood versions of these types of sound. See also GEOTHERMAL-LAVA."
-      ],
-      "synonyms": [
-        "Ash",
-        "Bombs",
-        "Caldera",
-        "Calderas",
-        "Chasma",
-        "Cloud",
-        "Crater",
-        "Cryovolcano",
-        "Erupting",
-        "Eruption",
-        "Eruptions",
-        "Eruptive",
-        "Flow",
-        "Fumarole",
-        "Geothermic",
-        "Kilauea",
-        "Lahar",
-        "Lava",
-        "Lavas",
-        "Magma",
-        "Magmasphere",
-        "Magmatic",
-        "Mantle",
-        "Pinatubo",
-        "Pyroclastic",
-        "Pyroclastics",
-        "Pyroclasts",
-        "Rhyolitic",
-        "Stratovolcano",
-        "Strombolian",
-        "Subvolcanic",
-        "Tephra",
-        "Volcanic",
-        "Volcanically",
-        "Volcanics",
-        "Volcanism",
-        "Volcanogenic",
-        "Volcanological",
-        "Volcanologist",
-        "Volcanologists",
-        "Volcanology",
-        "Vulcan",
-        "Vulcanian",
-        "Vulcanic",
-        "Vulcanism",
-        "Vulcano",
-        "Vulcanoid",
-        "Vulcanology"
-      ],
-      "acoustic_signature": {
-        "morphology": "complex",
-        "separability": "semantic_only",
-        "gates": [
-          {
-            "feature": "length_seconds",
-            "min": 2.0
-          },
-          {
-            "feature": "low_band_energy",
-            "min": 0.12
-          },
-          {
-            "feature": "harmonicity",
-            "max": 0.65
-          }
-        ],
-        "priors": [
-          {
-            "feature": "low_band_energy",
-            "mean": 0.6,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.8
-          },
-          {
-            "feature": "spectral_flux",
-            "mean": 0.3,
-            "deviation": 0.15,
-            "transform": "linear",
-            "weight": 0.5
-          },
-          {
-            "feature": "stationarity",
-            "mean": 0.4,
-            "deviation": 0.2,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "high_band_energy",
-            "mean": 0.15,
-            "deviation": 0.12,
-            "transform": "linear",
-            "weight": 0.4
-          },
-          {
-            "feature": "envelope_kurtosis",
-            "mean": 6.0,
-            "deviation": 5.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "lufs",
-            "mean": -11.0,
-            "deviation": 6.0,
-            "transform": "linear",
-            "weight": 0.3
-          },
-          {
-            "feature": "spectral_centroid_hz",
-            "mean": 350.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.6
-          },
-          {
-            "feature": "crest_factor",
-            "mean": 6.0,
-            "deviation": 2.2,
-            "transform": "log",
-            "weight": 0.5
-          },
-          {
-            "feature": "onset_rate_per_second",
-            "mean": 2.0,
-            "deviation": 3.0,
-            "transform": "log",
-            "weight": 0.4
-          },
-          {
-            "feature": "length_seconds",
-            "mean": 30.0,
-            "deviation": 2.5,
-            "transform": "log",
-            "weight": 0.5
-          }
-        ],
-        "discriminators": [
-          "A sustained low-frequency eruption roar PUNCTUATED by explosive lava-bomb transients — the one shape cue against EARTHQUAKE, whose rumble is continuous: higher crest_factor and higher envelope_kurtosis (isolated bursts riding a bed).",
-          "The explanation cross-references GEOTHERMAL-LAVA. That is the close-mic'd real recording; this is the loud hollywood composite. DSP cannot tell a composite from its source — only that this one is louder.",
-          "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
-        ],
-        "confusable_with": [
-          "NATDQuak",
-          "NATDAval",
-          "GEOLava",
-          "EXPLReal",
-          "EXPLDsgn"
-        ]
+     },
+     {
+      "feature": "lufs",
+      "mean": -13.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
       }
-    }
-  ]
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Composite big movements of sliding, falling earth, landslides, mudslides.' A long, loud, low-frequency-dominant roar carrying a dense granular debris layer.",
+     "The one weak cue against EARTHQUAKE: an avalanche is made of tumbling matter, so it carries a granular mid/high texture — a higher onset_rate_per_second and less extreme low-frequency dominance than a pure quake rumble. A nudge, never a decision.",
+     "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
+    ],
+    "confusable_with": [
+     "NATDQuak",
+     "NATDVolc",
+     "DESTRClpse",
+     "ROCKCrsh",
+     "SNOWCrsh"
+    ]
+   }
+  },
+  {
+   "subcategory": "EARTHQUAKE",
+   "category_id": "NATDQuak",
+   "category_short": "NATD",
+   "explanation": [
+    "Composite and complex earthquake rumbles and rattles. This category often for big hollywood versions of these types of sound."
+   ],
+   "synonyms": [
+    "Activity",
+    "Aftershock",
+    "Aftershocks",
+    "Disasters",
+    "Earth",
+    "Epicenter",
+    "Event",
+    "Fissure",
+    "Foreshock",
+    "Foreshocks",
+    "Ground",
+    "Hypocenter",
+    "Hypocentre",
+    "LFE",
+    "Quake",
+    "Quakes",
+    "Rattle",
+    "Rumble",
+    "Seism",
+    "Seismic",
+    "Seismism",
+    "Seismogram",
+    "Seismograms",
+    "Seismograph",
+    "Seismographic",
+    "Seismographs",
+    "Seismological",
+    "Seismologist",
+    "Seismologists",
+    "Seismology",
+    "Seismometer",
+    "Shake",
+    "Shakes",
+    "Shock",
+    "Tectonic",
+    "Temblor",
+    "Temblors",
+    "Tremor",
+    "Tremoring",
+    "Tremors"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 2.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.2
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.65
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -12.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 250.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Composite and complex earthquake rumbles and rattles.' The most low-frequency-dominant object in the taxonomy: a sub-200 Hz bed with the lowest spectral_centroid_hz of any NATURAL DISASTER sibling, punctuated by intermittent mid-band object rattles.",
+     "That extreme low-frequency weight is a TENDENCY against AVALANCHE, VOLCANO and DESIGNED-RUMBLE, not a boundary. It is a prior, and it must never be promoted to an assertion.",
+     "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
+    ],
+    "confusable_with": [
+     "NATDAval",
+     "NATDVolc",
+     "DSGNRmbl",
+     "DESTRClpse",
+     "EXPLDsgn"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "NATDMisc",
+   "category_short": "NATD",
+   "explanation": [
+    "Natural Disaster sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Act",
+    "Apocalypse",
+    "Armageddon",
+    "Calamity",
+    "Cataclysm",
+    "Catastrophe",
+    "Disaster",
+    "Doomsdate",
+    "Doomsday",
+    "Drought",
+    "Famine",
+    "Flood",
+    "Force",
+    "God",
+    "Majeure",
+    "Megastorm",
+    "Meltdown",
+    "Miscellaneous",
+    "Of",
+    "Superstorm"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "Catch-all / abstention target. It has no morphology of its own: it is the answer when no sibling in this category wins decisively (spec section 6). No gates and no priors — asserting MISC from positive signal evidence would be incoherent.",
+     "Read the synonym list: Apocalypse, Armageddon, Doomsday, Act of God, Famine, Drought. These are not sounds. The bucket is purely semantic, and several members (Drought, Famine) have no acoustic realisation at all."
+    ],
+    "confusable_with": [
+     "NATDQuak",
+     "NATDTorn",
+     "NATDTsun",
+     "NATDThyp",
+     "NATDVolc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TORNADO",
+   "category_id": "NATDTorn",
+   "category_short": "NATD",
+   "explanation": [
+    "Composite tornado sounds",
+    "layered and created massive tornadoes. This category often for big hollywood versions of these types of sound."
+   ],
+   "synonyms": [
+    "Cloud",
+    "Cyclone",
+    "Devil",
+    "Downburst",
+    "Downbursts",
+    "Dust",
+    "Duststorm",
+    "Duststorms",
+    "Eyewall",
+    "Funnel",
+    "Microburst",
+    "Supercell",
+    "Twister",
+    "Twisters",
+    "Updraft",
+    "Vortex",
+    "Waterspout",
+    "Waterspouts",
+    "Whirlwind",
+    "Whirlwinds",
+    "Windstorm"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.7,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.25,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 40.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A broadband, low-frequency-weighted wind roar with a slow swirl modulation (spectral_centroid_deviation_hz rising and falling with the vortex).",
+     "Signal-identical to WIND-TURBULENT, to WIND-GUST at scale, and to TYPHOON. Nothing in DSP knows that a wind is rotating. Never assert from signal.",
+     "The only tendency separating it from TYPHOON: a tornado is shorter and gustier (lower stationarity); a typhoon is a long stationary bed. That is a nudge, and it is all there is.",
+     "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
+    ],
+    "confusable_with": [
+     "NATDThyp",
+     "WINDTurb",
+     "WINDGust",
+     "FIRETurb",
+     "STORM"
+    ]
+   }
+  },
+  {
+   "subcategory": "TSUNAMI",
+   "category_id": "NATDTsun",
+   "category_short": "NATD",
+   "explanation": [
+    "Composite tidal wave or tsunami scenes",
+    "layered and created. This category often for big hollywood versions of these types of sound."
+   ],
+   "synonyms": [
+    "Catastrophic",
+    "Earthquake",
+    "Flood",
+    "Floods",
+    "Giant",
+    "Mega",
+    "Megatsunami",
+    "Sea",
+    "Sunami",
+    "Supertide",
+    "Surge",
+    "Tidal",
+    "Tsunami",
+    "Tsunamigenic",
+    "Underwater",
+    "Wave"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.7,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.55,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 700.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A BUILDING broadband water surge: a low-frequency roar under a broadband hiss, with an envelope that swells toward the impact (envelope_temporal_centroid past the midpoint — the one shape cue in this set).",
+     "Signal-identical to WATER-WAVE and WATER-SURF at scale. Nothing in DSP knows that a wave is a tsunami; the difference is one of narrative scale. Text only.",
+     "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
+    ],
+    "confusable_with": [
+     "WATRWave",
+     "WATRSurf",
+     "WATRTurb",
+     "NATDThyp",
+     "NATDAval"
+    ]
+   }
+  },
+  {
+   "subcategory": "TYPHOON",
+   "category_id": "NATDThyp",
+   "category_short": "NATD",
+   "explanation": [
+    "Composite typhoons",
+    "cyclones or hurricanes. Massive swirling storms. This category often for big hollywood versions of these types of sound."
+   ],
+   "synonyms": [
+    "Cyclone",
+    "Cyclones",
+    "Cyclonic",
+    "Eyewall",
+    "Flood",
+    "Floods",
+    "Hurricane",
+    "Hurricanes",
+    "Monsoon",
+    "Monsoonal",
+    "Monsoons",
+    "Severe",
+    "Storm",
+    "Storm.",
+    "Storms",
+    "Strong",
+    "Surge",
+    "Tempest",
+    "Tropical",
+    "Tyfoon",
+    "Typhon",
+    "Wind",
+    "Windstorm"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.72,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.18,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 60.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Massive swirling storms.' A long, near-stationary storm bed: wind noise with a rain texture on top. Longer, flatter and more stationary than TORNADO's gusting vortex — a tendency, not a boundary.",
+     "Overlaps WEATHER-STORM, WIND-TURBULENT and RAIN completely. There is no signal fact that makes a storm bed a typhoon rather than a storm. Text only.",
+     "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
+    ],
+    "confusable_with": [
+     "NATDTorn",
+     "STORM",
+     "WINDTurb",
+     "RAIN",
+     "WTHR"
+    ]
+   }
+  },
+  {
+   "subcategory": "VOLCANO",
+   "category_id": "NATDVolc",
+   "category_short": "NATD",
+   "explanation": [
+    "Composite big volcano eruptions. Lava",
+    "lava bombs",
+    "eruptions. This category often for big hollywood versions of these types of sound. See also GEOTHERMAL-LAVA."
+   ],
+   "synonyms": [
+    "Ash",
+    "Bombs",
+    "Caldera",
+    "Calderas",
+    "Chasma",
+    "Cloud",
+    "Crater",
+    "Cryovolcano",
+    "Erupting",
+    "Eruption",
+    "Eruptions",
+    "Eruptive",
+    "Flow",
+    "Fumarole",
+    "Geothermic",
+    "Kilauea",
+    "Lahar",
+    "Lava",
+    "Lavas",
+    "Magma",
+    "Magmasphere",
+    "Magmatic",
+    "Mantle",
+    "Pinatubo",
+    "Pyroclastic",
+    "Pyroclastics",
+    "Pyroclasts",
+    "Rhyolitic",
+    "Stratovolcano",
+    "Strombolian",
+    "Subvolcanic",
+    "Tephra",
+    "Volcanic",
+    "Volcanically",
+    "Volcanics",
+    "Volcanism",
+    "Volcanogenic",
+    "Volcanological",
+    "Volcanologist",
+    "Volcanologists",
+    "Volcanology",
+    "Vulcan",
+    "Vulcanian",
+    "Vulcanic",
+    "Vulcanism",
+    "Vulcano",
+    "Vulcanoid",
+    "Vulcanology"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 2.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.12
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.65
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 6.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -11.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 350.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A sustained low-frequency eruption roar PUNCTUATED by explosive lava-bomb transients — the one shape cue against EARTHQUAKE, whose rumble is continuous: higher crest_factor and higher envelope_kurtosis (isolated bursts riding a bed).",
+     "The explanation cross-references GEOTHERMAL-LAVA. That is the close-mic'd real recording; this is the loud hollywood composite. DSP cannot tell a composite from its source — only that this one is louder.",
+     "Honest tier: semantic_only. These are 'composite big hollywood versions' — designed layer stacks, not physical classes. An earthquake, an avalanche and a volcano are all 'long, loud, low-frequency-dominant rumble'; no DSP separates them and none ever will. The value of this signature is its GATES: long + low-frequency-dominant rules out every impulse, every bright texture and every tonal source in the taxonomy. Prune with it, then let synonyms commit."
+    ],
+    "confusable_with": [
+     "NATDQuak",
+     "NATDAval",
+     "GEOLava",
+     "EXPLReal",
+     "EXPLDsgn"
+    ]
+   }
+  }
+ ]
 }
