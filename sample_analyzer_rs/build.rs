@@ -46,8 +46,23 @@ fn main() {
     // whitespace downloaded by every visitor. Re-serializing compact here costs a
     // build-time parse and changes nothing about what the data MEANS: serde parses
     // both forms to the same structs.
+    //
+    // A file may opt out of the matcher with `"matchable": false`. Those describe a
+    // different axis (MUSICPROD answers "what role does this play in a production",
+    // not "what is this sound"), and they reuse the synonyms and signatures of a real
+    // UCS category. Letting one into the index would give every music sample a twin
+    // candidate with an identical signature — splitting the posterior and lowering
+    // the IDF of every music token. They are bundled separately instead.
+    let matchable = |p: &PathBuf| -> bool {
+        let text = fs::read_to_string(p).unwrap_or_else(|e| panic!("read {}: {e}", p.display()));
+        let value: serde_json::Value = serde_json::from_str(&text)
+            .unwrap_or_else(|e| panic!("{} is not valid JSON: {e}", p.display()));
+        value.get("matchable").and_then(|m| m.as_bool()).unwrap_or(true)
+    };
+
     let bodies: Vec<String> = cat_files
         .iter()
+        .filter(|p| matchable(p))
         .map(|p| {
             let text = fs::read_to_string(p).unwrap_or_else(|e| panic!("read {}: {e}", p.display()));
             let value: serde_json::Value = serde_json::from_str(&text)
@@ -57,8 +72,22 @@ fn main() {
         .collect();
     let bundle = format!("[{}]", bodies.join(","));
 
+    // The opted-out files, bundled on their own. MUSICPROD is read from here.
+    let role_bodies: Vec<String> = cat_files
+        .iter()
+        .filter(|p| !matchable(p))
+        .map(|p| {
+            let text = fs::read_to_string(p).unwrap_or_else(|e| panic!("read {}: {e}", p.display()));
+            let value: serde_json::Value = serde_json::from_str(&text)
+                .unwrap_or_else(|e| panic!("{} is not valid JSON: {e}", p.display()));
+            serde_json::to_string(&value).expect("re-serialize category")
+        })
+        .collect();
+    let role_bundle = format!("[{}]", role_bodies.join(","));
+
     let out = PathBuf::from(std::env::var("OUT_DIR").expect("OUT_DIR"));
     fs::write(out.join("ucs_signed.json"), &bundle).expect("write ucs_signed.json");
+    fs::write(out.join("ucs_roles.json"), &role_bundle).expect("write ucs_roles.json");
 
     // Revision hash over the extractors and the category data together.
     let mut h: u64 = 0xcbf2_9ce4_8422_2325;
@@ -72,6 +101,9 @@ fn main() {
         absorb(&fs::read(&p).expect("read src file"));
     }
     absorb(bundle.as_bytes());
+    // The role taxonomy decides a field we write into every record, so a change to
+    // it must invalidate existing sidecars exactly as a change to a signature does.
+    absorb(role_bundle.as_bytes());
 
     println!("cargo:rustc-env=ANALYZER_REV={:016x}", h);
 
