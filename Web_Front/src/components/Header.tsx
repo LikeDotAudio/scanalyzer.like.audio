@@ -1,10 +1,13 @@
 import TipJar from './TipJar';
+import { isTauri } from '../audioLinking';
 
 interface HeaderProps {
   isAnalyzing: boolean;
   progress: number;
   onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onLoadSounds: () => void;
+  /** Desktop: absolute root that relative .PEAK paths resolve against. */
+  audioRoot?: string;
   onUnloadSounds?: () => void;
   audioCount: number;
   currentSound?: string;
@@ -12,7 +15,9 @@ interface HeaderProps {
   activeTab?: string;
 }
 
-export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, onUnloadSounds, audioCount, currentSound, hasData, activeTab }: HeaderProps) {
+export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, onUnloadSounds, audioCount, audioRoot, currentSound, hasData, activeTab }: HeaderProps) {
+  // Desktop links one root folder; the browser links a list of File objects.
+  const audioLinked = isTauri() ? !!audioRoot : audioCount > 0;
   return (
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
@@ -36,9 +41,9 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
               <strong style={{ color: 'var(--accent-primary)' }}>Step 1:</strong> Scan a folder (Scanalize tab) or <strong style={{ color: 'var(--accent-primary)' }}>Load PEAK Files</strong> to bring in an analysis. →
             </span>
-          ) : audioCount === 0 ? (
+          ) : !audioLinked ? (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>Step 2:</strong> Click <strong style={{ color: 'var(--accent-primary)' }}>Load Sounds</strong> to give the analyzer real-time access to your local files so you can hear them. →
+              <strong style={{ color: 'var(--accent-primary)' }}>Step 2:</strong> Click <strong style={{ color: 'var(--accent-primary)' }}>{isTauri() ? 'Link Audio Folder' : 'Load Sounds'}</strong> to give the analyzer real-time access to your local files so you can hear them. →
             </span>
           ) : (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
@@ -68,7 +73,11 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
             onChange={onImportPeak}
           />
         </label>
-        <button className={`btn ${audioCount > 0 ? '' : 'primary blink'}`} onClick={onLoadSounds}>Load Sounds</button>
+        {/* Desktop: a .PEAK scanned in the browser holds relative paths, so the
+            asset protocol needs an absolute root to join them onto. */}
+        <button className={`btn ${audioLinked ? '' : 'primary blink'}`} onClick={onLoadSounds}>
+          {isTauri() ? 'Link Audio Folder' : 'Load Sounds'}
+        </button>
         {audioCount > 0 && (
           <button 
             className="btn" 

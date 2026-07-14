@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './index.css'
-import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanDirectoryHandle, clearDirHandle } from './audioLinking'
+import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanDirectoryHandle, clearDirHandle, isTauri, setAudioRoot, getAudioRoot } from './audioLinking'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
@@ -32,6 +32,8 @@ function App() {
   const [currentSound, setCurrentSound] = useState('')
   // Set when a loaded .PEAK predates the grouped schema and had to be migrated.
   const [schemaNotice, setSchemaNotice] = useState('')
+  // Desktop only: the absolute folder relative .PEAK paths resolve against.
+  const [audioRootLinked, setAudioRootLinked] = useState(getAudioRoot())
 
   // Keep the active tab in sync with the URL hash (linkable / back-forward).
   useEffect(() => {
@@ -152,6 +154,19 @@ function App() {
 
   // Global "Load Sounds": link an audio folder app-wide (all tabs share it).
   const handleLoadSounds = async () => {
+    // Desktop: store the absolute root that relative .PEAK paths hang off, so the
+    // asset protocol can resolve them. No File list is needed — Tauri streams
+    // straight from disk.
+    if (isTauri()) {
+      const { open } = await import('@tauri-apps/plugin-dialog');
+      const dir = await open({ directory: true, multiple: false });
+      if (typeof dir === 'string') {
+        setAudioRoot(dir);
+        setAudioRootLinked(dir);   // re-render so playback + Header pick it up
+      }
+      return;
+    }
+
     if (fsaSupported()) {
       try {
         if (hasPreviousDir && audioFiles.length === 0) {
@@ -218,7 +233,7 @@ function App() {
           Drop .PEAK file to load
         </div>
       )}
-      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
+      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} audioRoot={audioRootLinked} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
 
       {schemaNotice && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.4rem 0.75rem', background: 'rgba(255,190,60,0.10)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.78rem' }}>

@@ -59,9 +59,9 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      if (group && (it.group || 'Unclassified') !== group) return false;
-      if (sub && (it.subgroup || '').trim() !== sub) return false;
-      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+      if (group && (it.classification?.group || 'Unclassified') !== group) return false;
+      if (sub && (it.classification?.subgroup || '').trim() !== sub) return false;
+      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });

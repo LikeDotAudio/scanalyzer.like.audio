@@ -26,9 +26,9 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      if (scopeGroup && (it.group || 'Unclassified') !== scopeGroup) return false;
-      if (scopeSub && (it.subgroup || '').trim() !== scopeSub) return false;
-      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+      if (scopeGroup && (it.classification?.group || 'Unclassified') !== scopeGroup) return false;
+      if (scopeSub && (it.classification?.subgroup || '').trim() !== scopeSub) return false;
+      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });

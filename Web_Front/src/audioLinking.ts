@@ -122,13 +122,34 @@ export function isTauri(): boolean {
 
 import { convertFileSrc } from '@tauri-apps/api/core';
 
+// The desktop app resolves audio through the asset protocol, which needs an
+// ABSOLUTE path. The Rust scanner records one; the web scanner only ever sees
+// webkitRelativePath and records something like "Music Samples/kick.wav". So a
+// .PEAK produced in the browser needs an absolute root to be joined onto before
+// the desktop app can play it — that is what "Link Audio Folder" stores.
+const AUDIO_ROOT_KEY = 'scanalyzer_audio_root';
+
+export function getAudioRoot(): string {
+  try { return localStorage.getItem(AUDIO_ROOT_KEY) || ''; } catch { return ''; }
+}
+
+export function setAudioRoot(dir: string) {
+  try { localStorage.setItem(AUDIO_ROOT_KEY, dir); } catch { /* private mode */ }
+}
+
+const isAbsolutePath = (p: string) => p.startsWith('/') || /^[A-Za-z]:[\\/]/.test(p);
+
 export function resolveAudioSrc(files: File[], item: any): string | null {
-  if (isTauri() && item?.metadata?.path) {
-    // In Tauri, we can load local files natively using the asset protocol
-    return convertFileSrc(item.metadata.path); 
+  const recorded = String(item?.metadata?.path || '');
+
+  if (isTauri() && recorded) {
+    if (isAbsolutePath(recorded)) return convertFileSrc(recorded);
+    // Relative path (a .PEAK scanned in the browser): join it onto the linked root.
+    const root = getAudioRoot().replace(/[/\\]+$/, '');
+    return root ? convertFileSrc(`${root}/${recorded}`) : null;
   }
 
-  const wantPath = String(item?.metadata?.path || '').replace(/^\.?\/+/, '');
+  const wantPath = recorded.replace(/^\.?\/+/, '');
   const wantName = String(item?.metadata?.name || '').toLowerCase();
   
   let found: File | undefined;

@@ -19,7 +19,7 @@ export default function GroupsTab({ analysisResult }: GroupsTabProps) {
           {/* Simple grouping example */}
           {Object.entries(
             analysisResult.reduce((acc, curr) => {
-              const key = curr.group || 'Other';
+              const key = curr.classification?.group || 'Other';
               acc[key] = (acc[key] || 0) + 1;
               return acc;
             }, {} as Record<string, number>)

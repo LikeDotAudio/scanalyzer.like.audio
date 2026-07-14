@@ -37,13 +37,16 @@ export function tokenValue(item: any, key: TokenKey): string {
     case 'instrumentFamily': return item.classification.instrument_family || '';
     case 'rootNote': return item.musicality.root_note_name || '';
     case 'bpm': return item.musicality.beats_per_minute ? `${item.musicality.beats_per_minute}BPM` : '';
-    case 'lengthTier': return item.length_tier || '';
+    case 'lengthTier': return item.classification?.length_class || '';
     case 'envelopeShape': return item.envelope.envelope_shape || '';
     case 'distortion': return item.spectral_features.distortion || '';
     case 'cluster': return item.unsupervised.cluster != null && item.unsupervised.cluster !== -1 ? `C${item.unsupervised.cluster}` : '';
     case 'pitch': return item.musicality.pitch_hz ? `${Math.round(item.musicality.pitch_hz)}Hz` : '';
     case 'brightness': return item.spectral_features.spectral_centroid_hz ? `${Math.round(item.spectral_features.spectral_centroid_hz)}Hz` : '';
-    case 'harmonicity': return item.harmonicity != null ? item.harmonicity.toFixed(2) : '';
+    case 'harmonicity': {
+      const h = item.spectral_features?.harmonicity;
+      return h != null ? h.toFixed(2) : '';
+    }
     default: return '';
   }
 }

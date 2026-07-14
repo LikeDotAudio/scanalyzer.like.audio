@@ -270,9 +270,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     const spec = computeSpectrum(mono, buffer.sampleRate);
 
     // BPM: prefer the record's value; for loops with none, estimate in-browser.
-    let bpm = Number(item?.beats_per_minute) || 0;
+    let bpm = Number(item?.musicality?.beats_per_minute) || 0;
     let bpmEst = false;
-    if (!bpm && (item?.timbre === 'Loop' || item?.length_class === 'Loop')) {
+    if (!bpm && (item?.classification?.timbre === 'Loop' || item?.classification?.length_class === 'Loop')) {
       bpm = estimateBpm(mono, buffer.sampleRate);
       bpmEst = bpm > 0;
     }
@@ -288,7 +288,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
   const handleSelect = async (item: any, forcePlay = false) => {
     setSelectedItem(item);
-    onSound?.(item?.name || '');
+    onSound?.(item?.metadata?.name || '');
 
     const src = resolveAudioSrc(audioFiles, item);
     if (!src) {
@@ -453,7 +453,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           {activeColumns.find(c => c.key === 'length_seconds') && <td style={cell()}>{item.metadata.length_seconds?.toFixed(2)}</td>}
                                           {activeColumns.find(c => c.key === 'transient_count') && <td style={cell({ color: '#F59E0B' })}>{item.envelope.transient_count}</td>}
                                           {activeColumns.find(c => c.key === 'spectral_centroid_hz') && <td style={cell()}>{item.spectral_features.spectral_centroid_hz ? Math.round(item.spectral_features.spectral_centroid_hz) : 0}</td>}
-                                          {activeColumns.find(c => c.key === 'harmonicity') && <td style={cell()}>{item.harmonicity?.toFixed(2)}</td>}
+                                          {activeColumns.find(c => c.key === 'harmonicity') && <td style={cell()}>{item.spectral_features?.harmonicity?.toFixed(2)}</td>}
                                           {activeColumns.find(c => c.key === 'beats_per_minute') && <td style={cell()}>{item.musicality.beats_per_minute || 0}</td>}
                                       </tr>
                                   );
@@ -508,7 +508,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                           <label className="btn secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <input type="checkbox" checked={autoPlay} onChange={e => setAutoPlay(e.target.checked)} /> auto-play
                           </label>
-                          <span className="text-secondary" style={{ fontSize: '0.8rem' }}>{selectedItem.length_seconds ? `${selectedItem.length_seconds.toFixed(2)} s · ${Math.round(selectedItem.length_seconds * (Number(selectedItem.sample_rate ?? selectedItem.samplerate) || 44100)).toLocaleString()} smp` : ''}</span>
+                          <span className="text-secondary" style={{ fontSize: '0.8rem' }}>{selectedItem.metadata?.length_seconds ? `${selectedItem.metadata.length_seconds.toFixed(2)} s · ${Math.round(selectedItem.metadata.length_seconds * (Number(selectedItem.metadata.sample_rate) || 44100)).toLocaleString()} smp` : ''}</span>
                       </div>
                   </>
               ) : (

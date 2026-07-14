@@ -4,10 +4,11 @@ import type { PlotGeo } from './audioAnalysis';
 // markers, positioned in time across the plot.
 export function drawEnvelope(ctx: CanvasRenderingContext2D, item: any, duration: number, geo: PlotGeo) {
   const { w, mid, halfH } = geo;
-  const att = Number(item?.envelope_attack_seconds ?? item?.attack_seconds ?? 0) || 0;
-  const dec = Number(item?.envelope_decay_seconds ?? 0) || 0;
-  const sus = Number(item?.envelope_sustain_level ?? 0) || 0;
-  const rel = Number(item?.envelope_release_seconds ?? 0) || 0;
+  const env = item?.envelope ?? {};
+  const att = Number(env.envelope_attack_seconds ?? env.attack_seconds ?? 0) || 0;
+  const dec = Number(env.envelope_decay_seconds ?? 0) || 0;
+  const sus = Number(env.envelope_sustain_level ?? 0) || 0;
+  const rel = Number(env.envelope_release_seconds ?? 0) || 0;
   if (duration <= 0 || !(att || dec || sus || rel)) return;
 
   const t1 = Math.min(duration, att);

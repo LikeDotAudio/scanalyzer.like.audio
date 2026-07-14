@@ -71,7 +71,7 @@ export function drawSpectrumTrace(ctx: CanvasRenderingContext2D, spec: Spectrum,
   ctx.fillText('spectrum', w - 4, 2);
 
   // Root-note fundamental as a vertical marker on the frequency axis.
-  const rf = noteToFreq(item?.root_note_name);
+  const rf = noteToFreq(item?.musicality?.root_note_name);
   if (rf && rf >= f0 && rf <= f1) {
     const X = xFreq(rf);
     ctx.strokeStyle = 'rgba(168,85,247,0.9)';
