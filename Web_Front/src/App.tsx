@@ -82,19 +82,6 @@ function App() {
 
   const goToTab = (id: string) => { window.location.hash = `#/${id}`; setActiveTab(id); }
 
-  const handleExportPeak = () => {
-    if (analysisResult.length === 0) return;
-    const blob = new Blob([JSON.stringify(analysisResult)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'sample_analysis.peak';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
   const loadPeakFiles = (fileList: File[]) => {
     const files = fileList.filter(f => /\.peak$|\.json$/i.test(f.name) || f.type === 'application/json');
     if (files.length === 0) return;
@@ -134,13 +121,6 @@ function App() {
       };
       reader.readAsText(file);
     });
-  }
-
-  const handleImportPeak = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    loadPeakFiles(Array.from(e.target.files));
-    // Reset the input so the user can load the exact same file again if they want to
-    e.target.value = '';
   }
 
   const [isDragging, setIsDragging] = useState(false)
@@ -202,9 +182,24 @@ function App() {
     }
   }
 
-  const handleUnloadSounds = () => {
+  // A full reset, not just an unlink: the analysis is what the 3D cloud, the 2D
+  // charts and the file list are drawn from, so dropping the audio while leaving
+  // 36k points on screen left the app claiming to show a library that was no
+  // longer loaded. Nothing is lost — every scanned file's .PEAK sidecar is still
+  // on disk, so re-scanning the folder reads it all back without re-analyzing.
+  const handleUnloadSounds = async () => {
+    if (analysisResult.length && !window.confirm(
+      `Unload ${analysisResult.length.toLocaleString()} analyzed sample(s)? The 3D cloud, the 2D charts and the file list will be cleared. Your .PEAK sidecars stay on disk, so re-scanning the folder reads them straight back.`
+    )) return;
+
     setAudioFiles([]);
     setHasPreviousDir(false);
+    setAnalysisResult([]);
+    setCurrentSound('');
+    setSchemaNotice('');
+    setAudioRoot('');
+    setAudioRootLinked('');
+    await clearDirHandle();
   }
 
   const tabs = [
@@ -233,7 +228,7 @@ function App() {
           Drop .PEAK file to load
         </div>
       )}
-      <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} audioRoot={audioRootLinked} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
+      <Header isAnalyzing={isAnalyzing} progress={progress} onLoadSounds={handleLoadSounds} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} audioRoot={audioRootLinked} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
 
       {schemaNotice && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.4rem 0.75rem', background: 'rgba(255,190,60,0.10)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.78rem' }}>
@@ -272,10 +267,8 @@ function App() {
             isAnalyzing={isAnalyzing}
             setIsAnalyzing={setIsAnalyzing}
             setProgress={setProgress}
-            onExportPeak={handleExportPeak}
             onViewCloud={() => goToTab('cloud')}
             setAudioFiles={setAudioFiles}
-            onImportPeak={handleImportPeak}
             onLoadSounds={handleLoadSounds}
           />
         </div>

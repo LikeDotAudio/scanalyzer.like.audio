@@ -19,10 +19,8 @@ interface ScanalyzeTabProps {
   isAnalyzing: boolean;
   setIsAnalyzing: (val: boolean) => void;
   setProgress: (val: number) => void;
-  onExportPeak: () => void;
   onViewCloud: () => void;
   setAudioFiles: (files: File[]) => void;
-  onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onLoadSounds: () => void;
 }
 
@@ -32,10 +30,8 @@ export default function ScanalyzeTab({
     isAnalyzing,
     setIsAnalyzing,
     setProgress,
-    onExportPeak,
     onViewCloud,
     setAudioFiles,
-    onImportPeak,
     onLoadSounds
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
@@ -247,25 +243,6 @@ export default function ScanalyzeTab({
 
   const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => { void discover(e.target.files, 1); };
 
-  const downloadPeak = (records: any[]) => {
-    try {
-        const now = new Date();
-        const p = (n: number) => String(n).padStart(2, '0');
-        const ts = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}${p(now.getHours())}${p(now.getMinutes())}`;
-        const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Scanalyzer.like.audio - File Audit ${ts}.peak`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    } catch (err) {
-        console.error('Failed to save .peak', err);
-    }
-  };
-
   const startAnalysis = async (files: File[]) => {
     if (files.length === 0) return;
     setIsAnalyzing(true);
@@ -274,7 +251,6 @@ export default function ScanalyzeTab({
     setTotal(files.length);
     stopRef.current = false;
     const newResults: any[] = [];
-    let stopped = false;
     let completed = 0;
 
     startMsRef.current = performance.now();
@@ -303,7 +279,6 @@ export default function ScanalyzeTab({
 
         const assignWork = (worker: Worker) => {
             if (stopRef.current) {
-                stopped = true;
                 checkDone();
                 return;
             }
@@ -359,20 +334,12 @@ export default function ScanalyzeTab({
 
     workers.forEach(w => w.terminate());
 
-    // Keep whatever was scanned. On a clean finish, auto-download the .peak;
-    // on a manual stop, ask whether to keep the partial analysis.
-    const combined = [...analysisResult, ...newResults];
-    setAnalysisResult(combined);
-    if (stopped) {
-        if (window.confirm(`Scan stopped after ${newResults.length} file(s). Keep the .PEAK of what was scanned so far?`)) {
-            downloadPeak(combined);
-        }
-    } else {
-        downloadPeak(combined);
-    }
+    // Keep whatever was scanned. Every finished file already wrote its own .PEAK
+    // sidecar next to the audio, so there is nothing to download and nothing to
+    // ask about on a manual stop — the partial analysis is on disk either way.
+    setAnalysisResult([...analysisResult, ...newResults]);
     stopRef.current = false;
     setIsAnalyzing(false);
-    setPendingWavFiles([]);
   };
 
   if (isAnalyzing) {
@@ -419,9 +386,9 @@ export default function ScanalyzeTab({
                   <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', padding: '1rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
                       <strong style={{ color: 'var(--accent-primary)' }}>What happens next</strong>
                       <ol style={{ margin: '0.5rem 0 0', paddingLeft: '1.25rem' }}>
-                          <li>When the scan finishes, a <strong>.peak</strong> file downloads automatically — this is the analysis of your shared folder.</li>
-                          <li>Load it back in with <strong>Load PEAK Files</strong> (top right).</li>
-                          <li>Then click <strong>Load Sounds</strong> to give the analyzer access again to read your local storage in real time.</li>
+                          <li>Each file's analysis is written as a <strong>.PEAK</strong> sidecar right beside the audio, as it finishes.</li>
+                          <li>When the scan is done, click <strong>View 3D Cloud</strong> — the results are already loaded.</li>
+                          <li>Re-scanning this folder later reads those sidecars back instantly instead of re-analyzing.</li>
                       </ol>
                       <div style={{ marginTop: '0.75rem', color: 'var(--text-secondary)' }}>
                           🔒 Again, nothing is uploaded — this is all done locally on your machine.
@@ -606,10 +573,6 @@ export default function ScanalyzeTab({
             disabled={!wasmReady}
           />
         </label>
-        <label className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem' }}>
-          Load a PEAK File previously scanned…
-          <input type="file" accept=".peak,.PEAK,.json" multiple style={{ display: 'none' }} onChange={onImportPeak} />
-        </label>
         <button className="btn primary" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem' }} onClick={onLoadSounds}>
           Load Sounds Directory…
         </button>
@@ -620,9 +583,6 @@ export default function ScanalyzeTab({
           <h3 style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem' }}>Analysis Complete</h3>
           <p className="text-secondary">{analysisResult.length} files successfully processed.</p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
-            <button className="btn" onClick={onExportPeak}>
-              Save .PEAK File
-            </button>
             <button className="btn primary" onClick={onViewCloud}>
               View 3D Cloud
             </button>

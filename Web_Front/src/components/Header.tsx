@@ -4,7 +4,6 @@ import { isTauri } from '../audioLinking';
 interface HeaderProps {
   isAnalyzing: boolean;
   progress: number;
-  onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onLoadSounds: () => void;
   /** Desktop: absolute root that relative .PEAK paths resolve against. */
   audioRoot?: string;
@@ -15,7 +14,7 @@ interface HeaderProps {
   activeTab?: string;
 }
 
-export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, onUnloadSounds, audioCount, audioRoot, currentSound, hasData, activeTab }: HeaderProps) {
+export default function Header({ isAnalyzing, progress, onLoadSounds, onUnloadSounds, audioCount, audioRoot, currentSound, hasData, activeTab }: HeaderProps) {
   // Desktop links one root folder; the browser links a list of File objects.
   const audioLinked = isTauri() ? !!audioRoot : audioCount > 0;
   return (
@@ -39,7 +38,7 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
             <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
           ) : !hasData ? (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>Step 1:</strong> Scan a folder (Scanalize tab) or <strong style={{ color: 'var(--accent-primary)' }}>Load PEAK Files</strong> to bring in an analysis. →
+              <strong style={{ color: 'var(--accent-primary)' }}>Step 1:</strong> Scan a folder in the <strong style={{ color: 'var(--accent-primary)' }}>Scanalize</strong> tab to bring in an analysis. →
             </span>
           ) : !audioLinked ? (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
@@ -63,16 +62,6 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
       )}
 
       <div className="hide-on-mobile" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <label className={`btn ${hasData ? '' : 'primary blink'}`} style={{ cursor: 'pointer', margin: 0 }}>
-          Load PEAK Files
-          <input
-            type="file"
-            accept=".peak,.PEAK,.json"
-            multiple
-            style={{ display: 'none' }}
-            onChange={onImportPeak}
-          />
-        </label>
         {/* Desktop: a .PEAK scanned in the browser holds relative paths, so the
             asset protocol needs an absolute root to join them onto. */}
         <button className={`btn ${audioLinked ? '' : 'primary blink'}`} onClick={onLoadSounds}>
