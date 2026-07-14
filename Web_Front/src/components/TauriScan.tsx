@@ -6,7 +6,21 @@ import initWasm, { analyzer_version } from 'wasm_analyzer';
 import { setAudioRoot } from '../audioLinking';
 import { normalizePeakRecords } from '../peakSchema';
 
+/** What survey_directory reports — see src-tauri/src/lib.rs. */
+interface Survey {
+  audio_files: number;
+  total_bytes: number;
+  with_sidecar: number;
+  /** null when the sidecars here disagree on a version — "mixed", not a lie. */
+  sidecar_engine: string | null;
+  sample: { path: string; has_sidecar: boolean }[];
+}
+
 export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzing, setIsAnalyzing, setProgress, onViewCloud }: any) {
+  // What the picked folder holds, shown before a single file is decoded.
+  const [survey, setSurvey] = useState<Survey | null>(null);
+  const strideRef = useRef<number | undefined>(undefined);
+  const setStrideRef = (v?: number) => { strideRef.current = v; };
   const [done, setDone] = useState(0);
   const [total, setTotal] = useState(0);
   const [workerCount, setWorkerCount] = useState(0);
@@ -108,21 +122,58 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handlePickAndScan = async (stride?: number) => {
+  // Pick a folder and SURVEY it — do not start work. The desktop build used to go
+  // straight from the picker into a full re-analysis of a library it may already have
+  // done, with no way to see what was there or to say no. This is the same survey the
+  // browser has always shown, and it costs a directory listing.
+  const handlePickAndSurvey = async (stride?: number) => {
     const dir = await open({ directory: true, multiple: false });
-    if (dir && typeof dir === 'string') {
-        targetDirRef.current = dir;   // read by the finish handler; no re-subscribe
-        // The folder you scan IS the folder the audio lives in. Recording it as the
-        // audio root is what lets playback resolve a record's relative path; the only
-        // thing that used to set it was the "Link Audio Folder" button, so once that
-        // went, the desktop build scanned happily and then played nothing.
-        setAudioRoot(dir);
-        setIsAnalyzing(true);
-        setDone(0);
-        setTotal(0);
-        setProgress(0);
-        setStartTime(null);
-        invoke('start_analysis', { directory: dir, stride });
+    if (!dir || typeof dir !== 'string') return;
+    targetDirRef.current = dir;   // read by the finish handler; no re-subscribe
+    // The folder you scan IS the folder the audio lives in. Recording it as the audio
+    // root is what lets playback resolve a record's relative path.
+    setAudioRoot(dir);
+    setStrideRef(stride);
+    try {
+      setSurvey(await invoke<Survey>('survey_directory', { directory: dir }));
+    } catch (err) {
+      alert(`Could not read that folder: ${err}`);
+    }
+  };
+
+  const beginAnalysis = (force: boolean) => {
+    const dir = targetDirRef.current;
+    if (!dir) return;
+    setSurvey(null);
+    setIsAnalyzing(true);
+    setDone(0);
+    setTotal(0);
+    setProgress(0);
+    setStartTime(null);
+    invoke('start_analysis', { directory: dir, stride: strideRef.current, force });
+  };
+
+  // "Just open what I already have" — read the sidecars, analyze nothing.
+  const openExisting = async () => {
+    const dir = targetDirRef.current;
+    if (!dir) return;
+    setSurvey(null);
+    try {
+      const count: number = await invoke('open_sidecars', { directory: dir });
+      const PAGE = 2000;
+      const all: any[] = [];
+      for (let offset = 0; offset < count; offset += PAGE) {
+        const page: string = await invoke('read_peak_page', { offset, limit: PAGE });
+        all.push(...normalizePeakRecords(JSON.parse(page)).records);
+        setLoaded({ done: Math.min(offset + PAGE, count), total: count });
+      }
+      await invoke('close_peak_file');
+      setLoaded(null);
+      if (all.length) setAnalysisResult([...analysisResultRef.current, ...all]);
+    } catch (err) {
+      setLoaded(null);
+      console.error('Failed to open sidecars:', err);
+      alert(`Could not open the existing .PEAK sidecars: ${err}`);
     }
   };
 
@@ -198,12 +249,99 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
     );
   }
 
+  // The survey: what is in the folder, before a single byte is read.
+  if (survey) {
+    const gb = survey.total_bytes / 1e9;
+    const toAnalyze = survey.audio_files - survey.with_sidecar;
+    const stat: React.CSSProperties = { display: 'flex', justifyContent: 'space-between', gap: '2rem', padding: '0.25rem 0' };
+    const mono: React.CSSProperties = { fontFamily: 'monospace', fontSize: '0.78rem' };
+    const staleScan = survey.with_sidecar > 0 && survey.sidecar_engine !== null && survey.sidecar_engine !== version;
+    const mixedScan = survey.with_sidecar > 0 && survey.sidecar_engine === null;
+    const currentScan = survey.with_sidecar > 0 && survey.sidecar_engine === version;
+
+    return (
+      <div className="tab-content glass-panel" style={{ margin: 0, padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+        <h2 style={{ fontSize: '1.8rem' }}>Found {survey.audio_files.toLocaleString()} audio file(s)</h2>
+
+        <div style={{ minWidth: '380px', fontSize: '0.9rem', color: 'var(--text-secondary)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '0.5rem 0' }}>
+          <div style={stat}><span>Audio files{strideRef.current && strideRef.current > 1 ? ` (1 of every ${strideRef.current})` : ''}</span><strong style={{ color: 'var(--text-primary)' }}>{survey.audio_files.toLocaleString()}</strong></div>
+          <div style={stat}><span>Total audio</span><strong style={{ color: 'var(--text-primary)' }}>{gb >= 1 ? `${gb.toFixed(1)} GB` : `${(survey.total_bytes / 1e6).toFixed(0)} MB`}</strong></div>
+          <div style={stat}><span>Already have a .PEAK sidecar</span><strong style={{ color: 'var(--accent-primary)' }}>{survey.with_sidecar.toLocaleString()}</strong></div>
+          <div style={stat}><span>No sidecar — never analyzed</span><strong style={{ color: 'var(--accent-secondary)' }}>{toAnalyze.toLocaleString()}</strong></div>
+          {survey.with_sidecar > 0 && (
+            <>
+              <div style={stat}>
+                <span>Sidecar engine</span>
+                <strong style={{ ...mono, color: currentScan ? 'var(--accent-primary)' : 'var(--accent-secondary)' }}>
+                  {mixedScan ? 'mixed versions' : survey.sidecar_engine}
+                </strong>
+              </div>
+              <div style={stat}><span>Current engine</span><strong style={{ ...mono, color: 'var(--text-primary)' }}>{version || '—'}</strong></div>
+            </>
+          )}
+        </div>
+
+        {(staleScan || mixedScan) && (
+          <div style={{ maxWidth: '640px', fontSize: '0.82rem', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.5 }}>
+            These files were analyzed before, by <strong>different extractor code</strong> than the engine
+            now loaded. Re-analyzing {survey.audio_files.toLocaleString()} file(s) will take a while;
+            opening the existing sidecars is instant, but their numbers come from the older engine.
+          </div>
+        )}
+        {currentScan && toAnalyze === 0 && (
+          <div style={{ maxWidth: '640px', fontSize: '0.82rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+            Every file already has a sidecar from <em>this</em> engine — re-analyzing could only
+            reproduce the same numbers.
+          </div>
+        )}
+
+        <div style={{ width: '100%', maxWidth: '640px', maxHeight: '220px', overflowY: 'auto', background: 'rgba(0,0,0,0.25)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', fontSize: '0.72rem', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
+          {survey.sample.map((f, i) => (
+            <div key={i} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {f.has_sidecar ? '✓ ' : '· '}{f.path}
+            </div>
+          ))}
+          {survey.audio_files > survey.sample.length && (
+            <div style={{ paddingTop: '0.3rem', color: 'var(--accent-secondary)' }}>
+              … and {(survey.audio_files - survey.sample.length).toLocaleString()} more (showing the first {survey.sample.length})
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {survey.with_sidecar > 0 && (
+            <button className="btn primary" style={{ padding: '0.6rem 1.5rem' }}
+              title="Load the analysis already on disk. Nothing is re-analyzed."
+              onClick={() => { void openExisting(); }}>
+              Open the {survey.with_sidecar.toLocaleString()} peak{survey.with_sidecar === 1 ? '' : 's'} as-is
+            </button>
+          )}
+          <button className={`btn ${survey.with_sidecar > 0 ? '' : 'primary'}`} style={{ padding: '0.6rem 1.5rem' }}
+            title="Ignore every existing sidecar and analyze every file from scratch."
+            onClick={() => beginAnalysis(true)}>
+            Rescan all {survey.audio_files.toLocaleString()}
+          </button>
+          {survey.with_sidecar > 0 && toAnalyze > 0 && (
+            <button className="btn" style={{ padding: '0.6rem 1.5rem' }}
+              title="Reuse sidecars written by this engine; analyze only what is missing or out of date."
+              onClick={() => beginAnalysis(false)}>
+              Only analyze what's missing
+            </button>
+          )}
+          <button className="btn" style={{ padding: '0.6rem 1.5rem' }} onClick={() => setSurvey(null)}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem', alignItems: 'center' }}>
-      <button className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }} onClick={() => handlePickAndScan()}>
+      <button className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }} onClick={() => handlePickAndSurvey()}>
         SCAN with RUST engine...
       </button>
-      <button className="btn" style={{ cursor: 'pointer', padding: '0.5rem 1.5rem', fontSize: '0.9rem', opacity: 0.8 }} onClick={() => handlePickAndScan(50)}>
+      <button className="btn" style={{ cursor: 'pointer', padding: '0.5rem 1.5rem', fontSize: '0.9rem', opacity: 0.8 }} onClick={() => handlePickAndSurvey(50)}>
         SAMPLE scan (1 of 50 files)
       </button>
       
