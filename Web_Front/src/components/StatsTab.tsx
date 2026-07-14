@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
-import { groupColor, musicProdColor, musicProdCategory, taxonomyKeys, CLOUD_PALETTE } from '../groupColors'
+import { ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
 import { resolveAudioSrc, isTauri } from '../audioLinking'
 import ScopeBar from './ScopeBar'
 
@@ -69,30 +69,16 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     });
   }, [analysisResult, group, sub, filterText]);
 
+  // UCS category counts — the coarse level, shown in the donut and, unscoped, the bar.
   const categoryData = useMemo(() => {
     const c: Record<string, number> = {};
-    for (const it of data) { const k = it.classification?.music_production_category || musicProdCategory(it.classification?.group || ''); c[k] = (c[k] || 0) + 1; }
+    for (const it of data) { const k = it.ucs?.category || '(unclassified)'; c[k] = (c[k] || 0) + 1; }
     return Object.entries(c).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
   }, [data]);
 
-  const groupData = useMemo(() => {
-    const c: Record<string, number> = {};
-    for (const it of data) { const k = it.classification?.group || 'Unclassified'; c[k] = (c[k] || 0) + 1; }
-    return Object.entries(c).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
-  }, [data]);
-
-  // Distinct colour per subgroup present in scope, so subgroups read apart.
-  const subColors = useMemo(() => {
-    const subs = Array.from(new Set(data.map(it => (it.classification?.subgroup || '').trim()).filter(Boolean))).sort();
-    const map = new Map<string, string>();
-    subs.forEach((s, i) => map.set(s, CLOUD_PALETTE[i % CLOUD_PALETTE.length]));
-    return map;
-  }, [data]);
-
-  const pointColor = (it: any) => {
-    const sg = (it.classification?.subgroup || '').trim();
-    return sg ? (subColors.get(sg) as string) : groupColor(it.classification?.group || 'Unclassified', '');
-  };
+  // Scatter points coloured the same way as the cloud: UCS category hue, subcategory shade.
+  const pointColor = (it: any) =>
+    ucsSubColor(it.ucs?.category || '', (it.ucs?.subcategory || '').trim());
 
   // Downsample the scatter to keep it responsive on huge scopes.
   const plotData = useMemo(() => {
@@ -102,15 +88,16 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   }, [data]);
   const sampled = data.length > SAMPLE_MAX;
 
+  // UCS subcategories within the scoped category — the fine level, shown in the bar
+  // once a category chip is picked. `data` is already filtered to that category.
   const subgroupData = useMemo(() => {
-    const c: Record<string, { value: number; group: string; sub: string }> = {};
+    const c: Record<string, { value: number; cat: string; sub: string }> = {};
     for (const it of data) {
-      const sg = (it.classification?.subgroup || '').trim();
-      if (!sg) continue;
-      const g = it.classification?.group || 'Unclassified';
-      const label = `${g} / ${sg}`;
-      if (!c[label]) c[label] = { value: 0, group: g, sub: sg };
-      c[label].value++;
+      const sub = (it.ucs?.subcategory || '').trim();
+      if (!sub) continue;
+      const cat = it.ucs?.category || '(unclassified)';
+      if (!c[sub]) c[sub] = { value: 0, cat, sub };
+      c[sub].value++;
     }
     return Object.entries(c).map(([name, v]) => ({ name, ...v })).sort((a, b) => b.value - a.value).slice(0, 24);
   }, [data]);
@@ -214,11 +201,11 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '0.5rem', padding: '0.5rem', minHeight: 0 }}>
         {/* God Categories donut */}
         <div className="glass-panel" style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          <h3 style={{ marginBottom: '0.25rem', color: 'var(--accent-primary)', fontSize: '0.85rem' }}>God Categories</h3>
+          <h3 style={{ marginBottom: '0.25rem', color: 'var(--accent-primary)', fontSize: '0.85rem' }}>UCS Categories</h3>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie data={categoryData} cx="50%" cy="50%" innerRadius={45} outerRadius={80} paddingAngle={3} dataKey="value" nameKey="name">
-                {categoryData.map((e, i) => <Cell key={i} fill={musicProdColor(e.name)} />)}
+                {categoryData.map((e, i) => <Cell key={i} fill={ucsColor(e.name)} />)}
               </Pie>
               <Tooltip contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} />
               <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
@@ -229,17 +216,17 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
         {/* Identified Groups / Subgroups bar */}
         <div className="glass-panel" style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <h3 style={{ marginBottom: '0.25rem', color: 'var(--accent-secondary)', fontSize: '0.85rem' }}>
-            {group ? `Subgroups in ${group}` : 'Identified Groups'}
+            {group ? `Subcategories in ${group}` : 'UCS Categories'}
           </h3>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={group ? subgroupData : groupData} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+            <BarChart data={group ? subgroupData : categoryData} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={false} />
               <XAxis type="number" stroke="var(--text-secondary)" fontSize={11} />
               <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" width={group ? 130 : 90} fontSize={11} />
               <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} />
               <Bar dataKey="value">
-                {(group ? subgroupData : groupData).map((e: any, i) => (
-                  <Cell key={i} fill={group ? (subColors.get(e.sub) || groupColor(e.group, e.sub)) : groupColor(e.name, '')} />
+                {(group ? subgroupData : categoryData).map((e: any, i) => (
+                  <Cell key={i} fill={group ? ucsSubColor(e.cat, e.sub) : ucsColor(e.name)} />
                 ))}
               </Bar>
             </BarChart>
