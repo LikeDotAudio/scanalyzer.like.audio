@@ -240,6 +240,7 @@ export default function ScanalyzeTab({
           ? `Nothing to analyze — absorbed ${absorbed.length} up-to-date .PEAK sidecar(s).`
           : "All files in this folder have already been analyzed!");
       }
+      if (absorbed.length) onViewCloud();   // opened existing peaks — show them
       return;
     }
     // The survey screen already showed the file list and the user picked an action there,
@@ -345,6 +346,7 @@ export default function ScanalyzeTab({
     setAnalysisResult([...analysisResult, ...newResults]);
     stopRef.current = false;
     setIsAnalyzing(false);
+    if (newResults.length) onViewCloud();   // the analysis is the point — show it
   };
 
   if (isAnalyzing) {

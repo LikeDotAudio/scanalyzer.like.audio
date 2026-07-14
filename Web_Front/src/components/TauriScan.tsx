@@ -42,6 +42,10 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
   const targetDirRef = useRef<string | null>(null);
   const analysisResultRef = useRef<any[]>(analysisResult);
   useEffect(() => { analysisResultRef.current = analysisResult; }, [analysisResult]);
+  // The finished-scan listener is bound once on mount, so it must reach the CURRENT
+  // onViewCloud through a ref rather than the stale closure value.
+  const onViewCloudRef = useRef<() => void>(onViewCloud);
+  useEffect(() => { onViewCloudRef.current = onViewCloud; }, [onViewCloud]);
 
   useEffect(() => {
     initWasm().then(() => setVersion(analyzer_version())).catch(console.error);
@@ -104,7 +108,10 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
                 }
                 await invoke('close_peak_file');
                 setLoaded(null);
-                if (all.length) setAnalysisResult([...analysisResultRef.current, ...all]);
+                if (all.length) {
+                    setAnalysisResult([...analysisResultRef.current, ...all]);
+                    onViewCloudRef.current?.();   // the analysis is the point — show it
+                }
             } catch (err) {
                 setLoaded(null);
                 console.error("Failed to load peak file:", err);
@@ -169,7 +176,10 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       }
       await invoke('close_peak_file');
       setLoaded(null);
-      if (all.length) setAnalysisResult([...analysisResultRef.current, ...all]);
+      if (all.length) {
+        setAnalysisResult([...analysisResultRef.current, ...all]);
+        onViewCloud?.();
+      }
     } catch (err) {
       setLoaded(null);
       console.error('Failed to open sidecars:', err);
