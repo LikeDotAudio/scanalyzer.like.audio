@@ -46,38 +46,9 @@ pub fn music_prod_category(
     if is_loop {
         return LOOP;
     }
-    match group {
-        "IR" => IMPULSE_RESPONSE,
-
-        // 1. Core kit — the western backbone.
-        "Kick" | "Snare" | "Clap" | "Snap" | "Hi-Hat" | "Tom" => CORE_KIT,
-
-        // 2. Cymbals & metals.
-        "Crash" | "Ride" | "Ride Bell" | "Splash" | "China" | "Cymbal" => CYMBALS,
-
-        // 3. Hand percussion & shakers.
-        "Cowbell" | "Shaker" | "Tambourine" | "Woodblock" | "Guiro" | "Triangle" | "Chime"
-        | "Bell" | "Perc" => HAND_PERCUSSION,
-
-        // 4. World & regional drums.
-        "Conga" | "Bongo" | "Timbale" | "Djembe" | "Talking Drum" | "Darbuka" | "Taiko"
-        | "Cajon" | "Surdo" | "Tabla" => WORLD,
-
-        // 5. Orchestral & pitched percussion.
-        "Marimba" | "Vibraphone" | "Xylophone" | "Glockenspiel" | "Timpani" | "Steel Pan"
-        | "Kalimba" => ORCHESTRAL,
-
-        // 6. Electronic & sound design — the sampler specials.
-        "808" | "Vinyl" | "Scratch" | "DJ" | "Vocal" | "FX" => ELECTRONIC,
-
-        // Not one of the six drum families, but the library is full of tuned instruments.
-        "Guitar" | "Strings" | "Horn" | "Sax" | "Bass" | "Keyboards" | "Note" => MELODIC,
-
-        "Loops/Patterns" => LOOP,
-
-        // Name taxonomy failed — classify by the measured envelope.
-        _ => from_envelope(env),
-    }
+    // The instrument→family membership lives in MUSICPROD.json, read by categorize.rs.
+    // A name the taxonomy could not place has no family; the envelope decides.
+    crate::categorize::family_of(group).unwrap_or_else(|| from_envelope(env))
 }
 
 /// A struck / hit family, where a root note is usually meaningless noise.

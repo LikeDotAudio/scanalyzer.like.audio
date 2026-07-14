@@ -1,137 +1,115 @@
+//! The music-production taxonomy, read from UCS/categories/MUSICPROD.json.
+//!
+//! Like ucs.rs reads the UCS categories, this reads MUSICPROD — but a production role is
+//! a FILE-NAME lookup, not an acoustic guess, so the data is synonyms and abbreviations
+//! rather than priors and gates. The taxonomy used to be hardcoded here as a RULES table;
+//! it now lives in the JSON, the single source of truth the frontend is generated from too.
+use std::collections::HashMap;
+use std::sync::OnceLock;
+
+use serde::Deserialize;
+
 use crate::normalize::normalize_name;
 
+#[derive(Deserialize)]
+struct Variation {
+    name: String,
+    #[serde(default)]
+    phrases: Vec<String>,
+    #[serde(default)]
+    abbrevs: Vec<String>,
+}
+
+#[derive(Deserialize)]
+struct Instrument {
+    instrument: String,
+    family: String,
+    #[serde(default)]
+    phrases: Vec<String>,
+    #[serde(default)]
+    abbrevs: Vec<String>,
+    #[serde(default)]
+    variations: Vec<Variation>,
+}
+
+#[derive(Deserialize)]
+struct MusicProd {
+    instruments: Vec<Instrument>,
+}
+
+pub struct Taxonomy {
+    doc: MusicProd,
+    /// instrument name -> its family. First wins, so a duplicated instrument (the
+    /// generic-drum Perc rule appears twice) keeps the family of its first entry.
+    family_of: HashMap<String, String>,
+}
+
+/// The non-matchable UCS files bundled by build.rs — MUSICPROD is the only one.
+const ROLE_BUNDLE: &str = include_str!(concat!(env!("OUT_DIR"), "/ucs_roles.json"));
+
+fn load() -> Taxonomy {
+    let arr: Vec<serde_json::Value> = serde_json::from_str(ROLE_BUNDLE)
+        .expect("bundled ucs_roles.json is not valid JSON — check build.rs");
+    let mp = arr
+        .into_iter()
+        .find(|v| v.get("category").and_then(|c| c.as_str()) == Some("MUSICPROD"))
+        .expect("MUSICPROD.json missing from the role bundle");
+    let doc: MusicProd =
+        serde_json::from_value(mp).expect("MUSICPROD.json does not match the taxonomy schema");
+
+    let mut family_of = HashMap::new();
+    for inst in &doc.instruments {
+        family_of
+            .entry(inst.instrument.clone())
+            .or_insert_with(|| inst.family.clone());
+    }
+    Taxonomy { doc, family_of }
+}
+
+pub fn taxonomy() -> &'static Taxonomy {
+    static T: OnceLock<Taxonomy> = OnceLock::new();
+    T.get_or_init(load)
+}
+
+/// The family an instrument belongs to, or None if the name is unknown (the caller
+/// falls back to the measured envelope). References into the 'static taxonomy.
+pub fn family_of(group: &str) -> Option<&'static str> {
+    taxonomy().family_of.get(group).map(String::as_str)
+}
+
 /// Categorize a sample by its (full-path) name, tolerant of the many spelling /
-/// abbreviation conventions for drum elements. Phrases are matched as substrings
-/// of the normalized name; ABBREVIATIONS are matched as whole tokens (so "bd"
-/// hits "BD_01" but not "bird"). Order = most specific first.
-/// Returns (group, subgroup, matched-token). `subgroup` is a curated instrument
-/// level under a broader group ("Conga" under "Perc", "Synth" under "Keyboards")
-/// or "" when the group has no deeper level (then the length tier is used).
+/// abbreviation conventions for drum elements. Phrases match as substrings of the
+/// normalized name; ABBREVIATIONS match as whole tokens (so "bd" hits "BD_01" but not
+/// "bird"). Instruments are tried in file order (most specific first); a variation is
+/// tried before its instrument's base.
+///
+/// Returns (instrument, variation, matched-token), all borrowed from the 'static
+/// taxonomy. `variation` is "" when only the base matched.
 pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
+    let t = taxonomy();
     let norm = normalize_name(name);
     let toks: Vec<&str> = norm.split_whitespace().collect();
-    let tok = |t: &str| toks.iter().any(|x| *x == t);
+    let tok = |s: &str| toks.iter().any(|x| *x == s);
     let ph = |p: &str| norm.contains(p);
 
-    // Each rule: (group, subgroup, phrases[], abbrev-tokens[]). The GROUP is the
-    // instrument (Kick, Crash, Conga, 808); the SUBGROUP is a curated variation of it
-    // (a Snare's Rimshot, a Hi-Hat's Closed, a Tom's pitch). Phrases match as substrings,
-    // abbrevs as whole tokens. Order = most specific first. The abbreviations are the
-    // shorthand producers put in file names (BD, CHH, XSTK, CRSH, CNG, 808…).
-    const RULES: &[(&str, &str, &[&str], &[&str])] = &[
-        // --- impulse responses (convolution / cabinet / reverb) — checked early ---
-        ("IR", "", &["impulse response", "impulse", "convolution", "convol", "cabinet", "guitar cab", "reverb ir"], &["ir", "cab", "conv"]),
-
-        // === 1. CORE KIT ===
-        // Kick before Bass: anything that says "bass drum" in any spelling is a Kick;
-        // only a plain "bass" is Bass. 808 is handled separately (Electronic), not here.
-        ("Kick", "", &["kick", "kik", "bass drum", "bassdrum", "bassdrm", "bass drm", "bdrum"],
-                     &["bd", "kck", "kik", "kic", "kk", "bassd", "bdr"]),
-        // Snare and its stick variations. Rimshot and cross-stick are the snare, played
-        // differently — not separate instruments.
-        ("Snare", "Rimshot", &["rimshot", "rim shot"], &["rim", "rs", "rimsh"]),
-        ("Snare", "Cross-stick", &["cross stick", "crossstick", "side stick", "sidestick"], &["xstk", "xs", "xstick"]),
-        ("Snare", "", &["snare"], &["sd", "sn", "snr"]),
-        // Claps and finger snaps — the human layer over the snare.
-        ("Clap", "", &["handclap", "hand clap", "clap"], &["cp", "clp"]),
-        ("Snap", "", &["finger snap", "fingersnap", "snap"], &["fngr", "snp"]),
-        // Hi-hats, split closed / open / pedal. Abbrev order matters: chh/ohh/phh before
-        // the bare ch/oh/ph so a "CHH" is Closed, not ambiguous.
-        ("Hi-Hat", "Closed", &["closed hat", "closed hi hat", "closed hihat"], &["chh", "ch"]),
-        ("Hi-Hat", "Open", &["open hat", "open hi hat", "open hihat"], &["ohh", "oh"]),
-        ("Hi-Hat", "Pedal", &["pedal hat", "foot hat", "pedal hi hat"], &["phh", "ph"]),
-        // "hh" and "hat" as substrings too, so an embedded "ClosedHH1" or "808HH" still lands.
-        ("Hi-Hat", "", &["hihat", "hi hat", "hats", "hat", "hh"], &[]),
-        // Toms are one instrument at different pitches — the pitch is the variation.
-        ("Tom", "Hi", &["high tom", "hi tom", "rack tom 1", "tom 1", "hitom"], &["ht", "t1", "hitom"]),
-        ("Tom", "Mid", &["mid tom", "middle tom", "rack tom 2", "tom 2", "midtom"], &["mt", "t2", "midtom"]),
-        ("Tom", "Floor", &["floor tom", "low tom", "tom 3", "lotom", "floortom"], &["ft", "lt", "t3", "lotom"]),
-        ("Tom", "", &["tom"], &["tm"]),
-
-        // === 2. CYMBALS & METALS ===
-        // Each cymbal type is its own instrument. Crash before the generic cymbal rule.
-        ("Crash", "", &["crash cymbal", "crash"], &["crsh", "cc"]),
-        ("Ride Bell", "", &["ride bell", "bell cymbal"], &["rdb"]),
-        ("Ride", "", &["ride cymbal", "ride"], &["rd", "rc"]),
-        ("Splash", "", &["splash cymbal", "splash"], &["spl"]),
-        ("China", "", &["china cymbal", "china"], &["chn"]),
-        ("Cymbal", "Gong", &["gong", "tam tam", "tamtam"], &[]),
-        // "cym" as a substring too, so an embedded "OHCYM" or "808_CYM" still lands.
-        ("Cymbal", "", &["cymbal", "cym", "sizzle", "swish", "zildjian", "sabian", "paiste"], &["cy"]),
-
-        // === 4. WORLD & REGIONAL (before generic Perc so they are not swallowed) ===
-        ("Conga", "", &["conga", "tumba", "quinto"], &["cng", "cg", "con"]),
-        ("Bongo", "", &["bongo"], &["bng"]),
-        ("Timbale", "", &["timbale", "timbales"], &["timb"]),
-        ("Djembe", "", &["djembe"], &["djm", "djb"]),
-        ("Talking Drum", "", &["talking drum", "talkingdrum"], &[]),
-        ("Darbuka", "", &["darbuka", "doumbek", "goblet drum"], &[]),
-        ("Taiko", "", &["taiko"], &[]),
-        ("Cajon", "", &["cajon"], &[]),
-        ("Surdo", "", &["surdo"], &[]),
-        ("Tabla", "", &["tabla"], &[]),
-
-        // === 5. ORCHESTRAL & PITCHED ===
-        ("Marimba", "", &["marimba"], &[]),
-        ("Vibraphone", "", &["vibraphone", "vibes"], &["vib"]),
-        ("Xylophone", "", &["xylophone"], &["xyl"]),
-        ("Glockenspiel", "", &["glockenspiel", "glock"], &[]),
-        ("Timpani", "", &["timpani", "kettledrum", "kettle drum"], &["timp"]),
-        ("Steel Pan", "", &["steel pan", "steelpan", "steel drum", "steeldrum"], &[]),
-        ("Kalimba", "", &["kalimba", "mbira", "thumb piano"], &[]),
-
-        // === 3. HAND PERCUSSION & SHAKERS ===
-        // Cowbell before Bell so "cowbell" never falls through to plain Bell.
-        ("Cowbell", "", &["cowbell", "cow bell", "agogo"], &["cb", "cow", "cbell"]),
-        ("Shaker", "", &["shaker", "maracas", "maraca", "cabasa", "caxixi", "egg shaker"], &["shkr", "shk", "shak"]),
-        ("Tambourine", "", &["tambourine"], &["tamb", "tmb"]),
-        ("Woodblock", "", &["woodblock", "wood block", "claves", "clave", "castanet", "block"], &["wb", "clv", "clav"]),
-        ("Guiro", "", &["guiro", "scraper", "cuica"], &["gui"]),
-        ("Triangle", "", &["triangle"], &[]),
-        ("Chime", "", &["wind chime", "chime"], &[]),
-        ("Bell", "", &["sleigh bell", "hand bell", "bell"], &[]),
-        // Slap bass is a Bass technique — guard it before the Slap percussion rule.
-        ("Bass", "", &["slap bass", "bass slap"], &[]),
-        ("Perc", "Slap", &["slap"], &[]),
-        ("Perc", "", &["percussion", "auxiliary", "perc"], &["prc", "perc"]),
-
-        // === 6. ELECTRONIC & SOUND DESIGN ===
-        // 808 is a drum machine / sub-bass hybrid — its own instrument, not Bass.
-        ("808", "", &["808"], &["808"]),
-        ("Vinyl", "", &["vinyl", "crackle", "atmosphere", "atmos", "record noise"], &["vnl"]),
-        ("Scratch", "", &["scratches", "scratch"], &["scr"]),
-        ("DJ", "", &["turntable", "deck", "transform scratch"], &["dj"]),
-        ("Vocal", "", &["vocal", "voice", "chant", "shout", "adlib", "choir", "acapella", "acappella"], &["vox", "vx", "voc"]),
-        ("FX", "Riser", &["riser", "uplifter", "sweep up"], &["ris", "swp"]),
-        ("FX", "Impact", &["impact", "boom", "hit fx"], &["imp"]),
-        ("FX", "", &["sound effect", "foley", "laser", "noise", "zap", "glitch", "drone",
-                     "whoosh", "reverse", "downlifter", "sweep", "sfx", "fx"], &["fx", "sfx"]),
-
-        // === MELODIC (not in the 6 drum families, but the library is full of it) ===
-        ("Guitar", "", &["guitar", "gtr", "acoustic gt", "electric gt"], &["gtr", "gt"]),
-        ("Strings", "", &["strings", "string", "violin", "viola", "cello", "orchestra", "ensemble", "pizz", "arco"], &[]),
-        ("Horn", "", &["horn", "trumpet", "trombone", "tuba", "brass"], &["hrn"]),
-        ("Sax", "", &["saxophone", "sax"], &[]),
-        ("Bass", "", &["bass", "sub bass", "808 bass"], &["sub"]),
-        ("Keyboards", "Electric Piano", &["electric piano", "rhodes", "wurlitzer", "wurli", "e-piano", "epiano"], &["ep"]),
-        ("Keyboards", "Organ", &["organ", "hammond"], &["org"]),
-        ("Keyboards", "Clav", &["clavinet", "clav"], &[]),
-        ("Keyboards", "Piano", &["grand piano", "upright piano", "piano"], &["pno"]),
-        ("Keyboards", "Synth", &["synthesizer", "synth"], &["syn"]),
-        ("Keyboards", "", &["keyboard", "keys"], &["kb", "keyb"]),
-        ("Note", "", &["note"], &[]),
-
-        // Generic "drum" tag, last, so "Synth Drum" and bare "drum" land somewhere.
-        ("Perc", "Drum", &["drum"], &["drm"]),
-        ("Loops/Patterns", "", &["loop", "groove", "beat"], &["lp"]),
-    ];
-
-    for (cat, sub, phrases, abbrevs) in RULES {
+    let hit = |phrases: &'static [String], abbrevs: &'static [String]| -> Option<&'static str> {
         if let Some(p) = phrases.iter().find(|p| ph(p)) {
-            return (cat, sub, p);
+            return Some(p.as_str());
         }
         if let Some(a) = abbrevs.iter().find(|a| tok(a)) {
-            return (cat, sub, a);
+            return Some(a.as_str());
+        }
+        None
+    };
+
+    for inst in &t.doc.instruments {
+        for v in &inst.variations {
+            if let Some(why) = hit(&v.phrases, &v.abbrevs) {
+                return (inst.instrument.as_str(), v.name.as_str(), why);
+            }
+        }
+        if let Some(why) = hit(&inst.phrases, &inst.abbrevs) {
+            return (inst.instrument.as_str(), "", why);
         }
     }
     ("Unclassified", "", "")

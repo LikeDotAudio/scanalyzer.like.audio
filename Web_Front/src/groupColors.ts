@@ -1,27 +1,9 @@
-// Group / music-production colour system. FAMILY (music_production_category) → its
-// member INSTRUMENTS (classification.group), assigned by sample_analyzer_rs/src/
-// music_prod.rs + categorize.rs. This is a producer's drum-sampler taxonomy: keep it in
-// step with music_prod.rs — the family names and the group→family membership must match
-// exactly, or the scope chips and colours disagree with what the engine wrote.
-export const MUSIC_PROD_CATEGORIES: [string, string[]][] = [
-  // 1. Core kit — the western backbone.
-  ['CORE KIT', ['Kick', 'Snare', 'Clap', 'Snap', 'Hi-Hat', 'Tom']],
-  // 2. Cymbals & metals.
-  ['CYMBALS & METALS', ['Crash', 'Ride', 'Ride Bell', 'Splash', 'China', 'Cymbal']],
-  // 3. Hand percussion & shakers.
-  ['HAND PERCUSSION', ['Cowbell', 'Shaker', 'Tambourine', 'Woodblock', 'Guiro', 'Triangle', 'Chime', 'Bell', 'Perc']],
-  // 4. World & regional drums.
-  ['WORLD & REGIONAL', ['Conga', 'Bongo', 'Timbale', 'Djembe', 'Talking Drum', 'Darbuka', 'Taiko', 'Cajon', 'Surdo', 'Tabla']],
-  // 5. Orchestral & pitched percussion.
-  ['ORCHESTRAL & PITCHED', ['Marimba', 'Vibraphone', 'Xylophone', 'Glockenspiel', 'Timpani', 'Steel Pan', 'Kalimba']],
-  // 6. Electronic & sound design — the sampler specials.
-  ['ELECTRONIC & DESIGN', ['808', 'Vinyl', 'Scratch', 'DJ', 'Vocal', 'FX']],
-  // Not one of the six drum families, but the library is full of tuned instruments.
-  ['MELODIC', ['Guitar', 'Strings', 'Horn', 'Sax', 'Bass', 'Keyboards', 'Note']],
-  ['IMPULSE RESPONSE', ['IR']],
-  ['LOOP', ['Loops/Patterns']],
-  ['MISC', ['Unclassified']],
-];
+// Group / music-production colour system. The taxonomy — FAMILY
+// (music_production_category) → its member INSTRUMENTS (classification.group) — and the
+// per-family hues are GENERATED from UCS/categories/MUSICPROD.json, the same file the Rust
+// engine reads. Edit the JSON and run `npm run gen:musicprod`; never edit the taxonomy here.
+import { MUSIC_PROD_CATEGORIES, MUSIC_PROD_HUES } from './musicprodTaxonomy';
+export { MUSIC_PROD_CATEGORIES };
 
 export const CATEGORY_ORDER = MUSIC_PROD_CATEGORIES.map(([cat]) => cat);
 
@@ -50,20 +32,8 @@ export const CLOUD_PALETTE = [
   '#ff8a65', '#4db6ac', '#dce775', '#9575cd', '#ffffff',
 ];
 
-// One hue per family, spread around the wheel so neighbours stay distinct.
-// MISC is null → the grey ramp.
-const CATEGORY_HUES: Record<string, number | null> = {
-  'CORE KIT': 0.02,
-  'CYMBALS & METALS': 0.12,
-  'HAND PERCUSSION': 0.21,
-  'WORLD & REGIONAL': 0.33,
-  'ORCHESTRAL & PITCHED': 0.45,
-  'ELECTRONIC & DESIGN': 0.55,
-  MELODIC: 0.68,
-  'IMPULSE RESPONSE': 0.80,
-  LOOP: 0.90,
-  MISC: null,
-};
+// One hue per family (generated from MUSICPROD.json). MISC is null → the grey ramp.
+const CATEGORY_HUES = MUSIC_PROD_HUES;
 
 const CATEGORY_GROUPS: Record<string, string[]> = {};
 for (const [cat, groups] of MUSIC_PROD_CATEGORIES) CATEGORY_GROUPS[cat] = groups;
