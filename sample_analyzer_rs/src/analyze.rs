@@ -154,15 +154,14 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     // old god map let the vocal flag clobber Complex here, so every vocal-ish
     // loop lost its loop-ness.)
     if is_vocal && !is_loop {
-        music_class = crate::music_prod::PERFORMANCE.to_string();
+        music_class = crate::music_prod::ELECTRONIC.to_string();
     }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
     // harmonic, e.g. an 808 or a pitched tom), report none — nil is fine.
     let (root_name, root_hz, root_cents) =
-        if (music_class == crate::music_prod::PERCUSSION
-            || music_class == crate::music_prod::SHAKEN)
+        if crate::music_prod::is_percussive_family(&music_class)
             && root_note < 0
             && harmonicity < 0.6
         {
@@ -413,15 +412,14 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     // old god map let the vocal flag clobber Complex here, so every vocal-ish
     // loop lost its loop-ness.)
     if is_vocal && !is_loop {
-        music_class = crate::music_prod::PERFORMANCE.to_string();
+        music_class = crate::music_prod::ELECTRONIC.to_string();
     }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
     // harmonic, e.g. an 808 or a pitched tom), report none — nil is fine.
     let (root_name, root_hz, root_cents) =
-        if (music_class == crate::music_prod::PERCUSSION
-            || music_class == crate::music_prod::SHAKEN)
+        if crate::music_prod::is_percussive_family(&music_class)
             && root_note < 0
             && harmonicity < 0.6
         {

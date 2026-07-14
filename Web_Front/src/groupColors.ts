@@ -1,32 +1,24 @@
-// Group / music-production colour system — the roles come from
-// UCS/categories/MUSICPROD.json and are assigned by sample_analyzer_rs/src/music_prod.rs.
-//
-// This replaces the old "god categories" (Percussive / Tonal / Keyboards /
-// Complex / Impulsive with Tail). Keep the group→role map below in step with
-// music_prod.rs. Roles that music_prod.rs only reaches via a SUBGROUP —
-// SYNTHESIZED, BELLS, CHIME, SHAKEN, PERCUSSION TUNED — cannot be derived from a
-// group name, so they get a hue here but no group members; a record colours by
-// its own music_production_category when it carries one.
-
+// Group / music-production colour system. FAMILY (music_production_category) → its
+// member INSTRUMENTS (classification.group), assigned by sample_analyzer_rs/src/
+// music_prod.rs + categorize.rs. This is a producer's drum-sampler taxonomy: keep it in
+// step with music_prod.rs — the family names and the group→family membership must match
+// exactly, or the scope chips and colours disagree with what the engine wrote.
 export const MUSIC_PROD_CATEGORIES: [string, string[]][] = [
-  ['PERCUSSION', ['Clap', 'Cymbal', 'Hi-Hat', 'Kick', 'Perc', 'Ride', 'Rim', 'Snare', 'Tom']],
-  ['PERCUSSION TUNED', []],
-  ['BELLS', []],
-  ['CHIME', []],
-  ['SHAKEN', []],
+  // 1. Core kit — the western backbone.
+  ['CORE KIT', ['Kick', 'Snare', 'Clap', 'Snap', 'Hi-Hat', 'Tom']],
+  // 2. Cymbals & metals.
+  ['CYMBALS & METALS', ['Crash', 'Ride', 'Ride Bell', 'Splash', 'China', 'Cymbal']],
+  // 3. Hand percussion & shakers.
+  ['HAND PERCUSSION', ['Cowbell', 'Shaker', 'Tambourine', 'Woodblock', 'Guiro', 'Triangle', 'Chime', 'Bell', 'Perc']],
+  // 4. World & regional drums.
+  ['WORLD & REGIONAL', ['Conga', 'Bongo', 'Timbale', 'Djembe', 'Talking Drum', 'Darbuka', 'Taiko', 'Cajon', 'Surdo', 'Tabla']],
+  // 5. Orchestral & pitched percussion.
+  ['ORCHESTRAL & PITCHED', ['Marimba', 'Vibraphone', 'Xylophone', 'Glockenspiel', 'Timpani', 'Steel Pan', 'Kalimba']],
+  // 6. Electronic & sound design — the sampler specials.
+  ['ELECTRONIC & DESIGN', ['808', 'Vinyl', 'Scratch', 'DJ', 'Vocal', 'FX']],
+  // Not one of the six drum families, but the library is full of tuned instruments.
+  ['MELODIC', ['Guitar', 'Strings', 'Horn', 'Sax', 'Bass', 'Keyboards', 'Note']],
   ['IMPULSE RESPONSE', ['IR']],
-  ['KEYED', ['Keyboards']],
-  ['SYNTHESIZED', []],
-  ['PLUCKED', ['Guitar']],
-  ['STRINGED', ['Strings']],
-  ['BRASS', ['Horn']],
-  ['WOODWIND', ['Sax']],
-  // Bass is an instrument: the name matcher only sees the word "bass" and cannot
-  // tell a sub from an upright, so it is not forced into a family.
-  ['INSTRUMENT', ['Bass', 'Note']],
-  // A vocal take, a scratch and a turntable are all captured performances.
-  ['PERFORMANCE', ['Voice', 'Scratch', 'DJ']],
-  ['EXPERIMENTAL', ['FX']],
   ['LOOP', ['Loops/Patterns']],
   ['MISC', ['Unclassified']],
 ];
@@ -58,36 +50,30 @@ export const CLOUD_PALETTE = [
   '#ff8a65', '#4db6ac', '#dce775', '#9575cd', '#ffffff',
 ];
 
-// One hue per role, spread around the wheel so neighbouring roles stay distinct.
+// One hue per family, spread around the wheel so neighbours stay distinct.
 // MISC is null → the grey ramp.
 const CATEGORY_HUES: Record<string, number | null> = {
-  PERCUSSION: 0.02,
-  'PERCUSSION TUNED': 0.08,
-  BELLS: 0.12,
-  CHIME: 0.16,
-  SHAKEN: 0.21,
-  'IMPULSE RESPONSE': 0.28,
-  KEYED: 0.36,
-  SYNTHESIZED: 0.44,
-  PLUCKED: 0.50,
-  STRINGED: 0.55,
-  BRASS: 0.61,
-  WOODWIND: 0.66,
-  INSTRUMENT: 0.72,
-  PERFORMANCE: 0.79,
-  EXPERIMENTAL: 0.86,
-  LOOP: 0.93,
+  'CORE KIT': 0.02,
+  'CYMBALS & METALS': 0.12,
+  'HAND PERCUSSION': 0.21,
+  'WORLD & REGIONAL': 0.33,
+  'ORCHESTRAL & PITCHED': 0.45,
+  'ELECTRONIC & DESIGN': 0.55,
+  MELODIC: 0.68,
+  'IMPULSE RESPONSE': 0.80,
+  LOOP: 0.90,
   MISC: null,
 };
 
 const CATEGORY_GROUPS: Record<string, string[]> = {};
 for (const [cat, groups] of MUSIC_PROD_CATEGORIES) CATEGORY_GROUPS[cat] = groups;
 
+// The curated variation subgroups the engine emits (categorize.rs). Their only job here
+// is a stable, distinct shade offset; an unlisted subgroup falls back to a hash.
 const KNOWN_SUBGROUPS = [
-  'Hi', 'Mid', 'Lo', 'Disco', 'Crash', 'Gong', 'Conga', 'Bongo', 'Cowbell',
-  'Clave', 'Shaker', 'Block', 'Bell', 'Chime', 'Kalimba', 'Taiko', 'Tabla',
-  'Slap', 'Triangle', 'Piano', 'Electric Piano', 'Organ', 'Clav', 'Synth',
-  'Beat', 'Groove', 'Guitar', 'Loop', 'Drum',
+  'Rimshot', 'Cross-stick', 'Closed', 'Open', 'Pedal', 'Hi', 'Mid', 'Floor',
+  'Gong', 'Riser', 'Impact', 'Slap', 'Piano', 'Electric Piano', 'Organ', 'Clav', 'Synth',
+  'Drum',
 ];
 
 // CRC-32 (matches Python's zlib.crc32) for stable hashing of unknown names.

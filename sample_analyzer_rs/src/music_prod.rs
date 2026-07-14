@@ -17,89 +17,87 @@
 //! this sound". The two axes are carried side by side on every record.
 use crate::envelope::Envelope;
 
-pub const BELLS: &str = "BELLS";
-pub const BRASS: &str = "BRASS";
-pub const CHIME: &str = "CHIME";
-pub const EXPERIMENTAL: &str = "EXPERIMENTAL";
-pub const IMPULSE_RESPONSE: &str = "IMPULSE RESPONSE";
-pub const INSTRUMENT: &str = "INSTRUMENT";
-pub const KEYED: &str = "KEYED";
+// The six producer families a drum sampler is organized around, plus the families the
+// rest of a real library needs: MELODIC for tuned instruments, LOOP, IMPULSE_RESPONSE,
+// and MISC for what nothing could place.
+pub const CORE_KIT: &str = "CORE KIT";
+pub const CYMBALS: &str = "CYMBALS & METALS";
+pub const HAND_PERCUSSION: &str = "HAND PERCUSSION";
+pub const WORLD: &str = "WORLD & REGIONAL";
+pub const ORCHESTRAL: &str = "ORCHESTRAL & PITCHED";
+pub const ELECTRONIC: &str = "ELECTRONIC & DESIGN";
+pub const MELODIC: &str = "MELODIC";
 pub const LOOP: &str = "LOOP";
+pub const IMPULSE_RESPONSE: &str = "IMPULSE RESPONSE";
 pub const MISC: &str = "MISC";
-pub const PERCUSSION: &str = "PERCUSSION";
-pub const PERCUSSION_TUNED: &str = "PERCUSSION TUNED";
-pub const PERFORMANCE: &str = "PERFORMANCE";
-pub const PLUCKED: &str = "PLUCKED";
-pub const SHAKEN: &str = "SHAKEN";
-pub const STRINGED: &str = "STRINGED";
-pub const SYNTHESIZED: &str = "SYNTHESIZED";
-pub const WOODWIND: &str = "WOODWIND";
 
-/// Assign the music-production role. A loop is a LOOP whatever it contains; a
-/// recognized (group, subgroup) uses the curated map; anything the name taxonomy
+/// Assign the production FAMILY from the instrument group. A loop is a LOOP whatever it
+/// contains; a recognized instrument maps to its family; anything the name taxonomy
 /// could not place is classified by its measured envelope.
+///
+/// `subgroup` is unused now — the family is decided by the instrument alone — but kept in
+/// the signature so the call site and the record schema do not have to change.
 pub fn music_prod_category(
     group: &str,
-    subgroup: &str,
+    _subgroup: &str,
     is_loop: bool,
     env: &Envelope,
 ) -> &'static str {
     if is_loop {
         return LOOP;
     }
-    match (group, subgroup) {
-        // A convolution IR is not a musical part, but it is in the library, so it
-        // gets a role of its own rather than falling into MISC.
-        ("IR", _) => IMPULSE_RESPONSE,
+    match group {
+        "IR" => IMPULSE_RESPONSE,
 
-        // Keyboards split on the subgroup: a synth is a synth, not a piano.
-        ("Keyboards", "Synth") => SYNTHESIZED,
-        ("Keyboards", _) => KEYED,
+        // 1. Core kit — the western backbone.
+        "Kick" | "Snare" | "Clap" | "Snap" | "Hi-Hat" | "Tom" => CORE_KIT,
 
-        // Tuned / bell-like percussion, routed by subgroup. These all used to
-        // collapse into the same bucket as a kick drum.
-        ("Perc", "Bell") | ("Perc", "Cowbell") | ("Cymbal", "Gong") => BELLS,
-        ("Perc", "Chime") => CHIME,
-        ("Perc", "Shaker") => SHAKEN,
-        ("Perc", "Kalimba") | ("Perc", "Triangle") => PERCUSSION_TUNED,
+        // 2. Cymbals & metals.
+        "Crash" | "Ride" | "Ride Bell" | "Splash" | "China" | "Cymbal" => CYMBALS,
 
-        // The drum kit and the rest of auxiliary percussion.
-        ("Kick", _) | ("Snare", _) | ("Hi-Hat", _) | ("Ride", _) | ("Cymbal", _)
-        | ("Clap", _) | ("Rim", _) | ("Tom", _) | ("Perc", _) => PERCUSSION,
+        // 3. Hand percussion & shakers.
+        "Cowbell" | "Shaker" | "Tambourine" | "Woodblock" | "Guiro" | "Triangle" | "Chime"
+        | "Bell" | "Perc" => HAND_PERCUSSION,
 
-        ("Guitar", _) => PLUCKED,
-        ("Strings", _) => STRINGED,
-        ("Horn", _) => BRASS,
-        ("Sax", _) => WOODWIND,
+        // 4. World & regional drums.
+        "Conga" | "Bongo" | "Timbale" | "Djembe" | "Talking Drum" | "Darbuka" | "Taiko"
+        | "Cajon" | "Surdo" | "Tabla" => WORLD,
 
-        // Bass is an instrument: the name matcher only sees the word "bass" and
-        // cannot tell a sub from an upright, so it is not forced into a family.
-        ("Bass", _) | ("Note", _) => INSTRUMENT,
+        // 5. Orchestral & pitched percussion.
+        "Marimba" | "Vibraphone" | "Xylophone" | "Glockenspiel" | "Timpani" | "Steel Pan"
+        | "Kalimba" => ORCHESTRAL,
 
-        // A vocal take, a scratch and a turntable are all captured performances.
-        ("Voice", _) | ("Scratch", _) | ("DJ", _) => PERFORMANCE,
+        // 6. Electronic & sound design — the sampler specials.
+        "808" | "Vinyl" | "Scratch" | "DJ" | "Vocal" | "FX" => ELECTRONIC,
 
-        ("FX", _) => EXPERIMENTAL,
-        ("Loops/Patterns", _) => LOOP,
+        // Not one of the six drum families, but the library is full of tuned instruments.
+        "Guitar" | "Strings" | "Horn" | "Sax" | "Bass" | "Keyboards" | "Note" => MELODIC,
+
+        "Loops/Patterns" => LOOP,
 
         // Name taxonomy failed — classify by the measured envelope.
         _ => from_envelope(env),
     }
 }
 
-/// Role for a file whose name told us nothing.
+/// A struck / hit family, where a root note is usually meaningless noise.
+pub fn is_percussive_family(family: &str) -> bool {
+    matches!(family, CORE_KIT | CYMBALS | HAND_PERCUSSION | WORLD)
+}
+
+/// Family for a file whose name told us nothing.
 fn from_envelope(env: &Envelope) -> &'static str {
     match env.shape {
         "Multi" => LOOP,
-        "Sustained" | "Swell" => INSTRUMENT,
-        "Plucky" => PERCUSSION,
+        "Sustained" | "Swell" => MELODIC,
+        "Plucky" => CORE_KIT,
         "Decaying" => {
             // Fast attack, no plateau: the length of the die-off separates a hit
             // from a ringing wash (a reverb-like tail rings well past half a second).
             if env.decay + env.release > 0.5 {
                 IMPULSE_RESPONSE
             } else {
-                PERCUSSION
+                CORE_KIT
             }
         }
         _ => MISC, // "Silent" or unmeasurable
@@ -126,40 +124,38 @@ mod tests {
     }
 
     #[test]
-    fn curated_map() {
+    fn instruments_map_to_their_families() {
         let e = env("Plucky", 0.05, 0.05);
-        assert_eq!(music_prod_category("Kick", "", false, &e), PERCUSSION);
-        assert_eq!(music_prod_category("Cymbal", "Crash", false, &e), PERCUSSION);
+        // 1. Core kit.
+        assert_eq!(music_prod_category("Kick", "", false, &e), CORE_KIT);
+        assert_eq!(music_prod_category("Snare", "Rimshot", false, &e), CORE_KIT);
+        assert_eq!(music_prod_category("Hi-Hat", "Closed", false, &e), CORE_KIT);
+        assert_eq!(music_prod_category("Clap", "", false, &e), CORE_KIT);
+        // 2. Cymbals & metals — each cymbal is its own instrument now.
+        assert_eq!(music_prod_category("Crash", "", false, &e), CYMBALS);
+        assert_eq!(music_prod_category("Ride", "", false, &e), CYMBALS);
+        assert_eq!(music_prod_category("China", "", false, &e), CYMBALS);
+        // 3. Hand percussion.
+        assert_eq!(music_prod_category("Shaker", "", false, &e), HAND_PERCUSSION);
+        assert_eq!(music_prod_category("Cowbell", "", false, &e), HAND_PERCUSSION);
+        assert_eq!(music_prod_category("Perc", "", false, &e), HAND_PERCUSSION);
+        // 4. World & regional.
+        assert_eq!(music_prod_category("Conga", "", false, &e), WORLD);
+        assert_eq!(music_prod_category("Djembe", "", false, &e), WORLD);
+        assert_eq!(music_prod_category("Cajon", "", false, &e), WORLD);
+        // 5. Orchestral & pitched.
+        assert_eq!(music_prod_category("Marimba", "", false, &e), ORCHESTRAL);
+        assert_eq!(music_prod_category("Timpani", "", false, &e), ORCHESTRAL);
+        // 6. Electronic & design.
+        assert_eq!(music_prod_category("808", "", false, &e), ELECTRONIC);
+        assert_eq!(music_prod_category("Vocal", "", false, &e), ELECTRONIC);
+        assert_eq!(music_prod_category("FX", "Riser", false, &e), ELECTRONIC);
+        // Melodic content the drum families do not cover.
+        assert_eq!(music_prod_category("Guitar", "", false, &e), MELODIC);
+        assert_eq!(music_prod_category("Bass", "", false, &e), MELODIC);
+        assert_eq!(music_prod_category("Keyboards", "Synth", false, &e), MELODIC);
+        // IR keeps its own family.
         assert_eq!(music_prod_category("IR", "", false, &e), IMPULSE_RESPONSE);
-        assert_eq!(music_prod_category("Guitar", "", false, &e), PLUCKED);
-        assert_eq!(music_prod_category("Strings", "", false, &e), STRINGED);
-        assert_eq!(music_prod_category("Horn", "", false, &e), BRASS);
-        assert_eq!(music_prod_category("Sax", "", false, &e), WOODWIND);
-        assert_eq!(music_prod_category("FX", "", false, &e), EXPERIMENTAL);
-    }
-
-    #[test]
-    fn subgroup_routing_the_old_map_could_not_do() {
-        let e = env("Plucky", 0.05, 0.05);
-        // A synth is a Keyboards SUBGROUP — the old map made it a plain keyboard.
-        assert_eq!(music_prod_category("Keyboards", "Synth", false, &e), SYNTHESIZED);
-        assert_eq!(music_prod_category("Keyboards", "Piano", false, &e), KEYED);
-        assert_eq!(music_prod_category("Keyboards", "Clav", false, &e), KEYED);
-        // Clave is Perc, clavinet is Keyboards — categorize() already separates them.
-        assert_eq!(music_prod_category("Perc", "Clave", false, &e), PERCUSSION);
-        // Tuned and bell-like percussion no longer collapse into PERCUSSION.
-        assert_eq!(music_prod_category("Perc", "Bell", false, &e), BELLS);
-        assert_eq!(music_prod_category("Perc", "Cowbell", false, &e), BELLS);
-        assert_eq!(music_prod_category("Cymbal", "Gong", false, &e), BELLS);
-        assert_eq!(music_prod_category("Perc", "Chime", false, &e), CHIME);
-        assert_eq!(music_prod_category("Perc", "Shaker", false, &e), SHAKEN);
-        assert_eq!(music_prod_category("Perc", "Kalimba", false, &e), PERCUSSION_TUNED);
-        assert_eq!(music_prod_category("Perc", "Triangle", false, &e), PERCUSSION_TUNED);
-        // Bass is an instrument; a vocal take is a performance ("Vocal" was a dead
-        // arm in the old map — categorize() emits "Voice").
-        assert_eq!(music_prod_category("Bass", "", false, &e), INSTRUMENT);
-        assert_eq!(music_prod_category("Voice", "", false, &e), PERFORMANCE);
-        assert_eq!(music_prod_category("Scratch", "", false, &e), PERFORMANCE);
     }
 
     #[test]
@@ -169,11 +165,20 @@ mod tests {
         assert_eq!(music_prod_category("Kick", "", true, &e), LOOP);
         assert_eq!(music_prod_category("Loops/Patterns", "", false, &e), LOOP);
         // Unrecognized name → the measured envelope decides.
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Plucky", 0.05, 0.05)), PERCUSSION);
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Plucky", 0.05, 0.05)), CORE_KIT);
         assert_eq!(music_prod_category("Unclassified", "", false, &env("Decaying", 1.2, 0.8)), IMPULSE_RESPONSE);
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Decaying", 0.1, 0.1)), PERCUSSION);
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Sustained", 0.1, 0.4)), INSTRUMENT);
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Decaying", 0.1, 0.1)), CORE_KIT);
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Sustained", 0.1, 0.4)), MELODIC);
         assert_eq!(music_prod_category("Unclassified", "", false, &env("Multi", 0.1, 0.1)), LOOP);
         assert_eq!(music_prod_category("Unclassified", "", false, &env("Silent", 0.0, 0.0)), MISC);
+    }
+
+    #[test]
+    fn percussive_families_are_flagged_for_root_suppression() {
+        assert!(is_percussive_family(CORE_KIT));
+        assert!(is_percussive_family(CYMBALS));
+        assert!(is_percussive_family(WORLD));
+        assert!(!is_percussive_family(MELODIC));
+        assert!(!is_percussive_family(ELECTRONIC));
     }
 }
