@@ -21,7 +21,7 @@ const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
   { key: 'name', label: 'File', width: '17%', get: it => it.metadata?.name || '' },
-  { key: 'god_category', label: 'Category', width: '9%', get: it => it.classification?.god_category || '' },
+  { key: 'music_production_category', label: 'Music Prod', width: '9%', get: it => it.classification?.music_production_category || '' },
   { key: 'group', label: 'Group', width: '8%', get: it => it.classification?.group || '' },
   { key: 'subgroup', label: 'Subgroup', width: '9%', get: it => it.classification?.subgroup || '' },
   { key: 'ucs_category', label: 'UCS Cat', width: '8%', get: it => it.ucs?.category || '' },
@@ -440,7 +440,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                               background: isSelected ? 'rgba(59, 130, 246, 0.25)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
-                                          {activeColumns.find(c => c.key === 'god_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.god_category}>{item.classification.god_category}</td>}
+                                          {activeColumns.find(c => c.key === 'music_production_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.music_production_category}>{item.classification.music_production_category}</td>}
                                           {activeColumns.find(c => c.key === 'group') && <td style={cell({ color: gcol })}>{item.classification.group}</td>}
                                           {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.classification?.subgroup}>{item.classification?.subgroup}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}

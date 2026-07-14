@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
-import { groupColor, godColor, godCategory, CLOUD_PALETTE } from '../groupColors'
+import { groupColor, musicProdColor, musicProdCategory, CLOUD_PALETTE } from '../groupColors'
 import { resolveAudioSrc, isTauri } from '../audioLinking'
 import ScopeBar from './ScopeBar'
 
@@ -69,7 +69,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
 
   const categoryData = useMemo(() => {
     const c: Record<string, number> = {};
-    for (const it of data) { const k = it.classification?.god_category || godCategory(it.classification?.group || ''); c[k] = (c[k] || 0) + 1; }
+    for (const it of data) { const k = it.classification?.music_production_category || musicProdCategory(it.classification?.group || ''); c[k] = (c[k] || 0) + 1; }
     return Object.entries(c).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
   }, [data]);
 
@@ -216,7 +216,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie data={categoryData} cx="50%" cy="50%" innerRadius={45} outerRadius={80} paddingAngle={3} dataKey="value" nameKey="name">
-                {categoryData.map((e, i) => <Cell key={i} fill={godColor(e.name)} />)}
+                {categoryData.map((e, i) => <Cell key={i} fill={musicProdColor(e.name)} />)}
               </Pie>
               <Tooltip contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} />
               <Legend wrapperStyle={{ fontSize: '0.7rem' }} />

@@ -25,8 +25,8 @@
 //!   distortion   — THD + clipping density → Clean / Dirty / Clipped
 //!   moments      — mean / variance / skewness / kurtosis of a series
 //!   timbre / label — feature+name → timbre and taxonomy labels
-//!   tags / family / god — multi-label acoustic types, sound-design roles,
-//!                  Hornbostel-Sachs family, envelope god category
+//!   tags / family / music_prod — multi-label acoustic types, sound-design roles,
+//!                  Hornbostel-Sachs family, music-production role
 //!   analyze      — orchestrates the extractors into one `Peak`
 //!   feature_vec / sqdist / kmeans / cluster / pca — blind grouping + embedding
 //!   args / discover / sidecar / stream / emit / run — CLI + orchestration
@@ -47,7 +47,7 @@ pub mod family;
 pub mod feature_vec;
 pub mod flux;
 pub mod framestats;
-pub mod god;
+pub mod music_prod;
 pub mod kmeans;
 pub mod label;
 pub mod mfcc;

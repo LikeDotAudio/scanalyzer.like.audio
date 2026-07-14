@@ -1,11 +1,11 @@
 export type TokenKey =
-  | 'folderPath' | 'godCategory' | 'group' | 'subgroup' | 'timbre'
+  | 'folderPath' | 'musicProductionCategory' | 'group' | 'subgroup' | 'timbre'
   | 'instrumentFamily' | 'rootNote' | 'bpm' | 'lengthTier' | 'envelopeShape'
   | 'distortion' | 'cluster' | 'pitch' | 'brightness' | 'harmonicity';
 
 export const TOKEN_LABELS: Record<TokenKey, string> = {
   folderPath: 'Folder Path',
-  godCategory: 'God Category',
+  musicProductionCategory: 'Music Production',
   group: 'Group',
   subgroup: 'Subgroup',
   timbre: 'Timbre',
@@ -30,7 +30,7 @@ export function tokenValue(item: any, key: TokenKey): string {
       const parts = p.split('/').filter(Boolean);
       return parts.length > 1 ? parts.slice(0, -1).join('-') : (parts[0] || '');
     }
-    case 'godCategory': return item.classification.god_category || '';
+    case 'musicProductionCategory': return item.classification?.music_production_category || '';
     case 'group': return item.classification?.group || '';
     case 'subgroup': return item.classification?.subgroup || '';
     case 'timbre': return item.classification.timbre || '';
@@ -62,15 +62,15 @@ export function buildSlots(enabledDefaults: TokenKey[], order: TokenKey[]): Slot
 export function getSavedSubfolders(): Slot[] {
   const v = localStorage.getItem('scanalyzer_rename_subfolders');
   if (v) try { return JSON.parse(v); } catch {}
-  return buildSlots(['godCategory', 'group', 'subgroup'],
-      ['godCategory', 'group', 'subgroup', 'timbre', 'instrumentFamily', 'distortion', 'envelopeShape', 'lengthTier', 'cluster']);
+  return buildSlots(['musicProductionCategory', 'group', 'subgroup'],
+      ['musicProductionCategory', 'group', 'subgroup', 'timbre', 'instrumentFamily', 'distortion', 'envelopeShape', 'lengthTier', 'cluster']);
 }
 
 export function getSavedPrepend(): Slot[] {
   const v = localStorage.getItem('scanalyzer_rename_prepend');
   if (v) try { return JSON.parse(v); } catch {}
-  return buildSlots(['godCategory', 'group', 'subgroup', 'timbre'],
-      ['folderPath', 'godCategory', 'group', 'subgroup', 'timbre', 'instrumentFamily']);
+  return buildSlots(['musicProductionCategory', 'group', 'subgroup', 'timbre'],
+      ['folderPath', 'musicProductionCategory', 'group', 'subgroup', 'timbre', 'instrumentFamily']);
 }
 
 export function getSavedAppend(): Slot[] {

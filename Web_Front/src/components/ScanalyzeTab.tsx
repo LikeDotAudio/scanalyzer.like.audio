@@ -45,6 +45,12 @@ export default function ScanalyzeTab({
   const [absorbed, setAbsorbed] = useState(0);
   const [stale, setStale] = useState(0);
   const [version, setVersion] = useState('');
+  // What the folder survey found, shown for confirmation before any file is read.
+  const [preview, setPreview] = useState<
+    { all: File[]; wavFiles: File[]; sidecars: Map<string, File>; everyNth: number } | null
+  >(null);
+  // Progress while absorbing existing sidecars in chunks.
+  const [absorbing, setAbsorbing] = useState<{ done: number; total: number } | null>(null);
   const stopRef = useRef(false);
   const startMsRef = useRef<number>(0);
   const threadsRef = useRef<number>(1);
@@ -78,12 +84,16 @@ export default function ScanalyzeTab({
   // identical extractor code, and re-analyzing the file could only reproduce it.
   // We absorb it and skip the work. Anything else — no sidecar, a sidecar from an
   // older engine, an unreadable one — is analyzed as normal.
+  // Survey the picked folder WITHOUT reading anything off disk, and show what was
+  // found. A real library is large — FSD50K's dev split is 41k wavs alongside 40k
+  // sidecars — and the old flow read every one of those sidecars, one awaited
+  // `.text()` at a time, before it drew a single pixel. On a folder that size the
+  // tab simply hung and then died. Listing a FileList is cheap (a File is a handle,
+  // not the bytes), so we count first, let the user look, and only then do work.
   const discover = async (files: FileList | null | File[], everyNth = 1) => {
     if (!files || !wasmReady) return;
     const all = Array.from(files);
-    const engine = analyzer_version();
 
-    // Index the sidecars the picker gave us, by the path they describe.
     const sidecars = new Map<string, File>();
     for (const f of all) {
       if (/\.peak$/i.test(f.name)) sidecars.set(stem(f), f);
@@ -91,6 +101,26 @@ export default function ScanalyzeTab({
 
     let wavFiles = all.filter(f => f.name.toLowerCase().endsWith('.wav'));
     if (everyNth > 1) wavFiles = wavFiles.filter((_, i) => i % everyNth === 0);
+
+    if (wavFiles.length === 0) {
+      alert('No .wav files found in that folder.');
+      return;
+    }
+    setPreview({ all, wavFiles, sidecars, everyNth });
+  };
+
+  /** How many sidecars/wavs to touch per chunk before yielding to the browser. */
+  const CHUNK = 250;
+  const yieldToUi = () => new Promise(r => setTimeout(r, 0));
+
+  // The user said go. Absorb up-to-date sidecars in chunks, keeping the UI alive,
+  // then hand whatever still needs analyzing to the worker pool.
+  const confirmPreview = async () => {
+    if (!preview) return;
+    const { all, wavFiles, sidecars } = preview;
+    const engine = analyzer_version();
+    setPreview(null);
+    setAbsorbing({ done: 0, total: wavFiles.length });
 
     // Already in this session's results — resume rather than redo. (This used to
     // compare against only the *top* folder segment while the records store the
@@ -101,29 +131,43 @@ export default function ScanalyzeTab({
     const toProcess: File[] = [];
     let staleSidecars = 0;
 
-    for (const file of wavFiles) {
-      if (existingPaths.has(`${folderOf(file)}/${file.name}`)) continue;
+    for (let i = 0; i < wavFiles.length; i += CHUNK) {
+      const chunk = wavFiles.slice(i, i + CHUNK);
 
-      const sidecar = sidecars.get(stem(file));
-      if (sidecar) {
+      // Read this chunk's sidecars concurrently rather than one awaited call at a
+      // time — the old serial loop was the bottleneck on a big folder.
+      const reads = await Promise.all(chunk.map(async file => {
+        if (existingPaths.has(`${folderOf(file)}/${file.name}`)) return { file, skip: true };
+        const sidecar = sidecars.get(stem(file));
+        if (!sidecar) return { file, rec: null };
         try {
           // A sidecar can predate the grouped schema, so read it through the same
           // normalizer as an imported .PEAK. An older one carries an older version
           // stamp and so falls through to `staleSidecars` and gets recomputed.
           const [rec] = normalizePeakRecords([JSON.parse(await sidecar.text())]).records;
-          // Same engine and the sidecar really describes this file.
-          if (rec && rec.metadata.analyzer_version === engine && rec.metadata.name === file.name) {
-            absorbed.push(rec);
-            continue;
-          }
-          staleSidecars++;      // written by different extractor code — recompute
+          return { file, rec };
         } catch {
-          /* unreadable or not JSON: fall through and analyze the file */
+          return { file, rec: null };   // unreadable or not JSON: analyze it
+        }
+      }));
+
+      for (const r of reads) {
+        if ((r as any).skip) continue;
+        const rec = (r as any).rec;
+        // Same engine and the sidecar really describes this file.
+        if (rec && rec.metadata.analyzer_version === engine && rec.metadata.name === r.file.name) {
+          absorbed.push(rec);
+        } else {
+          if (rec) staleSidecars++;    // written by different extractor code
+          toProcess.push(r.file);
         }
       }
-      toProcess.push(file);
+
+      setAbsorbing({ done: Math.min(i + CHUNK, wavFiles.length), total: wavFiles.length });
+      await yieldToUi();
     }
 
+    setAbsorbing(null);
     setAudioFiles(filterAudioFiles(all));   // link the audio either way
     setAbsorbed(absorbed.length);
     setStale(staleSidecars);
@@ -340,6 +384,67 @@ export default function ScanalyzeTab({
               </div>
           </div>
       );
+  }
+
+  // Reading 40k sidecars takes a while even chunked — show it happening.
+  if (absorbing) {
+    const pct = absorbing.total ? Math.round((absorbing.done / absorbing.total) * 100) : 0;
+    return (
+      <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <h2 style={{ fontSize: '1.6rem', marginBottom: '1rem' }}>Reading existing .PEAK sidecars…</h2>
+        <div style={{ color: 'var(--accent-primary)', fontSize: '2rem', fontWeight: 700, marginBottom: '1rem' }}>
+          {absorbing.done.toLocaleString()} <span style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>/ {absorbing.total.toLocaleString()}</span>
+        </div>
+        <div className="progress-container" style={{ width: '80%', maxWidth: '600px' }}>
+          <div className="progress-fill" style={{ width: `${pct}%` }} />
+        </div>
+      </div>
+    );
+  }
+
+  // The survey: what is in the folder, before a single byte is read.
+  if (preview) {
+    const { wavFiles, sidecars, everyNth } = preview;
+    const bytes = wavFiles.reduce((n, f) => n + f.size, 0);
+    const gb = bytes / 1e9;
+    const withSidecar = wavFiles.filter(f => sidecars.has(stem(f))).length;
+    const toAnalyze = wavFiles.length - withSidecar;
+    const stat: React.CSSProperties = { display: 'flex', justifyContent: 'space-between', gap: '2rem', padding: '0.25rem 0' };
+
+    return (
+      <div className="tab-content glass-panel" style={{ margin: 0, padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+        <h2 style={{ fontSize: '1.8rem' }}>Found {wavFiles.length.toLocaleString()} audio file(s)</h2>
+
+        <div style={{ minWidth: '380px', fontSize: '0.9rem', color: 'var(--text-secondary)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '0.5rem 0' }}>
+          <div style={stat}><span>.wav files{everyNth > 1 ? ` (1 of every ${everyNth})` : ''}</span><strong style={{ color: 'var(--text-primary)' }}>{wavFiles.length.toLocaleString()}</strong></div>
+          <div style={stat}><span>Total audio</span><strong style={{ color: 'var(--text-primary)' }}>{gb >= 1 ? `${gb.toFixed(1)} GB` : `${(bytes / 1e6).toFixed(0)} MB`}</strong></div>
+          <div style={stat}><span>Already have a .PEAK sidecar</span><strong style={{ color: 'var(--accent-primary)' }}>{withSidecar.toLocaleString()}</strong></div>
+          <div style={stat}><span>Need analysis</span><strong style={{ color: 'var(--accent-secondary)' }}>{toAnalyze.toLocaleString()}</strong></div>
+        </div>
+
+        <div style={{ width: '100%', maxWidth: '640px', maxHeight: '220px', overflowY: 'auto', background: 'rgba(0,0,0,0.25)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', fontSize: '0.72rem', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
+          {wavFiles.slice(0, 200).map((f, i) => (
+            <div key={i} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {sidecars.has(stem(f)) ? '✓ ' : '· '}{(f as any).relPath || f.webkitRelativePath || f.name}
+            </div>
+          ))}
+          {wavFiles.length > 200 && (
+            <div style={{ paddingTop: '0.3rem', color: 'var(--accent-secondary)' }}>
+              … and {(wavFiles.length - 200).toLocaleString()} more (showing the first 200)
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button className="btn primary" style={{ padding: '0.6rem 1.8rem' }} onClick={() => { void confirmPreview(); }}>
+            OK — go ahead
+          </button>
+          <button className="btn" style={{ padding: '0.6rem 1.5rem' }} onClick={() => setPreview(null)}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

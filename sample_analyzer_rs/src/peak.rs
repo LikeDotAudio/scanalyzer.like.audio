@@ -33,7 +33,7 @@ pub struct Classification {
     pub acoustic_types: Vec<String>,
     pub sound_design_roles: Vec<String>,
     pub instrument_family: Vec<String>,
-    pub god_category: String,
+    pub music_production_category: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]

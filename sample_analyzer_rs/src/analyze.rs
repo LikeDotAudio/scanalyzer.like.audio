@@ -9,7 +9,7 @@ use crate::envelope::envelope_analysis;
 use crate::family::classify_family;
 use crate::flux::spectral_flux;
 use crate::framestats::centroid_stats;
-use crate::god::god_category;
+use crate::music_prod::music_prod_category;
 use crate::label::label_sample;
 use crate::mfcc::mfcc_mean;
 use crate::morphology::morphology;
@@ -99,7 +99,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
 
     // ---- FINAL STEP: the file name. Everything above was measured from the
     // audio alone; only now is the path/name consulted, to lay the curated
-    // taxonomy (group / subgroup / family / god category) on top of the
+    // taxonomy (group / subgroup / family / music-production role) on top of the
     // acoustic evidence.
     let name = path.file_name().and_then(|x| x.to_str()).unwrap_or("").to_string();
     let parent = path.parent().unwrap_or(root);
@@ -146,17 +146,26 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
     }
     bpm = bpm.round();
-    let mut god_class = god_category(&l.group, is_loop, &env).to_string();
-    
-    if is_vocal {
-        god_class = crate::god::VOCAL.to_string();
+    let mut music_class =
+        music_prod_category(&l.group, &l.subgroup, is_loop, &env).to_string();
+
+    // The voice detector overrides the NAME — but not a loop. A vocal loop is
+    // still a loop: what it is made of does not change the role it plays. (The
+    // old god map let the vocal flag clobber Complex here, so every vocal-ish
+    // loop lost its loop-ness.)
+    if is_vocal && !is_loop {
+        music_class = crate::music_prod::PERFORMANCE.to_string();
     }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
     // harmonic, e.g. an 808 or a pitched tom), report none — nil is fine.
     let (root_name, root_hz, root_cents) =
-        if god_class == crate::god::PERCUSSIVE && root_note < 0 && harmonicity < 0.6 {
+        if (music_class == crate::music_prod::PERCUSSION
+            || music_class == crate::music_prod::SHAKEN)
+            && root_note < 0
+            && harmonicity < 0.6
+        {
             (String::new(), 0.0, 0.0)
         } else {
             (root_name, root_hz, root_cents)
@@ -208,7 +217,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
             acoustic_types: acoustic,
             sound_design_roles: sound_design,
             instrument_family: family,
-            god_category: god_class,
+            music_production_category: music_class,
         },
         envelope: crate::peak::Envelope {
             transient_count: transients,
@@ -361,7 +370,7 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
 
     // ---- FINAL STEP: the file name. Everything above was measured from the
     // audio alone; only now is the path/name consulted, to lay the curated
-    // taxonomy (group / subgroup / family / god category) on top of the
+    // taxonomy (group / subgroup / family / music-production role) on top of the
     // acoustic evidence.
     let name = name.to_string();
     let folder = folder.to_string();
@@ -395,17 +404,26 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
         bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
     }
     bpm = bpm.round();
-    let mut god_class = god_category(&l.group, is_loop, &env).to_string();
-    
-    if is_vocal {
-        god_class = crate::god::VOCAL.to_string();
+    let mut music_class =
+        music_prod_category(&l.group, &l.subgroup, is_loop, &env).to_string();
+
+    // The voice detector overrides the NAME — but not a loop. A vocal loop is
+    // still a loop: what it is made of does not change the role it plays. (The
+    // old god map let the vocal flag clobber Complex here, so every vocal-ish
+    // loop lost its loop-ness.)
+    if is_vocal && !is_loop {
+        music_class = crate::music_prod::PERFORMANCE.to_string();
     }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
     // harmonic, e.g. an 808 or a pitched tom), report none — nil is fine.
     let (root_name, root_hz, root_cents) =
-        if god_class == crate::god::PERCUSSIVE && root_note < 0 && harmonicity < 0.6 {
+        if (music_class == crate::music_prod::PERCUSSION
+            || music_class == crate::music_prod::SHAKEN)
+            && root_note < 0
+            && harmonicity < 0.6
+        {
             (String::new(), 0.0, 0.0)
         } else {
             (root_name, root_hz, root_cents)
@@ -459,7 +477,7 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
             acoustic_types: acoustic,
             sound_design_roles: sound_design,
             instrument_family: family,
-            god_category: god_class,
+            music_production_category: music_class,
         },
         envelope: crate::peak::Envelope {
             transient_count: transients,

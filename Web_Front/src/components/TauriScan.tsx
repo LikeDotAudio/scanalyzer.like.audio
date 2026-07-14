@@ -3,17 +3,28 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { open } from '@tauri-apps/plugin-dialog';
 import initWasm, { analyzer_version } from 'wasm_analyzer';
+import { normalizePeakRecords } from '../peakSchema';
 
 export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzing, setIsAnalyzing, setProgress, onViewCloud }: any) {
   const [done, setDone] = useState(0);
   const [total, setTotal] = useState(0);
   const [workerCount, setWorkerCount] = useState(0);
-  const [targetDir, setTargetDir] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [version, setVersion] = useState('');
 
   const threadsTextRef = useRef<Record<number, HTMLSpanElement>>({});
   const threadsProgressRef = useRef<Record<number, HTMLDivElement>>({});
+
+  // The listeners are established ONCE, on mount. They used to be torn down and
+  // re-subscribed whenever targetDir or analysisResult changed — and since
+  // handlePickAndScan sets targetDir and then immediately invokes the scan, the
+  // `start` event (which carries `total` and `workers`) landed in the gap while
+  // listen() was still re-attaching, and was lost. The scan ran, but the UI never
+  // learned how many files there were, so it sat at 0 with an empty worker grid.
+  // Anything the handlers need that changes over time is read through a ref.
+  const targetDirRef = useRef<string | null>(null);
+  const analysisResultRef = useRef<any[]>(analysisResult);
+  useEffect(() => { analysisResultRef.current = analysisResult; }, [analysisResult]);
 
   useEffect(() => {
     initWasm().then(() => setVersion(analyzer_version())).catch(console.error);
@@ -49,11 +60,6 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
                     setTotal(prev => prev === 0 ? msg.total : prev);
                     setProgress(Math.round(((msg.done || 0) / msg.total) * 100));
                 }
-                setWorkerCount(prev => prev === 0 ? 30 : prev);
-            }
-            if (msg.type === 'thread_start') {
-                // If we missed start event, recover total/workers if possible
-                setWorkerCount(prev => prev === 0 ? 30 : prev);
             }
         } catch (e) {}
       });
@@ -63,14 +69,27 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       });
       unlistenFin = await listen('analyzer-finished', async () => {
         setIsAnalyzing(false);
-        if (targetDir) {
+        const dir = targetDirRef.current;
+        if (dir) {
             try {
-                const res: string = await invoke('read_peak_file', { directory: targetDir });
-                const json = JSON.parse(res);
-                if (Array.isArray(json)) {
-                    setAnalysisResult([...analysisResult, ...json]);
+                // Pull the finished .PEAK in pages. Reading it as one string used to
+                // push ~150 MB through IPC on a library the size of FSD50K and kill
+                // the webview; Rust parses it once and hands us slices.
+                const count: number = await invoke('open_peak_file', { directory: dir });
+                const PAGE = 2000;
+                const all: any[] = [];
+                for (let offset = 0; offset < count; offset += PAGE) {
+                    const page: string = await invoke('read_peak_page', { offset, limit: PAGE });
+                    // A .PEAK on disk may predate the grouped schema; normalize it the
+                    // same way an imported one is, so the UI never sees a flat record.
+                    all.push(...normalizePeakRecords(JSON.parse(page)).records);
+                    setLoaded({ done: Math.min(offset + PAGE, count), total: count });
                 }
+                await invoke('close_peak_file');
+                setLoaded(null);
+                if (all.length) setAnalysisResult([...analysisResultRef.current, ...all]);
             } catch (err) {
+                setLoaded(null);
                 console.error("Failed to load peak file:", err);
             }
         }
@@ -83,12 +102,13 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       if (typeof unlistenErr === 'function') unlistenErr();
       if (typeof unlistenFin === 'function') unlistenFin();
     };
-  }, [targetDir, analysisResult, setAnalysisResult, setIsAnalyzing, setProgress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePickAndScan = async (stride?: number) => {
     const dir = await open({ directory: true, multiple: false });
     if (dir && typeof dir === 'string') {
-        setTargetDir(dir);
+        targetDirRef.current = dir;   // read by the finish handler; no re-subscribe
         setIsAnalyzing(true);
         setDone(0);
         setTotal(0);

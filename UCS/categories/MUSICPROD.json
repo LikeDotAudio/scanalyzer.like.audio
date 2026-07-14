@@ -863,6 +863,43 @@
    }
   },
   {
+   "subcategory": "IMPULSE RESPONSE",
+   "category_id": "MUSPImpr",
+   "category_short": "MUSP",
+   "explanation": [
+    "A convolution impulse response: cabinet, room, plate, spring or hall.",
+    "Not a musical part — it is a measurement of a space or a device, kept here so every sample in a production library carries a role rather than falling through."
+   ],
+   "synonyms": [
+    "Cabinet",
+    "Convolution",
+    "Hall",
+    "Impulse",
+    "IR",
+    "Plate",
+    "Reverb",
+    "Room",
+    "Spring"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.05
+     },
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [],
+    "discriminators": [],
+    "confusable_with": []
+   }
+  },
+  {
    "subcategory": "INSTRUMENT",
    "category_id": "MUSPInst",
    "category_short": "MUSP",

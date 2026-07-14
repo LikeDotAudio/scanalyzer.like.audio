@@ -1,29 +1,48 @@
-// Group / god-category colour system — a faithful TypeScript port of the
-// Python support/config.py so the web 3D cloud colours groups identically to
-// the desktop app (same god categories, same palette, same shade maths).
+// Group / music-production colour system — the roles come from
+// UCS/categories/MUSICPROD.json and are assigned by sample_analyzer_rs/src/music_prod.rs.
+//
+// This replaces the old "god categories" (Percussive / Tonal / Keyboards /
+// Complex / Impulsive with Tail). Keep the group→role map below in step with
+// music_prod.rs. Roles that music_prod.rs only reaches via a SUBGROUP —
+// SYNTHESIZED, BELLS, CHIME, SHAKEN, PERCUSSION TUNED — cannot be derived from a
+// group name, so they get a hue here but no group members; a record colours by
+// its own music_production_category when it carries one.
 
-export const GOD_CATEGORIES: [string, string[]][] = [
-  ['Percussive', ['Clap', 'Cymbal', 'Hi-Hat', 'Kick', 'Perc', 'Ride', 'Rim', 'Snare', 'Tom']],
-  ['Impulsive with Tail', ['IR']],
-  // 'Vocal', not 'Voice' — that is the group name the analyzer actually emits
-  // (god.rs / config.py). The typo silently dropped every vocal sample into the
-  // Unassigned grey ramp instead of the Tonal hue.
-  ['Tonal', ['Bass', 'Guitar', 'Horn', 'Note', 'Sax', 'Strings', 'Vocal']],
-  ['Keyboards', ['Keyboards']],
-  ['Complex', ['DJ', 'FX', 'Loops/Patterns', 'Scratch']],
-  ['Unassigned', ['Unclassified']],
+export const MUSIC_PROD_CATEGORIES: [string, string[]][] = [
+  ['PERCUSSION', ['Clap', 'Cymbal', 'Hi-Hat', 'Kick', 'Perc', 'Ride', 'Rim', 'Snare', 'Tom']],
+  ['PERCUSSION TUNED', []],
+  ['BELLS', []],
+  ['CHIME', []],
+  ['SHAKEN', []],
+  ['IMPULSE RESPONSE', ['IR']],
+  ['KEYED', ['Keyboards']],
+  ['SYNTHESIZED', []],
+  ['PLUCKED', ['Guitar']],
+  ['STRINGED', ['Strings']],
+  ['BRASS', ['Horn']],
+  ['WOODWIND', ['Sax']],
+  // Bass is an instrument: the name matcher only sees the word "bass" and cannot
+  // tell a sub from an upright, so it is not forced into a family.
+  ['INSTRUMENT', ['Bass', 'Note']],
+  // A vocal take, a scratch and a turntable are all captured performances.
+  ['PERFORMANCE', ['Voice', 'Scratch', 'DJ']],
+  ['EXPERIMENTAL', ['FX']],
+  ['LOOP', ['Loops/Patterns']],
+  ['MISC', ['Unclassified']],
 ];
 
-export const CATEGORY_ORDER = GOD_CATEGORIES.map(([cat]) => cat);
+export const CATEGORY_ORDER = MUSIC_PROD_CATEGORIES.map(([cat]) => cat);
 
 const GROUP_TO_CATEGORY: Record<string, string> = {};
-for (const [cat, groups] of GOD_CATEGORIES) for (const g of groups) GROUP_TO_CATEGORY[g] = cat;
+for (const [cat, groups] of MUSIC_PROD_CATEGORIES) for (const g of groups) GROUP_TO_CATEGORY[g] = cat;
 
 // Every named group in taxonomy order — used to build the legend.
-export const ALL_GROUPS: string[] = GOD_CATEGORIES.flatMap(([, groups]) => groups);
+export const ALL_GROUPS: string[] = MUSIC_PROD_CATEGORIES.flatMap(([, groups]) => groups);
 
-export function godCategory(group: string): string {
-  return GROUP_TO_CATEGORY[group] ?? 'Unassigned';
+/** The music-production role a name group implies. Prefer a record's own
+ *  `classification.music_production_category`; this is the fallback for a bare group. */
+export function musicProdCategory(group: string): string {
+  return GROUP_TO_CATEGORY[group] ?? 'MISC';
 }
 
 // Composite key for a group+subgroup (used for show/hide sets). The unit-
@@ -39,17 +58,30 @@ export const CLOUD_PALETTE = [
   '#ff8a65', '#4db6ac', '#dce775', '#9575cd', '#ffffff',
 ];
 
-const GOD_HUES: Record<string, number | null> = {
-  Percussive: 0.02,
-  'Impulsive with Tail': 0.12,
-  Tonal: 0.36,
-  Keyboards: 0.55,
-  Complex: 0.74,
-  Unassigned: null,
+// One hue per role, spread around the wheel so neighbouring roles stay distinct.
+// MISC is null → the grey ramp.
+const CATEGORY_HUES: Record<string, number | null> = {
+  PERCUSSION: 0.02,
+  'PERCUSSION TUNED': 0.08,
+  BELLS: 0.12,
+  CHIME: 0.16,
+  SHAKEN: 0.21,
+  'IMPULSE RESPONSE': 0.28,
+  KEYED: 0.36,
+  SYNTHESIZED: 0.44,
+  PLUCKED: 0.50,
+  STRINGED: 0.55,
+  BRASS: 0.61,
+  WOODWIND: 0.66,
+  INSTRUMENT: 0.72,
+  PERFORMANCE: 0.79,
+  EXPERIMENTAL: 0.86,
+  LOOP: 0.93,
+  MISC: null,
 };
 
 const CATEGORY_GROUPS: Record<string, string[]> = {};
-for (const [cat, groups] of GOD_CATEGORIES) CATEGORY_GROUPS[cat] = groups;
+for (const [cat, groups] of MUSIC_PROD_CATEGORIES) CATEGORY_GROUPS[cat] = groups;
 
 const KNOWN_SUBGROUPS = [
   'Hi', 'Mid', 'Lo', 'Disco', 'Crash', 'Gong', 'Conga', 'Bongo', 'Cowbell',
@@ -127,8 +159,8 @@ export function complementColor(hex: string): string {
   return hsv(h + 0.5, s, max);
 }
 
-export function godColor(category: string): string {
-  const hue = GOD_HUES[category];
+export function musicProdColor(category: string): string {
+  const hue = CATEGORY_HUES[category];
   if (hue == null) return '#9a9a9a';
   return hsv(hue, 0.78, 0.95);
 }
@@ -141,8 +173,8 @@ export function groupColor(group: string, subgroup = ''): string {
     const i = idx >= 0 ? idx : crc32(subgroup);
     return CLOUD_PALETTE[i % CLOUD_PALETTE.length];
   }
-  const cat = godCategory(group);
-  const hue = GOD_HUES[cat];
+  const cat = musicProdCategory(group);
+  const hue = CATEGORY_HUES[cat];
   const members = CATEGORY_GROUPS[cat] ?? [];
   const gi = members.indexOf(group) >= 0 ? members.indexOf(group) : crc32(group || '') % 8;
   const n = Math.max(members.length, 2);
@@ -156,8 +188,8 @@ export function groupColor(group: string, subgroup = ''): string {
 // The second taxonomy, and a faithful port of support/config.py so the web cloud
 // and the desktop cloud colour a UCS category identically.
 //
-// Unrelated to the god categories above: those are six envelope buckets over the
-// drum-pack name groups. These are the 82 UCS categories the analyzer scores
+// Unrelated to the music-production roles above: those say what part a sample
+// plays in a production. These are the 82 UCS categories the analyzer scores
 // every file against. The UCS CATEGORY fixes the hue; the UCS SUBCATEGORY picks
 // a shade within it, so a category reads as one colour family.
 //

@@ -24,7 +24,7 @@ export default function ShapesMenu({ shapeBy, setShapeBy }: ShapesMenuProps) {
           {shapeBy === 'Uniform' && (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>All</span> <span style={{ color: 'var(--text-primary)' }}>Sphere</span></div>
           )}
-          {shapeBy === 'God Category' && (
+          {shapeBy === 'Music Production' && (
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Percussive</span> <span style={{ color: 'var(--text-primary)' }}>Pyramid</span></div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Impulsive with tail</span> <span style={{ color: 'var(--text-primary)' }}>Diamond</span></div>
