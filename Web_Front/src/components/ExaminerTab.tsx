@@ -4,7 +4,7 @@ import { generateNewName } from '../renameConfig';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from './ScopeBar';
-import { groupColor, complementColor, ucsColor, ucsSubColor, taxonomyKeys, type Taxonomy } from '../groupColors';
+import { complementColor, ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../ucsIndex';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
@@ -22,15 +22,15 @@ const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
 // Bumped when the column set changes: a saved v1 set would hide every new column
 // (Music Prod, UCS Alt 1-3) and keep pointing at the dropped god_category.
-const COLS_KEY = 'scanalyzer_examiner_cols_v3';
+const COLS_KEY = 'scanalyzer_examiner_cols_v4';
 
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
   { key: 'name', label: 'File', width: '17%', get: it => it.metadata?.name || '' },
-  { key: 'music_production_category', label: 'Music Prod', width: '9%', get: it => it.classification?.music_production_category || '' },
-  { key: 'group', label: 'Group', width: '8%', get: it => it.classification?.group || '' },
-  { key: 'subgroup', label: 'Subgroup', width: '9%', get: it => it.classification?.subgroup || '' },
-  { key: 'ucs_category', label: 'UCS Group', width: '8%', get: it => it.ucs?.category || '' },
-  { key: 'ucs_subcategory', label: 'Sub Group', width: '9%', get: it => it.ucs?.subcategory || '' },
+  // UCS production role — MUSICPROD.json, carried over from UCS MUSICAL. This replaces the
+  // old filename Group/Subgroup columns, which were a separate non-UCS taxonomy.
+  { key: 'music_production_category', label: 'UCS Prod', width: '10%', get: it => it.classification?.music_production_category || '' },
+  { key: 'ucs_category', label: 'UCS Category', width: '9%', get: it => it.ucs?.category || '' },
+  { key: 'ucs_subcategory', label: 'UCS Subcategory', width: '10%', get: it => it.ucs?.subcategory || '' },
   // The runners-up the UCS matcher scored, best first. Each is "<category_id> <confidence>".
   { key: 'ucs_alt_1_group', label: 'Alt 1 Group', width: '7%', get: it => altCategory(it.ucs?.alternatives?.[0]) },
   { key: 'ucs_alt_1_subgroup', label: 'Alt 1 Sub', width: '7%', get: it => altSubcategory(it.ucs?.alternatives?.[0]) },
@@ -77,7 +77,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
-  const [taxonomy, setTaxonomy] = useState<Taxonomy>('UCS');
+  // UCS is king — no music-vs-UCS switch. The Examiner scopes by UCS only.
+  const taxonomy = 'UCS' as const;
   // Which UCS runner-up ranks the scope filter also matches on. 0/1/2 = Alt 1/2/3.
   const [altRanks, setAltRanks] = useState<Set<number>>(new Set([0, 1, 2]));
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
@@ -326,7 +327,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     const duration = buffer.duration;
 
     // Waveform = the sample's group colour; spectrum = its complement.
-    const gcol = groupColor(item?.classification?.group || 'Unclassified', item?.classification?.subgroup || '');
+    const gcol = ucsSubColor(item?.ucs?.category || '', (item?.ucs?.subcategory || '').trim());
     const ccol = complementColor(gcol);
     const spec = computeSpectrum(mono, buffer.sampleRate);
 
@@ -455,13 +456,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                 filterText={filter} setFilterText={setFilter} taxonomy={taxonomy} altRanks={altRanks}
                 rightContent={
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
-                    <div className="text-secondary" style={{ fontSize: '0.8rem', display: 'flex', gap: '0.5rem' }}>
-                      <button className={`btn ${taxonomy === 'Music production' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('Music production')}>Music Production</button>
-                      <button className={`btn ${taxonomy === 'UCS' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('UCS')}>UCS</button>
-                    </div>
-                    {/* Which runner-up ranks the scope also matches on. Only meaningful under
-                        UCS, where the record carries the scorer's alternatives. */}
-                    {taxonomy === 'UCS' && (
+                    {/* Which runner-up ranks the scope also matches on — the record carries
+                        the scorer's alternatives. */}
+                    {(
                       <div className="text-secondary" style={{ fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: '0.45rem' }}
                         title="With a scope selected, also match samples where this runner-up falls in that UCS category.">
                         <span>Match:</span>
@@ -528,7 +525,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                               {rows.slice(startIndex, endIndex).map((item, i) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
-                                  const gcol = groupColor(item.classification?.group || 'Unclassified', item.classification?.subgroup || '');
                                   return (
                                       <tr key={idx}
                                           onClick={() => handleSelect(item)}
@@ -544,8 +540,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
                                           {activeColumns.find(c => c.key === 'music_production_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.music_production_category}>{item.classification.music_production_category}</td>}
-                                          {activeColumns.find(c => c.key === 'group') && <td style={cell({ color: gcol })}>{item.classification.group}</td>}
-                                          {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.classification?.subgroup}>{item.classification?.subgroup}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0])}</td>}
