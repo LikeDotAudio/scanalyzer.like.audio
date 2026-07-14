@@ -20,7 +20,7 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::normalize::normalize_name_words;
 use crate::peak::Peak;
@@ -417,7 +417,7 @@ fn text_evidence(e: &Entry, idx: &Index, name_tokens: &[String], folder_tokens: 
 /// field in the .PEAK — the old form was a single packed string of the ABBREVIATED
 /// id plus a number ("DSGNMisc 0.003"), which no consumer could read or filter on
 /// without re-parsing it.
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct Alternative {
     pub category: String,
     pub subcategory: String,
@@ -427,6 +427,50 @@ pub struct Alternative {
     /// placed on acoustic signal alone.
     #[serde(default)]
     pub synonyms: Vec<String>,
+}
+
+/// Read either form. A .PEAK written before the struct existed holds the packed
+/// string described above ("DSGNMisc 0.003"); refusing it made whole libraries
+/// unreadable to their own analyzer over a runner-up nobody reads. We recover the id
+/// and the probability, and leave the names blank rather than inventing them — the
+/// abbreviated id is all the old form ever recorded.
+impl<'de> Deserialize<'de> for Alternative {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        #[serde(untagged)]
+        enum Either {
+            Packed(String),
+            Full {
+                #[serde(default)]
+                category: String,
+                #[serde(default)]
+                subcategory: String,
+                #[serde(default)]
+                id: String,
+                #[serde(default)]
+                probability: f64,
+                #[serde(default)]
+                synonyms: Vec<String>,
+            },
+        }
+        Ok(match Either::deserialize(d)? {
+            Either::Full { category, subcategory, id, probability, synonyms } => Alternative {
+                category,
+                subcategory,
+                id,
+                probability,
+                synonyms,
+            },
+            Either::Packed(s) => {
+                let (id, prob) = s.rsplit_once(' ').unwrap_or((s.as_str(), "0"));
+                Alternative {
+                    id: id.to_string(),
+                    probability: prob.parse().unwrap_or(0.0),
+                    ..Default::default()
+                }
+            }
+        })
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -574,6 +618,17 @@ pub fn classify(p: &Peak) -> Verdict {
     }
 
     let n_cands = cands.len();
+
+    // NOT sharpened. Taking the (α+β)-th root above compresses the scores, so the
+    // winner's normalized share often falls under MIN_CONFIDENCE and we abstain. The
+    // obvious fix is a monotonic sharpening to restore the spread the thresholds were
+    // calibrated against — and it is the wrong fix. Swept over both labelled corpora it
+    // bought almost no recall on music (26% -> 33%) while taking false positives on
+    // SOUND EFFECTS from 1.2% to 19%: on a fifth of the SFX library a MUSICAL
+    // subcategory ALREADY tops the ranking, and abstention was the only thing hiding it.
+    // Committing harder just states a wrong answer with more confidence. The high
+    // abstention rate is a symptom of a ranking that cannot separate those files; it is
+    // not a thresholding problem, and it must not be papered over with one.
     let total: f64 = cands.iter().map(|c| c.post).sum();
     for c in cands.iter_mut() {
         c.post /= total.max(1e-12);
