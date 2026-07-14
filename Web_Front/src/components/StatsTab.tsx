@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
-import { groupColor, musicProdColor, musicProdCategory, CLOUD_PALETTE } from '../groupColors'
+import { groupColor, musicProdColor, musicProdCategory, taxonomyKeys, CLOUD_PALETTE } from '../groupColors'
 import { resolveAudioSrc, isTauri } from '../audioLinking'
 import ScopeBar from './ScopeBar'
 
@@ -59,8 +59,11 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      if (group && (it.classification?.group || 'Unclassified') !== group) return false;
-      if (sub && (it.classification?.subgroup || '').trim() !== sub) return false;
+      // The ScopeBar shows music-production roles opening into name groups, so
+              // scope on the same keys it renders.
+      const [role, g] = taxonomyKeys(it, 'Music production');
+      if (group && role !== group) return false;
+      if (sub && g !== sub) return false;
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;

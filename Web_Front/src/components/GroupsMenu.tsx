@@ -15,7 +15,7 @@ interface GroupsMenuProps {
 export default function GroupsMenu({ groupTree, taxonomy, hiddenGroups, setHiddenGroups, expanded, setExpanded, toggleKey, toggleExpand }: GroupsMenuProps) {
   return (
     <div className="glass-panel" style={{ position: 'absolute', top: '3.5rem', right: '1rem', zIndex: 20, background: 'rgba(17, 19, 24, 0.95)', padding: '1rem', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.15rem', width: '280px', maxHeight: 'calc(100% - 5rem)', overflowY: 'auto' }}>
-      <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem', margin: 0, marginBottom: '0.5rem' }}>{taxonomy === 'UCS' ? 'UCS categories / subcategories' : 'Groups / subgroups'}</h3>
+      <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', fontSize: '0.9rem', margin: 0, marginBottom: '0.5rem' }}>{taxonomy === 'UCS' ? 'UCS categories / subcategories' : 'Music-production roles / groups'}</h3>
       <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.2rem' }}>
         <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', flex: 1 }}
           onClick={() => setHiddenGroups(new Set())}>Show all</button>

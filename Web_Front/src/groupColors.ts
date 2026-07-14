@@ -246,16 +246,21 @@ export function ucsSubKey(category: string, subcategory: string): string {
 }
 
 /**
- * The two taxonomies, behind one accessor, so the cloud, its legend and its
- * hide/show filters all read a record the same way.
+ * The two axes the analyzer actually computes, behind one accessor, so the cloud,
+ * its legend, the scope bars and the hide/show filters all read a record the same
+ * way. These are the only two taxonomies:
  *
- *   'Name groups' — group  -> subgroup        (the drum-pack taxonomy)
- *   'UCS'         — ucs_category -> ucs_subcategory
+ *   'Music production' — music_production_category -> group   (what ROLE it plays)
+ *   'UCS'              — ucs.category -> ucs.subcategory      (what the sound IS)
+ *
+ * The standalone "Name groups" taxonomy is gone: the drum-pack group (Kick, Snare,
+ * Guitar, …) is now the SECOND level under its music-production role, so nothing
+ * is lost — a role opens into its groups.
  */
-export type Taxonomy = 'UCS' | 'Name groups';
+export type Taxonomy = 'UCS' | 'Music production';
 
 export function taxonomyOf(colorBy: string): Taxonomy {
-  return colorBy.startsWith('UCS') ? 'UCS' : 'Name groups';
+  return colorBy.startsWith('UCS') ? 'UCS' : 'Music production';
 }
 
 /** [top, sub] for a record under the given taxonomy. */
@@ -263,9 +268,14 @@ export function taxonomyKeys(item: any, taxonomy: Taxonomy): [string, string] {
   if (taxonomy === 'UCS') {
     return [item.ucs?.category || '(unclassified)', (item.ucs?.subcategory || '').trim()];
   }
-  return [item.classification?.group || 'Unclassified', (item.classification?.subgroup || '').trim()];
+  const group = (item.classification?.group || 'Unclassified').trim();
+  // A record analyzed before MUSICPROD has no role — derive it from the group.
+  const role = item.classification?.music_production_category || musicProdCategory(group);
+  return [role, group];
 }
 
 export function taxonomyColor(top: string, sub: string, taxonomy: Taxonomy): string {
-  return taxonomy === 'UCS' ? ucsSubColor(top, sub) : groupColor(top, sub);
+  if (taxonomy === 'UCS') return ucsSubColor(top, sub);
+  // The role fixes the hue; the group under it is a shade of that hue.
+  return sub ? groupColor(sub, '') : musicProdColor(top);
 }

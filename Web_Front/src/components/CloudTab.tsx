@@ -40,8 +40,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      const g = taxonomy === 'UCS' ? (it.ucs?.category || '(unclassified)') : (it.classification?.group || 'Unclassified');
-      const sg = taxonomy === 'UCS' ? (it.ucs?.subcategory || '').trim() : (it.classification?.subgroup || '').trim();
+      const [g, sg] = taxonomyKeys(it, taxonomy);
       if (scopeGroup && g !== scopeGroup) return false;
       if (scopeSub && sg !== scopeSub) return false;
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`

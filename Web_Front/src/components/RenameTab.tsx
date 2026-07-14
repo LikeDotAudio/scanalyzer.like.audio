@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { buildScript, type RenamePlan, type ScriptKind, type Mode, type BitDepth } from '../renameScript';
 import { TOKEN_LABELS, type Slot, getSavedSubfolders, getSavedPrepend, getSavedAppend, tokenValue, generateNewName } from '../renameConfig';
 import ScopeBar from './ScopeBar';
+import { taxonomyKeys } from '../groupColors';
 
 interface RenameTabProps {
   analysisResult: any[];
@@ -26,8 +27,11 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      if (scopeGroup && (it.classification?.group || 'Unclassified') !== scopeGroup) return false;
-      if (scopeSub && (it.classification?.subgroup || '').trim() !== scopeSub) return false;
+      // The ScopeBar shows music-production roles opening into name groups, so
+      // scope on the same keys it renders.
+      const [role, g] = taxonomyKeys(it, 'Music production');
+      if (scopeGroup && role !== scopeGroup) return false;
+      if (scopeSub && g !== scopeSub) return false;
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;

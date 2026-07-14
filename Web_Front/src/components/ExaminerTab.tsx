@@ -4,7 +4,7 @@ import { generateNewName } from '../renameConfig';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from './ScopeBar';
-import { groupColor, complementColor, ucsColor, ucsSubColor, type Taxonomy } from '../groupColors';
+import { groupColor, complementColor, ucsColor, ucsSubColor, taxonomyKeys, type Taxonomy } from '../groupColors';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import PropertyBars from '../examiner/PropertyBars';
@@ -19,13 +19,21 @@ interface ExaminerTabProps {
 
 const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
+// Bumped when the column set changes: a saved v1 set would hide every new column
+// (Music Prod, UCS Alt 1-3) and keep pointing at the dropped god_category.
+const COLS_KEY = 'scanalyzer_examiner_cols_v2';
+
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
   { key: 'name', label: 'File', width: '17%', get: it => it.metadata?.name || '' },
   { key: 'music_production_category', label: 'Music Prod', width: '9%', get: it => it.classification?.music_production_category || '' },
   { key: 'group', label: 'Group', width: '8%', get: it => it.classification?.group || '' },
   { key: 'subgroup', label: 'Subgroup', width: '9%', get: it => it.classification?.subgroup || '' },
-  { key: 'ucs_category', label: 'UCS Cat', width: '8%', get: it => it.ucs?.category || '' },
-  { key: 'ucs_subcategory', label: 'UCS Sub', width: '9%', get: it => it.ucs?.subcategory || '' },
+  { key: 'ucs_category', label: 'UCS Group', width: '8%', get: it => it.ucs?.category || '' },
+  { key: 'ucs_subcategory', label: 'Sub Group', width: '9%', get: it => it.ucs?.subcategory || '' },
+  // The runners-up the UCS matcher scored, best first. Each is "<category_id> <confidence>".
+  { key: 'ucs_alt_1', label: 'UCS Alt 1', width: '7%', get: it => it.ucs?.alternatives?.[0] || '' },
+  { key: 'ucs_alt_2', label: 'UCS Alt 2', width: '7%', get: it => it.ucs?.alternatives?.[1] || '' },
+  { key: 'ucs_alt_3', label: 'UCS Alt 3', width: '7%', get: it => it.ucs?.alternatives?.[2] || '' },
   { key: 'reason', label: 'Reason', width: '14%', get: it => it.classification?.reason?.[0] || '' },
   { key: 'timbre', label: 'Timbre', width: '8%', get: it => it.classification?.timbre || '' },
   { key: 'cluster', label: 'Clust', numeric: true, width: '4%', get: it => (it.unsupervised?.cluster ?? -1) },
@@ -52,7 +60,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
-  const [taxonomy, setTaxonomy] = useState<Taxonomy>('Name groups');
+  const [taxonomy, setTaxonomy] = useState<Taxonomy>('Music production');
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
   const [showColMenu, setShowColMenu] = useState(false);
 
@@ -63,7 +71,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   }, [analysisResult, taxonomy]);
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
     try {
-      const saved = localStorage.getItem('scanalyzer_examiner_cols');
+      const saved = localStorage.getItem(COLS_KEY);
       if (saved) return new Set(JSON.parse(saved));
     } catch { /* ignore */ }
     return new Set(COLUMNS.map(c => c.key));
@@ -74,7 +82,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     if (next.has(key)) next.delete(key);
     else next.add(key);
     setVisibleColumns(next);
-    localStorage.setItem('scanalyzer_examiner_cols', JSON.stringify(Array.from(next)));
+    localStorage.setItem(COLS_KEY, JSON.stringify(Array.from(next)));
   };
 
   const activeColumns = COLUMNS.filter(c => visibleColumns.has(c.key));
@@ -83,8 +91,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const filteredRows = useMemo(() => {
     const q = filter.trim().toLowerCase();
     return analysisResult.filter(it => {
-      const g = taxonomy === 'UCS' ? (it.ucs?.category || '(unclassified)') : (it.classification?.group || 'Unclassified');
-      const sg = taxonomy === 'UCS' ? (it.ucs?.subcategory || '').trim() : (it.classification?.subgroup || '').trim();
+      const [g, sg] = taxonomyKeys(it, taxonomy);
       if (scopeGroup && g !== scopeGroup) return false;
       if (scopeSub && sg !== scopeSub) return false;
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
@@ -378,7 +385,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                 rightContent={
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
                     <div className="text-secondary" style={{ fontSize: '0.8rem', display: 'flex', gap: '0.5rem' }}>
-                      <button className={`btn ${taxonomy === 'Name groups' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('Name groups')}>Music Groups</button>
+                      <button className={`btn ${taxonomy === 'Music production' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('Music production')}>Music Production</button>
                       <button className={`btn ${taxonomy === 'UCS' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('UCS')}>UCS</button>
                     </div>
                     <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{(isTauri() || audioFiles.length) ? ` · ${isTauri() ? 'Native Audio' : audioFiles.length + ' audio linked'}` : ''}</div>
@@ -445,6 +452,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.classification?.subgroup}>{item.classification?.subgroup}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.ucs?.alternatives?.[0] || ''}>{item.ucs?.alternatives?.[0] || ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.ucs?.alternatives?.[1] || ''}>{item.ucs?.alternatives?.[1] || ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.ucs?.alternatives?.[2] || ''}>{item.ucs?.alternatives?.[2] || ''}</td>}
                                           {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.reason?.[0] || ''}>{item.classification.reason?.[0] || ''}</td>}
                                           {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.classification.timbre}>{item.classification.timbre ? `${TIMBRE_EMOJI[item.classification.timbre] || '🎚️'} ${item.classification.timbre}` : ''}</td>}
                                           {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.unsupervised.cluster !== -1 ? item.unsupervised.cluster : ''}</td>}
