@@ -2,8 +2,7 @@ import { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useThree, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
-import { groupColor, musicProdColor, musicProdCategory, subKey, ucsColor, ucsSubColor,
-         taxonomyOf, taxonomyKeys } from './groupColors'
+import { musicProdCategory, subKey, ucsColor, ucsSubColor, taxonomyKeys } from './groupColors'
 import type { Taxonomy } from './groupColors'
 
 // Feature registry: label → how to read it. Numeric features are normalized
@@ -30,8 +29,9 @@ export const AXIS_OPTIONS = Object.keys(CLOUD_FEATURES);
 export const SIZE_OPTIONS = Object.entries(CLOUD_FEATURES)
   .filter(([, f]) => !f.categorical)
   .map(([label]) => label);
-export const COLOR_OPTIONS = ['UCS Category', 'UCS Subcategory', 'Group', 'Music Production', 'Subgroup'];
-export const SHAPE_OPTIONS = ['Instrument', 'Music Production', 'Timbre', 'Uniform'];
+// UCS is the only taxonomy the cloud speaks. Category = hue, Subcategory = shade within it.
+export const COLOR_OPTIONS = ['UCS Category', 'UCS Subcategory'];
+export const SHAPE_OPTIONS = ['Instrument', 'Timbre', 'Uniform'];
 
 const SPAN = 30; // world units each axis is spread over
 
@@ -82,36 +82,23 @@ function colorFor(item: any, colorBy: string): string {
   // The UCS taxonomy (82 categories, scored per file) — hue = parent category,
   // shade = subcategory. Distinct from the god categories, which are six
   // envelope buckets over the drum-pack name groups.
-  if (colorBy === 'UCS Category') return ucsColor(item.ucs?.category || '');
   if (colorBy === 'UCS Subcategory') {
     return ucsSubColor(item.ucs?.category || '', item.ucs?.subcategory || '');
   }
-  const group = item.classification?.group || 'Unclassified';
-  if (colorBy === 'Music Production')
-    return musicProdColor(item.classification?.music_production_category || musicProdCategory(group));
-  if (colorBy === 'Subgroup') return groupColor(group, item.classification?.subgroup || '');
-  return groupColor(group, '');
+  // Default and 'UCS Category': hue by UCS category.
+  return ucsColor(item.ucs?.category || '');
 }
 
 function getShapeFor(it: any, shapeBy: string): string {
   if (shapeBy === 'Uniform') return 'sphere';
 
   const g = (it.classification?.group || '').toLowerCase();
+  // Not a scope taxonomy — just a shape heuristic. Instrument-family shapes lean on the
+  // production role where the group name is ambiguous.
   const role = it.classification?.music_production_category
     || musicProdCategory(it.classification?.group || '');
   const t = (it.classification?.timbre || '').toLowerCase();
   const transient_count = it.envelope?.transient_count ?? 0;
-  
-  if (shapeBy === 'Music Production') {
-    if (role === 'PERCUSSION' || role === 'PERCUSSION TUNED' || role === 'SHAKEN') return 'pyramid';
-    if (role === 'IMPULSE RESPONSE') return 'diamond';
-    if (role === 'BELLS' || role === 'CHIME') return 'diamond';
-    if (role === 'KEYED' || role === 'SYNTHESIZED') return 'cube';
-    if (role === 'PLUCKED' || role === 'STRINGED' || role === 'BRASS'
-        || role === 'WOODWIND' || role === 'INSTRUMENT') return 'cube';
-    if (role === 'LOOP' || role === 'EXPERIMENTAL' || role === 'PERFORMANCE') return 'torus';
-    return 'sphere';
-  }
 
   if (shapeBy === 'Timbre') {
     if (t === 'percussive') return 'pyramid';
@@ -223,8 +210,8 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
 
 function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hiddenGroups, selectedIndex, onPick }: CloudProps) {
   const count = data.length
-  // The legend, the filters and the colours must all read the same taxonomy.
-  const taxonomy = taxonomyOf(colorBy);
+  // UCS is the only taxonomy the cloud speaks.
+  const taxonomy = 'UCS' as const;
 
   const { shapeData, allPositions, selectedSize, selectedShape } = useMemo(() => {
     const xf = makeAxis(data, xAxis);
