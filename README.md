@@ -201,6 +201,22 @@ held tone is just ripple and can sit at the end of the file):
   → `Sustained` (sustain > 0.5) → `Plucky` (sustain < 0.15 and decay <
   0.15 s) → else `Decaying`.
 
+> **These describe one event. On a multi-event file they describe the edit.**
+> The envelope is fitted to the whole file against a single peak `P`, so when a
+> file contains many events, `P` is merely the loudest of them and "attack"
+> becomes *the time until the loudest event* — a property of how the recording
+> was cut, not of the sound. Measured across 40,966 labelled clips, the attack
+> tracks file length at **r = +0.72** and lands about a third of the way in; a
+> computer keypress reads **10 ms** on one-shot files and **3.0 s** on
+> multi-event ones. The same applies to `attack_seconds`, `sustain_ratio`,
+> `decay_time_seconds_60db` and `crest_factor`, all of which are defined against
+> that same global peak.
+>
+> **Read them only where `transient_count ≤ 1`.** Above that, they are still
+> meaningful *relative to the file* (a long swell really does peak late), but
+> they are not a description of the source. This is why the UCS calibration
+> restricts all ten peak-relative features to one-shot files.
+
 ### Pitch & harmonicity (`pitch.rs`)
 
 Autocorrelation over the middle half of the signal:
@@ -532,7 +548,7 @@ reasoning was wrong. Three findings, each recorded in the calibration file:
 1. **Whole-clip ADSR describes the uploader's edit, not the sound.** On a multi-event
    clip the "attack" is just the time to the loudest event: it tracks clip length at
    r = +0.72, and a computer keypress reads 10 ms on one-shot clips but **3.0 s** on
-   multi-event ones. The nine peak-relative features (the `envelope_*` ADSR fields,
+   multi-event ones. The ten peak-relative features (the seven `envelope_*` ADSR fields,
    `sustain_ratio`, `decay_time_seconds_60db`, `crest_factor`) are therefore calibrated
    from **one-shot clips only**. Without that restriction the taxonomy would have learned
    "computer keyboard = 2.65 s attack."
@@ -595,13 +611,13 @@ a missing feature reads as absent rather than as a plausible zero.
 | `audit` | bool | generic "drum" tag with no specific instrument — flagged for acoustic review |
 | `length_seconds` | number | duration |
 | `transient_count` | int | detected attacks; >1 ⇒ multi-hit |
-| `attack_seconds` | number | time to the loudest sample |
+| `attack_seconds` | number | time to the loudest sample — **peak-relative** ¹ |
 | `root_mean_square_level` | number | loudness, linear RMS |
-| `crest_factor` | number | peak ÷ RMS (spiky high, squashed low) |
+| `crest_factor` | number | peak ÷ RMS (spiky high, squashed low) — **peak-relative** ¹ |
 | `zero_crossings_per_second` | number | noisiness/brightness |
 | `pitch_hz` | number | autocorrelation pitch estimate |
 | `harmonicity` | number | 0 noise … 1 strongly pitched |
-| `sustain_ratio` | number | fraction of file held ≥ 50 % of peak |
+| `sustain_ratio` | number | fraction of file held ≥ 50 % of peak — **peak-relative** ¹ |
 | `sustained` | bool | one note held the whole file |
 | `complexity` | number | spectral spread around the centroid (Hz) |
 | `spectral_centroid_hz` | number | brightness (whole-file) |
@@ -616,12 +632,12 @@ a missing feature reads as absent rather than as a plausible zero.
 | `total_harmonic_distortion` | number | harmonic power ÷ fundamental (0 = pure; 0 when unmeasurable) |
 | `clipping_density` | number | fraction of samples pinned at the ceiling in flat-top runs |
 | `distortion` | string | Clean / Dirty / Clipped |
-| `envelope_attack_seconds` | number | 10 %→90 % rise |
-| `envelope_decay_seconds` | number | peak → sustain plateau |
-| `envelope_sustain_level` | number | plateau, fraction of peak |
-| `envelope_release_seconds` | number | final fade to silence |
-| `envelope_temporal_centroid` | number | energy center in time, 0..1 |
-| `envelope_skewness` / `envelope_kurtosis` | number | 3rd / 4th moments of the envelope |
+| `envelope_attack_seconds` | number | 10 %→90 % rise — **peak-relative** ¹ |
+| `envelope_decay_seconds` | number | peak → sustain plateau — **peak-relative** ¹ |
+| `envelope_sustain_level` | number | plateau, fraction of peak — **peak-relative** ¹ |
+| `envelope_release_seconds` | number | final fade to silence — **peak-relative** ¹ |
+| `envelope_temporal_centroid` | number | energy center in time, 0..1 — **peak-relative** ¹ |
+| `envelope_skewness` / `envelope_kurtosis` | number | 3rd / 4th moments of the envelope — **peak-relative** ¹ |
 | `envelope_shape` | string | Swell / Sustained / Plucky / Decaying / Multi / Silent |
 | `acoustic_types` | string[] | Harmonic / Inharmonic / Stochastic / Impulsive (multi) |
 | `sound_design_roles` | string[] | Pad / Pluck / Lead / Bass (multi; may be empty) |
@@ -639,6 +655,15 @@ a missing feature reads as absent rather than as a plausible zero.
 | `dc_offset` | number | Average waveform offset from zero (quality assurance) |
 | `trailing_silence_ms` | number | Milliseconds of dead space at the end of the file |
 | `ucs_category` / `ucs_subcategory` / `ucs_id` | string | Standardized Universal Category System metadata (e.g. `MUSICAL`, `PERCUSSION`, `MUSCPerc`) |
+
+¹ **Peak-relative — only describes the source when `transient_count ≤ 1`.** These ten
+fields (plus `decay_time_seconds_60db`) are all defined against the file's single loudest
+peak. On a multi-event file that peak is just the loudest of many events, so they end up
+describing *how the file was cut* rather than what it is: measured across 40,966 labelled
+clips, `envelope_attack_seconds` tracks file length at **r = +0.72**, and a computer
+keypress reads **10 ms** on one-shot files but **3.0 s** on multi-event ones. Filter on
+`transient_count` before you aggregate, compare, or train on any of them — see
+[the ADSR envelope](#adsr-envelope-enveloprs) and the UCS calibration above.
 
 ---
 
