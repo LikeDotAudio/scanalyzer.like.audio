@@ -56,7 +56,11 @@ pub fn get_integrated_lufs(raw_interleaved: &[f32], channels: u16, sample_rate: 
         return -70.0;
     }
     
-    analyzer.loudness_global().unwrap_or(-70.0)
+    // A silent file measures as −∞, which serde_json writes as `null` — and a null
+    // is not an f64 on the way back in. Fold every non-finite result onto the −70
+    // "unmeasurable" sentinel so the record we write is a record we can read.
+    let lufs = analyzer.loudness_global().unwrap_or(-70.0);
+    if lufs.is_finite() { lufs } else { -70.0 }
 }
 
 /// The onset envelope: rising energy per 512-sample frame, i.e. where the
@@ -130,6 +134,22 @@ pub fn calculate_qa_metrics(samples: &[f32], sample_rate: u32) -> (f64, f64) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    // A silent buffer measures as −∞ LUFS, and serde_json writes a non-finite float as
+    // `null` — which is not an f64 coming back in. That made every silent sample a
+    // sidecar the analyzer could not re-read, so it re-analyzed them on every scan.
+    #[test]
+    fn silence_measures_as_the_sentinel_not_negative_infinity() {
+        let silence = vec![0.0f32; 48_000];
+        let lufs = get_integrated_lufs(&silence, 1, 48_000);
+        assert!(lufs.is_finite(), "silent file gave a non-finite LUFS: {lufs}");
+        assert!(lufs <= -69.0, "silence should read as unmeasurable, got {lufs}");
+
+        // And the record it produces must survive a round trip through JSON.
+        let json = serde_json::to_string(&lufs).unwrap();
+        assert_ne!(json, "null", "a non-finite LUFS serializes to null");
+        assert!(serde_json::from_str::<f64>(&json).is_ok());
+    }
 
     const FRAME: usize = 512;
 

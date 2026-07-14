@@ -4,7 +4,6 @@ import { isTauri } from '../audioLinking';
 interface HeaderProps {
   isAnalyzing: boolean;
   progress: number;
-  onLoadSounds: () => void;
   /** Desktop: absolute root that relative .PEAK paths resolve against. */
   audioRoot?: string;
   onUnloadSounds?: () => void;
@@ -14,7 +13,7 @@ interface HeaderProps {
   activeTab?: string;
 }
 
-export default function Header({ isAnalyzing, progress, onLoadSounds, onUnloadSounds, audioCount, audioRoot, currentSound, hasData, activeTab }: HeaderProps) {
+export default function Header({ isAnalyzing, progress, onUnloadSounds, audioCount, audioRoot, currentSound, hasData, activeTab }: HeaderProps) {
   // Desktop links one root folder; the browser links a list of File objects.
   const audioLinked = isTauri() ? !!audioRoot : audioCount > 0;
   return (
@@ -42,7 +41,7 @@ export default function Header({ isAnalyzing, progress, onLoadSounds, onUnloadSo
             </span>
           ) : !audioLinked ? (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>Step 2:</strong> Click <strong style={{ color: 'var(--accent-primary)' }}>{isTauri() ? 'Link Audio Folder' : 'Load Sounds'}</strong> to give the analyzer real-time access to your local files so you can hear them. →
+              <strong style={{ color: 'var(--accent-primary)' }}>Step 2:</strong> Scan the folder again to re-link its audio — the .PEAK sidecars load instantly, and playback comes back with them.
             </span>
           ) : (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
@@ -62,11 +61,6 @@ export default function Header({ isAnalyzing, progress, onLoadSounds, onUnloadSo
       )}
 
       <div className="hide-on-mobile" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        {/* Desktop: a .PEAK scanned in the browser holds relative paths, so the
-            asset protocol needs an absolute root to join them onto. */}
-        <button className={`btn ${audioLinked ? '' : 'primary blink'}`} onClick={onLoadSounds}>
-          {isTauri() ? 'Link Audio Folder' : 'Load Sounds'}
-        </button>
         {audioCount > 0 && (
           <button 
             className="btn" 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './index.css'
-import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanDirectoryHandle, clearDirHandle, isTauri, setAudioRoot, getAudioRoot } from './audioLinking'
+import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot } from './audioLinking'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
@@ -43,18 +43,15 @@ function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, [])
 
-  // Auto-load previous directory handle if permitted
-  const [hasPreviousDir, setHasPreviousDir] = useState(false);
+  // Re-link the audio folder on load if Chrome still remembers the grant. Without
+  // it there is no button to ask again — re-scanning the folder is the way back.
   useEffect(() => {
     if (!fsaSupported()) return;
     (async () => {
       const handle = await getDirHandle();
       if (!handle) return;
       const options = { mode: 'read' } as any;
-      if ((await handle.queryPermission(options)) !== 'granted') {
-        setHasPreviousDir(true);
-        return;
-      }
+      if ((await handle.queryPermission(options)) !== 'granted') return;
       try {
         setAudioFiles(await scanDirectoryHandle(handle));
       } catch (err) {
@@ -62,7 +59,6 @@ function App() {
         // Drop it, or it throws on every load and "Load Sounds" keeps resuming it.
         console.warn('Remembered audio folder is gone; forgetting it.', err);
         await clearDirHandle();
-        setHasPreviousDir(false);
       }
     })();
   }, []);
@@ -116,7 +112,6 @@ function App() {
            setSchemaNotice(noticeFor(migrated, skipped));
            setAudioFiles([]);
            setCurrentSound('');
-           setHasPreviousDir(false);
         }
       };
       reader.readAsText(file);
@@ -132,56 +127,6 @@ function App() {
     if (files.length) loadPeakFiles(files);
   }
 
-  // Global "Load Sounds": link an audio folder app-wide (all tabs share it).
-  const handleLoadSounds = async () => {
-    // Desktop: store the absolute root that relative .PEAK paths hang off, so the
-    // asset protocol can resolve them. No File list is needed — Tauri streams
-    // straight from disk.
-    if (isTauri()) {
-      const { open } = await import('@tauri-apps/plugin-dialog');
-      const dir = await open({ directory: true, multiple: false });
-      if (typeof dir === 'string') {
-        setAudioRoot(dir);
-        setAudioRootLinked(dir);   // re-render so playback + Header pick it up
-      }
-      return;
-    }
-
-    if (fsaSupported()) {
-      try {
-        if (hasPreviousDir && audioFiles.length === 0) {
-          const handle = await getDirHandle();
-          if (handle) {
-            const options = { mode: 'read' } as any;
-            if ((await handle.requestPermission(options)) === 'granted') {
-              try {
-                setAudioFiles(await scanDirectoryHandle(handle));
-                setHasPreviousDir(false);
-                return;
-              } catch (err) {
-                // Folder is gone — forget it and fall through to the picker
-                // rather than leaving the user with a button that does nothing.
-                console.warn('Remembered audio folder is gone; forgetting it.', err);
-                await clearDirHandle();
-                setHasPreviousDir(false);
-              }
-            }
-          }
-        }
-        setAudioFiles(await pickDirectoryFiles()); 
-        setHasPreviousDir(false);
-      }
-      catch (err) { if ((err as Error)?.name !== 'AbortError') console.warn(err); }
-    } else {
-      // Fallback: a hidden directory <input> for non-Chromium browsers.
-      const input = document.createElement('input');
-      input.type = 'file';
-      (input as any).webkitdirectory = true;
-      input.onchange = () => { if (input.files) setAudioFiles(filterAudioFiles(Array.from(input.files))); };
-      input.click();
-    }
-  }
-
   // A full reset, not just an unlink: the analysis is what the 3D cloud, the 2D
   // charts and the file list are drawn from, so dropping the audio while leaving
   // 36k points on screen left the app claiming to show a library that was no
@@ -193,7 +138,6 @@ function App() {
     )) return;
 
     setAudioFiles([]);
-    setHasPreviousDir(false);
     setAnalysisResult([]);
     setCurrentSound('');
     setSchemaNotice('');
@@ -228,7 +172,7 @@ function App() {
           Drop .PEAK file to load
         </div>
       )}
-      <Header isAnalyzing={isAnalyzing} progress={progress} onLoadSounds={handleLoadSounds} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} audioRoot={audioRootLinked} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
+      <Header isAnalyzing={isAnalyzing} progress={progress} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} audioRoot={audioRootLinked} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
 
       {schemaNotice && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.4rem 0.75rem', background: 'rgba(255,190,60,0.10)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.78rem' }}>
@@ -269,12 +213,11 @@ function App() {
             setProgress={setProgress}
             onViewCloud={() => goToTab('cloud')}
             setAudioFiles={setAudioFiles}
-            onLoadSounds={handleLoadSounds}
           />
         </div>
 
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-          <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} onLoadSounds={handleLoadSounds} />
+          <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />
         </div>
 
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>

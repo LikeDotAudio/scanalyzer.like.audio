@@ -11,7 +11,6 @@ interface CloudTabProps {
   analysisResult: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
-  onLoadSounds?: () => void;
 }
 
 
@@ -23,7 +22,7 @@ interface CloudTabProps {
 const PREF = 'scanalyzer_cloud_v2_';
 const getPref = (key: string, def: string) => localStorage.getItem(PREF + key) || def;
 
-export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSounds }: CloudTabProps) {
+export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudTabProps) {
   const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
   const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
   const [zAxis, setZAxis] = useState(() => getPref('zAxis', 'Complexity'));
@@ -199,7 +198,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
             xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis}
             zAxis={zAxis} setZAxis={setZAxis} sizeAxis={sizeAxis} setSizeAxis={setSizeAxis}
             colorBy={colorBy} setColorBy={setColorBy} showAxes={showAxes} setShowAxes={setShowAxes}
-            audioFilesLength={isTauri() ? 1 : audioFiles.length} onLoadSounds={onLoadSounds}
+            audioFilesLength={isTauri() ? 1 : audioFiles.length}
           />
         )}
 

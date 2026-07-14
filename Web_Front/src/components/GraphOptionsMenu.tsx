@@ -23,12 +23,11 @@ interface GraphOptionsMenuProps {
   colorBy: string; setColorBy: (v: string) => void;
   showAxes: boolean; setShowAxes: (v: boolean) => void;
   audioFilesLength: number;
-  onLoadSounds?: () => void;
 }
 
 export default function GraphOptionsMenu({
   xAxis, setXAxis, yAxis, setYAxis, zAxis, setZAxis, sizeAxis, setSizeAxis, colorBy, setColorBy,
-  showAxes, setShowAxes, audioFilesLength, onLoadSounds
+  showAxes, setShowAxes, audioFilesLength
 }: GraphOptionsMenuProps) {
   const applyPreset = (x: string, y: string, z: string, size: string) => {
     setXAxis(x); setYAxis(y); setZAxis(z); setSizeAxis(size);
@@ -68,7 +67,7 @@ export default function GraphOptionsMenu({
       <div style={{ marginTop: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem' }}>
         {audioFilesLength > 0
           ? <div className="text-secondary" style={{ fontSize: '0.75rem', textAlign: 'center' }}>{audioFilesLength === 1 ? 'Native Audio linked' : audioFilesLength.toLocaleString() + ' audio linked'}</div>
-          : <button className="btn primary blink" style={{ width: '100%', padding: '0.3rem', fontSize: '0.75rem' }} onClick={() => onLoadSounds?.()}>⚠ 0 audio linked — Load folder</button>}
+          : <div className="text-secondary" style={{ fontSize: '0.75rem', textAlign: 'center', color: 'var(--accent-secondary)' }}>⚠ 0 audio linked — re-scan the folder to hear samples</div>}
       </div>
     </div>
   );

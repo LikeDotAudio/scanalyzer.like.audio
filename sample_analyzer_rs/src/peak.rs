@@ -3,7 +3,22 @@
 //!
 //! Field names are deliberately spelled out in full English — the .PEAK file
 //! is a data model others read, so nothing is abbreviated or implied.
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
+
+/// −70 LUFS is the agreed "unmeasurable" sentinel — `ucs::feature()` reads anything
+/// at or below −69 as "no loudness here" rather than as a very quiet one.
+fn lufs_unmeasurable() -> f64 {
+    -70.0
+}
+
+/// A digitally silent file measures as −∞ LUFS, and serde_json writes a non-finite
+/// float as `null`. Deserializing that back into an `f64` fails, so the analyzer could
+/// not read the sidecars it had written itself — every silent sample became an
+/// unreadable record. Read `null` (or any non-finite value) as the sentinel instead.
+fn lufs_from_json<'de, D: Deserializer<'de>>(d: D) -> Result<f64, D::Error> {
+    let v = Option::<f64>::deserialize(d)?;
+    Ok(v.filter(|x| x.is_finite()).unwrap_or_else(lufs_unmeasurable))
+}
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Metadata {
@@ -104,6 +119,7 @@ pub struct SpectralFeatures {
     pub voicing_ratio: Option<f64>,
     pub mid_rms: f64,
     pub side_rms: f64,
+    #[serde(default = "lufs_unmeasurable", deserialize_with = "lufs_from_json")]
     pub lufs: f64,
 }
 

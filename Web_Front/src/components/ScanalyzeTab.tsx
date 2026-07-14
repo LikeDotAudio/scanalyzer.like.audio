@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import initWasm, { analyzer_version } from 'wasm_analyzer';
-import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar } from '../audioLinking';
+import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar, relPathOf } from '../audioLinking';
 import { normalizePeakRecords } from '../peakSchema';
 import TauriScan from './TauriScan';
 
-/** The folder a record is filed under — the file's parent path. */
+/** The folder a record is filed under — the file's parent path, or '' at the root.
+ *  Never a placeholder word: the UCS classifier reads this field as *text evidence*,
+ *  so a literal fallback of "folder" matched the office-supplies synonym and filed
+ *  the library under OBJECTS/OFFICE. An empty string says "no folder" and is silent. */
 const folderOf = (file: File) => {
-  const parts = (file.webkitRelativePath || file.name).split('/');
-  return parts.length > 1 ? parts.slice(0, -1).join('/') : 'folder';
+  const parts = (relPathOf(file) || file.name).split('/');
+  return parts.length > 1 ? parts.slice(0, -1).join('/') : '';
 };
 
-/** A file's path with its extension removed, used to pair `kick.wav` with `kick.PEAK`. */
-const stem = (file: File) => (file.webkitRelativePath || file.name).replace(/\.[^./]+$/, '');
+/** A file's path with its extension removed, used to pair `kick.wav` with `kick.PEAK`.
+ *  Keyed on the full relative path, not the bare name: a library has a `Kick.wav` in
+ *  every drum folder, and keying on the name alone pairs them all with one sidecar. */
+const stem = (file: File) => (relPathOf(file) || file.name).replace(/\.[^./]+$/, '');
 
 interface ScanalyzeTabProps {
   analysisResult: any[];
@@ -21,7 +26,6 @@ interface ScanalyzeTabProps {
   setProgress: (val: number) => void;
   onViewCloud: () => void;
   setAudioFiles: (files: File[]) => void;
-  onLoadSounds: () => void;
 }
 
 export default function ScanalyzeTab({
@@ -31,8 +35,7 @@ export default function ScanalyzeTab({
     setIsAnalyzing,
     setProgress,
     onViewCloud,
-    setAudioFiles,
-    onLoadSounds
+    setAudioFiles
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
   const [done, setDone] = useState(0);
@@ -291,8 +294,8 @@ export default function ScanalyzeTab({
             const file = files[idx];
             
             file.arrayBuffer().then(arrayBuffer => {
-                const parts = (file.webkitRelativePath || file.name).split('/');
-                const folder = parts.length > 1 ? parts.slice(0, -1).join('/') : "folder";
+                const parts = (relPathOf(file) || file.name).split('/');
+                const folder = parts.length > 1 ? parts.slice(0, -1).join('/') : '';
                 
                 worker.onmessage = async (e) => {
                     const { result, error } = e.data;
@@ -304,8 +307,7 @@ export default function ScanalyzeTab({
                             if (parsed.status !== "error") {
                                 newResults.push(parsed);
                                 if (dirHandle) {
-                                    // Use webkitRelativePath for the sidecar, falling back to name
-                                    const relPath = (file as any).relPath || file.webkitRelativePath || file.name;
+                                    const relPath = relPathOf(file) || file.name;
                                     await writePeakSidecar(dirHandle, relPath, parsed);
                                 }
                             }
@@ -476,7 +478,7 @@ export default function ScanalyzeTab({
         <div style={{ width: '100%', maxWidth: '640px', maxHeight: '220px', overflowY: 'auto', background: 'rgba(0,0,0,0.25)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', fontSize: '0.72rem', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
           {wavFiles.slice(0, 200).map((f, i) => (
             <div key={i} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {sidecars.has(stem(f)) ? '✓ ' : '· '}{(f as any).relPath || f.webkitRelativePath || f.name}
+              {sidecars.has(stem(f)) ? '✓ ' : '· '}{relPathOf(f) || f.name}
             </div>
           ))}
           {wavFiles.length > 200 && (
@@ -538,7 +540,7 @@ export default function ScanalyzeTab({
             disabled={!wasmReady}
             onClick={async () => {
               try {
-                const files = await pickDirectoryFiles(true);
+                const files = await pickDirectoryFiles(true, true);
                 void discover(files, 1);
               } catch (err) {
                 console.warn(err);
@@ -573,9 +575,6 @@ export default function ScanalyzeTab({
             disabled={!wasmReady}
           />
         </label>
-        <button className="btn primary" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem' }} onClick={onLoadSounds}>
-          Load Sounds Directory…
-        </button>
       </div>
 
       {analysisResult.length > 0 && (

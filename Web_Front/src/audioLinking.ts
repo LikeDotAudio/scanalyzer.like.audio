@@ -62,13 +62,20 @@ export async function clearDirHandle() {
   });
 }
 
-export async function scanDirectoryHandle(dirHandle: any): Promise<File[]> {
+/** A cached analysis written next to its audio. */
+const SIDECAR_RE = /\.peak$/i;
+
+// `includeSidecars` matters: a scan needs the .PEAK files to know what has
+// already been analyzed, but audio *linking* wants only playable files. Walking
+// with the sidecars filtered out is what made the scanner re-analyze a folder it
+// had already done — it never saw the cache it had written itself.
+export async function scanDirectoryHandle(dirHandle: any, includeSidecars = false): Promise<File[]> {
   const out: File[] = [];
   async function walk(handle: any, prefix: string) {
     for await (const [name, child] of handle.entries()) {
       const path = prefix ? `${prefix}/${name}` : name;
       if (child.kind === 'file') {
-        if (AUDIO_RE.test(name)) {
+        if (AUDIO_RE.test(name) || (includeSidecars && SIDECAR_RE.test(name))) {
           const file = await child.getFile();
           (file as any).relPath = path;
           out.push(file);
@@ -84,14 +91,14 @@ export async function scanDirectoryHandle(dirHandle: any): Promise<File[]> {
 
 // Prompt for a directory and return every audio File within, each tagged with
 // its relative path (stashed on `relPath` since webkitRelativePath is read-only).
-export async function pickDirectoryFiles(readWrite = false): Promise<File[]> {
+export async function pickDirectoryFiles(readWrite = false, includeSidecars = false): Promise<File[]> {
   const anyWin = window as any;
   if (!fsaSupported()) {
     throw new Error('This browser does not support the File System Access API (use Chrome or Edge).');
   }
   const dir = await anyWin.showDirectoryPicker({ mode: readWrite ? 'readwrite' : 'read' });
   await setDirHandle(dir);
-  return scanDirectoryHandle(dir);
+  return scanDirectoryHandle(dir, includeSidecars);
 }
 
 export async function writePeakSidecar(rootHandle: any, relPath: string, json: any) {
@@ -112,7 +119,10 @@ export async function writePeakSidecar(rootHandle: any, relPath: string, json: a
   }
 }
 
-function relPathOf(f: File): string {
+/** Where a file sits in the picked tree. The FSA picker cannot write the read-only
+ *  `webkitRelativePath`, so it stashes the path on `relPath`; the <input webkitdirectory>
+ *  fallback populates the real one. Read both, or half the callers key on a bare name. */
+export function relPathOf(f: File): string {
   return (f as any).relPath || f.webkitRelativePath || '';
 }
 
