@@ -42,7 +42,7 @@ pub struct Ucs {
     pub subcategory: String,
     pub id: String,
     pub confidence: f64,
-    pub alternatives: Vec<String>,
+    pub alternatives: Vec<crate::ucs::Alternative>,
     pub reason: String,
 }
 

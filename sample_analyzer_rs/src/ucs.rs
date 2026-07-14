@@ -398,13 +398,25 @@ fn text_evidence(e: &Entry, idx: &Index, name_tokens: &[String], folder_tokens: 
 
 // -------------------------------------------------------------------- verdict
 
+/// A runner-up the matcher scored. Spelled out in full English like every other
+/// field in the .PEAK — the old form was a single packed string of the ABBREVIATED
+/// id plus a number ("DSGNMisc 0.003"), which no consumer could read or filter on
+/// without re-parsing it.
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct Alternative {
+    pub category: String,
+    pub subcategory: String,
+    pub id: String,
+    pub probability: f64,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Verdict {
     pub category: String,
     pub subcategory: String,
     pub id: String,
     pub confidence: f64,
-    pub alternatives: Vec<String>,
+    pub alternatives: Vec<Alternative>,
     pub reason: String,
 }
 
@@ -511,15 +523,18 @@ pub fn classify(p: &Peak) -> Verdict {
     let runner = cands.get(1);
     let e = &idx.entries[top.i];
 
-    let alternatives: Vec<String> = cands
+    let alternatives: Vec<Alternative> = cands
         .iter()
         .skip(1)
         .take(3)
         .map(|c| {
-            format!(
-                "{} {:.3}",
-                idx.entries[c.i].sub.category_id, c.post
-            )
+            let alt = &idx.entries[c.i];
+            Alternative {
+                category: alt.category.clone(),
+                subcategory: alt.sub.subcategory.clone(),
+                id: alt.sub.category_id.clone(),
+                probability: (c.post * 1000.0).round() / 1000.0,
+            }
         })
         .collect();
 
