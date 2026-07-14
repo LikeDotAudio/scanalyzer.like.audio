@@ -39,7 +39,6 @@ export default function ScanalyzeTab({
     onLoadSounds
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
-  const [pendingWavFiles, setPendingWavFiles] = useState<File[]>([]);
   const [done, setDone] = useState(0);
   const [total, setTotal] = useState(0);
   const [absorbed, setAbsorbed] = useState(0);
@@ -158,7 +157,7 @@ export default function ScanalyzeTab({
       setAudioFiles(filterAudioFiles(all));
       setAbsorbed(0);
       setStale(0);
-      setPendingWavFiles(wavFiles);
+      void startAnalysis(wavFiles);
       return;
     }
 
@@ -239,10 +238,11 @@ export default function ScanalyzeTab({
           ? `Nothing to analyze — absorbed ${absorbed.length} up-to-date .PEAK sidecar(s).`
           : "All files in this folder have already been analyzed!");
       }
-      setPendingWavFiles([]);
       return;
     }
-    setPendingWavFiles(toProcess);
+    // The survey screen already showed the file list and the user picked an action there,
+    // so go straight to work rather than asking them to confirm the same folder twice.
+    void startAnalysis(toProcess);
   };
 
   const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => { void discover(e.target.files, 1); };
@@ -266,11 +266,12 @@ export default function ScanalyzeTab({
     }
   };
 
-  const startAnalysis = async () => {
+  const startAnalysis = async (files: File[]) => {
+    if (files.length === 0) return;
     setIsAnalyzing(true);
     setProgress(0);
     setDone(0);
-    setTotal(pendingWavFiles.length);
+    setTotal(files.length);
     stopRef.current = false;
     const newResults: any[] = [];
     let stopped = false;
@@ -295,7 +296,7 @@ export default function ScanalyzeTab({
 
     await new Promise<void>((resolve) => {
         const checkDone = () => {
-            if (completed >= nextFileIdx && (nextFileIdx >= pendingWavFiles.length || stopRef.current)) {
+            if (completed >= nextFileIdx && (nextFileIdx >= files.length || stopRef.current)) {
                 resolve();
             }
         };
@@ -306,13 +307,13 @@ export default function ScanalyzeTab({
                 checkDone();
                 return;
             }
-            if (nextFileIdx >= pendingWavFiles.length) {
+            if (nextFileIdx >= files.length) {
                 checkDone();
                 return;
             }
 
             const idx = nextFileIdx++;
-            const file = pendingWavFiles[idx];
+            const file = files[idx];
             
             file.arrayBuffer().then(arrayBuffer => {
                 const parts = (file.webkitRelativePath || file.name).split('/');
@@ -339,7 +340,7 @@ export default function ScanalyzeTab({
                     }
                     completed++;
                     setDone(completed);
-                    setProgress(Math.round((completed / pendingWavFiles.length) * 100));
+                    setProgress(Math.round((completed / files.length) * 100));
                     assignWork(worker);
                 };
                 
@@ -348,7 +349,7 @@ export default function ScanalyzeTab({
                 console.error(`Failed to read ${file.name}`, err);
                 completed++;
                 setDone(completed);
-                setProgress(Math.round((completed / pendingWavFiles.length) * 100));
+                setProgress(Math.round((completed / files.length) * 100));
                 assignWork(worker);
             });
         };
@@ -397,6 +398,16 @@ export default function ScanalyzeTab({
                   <div style={{ width: '100%', height: '16px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', overflow: 'hidden', marginBottom: '1rem' }}>
                       <div style={{ width: `${pct}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.15s' }} />
                   </div>
+                  {(absorbed > 0 || stale > 0) && (
+                    <div style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1rem', lineHeight: 1.5 }}>
+                      {absorbed > 0 && (
+                        <>Absorbed <strong style={{ color: 'var(--accent-primary)' }}>{absorbed.toLocaleString()}</strong> up-to-date .PEAK sidecar{absorbed === 1 ? '' : 's'} — same engine, so those files are not being re-analyzed. </>
+                      )}
+                      {stale > 0 && (
+                        <><strong>{stale.toLocaleString()}</strong> sidecar{stale === 1 ? ' was' : 's were'} written by a different engine version and {stale === 1 ? 'is' : 'are'} being recomputed.</>
+                      )}
+                    </div>
+                  )}
                   <div style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: 1.5 }}>
                       <strong>{threadsRef.current}</strong> concurrent threads &middot; {etaStr}
                       {fsaSupported() && <><br /><span style={{ color: 'var(--accent-secondary)' }}>Writing .PEAK sidecars locally to source directories</span></>}
@@ -416,32 +427,6 @@ export default function ScanalyzeTab({
                           🔒 Again, nothing is uploaded — this is all done locally on your machine.
                       </div>
                   </div>
-              </div>
-          </div>
-      );
-  }
-
-  if (pendingWavFiles.length > 0) {
-      return (
-          <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Ready to Scan</h2>
-              <p className="text-secondary" style={{ marginBottom: '0.75rem', fontSize: '1.2rem' }}>
-                  Found <strong>{pendingWavFiles.length}</strong> new .wav files to process.
-              </p>
-              {(absorbed > 0 || stale > 0) && (
-                <p className="text-secondary" style={{ marginBottom: '2.5rem', fontSize: '0.95rem', textAlign: 'center', maxWidth: '640px' }}>
-                  {absorbed > 0 && (
-                    <>Absorbed <strong style={{ color: 'var(--accent-primary)' }}>{absorbed}</strong> up-to-date .PEAK sidecar{absorbed === 1 ? '' : 's'} — same engine, so those files are already done and will not be re-analyzed. </>
-                  )}
-                  {stale > 0 && (
-                    <><strong>{stale}</strong> sidecar{stale === 1 ? ' was' : 's were'} written by a different engine version and will be recomputed.</>
-                  )}
-                </p>
-              )}
-              {absorbed === 0 && stale === 0 && <div style={{ marginBottom: '2.5rem' }} />}
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                  <button className="btn" onClick={() => setPendingWavFiles([])}>Cancel</button>
-                  <button className="btn primary" onClick={startAnalysis}>Continue to Analysis</button>
               </div>
           </div>
       );
