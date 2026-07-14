@@ -44,6 +44,24 @@ export async function getDirHandle(): Promise<any> {
   });
 }
 
+// Forget the remembered folder. The handle outlives the directory it points at,
+// so a folder that has since been moved, renamed or deleted leaves a handle that
+// still reads as permission-granted but throws NotFoundError on the first walk.
+export async function clearDirHandle() {
+  return new Promise((resolve) => {
+    const req = indexedDB.open('ScanalyzerDB', 1);
+    req.onupgradeneeded = (e: any) => { e.target.result.createObjectStore('handles'); };
+    req.onsuccess = (e: any) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('handles')) return resolve(true);
+      const tx = db.transaction('handles', 'readwrite');
+      tx.objectStore('handles').delete('audioDir');
+      tx.oncomplete = () => resolve(true);
+    };
+    req.onerror = () => resolve(true);
+  });
+}
+
 export async function scanDirectoryHandle(dirHandle: any): Promise<File[]> {
   const out: File[] = [];
   async function walk(handle: any, prefix: string) {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './index.css'
-import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanDirectoryHandle } from './audioLinking'
+import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanDirectoryHandle, clearDirHandle } from './audioLinking'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
@@ -44,19 +44,25 @@ function App() {
   // Auto-load previous directory handle if permitted
   const [hasPreviousDir, setHasPreviousDir] = useState(false);
   useEffect(() => {
-    if (fsaSupported()) {
-      getDirHandle().then(async (handle) => {
-        if (handle) {
-          const options = { mode: 'read' } as any;
-          if ((await handle.queryPermission(options)) === 'granted') {
-             const files = await scanDirectoryHandle(handle);
-             setAudioFiles(files);
-          } else {
-             setHasPreviousDir(true);
-          }
-        }
-      });
-    }
+    if (!fsaSupported()) return;
+    (async () => {
+      const handle = await getDirHandle();
+      if (!handle) return;
+      const options = { mode: 'read' } as any;
+      if ((await handle.queryPermission(options)) !== 'granted') {
+        setHasPreviousDir(true);
+        return;
+      }
+      try {
+        setAudioFiles(await scanDirectoryHandle(handle));
+      } catch (err) {
+        // The folder was moved, renamed or deleted since we stored the handle.
+        // Drop it, or it throws on every load and "Load Sounds" keeps resuming it.
+        console.warn('Remembered audio folder is gone; forgetting it.', err);
+        await clearDirHandle();
+        setHasPreviousDir(false);
+      }
+    })();
   }, []);
 
   // Describe what a migration cost, so blank UCS/loudness columns aren't a mystery.
@@ -71,21 +77,6 @@ function App() {
     if (skipped) parts.push(`Skipped ${skipped} unreadable record(s).`);
     return parts.join(' ');
   };
-
-  // Auto-load default peak file on mount so users can wander around
-  useEffect(() => {
-    import('./assets/Scanalyzer.like.audio - File Audit 202607112254.peak?url').then(mod => {
-      fetch(mod.default)
-        .then(res => res.json())
-        .then(json => {
-          const { records, migrated, skipped } = normalizePeakRecords(json);
-          if (records.length === 0) return;
-          setAnalysisResult(prev => prev.length === 0 ? records : prev);
-          setSchemaNotice(noticeFor(migrated, skipped));
-        })
-        .catch(err => console.error("Failed to load default peak file:", err));
-    }).catch(err => console.error("Failed to import default peak file URL:", err));
-  }, [])
 
   const goToTab = (id: string) => { window.location.hash = `#/${id}`; setActiveTab(id); }
 
@@ -162,15 +153,23 @@ function App() {
   // Global "Load Sounds": link an audio folder app-wide (all tabs share it).
   const handleLoadSounds = async () => {
     if (fsaSupported()) {
-      try { 
+      try {
         if (hasPreviousDir && audioFiles.length === 0) {
           const handle = await getDirHandle();
           if (handle) {
             const options = { mode: 'read' } as any;
             if ((await handle.requestPermission(options)) === 'granted') {
-              setAudioFiles(await scanDirectoryHandle(handle));
-              setHasPreviousDir(false);
-              return;
+              try {
+                setAudioFiles(await scanDirectoryHandle(handle));
+                setHasPreviousDir(false);
+                return;
+              } catch (err) {
+                // Folder is gone — forget it and fall through to the picker
+                // rather than leaving the user with a button that does nothing.
+                console.warn('Remembered audio folder is gone; forgetting it.', err);
+                await clearDirHandle();
+                setHasPreviousDir(false);
+              }
             }
           }
         }

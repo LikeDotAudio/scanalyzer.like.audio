@@ -9,6 +9,13 @@
 //! the old analyzer never computed (see `LEGACY_MIGRATION_GAPS`) stay absent, so
 //! they read as undefined and render blank rather than as a plausible zero.
 
+/** Read a grouped field by dotted path, e.g. `spectral_features.harmonicity`.
+ *  Returns undefined for a field the record does not carry — a migrated record
+ *  is missing whole features, and those must read as absent, not as zero. */
+export function getField(item: any, path: string): any {
+  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), item);
+}
+
 /** Where each field of a flat analyzer-0.1.0 record lives in the current schema. */
 const LEGACY_GROUPS: Record<string, string[]> = {
   metadata: [
