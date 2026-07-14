@@ -1585,40 +1585,34 @@
     "priors": [
      {
       "feature": "low_band_energy",
-      "mean": 0.09285,
+      "mean": 0.10438,
       "deviation": 0.2,
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 209,
-       "fsd50k_classes": [
-        "Train"
-       ],
-       "measured_deviation": 0.08526,
-       "reasoned_mean": 0.4,
-       "reasoned_deviation": 0.2,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 297,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.09285
       }
      },
      {
       "feature": "spectral_flatness",
-      "mean": 0.12231,
+      "mean": 0.10908,
       "deviation": 0.22,
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 209,
-       "fsd50k_classes": [
-        "Train"
-       ],
-       "measured_deviation": 0.08787,
-       "reasoned_mean": 0.48,
-       "reasoned_deviation": 0.22,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 297,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.12231
       }
      },
      {
@@ -1633,21 +1627,18 @@
      },
      {
       "feature": "harmonicity",
-      "mean": 0.43285,
-      "deviation": 0.29239,
+      "mean": 0.47409,
+      "deviation": 0.4031,
       "transform": "linear",
       "weight": 0.2,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 209,
-       "fsd50k_classes": [
-        "Train"
-       ],
-       "measured_deviation": 0.29239,
-       "reasoned_mean": 0.25,
-       "reasoned_deviation": 0.2,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 297,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.43285
       }
      }
     ],
@@ -1660,7 +1651,235 @@
      "TRNSbwy",
      "TRNMech",
      "TRNClak"
-    ]
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 297,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Train": 297
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 296,
+       "percentile_05": 1677.8,
+       "median": 2812.2,
+       "percentile_95": 4538.8
+      },
+      "crest_factor": {
+       "clips": 28,
+       "percentile_05": 3.6323,
+       "median": 10.066,
+       "percentile_95": 20.362,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 27,
+       "percentile_05": 0.019955,
+       "median": 0.37415,
+       "percentile_95": 10.307,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 28,
+       "percentile_05": 0.019955,
+       "median": 0.68345,
+       "percentile_95": 5.298,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 28,
+       "percentile_05": -1.2379,
+       "median": 3.5355,
+       "percentile_95": 61.674,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 23,
+       "percentile_05": 0.24943,
+       "median": 2.1751,
+       "percentile_95": 10.626,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 28,
+       "percentile_05": -0.12109,
+       "median": 1.799,
+       "percentile_95": 6.6269,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 28,
+       "percentile_05": 0.010399,
+       "median": 0.072882,
+       "percentile_95": 0.62087,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 28,
+       "percentile_05": 0.060648,
+       "median": 0.3325,
+       "percentile_95": 0.61085,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 297,
+       "percentile_05": 0.10403,
+       "median": 0.47409,
+       "percentile_95": 0.93077
+      },
+      "high_band_energy": {
+       "clips": 297,
+       "percentile_05": 0.10933,
+       "median": 0.32429,
+       "percentile_95": 0.71921
+      },
+      "inharmonicity": {
+       "clips": 297,
+       "percentile_05": 0.1239,
+       "median": 0.42767,
+       "percentile_95": 0.60288
+      },
+      "low_band_energy": {
+       "clips": 297,
+       "percentile_05": 0.010701,
+       "median": 0.10438,
+       "percentile_95": 0.41807
+      },
+      "mid_band_energy": {
+       "clips": 297,
+       "percentile_05": 0.20033,
+       "median": 0.49833,
+       "percentile_95": 0.71229
+      },
+      "onset_periodicity": {
+       "clips": 297,
+       "percentile_05": 0.10294,
+       "median": 0.25789,
+       "percentile_95": 0.54468
+      },
+      "onset_rate_per_second": {
+       "clips": 297,
+       "percentile_05": 0.088003,
+       "median": 0.71213,
+       "percentile_95": 2.6087
+      },
+      "partial_count": {
+       "clips": 295,
+       "percentile_05": 4.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 151,
+       "percentile_05": 61.678,
+       "median": 501.14,
+       "percentile_95": 1633.3
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 297,
+       "percentile_05": 162.89,
+       "median": 503.28,
+       "percentile_95": 1568.5
+      },
+      "spectral_centroid_hz": {
+       "clips": 296,
+       "percentile_05": 1037.6,
+       "median": 2133.7,
+       "percentile_95": 5259.7
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 297,
+       "percentile_05": 896.01,
+       "median": 2116.8,
+       "percentile_95": 4197.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 297,
+       "percentile_05": -165.71,
+       "median": 4.5024,
+       "percentile_95": 148.25
+      },
+      "spectral_entropy": {
+       "clips": 297,
+       "percentile_05": 0.27468,
+       "median": 0.46739,
+       "percentile_95": 0.6175
+      },
+      "spectral_flatness": {
+       "clips": 297,
+       "percentile_05": 0.033194,
+       "median": 0.10908,
+       "percentile_95": 0.32865
+      },
+      "spectral_flux": {
+       "clips": 297,
+       "percentile_05": 0.18869,
+       "median": 0.21756,
+       "percentile_95": 0.22667
+      },
+      "spectral_rolloff_hz": {
+       "clips": 296,
+       "percentile_05": 1473.9,
+       "median": 4139.3,
+       "percentile_95": 9831.3
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 297,
+       "percentile_05": -8.8893,
+       "median": -5.4243,
+       "percentile_95": -1.7853
+      },
+      "stationarity": {
+       "clips": 297,
+       "percentile_05": 0.0,
+       "median": 0.37331,
+       "percentile_95": 0.72527,
+       "censored_at_floor_fraction": 0.249
+      },
+      "sustain_ratio": {
+       "clips": 28,
+       "percentile_05": 0.0061602,
+       "median": 0.077778,
+       "percentile_95": 0.86486,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 296,
+       "percentile_05": 0.064432,
+       "median": 0.19325,
+       "percentile_95": 0.45116
+      },
+      "transient_count": {
+       "clips": 297,
+       "percentile_05": 1.0,
+       "median": 9.0,
+       "percentile_95": 35.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 296,
+       "percentile_05": 514.82,
+       "median": 1904.1,
+       "percentile_95": 5032.2
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
    }
   },
   {
@@ -1898,21 +2117,18 @@
     "priors": [
      {
       "feature": "low_band_energy",
-      "mean": 0.12448,
+      "mean": 0.12254,
       "deviation": 0.18,
       "transform": "linear",
       "weight": 0.4,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 223,
-       "fsd50k_classes": [
-        "Subway_and_metro_and_underground"
-       ],
-       "measured_deviation": 0.09823,
-       "reasoned_mean": 0.5,
-       "reasoned_deviation": 0.18,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 269,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.12448
       }
      },
      {
@@ -1927,50 +2143,50 @@
      },
      {
       "feature": "harmonicity",
-      "mean": 0.53844,
-      "deviation": 0.2486,
+      "mean": 0.5183,
+      "deviation": 0.3419,
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 223,
-       "fsd50k_classes": [
-        "Subway_and_metro_and_underground"
-       ],
-       "measured_deviation": 0.2486,
-       "reasoned_mean": 0.35,
-       "reasoned_deviation": 0.22,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 269,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.53844
       }
      },
      {
       "feature": "onset_periodicity",
-      "mean": 0.45,
+      "mean": 0.20728,
       "deviation": 0.22,
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "reasoned"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 269,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.45
       }
      },
      {
       "feature": "spectral_centroid_hz",
-      "mean": 2208.15382,
+      "mean": 2139.5,
       "deviation": 700.0,
       "transform": "log",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 223,
-       "fsd50k_classes": [
-        "Subway_and_metro_and_underground"
-       ],
-       "measured_deviation": 1.57737,
-       "reasoned_mean": 1000.0,
-       "reasoned_deviation": 700.0,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 269,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2208.15382
       }
      },
      {
@@ -1985,40 +2201,34 @@
      },
      {
       "feature": "spectral_flux",
-      "mean": 0.22028,
+      "mean": 0.21951,
       "deviation": 0.08,
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 223,
-       "fsd50k_classes": [
-        "Subway_and_metro_and_underground"
-       ],
-       "measured_deviation": 0.00614,
-       "reasoned_mean": 0.16,
-       "reasoned_deviation": 0.08,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 269,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.22028
       }
      },
      {
       "feature": "stationarity",
-      "mean": 0.47851,
-      "deviation": 0.25394,
+      "mean": 0.45923,
+      "deviation": 0.2985,
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 223,
-       "fsd50k_classes": [
-        "Subway_and_metro_and_underground"
-       ],
-       "measured_deviation": 0.25394,
-       "reasoned_mean": 0.55,
-       "reasoned_deviation": 0.2,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 269,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.47851
       }
      },
      {
@@ -2043,7 +2253,171 @@
      "TRNClak",
      "TRNBrake",
      "TRNHspd"
-    ]
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 269,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Subway_and_metro_and_underground": 269
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 269,
+       "percentile_05": 1577.3,
+       "median": 2940.0,
+       "percentile_95": 4328.0
+      },
+      "harmonicity": {
+       "clips": 269,
+       "percentile_05": 0.18509,
+       "median": 0.5183,
+       "percentile_95": 0.88416
+      },
+      "high_band_energy": {
+       "clips": 269,
+       "percentile_05": 0.11426,
+       "median": 0.32459,
+       "percentile_95": 0.59981
+      },
+      "inharmonicity": {
+       "clips": 269,
+       "percentile_05": 0.11188,
+       "median": 0.41414,
+       "percentile_95": 0.62932
+      },
+      "low_band_energy": {
+       "clips": 269,
+       "percentile_05": 0.029285,
+       "median": 0.12254,
+       "percentile_95": 0.36904
+      },
+      "mid_band_energy": {
+       "clips": 269,
+       "percentile_05": 0.29747,
+       "median": 0.49611,
+       "percentile_95": 0.75828
+      },
+      "onset_periodicity": {
+       "clips": 269,
+       "percentile_05": 0.09599,
+       "median": 0.20728,
+       "percentile_95": 0.37214
+      },
+      "onset_rate_per_second": {
+       "clips": 269,
+       "percentile_05": 0.26379,
+       "median": 1.28,
+       "percentile_95": 2.7942
+      },
+      "partial_count": {
+       "clips": 268,
+       "percentile_05": 6.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 106,
+       "percentile_05": 81.215,
+       "median": 334.09,
+       "percentile_95": 1575.0
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 269,
+       "percentile_05": 180.12,
+       "median": 637.95,
+       "percentile_95": 1587.7
+      },
+      "spectral_centroid_hz": {
+       "clips": 269,
+       "percentile_05": 990.35,
+       "median": 2139.5,
+       "percentile_95": 4011.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 269,
+       "percentile_05": 981.8,
+       "median": 1719.1,
+       "percentile_95": 3173.3
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 269,
+       "percentile_05": -225.85,
+       "median": -11.603,
+       "percentile_95": 158.55
+      },
+      "spectral_entropy": {
+       "clips": 269,
+       "percentile_05": 0.3214,
+       "median": 0.42318,
+       "percentile_95": 0.53981
+      },
+      "spectral_flatness": {
+       "clips": 269,
+       "percentile_05": 0.031858,
+       "median": 0.11096,
+       "percentile_95": 0.28125
+      },
+      "spectral_flux": {
+       "clips": 269,
+       "percentile_05": 0.19755,
+       "median": 0.21951,
+       "percentile_95": 0.2268
+      },
+      "spectral_rolloff_hz": {
+       "clips": 269,
+       "percentile_05": 1529.5,
+       "median": 4060.7,
+       "percentile_95": 9185.9
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 269,
+       "percentile_05": -8.6927,
+       "median": -6.0545,
+       "percentile_95": -3.1365
+      },
+      "stationarity": {
+       "clips": 269,
+       "percentile_05": 0.0,
+       "median": 0.45923,
+       "percentile_95": 0.75148
+      },
+      "syllabic_modulation_energy": {
+       "clips": 268,
+       "percentile_05": 0.11738,
+       "median": 0.25589,
+       "percentile_95": 0.43093
+      },
+      "transient_count": {
+       "clips": 269,
+       "percentile_05": 2.0,
+       "median": 12.0,
+       "percentile_95": 35.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 269,
+       "percentile_05": 578.22,
+       "median": 1661.8,
+       "percentile_95": 3725.8
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
    }
   },
   {

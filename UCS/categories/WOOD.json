@@ -970,7 +970,242 @@
      "The abstention target for WOOD. It carries no morphology of its own and no gates, so it can always absorb a file the seven morphology siblings reject.",
      "If any of IMPACT / FRICTION / BREAK / CRASH / MOVEMENT / HANDLE / TONAL survives its gates with a decent score, prefer it."
     ],
-    "confusable_with": []
+    "confusable_with": [],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 121,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Wood": 121
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 121,
+       "percentile_05": 1793.8,
+       "median": 4229.4,
+       "percentile_95": 5653.1
+      },
+      "crest_factor": {
+       "clips": 36,
+       "percentile_05": 4.2057,
+       "median": 18.698,
+       "percentile_95": 52.492,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 26,
+       "percentile_05": 0.10456,
+       "median": 0.24593,
+       "percentile_95": 0.95303,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 29,
+       "percentile_05": 0.0099773,
+       "median": 0.049887,
+       "percentile_95": 1.2322,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 36,
+       "percentile_05": 0.11474,
+       "median": 0.27438,
+       "percentile_95": 0.51882,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 36,
+       "percentile_05": -1.0819,
+       "median": 46.829,
+       "percentile_95": 137.07,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 36,
+       "percentile_05": 0.0099773,
+       "median": 0.18957,
+       "percentile_95": 2.215,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 36,
+       "percentile_05": 0.59154,
+       "median": 6.5118,
+       "percentile_95": 11.012,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 36,
+       "percentile_05": 0.00046428,
+       "median": 0.0092881,
+       "percentile_95": 0.050656,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 36,
+       "percentile_05": 0.0056755,
+       "median": 0.24236,
+       "percentile_95": 0.51454,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 121,
+       "percentile_05": 0.099471,
+       "median": 0.26781,
+       "percentile_95": 0.89349
+      },
+      "high_band_energy": {
+       "clips": 121,
+       "percentile_05": 0.28261,
+       "median": 0.6784,
+       "percentile_95": 0.90421
+      },
+      "inharmonicity": {
+       "clips": 121,
+       "percentile_05": 0.10724,
+       "median": 0.43422,
+       "percentile_95": 0.60528
+      },
+      "low_band_energy": {
+       "clips": 121,
+       "percentile_05": 0.005727,
+       "median": 0.036201,
+       "percentile_95": 0.2213
+      },
+      "mid_band_energy": {
+       "clips": 121,
+       "percentile_05": 0.055424,
+       "median": 0.26295,
+       "percentile_95": 0.59646
+      },
+      "onset_periodicity": {
+       "clips": 121,
+       "percentile_05": 0.0037493,
+       "median": 0.2599,
+       "percentile_95": 0.47094
+      },
+      "onset_rate_per_second": {
+       "clips": 121,
+       "percentile_05": 0.2381,
+       "median": 1.1166,
+       "percentile_95": 3.5504
+      },
+      "partial_count": {
+       "clips": 121,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 95,
+       "percentile_05": 166.42,
+       "median": 938.3,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 121,
+       "percentile_05": 381.19,
+       "median": 1313.7,
+       "percentile_95": 2706.4
+      },
+      "spectral_centroid_hz": {
+       "clips": 121,
+       "percentile_05": 2034.5,
+       "median": 5007.1,
+       "percentile_95": 8786.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 121,
+       "percentile_05": 1985.0,
+       "median": 4476.1,
+       "percentile_95": 8358.9
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 121,
+       "percentile_05": -2963.5,
+       "median": -24.746,
+       "percentile_95": 2953.2
+      },
+      "spectral_entropy": {
+       "clips": 121,
+       "percentile_05": 0.25501,
+       "median": 0.49539,
+       "percentile_95": 0.76013
+      },
+      "spectral_flatness": {
+       "clips": 121,
+       "percentile_05": 0.043974,
+       "median": 0.32165,
+       "percentile_95": 0.66598
+      },
+      "spectral_flux": {
+       "clips": 121,
+       "percentile_05": 0.18831,
+       "median": 0.22508,
+       "percentile_95": 0.2398
+      },
+      "spectral_rolloff_hz": {
+       "clips": 121,
+       "percentile_05": 3542.8,
+       "median": 9355.7,
+       "percentile_95": 14728.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 121,
+       "percentile_05": -7.0218,
+       "median": -2.6738,
+       "percentile_95": 0.56241
+      },
+      "stationarity": {
+       "clips": 121,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.44633,
+       "censored_at_floor_fraction": 0.81
+      },
+      "sustain_ratio": {
+       "clips": 36,
+       "percentile_05": 0.0055556,
+       "median": 0.023256,
+       "percentile_95": 0.22222,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 108,
+       "percentile_05": 0.039078,
+       "median": 0.25974,
+       "percentile_95": 0.37989
+      },
+      "transient_count": {
+       "clips": 121,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 18.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 121,
+       "percentile_05": 857.36,
+       "median": 3612.1,
+       "percentile_95": 10697.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
    }
   },
   {

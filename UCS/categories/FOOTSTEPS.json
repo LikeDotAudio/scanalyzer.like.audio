@@ -638,32 +638,34 @@
     "priors": [
      {
       "feature": "onset_rate_per_second",
-      "mean": 1.6084,
-      "deviation": 1.82957,
+      "mean": 1.5371,
+      "deviation": 2.007,
       "transform": "log",
       "weight": 0.9,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 450,
-       "fsd50k_classes": [
-        "Run",
-        "Walk_and_footsteps"
-       ],
-       "measured_deviation": 1.82957,
-       "reasoned_mean": 2.0,
-       "reasoned_deviation": 1.8,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.6084
       }
      },
      {
       "feature": "onset_periodicity",
-      "mean": 0.58,
+      "mean": 0.25073,
       "deviation": 0.2,
       "transform": "linear",
       "weight": 0.8,
       "provenance": {
-       "source": "reasoned"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.58
       }
      },
      {
@@ -708,22 +710,18 @@
      },
      {
       "feature": "spectral_centroid_hz",
-      "mean": 2792.97226,
+      "mean": 2925.6,
       "deviation": 2.3,
       "transform": "log",
       "weight": 0.4,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 450,
-       "fsd50k_classes": [
-        "Run",
-        "Walk_and_footsteps"
-       ],
-       "measured_deviation": 1.6605,
-       "reasoned_mean": 1200.0,
-       "reasoned_deviation": 2.3,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2792.97226
       }
      },
      {
@@ -733,17 +731,13 @@
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 450,
-       "fsd50k_classes": [
-        "Run",
-        "Walk_and_footsteps"
-       ],
-       "measured_deviation": 0.09699,
-       "reasoned_mean": 0.32,
-       "reasoned_deviation": 0.2,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.10602
       }
      },
      {
@@ -758,22 +752,18 @@
      },
      {
       "feature": "harmonicity",
-      "mean": 0.37059,
-      "deviation": 0.33764,
+      "mean": 0.3761,
+      "deviation": 0.4138,
       "transform": "linear",
       "weight": 0.5,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 450,
-       "fsd50k_classes": [
-        "Run",
-        "Walk_and_footsteps"
-       ],
-       "measured_deviation": 0.33764,
-       "reasoned_mean": 0.08,
-       "reasoned_deviation": 0.09,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.37059
       }
      },
      {
@@ -789,21 +779,17 @@
      {
       "feature": "stationarity",
       "mean": 0.0,
-      "deviation": 0.2,
+      "deviation": 0.25,
       "transform": "linear",
       "weight": 0.3,
       "provenance": {
-       "source": "measured",
-       "dataset": "FSD50K",
-       "clips": 450,
-       "fsd50k_classes": [
-        "Run",
-        "Walk_and_footsteps"
-       ],
-       "measured_deviation": 0.14219,
-       "reasoned_mean": 0.3,
-       "reasoned_deviation": 0.2,
-       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.0
       }
      },
      {
@@ -828,7 +814,242 @@
      "FEETHors",
      "FEETMisc",
      "FEETCrea"
-    ]
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 546,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Run": 231,
+      "Walk_and_footsteps": 326
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 546,
+       "percentile_05": 2148.9,
+       "median": 3916.2,
+       "percentile_95": 5520.1
+      },
+      "crest_factor": {
+       "clips": 29,
+       "percentile_05": 6.9723,
+       "median": 12.935,
+       "percentile_95": 29.919,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 29,
+       "percentile_05": 0.0099773,
+       "median": 0.054875,
+       "percentile_95": 0.3941,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 29,
+       "percentile_05": 0.024943,
+       "median": 0.14966,
+       "percentile_95": 0.25442,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 29,
+       "percentile_05": 0.19877,
+       "median": 16.614,
+       "percentile_95": 92.16,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 28,
+       "percentile_05": 0.029932,
+       "median": 0.094785,
+       "percentile_95": 0.27937,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 29,
+       "percentile_05": 1.0139,
+       "median": 3.5564,
+       "percentile_95": 8.9814,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 29,
+       "percentile_05": 0.0087609,
+       "median": 0.053684,
+       "percentile_95": 0.23837,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 29,
+       "percentile_05": 0.087099,
+       "median": 0.23258,
+       "percentile_95": 0.58818,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 546,
+       "percentile_05": 0.066792,
+       "median": 0.37587,
+       "percentile_95": 0.96209
+      },
+      "high_band_energy": {
+       "clips": 546,
+       "percentile_05": 0.12824,
+       "median": 0.3981,
+       "percentile_95": 0.79932
+      },
+      "inharmonicity": {
+       "clips": 546,
+       "percentile_05": 0.23977,
+       "median": 0.46519,
+       "percentile_95": 0.62502
+      },
+      "low_band_energy": {
+       "clips": 546,
+       "percentile_05": 0.0169,
+       "median": 0.10593,
+       "percentile_95": 0.46665
+      },
+      "mid_band_energy": {
+       "clips": 546,
+       "percentile_05": 0.12999,
+       "median": 0.42485,
+       "percentile_95": 0.69847
+      },
+      "onset_periodicity": {
+       "clips": 546,
+       "percentile_05": 0.12155,
+       "median": 0.25034,
+       "percentile_95": 0.45067
+      },
+      "onset_rate_per_second": {
+       "clips": 546,
+       "percentile_05": 0.4,
+       "median": 1.5369,
+       "percentile_95": 3.3091
+      },
+      "partial_count": {
+       "clips": 536,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 237,
+       "percentile_05": 109.98,
+       "median": 518.82,
+       "percentile_95": 1764.0
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 54,
+       "percentile_05": -1.1092,
+       "median": -0.01316,
+       "percentile_95": 4.8153
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 546,
+       "percentile_05": 440.83,
+       "median": 1090.6,
+       "percentile_95": 2341.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 546,
+       "percentile_05": 1193.4,
+       "median": 2923.7,
+       "percentile_95": 6593.3
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 546,
+       "percentile_05": 1579.9,
+       "median": 3766.5,
+       "percentile_95": 6859.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 546,
+       "percentile_05": -477.59,
+       "median": 7.9187,
+       "percentile_95": 2175.0
+      },
+      "spectral_entropy": {
+       "clips": 546,
+       "percentile_05": 0.20674,
+       "median": 0.47859,
+       "percentile_95": 0.7465
+      },
+      "spectral_flatness": {
+       "clips": 546,
+       "percentile_05": 0.05061,
+       "median": 0.22529,
+       "percentile_95": 0.55542
+      },
+      "spectral_flux": {
+       "clips": 546,
+       "percentile_05": 0.20732,
+       "median": 0.22889,
+       "percentile_95": 0.23866
+      },
+      "spectral_rolloff_hz": {
+       "clips": 546,
+       "percentile_05": 1624.5,
+       "median": 6337.8,
+       "percentile_95": 13257.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 546,
+       "percentile_05": -8.0222,
+       "median": -4.7458,
+       "percentile_95": -0.96766
+      },
+      "stationarity": {
+       "clips": 546,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.47399,
+       "censored_at_floor_fraction": 0.608
+      },
+      "sustain_ratio": {
+       "clips": 29,
+       "percentile_05": 0.0065789,
+       "median": 0.076923,
+       "percentile_95": 0.25,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 521,
+       "percentile_05": 0.12712,
+       "median": 0.26082,
+       "percentile_95": 0.50586
+      },
+      "transient_count": {
+       "clips": 546,
+       "percentile_05": 1.0,
+       "median": 8.0,
+       "percentile_95": 41.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 546,
+       "percentile_05": 466.9,
+       "median": 2679.8,
+       "percentile_95": 10261.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
    }
   },
   {

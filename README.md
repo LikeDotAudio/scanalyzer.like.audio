@@ -473,6 +473,91 @@ axes of greatest variance of the whole library.
 
 The **Universal Category System (UCS)** is the de facto standardized taxonomy in audio post-production (e.g., `CatID-SubCatID_Vendor_...`). The analyzer seamlessly weaves this standard into its output by mapping its deep acoustic and heuristic findings directly to official UCS v8.2 IDs. This allows independent creators and game/film studios to cleanly ingest your processed library into professional tools like Soundminer without manual categorization. It maps terms intelligently under the `MUSICAL` and `DESIGNED` hierarchies, outputting `ucs_category`, `ucs_subcategory`, and `ucs_id`.
 
+Each of the 778 subcategories in `UCS/categories/*.json` carries an
+`acoustic_signature`: a `morphology`, a `separability` tier, hard `gates`, and
+weighted Gaussian `priors`. `build.rs` splices those files into the binary, so the
+scorer and the taxonomy can never drift apart. The grammar and the scoring math are
+specified in `Documentation/ucs_signature_spec.md`.
+
+### Calibrating the signatures against FSD50K
+
+Those signatures began as *reasoned* numbers — derived from physics and from the UCS
+explanation text, internally consistent, and never once compared to a real audio file.
+The calibration pass replaces that with measurement wherever measurement is possible.
+
+**The corpus.** FSD50K.dev — 40,966 clips, scanned to `.PEAK` by the current analyzer,
+whose filenames carry the human-authored FSD50K label chain. `UCS/fsd50k_crosswalk.json`
+hand-maps those labels to UCS IDs; only `high` and `medium` confidence entries calibrate,
+and the coarse AudioSet parents (`Music`, `Animal`, `Vehicle`) are deliberately refused.
+A clip is used only when every label it carries agrees on **one** subcategory — 28,815
+of 40,966 survive that, and the **85 subcategories** holding at least 30 such clips
+(28,790 of them) are the ones that calibrate. The rest are dropped as ambiguous rather
+than silently averaged into a class they only partly belong to.
+
+**What gets written back** (`UCS/fsd50k_calibration.json` records all of it):
+
+- **651 priors** move to the measured median, each stamped with a `provenance` block
+  naming the dataset, the clip count, and the reasoned value it replaced. Absence of
+  that block still means "reasoned, never measured."
+- **`measured_evidence`** on each covered subcategory — clip count, contributing FSD50K
+  classes, and p05/median/p95 for every feature in the closed vocabulary. These are the
+  facts a signature can be argued with.
+- **11 morphology archetypes** measured across all covered subcategories. This is the
+  lever for the ~690 subcategories FSD50K cannot reach: `impulsive_with_tail` rings for
+  1.28 s where `impulsive` rings for 0.455 s, so an uncovered subcategory inherits its
+  archetype rather than inventing numbers.
+- **32 gates fixed** — 20 widened to the measured p01/p99, 12 retired as vacuous. Gates
+  are unrecoverable (a violation zeroes the score outright), and the reasoned gates were
+  rejecting **14.3%** of their own true clips; now 8.0%.
+
+**Deviations may only widen, never tighten, and means move to the measured median.**
+FSD50K is amateur Freesound audio; a UCS library is clean, close-miked professional SFX.
+That domain shift is real, so a measured number is treated as *a prior on the prior*,
+and a prior that is too tight is worse than one that is too loose — it produces confident
+wrong answers.
+
+**Eleven features are never calibrated from this corpus**, because there they measure the
+uploader rather than the sound: `length_seconds` (Freesound clips are truncated to
+0.3–30 s), `lufs` and `root_mean_square_level` (arbitrary uploader normalization),
+`stereo_width` (FSD50K is mono), `band_limit_high_hz` (much of it is lossy-origin), and
+`voicing_ratio` (the WebRTC VAD is telephony-tuned and fires on guitar and rain alike),
+among others. They keep their reasoned values, and `not_calibrated` in the calibration
+file says so out loud.
+
+#### What measuring falsified
+
+The point of calibration is not only to sharpen numbers — it is to find out where the
+reasoning was wrong. Three findings, each recorded in the calibration file:
+
+1. **Whole-clip ADSR describes the uploader's edit, not the sound.** On a multi-event
+   clip the "attack" is just the time to the loudest event: it tracks clip length at
+   r = +0.72, and a computer keypress reads 10 ms on one-shot clips but **3.0 s** on
+   multi-event ones. The nine peak-relative features (the `envelope_*` ADSR fields,
+   `sustain_ratio`, `decay_time_seconds_60db`, `crest_factor`) are therefore calibrated
+   from **one-shot clips only**. Without that restriction the taxonomy would have learned
+   "computer keyboard = 2.65 s attack."
+2. **`harmonicity` is a fair prior and a fatal gate.** It does separate noise from tone
+   (Cohen's d = 1.95), but its noise-side tail runs to 0.97, while the reasoned gates sat
+   at `max` 0.5–0.65 — right on the noise *median*. Seven gates (wind, fire, whisper,
+   rain, surf, breath) were each killing 35–75% of their own true clips.
+   (`inharmonicity` is the stronger discriminator, d = 2.60.)
+3. **The scoring rule in spec §6 rewards vagueness.** `L = Σwᵢ(−½zᵢ²) ÷ Σwᵢ` divides by
+   total weight, so fewer priors means fewer chances to be penalized: **25.6% of clips are
+   won by a subcategory with a single usable prior term**, and the MISC abstention buckets
+   (`DOORMisc` and `DRWRMisc` have 1 prior and 0 gates) win constantly. It inverts the
+   separability tiers — `semantic_only` scores 6.6% top-1 against `signal_separable`'s
+   3.0% — and it pins top-1 at ~4% no matter what the priors say, which is why calibration
+   alone cannot move it. A true Gaussian log-likelihood (`Σwᵢ(−½zᵢ² − ln σᵢ)`, summed
+   rather than averaged) takes `signal_separable` to **13.3%** and collapses `semantic_only`
+   to **0.1%**, which is the correct behaviour: semantic_only must not be winnable from
+   signal alone. **The tier design is right; the scoring rule is wrong.** `ucs.rs` still
+   implements the spec's rule — this is a known, measured defect, not yet fixed.
+
+The held-out evaluation above (70/30 split, signal only, no filename) is *in-domain* —
+FSD50K calibrating and FSD50K testing. It can measure fit, but it structurally cannot
+show the benefit of the widen-only policy, which is insurance against a professional-SFX
+domain shift this corpus does not contain.
+
 ---
 
 ## The .PEAK data model
