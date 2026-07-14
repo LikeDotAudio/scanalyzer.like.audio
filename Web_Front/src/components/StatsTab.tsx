@@ -59,9 +59,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      // The ScopeBar shows music-production roles opening into name groups, so
-              // scope on the same keys it renders.
-      const [role, g] = taxonomyKeys(it, 'Music production');
+      // The ScopeBar scopes by UCS category -> subcategory; match what it renders.
+      const [role, g] = taxonomyKeys(it, 'UCS');
       if (group && role !== group) return false;
       if (sub && g !== sub) return false;
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`

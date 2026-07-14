@@ -5,7 +5,7 @@ import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from './ScopeBar';
 import { groupColor, complementColor, ucsColor, ucsSubColor, taxonomyKeys, type Taxonomy } from '../groupColors';
-import { altCategory, altSubcategory } from '../ucsIndex';
+import { altCategory, altSubcategory, altProbability } from '../ucsIndex';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import PropertyBars from '../examiner/PropertyBars';
@@ -22,7 +22,7 @@ const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
 // Bumped when the column set changes: a saved v1 set would hide every new column
 // (Music Prod, UCS Alt 1-3) and keep pointing at the dropped god_category.
-const COLS_KEY = 'scanalyzer_examiner_cols_v2';
+const COLS_KEY = 'scanalyzer_examiner_cols_v3';
 
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
   { key: 'name', label: 'File', width: '17%', get: it => it.metadata?.name || '' },
@@ -32,9 +32,25 @@ const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; g
   { key: 'ucs_category', label: 'UCS Group', width: '8%', get: it => it.ucs?.category || '' },
   { key: 'ucs_subcategory', label: 'Sub Group', width: '9%', get: it => it.ucs?.subcategory || '' },
   // The runners-up the UCS matcher scored, best first. Each is "<category_id> <confidence>".
-  { key: 'ucs_alt_1', label: 'UCS Alt 1', width: '7%', get: it => it.ucs?.alternatives?.[0] || '' },
-  { key: 'ucs_alt_2', label: 'UCS Alt 2', width: '7%', get: it => it.ucs?.alternatives?.[1] || '' },
-  { key: 'ucs_alt_3', label: 'UCS Alt 3', width: '7%', get: it => it.ucs?.alternatives?.[2] || '' },
+  { key: 'ucs_alt_1_group', label: 'Alt 1 Group', width: '7%', get: it => altCategory(it.ucs?.alternatives?.[0]) },
+  { key: 'ucs_alt_1_subgroup', label: 'Alt 1 Sub', width: '7%', get: it => altSubcategory(it.ucs?.alternatives?.[0]) },
+  { key: 'ucs_alt_1_probability', label: 'Alt 1 Prob', numeric: true, width: '5%', get: it => {
+      const p = altProbability(it.ucs?.alternatives?.[0]);
+      return Number.isFinite(p) ? p : -1;
+  } },
+  { key: 'ucs_alt_2_group', label: 'Alt 2 Group', width: '7%', get: it => altCategory(it.ucs?.alternatives?.[1]) },
+  { key: 'ucs_alt_2_subgroup', label: 'Alt 2 Sub', width: '7%', get: it => altSubcategory(it.ucs?.alternatives?.[1]) },
+  { key: 'ucs_alt_2_probability', label: 'Alt 2 Prob', numeric: true, width: '5%', get: it => {
+      const p = altProbability(it.ucs?.alternatives?.[1]);
+      return Number.isFinite(p) ? p : -1;
+  } },
+  { key: 'ucs_alt_3_group', label: 'Alt 3 Group', width: '7%', get: it => altCategory(it.ucs?.alternatives?.[2]) },
+  { key: 'ucs_alt_3_subgroup', label: 'Alt 3 Sub', width: '7%', get: it => altSubcategory(it.ucs?.alternatives?.[2]) },
+  { key: 'ucs_alt_3_probability', label: 'Alt 3 Prob', numeric: true, width: '5%', get: it => {
+      const p = altProbability(it.ucs?.alternatives?.[2]);
+      return Number.isFinite(p) ? p : -1;
+  } },
+
   { key: 'reason', label: 'Reason', width: '14%', get: it => it.classification?.reason?.[0] || '' },
   { key: 'timbre', label: 'Timbre', width: '8%', get: it => it.classification?.timbre || '' },
   { key: 'cluster', label: 'Clust', numeric: true, width: '4%', get: it => (it.unsupervised?.cluster ?? -1) },
@@ -61,7 +77,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
-  const [taxonomy, setTaxonomy] = useState<Taxonomy>('Music production');
+  const [taxonomy, setTaxonomy] = useState<Taxonomy>('UCS');
   // Which UCS runner-up ranks the scope filter also matches on. 0/1/2 = Alt 1/2/3.
   const [altRanks, setAltRanks] = useState<Set<number>>(new Set([0, 1, 2]));
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
@@ -98,14 +114,20 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   // and, with Alt 1-3 ticked, you get everything the scorer *considered* a door, not just
   // what it committed to. The alternates are ids ("DOORKnck 0.31"), so they resolve
   // through UCS_BY_ID rather than by string-matching the category name.
+  // Rows that only got into scope through a runner-up. They are shown, but greyed:
+  // the scorer *considered* them a door, it did not commit to one.
+  const [viaAlt, setViaAlt] = useState<WeakSet<any>>(new WeakSet());
+
   const filteredRows = useMemo(() => {
     const q = filter.trim().toLowerCase();
     const ranks = [...altRanks].sort();
-    return analysisResult.filter(it => {
+    const alts = new WeakSet<any>();
+    const out = analysisResult.filter(it => {
       const [g, sg] = taxonomyKeys(it, taxonomy);
 
       if (scopeGroup) {
-        let hit = g === scopeGroup && (!scopeSub || sg === scopeSub);
+        const primary = g === scopeGroup && (!scopeSub || sg === scopeSub);
+        let hit = primary;
         if (!hit && taxonomy === 'UCS' && ranks.length) {
           hit = ranks.some(r => {
             const alt = it.ucs?.alternatives?.[r];
@@ -113,16 +135,23 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
             if (altCategory(alt) !== scopeGroup) return false;
             return !scopeSub || altSubcategory(alt) === scopeSub;
           });
+          if (hit) alts.add(it);
         }
         if (!hit) return false;
       } else if (scopeSub && sg !== scopeSub) {
         return false;
       }
 
-      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
+      // Search reads the runners-up too, so typing "door" finds what the scorer
+      // considered a door even when it committed to WOOD.
+      const altText = (it.ucs?.alternatives || [])
+        .map((a: any) => `${altCategory(a)} ${altSubcategory(a)}`).join(' ');
+      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${altText} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });
+    setViaAlt(alts);
+    return out;
   }, [analysisResult, filter, scopeGroup, scopeSub, taxonomy, altRanks]);
 
   // The displayed list: filtered, then sorted by the clicked column.
@@ -488,7 +517,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           onClick={() => handleSelect(item)}
                                           style={{
                                               cursor: 'pointer', height: ROW_H,
-                                              background: isSelected ? 'rgba(59, 130, 246, 0.25)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
+                                              // In scope only because a runner-up matched: grey, not a committed hit.
+                                              background: isSelected
+                                                ? 'rgba(59, 130, 246, 0.25)'
+                                                : viaAlt.has(item)
+                                                  ? 'rgba(150,150,150,0.16)'
+                                                  : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
+                                              opacity: !isSelected && viaAlt.has(item) ? 0.75 : 1,
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
                                           {activeColumns.find(c => c.key === 'music_production_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.music_production_category}>{item.classification.music_production_category}</td>}
@@ -496,9 +531,15 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.classification?.subgroup}>{item.classification?.subgroup}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_1') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.ucs?.alternatives?.[0] || ''}>{item.ucs?.alternatives?.[0] || ''}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_2') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.ucs?.alternatives?.[1] || ''}>{item.ucs?.alternatives?.[1] || ''}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_3') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.ucs?.alternatives?.[2] || ''}>{item.ucs?.alternatives?.[2] || ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0])}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[0])}>{altSubcategory(item.ucs?.alternatives?.[0])}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1_probability') && <td style={cell({ color: 'var(--text-secondary)' })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[0])) ? altProbability(item.ucs?.alternatives?.[0]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[1])}>{altCategory(item.ucs?.alternatives?.[1])}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[1])}>{altSubcategory(item.ucs?.alternatives?.[1])}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2_probability') && <td style={cell({ color: 'var(--text-secondary)' })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[1])) ? altProbability(item.ucs?.alternatives?.[1]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[2])}>{altCategory(item.ucs?.alternatives?.[2])}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[2])}>{altSubcategory(item.ucs?.alternatives?.[2])}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3_probability') && <td style={cell({ color: 'var(--text-secondary)' })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[2])) ? altProbability(item.ucs?.alternatives?.[2]).toFixed(3) : ''}</td>}
                                           {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.reason?.[0] || ''}>{item.classification.reason?.[0] || ''}</td>}
                                           {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.classification.timbre}>{item.classification.timbre ? `${TIMBRE_EMOJI[item.classification.timbre] || '🎚️'} ${item.classification.timbre}` : ''}</td>}
                                           {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.unsupervised.cluster !== -1 ? item.unsupervised.cluster : ''}</td>}

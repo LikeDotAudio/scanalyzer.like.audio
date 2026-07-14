@@ -279,3 +279,64 @@ export function taxonomyColor(top: string, sub: string, taxonomy: Taxonomy): str
   // The role fixes the hue; the group under it is a shade of that hue.
   return sub ? groupColor(sub, '') : musicProdColor(top);
 }
+
+/** One candidate placement for a record: the matcher's winner, or a runner-up. */
+export interface Candidate {
+  category: string;
+  subcategory: string;
+  /** false for a runner-up — the UI greys these out. */
+  primary: boolean;
+  probability: number;
+}
+
+/**
+ * Every UCS category a record could plausibly be filed under: the winner plus the
+ * runners-up the matcher scored. Scoping and search look at all of them, so a
+ * sample whose SECOND guess was METAL still turns up under METAL — just marked as
+ * a maybe rather than a hit.
+ *
+ * Only meaningful for the UCS taxonomy; the music-production role has no runners-up.
+ */
+export function ucsCandidates(item: any): Candidate[] {
+  const out: Candidate[] = [{
+    category: item.ucs?.category || '(unclassified)',
+    subcategory: (item.ucs?.subcategory || '').trim(),
+    primary: true,
+    probability: Number(item.ucs?.confidence) || 0,
+  }];
+  for (const a of (item.ucs?.alternatives || [])) {
+    // Records written before alternatives were structured hold a packed string
+    // ("DSGNMisc 0.003"); there is no category name in it, so skip those rather
+    // than invent one.
+    if (!a || typeof a !== 'object' || !a.category) continue;
+    out.push({
+      category: a.category,
+      subcategory: (a.subcategory || '').trim(),
+      primary: false,
+      probability: Number(a.probability) || 0,
+    });
+  }
+  return out;
+}
+
+/**
+ * Does a record belong in [group, sub] under this taxonomy, and did it get there
+ * on its primary classification or only via an alternative?
+ */
+export function taxonomyMatch(
+  item: any,
+  taxonomy: Taxonomy,
+  group: string | null,
+  sub: string | null,
+): { match: boolean; viaAlternative: boolean } {
+  if (taxonomy !== 'UCS') {
+    const [top, s] = taxonomyKeys(item, taxonomy);
+    const match = (!group || top === group) && (!sub || s === sub);
+    return { match, viaAlternative: false };
+  }
+  const hits = ucsCandidates(item).filter(c =>
+    (!group || c.category === group) && (!sub || c.subcategory === sub));
+  if (!hits.length) return { match: false, viaAlternative: false };
+  // A primary hit beats an alternative hit — only grey it out if that is all it has.
+  return { match: true, viaAlternative: !hits.some(c => c.primary) };
+}

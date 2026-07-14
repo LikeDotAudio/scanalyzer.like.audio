@@ -16,14 +16,19 @@ interface CloudTabProps {
 
 
 
-const getPref = (key: string, def: string) => localStorage.getItem(`scanalyzer_cloud_${key}`) || def;
+// v2: the saved prefs are from the old taxonomy. A stored colorBy of 'Group' would
+// override the new UCS default (so the 3D scope bar would keep listing roles), and a
+// stored 'God Category' is now a dead option that no longer exists in the select.
+// Bumping the prefix retires both in one go.
+const PREF = 'scanalyzer_cloud_v2_';
+const getPref = (key: string, def: string) => localStorage.getItem(PREF + key) || def;
 
 export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSounds }: CloudTabProps) {
   const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
   const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
   const [zAxis, setZAxis] = useState(() => getPref('zAxis', 'Complexity'));
   const [sizeAxis, setSizeAxis] = useState(() => getPref('sizeAxis', 'Length'));
-  const [colorBy, setColorBy] = useState(() => getPref('colorBy', 'Group'));
+  const [colorBy, setColorBy] = useState(() => getPref('colorBy', 'UCS Category'));
   const [shapeBy, setShapeBy] = useState(() => getPref('shapeBy', 'Instrument'));
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
@@ -50,12 +55,12 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   }, [analysisResult, scopeGroup, scopeSub, filterText, taxonomy]);
 
   useEffect(() => {
-    localStorage.setItem('scanalyzer_cloud_xAxis', xAxis);
-    localStorage.setItem('scanalyzer_cloud_yAxis', yAxis);
-    localStorage.setItem('scanalyzer_cloud_zAxis', zAxis);
-    localStorage.setItem('scanalyzer_cloud_sizeAxis', sizeAxis);
-    localStorage.setItem('scanalyzer_cloud_colorBy', colorBy);
-    localStorage.setItem('scanalyzer_cloud_shapeBy', shapeBy);
+    localStorage.setItem(PREF + 'xAxis', xAxis);
+    localStorage.setItem(PREF + 'yAxis', yAxis);
+    localStorage.setItem(PREF + 'zAxis', zAxis);
+    localStorage.setItem(PREF + 'sizeAxis', sizeAxis);
+    localStorage.setItem(PREF + 'colorBy', colorBy);
+    localStorage.setItem(PREF + 'shapeBy', shapeBy);
   }, [xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy]);
   const [showAxes, setShowAxes] = useState(true);
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set());

@@ -18,7 +18,7 @@ interface ScopeBarProps {
   altRanks?: Set<number>;
 }
 
-export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'Music production', altRanks }: ScopeBarProps) {
+export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'UCS', altRanks }: ScopeBarProps) {
   const useAlts = taxonomy === 'UCS' && !!altRanks?.size;
   const ranks = useMemo(() => (useAlts ? Array.from(altRanks!) : []), [useAlts, altRanks]);
 

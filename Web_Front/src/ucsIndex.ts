@@ -1,10 +1,16 @@
 // GENERATED from UCS/categories/*.json — do not edit by hand.
 // Regenerate whenever the taxonomy changes (778 subcategories, UCS v8.2.1).
 //
-// The .PEAK `ucs.alternatives` are strings like "DOORKnck 0.31" — a category_id and a
-// confidence. Nothing else on the record says which CATEGORY that id belongs to, so the
-// Examiner needs this map to fold a runner-up like DOORKnck under the DOORS scope.
-// The id's prefix is NOT a reliable shortcut (MUSICAL is MUSC, MUSICPROD is MUSP).
+// BACK-COMPAT SHIM. The analyzer now writes `ucs.alternatives` as objects with the
+// names spelled out in full, like every other field in the .PEAK:
+//
+//     { category: "DOORS", subcategory: "KNOCK", id: "DOORKnck", probability: 0.31 }
+//
+// It used to write a single packed string of the ABBREVIATED id and a number
+// ("DOORKnck 0.31"), which said nothing about which CATEGORY the id belonged to —
+// hence this map. Records written by the old engine are still on disk, so the
+// accessors below read BOTH forms; the map is only consulted for the old one.
+// (The id prefix is not a reliable shortcut: MUSICAL is MUSC, MUSICPROD is MUSP.)
 
 /** category_id -> [CATEGORY, SUBCATEGORY] */
 export const UCS_BY_ID: Record<string, readonly [string, string]> = {
@@ -788,17 +794,38 @@ export const UCS_BY_ID: Record<string, readonly [string, string]> = {
   WTHR: ['WEATHER', 'MISC'],
 };
 
-/** The leading token of an alternatives entry ("DOORKnck 0.31" -> "DOORKnck"). */
-export function altId(alt: string): string {
-  return (alt || '').trim().split(/\s+/)[0] || '';
+/** One `ucs.alternatives` entry: an object from the current engine, or a packed
+ *  string ("DOORKnck 0.31") from an older one. */
+export type Alt = { category?: string; subcategory?: string; id?: string; probability?: number } | string | null | undefined;
+
+/** The leading token of a legacy alternatives string ("DOORKnck 0.31" -> "DOORKnck"). */
+export function altId(alt: Alt): string {
+  if (alt && typeof alt === 'object') return alt.id || '';
+  return String(alt || '').trim().split(/\s+/)[0] || '';
 }
 
-/** The UCS CATEGORY an alternatives entry belongs to, or '' if the id is unknown. */
-export function altCategory(alt: string): string {
+/** The UCS CATEGORY an alternatives entry belongs to, or '' if it cannot be resolved. */
+export function altCategory(alt: Alt): string {
+  if (alt && typeof alt === 'object') return alt.category || '';
   return UCS_BY_ID[altId(alt)]?.[0] || '';
 }
 
-/** The UCS SUBCATEGORY an alternatives entry belongs to, or '' if the id is unknown. */
-export function altSubcategory(alt: string): string {
+/** The UCS SUBCATEGORY an alternatives entry belongs to, or '' if it cannot be resolved. */
+export function altSubcategory(alt: Alt): string {
+  if (alt && typeof alt === 'object') return alt.subcategory || '';
   return UCS_BY_ID[altId(alt)]?.[1] || '';
+}
+
+/** The posterior the matcher gave this runner-up, or NaN when it is not known. */
+export function altProbability(alt: Alt): number {
+  if (alt && typeof alt === 'object') {
+    return typeof alt.probability === 'number' ? alt.probability : NaN;
+  }
+  const n = Number(String(alt || '').trim().split(/\s+/)[1]);
+  return Number.isFinite(n) ? n : NaN;
+}
+
+/** Is there anything to show for this entry at all? */
+export function hasAlt(alt: Alt): boolean {
+  return !!altCategory(alt);
 }
