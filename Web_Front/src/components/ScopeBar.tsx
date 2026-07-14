@@ -19,7 +19,7 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   const groups = useMemo(() => {
     const s = new Set<string>();
     for (const it of analysisResult) {
-      s.add(taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified'));
+      s.add(taxonomy === 'UCS' ? (it.ucs?.category || '(unclassified)') : (it.classification?.group || 'Unclassified'));
     }
     return Array.from(s).sort();
   }, [analysisResult, taxonomy]);
@@ -28,8 +28,8 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
     if (!group) return [];
     const s = new Set<string>();
     for (const it of analysisResult) {
-      const g = taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified');
-      const sg = taxonomy === 'UCS' ? (it.ucs_subcategory || '').trim() : (it.subgroup || '').trim();
+      const g = taxonomy === 'UCS' ? (it.ucs?.category || '(unclassified)') : (it.classification?.group || 'Unclassified');
+      const sg = taxonomy === 'UCS' ? (it.ucs?.subcategory || '').trim() : (it.classification?.subgroup || '').trim();
       if (g === group && sg) s.add(sg);
     }
     return Array.from(s).sort();

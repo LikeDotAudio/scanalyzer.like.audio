@@ -20,22 +20,22 @@ interface ExaminerTabProps {
 const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
-  { key: 'name', label: 'File', width: '17%', get: it => it.name || '' },
-  { key: 'god_category', label: 'Category', width: '9%', get: it => it.god_category || '' },
-  { key: 'group', label: 'Group', width: '8%', get: it => it.group || '' },
-  { key: 'subgroup', label: 'Subgroup', width: '9%', get: it => it.subgroup || '' },
-  { key: 'ucs_category', label: 'UCS Cat', width: '8%', get: it => it.ucs_category || '' },
-  { key: 'ucs_subcategory', label: 'UCS Sub', width: '9%', get: it => it.ucs_subcategory || '' },
-  { key: 'reason', label: 'Reason', width: '14%', get: it => it.reason?.[0] || '' },
-  { key: 'timbre', label: 'Timbre', width: '8%', get: it => it.timbre || '' },
-  { key: 'cluster', label: 'Clust', numeric: true, width: '4%', get: it => (it.cluster ?? -1) },
-  { key: 'root', label: 'Root', numeric: true, width: '5%', get: it => (noteToFreq(it.root_note_name) ?? -1) },
-  { key: 'pitch_hz', label: 'Pitch', numeric: true, width: '5%', get: it => (it.pitch_hz || 0) },
-  { key: 'length_seconds', label: 'Len', numeric: true, width: '4%', get: it => (it.length_seconds || 0) },
-  { key: 'transient_count', label: 'Tr', numeric: true, width: '3%', get: it => (it.transient_count || 0) },
-  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, width: '5%', get: it => (it.spectral_centroid_hz || 0) },
-  { key: 'harmonicity', label: 'Harm', numeric: true, width: '4%', get: it => (it.harmonicity || 0) },
-  { key: 'beats_per_minute', label: 'BPM', numeric: true, width: '5%', get: it => (it.beats_per_minute || 0) },
+  { key: 'name', label: 'File', width: '17%', get: it => it.metadata?.name || '' },
+  { key: 'god_category', label: 'Category', width: '9%', get: it => it.classification?.god_category || '' },
+  { key: 'group', label: 'Group', width: '8%', get: it => it.classification?.group || '' },
+  { key: 'subgroup', label: 'Subgroup', width: '9%', get: it => it.classification?.subgroup || '' },
+  { key: 'ucs_category', label: 'UCS Cat', width: '8%', get: it => it.ucs?.category || '' },
+  { key: 'ucs_subcategory', label: 'UCS Sub', width: '9%', get: it => it.ucs?.subcategory || '' },
+  { key: 'reason', label: 'Reason', width: '14%', get: it => it.classification?.reason?.[0] || '' },
+  { key: 'timbre', label: 'Timbre', width: '8%', get: it => it.classification?.timbre || '' },
+  { key: 'cluster', label: 'Clust', numeric: true, width: '4%', get: it => (it.unsupervised?.cluster ?? -1) },
+  { key: 'root', label: 'Root', numeric: true, width: '5%', get: it => (noteToFreq(it.musicality?.root_note_name) ?? -1) },
+  { key: 'pitch_hz', label: 'Pitch', numeric: true, width: '5%', get: it => (it.musicality?.pitch_hz || 0) },
+  { key: 'length_seconds', label: 'Len', numeric: true, width: '4%', get: it => (it.metadata?.length_seconds || 0) },
+  { key: 'transient_count', label: 'Tr', numeric: true, width: '3%', get: it => (it.envelope?.transient_count || 0) },
+  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, width: '5%', get: it => (it.spectral_features?.spectral_centroid_hz || 0) },
+  { key: 'harmonicity', label: 'Harm', numeric: true, width: '4%', get: it => (it.spectral_features?.harmonicity || 0) },
+  { key: 'beats_per_minute', label: 'BPM', numeric: true, width: '5%', get: it => (it.musicality?.beats_per_minute || 0) },
 ];
 
 // A small emoji per timbre class, shown in the Timbre column.
@@ -83,11 +83,11 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const filteredRows = useMemo(() => {
     const q = filter.trim().toLowerCase();
     return analysisResult.filter(it => {
-      const g = taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified');
-      const sg = taxonomy === 'UCS' ? (it.ucs_subcategory || '').trim() : (it.subgroup || '').trim();
+      const g = taxonomy === 'UCS' ? (it.ucs?.category || '(unclassified)') : (it.classification?.group || 'Unclassified');
+      const sg = taxonomy === 'UCS' ? (it.ucs?.subcategory || '').trim() : (it.classification?.subgroup || '').trim();
       if (scopeGroup && g !== scopeGroup) return false;
       if (scopeSub && sg !== scopeSub) return false;
-      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.ucs_category || ''} ${it.ucs_subcategory || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });

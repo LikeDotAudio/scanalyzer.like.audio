@@ -105,13 +105,13 @@ export function isTauri(): boolean {
 import { convertFileSrc } from '@tauri-apps/api/core';
 
 export function resolveAudioSrc(files: File[], item: any): string | null {
-  if (isTauri() && item?.path) {
+  if (isTauri() && item?.metadata?.path) {
     // In Tauri, we can load local files natively using the asset protocol
     return convertFileSrc(item.metadata.path); 
   }
 
-  const wantPath = String(item?.path || '').replace(/^\.?\/+/, '');
-  const wantName = String(item?.name || '').toLowerCase();
+  const wantPath = String(item?.metadata?.path || '').replace(/^\.?\/+/, '');
+  const wantName = String(item?.metadata?.name || '').toLowerCase();
   
   let found: File | undefined;
   if (wantPath) {

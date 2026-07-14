@@ -44,6 +44,8 @@ export default function ScanalyzeTab({
   const [absorbed, setAbsorbed] = useState(0);
   const [stale, setStale] = useState(0);
   const stopRef = useRef(false);
+  const startMsRef = useRef<number>(0);
+  const threadsRef = useRef<number>(1);
 
   if (isTauri()) {
     return (
@@ -161,7 +163,9 @@ export default function ScanalyzeTab({
     let stopped = false;
     let completed = 0;
 
+    startMsRef.current = performance.now();
     const numWorkers = navigator.hardwareConcurrency || 4;
+    threadsRef.current = numWorkers;
     const workers = Array.from({ length: numWorkers }).map(() => 
         new Worker(new URL('../wasmWorker.ts', import.meta.url), { type: 'module' })
     );
@@ -259,6 +263,17 @@ export default function ScanalyzeTab({
 
   if (isAnalyzing) {
       const pct = total ? Math.round((done / total) * 100) : 0;
+      const elapsedS = (performance.now() - startMsRef.current) / 1000;
+      let etaStr = "Calculating ETA...";
+      if (done > 5 && elapsedS > 1) {
+          const rate = done / elapsedS;
+          const rem = total - done;
+          const etaS = Math.max(0, Math.round(rem / rate));
+          const m = Math.floor(etaS / 60);
+          const s = etaS % 60;
+          etaStr = `ETA: ${m}m ${s.toString().padStart(2, '0')}s`;
+      }
+
       return (
           <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ width: '100%', maxWidth: '640px' }}>
@@ -268,6 +283,10 @@ export default function ScanalyzeTab({
                   </div>
                   <div style={{ width: '100%', height: '16px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', overflow: 'hidden', marginBottom: '1rem' }}>
                       <div style={{ width: `${pct}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.15s' }} />
+                  </div>
+                  <div style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: 1.5 }}>
+                      <strong>{threadsRef.current}</strong> concurrent threads &middot; {etaStr}
+                      {fsaSupported() && <><br /><span style={{ color: 'var(--accent-secondary)' }}>Writing .PEAK sidecars locally to source directories</span></>}
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
                       <button className="btn" style={{ background: '#ef4444', color: 'white', border: 'none' }} onClick={() => { stopRef.current = true; }}>■ Stop scan</button>

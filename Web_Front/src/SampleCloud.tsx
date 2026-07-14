@@ -9,21 +9,21 @@ import type { Taxonomy } from './groupColors'
 // Feature registry: label → how to read it. Numeric features are normalized
 // across the dataset; categorical ones are spread into bands. Mirrors the
 // desktop graph tab's ISO_FEATURES.
-type Feature = { categorical?: boolean; key?: string; get?: (it: any) => string };
+type Feature = { categorical?: boolean; get: (it: any) => number | string };
 export const CLOUD_FEATURES: Record<string, Feature> = {
-  Group: { categorical: true, get: (it) => it.group || 'Unclassified' },
-  Subgroup: { categorical: true, get: (it) => it.subgroup || '—' },
-  Timbre: { categorical: true, get: (it) => it.timbre || '?' },
-  Length: { key: 'length_seconds' },
-  Complexity: { key: 'complexity' },
-  'Brightness (centroid)': { key: 'spectral_centroid_hz' },
-  Harmonicity: { key: 'harmonicity' },
-  Sustain: { key: 'envelope_sustain_level' },
-  Attack: { key: 'attack_seconds' },
-  Pitch: { key: 'pitch_hz' },
-  BPM: { key: 'beats_per_minute' },
-  RMS: { key: 'root_mean_square_level' },
-  ZCR: { key: 'zero_crossings_per_second' },
+  Group: { categorical: true, get: (it) => it.classification?.group || 'Unclassified' },
+  Subgroup: { categorical: true, get: (it) => it.classification?.subgroup || '—' },
+  Timbre: { categorical: true, get: (it) => it.classification?.timbre || '?' },
+  Length: { get: (it) => it.metadata?.length_seconds ?? 0 },
+  Complexity: { get: (it) => it.spectral_features?.complexity ?? 0 },
+  'Brightness (centroid)': { get: (it) => it.spectral_features?.spectral_centroid_hz ?? 0 },
+  Harmonicity: { get: (it) => it.spectral_features?.harmonicity ?? 0 },
+  Sustain: { get: (it) => it.envelope?.envelope_sustain_level ?? 0 },
+  Attack: { get: (it) => it.envelope?.attack_seconds ?? 0 },
+  Pitch: { get: (it) => it.musicality?.pitch_hz ?? 0 },
+  BPM: { get: (it) => it.musicality?.beats_per_minute ?? 0 },
+  RMS: { get: (it) => it.spectral_features?.root_mean_square_level ?? 0 },
+  ZCR: { get: (it) => it.spectral_features?.zero_crossings_per_second ?? 0 },
 };
 
 export const AXIS_OPTIONS = Object.keys(CLOUD_FEATURES);
@@ -49,15 +49,14 @@ function makeAxis(data: any[], label: string): (it: any, i: number) => number {
     const n = Math.max(1, cats.length - 1);
     return (it, i) => ((cats.indexOf(f.get!(it)) / n) - 0.5) * SPAN + jitter(i) * 1.4;
   }
-  const key = f.key!;
   let mn = Infinity, mx = -Infinity;
   for (const it of data) {
-    const v = Number(it[key]);
+    const v = Number(f.get(it));
     if (Number.isFinite(v)) { if (v < mn) mn = v; if (v > mx) mx = v; }
   }
   const range = mx - mn || 1;
   return (it) => {
-    const v = Number(it[key]);
+    const v = Number(f.get(it));
     const nv = Number.isFinite(v) ? (v - mn) / range : 0.5;
     return (nv - 0.5) * SPAN;
   };
@@ -65,16 +64,15 @@ function makeAxis(data: any[], label: string): (it: any, i: number) => number {
 
 function makeSize(data: any[], label: string): (it: any) => number {
   const f = CLOUD_FEATURES[label];
-  if (!f || f.categorical || !f.key) return () => 0.7;
-  const key = f.key;
+  if (!f || f.categorical) return () => 0.7;
   let mn = Infinity, mx = -Infinity;
   for (const it of data) {
-    const v = Number(it[key]);
+    const v = Number(f.get(it));
     if (Number.isFinite(v)) { if (v < mn) mn = v; if (v > mx) mx = v; }
   }
   const range = mx - mn || 1;
   return (it) => {
-    const v = Number(it[key]);
+    const v = Number(f.get(it));
     const nv = Number.isFinite(v) ? (v - mn) / range : 0.5;
     return 0.35 + nv * 1.6;
   };
@@ -84,22 +82,23 @@ function colorFor(item: any, colorBy: string): string {
   // The UCS taxonomy (82 categories, scored per file) — hue = parent category,
   // shade = subcategory. Distinct from the god categories, which are six
   // envelope buckets over the drum-pack name groups.
-  if (colorBy === 'UCS Category') return ucsColor(item.ucs.category || '');
+  if (colorBy === 'UCS Category') return ucsColor(item.ucs?.category || '');
   if (colorBy === 'UCS Subcategory') {
-    return ucsSubColor(item.ucs.category || '', item.ucs.subcategory || '');
+    return ucsSubColor(item.ucs?.category || '', item.ucs?.subcategory || '');
   }
-  const group = item.classification.group || 'Unclassified';
+  const group = item.classification?.group || 'Unclassified';
   if (colorBy === 'God Category') return godColor(godCategory(group));
-  if (colorBy === 'Subgroup') return groupColor(group, item.metadata.subgroup || '');
+  if (colorBy === 'Subgroup') return groupColor(group, item.classification?.subgroup || '');
   return groupColor(group, '');
 }
 
 function getShapeFor(it: any, shapeBy: string): string {
   if (shapeBy === 'Uniform') return 'sphere';
 
-  const g = (it.group || '').toLowerCase();
-  const god = (it.god_category || '').toLowerCase();
-  const t = (it.timbre || '').toLowerCase();
+  const g = (it.classification?.group || '').toLowerCase();
+  const god = (it.classification?.god_category || '').toLowerCase();
+  const t = (it.classification?.timbre || '').toLowerCase();
+  const transient_count = it.envelope?.transient_count ?? 0;
   
   if (shapeBy === 'God Category') {
     if (god === 'percussive') return 'pyramid';
@@ -125,7 +124,7 @@ function getShapeFor(it: any, shapeBy: string): string {
   if (g.includes('cymbal') || g.includes('hi-hat') || g.includes('ride') || g.includes('crash') || g.includes('hihat')) return 'disc';
   if (g === 'ir' || god === 'impulsive with tail') return 'diamond';
   if (g === 'perc' || god === 'percussive') return 'pyramid';
-  if (it.transient_count > 1 || god === 'complex' || g.includes('loop') || g === 'fx') return 'torus';
+  if (transient_count > 1 || god === 'complex' || g.includes('loop') || g === 'fx') return 'torus';
   if (g === 'bass' || g.includes('synth') || god === 'tonal') return 'cube';
   if (g === 'vocal' || g.includes('voice')) return 'icosahedron';
   return 'sphere'; // default for unclassified

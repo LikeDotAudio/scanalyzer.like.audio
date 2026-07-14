@@ -4,10 +4,16 @@ import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanD
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
 import CloudTab from './components/CloudTab'
-import StatsTab from './components/StatsTab'
-import GroupsTab from './components/GroupsTab'
-import ExaminerTab from './components/ExaminerTab'
-import RenameTab from './components/RenameTab'
+import StatsTabRaw from './components/StatsTab'
+import GroupsTabRaw from './components/GroupsTab'
+import ExaminerTabRaw from './components/ExaminerTab'
+import RenameTabRaw from './components/RenameTab'
+import { lazy, Suspense } from 'react'
+
+const StatsTab = lazy(async () => ({ default: StatsTabRaw }))
+const GroupsTab = lazy(async () => ({ default: GroupsTabRaw }))
+const ExaminerTab = lazy(async () => ({ default: ExaminerTabRaw }))
+const RenameTab = lazy(async () => ({ default: RenameTabRaw }))
 
 const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'rename'] as const;
 
@@ -232,10 +238,12 @@ function App() {
           <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} onLoadSounds={handleLoadSounds} />
         </div>
 
-        {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
-        {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-        {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
-        {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
+        <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
+          {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
+          {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
+          {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
+        </Suspense>
         
       </main>
     </div>

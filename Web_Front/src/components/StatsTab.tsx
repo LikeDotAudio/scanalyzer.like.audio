@@ -12,15 +12,15 @@ interface StatsTabProps {
 
 // Numeric features selectable on the configurable scatter charts.
 const NUM_FEATURES: Record<string, string> = {
-  Pitch: 'pitch_hz',
-  Brightness: 'spectral_centroid_hz',
-  Length: 'length_seconds',
-  Complexity: 'complexity',
-  Harmonicity: 'harmonicity',
-  Attack: 'attack_seconds',
-  Sustain: 'envelope_sustain_level',
-  BPM: 'beats_per_minute',
-  Transients: 'transient_count',
+  Pitch: 'musicality.pitch_hz',
+  Brightness: 'spectral_features.spectral_centroid_hz',
+  Length: 'metadata.length_seconds',
+  Complexity: 'spectral_features.complexity',
+  Harmonicity: 'spectral_features.harmonicity',
+  Attack: 'envelope.attack_seconds',
+  Sustain: 'envelope.envelope_sustain_level',
+  BPM: 'musicality.beats_per_minute',
+  Transients: 'envelope.transient_count',
 };
 const NUM_LABELS = Object.keys(NUM_FEATURES);
 
@@ -69,27 +69,27 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
 
   const categoryData = useMemo(() => {
     const c: Record<string, number> = {};
-    for (const it of data) { const k = it.god_category || godCategory(it.group || ''); c[k] = (c[k] || 0) + 1; }
+    for (const it of data) { const k = it.classification?.god_category || godCategory(it.classification?.group || ''); c[k] = (c[k] || 0) + 1; }
     return Object.entries(c).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
   }, [data]);
 
   const groupData = useMemo(() => {
     const c: Record<string, number> = {};
-    for (const it of data) { const k = it.group || 'Unclassified'; c[k] = (c[k] || 0) + 1; }
+    for (const it of data) { const k = it.classification?.group || 'Unclassified'; c[k] = (c[k] || 0) + 1; }
     return Object.entries(c).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
   }, [data]);
 
   // Distinct colour per subgroup present in scope, so subgroups read apart.
   const subColors = useMemo(() => {
-    const subs = Array.from(new Set(data.map(it => (it.subgroup || '').trim()).filter(Boolean))).sort();
+    const subs = Array.from(new Set(data.map(it => (it.classification?.subgroup || '').trim()).filter(Boolean))).sort();
     const map = new Map<string, string>();
     subs.forEach((s, i) => map.set(s, CLOUD_PALETTE[i % CLOUD_PALETTE.length]));
     return map;
   }, [data]);
 
   const pointColor = (it: any) => {
-    const sg = (it.subgroup || '').trim();
-    return sg ? (subColors.get(sg) as string) : groupColor(it.group || 'Unclassified', '');
+    const sg = (it.classification?.subgroup || '').trim();
+    return sg ? (subColors.get(sg) as string) : groupColor(it.classification?.group || 'Unclassified', '');
   };
 
   // Downsample the scatter to keep it responsive on huge scopes.
@@ -103,9 +103,9 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const subgroupData = useMemo(() => {
     const c: Record<string, { value: number; group: string; sub: string }> = {};
     for (const it of data) {
-      const sg = (it.subgroup || '').trim();
+      const sg = (it.classification?.subgroup || '').trim();
       if (!sg) continue;
-      const g = it.group || 'Unclassified';
+      const g = it.classification?.group || 'Unclassified';
       const label = `${g} / ${sg}`;
       if (!c[label]) c[label] = { value: 0, group: g, sub: sg };
       c[label].value++;
@@ -140,13 +140,13 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       const it = payload[0].payload;
       return (
         <div style={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)', padding: '0.5rem', color: '#fff', fontSize: '0.8rem', maxWidth: '300px' }}>
-          <div style={{ fontWeight: 'bold', color: 'var(--accent-primary)', marginBottom: '0.2rem', wordBreak: 'break-all' }}>{it.name}</div>
-          <div><strong style={{ color: 'var(--text-secondary)' }}>Group:</strong> {it.group || 'Unclassified'} {it.subgroup ? `/ ${it.subgroup}` : ''}</div>
-          <div><strong style={{ color: 'var(--text-secondary)' }}>Instrument:</strong> {it.timbre || 'Unknown'}</div>
-          <div><strong style={{ color: 'var(--text-secondary)' }}>Length:</strong> {it.length_seconds?.toFixed(2)}s</div>
+          <div style={{ fontWeight: 'bold', color: 'var(--accent-primary)', marginBottom: '0.2rem', wordBreak: 'break-all' }}>{it.metadata?.name}</div>
+          <div><strong style={{ color: 'var(--text-secondary)' }}>Group:</strong> {it.classification?.group || 'Unclassified'} {it.classification?.subgroup ? `/ ${it.classification?.subgroup}` : ''}</div>
+          <div><strong style={{ color: 'var(--text-secondary)' }}>Instrument:</strong> {it.classification?.timbre || 'Unknown'}</div>
+          <div><strong style={{ color: 'var(--text-secondary)' }}>Length:</strong> {it.metadata?.length_seconds?.toFixed(2)}s</div>
           <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.75rem' }}>
             {payload.map((p: any) => (
-              <div key={p.metadata.name}><strong style={{ color: 'var(--text-secondary)' }}>{p.metadata.name}:</strong> {p.value}</div>
+              <div key={p.name}><strong style={{ color: 'var(--text-secondary)' }}>{p.name}:</strong> {typeof p.value === 'number' ? p.value.toFixed(2) : p.value}</div>
             ))}
           </div>
         </div>

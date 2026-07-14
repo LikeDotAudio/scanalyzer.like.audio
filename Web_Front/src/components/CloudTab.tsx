@@ -40,11 +40,11 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      const g = taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified');
-      const sg = taxonomy === 'UCS' ? (it.ucs_subcategory || '').trim() : (it.subgroup || '').trim();
+      const g = taxonomy === 'UCS' ? (it.ucs?.category || '(unclassified)') : (it.classification?.group || 'Unclassified');
+      const sg = taxonomy === 'UCS' ? (it.ucs?.subcategory || '').trim() : (it.classification?.subgroup || '').trim();
       if (scopeGroup && g !== scopeGroup) return false;
       if (scopeSub && sg !== scopeSub) return false;
-      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.ucs_category || ''} ${it.ucs_subcategory || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });
@@ -168,8 +168,8 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
         {/* Selected sample readout (Top Left) */}
         {selected && (
           <div style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.65)', padding: '0.6rem 0.9rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '340px' }}>
-            <div style={{ color: '#FCD34D', fontSize: '0.85rem', marginBottom: '0.2rem' }}>{selected.name}</div>
-            <div className="text-secondary" style={{ fontSize: '0.75rem' }}>{selected.group}{selected.subgroup ? ` / ${selected.subgroup}` : ''} · {selected.timbre} · {selected.length_seconds?.toFixed(2)}s</div>
+            <div style={{ color: '#FCD34D', fontSize: '0.85rem', marginBottom: '0.2rem' }}>{selected.metadata?.name}</div>
+            <div className="text-secondary" style={{ fontSize: '0.75rem' }}>{selected.classification?.group}{selected.classification?.subgroup ? ` / ${selected.classification?.subgroup}` : ''} · {selected.classification?.timbre} · {selected.metadata?.length_seconds?.toFixed(2)}s</div>
             <button className="btn secondary" style={{ marginTop: '0.4rem', padding: '0.15rem 0.6rem', fontSize: '0.75rem' }} onClick={replay}>▶ Play</button>
             {playMsg && <div style={{ marginTop: '0.35rem', fontSize: '0.72rem', color: '#f59e0b' }}>{playMsg}</div>}
           </div>
