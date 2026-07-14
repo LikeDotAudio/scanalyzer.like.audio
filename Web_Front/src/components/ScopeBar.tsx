@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { type Taxonomy, taxonomyKeys, taxonomyColor } from '../groupColors';
+import { altCategory, altSubcategory } from '../ucsIndex';
 
 interface ScopeBarProps {
   analysisResult: any[];
@@ -11,16 +12,27 @@ interface ScopeBarProps {
   setFilterText?: (f: string) => void;
   rightContent?: React.ReactNode;
   taxonomy?: Taxonomy;
+  /** UCS runner-up ranks (0-2) the caller's filter also matches on. When set, a category
+   *  that only ever appears as a runner-up still gets a chip — otherwise the filter could
+   *  match rows the user has no way to scope to. */
+  altRanks?: Set<number>;
 }
 
-export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'Music production' }: ScopeBarProps) {
+export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'Music production', altRanks }: ScopeBarProps) {
+  const useAlts = taxonomy === 'UCS' && !!altRanks?.size;
+  const ranks = useMemo(() => (useAlts ? Array.from(altRanks!) : []), [useAlts, altRanks]);
+
   const groups = useMemo(() => {
     const s = new Set<string>();
     for (const it of analysisResult) {
       s.add(taxonomyKeys(it, taxonomy)[0]);
+      for (const r of ranks) {
+        const c = altCategory(it.ucs?.alternatives?.[r] || '');
+        if (c) s.add(c);
+      }
     }
     return Array.from(s).sort();
-  }, [analysisResult, taxonomy]);
+  }, [analysisResult, taxonomy, ranks]);
 
   const subgroups = useMemo(() => {
     if (!group) return [];
@@ -28,9 +40,16 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
     for (const it of analysisResult) {
       const [g, sg] = taxonomyKeys(it, taxonomy);
       if (g === group && sg) s.add(sg);
+      for (const r of ranks) {
+        const alt = it.ucs?.alternatives?.[r] || '';
+        if (altCategory(alt) === group) {
+          const asg = altSubcategory(alt);
+          if (asg) s.add(asg);
+        }
+      }
     }
     return Array.from(s).sort();
-  }, [analysisResult, group, taxonomy]);
+  }, [analysisResult, group, taxonomy, ranks]);
 
   const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string) => (
     <button key={label} onClick={onClick} className={`btn ${active ? 'primary' : 'secondary'}`}

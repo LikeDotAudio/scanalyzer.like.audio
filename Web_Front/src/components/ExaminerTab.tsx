@@ -5,6 +5,7 @@ import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from './ScopeBar';
 import { groupColor, complementColor, ucsColor, ucsSubColor, taxonomyKeys, type Taxonomy } from '../groupColors';
+import { altCategory, altSubcategory } from '../ucsIndex';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import PropertyBars from '../examiner/PropertyBars';
@@ -61,6 +62,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [taxonomy, setTaxonomy] = useState<Taxonomy>('Music production');
+  // Which UCS runner-up ranks the scope filter also matches on. 0/1/2 = Alt 1/2/3.
+  const [altRanks, setAltRanks] = useState<Set<number>>(new Set([0, 1, 2]));
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
   const [showColMenu, setShowColMenu] = useState(false);
 
@@ -88,17 +91,39 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const activeColumns = COLUMNS.filter(c => visibleColumns.has(c.key));
 
   // Rows matching the group/subgroup scope AND the filter text.
+  //
+  // The UCS scorer reports runners-up as well as a winner, and the winner is often only
+  // narrowly ahead — a door squeak can land on WOOD with DOORS as its second guess. So
+  // under the UCS taxonomy the scope also matches an enabled alternate rank: pick DOORS
+  // and, with Alt 1-3 ticked, you get everything the scorer *considered* a door, not just
+  // what it committed to. The alternates are ids ("DOORKnck 0.31"), so they resolve
+  // through UCS_BY_ID rather than by string-matching the category name.
   const filteredRows = useMemo(() => {
     const q = filter.trim().toLowerCase();
+    const ranks = [...altRanks].sort();
     return analysisResult.filter(it => {
       const [g, sg] = taxonomyKeys(it, taxonomy);
-      if (scopeGroup && g !== scopeGroup) return false;
-      if (scopeSub && sg !== scopeSub) return false;
+
+      if (scopeGroup) {
+        let hit = g === scopeGroup && (!scopeSub || sg === scopeSub);
+        if (!hit && taxonomy === 'UCS' && ranks.length) {
+          hit = ranks.some(r => {
+            const alt = it.ucs?.alternatives?.[r];
+            if (!alt) return false;
+            if (altCategory(alt) !== scopeGroup) return false;
+            return !scopeSub || altSubcategory(alt) === scopeSub;
+          });
+        }
+        if (!hit) return false;
+      } else if (scopeSub && sg !== scopeSub) {
+        return false;
+      }
+
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [analysisResult, filter, scopeGroup, scopeSub, taxonomy]);
+  }, [analysisResult, filter, scopeGroup, scopeSub, taxonomy, altRanks]);
 
   // The displayed list: filtered, then sorted by the clicked column.
   const rows = useMemo(() => {
@@ -380,14 +405,33 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
           <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
               <ScopeBar 
                 analysisResult={analysisResult} 
-                group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
-                filterText={filter} setFilterText={setFilter} taxonomy={taxonomy}
+                group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub}
+                filterText={filter} setFilterText={setFilter} taxonomy={taxonomy} altRanks={altRanks}
                 rightContent={
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
                     <div className="text-secondary" style={{ fontSize: '0.8rem', display: 'flex', gap: '0.5rem' }}>
                       <button className={`btn ${taxonomy === 'Music production' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('Music production')}>Music Production</button>
                       <button className={`btn ${taxonomy === 'UCS' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('UCS')}>UCS</button>
                     </div>
+                    {/* Which runner-up ranks the scope also matches on. Only meaningful under
+                        UCS, where the record carries the scorer's alternatives. */}
+                    {taxonomy === 'UCS' && (
+                      <div className="text-secondary" style={{ fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: '0.45rem' }}
+                        title="With a scope selected, also match samples where this runner-up falls in that UCS category.">
+                        <span>Match:</span>
+                        {[0, 1, 2].map(r => (
+                          <label key={r} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                            <input type="checkbox" checked={altRanks.has(r)}
+                              onChange={() => setAltRanks(prev => {
+                                const next = new Set(prev);
+                                next.has(r) ? next.delete(r) : next.add(r);
+                                return next;
+                              })} />
+                            Alt {r + 1}
+                          </label>
+                        ))}
+                      </div>
+                    )}
                     <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{(isTauri() || audioFiles.length) ? ` · ${isTauri() ? 'Native Audio' : audioFiles.length + ' audio linked'}` : ''}</div>
                     <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }} onClick={() => setShowColMenu(!showColMenu)}>⚙ Columns</button>
                     {showColMenu && (

@@ -46,8 +46,12 @@ export default function ScanalyzeTab({
   const [stale, setStale] = useState(0);
   const [version, setVersion] = useState('');
   // What the folder survey found, shown for confirmation before any file is read.
+  // `sidecarEngine` is read from a small sample of the sidecars, not all of them:
+  // on a 41k-file folder reading every one is what used to hang the tab. It is the
+  // version stamp the existing analysis was produced by, or null if none were readable.
   const [preview, setPreview] = useState<
-    { all: File[]; wavFiles: File[]; sidecars: Map<string, File>; everyNth: number } | null
+    { all: File[]; wavFiles: File[]; sidecars: Map<string, File>; everyNth: number;
+      sidecarEngine: string | null } | null
   >(null);
   // Progress while absorbing existing sidecars in chunks.
   const [absorbing, setAbsorbing] = useState<{ done: number; total: number } | null>(null);
@@ -106,20 +110,58 @@ export default function ScanalyzeTab({
       alert('No .wav files found in that folder.');
       return;
     }
-    setPreview({ all, wavFiles, sidecars, everyNth });
+
+    // Which engine produced the sidecars that are already here? Read a handful,
+    // spread across the folder, rather than all 40k — enough to name the version
+    // and let the user decide whether re-analyzing is worth it.
+    let sidecarEngine: string | null = null;
+    const withSidecar = wavFiles.filter(f => sidecars.has(stem(f)));
+    if (withSidecar.length) {
+      const step = Math.max(1, Math.floor(withSidecar.length / SIDECAR_PROBES));
+      const probes = withSidecar.filter((_, i) => i % step === 0).slice(0, SIDECAR_PROBES);
+      const versions = await Promise.all(probes.map(async f => {
+        try {
+          const [rec] = normalizePeakRecords([JSON.parse(await sidecars.get(stem(f))!.text())]).records;
+          return rec?.metadata?.analyzer_version || null;
+        } catch { return null; }
+      }));
+      const seen = versions.filter(Boolean) as string[];
+      // A folder scanned across two engine versions has no single answer; say so by
+      // leaving it null rather than picking one and lying about the other half.
+      sidecarEngine = seen.length && seen.every(v => v === seen[0]) ? seen[0] : null;
+    }
+
+    setPreview({ all, wavFiles, sidecars, everyNth, sidecarEngine });
   };
 
   /** How many sidecars/wavs to touch per chunk before yielding to the browser. */
   const CHUNK = 250;
+  /** Sidecars sampled during the survey just to name the engine that wrote them. */
+  const SIDECAR_PROBES = 12;
   const yieldToUi = () => new Promise(r => setTimeout(r, 0));
 
-  // The user said go. Absorb up-to-date sidecars in chunks, keeping the UI alive,
-  // then hand whatever still needs analyzing to the worker pool.
-  const confirmPreview = async () => {
+  // The user said go. Absorb existing sidecars in chunks, keeping the UI alive, then
+  // hand whatever still needs analyzing to the worker pool.
+  //
+  //   'auto'    absorb sidecars written by THIS engine; analyze everything else.
+  //   'open'    absorb every readable sidecar whatever engine wrote it, and analyze
+  //             nothing. Re-analysis is expensive and the old numbers are often what
+  //             you actually want to look at; this is "just open what I already have".
+  //   'rescan'  ignore every sidecar and analyze all of it from scratch.
+  const confirmPreview = async (mode: 'auto' | 'open' | 'rescan' = 'auto') => {
     if (!preview) return;
     const { all, wavFiles, sidecars } = preview;
     const engine = analyzer_version();
     setPreview(null);
+
+    if (mode === 'rescan') {
+      setAudioFiles(filterAudioFiles(all));
+      setAbsorbed(0);
+      setStale(0);
+      setPendingWavFiles(wavFiles);
+      return;
+    }
+
     setAbsorbing({ done: 0, total: wavFiles.length });
 
     // Already in this session's results — resume rather than redo. (This used to
@@ -130,6 +172,7 @@ export default function ScanalyzeTab({
     const absorbed: any[] = [];
     const toProcess: File[] = [];
     let staleSidecars = 0;
+    let noSidecar = 0;      // 'open' mode only: files left out because they had no usable .PEAK
 
     for (let i = 0; i < wavFiles.length; i += CHUNK) {
       const chunk = wavFiles.slice(i, i + CHUNK);
@@ -154,9 +197,19 @@ export default function ScanalyzeTab({
       for (const r of reads) {
         if ((r as any).skip) continue;
         const rec = (r as any).rec;
-        // Same engine and the sidecar really describes this file.
-        if (rec && rec.metadata.analyzer_version === engine && rec.metadata.name === r.file.name) {
+        // The sidecar must at least describe THIS file. In 'open' mode we take it
+        // whatever engine wrote it; in 'auto' only if the extractor code was identical,
+        // because then re-analyzing could only reproduce the same numbers.
+        const describesFile = rec && rec.metadata.name === r.file.name;
+        const sameEngine = describesFile && rec.metadata.analyzer_version === engine;
+        if (describesFile && (mode === 'open' || sameEngine)) {
+          if (!sameEngine) staleSidecars++;   // opened as-is, but from other extractor code
           absorbed.push(rec);
+        } else if (mode === 'open') {
+          // No usable sidecar and the user asked not to analyze. Leave it out rather
+          // than silently starting a 41k-file scan they declined — but keep the count,
+          // because "opened 40,900 of 40,966" is a fact they need to see.
+          noSidecar++;
         } else {
           if (rec) staleSidecars++;    // written by different extractor code
           toProcess.push(r.file);
@@ -175,9 +228,17 @@ export default function ScanalyzeTab({
     if (absorbed.length) setAnalysisResult([...analysisResult, ...absorbed]);
 
     if (toProcess.length === 0) {
-      alert(absorbed.length
-        ? `Nothing to analyze — absorbed ${absorbed.length} up-to-date .PEAK sidecar(s).`
-        : "All files in this folder have already been analyzed!");
+      if (mode === 'open') {
+        alert(
+          `Opened ${absorbed.length.toLocaleString()} existing .PEAK sidecar(s) — nothing was re-analyzed.` +
+          (staleSidecars ? `\n\n${staleSidecars.toLocaleString()} of them were written by a different analyzer version, so their numbers came from older extractor code. Rescan to bring them up to date.` : '') +
+          (noSidecar ? `\n\n${noSidecar.toLocaleString()} file(s) had no usable sidecar and were left out.` : '')
+        );
+      } else {
+        alert(absorbed.length
+          ? `Nothing to analyze — absorbed ${absorbed.length} up-to-date .PEAK sidecar(s).`
+          : "All files in this folder have already been analyzed!");
+      }
       setPendingWavFiles([]);
       return;
     }
@@ -404,12 +465,21 @@ export default function ScanalyzeTab({
 
   // The survey: what is in the folder, before a single byte is read.
   if (preview) {
-    const { wavFiles, sidecars, everyNth } = preview;
+    const { wavFiles, sidecars, everyNth, sidecarEngine } = preview;
     const bytes = wavFiles.reduce((n, f) => n + f.size, 0);
     const gb = bytes / 1e9;
     const withSidecar = wavFiles.filter(f => sidecars.has(stem(f))).length;
     const toAnalyze = wavFiles.length - withSidecar;
     const stat: React.CSSProperties = { display: 'flex', justifyContent: 'space-between', gap: '2rem', padding: '0.25rem 0' };
+
+    // These files have been scanned before. Whether that analysis is still current
+    // decides the whole choice, so say it plainly instead of quietly re-analyzing 41k
+    // files because a version string moved.
+    const engine = version;
+    const staleScan = withSidecar > 0 && sidecarEngine !== null && sidecarEngine !== engine;
+    const mixedScan = withSidecar > 0 && sidecarEngine === null;
+    const currentScan = withSidecar > 0 && sidecarEngine === engine;
+    const mono: React.CSSProperties = { fontFamily: 'monospace', fontSize: '0.78rem' };
 
     return (
       <div className="tab-content glass-panel" style={{ margin: 0, padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
@@ -419,8 +489,37 @@ export default function ScanalyzeTab({
           <div style={stat}><span>.wav files{everyNth > 1 ? ` (1 of every ${everyNth})` : ''}</span><strong style={{ color: 'var(--text-primary)' }}>{wavFiles.length.toLocaleString()}</strong></div>
           <div style={stat}><span>Total audio</span><strong style={{ color: 'var(--text-primary)' }}>{gb >= 1 ? `${gb.toFixed(1)} GB` : `${(bytes / 1e6).toFixed(0)} MB`}</strong></div>
           <div style={stat}><span>Already have a .PEAK sidecar</span><strong style={{ color: 'var(--accent-primary)' }}>{withSidecar.toLocaleString()}</strong></div>
-          <div style={stat}><span>Need analysis</span><strong style={{ color: 'var(--accent-secondary)' }}>{toAnalyze.toLocaleString()}</strong></div>
+          <div style={stat}><span>No sidecar — never analyzed</span><strong style={{ color: 'var(--accent-secondary)' }}>{toAnalyze.toLocaleString()}</strong></div>
+          {withSidecar > 0 && (
+            <>
+              <div style={stat}>
+                <span>Sidecar engine</span>
+                <strong style={{ ...mono, color: currentScan ? 'var(--accent-primary)' : 'var(--accent-secondary)' }}>
+                  {mixedScan ? 'mixed versions' : sidecarEngine}
+                </strong>
+              </div>
+              <div style={stat}>
+                <span>Current engine</span>
+                <strong style={{ ...mono, color: 'var(--text-primary)' }}>{engine || '—'}</strong>
+              </div>
+            </>
+          )}
         </div>
+
+        {(staleScan || mixedScan) && (
+          <div style={{ maxWidth: '640px', fontSize: '0.82rem', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.5 }}>
+            These files were analyzed before, by <strong>different extractor code</strong> than the
+            engine now loaded. Re-analyzing {wavFiles.length.toLocaleString()} file(s) will take a
+            while; opening the existing sidecars is instant, but their numbers come from the older
+            engine.
+          </div>
+        )}
+        {currentScan && toAnalyze === 0 && (
+          <div style={{ maxWidth: '640px', fontSize: '0.82rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+            Every file already has a sidecar from <em>this</em> engine — re-analyzing could only
+            reproduce the same numbers.
+          </div>
+        )}
 
         <div style={{ width: '100%', maxWidth: '640px', maxHeight: '220px', overflowY: 'auto', background: 'rgba(0,0,0,0.25)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', fontSize: '0.72rem', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
           {wavFiles.slice(0, 200).map((f, i) => (
@@ -435,10 +534,26 @@ export default function ScanalyzeTab({
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button className="btn primary" style={{ padding: '0.6rem 1.8rem' }} onClick={() => { void confirmPreview(); }}>
-            OK — go ahead
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {withSidecar > 0 && (
+            <button className="btn primary" style={{ padding: '0.6rem 1.5rem' }}
+              title="Load the analysis already on disk. Nothing is re-analyzed."
+              onClick={() => { void confirmPreview('open'); }}>
+              Open the {withSidecar.toLocaleString()} peak{withSidecar === 1 ? '' : 's'} as-is
+            </button>
+          )}
+          <button className={`btn ${withSidecar > 0 ? '' : 'primary'}`} style={{ padding: '0.6rem 1.5rem' }}
+            title="Ignore every existing sidecar and analyze every file from scratch."
+            onClick={() => { void confirmPreview('rescan'); }}>
+            Rescan all {wavFiles.length.toLocaleString()}
           </button>
+          {withSidecar > 0 && toAnalyze > 0 && (
+            <button className="btn" style={{ padding: '0.6rem 1.5rem' }}
+              title="Reuse sidecars written by this engine; analyze only what is missing or out of date."
+              onClick={() => { void confirmPreview('auto'); }}>
+              Only analyze what's missing
+            </button>
+          )}
           <button className="btn" style={{ padding: '0.6rem 1.5rem' }} onClick={() => setPreview(null)}>
             Cancel
           </button>
