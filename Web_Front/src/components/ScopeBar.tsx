@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { type Taxonomy, taxonomyKeys, taxonomyColor } from '../groupColors';
-import { altCategory, altSubcategory } from '../ucsIndex';
+import { type Taxonomy, taxonomyKeys, prodRoleOf, isProdRole, scopeSubgroups, scopeChipColor, scopeSubColor } from '../groupColors';
+import { altCategory } from '../ucsIndex';
 
 interface ScopeBarProps {
   analysisResult: any[];
@@ -22,34 +22,32 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   const useAlts = taxonomy === 'UCS' && !!altRanks?.size;
   const ranks = useMemo(() => (useAlts ? Array.from(altRanks!) : []), [useAlts, altRanks]);
 
-  const groups = useMemo(() => {
+  // Two families of top-level chip, side by side: the music-production ROLES
+  // (Percussion, Keyed, Loop…) and the UCS CATEGORIES (Musical, Doors, Water…). Their
+  // names never collide, so a chip's name alone says which axis it scopes. Roles come
+  // first — this is a sample library, and the role is what a producer reaches for.
+  const prodRoles = useMemo(() => {
+    const s = new Set<string>();
+    for (const it of analysisResult) s.add(prodRoleOf(it));
+    return Array.from(s).filter(Boolean).sort();
+  }, [analysisResult]);
+
+  const ucsCats = useMemo(() => {
     const s = new Set<string>();
     for (const it of analysisResult) {
-      s.add(taxonomyKeys(it, taxonomy)[0]);
+      s.add(taxonomyKeys(it, 'UCS')[0]);
       for (const r of ranks) {
         const c = altCategory(it.ucs?.alternatives?.[r] || '');
         if (c) s.add(c);
       }
     }
     return Array.from(s).sort();
-  }, [analysisResult, taxonomy, ranks]);
+  }, [analysisResult, ranks]);
 
-  const subgroups = useMemo(() => {
-    if (!group) return [];
-    const s = new Set<string>();
-    for (const it of analysisResult) {
-      const [g, sg] = taxonomyKeys(it, taxonomy);
-      if (g === group && sg) s.add(sg);
-      for (const r of ranks) {
-        const alt = it.ucs?.alternatives?.[r] || '';
-        if (altCategory(alt) === group) {
-          const asg = altSubcategory(alt);
-          if (asg) s.add(asg);
-        }
-      }
-    }
-    return Array.from(s).sort();
-  }, [analysisResult, group, taxonomy, ranks]);
+  const subgroups = useMemo(
+    () => (group ? scopeSubgroups(analysisResult, group) : []),
+    [analysisResult, group]
+  );
 
   const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string) => (
     <button key={label} onClick={onClick} className={`btn ${active ? 'primary' : 'secondary'}`}
@@ -63,13 +61,17 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
         {filterBtn('All', !group, () => { setGroup(null); setSub(null); })}
-        {groups.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, taxonomyColor(g, '', taxonomy)))}
+        {prodRoles.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g)))}
+        {prodRoles.length > 0 && ucsCats.length > 0 && (
+          <span style={{ width: '1px', alignSelf: 'stretch', background: 'var(--border-color)', margin: '0 0.25rem' }} />
+        )}
+        {ucsCats.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g)))}
       </div>
       {group && subgroups.length > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} subgroups:</span>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} {isProdRole(group) ? 'instruments' : 'subgroups'}:</span>
           {filterBtn('All', !sub, () => setSub(null))}
-          {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), taxonomyColor(group || '', sg, taxonomy)))}
+          {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), scopeSubColor(group, sg)))}
         </div>
       )}
       {(setFilterText || rightContent) && (

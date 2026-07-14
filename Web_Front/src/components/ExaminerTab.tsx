@@ -4,7 +4,7 @@ import { generateNewName } from '../renameConfig';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from './ScopeBar';
-import { complementColor, ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors';
+import { complementColor, ucsColor, ucsSubColor, matchesScope, isProdRole } from '../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../ucsIndex';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
@@ -124,12 +124,10 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     const ranks = [...altRanks].sort();
     const alts = new WeakSet<any>();
     const out = analysisResult.filter(it => {
-      const [g, sg] = taxonomyKeys(it, taxonomy);
-
       if (scopeGroup) {
-        const primary = g === scopeGroup && (!scopeSub || sg === scopeSub);
-        let hit = primary;
-        if (!hit && taxonomy === 'UCS' && ranks.length) {
+        let hit = matchesScope(it, scopeGroup, scopeSub);
+        // Runner-up matching applies only to UCS categories (a role has no alternatives).
+        if (!hit && !isProdRole(scopeGroup) && ranks.length) {
           hit = ranks.some(r => {
             const alt = it.ucs?.alternatives?.[r];
             if (!alt) return false;
@@ -139,8 +137,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
           if (hit) alts.add(it);
         }
         if (!hit) return false;
-      } else if (scopeSub && sg !== scopeSub) {
-        return false;
       }
 
       // Search reads the runners-up too, so typing "door" finds what the scorer

@@ -4,7 +4,7 @@ import { resolveAudioUrl, isTauri } from '../audioLinking';
 import ScopeBar from './ScopeBar';
 import GraphOptionsMenu from './GraphOptionsMenu';
 import GroupsMenu from './GroupsMenu'
-import { taxonomyKeys } from '../groupColors';
+import { taxonomyKeys, matchesScope } from '../groupColors';
 import ShapesMenu from './ShapesMenu';
 
 interface CloudTabProps {
@@ -51,14 +51,12 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      const [g, sg] = taxonomyKeys(it, taxonomy);
-      if (scopeGroup && g !== scopeGroup) return false;
-      if (scopeSub && sg !== scopeSub) return false;
+      if (!matchesScope(it, scopeGroup, scopeSub)) return false;
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [analysisResult, scopeGroup, scopeSub, filterText, taxonomy]);
+  }, [analysisResult, scopeGroup, scopeSub, filterText]);
 
   useEffect(() => {
     localStorage.setItem(PREF + 'xAxis', xAxis);

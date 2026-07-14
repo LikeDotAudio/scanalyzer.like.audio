@@ -280,6 +280,70 @@ export function taxonomyColor(top: string, sub: string, taxonomy: Taxonomy): str
   return sub ? groupColor(sub, '') : musicProdColor(top);
 }
 
+// --- UCS-Prod-as-a-top-level-scope ---------------------------------------------------
+// The 17 music-production roles (MUSICPROD.json) sit ALONGSIDE the UCS categories at the
+// top of the scope, not under MUSICAL. Every record has both a ucs.category and a role,
+// and the two name sets are disjoint (no UCS category is called "PERCUSSION"), so a chip's
+// name alone says which axis it scopes — no extra state, no taxonomy switch.
+
+/** The music-production role names — the top-level MUSICPROD categories. */
+export const PROD_ROLES: ReadonlySet<string> = new Set(CATEGORY_ORDER);
+
+/** True when a scope chip is a production role rather than a UCS category. */
+export function isProdRole(name: string): boolean {
+  return PROD_ROLES.has(name);
+}
+
+/** A record's production role, deriving it from the group for pre-MUSICPROD records. */
+export function prodRoleOf(item: any): string {
+  return item?.classification?.music_production_category
+    || musicProdCategory(item?.classification?.group || '');
+}
+
+/** Does a record fall in the selected scope? `group` may be a UCS category OR a
+ *  production role; the sub level is the UCS subcategory under a category, or the
+ *  filename group under a role. */
+export function matchesScope(item: any, group: string | null, sub: string | null): boolean {
+  if (!group) return true;
+  if (isProdRole(group)) {
+    if (prodRoleOf(item) !== group) return false;
+    if (sub && (item?.classification?.group || 'Unclassified').trim() !== sub) return false;
+    return true;
+  }
+  const [g, sg] = taxonomyKeys(item, 'UCS');
+  if (g !== group) return false;
+  if (sub && sg !== sub) return false;
+  return true;
+}
+
+/** The sub-level chips available under a selected top-level scope. */
+export function scopeSubgroups(items: any[], group: string): string[] {
+  const s = new Set<string>();
+  if (isProdRole(group)) {
+    for (const it of items) {
+      if (prodRoleOf(it) !== group) continue;
+      const g = (it?.classification?.group || '').trim();
+      if (g && g !== 'Unclassified') s.add(g);
+    }
+  } else {
+    for (const it of items) {
+      const [g, sg] = taxonomyKeys(it, 'UCS');
+      if (g === group && sg) s.add(sg);
+    }
+  }
+  return Array.from(s).sort();
+}
+
+/** Colour for a top-level scope chip, whichever axis it belongs to. */
+export function scopeChipColor(name: string): string {
+  return isProdRole(name) ? musicProdColor(name) : ucsColor(name);
+}
+
+/** Colour for a sub-level scope chip under a selected top-level scope. */
+export function scopeSubColor(group: string, sub: string): string {
+  return isProdRole(group) ? groupColor(sub, '') : ucsSubColor(group, sub);
+}
+
 /** One candidate placement for a record: the matcher's winner, or a runner-up. */
 export interface Candidate {
   category: string;

@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
-import { ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
+import { ucsColor, ucsSubColor, matchesScope } from '../groupColors'
 import { resolveAudioUrl, isTauri } from '../audioLinking'
 import ScopeBar from './ScopeBar'
 
@@ -59,10 +59,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      // The ScopeBar scopes by UCS category -> subcategory; match what it renders.
-      const [role, g] = taxonomyKeys(it, 'UCS');
-      if (group && role !== group) return false;
-      if (sub && g !== sub) return false;
+      // The ScopeBar scopes by a UCS category OR a production role; matchesScope knows both.
+      if (!matchesScope(it, group, sub)) return false;
       if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
