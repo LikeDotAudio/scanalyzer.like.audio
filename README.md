@@ -12,19 +12,21 @@ At its core, **scanalyzer** is a smart, automated librarian for your audio files
 > Get your library in check. 👇 
 > #MusicProduction #SoundDesign #BeatMaker #AudioEngineer #ProducerLife #MusicTech #SampleLibrary
 
-It ships as **two front-ends over one shared Rust DSP core** — a Python desktop
-GUI and a browser app — so the exact same analysis runs whether you launch the
-native app or open the web page:
+It ships as **one React app over one shared Rust DSP core**, delivered two ways —
+as a Tauri desktop app and as a browser app — so the exact same analysis and the
+exact same UI run whether you launch the native app or open the web page:
 
 ```
-                    ┌─────────────────────────────┐
-   Python desktop → │   Rust DSP core             │ ← Browser app (WebAssembly)
-   (main.py + Tk)   │   sample_analyzer_rs         │   (Web_Front, React + Vite)
-                    │   (one engine, both targets) │
-                    └─────────────────────────────┘
+                     ┌──────────────────────────────┐
+   Tauri desktop  →  │   Rust DSP core              │  ← Browser app (WebAssembly)
+   (Web_Front/       │   sample_analyzer_rs         │     (Web_Front, React + Vite)
+    src-tauri)       │   (one engine, both targets) │
+                     └──────────────────────────────┘
 ```
 
-- The **Python GUI** shells out to the native `oa_sample_analyzer` binary.
+- The **desktop app** (Tauri) wraps the same React front-end and shells out to
+  the native `oa_sample_analyzer` binary for scanning — full speed, one worker
+  per core, and it writes `.PEAK` sidecars straight to disk.
 - The **browser app** runs the *same* core compiled to WebAssembly
   (`Web_Front/wasm_analyzer`, a thin `wasm-bindgen` wrapper around
   `oa-sample-analyzer`) — entirely client-side, nothing uploaded.
@@ -33,43 +35,28 @@ native app or open the web page:
 
 ```
 Sample Analysis/
-├── sample_analyzer_rs/    # ── THE CORE ── Rust DSP engine (shared by both front-ends)
-│   └── target/release/oa_sample_analyzer     # native binary (desktop)
+├── sample_analyzer_rs/    # ── THE CORE ── Rust DSP engine (shared by both targets)
+│   └── target/release/oa_sample_analyzer     # native binary (used by the desktop app)
 │
-├── main.py                # Python desktop GUI shell (tabs live in support/)
-├── support/               # one module per GUI tab + config, theme, shared inspector
-├── graphing_rs/           # Rust 3D-cloud placement engine (desktop)
+├── UCS/                   # Universal Category System data
+│   └── categories/         # 82 UCS categories + MUSICPROD (the music-production role axis)
+│
+├── graphing_rs/           # Rust 3D-cloud placement engine
 ├── Sample_Conversion_rs/  # Rust sample-format conversion helper
-├── run.sh                 # desktop launcher: builds the Rust crates, opens the GUI
 │
-└── Web_Front/             # Browser app (React + Vite) — 100% client-side
+└── Web_Front/             # The app (React + Vite)
     ├── wasm_analyzer/      # the CORE compiled to WebAssembly (wasm-bindgen wrapper)
+    ├── src-tauri/          # the desktop shell (Tauri v2)
     └── src/                # React UI: Scanalize / 3D Cloud / Stats / Groups / Examiner / Rename
 ```
 
-## Run — desktop (Python)
-
-```bash
-./run.sh          # or:  python3 main.py
-```
-
-Requires: Python 3 with `numpy` + `matplotlib` (Tk backend), a Rust toolchain
-(`cargo`) for the first build, and an audio player for previews
-(`paplay`/`aplay`/`ffplay` on Linux, built-in on macOS/Windows).
-
-CLI (what the GUI runs for you):
-
-```bash
-oa_sample_analyzer <dir> [--out <path>] [--workers <n>] [--max-len <s>]
-                         [--clusters <k>] [--no-per-file] [--force]
-```
-
-## Run — browser (Web_Front)
+## Run — browser
 
 ```bash
 cd Web_Front
 npm install
 npm run dev       # local dev server;  npm run build  → static bundle in dist/
+npm run preview   # serve the production build (sets the wasm MIME type correctly)
 ```
 
 Requires: Node 18+. Rebuilding the WASM core needs a Rust toolchain plus
@@ -79,16 +66,46 @@ committed `wasm_analyzer/pkg` lets you run the app without that step.
 The browser app is **fully client-side** — no server does any work, and no data
 ever leaves the machine (see `Web_Front/src` and the `client-side-only` design
 note). It reads local folders through the File System Access API, runs the
-WASM DSP core in a Web Worker-free main pass, and never uploads anything.
+WASM DSP core in a worker pool, and never uploads anything.
+
+## Run — desktop (Tauri)
+
+```bash
+cargo build --release --manifest-path sample_analyzer_rs/Cargo.toml   # the scan engine
+cd Web_Front && npm run tauri dev                                     # or: npm run tauri build
+```
+
+Requires: Node 18+, a Rust toolchain, and the Tauri v2 system dependencies.
+
+The desktop app spawns `sample_analyzer_rs/target/release/oa_sample_analyzer`,
+so build that first. It scans with one worker per core, streams progress, and
+writes a `.PEAK` sidecar next to every sample.
+
+CLI (what the desktop app runs for you):
+
+```bash
+oa_sample_analyzer <dir> [--out <path>] [--workers <n>] [--max-len <s>]
+                         [--clusters <k>] [--no-per-file] [--force]
+```
+
+## Deployment
+
+The browser app is deployed to **<https://scanalyzer.like.audio>**.
+
+`.github/workflows/deploy_web.yml` runs on every push to `main` that touches
+`Web_Front/**` (or on manual dispatch). It builds the WASM core with
+`wasm-pack`, builds the Vite bundle, and syncs `Web_Front/dist/` to the web host
+over FTPS. Because the app is entirely client-side, the deploy is just static
+files — there is no server to run.
 
 ---
 
 ## The pipeline
 
-The Python GUI is only the front-end. All signal processing happens in the
-Rust binary, which walks the chosen folder for WAV files and analyzes them in
-parallel (default 30 worker threads), streaming one JSON line per file so the
-3D cloud fills in live. Per file, the order is deliberate:
+The front-end is only a shell. All signal processing happens in the Rust core,
+which walks the chosen folder for WAV files and analyzes them in parallel (one
+worker per core), streaming one JSON line per file so the 3D cloud fills in
+live. Per file, the order is deliberate:
 
 1. **Decode** the audio.
 2. **Measure** everything from the samples alone (time, spectrum, envelope,
@@ -97,7 +114,7 @@ parallel (default 30 worker threads), streaming one JSON line per file so the
    measurements only.
 4. **The file name is the LAST step** — only after all acoustic evidence is
    in does the path/name get consulted, to lay the curated taxonomy (group,
-   subgroup, family, god category) on top. If the name is completely ambiguous
+   subgroup, family, music-production role) on top. If the name is completely ambiguous
    ("Unclassified"), the system leans entirely on the computed acoustic instrument
    family to definitively assign a group (e.g., Idiophone → Percussion).
 5. After all files: **K-Means clustering** and a **PCA embedding** over the
@@ -107,14 +124,14 @@ parallel (default 30 worker threads), streaming one JSON line per file so the
 
 ### Version-stamped skip (incremental re-analysis)
 
-Every compile of the Rust crate hashes all of `src/*.rs` (FNV-1a, via
-`build.rs`) into an `analyzer_version` such as `0.1.0+38d2883735817901`, and
-every record carries it. Before analyzing a file the binary reads the existing
+Every compile of the Rust crate hashes all of `src/*.rs` **and the UCS category
+data** (FNV-1a, via `build.rs`) into an `analyzer_version`, and every record
+carries it. Before analyzing a file the binary reads the existing
 `<sample>.PEAK` sidecar: if it parses, its `analyzer_version` matches the
 running binary, and it names the same file, the record is **reused and the DSP
 skipped entirely** — identical code yields identical results by definition.
-Any change to the extractor source produces a new hash and invalidates old
-sidecars automatically. `--force` re-analyzes regardless. Sidecars are written
+Any change to an extractor *or* to a category signature *or* to the MUSICPROD
+role taxonomy produces a new hash and invalidates old sidecars automatically. `--force` re-analyzes regardless. Sidecars are written
 incrementally during the run, so a stopped/killed run resumes where it left
 off. (Clustering and PCA are global, so they are always recomputed.)
 
@@ -286,7 +303,7 @@ envelope, but THD + clipping pull them into different clusters.
 
 The analyzer utilizes a suite of industry-standard measurements and machine learning models for deeper context:
 
-- **Voice Activity Detection (VAD)** — an aggressive frame-by-frame scan using the highly optimized WebRTC VAD engine. If significant speech/vocal activity is found, the file is authoritatively classified into the `Vocal` top-level god category.
+- **Voice Activity Detection (VAD)** — an aggressive frame-by-frame scan using the highly optimized WebRTC VAD engine. If significant speech/vocal activity is found, the file is authoritatively assigned the `PERFORMANCE` music-production role — unless it is a loop, since a vocal loop is still a loop.
 - **Stereo Field Analysis** — Mid/Side processing computes `mid_rms` (mono compatibility) and `side_rms` (spatial width, reverb presence). 
 - **LUFS (ITU-R BS.1770)** — computes modern perceived loudness using K-Weighting and relative gating, providing a standardized `lufs` score.
 - **Chromagram** — a 12-bucket Pitch Class Profile mapping FFT magnitudes to standard Western musical notes, revealing chord structures regardless of octave.
@@ -332,24 +349,45 @@ pitch; one-shot = transient_count ≤ 1):
 
 Drums and FX legitimately match no role (shown as "(no role)").
 
-### Envelope god categories (`god.rs`) — the top level
+### Music-production role (`music_prod.rs`) — the top level
 
-The coarsest useful taxonomy, defined by fundamental ADSR shapes:
+The role a sample plays in a production. The subcategory names come from
+`UCS/categories/MUSICPROD.json`, which reuses UCS MUSICAL's names and acoustic
+signatures but is **excluded from the UCS matcher index** (`"matchable": false`):
+UCS answers *what is this sound*, MUSICPROD answers *what part does it play*.
+The two axes ride side by side on every record — `ucs.*` and
+`classification.music_production_category`.
 
-| God category | Envelope | Function |
-| --- | --- | --- |
-| **Percussive** | instant attack, fast decay, zero sustain | rhythmic anchors, impacts — all drums, cymbals and rides included |
-| **Impulsive with Tail** | instant attack, long ringing decay/release | wash, spatial context |
-| **Tonal** | variable attack, high sustain | melody, harmony, bass |
-| **Complex** | multiple transients or looping | beds, textures, FX |
+Enrolling MUSICPROD in the UCS matcher would have given every music sample a
+twin candidate with an identical signature, splitting the posterior and diluting
+the IDF of every music token, so `build.rs` bundles it separately.
 
-A loop is Complex regardless of name. A recognized name group maps directly
-(Clap/Cymbal/Hi-Hat/Kick/Perc/Ride/Rim/Snare/Tom → Percussive; IR → Impulsive
-with Tail; Bass/Guitar/Keyboards/Strings/Vocal → Sustained; DJ/FX/
-Loops/Scratch → Complex). Files the name taxonomy could not place are decided
-by their **measured** envelope shape: Multi → Complex; Sustained/Swell →
-Sustained; Plucky → Percussive; Decaying → Impulsive with Tail when
-decay + release > 0.5 s (a ringing wash), else Percussive.
+| Role | Assigned from |
+| --- | --- |
+| **PERCUSSION** | Kick, Snare, Hi-Hat, Ride, Cymbal, Clap, Rim, Tom, Perc |
+| **PERCUSSION TUNED** / **BELLS** / **CHIME** / **SHAKEN** | the Perc/Cymbal *subgroups* — Kalimba, Triangle / Bell, Cowbell, Gong / Chime / Shaker |
+| **KEYED** / **SYNTHESIZED** | Keyboards, split on its subgroup (Piano, Organ, Clav → KEYED; Synth → SYNTHESIZED) |
+| **PLUCKED** / **STRINGED** / **BRASS** / **WOODWIND** | Guitar / Strings / Horn / Sax |
+| **INSTRUMENT** | Bass, Note — the name matcher only sees the word "bass" and cannot tell a sub from an upright, so it is not forced into a family |
+| **PERFORMANCE** | Voice, Scratch, DJ — a vocal take, a scratch and a turntable are all captured performances |
+| **LOOP** | Loops/Patterns, and anything the loop detector flags |
+| **EXPERIMENTAL** | FX |
+| **IMPULSE RESPONSE** | IR — not a musical part, but it is in the library, so it gets a role rather than falling through |
+| **MISC** | everything unmeasurable |
+
+A loop is a LOOP whatever it is made of — the voice detector may override a
+*name*, but it never overrides loop-ness. Files the name taxonomy could not
+place are decided by their **measured** envelope shape: Multi → LOOP;
+Sustained/Swell → INSTRUMENT; Plucky → PERCUSSION; Decaying → IMPULSE RESPONSE
+when decay + release > 0.5 s (a ringing wash), else PERCUSSION.
+
+This replaced the old "god categories" (Percussive / Tonal / Keyboards /
+Complex / Impulsive with Tail), which only ever looked at the *group*: every
+bell, cowbell, gong, chime, kalimba and shaker collapsed into one bucket, a
+synth was indistinguishable from a piano, and the `Vocal` match arm was dead
+(the analyzer emits `Voice`). Because roles now separate tuned from untuned
+percussion, a bell or kalimba also keeps its root note instead of having it
+suppressed as a "percussive hit".
 
 ### Hornbostel-Sachs family (`family.rs`) — what is physically vibrating
 
@@ -442,6 +480,25 @@ The **Universal Category System (UCS)** is the de facto standardized taxonomy in
 Field names are spelled out in full — nothing abbreviated or implied. One
 JSON object per file (per-file sidecars; the aggregate file is an array).
 
+**The record is grouped.** Fields are nested under seven keys, so a field in the
+table below is read as `<group>.<field>` — e.g. `metadata.name`,
+`classification.music_production_category`, `spectral_features.harmonicity`:
+
+| Group | Holds |
+| --- | --- |
+| `metadata` | `analyzer_version`, `name`, `folder`, `sub`, `path`, `length_seconds`, `sample_rate`, `bit_depth`, `channels`, `source_format`, `lossy_source`, `dc_offset`, `trailing_silence_ms` |
+| `classification` | `group`, `subgroup`, `reason`, `timbre`, `length_class`, `audit`, `acoustic_types`, `sound_design_roles`, `instrument_family`, `music_production_category` |
+| `envelope` | `transient_count`, `attack_seconds`, `sustain_ratio`, `sustained`, the `envelope_*` ADSR fields, `decay_time_seconds_60db`, `onset_periodicity` |
+| `spectral_features` | `root_mean_square_level`, `crest_factor`, `zero_crossings_per_second`, `complexity`, the `spectral_*` fields, the `*_band_energy` fields, `harmonicity`, `inharmonicity`, `partial_count`, `mel_frequency_cepstral_coefficients`, `total_harmonic_distortion`, `clipping_density`, `distortion`, `stationarity`, `band_limit_high_hz`, `syllabic_modulation_energy`, `voicing_ratio`, `lufs`, `mid_rms`, `side_rms` |
+| `musicality` | `pitch_hz`, `pitch_slope_semitones_per_second`, `root_note_name`, `root_frequency_hz`, `root_cents_offset`, `beats_per_minute`, `root_midi_note`, `chromagram` |
+| `unsupervised` | `cluster`, `principal_components` |
+| `ucs` | `category`, `subcategory`, `id`, `confidence`, `alternatives`, `reason` |
+
+Records written before the grouping are flat. `Web_Front/src/peakSchema.ts`
+migrates those on load — it re-groups the old fields and leaves anything the old
+analyzer never computed (the whole `ucs` block, `lufs`, mid/side RMS) absent, so
+a missing feature reads as absent rather than as a plausible zero.
+
 | Field | Type | Meaning |
 | --- | --- | --- |
 | `analyzer_version` | string | crate version + source hash that produced this record; if it matches the running binary the record is reused instead of re-analyzed |
@@ -484,7 +541,7 @@ JSON object per file (per-file sidecars; the aggregate file is an array).
 | `acoustic_types` | string[] | Harmonic / Inharmonic / Stochastic / Impulsive (multi) |
 | `sound_design_roles` | string[] | Pad / Pluck / Lead / Bass (multi; may be empty) |
 | `instrument_family` | string | Hornbostel-Sachs guess ("" unknown) |
-| `god_category` | string | top-level envelope category |
+| `music_production_category` | string | the role the sample plays in a production — one of the MUSICPROD subcategories (`PERCUSSION`, `KEYED`, `SYNTHESIZED`, `LOOP`, `IMPULSE RESPONSE`, …). Replaces the old `god_category`. |
 | `sample_rate` / `bit_depth` / `channels` | int | raw file attributes |
 | `root_note_name` / `root_frequency_hz` / `root_cents_offset` | string/number | musical root, e.g. "A3", its Hz, cents off equal temperament |
 | `beats_per_minute` / `root_midi_note` | number/int | from the embedded ACID chunk (0 / −1 when absent) |
@@ -506,11 +563,12 @@ Near-black theme with bright text throughout. **Start Analysis** becomes
 **■ Stop Analysis** during a run — stopping keeps the sidecars written so
 far, which the version-skip reuses next run.
 
-**One colour system everywhere**: each god category owns a hue (Percussive =
-red-orange, Impulsive with Tail = gold, Tonal =
-green, Complex = violet, Unassigned = grey); every group is a
-distinct shade of its category's hue and every curated subgroup a further
-nudge of that shade (`support/config.py: group_color()`). The 3D cloud's
+**One colour system everywhere**: each music-production role owns a hue
+(PERCUSSION = red-orange, BELLS = gold, KEYED = green, SYNTHESIZED = teal,
+PERFORMANCE = violet, MISC = grey); every group is a distinct shade of its
+role's hue and every curated subgroup a further nudge of that shade
+(`Web_Front/src/groupColors.ts: groupColor()`, mirroring
+`sample_analyzer_rs/src/music_prod.rs`). The 3D cloud's
 points, its legend and sidebar tree, the 2D-stats buttons and scatter, and
 the Groups/Examiner table rows all share the exact same colours.
 
@@ -518,13 +576,13 @@ the Groups/Examiner table rows all share the exact same colours.
   pickers and ten one-click presets (**A–J**: classic, brightness, envelope
   space, tonal-vs-noisy, musicality, percussive, noise, texture, tempo,
   dynamics — the axis labels follow). Scroll to zoom, Top/Front/Side/Iso
-  views, drag to orbit. The god-category → group → subgroup tree in the
+  views, drag to orbit. The role → group → subgroup tree in the
   sidebar shows/hides any slice. Click a point to inspect and play it.
 - **2D Stats** — right beside the cloud: per-group scatter of any two
   measures, click a point to inspect/play.
-- **Groups / CSV** — group along any dimension (God category / Name group /
+- **Groups / CSV** — group along any dimension (Music production / Name group /
   Timbre / Env shape / Acoustic / Sound design / Family / Distortion /
-  Cluster), two levels deep; defaults to god categories with name groups
+  Cluster), two levels deep; defaults to music-production roles with name groups
   nested. Full CSV export of every field. Selecting a file opens the shared
   inspector: complete record JSON + waveform preview + Play.
 - **PEAK Examiner** — open any `.PEAK`, filter/search, same inspector.
@@ -534,7 +592,7 @@ the Groups/Examiner table rows all share the exact same colours.
   nearest. Same inspector.
 - **Flatten / Rename** — a token-based name builder: three reorderable
   checkbox tables (each row has ▲/▼) compose the result. **Destination
-  subfolders** — every checked label (God category, Group, Subgroup, Timbre,
+  subfolders** — every checked label (Music production, Group, Subgroup, Timbre,
   Family, Distortion, Envelope shape, Length tier, Cluster) becomes one
   folder level, in order. **Prepend** and **Append** tables build the file
   name around the original: `[prepend parts] - <original> - [append parts]`,
@@ -550,7 +608,7 @@ the Groups/Examiner table rows all share the exact same colours.
 
 The web front-end mirrors the desktop tabs — **Scanalize, 3D Cloud, Stats,
 Groups, Examiner, Flatten/Rename** — running the same Rust DSP core as
-WebAssembly, and sharing the one god-category → group → subgroup colour system.
+WebAssembly, and sharing the one role → group → subgroup colour system.
 It is **100% client-side**: no server performs any computation and nothing is
 uploaded. What differs from the desktop build:
 
