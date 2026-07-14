@@ -353,6 +353,16 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
     const src = resolveAudioSrc(audioFiles, item);
     if (!src) {
+      // Say WHY, rather than just going quiet. Silence here has three different causes
+      // and they need different fixes, so guessing between them wastes an afternoon.
+      console.warn('[examiner] no audio source for this record', {
+        desktop: isTauri(),
+        recordedPath: item?.metadata?.path,
+        audioFilesLinked: audioFiles.length,
+        hint: isTauri()
+          ? 'desktop: metadata.path must be absolute, or an audio root must be set'
+          : 'browser: no File matched — re-scan the folder to re-link the audio',
+      });
       // No linked audio — clear the preview so it doesn't show a stale sample.
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext('2d');
@@ -360,12 +370,19 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
       return;
     }
 
-    if (audioRef.current) {
+    // The <audio> element is only rendered once something is selected, so on the FIRST
+    // selection this runs before it exists and the ref is still null — the source was
+    // never assigned and the sample never played. Retry after the render that mounts it.
+    const load = () => {
+      const el = audioRef.current;
+      if (!el) return false;
       document.querySelectorAll('audio').forEach(a => a.pause());
-      audioRef.current.currentTime = 0;
-      audioRef.current.src = src;
-      if (autoPlay || forcePlay) audioRef.current.play().catch(() => {});
-    }
+      el.currentTime = 0;
+      el.src = src;
+      if (autoPlay || forcePlay) el.play().catch(err => console.warn('[examiner] play rejected', err));
+      return true;
+    };
+    if (!load()) requestAnimationFrame(load);
 
     // Decode the whole file and draw the static preview.
     try {

@@ -4,7 +4,7 @@ import { resolveAudioSrc, isTauri } from '../audioLinking';
 import ScopeBar from './ScopeBar';
 import GraphOptionsMenu from './GraphOptionsMenu';
 import GroupsMenu from './GroupsMenu'
-import { taxonomyOf, taxonomyKeys } from '../groupColors';
+import { taxonomyOf, taxonomyKeys, type Taxonomy } from '../groupColors';
 import ShapesMenu from './ShapesMenu';
 
 interface CloudTabProps {
@@ -33,7 +33,11 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [filterText, setFilterText] = useState('');
 
-  const taxonomy = taxonomyOf(colorBy);
+  // The scope taxonomy used to be DERIVED from the colour mode, so the only way to see
+  // the music-production roles was to change what the points were coloured by — and the
+  // MUSICPROD taxonomy looked simply absent to anyone scanning the UCS chips for it.
+  // It is its own control now; the colour mode only seeds the initial value.
+  const [taxonomy, setTaxonomy] = useState<Taxonomy>(() => taxonomyOf(getPref('colorBy', 'UCS Category')));
 
   useEffect(() => {
     setScopeGroup(null);
@@ -63,6 +67,11 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
   }, [xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy]);
   const [showAxes, setShowAxes] = useState(true);
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set());
+
+  // The hidden set is keyed by group name, and the two taxonomies share names — both have
+  // a PERCUSSION. Hiding it under UCS and then switching would silently hide the ROLE too,
+  // leaving points missing with nothing ticked to explain why. Start clean on a switch.
+  useEffect(() => { setHiddenGroups(new Set()); }, [taxonomy]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -151,7 +160,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
       <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)', zIndex: 10 }}>
           <ScopeBar 
             analysisResult={analysisResult} group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
-            filterText={filterText} setFilterText={setFilterText} taxonomy={taxonomy}
+            filterText={filterText} setFilterText={setFilterText} taxonomy={taxonomy} setTaxonomy={setTaxonomy}
             rightContent={
               <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} / {analysisResult.length} samples</span>
             }
