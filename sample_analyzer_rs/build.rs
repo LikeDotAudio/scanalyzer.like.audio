@@ -74,4 +74,11 @@ fn main() {
     absorb(bundle.as_bytes());
 
     println!("cargo:rustc-env=ANALYZER_REV={:016x}", h);
+
+    let date_output = std::process::Command::new("date")
+        .arg("+%Y%m%d.%H%M")
+        .output()
+        .expect("failed to execute date command");
+    let date_str = String::from_utf8_lossy(&date_output.stdout).trim().to_string();
+    println!("cargo:rustc-env=ANALYZER_DATE={}", date_str);
 }

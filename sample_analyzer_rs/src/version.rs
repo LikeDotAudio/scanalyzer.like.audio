@@ -2,4 +2,4 @@
 //! the src/*.rs sources (stamped by build.rs at compile time). Two builds of
 //! identical source share a version, so their results are interchangeable; any
 //! code change produces a new version and re-analysis.
-pub const ANALYZER_VERSION: &str = concat!(env!("CARGO_PKG_VERSION"), "+", env!("ANALYZER_REV"));
+pub const ANALYZER_VERSION: &str = concat!(env!("ANALYZER_DATE"), "-", env!("ANALYZER_REV"));
