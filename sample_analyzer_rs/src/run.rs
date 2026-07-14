@@ -45,6 +45,17 @@ pub fn run(cfg: &Config) {
                 // Reuse the existing sidecar when its analyzer version matches
                 // this binary — same extractor code yields the same results,
                 // so the DSP is skipped entirely (`--force` overrides).
+                let tid = rayon::current_thread_index().unwrap_or(0);
+                let fname = f.file_name().and_then(|x| x.to_str()).unwrap_or("");
+                {
+                    let _g = stdout_lock.lock().unwrap();
+                    crate::emit::emit(&serde_json::json!({
+                        "type": "thread_start",
+                        "thread_id": tid,
+                        "file": fname
+                    }));
+                }
+                
                 let cached = if cfg.force { None } else { read_sidecar(f, &cfg.root) };
                 let was_cached = cached.is_some();
                 // Catch any per-file panic so one bad sample can't abort the run.
@@ -72,8 +83,8 @@ pub fn run(cfg: &Config) {
                 // Stream progress / result (serialized to avoid interleaving).
                 let _g = stdout_lock.lock().unwrap();
                 match &res {
-                    Some(p) => emit_result(p, n, total),
-                    None => emit_skip(f.file_name().and_then(|x| x.to_str()).unwrap_or(""), n, total),
+                    Some(p) => emit_result(p, n, total, tid),
+                    None => emit_skip(f.file_name().and_then(|x| x.to_str()).unwrap_or(""), n, total, tid),
                 }
                 res
             })
@@ -84,7 +95,7 @@ pub fn run(cfg: &Config) {
     cluster_samples(&mut results, cfg.clusters);
     let mut cluster_counts = std::collections::BTreeMap::new();
     for p in &results {
-        *cluster_counts.entry(p.cluster).or_insert(0usize) += 1;
+        *cluster_counts.entry(p.unsupervised.cluster).or_insert(0usize) += 1;
     }
     emit(&serde_json::json!({ "type": "clusters", "k": cfg.clusters, "counts": cluster_counts }));
 

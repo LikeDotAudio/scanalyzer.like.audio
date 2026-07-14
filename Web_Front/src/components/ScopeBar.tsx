@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { groupColor } from '../groupColors';
 
+import { type Taxonomy, ucsColor, ucsSubColor } from '../groupColors';
+
 interface ScopeBarProps {
   analysisResult: any[];
   group: string | null;
@@ -10,23 +12,28 @@ interface ScopeBarProps {
   filterText?: string;
   setFilterText?: (f: string) => void;
   rightContent?: React.ReactNode;
+  taxonomy?: Taxonomy;
 }
 
-export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent }: ScopeBarProps) {
+export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'Name groups' }: ScopeBarProps) {
   const groups = useMemo(() => {
     const s = new Set<string>();
-    for (const it of analysisResult) s.add(it.group || 'Unclassified');
+    for (const it of analysisResult) {
+      s.add(taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified'));
+    }
     return Array.from(s).sort();
-  }, [analysisResult]);
+  }, [analysisResult, taxonomy]);
 
   const subgroups = useMemo(() => {
     if (!group) return [];
     const s = new Set<string>();
     for (const it of analysisResult) {
-      if ((it.group || 'Unclassified') === group && (it.subgroup || '').trim()) s.add(it.subgroup.trim());
+      const g = taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified');
+      const sg = taxonomy === 'UCS' ? (it.ucs_subcategory || '').trim() : (it.subgroup || '').trim();
+      if (g === group && sg) s.add(sg);
     }
     return Array.from(s).sort();
-  }, [analysisResult, group]);
+  }, [analysisResult, group, taxonomy]);
 
   const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string) => (
     <button key={label} onClick={onClick} className={`btn ${active ? 'primary' : 'secondary'}`}
@@ -40,13 +47,13 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
         {filterBtn('All', !group, () => { setGroup(null); setSub(null); })}
-        {groups.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, groupColor(g, '')))}
+        {groups.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, taxonomy === 'UCS' ? ucsColor(g) : groupColor(g, '')))}
       </div>
       {group && subgroups.length > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} subgroups:</span>
           {filterBtn('All', !sub, () => setSub(null))}
-          {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), groupColor(group, sg)))}
+          {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), taxonomy === 'UCS' ? ucsSubColor(group || '', sg) : groupColor(group || '', sg)))}
         </div>
       )}
       {(setFilterText || rightContent) && (

@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
 import { groupColor, godColor, godCategory, CLOUD_PALETTE } from '../groupColors'
-import { findAudioFile } from '../audioLinking'
+import { resolveAudioSrc, isTauri } from '../audioLinking'
 import ScopeBar from './ScopeBar'
 
 interface StatsTabProps {
@@ -45,7 +45,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [plotAll, setPlotAll] = useState(false);
   const [filterText, setFilterText] = useState('');
   const audioRef = useRef<HTMLAudioElement>(null);
-  const lastUrlRef = useRef<string | null>(null);
+
 
   useEffect(() => {
     setGroup(null);
@@ -115,21 +115,16 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
 
   const playItem = (item: any) => {
     if (!item) return;
-    onSound?.(item.name || '');
-    const file = findAudioFile(audioFiles, item);
-    if (file && audioRef.current) {
+    onSound?.(item.metadata.name || '');
+    const src = resolveAudioSrc(audioFiles, item);
+    if (src && audioRef.current) {
       document.querySelectorAll('audio').forEach(a => a.pause());
       audioRef.current.currentTime = 0;
-      if (lastUrlRef.current) {
-        URL.revokeObjectURL(lastUrlRef.current);
-      }
-      const newUrl = URL.createObjectURL(file);
-      lastUrlRef.current = newUrl;
-      audioRef.current.src = newUrl;
+      audioRef.current.src = src;
       audioRef.current.play().catch(() => {});
-      setNowPlaying(item.name);
+      setNowPlaying(item.metadata.name);
     } else {
-      setNowPlaying(audioFiles.length ? `No audio file for "${item.name}"` : 'No audio linked');
+      setNowPlaying((isTauri() || audioFiles.length) ? `No audio file for "${item.metadata.name}"` : 'No audio linked');
     }
   };
 
@@ -151,7 +146,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
           <div><strong style={{ color: 'var(--text-secondary)' }}>Length:</strong> {it.length_seconds?.toFixed(2)}s</div>
           <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.75rem' }}>
             {payload.map((p: any) => (
-              <div key={p.name}><strong style={{ color: 'var(--text-secondary)' }}>{p.name}:</strong> {p.value}</div>
+              <div key={p.metadata.name}><strong style={{ color: 'var(--text-secondary)' }}>{p.metadata.name}:</strong> {p.value}</div>
             ))}
           </div>
         </div>

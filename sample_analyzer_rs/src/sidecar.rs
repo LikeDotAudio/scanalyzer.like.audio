@@ -7,7 +7,7 @@ use crate::version::ANALYZER_VERSION;
 /// on success. Used both for the incremental write during analysis and the
 /// rewrite afterwards (once the cluster id is known).
 pub fn write_sidecar(p: &Peak) -> bool {
-    let peak_path = Path::new(&p.path).with_extension("PEAK");
+    let peak_path = Path::new(&p.metadata.path).with_extension("PEAK");
     serde_json::to_string_pretty(p)
         .ok()
         .and_then(|js| std::fs::write(&peak_path, js).ok())
@@ -23,22 +23,22 @@ pub fn read_sidecar(wav: &Path, root: &Path) -> Option<Peak> {
     let peak_path = wav.with_extension("PEAK");
     let txt = std::fs::read_to_string(&peak_path).ok()?;
     let mut p: Peak = serde_json::from_str(&txt).ok()?;
-    if p.analyzer_version != ANALYZER_VERSION {
+    if p.metadata.analyzer_version != ANALYZER_VERSION {
         return None; // produced by different extractor code — re-analyze
     }
     let name = wav.file_name().and_then(|x| x.to_str()).unwrap_or("");
-    if p.name != name || name.is_empty() {
+    if p.metadata.name != name || name.is_empty() {
         return None; // sidecar describes some other file — re-analyze
     }
     // Refresh location fields (the file may have been moved with its sidecar).
-    p.path = wav.to_string_lossy().to_string();
+    p.metadata.path = wav.to_string_lossy().to_string();
     let folder = wav
         .parent()
         .and_then(|par| par.strip_prefix(root).ok())
         .map(|p| p.to_string_lossy().replace('\\', "/"))
         .unwrap_or_default();
-    p.folder = folder.clone();
-    p.sub = folder;
-    p.cluster = -1; // clustering is global and re-run every time
+    p.metadata.folder = folder.clone();
+    p.metadata.sub = folder;
+    p.unsupervised.cluster = -1; // clustering is global and re-run every time
     Some(p)
 }

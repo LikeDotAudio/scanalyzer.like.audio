@@ -5,13 +5,14 @@ interface HeaderProps {
   progress: number;
   onImportPeak: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onLoadSounds: () => void;
+  onUnloadSounds?: () => void;
   audioCount: number;
   currentSound?: string;
   hasData: boolean;
   activeTab?: string;
 }
 
-export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, audioCount, currentSound, hasData, activeTab }: HeaderProps) {
+export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSounds, onUnloadSounds, audioCount, currentSound, hasData, activeTab }: HeaderProps) {
   return (
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
@@ -68,7 +69,15 @@ export default function Header({ isAnalyzing, progress, onImportPeak, onLoadSoun
           />
         </label>
         <button className={`btn ${audioCount > 0 ? '' : 'primary blink'}`} onClick={onLoadSounds}>Load Sounds</button>
-        {audioCount > 0 && <span className="text-secondary" style={{ fontSize: '0.75rem' }}>{audioCount.toLocaleString()} linked</span>}
+        {audioCount > 0 && (
+          <button 
+            className="btn" 
+            style={{ background: 'gray', color: 'white', fontSize: '0.75rem' }} 
+            onClick={onUnloadSounds}
+          >
+            Unlink and reset {audioCount.toLocaleString()} files
+          </button>
+        )}
       </div>
     </header>
   );

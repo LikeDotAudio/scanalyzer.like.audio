@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { findAudioFile } from '../audioLinking';
+import { resolveAudioSrc, isTauri } from '../audioLinking';
 import { generateNewName } from '../renameConfig';
-import ScopeBar from './ScopeBar';
-import { groupColor, complementColor } from '../groupColors';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
+import ScopeBar from './ScopeBar';
+import { groupColor, complementColor, ucsColor, ucsSubColor, type Taxonomy } from '../groupColors';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import PropertyBars from '../examiner/PropertyBars';
@@ -24,6 +24,8 @@ const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; g
   { key: 'god_category', label: 'Category', width: '9%', get: it => it.god_category || '' },
   { key: 'group', label: 'Group', width: '8%', get: it => it.group || '' },
   { key: 'subgroup', label: 'Subgroup', width: '9%', get: it => it.subgroup || '' },
+  { key: 'ucs_category', label: 'UCS Cat', width: '8%', get: it => it.ucs_category || '' },
+  { key: 'ucs_subcategory', label: 'UCS Sub', width: '9%', get: it => it.ucs_subcategory || '' },
   { key: 'reason', label: 'Reason', width: '14%', get: it => it.reason?.[0] || '' },
   { key: 'timbre', label: 'Timbre', width: '8%', get: it => it.timbre || '' },
   { key: 'cluster', label: 'Clust', numeric: true, width: '4%', get: it => (it.cluster ?? -1) },
@@ -50,6 +52,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
+  const [taxonomy, setTaxonomy] = useState<Taxonomy>('Name groups');
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
   const [showColMenu, setShowColMenu] = useState(false);
 
@@ -57,7 +60,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     setScopeGroup(null);
     setScopeSub(null);
     setFilter('');
-  }, [analysisResult]);
+  }, [analysisResult, taxonomy]);
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('scanalyzer_examiner_cols');
@@ -80,13 +83,15 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const filteredRows = useMemo(() => {
     const q = filter.trim().toLowerCase();
     return analysisResult.filter(it => {
-      if (scopeGroup && (it.group || 'Unclassified') !== scopeGroup) return false;
-      if (scopeSub && (it.subgroup || '').trim() !== scopeSub) return false;
-      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+      const g = taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified');
+      const sg = taxonomy === 'UCS' ? (it.ucs_subcategory || '').trim() : (it.subgroup || '').trim();
+      if (scopeGroup && g !== scopeGroup) return false;
+      if (scopeSub && sg !== scopeSub) return false;
+      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.ucs_category || ''} ${it.ucs_subcategory || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [analysisResult, filter, scopeGroup, scopeSub]);
+  }, [analysisResult, filter, scopeGroup, scopeSub, taxonomy]);
 
   // The displayed list: filtered, then sorted by the clicked column.
   const rows = useMemo(() => {
@@ -285,8 +290,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     setSelectedItem(item);
     onSound?.(item?.name || '');
 
-    const file = findAudioFile(audioFiles, item);
-    if (!file) {
+    const src = resolveAudioSrc(audioFiles, item);
+    if (!src) {
       // No linked audio — clear the preview so it doesn't show a stale sample.
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext('2d');
@@ -297,7 +302,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     if (audioRef.current) {
       document.querySelectorAll('audio').forEach(a => a.pause());
       audioRef.current.currentTime = 0;
-      audioRef.current.src = URL.createObjectURL(file);
+      audioRef.current.src = src;
       if (autoPlay || forcePlay) audioRef.current.play().catch(() => {});
     }
 
@@ -306,7 +311,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
       if (!decodeCtxRef.current) {
         decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
-      const buf = await file.arrayBuffer();
+      const buf = await (await fetch(src)).arrayBuffer();
       const decoded = await decodeCtxRef.current.decodeAudioData(buf);
       lastBufferRef.current = decoded;
       lastItemRef.current = item;
@@ -320,7 +325,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   // one finishes, until the user stops. Skips samples with no linked audio.
   const advanceDig = (fromIdx: number) => {
     let i = Math.max(0, fromIdx);
-    while (i < rows.length && !findAudioFile(audioFiles, rows[i])) i++;
+    while (i < rows.length && !resolveAudioSrc(isTauri() ? [new File([""], "dummy")] : audioFiles, rows[i])) i++;
     if (i < rows.length) handleSelect(rows[i], true);
     else setDigging(false); // reached the end of the list
   };
@@ -328,7 +333,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const startDig = () => {
     setDigging(true);
     const idx = selectedItem ? rows.indexOf(selectedItem) : -1;
-    if (idx >= 0 && findAudioFile(audioFiles, selectedItem)) handleSelect(selectedItem, true);
+    if (idx >= 0 && resolveAudioSrc(isTauri() ? [new File([""], "dummy")] : audioFiles, selectedItem)) handleSelect(selectedItem, true);
     else advanceDig(idx + 1);
   };
 
@@ -344,13 +349,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
   const handleDownload = () => {
     if (!selectedItem) return;
-    const file = findAudioFile(audioFiles, selectedItem);
-    if (!file) {
+    const src = resolveAudioSrc(isTauri() ? [new File([""], "dummy")] : audioFiles, selectedItem);
+    if (!src) {
       alert('Audio file not found in linked directory.');
       return;
     }
     const newName = generateNewName(selectedItem);
-    const url = URL.createObjectURL(file);
+    const url = src;
     const a = document.createElement('a');
     a.href = url;
     a.download = newName;
@@ -369,10 +374,14 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
               <ScopeBar 
                 analysisResult={analysisResult} 
                 group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
-                filterText={filter} setFilterText={setFilter}
+                filterText={filter} setFilterText={setFilter} taxonomy={taxonomy}
                 rightContent={
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
-                    <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{audioFiles.length ? ` · ${audioFiles.length} audio linked` : ''}</div>
+                    <div className="text-secondary" style={{ fontSize: '0.8rem', display: 'flex', gap: '0.5rem' }}>
+                      <button className={`btn ${taxonomy === 'Name groups' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('Name groups')}>Music Groups</button>
+                      <button className={`btn ${taxonomy === 'UCS' ? 'primary' : 'secondary'}`} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }} onClick={() => setTaxonomy('UCS')}>UCS</button>
+                    </div>
+                    <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{(isTauri() || audioFiles.length) ? ` · ${isTauri() ? 'Native Audio' : audioFiles.length + ' audio linked'}` : ''}</div>
                     <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }} onClick={() => setShowColMenu(!showColMenu)}>⚙ Columns</button>
                     {showColMenu && (
                       <div className="glass-panel" style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', zIndex: 50, padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', width: '220px', maxHeight: '300px', overflowY: 'auto' }}>
@@ -422,7 +431,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                               {rows.slice(startIndex, endIndex).map((item, i) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
-                                  const gcol = groupColor(item.group || 'Unclassified', item.subgroup || '');
+                                  const gcol = groupColor(item.classification.group || 'Unclassified', item.metadata.subgroup || '');
                                   return (
                                       <tr key={idx}
                                           onClick={() => handleSelect(item)}
@@ -430,20 +439,22 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                               cursor: 'pointer', height: ROW_H,
                                               background: isSelected ? 'rgba(59, 130, 246, 0.25)' : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                           }}>
-                                          {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.name}>{item.name}</td>}
-                                          {activeColumns.find(c => c.key === 'god_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.god_category}>{item.god_category}</td>}
-                                          {activeColumns.find(c => c.key === 'group') && <td style={cell({ color: gcol })}>{item.group}</td>}
-                                          {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.subgroup}>{item.subgroup}</td>}
-                                          {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.reason?.[0] || ''}>{item.reason?.[0] || ''}</td>}
-                                          {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.timbre}>{item.timbre ? `${TIMBRE_EMOJI[item.timbre] || '🎚️'} ${item.timbre}` : ''}</td>}
-                                          {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.cluster !== -1 ? item.cluster : ''}</td>}
-                                          {activeColumns.find(c => c.key === 'root') && <td style={cell({ color: '#8B5CF6' })}>{item.root_note_name}</td>}
-                                          {activeColumns.find(c => c.key === 'pitch_hz') && <td style={cell()}>{item.pitch_hz ? Math.round(item.pitch_hz) : 0}</td>}
-                                          {activeColumns.find(c => c.key === 'length_seconds') && <td style={cell()}>{item.length_seconds?.toFixed(2)}</td>}
-                                          {activeColumns.find(c => c.key === 'transient_count') && <td style={cell({ color: '#F59E0B' })}>{item.transient_count}</td>}
-                                          {activeColumns.find(c => c.key === 'spectral_centroid_hz') && <td style={cell()}>{item.spectral_centroid_hz ? Math.round(item.spectral_centroid_hz) : 0}</td>}
+                                          {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
+                                          {activeColumns.find(c => c.key === 'god_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.god_category}>{item.classification.god_category}</td>}
+                                          {activeColumns.find(c => c.key === 'group') && <td style={cell({ color: gcol })}>{item.classification.group}</td>}
+                                          {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.metadata.subgroup}>{item.metadata.subgroup}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
+                                          {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.reason?.[0] || ''}>{item.classification.reason?.[0] || ''}</td>}
+                                          {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.classification.timbre}>{item.classification.timbre ? `${TIMBRE_EMOJI[item.classification.timbre] || '🎚️'} ${item.classification.timbre}` : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.unsupervised.cluster !== -1 ? item.unsupervised.cluster : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'root') && <td style={cell({ color: '#8B5CF6' })}>{item.musicality.root_note_name}</td>}
+                                          {activeColumns.find(c => c.key === 'pitch_hz') && <td style={cell()}>{item.musicality.pitch_hz ? Math.round(item.musicality.pitch_hz) : 0}</td>}
+                                          {activeColumns.find(c => c.key === 'length_seconds') && <td style={cell()}>{item.metadata.length_seconds?.toFixed(2)}</td>}
+                                          {activeColumns.find(c => c.key === 'transient_count') && <td style={cell({ color: '#F59E0B' })}>{item.envelope.transient_count}</td>}
+                                          {activeColumns.find(c => c.key === 'spectral_centroid_hz') && <td style={cell()}>{item.spectral_features.spectral_centroid_hz ? Math.round(item.spectral_features.spectral_centroid_hz) : 0}</td>}
                                           {activeColumns.find(c => c.key === 'harmonicity') && <td style={cell()}>{item.harmonicity?.toFixed(2)}</td>}
-                                          {activeColumns.find(c => c.key === 'beats_per_minute') && <td style={cell()}>{item.beats_per_minute || 0}</td>}
+                                          {activeColumns.find(c => c.key === 'beats_per_minute') && <td style={cell()}>{item.musicality.beats_per_minute || 0}</td>}
                                       </tr>
                                   );
                               })}

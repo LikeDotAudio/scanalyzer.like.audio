@@ -66,35 +66,65 @@ export async function scanDirectoryHandle(dirHandle: any): Promise<File[]> {
 
 // Prompt for a directory and return every audio File within, each tagged with
 // its relative path (stashed on `relPath` since webkitRelativePath is read-only).
-export async function pickDirectoryFiles(): Promise<File[]> {
+export async function pickDirectoryFiles(readWrite = false): Promise<File[]> {
   const anyWin = window as any;
   if (!fsaSupported()) {
     throw new Error('This browser does not support the File System Access API (use Chrome or Edge).');
   }
-  const dir = await anyWin.showDirectoryPicker();
+  const dir = await anyWin.showDirectoryPicker({ mode: readWrite ? 'readwrite' : 'read' });
   await setDirHandle(dir);
   return scanDirectoryHandle(dir);
+}
+
+export async function writePeakSidecar(rootHandle: any, relPath: string, json: any) {
+  try {
+    const parts = relPath.split('/');
+    const fileName = parts.pop()!.replace(/\.[^./]+$/, '.PEAK');
+    let dir = rootHandle;
+    for (const part of parts) {
+      if (!part) continue;
+      dir = await dir.getDirectoryHandle(part);
+    }
+    const fileHandle = await dir.getFileHandle(fileName, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(json, null, 2));
+    await writable.close();
+  } catch (err) {
+    console.warn('Could not write sidecar for', relPath, err);
+  }
 }
 
 function relPathOf(f: File): string {
   return (f as any).relPath || f.webkitRelativePath || '';
 }
 
-// Resolve a .PEAK record to its audio File — full relative-path match first
-// (robust across identically-named files in different folders), then basename
-// (case-insensitive, since the .PEAK path root may differ from the linked root).
-export function findAudioFile(files: File[], item: any): File | undefined {
+export function isTauri(): boolean {
+  return typeof (window as any).__TAURI_INTERNALS__ !== 'undefined' || typeof (window as any).__TAURI__ !== 'undefined';
+}
+
+import { convertFileSrc } from '@tauri-apps/api/core';
+
+export function resolveAudioSrc(files: File[], item: any): string | null {
+  if (isTauri() && item?.path) {
+    // In Tauri, we can load local files natively using the asset protocol
+    return convertFileSrc(item.metadata.path); 
+  }
+
   const wantPath = String(item?.path || '').replace(/^\.?\/+/, '');
   const wantName = String(item?.name || '').toLowerCase();
+  
+  let found: File | undefined;
   if (wantPath) {
-    const byPath = files.find(f => {
+    found = files.find(f => {
       const rp = relPathOf(f);
       return rp && (rp === wantPath || rp.endsWith('/' + wantPath) || rp.endsWith(wantPath));
     });
-    if (byPath) return byPath;
   }
-  // Fall back to the just-the-filename tail of the path, then the name field.
-  const wantBase = (wantPath.split('/').pop() || wantName).toLowerCase();
-  return files.find(f => f.name.toLowerCase() === wantBase)
-      || (wantName ? files.find(f => f.name.toLowerCase() === wantName) : undefined);
+  if (!found) {
+    const wantBase = (wantPath.split('/').pop() || wantName).toLowerCase();
+    found = files.find(f => f.name.toLowerCase() === wantBase)
+        || (wantName ? files.find(f => f.name.toLowerCase() === wantName) : undefined);
+  }
+  
+  return found ? URL.createObjectURL(found) : null;
 }

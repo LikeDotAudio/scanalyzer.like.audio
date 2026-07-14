@@ -229,9 +229,9 @@ export function taxonomyOf(colorBy: string): Taxonomy {
 /** [top, sub] for a record under the given taxonomy. */
 export function taxonomyKeys(item: any, taxonomy: Taxonomy): [string, string] {
   if (taxonomy === 'UCS') {
-    return [item.ucs_category || '(unclassified)', (item.ucs_subcategory || '').trim()];
+    return [item.ucs.category || '(unclassified)', (item.ucs.subcategory || '').trim()];
   }
-  return [item.group || 'Unclassified', (item.subgroup || '').trim()];
+  return [item.classification.group || 'Unclassified', (item.metadata.subgroup || '').trim()];
 }
 
 export function taxonomyColor(top: string, sub: string, taxonomy: Taxonomy): string {

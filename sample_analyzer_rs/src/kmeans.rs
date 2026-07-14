@@ -113,6 +113,6 @@ pub fn kmeans_assign(results: &mut [Peak], idx: &[usize], k: usize, offset: i32)
     }
 
     for (m, &i) in idx.iter().enumerate() {
-        results[i].cluster = offset + assign[m] as i32;
+        results[i].unsupervised.cluster = offset + assign[m] as i32;
     }
 }

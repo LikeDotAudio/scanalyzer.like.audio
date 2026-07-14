@@ -67,7 +67,7 @@ export default function GraphOptionsMenu({
 
       <div style={{ marginTop: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem' }}>
         {audioFilesLength > 0
-          ? <div className="text-secondary" style={{ fontSize: '0.75rem', textAlign: 'center' }}>{audioFilesLength.toLocaleString()} audio linked</div>
+          ? <div className="text-secondary" style={{ fontSize: '0.75rem', textAlign: 'center' }}>{audioFilesLength === 1 ? 'Native Audio linked' : audioFilesLength.toLocaleString() + ' audio linked'}</div>
           : <button className="btn primary blink" style={{ width: '100%', padding: '0.3rem', fontSize: '0.75rem' }} onClick={() => onLoadSounds?.()}>⚠ 0 audio linked — Load folder</button>}
       </div>
     </div>

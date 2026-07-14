@@ -1,6 +1,6 @@
 import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
 import SampleCloud from '../SampleCloud';
-import { findAudioFile } from '../audioLinking';
+import { resolveAudioSrc, isTauri } from '../audioLinking';
 import ScopeBar from './ScopeBar';
 import GraphOptionsMenu from './GraphOptionsMenu';
 import GroupsMenu from './GroupsMenu'
@@ -29,6 +29,8 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [filterText, setFilterText] = useState('');
 
+  const taxonomy = taxonomyOf(colorBy);
+
   useEffect(() => {
     setScopeGroup(null);
     setScopeSub(null);
@@ -38,13 +40,15 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   const data = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
-      if (scopeGroup && (it.group || 'Unclassified') !== scopeGroup) return false;
-      if (scopeSub && (it.subgroup || '').trim() !== scopeSub) return false;
-      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
+      const g = taxonomy === 'UCS' ? (it.ucs_category || '(unclassified)') : (it.group || 'Unclassified');
+      const sg = taxonomy === 'UCS' ? (it.ucs_subcategory || '').trim() : (it.subgroup || '').trim();
+      if (scopeGroup && g !== scopeGroup) return false;
+      if (scopeSub && sg !== scopeSub) return false;
+      if (q && !`${it.name || ''} ${it.group || ''} ${it.subgroup || ''} ${it.ucs_category || ''} ${it.ucs_subcategory || ''} ${it.timbre || ''} ${it.root_note_name || ''} ${it.reason?.[0] || ''}`
         .toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [analysisResult, scopeGroup, scopeSub, filterText]);
+  }, [analysisResult, scopeGroup, scopeSub, filterText, taxonomy]);
 
   useEffect(() => {
     localStorage.setItem('scanalyzer_cloud_xAxis', xAxis);
@@ -74,8 +78,6 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
   // Which taxonomy the cloud is showing. Derived from the colour choice, so the
   // legend and the hide/show filters always describe what you are actually
   // looking at — colour by UCS and the tree becomes UCS category -> subcategory.
-  const taxonomy = taxonomyOf(colorBy);
-
   const groupTree = useMemo(() => {
     const map = new Map<string, { count: number; subs: Map<string, number> }>();
     for (const it of analysisResult) {
@@ -115,18 +117,22 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
     setSelectedIndex(index);
     const item = data[index];
     if (!item) return;
-    onSound?.(item.name || '');
-    if (audioFiles.length === 0) { setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
-    const file = findAudioFile(audioFiles, item);
-    if (!file) {
-      setPlayMsg(`No file matched "${item.name}" among ${audioFiles.length} linked.`);
+    onSound?.(item.metadata.name || '');
+    if (!isTauri() && audioFiles.length === 0) { setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
+    const src = resolveAudioSrc(audioFiles, item);
+    if (!src) {
+      if (!isTauri()) {
+          setPlayMsg(`Click 'Load Sounds' above to pick the ${item.metadata.folder} directory and enable playback.`);
+      } else {
+          setPlayMsg(`File not found: ${item.metadata.path}`);
+      }
       return;
     }
-    if (audioRef.current) {
+    const el = audioRef.current;
+    if (el) {
       document.querySelectorAll('audio').forEach(a => a.pause());
-      const el = audioRef.current;
       el.currentTime = 0;
-      el.src = URL.createObjectURL(file);
+      el.src = src;
       el.volume = 1;
       setPlayMsg('');
       el.play().then(() => setPlayMsg('')).catch(err => setPlayMsg(`Playback failed: ${err?.message || err}`));
@@ -142,7 +148,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
       <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)', zIndex: 10 }}>
           <ScopeBar 
             analysisResult={analysisResult} group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
-            filterText={filterText} setFilterText={setFilterText}
+            filterText={filterText} setFilterText={setFilterText} taxonomy={taxonomy}
             rightContent={
               <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} / {analysisResult.length} samples</span>
             }
@@ -189,7 +195,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onLoadSo
             xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis}
             zAxis={zAxis} setZAxis={setZAxis} sizeAxis={sizeAxis} setSizeAxis={setSizeAxis}
             colorBy={colorBy} setColorBy={setColorBy} showAxes={showAxes} setShowAxes={setShowAxes}
-            audioFilesLength={audioFiles.length} onLoadSounds={onLoadSounds}
+            audioFilesLength={isTauri() ? 1 : audioFiles.length} onLoadSounds={onLoadSounds}
           />
         )}
 

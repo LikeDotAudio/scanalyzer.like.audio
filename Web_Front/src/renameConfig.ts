@@ -26,23 +26,23 @@ export const ALL_TOKENS = Object.keys(TOKEN_LABELS) as TokenKey[];
 export function tokenValue(item: any, key: TokenKey): string {
   switch (key) {
     case 'folderPath': {
-      const p = String(item.path || '');
+      const p = String(item.metadata.path || '');
       const parts = p.split('/').filter(Boolean);
       return parts.length > 1 ? parts.slice(0, -1).join('-') : (parts[0] || '');
     }
-    case 'godCategory': return item.god_category || '';
-    case 'group': return item.group || '';
-    case 'subgroup': return item.subgroup || '';
-    case 'timbre': return item.timbre || '';
-    case 'instrumentFamily': return item.instrument_family || '';
-    case 'rootNote': return item.root_note_name || '';
-    case 'bpm': return item.beats_per_minute ? `${item.beats_per_minute}BPM` : '';
+    case 'godCategory': return item.classification.god_category || '';
+    case 'group': return item.classification.group || '';
+    case 'subgroup': return item.metadata.subgroup || '';
+    case 'timbre': return item.classification.timbre || '';
+    case 'instrumentFamily': return item.classification.instrument_family || '';
+    case 'rootNote': return item.musicality.root_note_name || '';
+    case 'bpm': return item.musicality.beats_per_minute ? `${item.musicality.beats_per_minute}BPM` : '';
     case 'lengthTier': return item.length_tier || '';
-    case 'envelopeShape': return item.envelope_shape || '';
-    case 'distortion': return item.distortion || '';
-    case 'cluster': return item.cluster != null && item.cluster !== -1 ? `C${item.cluster}` : '';
-    case 'pitch': return item.pitch_hz ? `${Math.round(item.pitch_hz)}Hz` : '';
-    case 'brightness': return item.spectral_centroid_hz ? `${Math.round(item.spectral_centroid_hz)}Hz` : '';
+    case 'envelopeShape': return item.envelope.envelope_shape || '';
+    case 'distortion': return item.spectral_features.distortion || '';
+    case 'cluster': return item.unsupervised.cluster != null && item.unsupervised.cluster !== -1 ? `C${item.unsupervised.cluster}` : '';
+    case 'pitch': return item.musicality.pitch_hz ? `${Math.round(item.musicality.pitch_hz)}Hz` : '';
+    case 'brightness': return item.spectral_features.spectral_centroid_hz ? `${Math.round(item.spectral_features.spectral_centroid_hz)}Hz` : '';
     case 'harmonicity': return item.harmonicity != null ? item.harmonicity.toFixed(2) : '';
     default: return '';
   }
@@ -79,8 +79,8 @@ export function getSavedAppend(): Slot[] {
 
 export function generateNewName(item: any, prependSlots?: Slot[], appendSlots?: Slot[]): string {
   if (!item) return '';
-  const base = String(item.name || '').replace(/\.[^.]+$/, '');
-  const ext = (String(item.name || '').match(/\.[^.]+$/) || [''])[0];
+  const base = String(item.metadata.name || '').replace(/\.[^.]+$/, '');
+  const ext = (String(item.metadata.name || '').match(/\.[^.]+$/) || [''])[0];
   const preArr = prependSlots || getSavedPrepend();
   const postArr = appendSlots || getSavedAppend();
   const pre = preArr.filter(s => s.enabled).map(s => tokenValue(item, s.key)).filter(Boolean);

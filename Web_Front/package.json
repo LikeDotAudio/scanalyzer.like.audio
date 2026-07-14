@@ -8,11 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "gen:logo": "node scripts/gen-logo.mjs"
+    "gen:logo": "node scripts/gen-logo.mjs",
+    "tauri": "tauri"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
+    "@tauri-apps/plugin-dialog": "^2.7.1",
+    "@tauri-apps/plugin-fs": "^2.5.1",
     "@types/three": "^0.185.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
@@ -21,6 +24,8 @@
     "wasm_analyzer": "file:wasm_analyzer/pkg"
   },
   "devDependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/cli": "^2.11.4",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

@@ -168,80 +168,80 @@ fn is_useful_token(t: &str) -> bool {
 /// normalizer — never treated as zero.
 fn feature(p: &Peak, name: &str) -> Option<f64> {
     let v = match name {
-        "length_seconds" => p.length_seconds,
-        "transient_count" => p.transient_count as f64,
-        "root_mean_square_level" => p.root_mean_square_level,
+        "length_seconds" => p.metadata.length_seconds,
+        "transient_count" => p.envelope.transient_count as f64,
+        "root_mean_square_level" => p.spectral_features.root_mean_square_level,
         "lufs" => {
             // −70 is the "unmeasurable" sentinel, not a loudness.
-            if p.lufs <= -69.0 {
+            if p.spectral_features.lufs <= -69.0 {
                 return None;
             }
-            p.lufs
+            p.spectral_features.lufs
         }
-        "crest_factor" => p.crest_factor,
-        "zero_crossings_per_second" => p.zero_crossings_per_second,
+        "crest_factor" => p.spectral_features.crest_factor,
+        "zero_crossings_per_second" => p.spectral_features.zero_crossings_per_second,
         "pitch_hz" => {
             // The spec declares this valid only over 50–2000 Hz.
-            if !(50.0..=2000.0).contains(&p.pitch_hz) {
+            if !(50.0..=2000.0).contains(&p.musicality.pitch_hz) {
                 return None;
             }
-            p.pitch_hz
+            p.musicality.pitch_hz
         }
-        "harmonicity" => p.harmonicity,
-        "inharmonicity" => p.inharmonicity,
-        "partial_count" => p.partial_count as f64,
-        "sustain_ratio" => p.sustain_ratio,
-        "spectral_centroid_hz" => p.spectral_centroid_hz,
-        "spectral_centroid_mean_hz" => p.spectral_centroid_mean_hz,
-        "spectral_centroid_deviation_hz" => p.spectral_centroid_deviation_hz,
-        "spectral_rolloff_hz" => p.spectral_rolloff_hz,
-        "spectral_flatness" => p.spectral_flatness,
-        "spectral_flux" => p.spectral_flux,
-        "complexity" => p.complexity,
-        "low_band_energy" => p.low_band_energy,
-        "mid_band_energy" => p.mid_band_energy,
-        "high_band_energy" => p.high_band_energy,
-        "total_harmonic_distortion" => p.total_harmonic_distortion,
-        "clipping_density" => p.clipping_density,
-        "envelope_attack_seconds" => p.envelope_attack_seconds,
-        "envelope_decay_seconds" => p.envelope_decay_seconds,
-        "envelope_sustain_level" => p.envelope_sustain_level,
-        "envelope_release_seconds" => p.envelope_release_seconds,
-        "envelope_temporal_centroid" => p.envelope_temporal_centroid,
-        "envelope_skewness" => p.envelope_skewness,
-        "envelope_kurtosis" => p.envelope_kurtosis,
-        "dc_offset" => p.dc_offset,
+        "harmonicity" => p.spectral_features.harmonicity,
+        "inharmonicity" => p.spectral_features.inharmonicity,
+        "partial_count" => p.spectral_features.partial_count as f64,
+        "sustain_ratio" => p.envelope.sustain_ratio,
+        "spectral_centroid_hz" => p.spectral_features.spectral_centroid_hz,
+        "spectral_centroid_mean_hz" => p.spectral_features.spectral_centroid_mean_hz,
+        "spectral_centroid_deviation_hz" => p.spectral_features.spectral_centroid_deviation_hz,
+        "spectral_rolloff_hz" => p.spectral_features.spectral_rolloff_hz,
+        "spectral_flatness" => p.spectral_features.spectral_flatness,
+        "spectral_flux" => p.spectral_features.spectral_flux,
+        "complexity" => p.spectral_features.complexity,
+        "low_band_energy" => p.spectral_features.low_band_energy,
+        "mid_band_energy" => p.spectral_features.mid_band_energy,
+        "high_band_energy" => p.spectral_features.high_band_energy,
+        "total_harmonic_distortion" => p.spectral_features.total_harmonic_distortion,
+        "clipping_density" => p.spectral_features.clipping_density,
+        "envelope_attack_seconds" => p.envelope.envelope_attack_seconds,
+        "envelope_decay_seconds" => p.envelope.envelope_decay_seconds,
+        "envelope_sustain_level" => p.envelope.envelope_sustain_level,
+        "envelope_release_seconds" => p.envelope.envelope_release_seconds,
+        "envelope_temporal_centroid" => p.envelope.envelope_temporal_centroid,
+        "envelope_skewness" => p.envelope.envelope_skewness,
+        "envelope_kurtosis" => p.envelope.envelope_kurtosis,
+        "dc_offset" => p.metadata.dc_offset,
         "beats_per_minute" => {
-            if p.beats_per_minute <= 0.0 {
+            if p.musicality.beats_per_minute <= 0.0 {
                 return None;
             }
-            p.beats_per_minute
+            p.musicality.beats_per_minute
         }
-        "sample_rate" => p.sample_rate as f64,
+        "sample_rate" => p.metadata.sample_rate as f64,
 
         // --- spec §4b, the morphology axis. Measured by `morphology.rs` and
         // --- `envelope.rs`; each is an Option on the record because the sound
         // --- may simply not have the property (a drone has no ring time), and
         // --- None must mean "skip this term", never "the value is 0".
-        "stationarity" => p.stationarity?,
-        "spectral_entropy" => p.spectral_entropy?,
-        "spectral_slope_db_per_octave" => p.spectral_slope_db_per_octave?,
-        "band_limit_high_hz" => p.band_limit_high_hz?,
-        "spectral_centroid_slope_hz_per_second" => p.spectral_centroid_slope_hz_per_second?,
-        "pitch_slope_semitones_per_second" => p.pitch_slope_semitones_per_second?,
-        "syllabic_modulation_energy" => p.syllabic_modulation_energy?,
-        "decay_time_seconds_60db" => p.decay_time_seconds_60db?,
-        "voicing_ratio" => p.voicing_ratio?,
-        "onset_periodicity" => p.onset_periodicity?,
+        "stationarity" => p.spectral_features.stationarity?,
+        "spectral_entropy" => p.spectral_features.spectral_entropy?,
+        "spectral_slope_db_per_octave" => p.spectral_features.spectral_slope_db_per_octave?,
+        "band_limit_high_hz" => p.spectral_features.band_limit_high_hz?,
+        "spectral_centroid_slope_hz_per_second" => p.spectral_features.spectral_centroid_slope_hz_per_second?,
+        "pitch_slope_semitones_per_second" => p.musicality.pitch_slope_semitones_per_second?,
+        "syllabic_modulation_energy" => p.spectral_features.syllabic_modulation_energy?,
+        "decay_time_seconds_60db" => p.envelope.decay_time_seconds_60db?,
+        "voicing_ratio" => p.spectral_features.voicing_ratio?,
+        "onset_periodicity" => p.envelope.onset_periodicity?,
 
         // --- derived on the fly from what the record already stores.
         "onset_rate_per_second" => {
-            if p.length_seconds <= 0.0 {
+            if p.metadata.length_seconds <= 0.0 {
                 return None;
             }
-            p.transient_count as f64 / p.length_seconds
+            p.envelope.transient_count as f64 / p.metadata.length_seconds
         }
-        "stereo_width" => p.side_rms / (p.mid_rms + 1e-9),
+        "stereo_width" => p.spectral_features.side_rms / (p.spectral_features.mid_rms + 1e-9),
 
         _ => return None,
     };
@@ -416,20 +416,20 @@ const MIN_MARGIN: f64 = 0.04;
 
 pub fn classify(p: &Peak) -> Verdict {
     let idx = index();
-    let lossy = p.lossy_source;
+    let lossy = p.metadata.lossy_source;
 
     let stem = p
-        .name
+        .metadata.name
         .rsplit_once('.')
         .map(|(s, _)| s)
-        .unwrap_or(&p.name)
+        .unwrap_or(&p.metadata.name)
         .to_string();
     let name_tokens: Vec<String> = normalize_name(&stem)
         .split_whitespace()
         .filter(|t| is_useful_token(t))
         .map(str::to_string)
         .collect();
-    let folder_tokens: Vec<String> = normalize_name(&p.folder)
+    let folder_tokens: Vec<String> = normalize_name(&p.metadata.folder)
         .split_whitespace()
         .filter(|t| is_useful_token(t))
         .map(str::to_string)

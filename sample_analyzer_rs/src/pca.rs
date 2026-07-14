@@ -17,7 +17,7 @@ pub fn pca_assign(results: &mut [Peak]) {
     let feats: Vec<Vec<f64>> = results.iter().map(feature_vec).collect();
     let d = feats[0].len();
     if n < 2 {
-        results[0].principal_components = vec![0.0; N_COMPONENTS];
+        results[0].unsupervised.principal_components = vec![0.0; N_COMPONENTS];
         return;
     }
 
@@ -85,7 +85,7 @@ pub fn pca_assign(results: &mut [Peak]) {
     }
 
     for (i, row) in x.iter().enumerate() {
-        results[i].principal_components = components
+        results[i].unsupervised.principal_components = components
             .iter()
             .map(|c| c.iter().zip(row).map(|(a, b)| a * b).sum())
             .collect();

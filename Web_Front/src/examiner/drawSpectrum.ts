@@ -86,6 +86,6 @@ export function drawSpectrumTrace(ctx: CanvasRenderingContext2D, spec: Spectrum,
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.font = 'bold 10px sans-serif';
-    ctx.fillText(`root ${item.root_note_name}`, Math.min(X + 3, w - 62), plotTop + 3);
+    ctx.fillText(`root ${item.musicality.root_note_name}`, Math.min(X + 3, w - 62), plotTop + 3);
   }
 }

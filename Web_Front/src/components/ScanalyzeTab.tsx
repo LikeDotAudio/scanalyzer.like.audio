@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import initWasm, { analyze_audio_buffer, analyzer_version } from 'wasm_analyzer';
-import { filterAudioFiles } from '../audioLinking';
+import initWasm, { analyzer_version } from 'wasm_analyzer';
+import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar } from '../audioLinking';
+import TauriScan from './TauriScan';
 
 /** The folder a record is filed under — the file's parent path. */
 const folderOf = (file: File) => {
@@ -44,6 +45,19 @@ export default function ScanalyzeTab({
   const [stale, setStale] = useState(0);
   const stopRef = useRef(false);
 
+  if (isTauri()) {
+    return (
+      <TauriScan
+        analysisResult={analysisResult}
+        setAnalysisResult={setAnalysisResult}
+        isAnalyzing={isAnalyzing}
+        setIsAnalyzing={setIsAnalyzing}
+        setProgress={setProgress}
+        onViewCloud={onViewCloud}
+      />
+    );
+  }
+
   useEffect(() => {
     initWasm().then(() => setWasmReady(true)).catch(console.error);
   }, []);
@@ -57,7 +71,7 @@ export default function ScanalyzeTab({
   // identical extractor code, and re-analyzing the file could only reproduce it.
   // We absorb it and skip the work. Anything else — no sidecar, a sidecar from an
   // older engine, an unreadable one — is analyzed as normal.
-  const discover = async (files: FileList | null, everyNth = 1) => {
+  const discover = async (files: FileList | null | File[], everyNth = 1) => {
     if (!files || !wasmReady) return;
     const all = Array.from(files);
     const engine = analyzer_version();
@@ -74,7 +88,7 @@ export default function ScanalyzeTab({
     // Already in this session's results — resume rather than redo. (This used to
     // compare against only the *top* folder segment while the records store the
     // full parent path, so the resume check never actually matched.)
-    const existingPaths = new Set(analysisResult.map(res => res.path));
+    const existingPaths = new Set(analysisResult.map(res => res.metadata.path));
 
     const absorbed: any[] = [];
     const toProcess: File[] = [];
@@ -143,32 +157,89 @@ export default function ScanalyzeTab({
     setDone(0);
     setTotal(pendingWavFiles.length);
     stopRef.current = false;
-    const newResults = [];
+    const newResults: any[] = [];
     let stopped = false;
+    let completed = 0;
 
-    for (let i = 0; i < pendingWavFiles.length; i++) {
-        if (stopRef.current) { stopped = true; break; }
-        const file = pendingWavFiles[i];
-        const arrayBuffer = await file.arrayBuffer();
-        const uint8Array = new Uint8Array(arrayBuffer);
-        const parts = (file.webkitRelativePath || file.name).split('/');
-        const folder = parts.length > 1 ? parts.slice(0, -1).join('/') : "folder";
+    const numWorkers = navigator.hardwareConcurrency || 4;
+    const workers = Array.from({ length: numWorkers }).map(() => 
+        new Worker(new URL('../wasmWorker.ts', import.meta.url), { type: 'module' })
+    );
 
-        try {
-            const jsonResult = analyze_audio_buffer(uint8Array, file.name, folder);
-            const parsed = JSON.parse(jsonResult);
-            if (parsed.status !== "error") {
-                newResults.push(parsed);
+    let nextFileIdx = 0;
+    const dirHandle = await getDirHandle();
+
+    // wait for all workers to be ready
+    await Promise.all(workers.map(worker => new Promise(resolve => {
+        worker.onmessage = (e) => {
+            if (e.data.type === 'ready') resolve(true);
+        };
+    })));
+
+    await new Promise<void>((resolve) => {
+        const checkDone = () => {
+            if (completed >= nextFileIdx && (nextFileIdx >= pendingWavFiles.length || stopRef.current)) {
+                resolve();
             }
-        } catch (err) {
-            console.error(`Failed to analyze ${file.name}`, err);
-        }
+        };
 
-        setDone(i + 1);
-        setProgress(Math.round(((i + 1) / pendingWavFiles.length) * 100));
+        const assignWork = (worker: Worker) => {
+            if (stopRef.current) {
+                stopped = true;
+                checkDone();
+                return;
+            }
+            if (nextFileIdx >= pendingWavFiles.length) {
+                checkDone();
+                return;
+            }
 
-        await new Promise(resolve => setTimeout(resolve, 0));
-    }
+            const idx = nextFileIdx++;
+            const file = pendingWavFiles[idx];
+            
+            file.arrayBuffer().then(arrayBuffer => {
+                const parts = (file.webkitRelativePath || file.name).split('/');
+                const folder = parts.length > 1 ? parts.slice(0, -1).join('/') : "folder";
+                
+                worker.onmessage = async (e) => {
+                    const { result, error } = e.data;
+                    if (error) {
+                        console.error(`Failed to analyze ${file.name}`, error);
+                    } else if (result) {
+                        try {
+                            const parsed = JSON.parse(result);
+                            if (parsed.status !== "error") {
+                                newResults.push(parsed);
+                                if (dirHandle) {
+                                    // Use webkitRelativePath for the sidecar, falling back to name
+                                    const relPath = (file as any).relPath || file.webkitRelativePath || file.name;
+                                    await writePeakSidecar(dirHandle, relPath, parsed);
+                                }
+                            }
+                        } catch (err) {
+                            console.error(`Failed to parse result for ${file.name}`, err);
+                        }
+                    }
+                    completed++;
+                    setDone(completed);
+                    setProgress(Math.round((completed / pendingWavFiles.length) * 100));
+                    assignWork(worker);
+                };
+                
+                worker.postMessage({ id: idx, buffer: arrayBuffer, name: file.name, folder }, [arrayBuffer]);
+            }).catch(err => {
+                console.error(`Failed to read ${file.name}`, err);
+                completed++;
+                setDone(completed);
+                setProgress(Math.round((completed / pendingWavFiles.length) * 100));
+                assignWork(worker);
+            });
+        };
+
+        workers.forEach(assignWork);
+    });
+
+    workers.forEach(w => w.terminate());
 
     // Keep whatever was scanned. On a clean finish, auto-download the .peak;
     // on a manual stop, ask whether to keep the partial analysis.
@@ -191,7 +262,7 @@ export default function ScanalyzeTab({
       return (
           <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ width: '100%', maxWidth: '640px' }}>
-                  <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', textAlign: 'center' }}>Scanning in progress…</h2>
+                  <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', textAlign: 'center' }}>Analyzing with WASM…</h2>
                   <div style={{ textAlign: 'center', color: 'var(--accent-primary)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.5rem' }}>
                       {done.toLocaleString()} of {total.toLocaleString()} files &middot; {pct}%
                   </div>
@@ -252,7 +323,8 @@ export default function ScanalyzeTab({
       </p>
       
       <div style={{ marginBottom: '1.5rem', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid var(--accent-secondary)', padding: '0.75rem', maxWidth: '800px', textAlign: 'left' }}>
-          <strong style={{ color: 'var(--accent-secondary)' }}>🔒 Privacy Notice:</strong> Your files are <strong>NOT</strong> uploaded to any server. All audio analysis is performed entirely locally on your machine using the compiled WebAssembly DSP Engine. The browser may ask for permission to "upload", but the data never leaves your computer. Sub-folders are scanned automatically.
+          <strong style={{ color: 'var(--accent-secondary)' }}>🔒 Privacy Notice:</strong> Your files are <strong>NOT</strong> uploaded to any server. All audio analysis is performed entirely locally on your machine using the compiled WebAssembly DSP Engine. The browser may ask for permission to "upload" or save files, but the data never leaves your computer. Sub-folders are scanned automatically. 
+          {fsaSupported() && <><br /><br /><strong>💾 Caching:</strong> Small <code>.PEAK</code> sidecar files will be written right beside your audio files on your local drive to cache the analysis, making future scans instantaneous!</>}
       </div>
       
       <div className="text-secondary" style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center' }}>
@@ -260,18 +332,36 @@ export default function ScanalyzeTab({
       </div>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem', alignItems: 'center' }}>
-        <label className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }}>
-          {wasmReady ? 'Scan a New Directory…' : 'Loading Engine...'}
-          <input
-            type="file"
-            // @ts-ignore
-            webkitdirectory="true"
-            directory="true"
-            style={{ display: 'none' }}
-            onChange={handleFolderUpload}
+        {fsaSupported() ? (
+          <button
+            className="btn primary"
+            style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }}
             disabled={!wasmReady}
-          />
-        </label>
+            onClick={async () => {
+              try {
+                const files = await pickDirectoryFiles(true);
+                void discover(files, 1);
+              } catch (err) {
+                console.warn(err);
+              }
+            }}
+          >
+            {wasmReady ? 'Scan a New Directory…' : 'Loading Engine...'}
+          </button>
+        ) : (
+          <label className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }}>
+            {wasmReady ? 'Scan a New Directory…' : 'Loading Engine...'}
+            <input
+              type="file"
+              // @ts-ignore
+              webkitdirectory="true"
+              directory="true"
+              style={{ display: 'none' }}
+              onChange={handleFolderUpload}
+              disabled={!wasmReady}
+            />
+          </label>
+        )}
         <label className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem' }} title="Quick test: analyze every 50th file discovered">
           🎲 Sample the Samples — scan every 50th file (quick test)
           <input

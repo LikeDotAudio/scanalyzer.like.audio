@@ -94,7 +94,7 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
   // Build the source→destination plan and download a rename script.
   const generate = (kind: ScriptKind) => {
     const plan: RenamePlan = data.map(item => {
-      const src = item.path || item.name;
+      const src = item.metadata.path || item.metadata.name;
       const folder = folderFor(item);
       const dest = [destRoot, folder, generateNewName(item, prepend, append)].filter(Boolean).join('/');
       return { src, dest };
@@ -257,7 +257,7 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
                       const name = generateNewName(item, prepend, append);
                       return (
                         <tr key={start + i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', height: PREVIEW_ROW_H }}>
-                          <td style={{ ...cellS, color: 'var(--text-secondary)' }} title={item.path}>{item.path}</td>
+                          <td style={{ ...cellS, color: 'var(--text-secondary)' }} title={item.metadata.path}>{item.metadata.path}</td>
                           <td style={{ ...cellS, color: 'var(--accent-primary)' }} title={folder}>{folder || '—'}</td>
                           <td style={{ ...cellS, color: '#FCD34D' }} title={name}>{name}</td>
                         </tr>

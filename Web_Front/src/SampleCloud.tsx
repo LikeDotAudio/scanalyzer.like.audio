@@ -84,13 +84,13 @@ function colorFor(item: any, colorBy: string): string {
   // The UCS taxonomy (82 categories, scored per file) — hue = parent category,
   // shade = subcategory. Distinct from the god categories, which are six
   // envelope buckets over the drum-pack name groups.
-  if (colorBy === 'UCS Category') return ucsColor(item.ucs_category || '');
+  if (colorBy === 'UCS Category') return ucsColor(item.ucs.category || '');
   if (colorBy === 'UCS Subcategory') {
-    return ucsSubColor(item.ucs_category || '', item.ucs_subcategory || '');
+    return ucsSubColor(item.ucs.category || '', item.ucs.subcategory || '');
   }
-  const group = item.group || 'Unclassified';
+  const group = item.classification.group || 'Unclassified';
   if (colorBy === 'God Category') return godColor(godCategory(group));
-  if (colorBy === 'Subgroup') return groupColor(group, item.subgroup || '');
+  if (colorBy === 'Subgroup') return groupColor(group, item.metadata.subgroup || '');
   return groupColor(group, '');
 }
 
