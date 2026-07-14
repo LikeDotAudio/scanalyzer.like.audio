@@ -25,7 +25,11 @@ fn slim_progress(line: &str) -> Option<String> {
     serde_json::to_string(&serde_json::Value::Object(out)).ok()
 }
 
-const AUDIO_EXTENSIONS: &[&str] = &["wav", "aif", "aiff", "flac", "mp3", "ogg", "m4a", "opus"];
+/// Exactly what the engine can decode — sample_analyzer_rs/src/decode.rs AUDIO_EXTENSIONS.
+/// Keep the two in step, or the survey promises files the analyzer will refuse.
+const AUDIO_EXTENSIONS: &[&str] = &[
+    "wav", "wave", "mp3", "flac", "aif", "aiff", "aifc", "ogg", "oga", "m4a", "mp4", "aac",
+];
 
 fn is_audio(path: &std::path::Path) -> bool {
     path.extension()

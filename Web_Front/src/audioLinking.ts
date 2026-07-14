@@ -2,7 +2,11 @@
 // folder, we recurse the whole tree and index every audio file by its relative
 // path, so any loaded .PEAK's records resolve to their sibling files.
 
-const AUDIO_RE = /\.(wav|aif|aiff|flac|mp3|ogg|m4a|opus)$/i;
+// Exactly what the engine can decode — sample_analyzer_rs/src/decode.rs AUDIO_EXTENSIONS.
+// Keep the two in step. This list used to advertise `opus`, which the decoder cannot open,
+// and omit `wave`/`aifc`/`mp4`/`aac`, which it can: the scanner offered files that would
+// fail and silently passed over files that would have worked.
+const AUDIO_RE = /\.(wav|wave|mp3|flac|aif|aiff|aifc|ogg|oga|m4a|mp4|aac)$/i;
 
 export function fsaSupported(): boolean {
   return typeof (window as any).showDirectoryPicker === 'function';

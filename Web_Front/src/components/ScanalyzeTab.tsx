@@ -101,11 +101,14 @@ export default function ScanalyzeTab({
       if (/\.peak$/i.test(f.name)) sidecars.set(stem(f), f);
     }
 
-    let wavFiles = all.filter(f => f.name.toLowerCase().endsWith('.wav'));
+    // Every format the engine can decode, not just .wav — the desktop build has always
+    // counted them all, and a library with a folder of AIFFs or FLACs was quietly
+    // reporting a smaller number here than the same folder reported there.
+    let wavFiles = filterAudioFiles(all);
     if (everyNth > 1) wavFiles = wavFiles.filter((_, i) => i % everyNth === 0);
 
     if (wavFiles.length === 0) {
-      alert('No .wav files found in that folder.');
+      alert('No audio files found in that folder.');
       return;
     }
 
@@ -440,7 +443,7 @@ export default function ScanalyzeTab({
         <h2 style={{ fontSize: '1.8rem' }}>Found {wavFiles.length.toLocaleString()} audio file(s)</h2>
 
         <div style={{ minWidth: '380px', fontSize: '0.9rem', color: 'var(--text-secondary)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '0.5rem 0' }}>
-          <div style={stat}><span>.wav files{everyNth > 1 ? ` (1 of every ${everyNth})` : ''}</span><strong style={{ color: 'var(--text-primary)' }}>{wavFiles.length.toLocaleString()}</strong></div>
+          <div style={stat}><span>Audio files{everyNth > 1 ? ` (1 of every ${everyNth})` : ''}</span><strong style={{ color: 'var(--text-primary)' }}>{wavFiles.length.toLocaleString()}</strong></div>
           <div style={stat}><span>Total audio</span><strong style={{ color: 'var(--text-primary)' }}>{gb >= 1 ? `${gb.toFixed(1)} GB` : `${(bytes / 1e6).toFixed(0)} MB`}</strong></div>
           <div style={stat}><span>Already have a .PEAK sidecar</span><strong style={{ color: 'var(--accent-primary)' }}>{withSidecar.toLocaleString()}</strong></div>
           <div style={stat}><span>No sidecar — never analyzed</span><strong style={{ color: 'var(--accent-secondary)' }}>{toAnalyze.toLocaleString()}</strong></div>
@@ -520,7 +523,7 @@ export default function ScanalyzeTab({
     <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scan a New Directory…</h2>
       <p className="text-secondary" style={{ marginBottom: '1rem', fontSize: '1.2rem', textAlign: 'center', maxWidth: '800px' }}>
-          Select a folder containing .wav files to begin local DSP analysis.
+          Select a folder of audio files to begin local DSP analysis.
       </p>
       
       <div style={{ marginBottom: '1.5rem', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid var(--accent-secondary)', padding: '0.75rem', maxWidth: '800px', textAlign: 'left' }}>
