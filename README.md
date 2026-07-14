@@ -561,18 +561,34 @@ reasoning was wrong. Three findings, each recorded in the calibration file:
    total weight, so fewer priors means fewer chances to be penalized: **25.6% of clips are
    won by a subcategory with a single usable prior term**, and the MISC abstention buckets
    (`DOORMisc` and `DRWRMisc` have 1 prior and 0 gates) win constantly. It inverts the
-   separability tiers — `semantic_only` scores 6.6% top-1 against `signal_separable`'s
+   separability tiers — `semantic_only` scores 6.4% top-1 against `signal_separable`'s
    3.0% — and it pins top-1 at ~4% no matter what the priors say, which is why calibration
    alone cannot move it. A true Gaussian log-likelihood (`Σwᵢ(−½zᵢ² − ln σᵢ)`, summed
-   rather than averaged) takes `signal_separable` to **13.3%** and collapses `semantic_only`
+   rather than averaged) takes `signal_separable` to **13.2%** and collapses `semantic_only`
    to **0.1%**, which is the correct behaviour: semantic_only must not be winnable from
    signal alone. **The tier design is right; the scoring rule is wrong.** `ucs.rs` still
    implements the spec's rule — this is a known, measured defect, not yet fixed.
 
-The held-out evaluation above (70/30 split, signal only, no filename) is *in-domain* —
-FSD50K calibrating and FSD50K testing. It can measure fit, but it structurally cannot
-show the benefit of the widen-only policy, which is insurance against a professional-SFX
-domain shift this corpus does not contain.
+#### Reproducing it
+
+Both halves are one script, run against a directory of scanned `.PEAK` sidecars:
+
+```bash
+python3 UCS/fsd50k_calibrate.py calibrate  ".../FSD50K.dev_audio"   # rewrites categories/*.json
+python3 UCS/fsd50k_calibrate.py evaluate   ".../FSD50K.dev_audio"   # the numbers above; writes nothing
+```
+
+`calibrate` is idempotent — it is a fixed point on its own output, and it carries the
+gate history forward rather than erasing it, so a re-run cannot quietly destroy the
+record of what the reasoned signature used to say. `evaluate` scores the **signal only**
+(gates plus the Gaussian, no filename), holds out 30% of the corpus by clip id, and
+reports both scoring rules side by side. It scores whatever is currently in
+`categories/*.json`, so to reproduce the *reasoned* baseline column, check out the tree
+as of before the calibration commit.
+
+That evaluation is *in-domain* — FSD50K calibrating and FSD50K testing. It can measure
+fit, but it structurally cannot show the benefit of the widen-only policy, which is
+insurance against a professional-SFX domain shift this corpus does not contain.
 
 ---
 
