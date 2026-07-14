@@ -11,6 +11,8 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
   const [workerCount, setWorkerCount] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [version, setVersion] = useState('');
+  // Paging the finished .PEAK back out of Rust.
+  const [loaded, setLoaded] = useState<{ done: number; total: number } | null>(null);
 
   const threadsTextRef = useRef<Record<number, HTMLSpanElement>>({});
   const threadsProgressRef = useRef<Record<number, HTMLDivElement>>({});
@@ -117,6 +119,21 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
         invoke('start_analysis', { directory: dir, stride });
     }
   };
+
+  if (loaded) {
+    const pct = loaded.total ? Math.round((loaded.done / loaded.total) * 100) : 0;
+    return (
+        <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <h2 style={{ fontSize: '1.6rem', marginBottom: '1rem' }}>Loading results…</h2>
+            <div style={{ color: 'var(--accent-primary)', fontSize: '2rem', fontWeight: 700, marginBottom: '1rem' }}>
+                {loaded.done.toLocaleString()} <span style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>/ {loaded.total.toLocaleString()}</span>
+            </div>
+            <div className="progress-container" style={{ width: '80%', maxWidth: '600px' }}>
+                <div className="progress-fill" style={{ width: `${pct}%` }} />
+            </div>
+        </div>
+    );
+  }
 
   if (isAnalyzing) {
     const pct = total ? Math.round((done / total) * 100) : 0;

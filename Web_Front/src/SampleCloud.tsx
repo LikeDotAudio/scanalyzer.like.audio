@@ -127,11 +127,11 @@ function getShapeFor(it: any, shapeBy: string): string {
   // Instrument (default)
   if (g.includes('kick') || g.includes('snare') || g.includes('tom') || g.includes('clap')) return 'cylinder';
   if (g.includes('cymbal') || g.includes('hi-hat') || g.includes('ride') || g.includes('crash') || g.includes('hihat')) return 'disc';
-  if (g === 'ir' || god === 'impulsive with tail') return 'diamond';
-  if (g === 'perc' || god === 'percussive') return 'pyramid';
-  if (transient_count > 1 || god === 'complex' || g.includes('loop') || g === 'fx') return 'torus';
-  if (g === 'bass' || g.includes('synth') || god === 'tonal') return 'cube';
-  if (g === 'vocal' || g.includes('voice')) return 'icosahedron';
+  if (g === 'ir' || role === 'IMPULSE RESPONSE') return 'diamond';
+  if (g === 'perc' || role === 'PERCUSSION' || role === 'PERCUSSION TUNED' || role === 'SHAKEN') return 'pyramid';
+  if (transient_count > 1 || role === 'LOOP' || role === 'EXPERIMENTAL' || g.includes('loop') || g === 'fx') return 'torus';
+  if (g === 'bass' || g.includes('synth') || role === 'SYNTHESIZED' || role === 'KEYED' || role === 'INSTRUMENT') return 'cube';
+  if (g === 'voice' || g.includes('voice') || role === 'PERFORMANCE') return 'icosahedron';
   return 'sphere'; // default for unclassified
 }
 
