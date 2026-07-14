@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './index.css'
 import { pickDirectoryFiles, fsaSupported, filterAudioFiles, getDirHandle, scanDirectoryHandle } from './audioLinking'
+import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
 import CloudTab from './components/CloudTab'
@@ -29,6 +30,8 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [progress, setProgress] = useState(0)
   const [currentSound, setCurrentSound] = useState('')
+  // Set when a loaded .PEAK predates the grouped schema and had to be migrated.
+  const [schemaNotice, setSchemaNotice] = useState('')
 
   // Keep the active tab in sync with the URL hash (linkable / back-forward).
   useEffect(() => {
@@ -56,15 +59,29 @@ function App() {
     }
   }, []);
 
+  // Describe what a migration cost, so blank UCS/loudness columns aren't a mystery.
+  const noticeFor = (migrated: number, skipped: number) => {
+    const parts: string[] = [];
+    if (migrated) {
+      parts.push(
+        `Migrated ${migrated} record(s) from an older analyzer. ` +
+        `Re-scan the folder to fill in: ${LEGACY_MIGRATION_GAPS.join(', ')}.`
+      );
+    }
+    if (skipped) parts.push(`Skipped ${skipped} unreadable record(s).`);
+    return parts.join(' ');
+  };
+
   // Auto-load default peak file on mount so users can wander around
   useEffect(() => {
     import('./assets/Scanalyzer.like.audio - File Audit 202607112254.peak?url').then(mod => {
       fetch(mod.default)
         .then(res => res.json())
         .then(json => {
-          if (Array.isArray(json)) {
-            setAnalysisResult(prev => prev.length === 0 ? json : prev);
-          }
+          const { records, migrated, skipped } = normalizePeakRecords(json);
+          if (records.length === 0) return;
+          setAnalysisResult(prev => prev.length === 0 ? records : prev);
+          setSchemaNotice(noticeFor(migrated, skipped));
         })
         .catch(err => console.error("Failed to load default peak file:", err));
     }).catch(err => console.error("Failed to import default peak file URL:", err));
@@ -91,6 +108,8 @@ function App() {
 
     let allResults: any[] = [];
     let filesProcessed = 0;
+    let migrated = 0;
+    let skipped = 0;
 
     files.forEach(file => {
       const reader = new FileReader();
@@ -98,7 +117,12 @@ function App() {
         try {
           const json = JSON.parse(event.target?.result as string);
           if (Array.isArray(json)) {
-            allResults = [...allResults, ...json];
+            // A .PEAK may come from any analyzer version; re-group the old flat
+            // schema so the UI's `item.metadata.*` reads don't hit undefined.
+            const report = normalizePeakRecords(json);
+            allResults = [...allResults, ...report.records];
+            migrated += report.migrated;
+            skipped += report.skipped;
           } else {
             console.error("Invalid .peak file format in", file.name);
           }
@@ -109,6 +133,7 @@ function App() {
         filesProcessed++;
         if (filesProcessed === files.length) {
            setAnalysisResult(allResults);
+           setSchemaNotice(noticeFor(migrated, skipped));
            setAudioFiles([]);
            setCurrentSound('');
            setHasPreviousDir(false);
@@ -195,6 +220,13 @@ function App() {
         </div>
       )}
       <Header isAnalyzing={isAnalyzing} progress={progress} onImportPeak={handleImportPeak} onLoadSounds={handleLoadSounds} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
+
+      {schemaNotice && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.4rem 0.75rem', background: 'rgba(255,190,60,0.10)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.78rem' }}>
+          <span style={{ flex: 1 }}>{schemaNotice}</span>
+          <button className="btn" onClick={() => setSchemaNotice('')} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '0.2rem 0.6rem', fontSize: '0.75rem' }}>Dismiss</button>
+        </div>
+      )}
 
       {/* Tabs Navigation */}
       <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '2px', padding: '2px', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>

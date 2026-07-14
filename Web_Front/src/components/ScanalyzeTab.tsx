@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import initWasm, { analyzer_version } from 'wasm_analyzer';
 import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar } from '../audioLinking';
+import { normalizePeakRecords } from '../peakSchema';
 import TauriScan from './TauriScan';
 
 /** The folder a record is filed under — the file's parent path. */
@@ -94,7 +95,7 @@ export default function ScanalyzeTab({
     // Already in this session's results — resume rather than redo. (This used to
     // compare against only the *top* folder segment while the records store the
     // full parent path, so the resume check never actually matched.)
-    const existingPaths = new Set(analysisResult.map(res => res.metadata.path));
+    const existingPaths = new Set(analysisResult.map(res => res.metadata?.path));
 
     const absorbed: any[] = [];
     const toProcess: File[] = [];
@@ -106,9 +107,12 @@ export default function ScanalyzeTab({
       const sidecar = sidecars.get(stem(file));
       if (sidecar) {
         try {
-          const rec = JSON.parse(await sidecar.text());
+          // A sidecar can predate the grouped schema, so read it through the same
+          // normalizer as an imported .PEAK. An older one carries an older version
+          // stamp and so falls through to `staleSidecars` and gets recomputed.
+          const [rec] = normalizePeakRecords([JSON.parse(await sidecar.text())]).records;
           // Same engine and the sidecar really describes this file.
-          if (rec && rec.analyzer_version === engine && rec.name === file.name) {
+          if (rec && rec.metadata.analyzer_version === engine && rec.metadata.name === file.name) {
             absorbed.push(rec);
             continue;
           }
