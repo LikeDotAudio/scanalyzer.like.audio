@@ -184,14 +184,14 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                 Rate
                 <select value={sampleRate} onChange={e => setSampleRate(Number(e.target.value))}
-                  style={{ background: '#000', color: '#fff', border: '1px solid var(--border-color)', borderRadius: 0, padding: '0.15rem 0.3rem' }}>
+                  style={{ background: '#fff', color: '#000', border: '1px solid var(--border-color)', borderRadius: 0, padding: '0.15rem 0.3rem' }}>
                   {[22050, 44100, 48000, 88200, 96000, 192000].map(r => <option key={r} value={r}>{r} Hz</option>)}
                 </select>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                 Bit depth
                 <select value={bitDepth} onChange={e => setBitDepth(e.target.value as BitDepth)}
-                  style={{ background: '#000', color: '#fff', border: '1px solid var(--border-color)', borderRadius: 0, padding: '0.15rem 0.3rem' }}>
+                  style={{ background: '#fff', color: '#000', border: '1px solid var(--border-color)', borderRadius: 0, padding: '0.15rem 0.3rem' }}>
                   <option value="keep">Keep</option>
                   <option value="16">16-bit</option>
                   <option value="24">24-bit</option>

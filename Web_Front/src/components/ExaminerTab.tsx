@@ -265,7 +265,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     const duration = buffer.duration;
 
     // Waveform = the sample's group colour; spectrum = its complement.
-    const gcol = groupColor(item?.group || 'Unclassified', item?.subgroup || '');
+    const gcol = groupColor(item?.classification?.group || 'Unclassified', item?.classification?.subgroup || '');
     const ccol = complementColor(gcol);
     const spec = computeSpectrum(mono, buffer.sampleRate);
 
@@ -431,7 +431,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                               {rows.slice(startIndex, endIndex).map((item, i) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
-                                  const gcol = groupColor(item.classification.group || 'Unclassified', item.metadata.subgroup || '');
+                                  const gcol = groupColor(item.classification?.group || 'Unclassified', item.classification?.subgroup || '');
                                   return (
                                       <tr key={idx}
                                           onClick={() => handleSelect(item)}
@@ -442,7 +442,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
                                           {activeColumns.find(c => c.key === 'god_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.god_category}>{item.classification.god_category}</td>}
                                           {activeColumns.find(c => c.key === 'group') && <td style={cell({ color: gcol })}>{item.classification.group}</td>}
-                                          {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.metadata.subgroup}>{item.metadata.subgroup}</td>}
+                                          {activeColumns.find(c => c.key === 'subgroup') && <td style={cell({ color: gcol })} title={item.classification?.subgroup}>{item.classification?.subgroup}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
                                           {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.reason?.[0] || ''}>{item.classification.reason?.[0] || ''}</td>}

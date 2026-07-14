@@ -3,16 +3,14 @@ use std::process::Command;
 use tauri::{AppHandle, Emitter};
 
 #[tauri::command]
-fn start_analysis(app: AppHandle, directory: String) -> Result<(), String> {
+fn start_analysis(app: AppHandle, directory: String, stride: Option<usize>) -> Result<(), String> {
     std::thread::spawn(move || {
-        let mut child =
-            match Command::new("../../sample_analyzer_rs/target/release/oa_sample_analyzer")
-                .arg(&directory)
-                .arg("--workers")
-                .arg("30")
-                .stdout(std::process::Stdio::piped())
-                .spawn()
-            {
+        let mut cmd = Command::new("../../sample_analyzer_rs/target/release/oa_sample_analyzer");
+        cmd.arg(&directory).arg("--workers").arg("30");
+        if let Some(s) = stride {
+            cmd.arg("--stride").arg(s.to_string());
+        }
+        let mut child = match cmd.stdout(std::process::Stdio::piped()).spawn() {
                 Ok(c) => c,
                 Err(e) => {
                     let _ = app.emit("analyzer-error", format!("Failed to start analyzer: {}", e));

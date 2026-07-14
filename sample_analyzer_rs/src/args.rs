@@ -9,6 +9,7 @@ pub struct Config {
     pub clusters: usize,
     pub per_file: bool,
     pub force: bool, // re-analyze even when a sidecar's analyzer version matches
+    pub stride: usize, // only process every Nth file
 }
 
 impl Config {
@@ -28,12 +29,14 @@ impl Config {
         let mut clusters = 8usize;
         let mut per_file = true;
         let mut force = false;
+        let mut stride = 1usize;
         let mut i = 2;
         while i < args.len() {
             match args[i].as_str() {
                 "--out" => { out = args.get(i + 1).map(PathBuf::from); i += 2; }
                 "--no-per-file" => { per_file = false; i += 1; }
                 "--force" => { force = true; i += 1; }
+                "--stride" => { stride = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(1).max(1); i += 2; }
                 "--workers" => { workers = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(30); i += 2; }
                 "--max-len" => { max_len = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(600.0); i += 2; }
                 "--clusters" => { clusters = args.get(i + 1).and_then(|v| v.parse().ok()).unwrap_or(8); i += 2; }
@@ -41,6 +44,6 @@ impl Config {
             }
         }
         let out = out.unwrap_or_else(|| root.join("sample_cloud_data.PEAK"));
-        Some(Config { root, out, workers, max_len, clusters, per_file, force })
+        Some(Config { root, out, workers, max_len, clusters, per_file, force, stride })
     }
 }

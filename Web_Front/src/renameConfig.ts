@@ -31,8 +31,8 @@ export function tokenValue(item: any, key: TokenKey): string {
       return parts.length > 1 ? parts.slice(0, -1).join('-') : (parts[0] || '');
     }
     case 'godCategory': return item.classification.god_category || '';
-    case 'group': return item.classification.group || '';
-    case 'subgroup': return item.metadata.subgroup || '';
+    case 'group': return item.classification?.group || '';
+    case 'subgroup': return item.classification?.subgroup || '';
     case 'timbre': return item.classification.timbre || '';
     case 'instrumentFamily': return item.classification.instrument_family || '';
     case 'rootNote': return item.musicality.root_note_name || '';

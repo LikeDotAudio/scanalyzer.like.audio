@@ -85,7 +85,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
     };
   }, [targetDir, analysisResult, setAnalysisResult, setIsAnalyzing, setProgress]);
 
-  const handlePickAndScan = async () => {
+  const handlePickAndScan = async (stride?: number) => {
     const dir = await open({ directory: true, multiple: false });
     if (dir && typeof dir === 'string') {
         setTargetDir(dir);
@@ -94,7 +94,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
         setTotal(0);
         setProgress(0);
         setStartTime(null);
-        invoke('start_analysis', { directory: dir });
+        invoke('start_analysis', { directory: dir, stride });
     }
   };
 
@@ -108,34 +108,43 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
         const remSec = (total - done) / rate;
         if (Number.isFinite(remSec) && remSec >= 0) {
             if (remSec > 3600) {
-                etaStr = ` · ETA: ${(remSec / 3600).toFixed(1)}h`;
+                etaStr = ` · ETA ${Math.round(remSec / 3600)}h ${Math.round((remSec % 3600) / 60)}m`;
             } else if (remSec > 60) {
-                etaStr = ` · ETA: ${Math.ceil(remSec / 60)}m`;
+                etaStr = ` · ETA ${Math.round(remSec / 60)}m ${Math.round(remSec % 60)}s`;
             } else {
-                etaStr = ` · ETA: ${Math.ceil(remSec)}s`;
+                etaStr = ` · ETA ${Math.round(remSec)}s`;
             }
         }
     }
 
     return (
         <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', textAlign: 'center' }}>Analyzing using RUST {version}…</h2>
-            <div style={{ textAlign: 'center', color: 'var(--accent-primary)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.5rem' }}>
-                {done.toLocaleString()} of {total.toLocaleString()} files &middot; {pct}%{etaStr}
+            <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', fontWeight: 600 }}>Analyzing using RUST {version}...</h2>
+            <div style={{ color: 'var(--accent-primary)', fontSize: '2.5rem', fontWeight: 700, margin: '1rem 0' }}>
+                {done} <span style={{ fontSize: '1.5rem', color: 'var(--text-secondary)' }}>/ {total}</span>
             </div>
-            <div style={{ width: '100%', maxWidth: '640px', height: '16px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', overflow: 'hidden', marginBottom: '1rem' }}>
-                <div style={{ width: `${pct}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.15s' }} />
+            
+            <div className="progress-container" style={{ width: '80%', maxWidth: '600px', marginBottom: '0.5rem' }}>
+                <div className="progress-fill" style={{ width: `${pct}%` }} />
+            </div>
+            
+            <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+                {pct}% Complete{etaStr}
             </div>
 
             {workerCount > 0 && (
-                <div style={{ marginTop: '2rem', width: '100%', maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{workerCount} Threads Running</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.4rem' }}>
+                <div style={{ width: '100%', maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '4px' }}>
                         {Array.from({ length: workerCount }).map((_, i) => (
-                            <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', borderRadius: '2px', padding: '0.25rem 0.5rem', position: 'relative', overflow: 'hidden' }}>
-                                <div ref={el => { if (el) threadsProgressRef.current[i] = el; }} style={{ position: 'absolute', top: 0, left: 0, bottom: 0, background: 'rgba(244, 144, 44, 0.15)', width: '0%' }} />
-                                <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', position: 'relative', zIndex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                    <span style={{ color: 'var(--text-muted)' }}>{i}:</span> <span ref={el => { if (el) threadsTextRef.current[i] = el; }}>...</span>
+                            <div key={i} style={{ background: 'rgba(0,0,0,0.2)', padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ fontSize: '0.65rem', color: 'var(--accent-secondary)', width: '16px', opacity: 0.7 }}>#{i}</div>
+                                <div style={{ flex: 1, position: 'relative', height: '16px', overflow: 'hidden', borderRadius: '2px', background: 'rgba(0,0,0,0.3)' }}>
+                                    <div ref={el => { if (el) threadsProgressRef.current[i] = el; }}
+                                         style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '100%', background: 'var(--accent-primary)', opacity: 0.2, transformOrigin: 'left', animation: 'none' }} />
+                                    <div ref={el => { if (el) threadsTextRef.current[i] = el; }}
+                                         style={{ position: 'relative', fontSize: '0.7rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', padding: '0 4px', lineHeight: '16px' }}>
+                                        ...
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -148,8 +157,11 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem', alignItems: 'center' }}>
-      <button className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }} onClick={handlePickAndScan}>
-        Native Tauri Scan Directory…
+      <button className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }} onClick={() => handlePickAndScan()}>
+        SCAN with RUST engine...
+      </button>
+      <button className="btn" style={{ cursor: 'pointer', padding: '0.5rem 1.5rem', fontSize: '0.9rem', opacity: 0.8 }} onClick={() => handlePickAndScan(50)}>
+        SAMPLE scan (1 of 50 files)
       </button>
       
       {analysisResult.length > 0 && (

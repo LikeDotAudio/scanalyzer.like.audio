@@ -10,7 +10,7 @@ const PRESETS: [string, string, string, string, string][] = [
 ];
 
 const selStyle: React.CSSProperties = {
-  background: '#000', color: '#fff',
+  background: '#fff', color: '#000',
   border: '1px solid var(--border-color)', borderRadius: 0,
   padding: '0.25rem 0.4rem', fontSize: '0.8rem',
 };

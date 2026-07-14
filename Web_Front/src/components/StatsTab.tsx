@@ -25,7 +25,7 @@ const NUM_FEATURES: Record<string, string> = {
 const NUM_LABELS = Object.keys(NUM_FEATURES);
 
 const selStyle: React.CSSProperties = {
-  background: '#000', color: '#fff', border: '1px solid var(--border-color)',
+  background: '#fff', color: '#000', border: '1px solid var(--border-color)',
   borderRadius: 0, padding: '0.15rem 0.3rem', fontSize: '0.75rem',
 };
 

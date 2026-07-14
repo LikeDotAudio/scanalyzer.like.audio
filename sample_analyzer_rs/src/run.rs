@@ -19,7 +19,11 @@ use crate::version::ANALYZER_VERSION;
 
 pub fn run(cfg: &Config) {
     let found = discover_audio(&cfg.root);
-    let files = found.files;
+    let files: Vec<_> = if cfg.stride > 1 {
+        found.files.into_iter().step_by(cfg.stride).collect()
+    } else {
+        found.files
+    };
     let total = files.len();
     // Report what we ignored. A silent drop is how a 94%-MP3 library came to
     // look like a directory the walker had failed to recurse into.
