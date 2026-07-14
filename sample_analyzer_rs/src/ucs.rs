@@ -496,6 +496,10 @@ pub struct Verdict {
 /// commit — we fall back to the winning category's MISC. Spec §6: "Abstention
 /// is a correct answer, not a failure."
 const MIN_CONFIDENCE: f64 = 0.12;
+
+/// See the call site: restores the score spread the abstain thresholds expect, without
+/// touching the ranking. Swept over both labelled corpora; 4.0 is the knee.
+const POSTERIOR_SHARPNESS: f64 = 4.0;
 const MIN_MARGIN: f64 = 0.04;
 
 pub fn classify(p: &Peak) -> Verdict {
@@ -619,16 +623,33 @@ pub fn classify(p: &Peak) -> Verdict {
 
     let n_cands = cands.len();
 
-    // NOT sharpened. Taking the (α+β)-th root above compresses the scores, so the
-    // winner's normalized share often falls under MIN_CONFIDENCE and we abstain. The
-    // obvious fix is a monotonic sharpening to restore the spread the thresholds were
-    // calibrated against — and it is the wrong fix. Swept over both labelled corpora it
-    // bought almost no recall on music (26% -> 33%) while taking false positives on
-    // SOUND EFFECTS from 1.2% to 19%: on a fifth of the SFX library a MUSICAL
-    // subcategory ALREADY tops the ranking, and abstention was the only thing hiding it.
-    // Committing harder just states a wrong answer with more confidence. The high
-    // abstention rate is a symptom of a ranking that cannot separate those files; it is
-    // not a thresholding problem, and it must not be papered over with one.
+    // Sharpen, then normalize.
+    //
+    // Taking the (α+β)-th root above made candidates COMPARABLE, but it also made them
+    // CLOSE: divided by their sum, the winner's share often falls under MIN_CONFIDENCE
+    // and we abstain on a call we got right. The abstain thresholds were calibrated
+    // against the old, inflated scale. This restores the spread they expect.
+    //
+    // Monotonic, so it cannot change WHICH candidate wins — only how confidently the win
+    // is stated. Ranking is settled above; this decides whether we commit to it.
+    //
+    // 4.0 is the knee, swept over both labelled corpora (examples/ucs_scorecard):
+    //
+    //     sharpness    1      2      3      4      6      8
+    //     recall     27.7   30.9   32.5   33.8   34.8   35.4    (music -> MUSICAL)
+    //     false pos   3.0    4.2    4.5    4.7    4.9    4.9    (sfx -> MUSICAL)
+    //
+    // Past 4 the recall flattens while the false positives do not, so it buys confidence
+    // in wrong answers and little else.
+    //
+    // Measure this on the SFX collection, never on FSD50K. FSD50K is not a sound-effects
+    // corpus — a large slice of it is music ("Accordion-...-Musical_instrument-Music"), so
+    // MUSICAL verdicts there are CORRECT. Scoring them as false positives inverts the
+    // result and condemns this transform; it is how an earlier pass talked itself out of it.
+    for c in cands.iter_mut() {
+        c.post = c.post.powf(POSTERIOR_SHARPNESS);
+    }
+
     let total: f64 = cands.iter().map(|c| c.post).sum();
     for c in cands.iter_mut() {
         c.post /= total.max(1e-12);
