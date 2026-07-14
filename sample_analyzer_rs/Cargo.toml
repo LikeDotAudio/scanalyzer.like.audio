@@ -12,6 +12,11 @@ path = "src/main.rs"
 opt-level = 3
 lto = true
 
+[build-dependencies]
+# Used only to minify the UCS bundle as it is spliced. Build-time only: nothing
+# here is linked into the analyzer or the WASM engine.
+serde_json = "1"
+
 [dependencies]
 hound = "3.5"
 rustfft = "6.2"

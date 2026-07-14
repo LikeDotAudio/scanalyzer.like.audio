@@ -37,12 +37,23 @@ fn main() {
         ucs_dir.display()
     );
 
-    // Splice the per-category files into a single JSON array. No parsing needed:
-    // each file is already a complete JSON object.
+    // Splice the per-category files into a single JSON array, MINIFIED.
+    //
+    // The category files on disk are pretty-printed for humans to read and diff,
+    // and that indentation is ~29 % of their bytes. This bundle is `include_str!`d
+    // into the binary, so every one of those spaces used to be compiled into the
+    // analyzer *and* shipped to the browser inside the WASM engine — 822 KB of
+    // whitespace downloaded by every visitor. Re-serializing compact here costs a
+    // build-time parse and changes nothing about what the data MEANS: serde parses
+    // both forms to the same structs.
     let bodies: Vec<String> = cat_files
         .iter()
-        .map(|p| fs::read_to_string(p).unwrap_or_else(|e| panic!("read {}: {e}", p.display())))
-        .map(|s| s.trim().to_string())
+        .map(|p| {
+            let text = fs::read_to_string(p).unwrap_or_else(|e| panic!("read {}: {e}", p.display()));
+            let value: serde_json::Value = serde_json::from_str(&text)
+                .unwrap_or_else(|e| panic!("{} is not valid JSON: {e}", p.display()));
+            serde_json::to_string(&value).expect("re-serialize category")
+        })
         .collect();
     let bundle = format!("[{}]", bodies.join(","));
 

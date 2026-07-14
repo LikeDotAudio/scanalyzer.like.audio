@@ -24,6 +24,34 @@ export function analyze_audio_buffer(buffer, name, folder) {
         wasm.__wbindgen_free(deferred4_0, deferred4_1, 1);
     }
 }
+
+/**
+ * The version stamp this engine writes into every record: crate version + a
+ * hash of the extractor sources.
+ *
+ * The scanner uses it to decide whether a `.PEAK` sidecar sitting next to an
+ * audio file can be *absorbed* instead of recomputed. A sidecar carrying this
+ * exact version was produced by identical extractor code, so re-analyzing the
+ * file is guaranteed to reproduce it bit for bit — the only thing a re-scan
+ * would buy is the time it costs. Any other version means the code moved and
+ * the record must be recomputed.
+ *
+ * This is the same constant the native binary stamps, so a library analyzed on
+ * the desktop is absorbed by the web front for free, and vice versa.
+ * @returns {string}
+ */
+export function analyzer_version() {
+    let deferred1_0;
+    let deferred1_1;
+    try {
+        const ret = wasm.analyzer_version();
+        deferred1_0 = ret[0];
+        deferred1_1 = ret[1];
+        return getStringFromWasm0(ret[0], ret[1]);
+    } finally {
+        wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+    }
+}
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,
