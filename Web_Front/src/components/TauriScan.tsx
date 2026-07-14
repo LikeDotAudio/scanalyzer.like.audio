@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { open } from '@tauri-apps/plugin-dialog';
 import initWasm, { analyzer_version } from 'wasm_analyzer';
+import { setAudioRoot } from '../audioLinking';
 import { normalizePeakRecords } from '../peakSchema';
 
 export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzing, setIsAnalyzing, setProgress, onViewCloud }: any) {
@@ -111,6 +112,11 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
     const dir = await open({ directory: true, multiple: false });
     if (dir && typeof dir === 'string') {
         targetDirRef.current = dir;   // read by the finish handler; no re-subscribe
+        // The folder you scan IS the folder the audio lives in. Recording it as the
+        // audio root is what lets playback resolve a record's relative path; the only
+        // thing that used to set it was the "Link Audio Folder" button, so once that
+        // went, the desktop build scanned happily and then played nothing.
+        setAudioRoot(dir);
         setIsAnalyzing(true);
         setDone(0);
         setTotal(0);

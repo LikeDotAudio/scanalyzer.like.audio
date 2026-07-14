@@ -43,24 +43,46 @@ function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, [])
 
-  // Re-link the audio folder on load if Chrome still remembers the grant. Without
-  // it there is no button to ask again — re-scanning the folder is the way back.
+  // Re-link the audio folder we remember, so samples play again after a reload.
+  //
+  // Chrome only hands a stored directory handle back on `granted`; if the grant has
+  // lapsed to `prompt`, re-requesting it REQUIRES a user gesture, and there is no
+  // "Load Sounds" button any more to supply one. So we borrow the gesture the user is
+  // already making: the first click anywhere in the app re-asks. Clicking a point in
+  // the cloud to hear it is itself the gesture that makes it audible.
+  //
+  // Without this the app looked linked, listed every sample, and played nothing.
   useEffect(() => {
     if (!fsaSupported()) return;
-    (async () => {
+    let done = false;
+
+    const link = async (mayPrompt: boolean) => {
+      if (done) return;
       const handle = await getDirHandle();
       if (!handle) return;
       const options = { mode: 'read' } as any;
-      if ((await handle.queryPermission(options)) !== 'granted') return;
+      let state = await handle.queryPermission(options);
+      if (state !== 'granted') {
+        if (!mayPrompt) return;                       // no gesture yet — wait for one
+        state = await handle.requestPermission(options);
+        if (state !== 'granted') return;              // the user said no; respect it
+      }
       try {
+        done = true;
         setAudioFiles(await scanDirectoryHandle(handle));
       } catch (err) {
-        // The folder was moved, renamed or deleted since we stored the handle.
-        // Drop it, or it throws on every load and "Load Sounds" keeps resuming it.
+        // The folder was moved, renamed or deleted since we stored the handle. Drop it,
+        // or it throws on every load and every click for ever after.
         console.warn('Remembered audio folder is gone; forgetting it.', err);
+        done = true;
         await clearDirHandle();
       }
-    })();
+    };
+
+    void link(false);                                  // already granted? link silently.
+    const onGesture = () => { void link(true); };
+    window.addEventListener('pointerdown', onGesture);
+    return () => window.removeEventListener('pointerdown', onGesture);
   }, []);
 
   // Describe what a migration cost, so blank UCS/loudness columns aren't a mystery.
