@@ -181,3 +181,36 @@ export function resolveAudioSrc(files: File[], item: any): string | null {
   
   return found ? URL.createObjectURL(found) : null;
 }
+
+/** Sync, cheap "is there audio for this record at all?" — used to skip records with no
+ *  playable file when stepping through a list. Real playback goes through resolveAudioUrl. */
+export function hasAudio(files: File[], item: any): boolean {
+  if (isTauri()) return isAbsolutePath(String(item?.metadata?.path || ''));
+  return !!resolveAudioSrc(files, item);
+}
+
+/** A URL an <audio> element (and fetch, for the waveform) can actually load.
+ *
+ *  On the desktop this reads the file's bytes over IPC and wraps them in a blob: URL,
+ *  rather than returning an asset:// URL. The asset protocol depends on a scope glob
+ *  matching the absolute path AND on the Linux webview's GStreamer having a decoder —
+ *  both fail silently and leave playback dead. Bytes → blob is the same mechanism the
+ *  browser build already uses, so it plays whatever the picker handed us.
+ *
+ *  The caller owns the returned URL and must revokeObjectURL it when done (all our
+ *  callers revoke the previous blob: src before assigning the next). */
+export async function resolveAudioUrl(files: File[], item: any): Promise<string | null> {
+  if (isTauri()) {
+    const path = String(item?.metadata?.path || '');
+    if (!path) return null;
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      const bytes = await invoke<ArrayBuffer>('read_audio_bytes', { path });
+      return URL.createObjectURL(new Blob([bytes]));
+    } catch (e) {
+      console.warn('[audio] read_audio_bytes failed', path, e);
+      return null;
+    }
+  }
+  return resolveAudioSrc(files, item);
+}

@@ -1,6 +1,6 @@
 import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
 import SampleCloud from '../SampleCloud';
-import { resolveAudioSrc, isTauri } from '../audioLinking';
+import { resolveAudioUrl, isTauri } from '../audioLinking';
 import ScopeBar from './ScopeBar';
 import GraphOptionsMenu from './GraphOptionsMenu';
 import GroupsMenu from './GroupsMenu'
@@ -123,13 +123,13 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
   };
 
 
-  const handlePick = (index: number) => {
+  const handlePick = async (index: number) => {
     setSelectedIndex(index);
     const item = data[index];
     if (!item) return;
     onSound?.(item.metadata.name || '');
     if (!isTauri() && audioFiles.length === 0) { setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
-    const src = resolveAudioSrc(audioFiles, item);
+    const src = await resolveAudioUrl(audioFiles, item);
     if (!src) {
       if (!isTauri()) {
           setPlayMsg(`Click 'Load Sounds' above to pick the ${item.metadata.folder} directory and enable playback.`);
@@ -141,6 +141,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
     const el = audioRef.current;
     if (el) {
       document.querySelectorAll('audio').forEach(a => a.pause());
+      if (el.src.startsWith('blob:')) URL.revokeObjectURL(el.src);
       el.currentTime = 0;
       el.src = src;
       el.volume = 1;

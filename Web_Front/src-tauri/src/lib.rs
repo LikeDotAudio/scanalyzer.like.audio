@@ -185,6 +185,23 @@ fn open_sidecars(directory: String, cache: tauri::State<'_, PeakCache>) -> Resul
     Ok(n)
 }
 
+/// Read an audio file's raw bytes for playback.
+///
+/// The asset protocol (convertFileSrc) is the "proper" way to stream a local file into
+/// an <audio> element, but on Linux WebKitGTK it depends on the scope glob matching the
+/// absolute path AND on GStreamer having a decoder for the container — two things that
+/// silently fail and leave playback dead with no error. Handing the bytes straight to
+/// the webview and letting it build a blob: URL sidesteps both: it is the same path the
+/// browser build already uses, and it works for any file the user picked.
+///
+/// One file at a time, a few MB — returned as a raw IPC Response, not a JSON number
+/// array, so the bytes are not stringified on the way across.
+#[tauri::command]
+fn read_audio_bytes(path: String) -> Result<tauri::ipc::Response, String> {
+    let bytes = std::fs::read(&path).map_err(|e| format!("{path}: {e}"))?;
+    Ok(tauri::ipc::Response::new(bytes))
+}
+
 #[tauri::command]
 fn start_analysis(
     app: AppHandle,
@@ -299,6 +316,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             survey_directory,
             open_sidecars,
+            read_audio_bytes,
             start_analysis,
             open_peak_file,
             read_peak_page,

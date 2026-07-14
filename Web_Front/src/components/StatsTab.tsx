@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
 import { ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
-import { resolveAudioSrc, isTauri } from '../audioLinking'
+import { resolveAudioUrl, isTauri } from '../audioLinking'
 import ScopeBar from './ScopeBar'
 
 interface StatsTabProps {
@@ -102,12 +102,13 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     return Object.entries(c).map(([name, v]) => ({ name, ...v })).sort((a, b) => b.value - a.value).slice(0, 24);
   }, [data]);
 
-  const playItem = (item: any) => {
+  const playItem = async (item: any) => {
     if (!item) return;
     onSound?.(item.metadata.name || '');
-    const src = resolveAudioSrc(audioFiles, item);
+    const src = await resolveAudioUrl(audioFiles, item);
     if (src && audioRef.current) {
       document.querySelectorAll('audio').forEach(a => a.pause());
+      if (audioRef.current.src.startsWith('blob:')) URL.revokeObjectURL(audioRef.current.src);
       audioRef.current.currentTime = 0;
       audioRef.current.src = src;
       audioRef.current.play().catch(() => {});

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { resolveAudioSrc, isTauri } from '../audioLinking';
+import { resolveAudioUrl, hasAudio, isTauri } from '../audioLinking';
 import { generateNewName } from '../renameConfig';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
@@ -352,16 +352,16 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     setSelectedItem(item);
     onSound?.(item?.metadata?.name || '');
 
-    const src = resolveAudioSrc(audioFiles, item);
+    const src = await resolveAudioUrl(audioFiles, item);
     if (!src) {
-      // Say WHY, rather than just going quiet. Silence here has three different causes
-      // and they need different fixes, so guessing between them wastes an afternoon.
+      // Say WHY, rather than just going quiet. Silence here has different causes that
+      // need different fixes, so guessing between them wastes an afternoon.
       console.warn('[examiner] no audio source for this record', {
         desktop: isTauri(),
         recordedPath: item?.metadata?.path,
         audioFilesLinked: audioFiles.length,
         hint: isTauri()
-          ? 'desktop: metadata.path must be absolute, or an audio root must be set'
+          ? 'desktop: read_audio_bytes failed — check the path exists and is readable'
           : 'browser: no File matched — re-scan the folder to re-link the audio',
       });
       // No linked audio — clear the preview so it doesn't show a stale sample.
@@ -378,6 +378,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
       const el = audioRef.current;
       if (!el) return false;
       document.querySelectorAll('audio').forEach(a => a.pause());
+      // Free the previous blob: URL before replacing it, or every selection leaks one.
+      if (el.src.startsWith('blob:')) URL.revokeObjectURL(el.src);
       el.currentTime = 0;
       el.src = src;
       if (autoPlay || forcePlay) el.play().catch(err => console.warn('[examiner] play rejected', err));
@@ -404,7 +406,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   // one finishes, until the user stops. Skips samples with no linked audio.
   const advanceDig = (fromIdx: number) => {
     let i = Math.max(0, fromIdx);
-    while (i < rows.length && !resolveAudioSrc(isTauri() ? [new File([""], "dummy")] : audioFiles, rows[i])) i++;
+    while (i < rows.length && !hasAudio(audioFiles, rows[i])) i++;
     if (i < rows.length) handleSelect(rows[i], true);
     else setDigging(false); // reached the end of the list
   };
@@ -412,7 +414,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const startDig = () => {
     setDigging(true);
     const idx = selectedItem ? rows.indexOf(selectedItem) : -1;
-    if (idx >= 0 && resolveAudioSrc(isTauri() ? [new File([""], "dummy")] : audioFiles, selectedItem)) handleSelect(selectedItem, true);
+    if (idx >= 0 && hasAudio(audioFiles, selectedItem)) handleSelect(selectedItem, true);
     else advanceDig(idx + 1);
   };
 
@@ -426,18 +428,16 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     advanceDig(rows.indexOf(selectedItem) + 1);
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!selectedItem) return;
-    const src = resolveAudioSrc(isTauri() ? [new File([""], "dummy")] : audioFiles, selectedItem);
-    if (!src) {
+    const url = await resolveAudioUrl(audioFiles, selectedItem);
+    if (!url) {
       alert('Audio file not found in linked directory.');
       return;
     }
-    const newName = generateNewName(selectedItem);
-    const url = src;
     const a = document.createElement('a');
     a.href = url;
-    a.download = newName;
+    a.download = generateNewName(selectedItem);
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
