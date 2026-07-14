@@ -25,10 +25,10 @@ export interface InitOutput {
     readonly memory: WebAssembly.Memory;
     readonly analyze_audio_buffer: (a: number, b: number, c: number, d: number, e: number, f: number) => [number, number];
     readonly analyzer_version: () => [number, number];
-    readonly __wbindgen_externrefs: WebAssembly.Table;
+    readonly __wbindgen_free: (a: number, b: number, c: number) => void;
     readonly __wbindgen_malloc: (a: number, b: number) => number;
     readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
-    readonly __wbindgen_free: (a: number, b: number, c: number) => void;
+    readonly __wbindgen_externrefs: WebAssembly.Table;
     readonly __wbindgen_start: () => void;
 }
 

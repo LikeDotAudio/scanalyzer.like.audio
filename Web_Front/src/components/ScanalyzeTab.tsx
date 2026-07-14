@@ -43,6 +43,7 @@ export default function ScanalyzeTab({
   const [total, setTotal] = useState(0);
   const [absorbed, setAbsorbed] = useState(0);
   const [stale, setStale] = useState(0);
+  const [version, setVersion] = useState('');
   const stopRef = useRef(false);
   const startMsRef = useRef<number>(0);
   const threadsRef = useRef<number>(1);
@@ -61,7 +62,10 @@ export default function ScanalyzeTab({
   }
 
   useEffect(() => {
-    initWasm().then(() => setWasmReady(true)).catch(console.error);
+    initWasm().then(() => {
+        setWasmReady(true);
+        setVersion(analyzer_version());
+    }).catch(console.error);
   }, []);
 
   // Discover WAV files in the picked folder. everyNth > 1 samples the library
@@ -277,7 +281,7 @@ export default function ScanalyzeTab({
       return (
           <div className="tab-content glass-panel" style={{ margin: 0, padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ width: '100%', maxWidth: '640px' }}>
-                  <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', textAlign: 'center' }}>Analyzing with WASM {analyzer_version()}…</h2>
+                  <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', textAlign: 'center' }}>Analyzing with WASM {version}…</h2>
                   <div style={{ textAlign: 'center', color: 'var(--accent-primary)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.5rem' }}>
                       {done.toLocaleString()} of {total.toLocaleString()} files &middot; {pct}%
                   </div>

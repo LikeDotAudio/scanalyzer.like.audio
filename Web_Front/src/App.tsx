@@ -219,7 +219,7 @@ function App() {
       {/* Main Content Area */}
       <main className="app-main" style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', padding: 0 }}>
         
-        {activeTab === 'scanalyze' && (
+        <div style={{ display: activeTab === 'scanalyze' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
           <ScanalyzeTab 
             analysisResult={analysisResult} 
             setAnalysisResult={setAnalysisResult}
@@ -232,7 +232,7 @@ function App() {
             onImportPeak={handleImportPeak}
             onLoadSounds={handleLoadSounds}
           />
-        )}
+        </div>
 
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
           <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} onLoadSounds={handleLoadSounds} />
