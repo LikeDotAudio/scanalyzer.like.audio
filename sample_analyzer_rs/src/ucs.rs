@@ -22,7 +22,7 @@ use std::sync::OnceLock;
 
 use serde::{Deserialize, Serialize};
 
-use crate::normalize::normalize_name;
+use crate::normalize::normalize_name_words;
 use crate::peak::Peak;
 
 // ---------------------------------------------------------------- data model
@@ -107,7 +107,7 @@ fn build_index() -> Index {
                 .cloned()
                 .chain(std::iter::once(sub.subcategory.clone()));
             for s in sources {
-                for t in normalize_name(&s).split_whitespace() {
+                for t in normalize_name_words(&s).split_whitespace() {
                     if is_useful_token(t) && !tokens.iter().any(|x| x == t) {
                         tokens.push(t.to_string());
                     }
@@ -146,8 +146,23 @@ pub fn index() -> &'static Index {
     INDEX.get_or_init(build_index)
 }
 
+/// Short and all-digit tokens that DO carry evidence, despite the length rule below.
+///
+/// A producer names a kick `BD`, a hi-hat `HH` or `CH`/`OH`, and a drum machine by its
+/// model number — `808`, `909`. The generic filter threw every one of them away as
+/// noise, so the most reliable signal in a drum library ("BD_01.wav" is a bass drum,
+/// with certainty) was the one signal the classifier could not see. These are only
+/// evidence because the producer overlay maps them to a subcategory; a short token that
+/// no synonym table claims still scores nothing, because its IDF is zero.
+const SHORT_EVIDENCE: &[&str] = &[
+    "bd", "sd", "hh", "ch", "oh", "kk", "tom", "dj", "ir", "fx", "808", "909", "707", "606", "303",
+];
+
 /// Tokens too short or too generic to carry category evidence.
 fn is_useful_token(t: &str) -> bool {
+    if SHORT_EVIDENCE.contains(&t) {
+        return true;
+    }
     if t.len() < 3 || t.chars().all(|c| c.is_ascii_digit()) {
         return false;
     }
@@ -408,6 +423,10 @@ pub struct Alternative {
     pub subcategory: String,
     pub id: String,
     pub probability: f64,
+    /// The synonyms this runner-up matched in the name or folder. Empty means it
+    /// placed on acoustic signal alone.
+    #[serde(default)]
+    pub synonyms: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -417,6 +436,15 @@ pub struct Verdict {
     pub id: String,
     pub confidence: f64,
     pub alternatives: Vec<Alternative>,
+    /// The words that actually won this match — the synonyms of the chosen
+    /// subcategory found in the file or folder name. Empty means the verdict rests
+    /// on acoustic signal alone, with no name evidence at all.
+    ///
+    /// A list, not a joined string: a match can hit several words ("kick", "drum"),
+    /// and a consumer must be able to filter on them without re-parsing prose. It
+    /// was previously recoverable only by reading `reason`.
+    #[serde(default)]
+    pub synonyms: Vec<String>,
     pub reason: String,
 }
 
@@ -436,12 +464,12 @@ pub fn classify(p: &Peak) -> Verdict {
         .map(|(s, _)| s)
         .unwrap_or(&p.metadata.name)
         .to_string();
-    let name_tokens: Vec<String> = normalize_name(&stem)
+    let name_tokens: Vec<String> = normalize_name_words(&stem)
         .split_whitespace()
         .filter(|t| is_useful_token(t))
         .map(str::to_string)
         .collect();
-    let folder_tokens: Vec<String> = normalize_name(&p.metadata.folder)
+    let folder_tokens: Vec<String> = normalize_name_words(&p.metadata.folder)
         .split_whitespace()
         .filter(|t| is_useful_token(t))
         .map(str::to_string)
@@ -472,6 +500,21 @@ pub fn classify(p: &Peak) -> Verdict {
             continue;
         }
 
+        // A MISC bucket is the ABSTENTION TARGET, not a candidate. It is where a
+        // verdict goes when the evidence will not support a real subcategory — so it
+        // must not be able to WIN one. It carries no acoustic signature, which means
+        // `signal_likelihood` hands it a free 1.0 ("no usable priors -> uninformative"),
+        // and it inherits its category's vaguest synonyms. Left in the pool it beats
+        // subcategories that actually describe the sound: a drum machine sample in a
+        // folder called "Tape Drum Machines" was won by ROBOTS/MISC on the word
+        // "machines", ahead of MUSICAL/PERCUSSION on "bd".
+        //
+        // Abstention still reaches these — the fallback below looks MISC up in the
+        // index by category, not in this candidate pool.
+        if e.sub.subcategory == "MISC" {
+            continue;
+        }
+
         if let Some(g) = gate_violation(sig, p, lossy) {
             if killed.is_none() {
                 killed = Some((e.sub.category_id.clone(), g));
@@ -481,7 +524,24 @@ pub fn classify(p: &Peak) -> Verdict {
         let (t, hits) = text_evidence(e, idx, &name_tokens, &folder_tokens);
         let s = signal_likelihood(sig, p, lossy);
         let (alpha, beta) = tier_exponents(&sig.separability);
-        let post = s.powf(alpha) * t.powf(beta);
+
+        // A WEIGHTED GEOMETRIC MEAN, not the raw product of spec §5.
+        //
+        // The spec's S^α·T^β is not comparable across candidates, because α and β
+        // differ per tier: a `semantic_only` subcategory cubes its text term while a
+        // `signal_separable` one leaves its own linear. The tier then decides the
+        // MAGNITUDE of the score rather than the balance of evidence within it, and a
+        // vague category with weak evidence outranks a precise one with strong
+        // evidence. Measured on a 36k drum library: "DMX_AnalogBD1_A.wav" in a folder
+        // called "Tape Drum Machines" was filed under ROBOTS, because ROBOTS/MISC
+        // (semantic_only) cubed a half-weight FOLDER hit on "machines" while
+        // MUSICAL/PERCUSSION (signal_separable) could only multiply a full-weight
+        // FILENAME hit on "bd" — the rarer, stronger, more specific evidence lost.
+        //
+        // Taking the (α+β)-th root puts every candidate back on one scale. The tier
+        // still sets how much each source of evidence is TRUSTED — that is what it is
+        // for — but it no longer inflates the score it produces.
+        let post = (s.powf(alpha) * t.powf(beta)).powf(1.0 / (alpha + beta).max(1e-9));
         cands.push(Cand { i, post, hits, signal: s });
     }
 
@@ -492,6 +552,7 @@ pub fn classify(p: &Peak) -> Verdict {
             id: "ARCHWtf".into(),
             confidence: 0.0,
             alternatives: vec![],
+            synonyms: vec![],
             reason: "every subcategory was gated out — no candidate survived".into(),
         };
     }
@@ -534,6 +595,7 @@ pub fn classify(p: &Peak) -> Verdict {
                 subcategory: alt.sub.subcategory.clone(),
                 id: alt.sub.category_id.clone(),
                 probability: (c.post * 1000.0).round() / 1000.0,
+                synonyms: c.hits.clone(),
             }
         })
         .collect();
@@ -581,6 +643,9 @@ pub fn classify(p: &Peak) -> Verdict {
                 id: m.sub.category_id.clone(),
                 confidence: top.post,
                 alternatives,
+                // The synonyms that got us to this *category* before we abstained on
+                // the subcategory — the evidence is still what it was.
+                synonyms: top.hits.clone(),
                 reason,
             };
         }
@@ -592,6 +657,7 @@ pub fn classify(p: &Peak) -> Verdict {
         id: e.sub.category_id.clone(),
         confidence: top.post,
         alternatives,
+        synonyms: top.hits.clone(),
         reason,
     }
 }

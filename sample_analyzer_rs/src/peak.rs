@@ -37,7 +37,12 @@ pub struct Metadata {
     pub trailing_silence_ms: f64,
 }
 
+// Read leniently. A .PEAK on disk may predate any field added since it was written —
+// the browser has always migrated those, and the engine refusing to is why a whole
+// SFX library was unreadable to its own analyzer. Both structs derive Default, so a
+// missing field reads as empty rather than failing the entire record.
 #[derive(Serialize, Deserialize, Clone, Default)]
+#[serde(default)]
 pub struct Classification {
     pub group: String,
     pub reason: Vec<String>,
@@ -52,12 +57,18 @@ pub struct Classification {
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]
+#[serde(default)]
 pub struct Ucs {
     pub category: String,
     pub subcategory: String,
     pub id: String,
     pub confidence: f64,
     pub alternatives: Vec<crate::ucs::Alternative>,
+    /// The synonyms that won the match — the words found in the file or folder name
+    /// that belong to the chosen subcategory. Empty means no name evidence at all:
+    /// the verdict rests on acoustic signal alone.
+    #[serde(default)]
+    pub synonyms: Vec<String>,
     pub reason: String,
 }
 

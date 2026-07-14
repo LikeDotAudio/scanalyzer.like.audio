@@ -295,6 +295,7 @@ fn finish(mut p: Peak) -> Peak {
     p.ucs.id = v.id;
     p.ucs.confidence = v.confidence;
     p.ucs.alternatives = v.alternatives;
+    p.ucs.synonyms = v.synonyms;
     p.ucs.reason = v.reason;
     p
 }

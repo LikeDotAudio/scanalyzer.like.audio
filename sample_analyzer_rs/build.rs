@@ -25,6 +25,7 @@ fn sorted_files(dir: &Path, ext: &str) -> Vec<PathBuf> {
 fn main() {
     println!("cargo:rerun-if-changed=src");
     println!("cargo:rerun-if-changed=../UCS/categories");
+    println!("cargo:rerun-if-changed=../UCS/producer_synonyms.json");
 
     let ucs_dir = Path::new("../UCS/categories");
     let cat_files: Vec<PathBuf> = sorted_files(ucs_dir, "json")
@@ -60,16 +61,70 @@ fn main() {
         value.get("matchable").and_then(|m| m.as_bool()).unwrap_or(true)
     };
 
+    // The producer-vocabulary overlay. UCS is a sound-effects standard: none of its 756
+    // subcategories contains "hihat", "cymbal", "808" or "oneshot", and "hat" belongs to
+    // OBJECTS/FASHION. A music library therefore has no UCS words to match on. The overlay
+    // adds those words, keyed by UCS category_id, and is merged here rather than edited
+    // into UCS/categories/ so the vendored spec stays pristine and upgradeable.
+    let overlay_path = Path::new("../UCS/producer_synonyms.json");
+    let overlay: serde_json::Value = {
+        let text = fs::read_to_string(overlay_path)
+            .unwrap_or_else(|e| panic!("read {}: {e}", overlay_path.display()));
+        serde_json::from_str(&text)
+            .unwrap_or_else(|e| panic!("{} is not valid JSON: {e}", overlay_path.display()))
+    };
+    let additions = overlay
+        .get("additions")
+        .and_then(|a| a.as_object())
+        .unwrap_or_else(|| panic!("{} has no `additions` object", overlay_path.display()))
+        .clone();
+
+    let mut merged_ids: Vec<String> = Vec::new();
     let bodies: Vec<String> = cat_files
         .iter()
         .filter(|p| matchable(p))
         .map(|p| {
             let text = fs::read_to_string(p).unwrap_or_else(|e| panic!("read {}: {e}", p.display()));
-            let value: serde_json::Value = serde_json::from_str(&text)
+            let mut value: serde_json::Value = serde_json::from_str(&text)
                 .unwrap_or_else(|e| panic!("{} is not valid JSON: {e}", p.display()));
+
+            if let Some(subs) = value.get_mut("subcategories").and_then(|s| s.as_array_mut()) {
+                for sub in subs {
+                    let Some(id) = sub
+                        .get("category_id")
+                        .and_then(|i| i.as_str())
+                        .map(str::to_string)
+                    else {
+                        continue;
+                    };
+                    let Some(extra) = additions.get(&id).and_then(|e| e.as_array()) else {
+                        continue;
+                    };
+                    let Some(syns) = sub.get_mut("synonyms").and_then(|s| s.as_array_mut()) else {
+                        continue;
+                    };
+                    for word in extra {
+                        if !syns.contains(word) {
+                            syns.push(word.clone());
+                        }
+                    }
+                    merged_ids.push(id);
+                }
+            }
             serde_json::to_string(&value).expect("re-serialize category")
         })
         .collect();
+
+    // A typo'd category_id would silently add nothing at all, and the only symptom
+    // would be a classifier that quietly keeps misfiling drums. Fail the build instead.
+    for id in additions.keys() {
+        assert!(
+            merged_ids.contains(id),
+            "{}: `{id}` matches no UCS category_id — the overlay would be a no-op",
+            overlay_path.display()
+        );
+    }
+
     let bundle = format!("[{}]", bodies.join(","));
 
     // The opted-out files, bundled on their own. MUSICPROD is read from here.
