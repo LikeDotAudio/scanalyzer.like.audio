@@ -1,5 +1,4 @@
 import TipJar from './TipJar';
-import { isTauri } from '../audioLinking';
 
 interface HeaderProps {
   isAnalyzing: boolean;
@@ -13,9 +12,7 @@ interface HeaderProps {
   activeTab?: string;
 }
 
-export default function Header({ isAnalyzing, progress, onUnloadSounds, audioCount, audioRoot, currentSound, hasData, activeTab }: HeaderProps) {
-  // Desktop links one root folder; the browser links a list of File objects.
-  const audioLinked = isTauri() ? !!audioRoot : audioCount > 0;
+export default function Header({ isAnalyzing, progress, onUnloadSounds, audioCount, currentSound, hasData, activeTab }: HeaderProps) {
   return (
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
@@ -35,19 +32,11 @@ export default function Header({ isAnalyzing, progress, onUnloadSounds, audioCou
         <div className="hide-on-mobile" style={{ flex: 1, minWidth: '250px', textAlign: 'center', overflow: 'hidden' }}>
           {currentSound ? (
             <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
-          ) : !hasData ? (
-            <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>Step 1:</strong> Scan a folder in the <strong style={{ color: 'var(--accent-primary)' }}>Scanalize</strong> tab to bring in an analysis. →
-            </span>
-          ) : !audioLinked ? (
-            <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>Step 2:</strong> Scan the folder again to re-link its audio — the .PEAK sidecars load instantly, and playback comes back with them.
-            </span>
-          ) : (
+          ) : hasData ? (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
               🟢 Online — select any sample to hear &amp; inspect it.
             </span>
-          )}
+          ) : null}
         </div>
       )}
 

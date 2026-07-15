@@ -213,6 +213,8 @@ h1, h2, h3, h4 {
   background: var(--accent-primary);
   border: none;
   font-weight: 600;
+  /* Black reads far better than white on the #f4902c orange. */
+  color: #000;
 }
 
 .btn.primary:hover {
