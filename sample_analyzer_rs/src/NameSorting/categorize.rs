@@ -64,18 +64,16 @@ pub struct Taxonomy {
     percussive: HashMap<String, bool>,
 }
 
-/// The non-matchable UCS files bundled by build.rs — MUSICPROD is the only one.
-const ROLE_BUNDLE: &str = include_str!(concat!(env!("OUT_DIR"), "/ucs_roles.json"));
+/// The producer file-name taxonomy — a PRIVATE analyzer asset, not a UCS category.
+/// It carries name synonyms/abbreviations (not acoustic signatures), and only drives
+/// the internal `group`/`subgroup` that family, clustering and labels read. It used to
+/// live at `UCS/categories/MUSICPROD.json` and be bundled by build.rs; it now sits
+/// beside this module so it is out of the UCS taxonomy entirely.
+const ROLE_DATA: &str = include_str!("music_names.json");
 
 fn load() -> Taxonomy {
-    let arr: Vec<serde_json::Value> = serde_json::from_str(ROLE_BUNDLE)
-        .expect("bundled ucs_roles.json is not valid JSON — check build.rs");
-    let mp = arr
-        .into_iter()
-        .find(|v| v.get("category").and_then(|c| c.as_str()) == Some("MUSICPROD"))
-        .expect("MUSICPROD.json missing from the role bundle");
-    let doc: MusicProd =
-        serde_json::from_value(mp).expect("MUSICPROD.json does not match the taxonomy schema");
+    let doc: MusicProd = serde_json::from_str(ROLE_DATA)
+        .expect("music_names.json does not match the taxonomy schema");
 
     let mut family_of = HashMap::new();
     for inst in &doc.instruments {

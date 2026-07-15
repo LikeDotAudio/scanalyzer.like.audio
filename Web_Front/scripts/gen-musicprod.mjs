@@ -6,7 +6,10 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const src = join(here, '..', '..', 'UCS', 'categories', 'MUSICPROD.json');
+// MUSICPROD is no longer a UCS category — it moved to a private analyzer asset
+// beside categorize.rs. The generated musicprodTaxonomy.ts is legacy (the prod
+// axis is retired from the UI) but still built, so read from the new location.
+const src = join(here, '..', '..', 'sample_analyzer_rs', 'src', 'NameSorting', 'music_names.json');
 const out = join(here, '..', 'src', 'musicprodTaxonomy.ts');
 
 const doc = JSON.parse(readFileSync(src, 'utf8'));

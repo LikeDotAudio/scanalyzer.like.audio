@@ -39,9 +39,12 @@ existing `.PEAK` sidecars and forces a re-scan. That is by design.
   categories; its `producer_synonyms.json` overlay was re-homed onto them.
 - **MUSICPROD retired as a user-facing axis.** The `music_production_category` field,
   the Examiner's "UCS Prod" column, and the production-role scope chips are gone — the
-  new instrument categories are the sole music taxonomy. (`categorize.rs` remains for
-  now as internal name-hint plumbing feeding `group`/`subgroup` → family, clustering
-  and labels.)
+  new instrument categories are the sole music taxonomy.
+- **`UCS/categories/MUSICPROD.json` removed from the UCS category set.** It was never a
+  UCS category (name synonyms, not acoustic signatures); it now lives as a private
+  analyzer asset at `sample_analyzer_rs/src/NameSorting/music_names.json`, still driving
+  the internal `group`/`subgroup` that family, clustering and labels read — behaviour
+  unchanged, but it is out of the UCS taxonomy and the build's category bundle.
 
 ### 2026-07-14
 

@@ -26,39 +26,39 @@ const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 const COLS_KEY = 'scanalyzer_examiner_cols_v4';
 
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
-  { key: 'name', label: 'File', width: '17%', get: it => it.metadata?.name || '' },
-  { key: 'ucs_category', label: 'UCS Category', width: '9%', get: it => it.ucs?.category || '' },
-  { key: 'ucs_subcategory', label: 'UCS Subcategory', width: '10%', get: it => it.ucs?.subcategory || '' },
+  { key: 'name', label: 'File', width: '250px', get: it => it.metadata?.name || '' },
+  { key: 'ucs_category', label: 'UCS Category', width: '130px', get: it => it.ucs?.category || '' },
+  { key: 'ucs_subcategory', label: 'UCS Subcategory', width: '140px', get: it => it.ucs?.subcategory || '' },
   // The runners-up the UCS matcher scored, best first. Each is "<category_id> <confidence>".
-  { key: 'ucs_alt_1_group', label: 'Alt 1 Group', width: '7%', get: it => altCategory(it.ucs?.alternatives?.[0]) },
-  { key: 'ucs_alt_1_subgroup', label: 'Alt 1 Sub', width: '7%', get: it => altSubcategory(it.ucs?.alternatives?.[0]) },
-  { key: 'ucs_alt_1_probability', label: 'Alt 1 Prob', numeric: true, width: '5%', get: it => {
+  { key: 'ucs_alt_1_group', label: 'Alt 1 Group', width: '100px', get: it => altCategory(it.ucs?.alternatives?.[0]) },
+  { key: 'ucs_alt_1_subgroup', label: 'Alt 1 Sub', width: '100px', get: it => altSubcategory(it.ucs?.alternatives?.[0]) },
+  { key: 'ucs_alt_1_probability', label: 'Alt 1 Prob', numeric: true, width: '80px', get: it => {
       const p = altProbability(it.ucs?.alternatives?.[0]);
       return Number.isFinite(p) ? p : -1;
   } },
-  { key: 'ucs_alt_2_group', label: 'Alt 2 Group', width: '7%', get: it => altCategory(it.ucs?.alternatives?.[1]) },
-  { key: 'ucs_alt_2_subgroup', label: 'Alt 2 Sub', width: '7%', get: it => altSubcategory(it.ucs?.alternatives?.[1]) },
-  { key: 'ucs_alt_2_probability', label: 'Alt 2 Prob', numeric: true, width: '5%', get: it => {
+  { key: 'ucs_alt_2_group', label: 'Alt 2 Group', width: '100px', get: it => altCategory(it.ucs?.alternatives?.[1]) },
+  { key: 'ucs_alt_2_subgroup', label: 'Alt 2 Sub', width: '100px', get: it => altSubcategory(it.ucs?.alternatives?.[1]) },
+  { key: 'ucs_alt_2_probability', label: 'Alt 2 Prob', numeric: true, width: '80px', get: it => {
       const p = altProbability(it.ucs?.alternatives?.[1]);
       return Number.isFinite(p) ? p : -1;
   } },
-  { key: 'ucs_alt_3_group', label: 'Alt 3 Group', width: '7%', get: it => altCategory(it.ucs?.alternatives?.[2]) },
-  { key: 'ucs_alt_3_subgroup', label: 'Alt 3 Sub', width: '7%', get: it => altSubcategory(it.ucs?.alternatives?.[2]) },
-  { key: 'ucs_alt_3_probability', label: 'Alt 3 Prob', numeric: true, width: '5%', get: it => {
+  { key: 'ucs_alt_3_group', label: 'Alt 3 Group', width: '100px', get: it => altCategory(it.ucs?.alternatives?.[2]) },
+  { key: 'ucs_alt_3_subgroup', label: 'Alt 3 Sub', width: '100px', get: it => altSubcategory(it.ucs?.alternatives?.[2]) },
+  { key: 'ucs_alt_3_probability', label: 'Alt 3 Prob', numeric: true, width: '80px', get: it => {
       const p = altProbability(it.ucs?.alternatives?.[2]);
       return Number.isFinite(p) ? p : -1;
   } },
 
-  { key: 'reason', label: 'Reason', width: '14%', get: it => it.classification?.reason?.[0] || '' },
-  { key: 'timbre', label: 'Timbre', width: '8%', get: it => it.classification?.timbre || '' },
-  { key: 'cluster', label: 'Clust', numeric: true, width: '4%', get: it => (it.unsupervised?.cluster ?? -1) },
-  { key: 'root', label: 'Root', numeric: true, width: '5%', get: it => (noteToFreq(it.musicality?.root_note_name) ?? -1) },
-  { key: 'pitch_hz', label: 'Pitch', numeric: true, width: '5%', get: it => (it.musicality?.pitch_hz || 0) },
-  { key: 'length_seconds', label: 'Len', numeric: true, width: '4%', get: it => (it.metadata?.length_seconds || 0) },
-  { key: 'transient_count', label: 'Tr', numeric: true, width: '3%', get: it => (it.envelope?.transient_count || 0) },
-  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, width: '5%', get: it => (it.spectral_features?.spectral_centroid_hz || 0) },
-  { key: 'harmonicity', label: 'Harm', numeric: true, width: '4%', get: it => (it.spectral_features?.harmonicity || 0) },
-  { key: 'beats_per_minute', label: 'BPM', numeric: true, width: '5%', get: it => (it.musicality?.beats_per_minute || 0) },
+  { key: 'reason', label: 'Reason', width: '200px', get: it => it.classification?.reason?.[0] || '' },
+  { key: 'timbre', label: 'Timbre', width: '110px', get: it => it.classification?.timbre || '' },
+  { key: 'cluster', label: 'Clust', numeric: true, width: '60px', get: it => (it.unsupervised?.cluster ?? -1) },
+  { key: 'root', label: 'Root', numeric: true, width: '60px', get: it => (noteToFreq(it.musicality?.root_note_name) ?? -1) },
+  { key: 'pitch_hz', label: 'Pitch', numeric: true, width: '70px', get: it => (it.musicality?.pitch_hz || 0) },
+  { key: 'length_seconds', label: 'Len', numeric: true, width: '60px', get: it => (it.metadata?.length_seconds || 0) },
+  { key: 'transient_count', label: 'Tr', numeric: true, width: '50px', get: it => (it.envelope?.transient_count || 0) },
+  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, width: '80px', get: it => (it.spectral_features?.spectral_centroid_hz || 0) },
+  { key: 'harmonicity', label: 'Harm', numeric: true, width: '60px', get: it => (it.spectral_features?.harmonicity || 0) },
+  { key: 'beats_per_minute', label: 'BPM', numeric: true, width: '80px', get: it => (it.musicality?.beats_per_minute || 0) },
 ];
 
 // A small emoji per timbre class, shown in the Timbre column.
@@ -165,6 +165,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
   const toggleSort = (key: string) =>
     setSort(prev => prev?.key === key ? { key, dir: (prev.dir === 1 ? -1 : 1) } : { key, dir: 1 });
+
+  const maxBpm = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.musicality?.beats_per_minute || 0), 1), [analysisResult]);
+  const maxBrightness = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.spectral_features?.spectral_centroid_hz || 0), 1), [analysisResult]);
 
   // Scroll-ahead audio buffering: pre-read a window of rows around the viewport so
   // the next few selections play instantly (see useAudioPrefetch). `scrollDirRef`
@@ -578,7 +581,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
               />
           </div>
           <div ref={scrollRef} onScroll={handleListScroll} style={{ flex: 1, overflow: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
+              <table style={{ minWidth: '100%', width: 'max-content', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
                   <colgroup>
                       {activeColumns.map(c => <col key={c.key} style={{ width: c.width }} />)}
                   </colgroup>
@@ -642,9 +645,17 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           {activeColumns.find(c => c.key === 'pitch_hz') && <td style={cell()}>{item.musicality.pitch_hz ? Math.round(item.musicality.pitch_hz) : 0}</td>}
                                           {activeColumns.find(c => c.key === 'length_seconds') && <td style={cell()}>{item.metadata.length_seconds?.toFixed(2)}</td>}
                                           {activeColumns.find(c => c.key === 'transient_count') && <td style={cell({ color: '#F59E0B' })}>{item.envelope.transient_count}</td>}
-                                          {activeColumns.find(c => c.key === 'spectral_centroid_hz') && <td style={cell()}>{item.spectral_features.spectral_centroid_hz ? Math.round(item.spectral_features.spectral_centroid_hz) : 0}</td>}
+                                          {activeColumns.find(c => c.key === 'spectral_centroid_hz') && <td style={cell({
+                                              background: item.spectral_features?.spectral_centroid_hz 
+                                                  ? `linear-gradient(90deg, rgba(244, 144, 44, 0.25) ${(item.spectral_features.spectral_centroid_hz / maxBrightness) * 100}%, transparent ${(item.spectral_features.spectral_centroid_hz / maxBrightness) * 100}%)` 
+                                                  : undefined
+                                          })}>{item.spectral_features.spectral_centroid_hz ? Math.round(item.spectral_features.spectral_centroid_hz) : 0}</td>}
                                           {activeColumns.find(c => c.key === 'harmonicity') && <td style={cell()}>{item.spectral_features?.harmonicity?.toFixed(2)}</td>}
-                                          {activeColumns.find(c => c.key === 'beats_per_minute') && <td style={cell()}>{item.musicality.beats_per_minute || 0}</td>}
+                                          {activeColumns.find(c => c.key === 'beats_per_minute') && <td style={cell({
+                                              background: item.musicality?.beats_per_minute 
+                                                  ? `linear-gradient(90deg, rgba(16, 185, 129, 0.25) ${(item.musicality.beats_per_minute / maxBpm) * 100}%, transparent ${(item.musicality.beats_per_minute / maxBpm) * 100}%)` 
+                                                  : undefined
+                                          })}>{item.musicality.beats_per_minute || 0}</td>}
                                       </tr>
                                   );
                               })}
