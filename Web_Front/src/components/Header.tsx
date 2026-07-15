@@ -1,4 +1,6 @@
 import TipJar from './TipJar';
+import { ucsColor, ucsSubColor } from '../groupColors';
+import { categoryLabel, subcategoryLabel } from '../categoryEmoji';
 
 interface HeaderProps {
   isAnalyzing: boolean;
@@ -8,11 +10,17 @@ interface HeaderProps {
   onUnloadSounds?: () => void;
   audioCount: number;
   currentSound?: string;
+  /** The full record for the current sound, so the header can show its length + UCS
+   *  category / subcategory (with emojis) beneath the track name. */
+  sample?: any;
   hasData: boolean;
   activeTab?: string;
 }
 
-export default function Header({ isAnalyzing, progress, onUnloadSounds, audioCount, currentSound, hasData, activeTab }: HeaderProps) {
+export default function Header({ isAnalyzing, progress, onUnloadSounds, audioCount, currentSound, sample, hasData, activeTab }: HeaderProps) {
+  const len = sample?.metadata?.length_seconds;
+  const cat = sample?.ucs?.category || '';
+  const sub = (sample?.ucs?.subcategory || '').trim();
   return (
     <header className="app-header glass-panel" style={{ zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
@@ -31,7 +39,16 @@ export default function Header({ isAnalyzing, progress, onUnloadSounds, audioCou
       {!isAnalyzing && (
         <div className="hide-on-mobile" style={{ flex: 1, minWidth: '250px', textAlign: 'center', overflow: 'hidden' }}>
           {currentSound ? (
-            <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
+            <>
+              <span className="accent-gradient" style={{ fontSize: '1.5rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{currentSound}</span>
+              {(Number.isFinite(len) || cat) && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '0.8rem', marginTop: '0.1rem', flexWrap: 'wrap' }}>
+                  {Number.isFinite(len) && <span className="text-secondary">{len.toFixed(2)} s</span>}
+                  {cat && <span style={{ color: ucsColor(cat) }} title={cat}>· {categoryLabel(cat)}</span>}
+                  {sub && <span style={{ color: ucsSubColor(cat, sub) }} title={sub}>/ {subcategoryLabel(cat, sub)}</span>}
+                </div>
+              )}
+            </>
           ) : hasData ? (
             <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
               🟢 Online — select any sample to hear &amp; inspect it.

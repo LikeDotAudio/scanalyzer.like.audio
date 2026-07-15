@@ -34,12 +34,7 @@ export function drawLoudness(ctx: CanvasRenderingContext2D, mono: Float32Array, 
   ctx.strokeStyle = color + 'E6';
   ctx.lineWidth = 1.5;
   ctx.stroke();
-
-  ctx.fillStyle = color;
-  ctx.font = '9px sans-serif';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'top';
-  ctx.fillText('loudness', w - 4, 14);
+  // (Label lives in the shared legend the Examiner draws top-right.)
 }
 
 /** Inter-channel phase over time: per-column normalised correlation of L and R,
@@ -69,10 +64,5 @@ export function drawPhase(ctx: CanvasRenderingContext2D, left: Float32Array, rig
   ctx.strokeStyle = color + 'E6';
   ctx.lineWidth = 1.25;
   ctx.stroke();
-
-  ctx.fillStyle = color;
-  ctx.font = '9px sans-serif';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'top';
-  ctx.fillText('phase', w - 4, 26);
+  // (Label lives in the shared legend the Examiner draws top-right.)
 }

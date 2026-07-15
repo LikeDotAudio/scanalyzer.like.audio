@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { resolveAudioUrl, isTauri, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
 import { toMono } from '../examiner/audioAnalysis';
+import { decodeWav } from '../examiner/decodeWav';
 import { ucsSubColor, matchesScope } from '../../groupColors';
 import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examiner/detectRegions';
 import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
@@ -53,8 +54,14 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
-  // Apply a "Send to Extractor" filter hint (keyed on its nonce so repeats re-fire).
-  useEffect(() => { if (filterHint?.name) setFilter(filterHint.name); }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Apply a "Send to Extractor" filter hint (keyed on its nonce so repeats re-fire) — and
+  // auto-select the matching file so it loads straight into the slicer, no extra click.
+  useEffect(() => {
+    if (!filterHint?.name) return;
+    setFilter(filterHint.name);
+    const match = analysisResult.find(it => (it.metadata?.name || '') === filterHint.name);
+    if (match) handleSelect(match);
+  }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
   const [multiOnly, setMultiOnly] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [params, setParams] = useState<RegionParams>(DEFAULT_REGION_PARAMS);
@@ -161,14 +168,10 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     const tick = () => {
       const el = audioRef.current;
       if (el && !el.paused) {
-        if (stopAtRef.current != null) {
-          if (el.currentTime >= stopAtRef.current) { el.pause(); stopAtRef.current = null; }
-        } else {
-          const loop = loopRegionRef.current;
-          const start = loop ? loop.start : 0;
-          const end = loop ? loop.end : (lengthRef.current || el.duration || 0);
-          if (end > 0 && (el.currentTime >= end - 0.004 || el.currentTime < start - 0.05)) el.currentTime = start;
-        }
+        // A one-shot region preview stops at its out-point. Otherwise playback runs straight
+        // to the natural end — no looping (the region loop-on-hover was resetting currentTime
+        // every frame, which is the "stalls and repeats the start" bug).
+        if (stopAtRef.current != null && el.currentTime >= stopAtRef.current) { el.pause(); stopAtRef.current = null; }
         // Sound the fades: duck the gain over the containing region's fade-in/out windows,
         // matching the linear ramp the exporter applies.
         const g = gainRef.current;
@@ -190,48 +193,74 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     return () => cancelAnimationFrame(id);
   }, []);
 
-  const setupAudioAndDetect = async (src: string, savedRegions: Region[], nativePath: string | null) => {
+  const setupAudioAndDetect = async (src: string, savedRegions: Region[], nativePath: string | null, lengthHint = 0) => {
     const gen = ++loadGenRef.current;
     setDecoding(true);
     samplesRef.current = null;
-    setRegions([]);
+    // Show the .PEAK's stored regions right away, so a file the scan found N regions in
+    // never reads as "0 regions" while (or if) the live re-detect can't run.
+    setRegions(savedRegions);
     setSelRegion(null);
     setChunkUcs({});
     setExamining(new Set());
     // On desktop with a real path, detect/slice/analyze run natively in-process; otherwise
     // (web, or a dropped file with no path) they run in the WASM worker.
     extractorEngine.setNative(nativePath);
+
+    // Display waveform: decode via Web Audio, best-effort. This can intermittently FAIL for
+    // MP3 in the WebKitGTK webview, so it must not gate detection — the native detect decodes
+    // the file itself. On web the worker session needs this PCM, so load() runs only here.
+    let decodedOk = false;
+    if (src) {
+      try {
+        if (audioRef.current) {
+          document.querySelectorAll('audio').forEach(a => a.pause());
+          audioRef.current.src = src;
+          audioRef.current.currentTime = 0;
+          // Auto-play on select (the click that selected the file is the user gesture).
+          stopAtRef.current = null;
+          loopRegionRef.current = null;
+          ensureAudioGraph();
+          audioRef.current.play().catch(() => {});
+        }
+        if (!decodeCtxRef.current) {
+          decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        }
+        const buf = await (await fetch(src)).arrayBuffer();
+        if (gen !== loadGenRef.current) return;
+        // decodeAudioData detaches the buffer, so decode a copy and keep `buf` for the WAV
+        // fallback (WebKitGTK's Web Audio decode intermittently fails on plain WAV).
+        let decoded: AudioBuffer | null = null;
+        try { decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0)); }
+        catch { decoded = decodeWav(buf, decodeCtxRef.current); }
+        if (gen !== loadGenRef.current) return;
+        if (!decoded) throw new Error('undecodable');
+        const mono = toMono(decoded);
+        samplesRef.current = mono;
+        lengthRef.current = decoded.duration;
+        sampleRateRef.current = decoded.sampleRate;
+        if (!nativePath) await extractorEngine.load(mono, decoded.sampleRate); // web worker session
+        decodedOk = true;
+      } catch {
+        samplesRef.current = null; // waveform trace stays blank, but detection can still run
+      }
+    }
+    if (!decodedOk && nativePath && lengthHint > 0) lengthRef.current = lengthHint; // give the overlay a time base
+
+    // Detect chunks. Native (desktop) decodes from the path itself, so it runs even when the
+    // display decode above failed; the WASM worker path needs the loaded PCM (decodedOk).
     try {
-      if (audioRef.current) {
-        document.querySelectorAll('audio').forEach(a => a.pause());
-        audioRef.current.src = src;
-        audioRef.current.currentTime = 0;
-        // Auto-play on select (the click that selected the file is the user gesture).
-        stopAtRef.current = null;
-        loopRegionRef.current = null;
-        ensureAudioGraph();
-        audioRef.current.play().catch(() => {});
+      if (gen !== loadGenRef.current) return;
+      if (nativePath || decodedOk) {
+        const fresh = await extractorEngine.detect(toEngineParams(params));
+        if (gen !== loadGenRef.current) return;
+        // If the live detect comes back empty but the record already knows regions, keep the
+        // stored ones rather than wiping to nothing.
+        setRegions(fresh.length ? reseedNames(fresh, savedRegions) : savedRegions);
       }
-      if (!decodeCtxRef.current) {
-        decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      const buf = await (await fetch(src)).arrayBuffer();
-      if (gen !== loadGenRef.current) return;
-      const decoded = await decodeCtxRef.current.decodeAudioData(buf);
-      if (gen !== loadGenRef.current) return;
-      const mono = toMono(decoded);
-      samplesRef.current = mono;
-      lengthRef.current = decoded.duration;
-      sampleRateRef.current = decoded.sampleRate;
-      // Hand the decoded PCM to the engine worker once; it holds it for every re-detect.
-      await extractorEngine.load(mono, decoded.sampleRate);
-      if (gen !== loadGenRef.current) return;
-      const fresh = await extractorEngine.detect(toEngineParams(params));
-      if (gen !== loadGenRef.current) return;
-      setRegions(reseedNames(fresh, savedRegions));
+      // else: couldn't decode or detect — leave the stored regions in place (set above).
     } catch {
-      samplesRef.current = null;
-      setRegions([]);
+      /* keep the stored regions set above */
     } finally {
       if (gen === loadGenRef.current) setDecoding(false);
     }
@@ -242,10 +271,15 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     setSaveMsg('');
     onSound?.(item?.metadata?.name || '');
     const src = await resolveAudioUrl(audioFiles, item);
-    if (!src) { setDecoding(false); return; }
-    // Desktop can decode the real file natively; the record's path is the filesystem path.
-    const nativePath = isTauri() ? (item?.metadata?.path || null) : null;
-    await setupAudioAndDetect(src, item.regions?.regions || [], nativePath);
+    // Desktop can decode + detect the real file natively — but ONLY when the record carries
+    // a real absolute path. The demo pack (and browser-scanned .PEAKs) record a relative
+    // web path that is not a file on disk; handing that to the native engine just fails, so
+    // it must go through the decoded-blob / worker path instead.
+    const path = String(item?.metadata?.path || '');
+    const isAbs = /^([A-Za-z]:[\\/]|\/)/.test(path);
+    const nativePath = isTauri() && isAbs ? path : null;
+    if (!src && !nativePath) { setDecoding(false); return; }
+    await setupAudioAndDetect(src || '', item.regions?.regions || [], nativePath, Number(item?.metadata?.length_seconds) || 0);
   };
 
   const loadDroppedFile = async (file: File) => {
@@ -334,8 +368,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     if (!el.paused) { el.pause(); return; }
     ensureAudioGraph();
     stopAtRef.current = null;
-    loopRegionRef.current = null;
-    if (el.currentTime >= (lengthRef.current || 0)) el.currentTime = 0;
+    if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
     el.play().catch(() => {});
   };
 
@@ -346,24 +379,21 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     return el && len > 0 ? el.currentTime / len : null;
   };
 
-  const regionAtTime = (t: number) => regions.findIndex(r => t >= r.start_seconds && t <= r.end_seconds);
-  // Hovering a position (in seconds) on either waveform: loop the region under it, and if
-  // playing jump to its start; null / between regions returns to the full-file loop.
-  const hoverAtTime = (t: number | null) => {
-    if (t == null) { loopRegionRef.current = null; return; }
-    const i = regionAtTime(t);
-    if (i < 0) { loopRegionRef.current = null; return; }
-    const r = regions[i];
-    const prev = loopRegionRef.current;
-    loopRegionRef.current = { start: r.start_seconds, end: r.end_seconds };
+  // Mouse over the circular player → start playback (from the current position, or the top
+  // if it had reached the end). No-op if already playing. Clicking the ring seeks — onScrub.
+  const playFromHover = () => {
     const el = audioRef.current;
-    if (el && !el.paused && (!prev || Math.abs(prev.start - r.start_seconds) > 1e-4)) el.currentTime = r.start_seconds;
+    if (!el || !el.paused) return;
+    ensureAudioGraph();
+    if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
+    el.play().catch(() => {});
   };
+  // Click / drag on a waveform → seek there (and play).
   const onScrub = (f: number) => {
     const el = audioRef.current;
     if (!el) return;
+    ensureAudioGraph();
     stopAtRef.current = null;
-    loopRegionRef.current = null;
     el.currentTime = f * (lengthRef.current || el.duration || 0);
     if (el.paused) el.play().catch(() => {});
   };
@@ -491,7 +521,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const waveCircle = (
     <WaveCircle samples={samplesRef.current} color={color} arcs={arcs} playing={playing} hasSelection={!!selectedItem}
       onPlay={playAll} getProgress={progress} onScrub={onScrub} onWheel={stepRegion} isNarrow={isNarrow}
-      onHover={(f) => hoverAtTime(f == null ? null : f * (lengthRef.current || 0))} />
+      onHover={(f) => { if (f != null) playFromHover(); }} />
   );
 
   return (
@@ -542,7 +572,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
               </div>
 
               <WavePlayer samples={samplesRef.current} length={lengthRef.current} regions={regions} color={color}
-                onUpdateRegion={updateRegion} onHoverTime={hoverAtTime} getProgress={progress} />
+                onUpdateRegion={updateRegion} onHoverTime={() => {}} getProgress={progress} />
 
               {/* Mobile: the play circle sits right under the slices, before the text fields. */}
               {isNarrow && waveCircle}

@@ -66,9 +66,7 @@ export function drawSpectrumTrace(ctx: CanvasRenderingContext2D, spec: Spectrum,
     ctx.fillStyle = 'rgba(127,214,226,0.7)';
     ctx.fillText(flabel, X, 12);
   }
-  ctx.textAlign = 'right';
-  ctx.fillStyle = color;
-  ctx.fillText('spectrum', w - 4, 2);
+  // ('spectrum' label lives in the shared legend the Examiner draws top-right.)
 
   // Root-note fundamental as a vertical marker on the frequency axis.
   const rf = noteToFreq(item?.musicality?.root_note_name);

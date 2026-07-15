@@ -1,8 +1,10 @@
-// The bottom-left field/value details table for the selected sample.
-//
-// The record is grouped (metadata, classification, envelope, ...), so listing its
-// top-level entries would just print seven "[object Object]" rows. Walk into each
-// group and show its fields under a group heading.
+import { useState } from 'react';
+
+// The bottom-left field/value explorer for the selected sample. A COMPLETE, dynamic dump:
+// it walks the record recursively, so every field at every depth shows — nested objects
+// and arrays-of-objects included (e.g. ucs.alternatives → alt 1/2/3, each with its own
+// category / subcategory / id / probability). A button bar (in place of the old
+// Field/Value header) isolates a single top-level parent group.
 interface Props {
   item: any;
 }
@@ -11,7 +13,15 @@ const cell = (color: string): React.CSSProperties => ({
   padding: '0.2rem 0.4rem', color, wordBreak: 'break-word',
 });
 
-/** Render a leaf value: arrays flattened, numbers fixed, absent shown as a dash. */
+const isObj = (v: any) => typeof v === 'object' && v !== null;
+const isPlainObj = (v: any) => isObj(v) && !Array.isArray(v);
+// Expandable = has structure worth recursing into: a non-empty object, or an array that
+// holds at least one object. A primitive, or an array of only primitives, is a leaf.
+const isExpandable = (v: any) =>
+  (isPlainObj(v) && Object.keys(v).length > 0) ||
+  (Array.isArray(v) && v.some(isObj));
+
+/** Format a leaf value: primitive-arrays flattened, numbers fixed, absent shown as a dash. */
 function format(v: any): string {
   if (v === null || v === undefined) return '—';
   if (Array.isArray(v)) return v.length ? v.map(format).join(', ') : '—';
@@ -20,62 +30,172 @@ function format(v: any): string {
   return String(v);
 }
 
-const isGroup = (v: any) => typeof v === 'object' && v !== null && !Array.isArray(v);
+// Array elements that are objects get a friendly 1-based label (alt "#1", region "#2", …);
+// object keys keep their name.
+const childEntries = (v: any): [string, any][] =>
+  Array.isArray(v) ? v.map((e, i) => [`#${i + 1}`, e] as [string, any]) : Object.entries(v);
+
+// A tiny, dependency-free YAML emitter for the PEAK record (plain JSON: objects, arrays,
+// numbers, strings, booleans, null). Enough for a faithful, human-readable clipboard dump.
+function yamlScalar(v: any): string {
+  if (v === null || v === undefined) return 'null';
+  if (typeof v === 'boolean') return v ? 'true' : 'false';
+  if (typeof v === 'number') return Number.isFinite(v) ? String(v) : 'null';
+  const s = String(v);
+  // Quote when the string could be misread as another type or would break flow parsing.
+  const needsQuote =
+    s === '' ||
+    /^\s|\s$/.test(s) ||
+    /[:#\-?,[\]{}&*!|>'"%@`]/.test(s) ||
+    /^(true|false|null|yes|no|on|off|~)$/i.test(s) ||
+    /^[+-]?(\d|\.\d)/.test(s);
+  return needsQuote
+    ? `"${s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`
+    : s;
+}
+
+function yamlLines(value: any, indent: number): string[] {
+  const pad = '  '.repeat(indent);
+  if (Array.isArray(value)) {
+    if (value.length === 0) return [`${pad}[]`];
+    return value.flatMap((el) => {
+      if (isObj(el)) {
+        const sub = yamlLines(el, indent + 1);
+        // Fold the item's first child onto the "- " marker so it reads as one block.
+        return sub.length
+          ? [`${pad}- ${sub[0].slice((indent + 1) * 2)}`, ...sub.slice(1)]
+          : [`${pad}-`];
+      }
+      return [`${pad}- ${yamlScalar(el)}`];
+    });
+  }
+  if (isPlainObj(value)) {
+    const keys = Object.keys(value);
+    if (keys.length === 0) return [`${pad}{}`];
+    return keys.flatMap((k) => {
+      const v = value[k];
+      const filled = isObj(v) && (Array.isArray(v) ? v.length : Object.keys(v).length);
+      if (filled) return [`${pad}${k}:`, ...yamlLines(v, indent + 1)];
+      if (isObj(v)) return [`${pad}${k}: ${Array.isArray(v) ? '[]' : '{}'}`];
+      return [`${pad}${k}: ${yamlScalar(v)}`];
+    });
+  }
+  return [`${pad}${yamlScalar(value)}`];
+}
+
+/** Serialize the whole PEAK record to a YAML document string. */
+function toYaml(item: any): string {
+  return yamlLines(item, 0).join('\n') + '\n';
+}
+
+/** Recursively render rows for one (label, value). Depth drives the indent. */
+function renderNode(label: string, value: any, depth: number, keyPath: string): React.ReactNode[] {
+  const indent = { paddingLeft: `${0.4 + depth * 0.85}rem` };
+
+  if (!isExpandable(value)) {
+    return [
+      <tr key={keyPath} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', verticalAlign: 'top' }}>
+        <td style={{ ...cell('#3B82F6'), ...indent }}>{label}</td>
+        <td style={cell('#FCD34D')}>{format(value)}</td>
+      </tr>,
+    ];
+  }
+
+  const heading = (
+    <tr key={`${keyPath}::h`} style={{ background: depth === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)' }}>
+      <td colSpan={2} style={{ ...indent, padding: '0.25rem 0.4rem', color: 'var(--text-secondary)', fontWeight: 600, letterSpacing: '0.03em' }}>
+        {label}
+      </td>
+    </tr>
+  );
+
+  const entries = childEntries(value);
+  const children = entries.flatMap(([k, cv]) => renderNode(k, cv, depth + 1, `${keyPath}.${k}`));
+  return [heading, ...children];
+}
 
 export default function FieldValueTable({ item }: Props) {
-  // Group rows first, then any stray top-level leaf, so nothing is hidden.
-  const groups = item ? Object.entries(item).filter(([, v]) => isGroup(v)) : [];
-  const loose = item ? Object.entries(item).filter(([, v]) => !isGroup(v)) : [];
+  // Top-level groups (the objects) drive the isolation buttons; any stray top-level leaf
+  // (a bare number/string on the record) is shown too so nothing is hidden.
+  const entries: [string, any][] = item ? Object.entries(item) : [];
+  const groups = entries.filter(([, v]) => isPlainObj(v));
+  const loose = entries.filter(([, v]) => !isPlainObj(v));
+
+  // Isolate a single parent group (null = show all). If the remembered group is absent
+  // from the newly selected record, fall back to showing everything.
+  const [only, setOnly] = useState<string | null>(null);
+  const activeOnly = only && groups.some(([g]) => g === only) ? only : null;
+  const shownGroups = activeOnly ? groups.filter(([g]) => g === activeOnly) : groups;
+
+  const groupBtn: React.CSSProperties = { padding: '0.1rem 0.4rem', fontSize: '0.68rem' };
+
+  // Copy the whole PEAK record as YAML to the clipboard, with a brief "Copied!" confirmation.
+  const [copied, setCopied] = useState(false);
+  const copyYaml = async () => {
+    if (!item) return;
+    try {
+      await navigator.clipboard.writeText(toYaml(item));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.75rem', tableLayout: 'fixed' }}>
-      <colgroup>
-        <col style={{ width: '105px' }} />
-        <col />
-      </colgroup>
-      <thead style={{ position: 'sticky', top: 0, background: '#1A1D24' }}>
-        <tr>
-          <th style={{ padding: '0.2rem 0.4rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Field</th>
-          <th style={{ padding: '0.2rem 0.4rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {!item && (
-          <tr><td colSpan={2} style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>Select a sample</td></tr>
-        )}
+    <>
+      {/* Parent-group isolation buttons — the replacement for the Field/Value header. */}
+      {item && (
+        <div style={{ position: 'sticky', top: 0, zIndex: 2, background: '#1A1D24', display: 'flex', flexWrap: 'wrap', gap: '3px', padding: '0.3rem 0.4rem', borderBottom: '1px solid var(--border-color)' }}>
+          <button className={`btn ${!activeOnly ? 'primary' : 'secondary'}`} style={groupBtn} onClick={() => setOnly(null)}>All</button>
+          {groups.map(([g]) => (
+            <button key={g} className={`btn ${activeOnly === g ? 'primary' : 'secondary'}`} style={groupBtn}
+              onClick={() => setOnly(activeOnly === g ? null : g)}>{g}</button>
+          ))}
+        </div>
+      )}
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.75rem', tableLayout: 'fixed' }}>
+        <colgroup>
+          <col style={{ width: '38%' }} />
+          <col />
+        </colgroup>
+        <tbody>
+          {!item && (
+            <tr><td colSpan={2} style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>Select a sample</td></tr>
+          )}
 
-        {groups.map(([group, fields]: [string, any]) => {
-          const entries = Object.entries(fields);
-          return [
-            <tr key={group} style={{ background: 'rgba(255,255,255,0.04)' }}>
-              <td colSpan={2} style={{ padding: '0.25rem 0.4rem', color: 'var(--text-secondary)', fontWeight: 600, letterSpacing: '0.03em' }}>
-                {group}
-              </td>
-            </tr>,
-            ...(entries.length === 0
+          {shownGroups.flatMap(([group, fields]) =>
+            // An empty group means "analyzed structure exists but has no fields yet".
+            isPlainObj(fields) && Object.keys(fields).length === 0
               ? [
-                  <tr key={`${group}-empty`} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td colSpan={2} style={{ ...cell('var(--text-secondary)'), fontStyle: 'italic' }}>
-                      not analyzed — re-scan to fill in
-                    </td>
+                  <tr key={`${group}::h`} style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <td colSpan={2} style={{ padding: '0.25rem 0.4rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{group}</td>
+                  </tr>,
+                  <tr key={`${group}::empty`} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td colSpan={2} style={{ ...cell('var(--text-secondary)'), paddingLeft: '1.25rem', fontStyle: 'italic' }}>not analyzed — re-scan to fill in</td>
                   </tr>,
                 ]
-              : entries.map(([k, v]) => (
-                  <tr key={`${group}.${k}`} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', verticalAlign: 'top' }}>
-                    <td style={cell('#3B82F6')}>{k}</td>
-                    <td style={cell('#FCD34D')}>{format(v)}</td>
-                  </tr>
-                ))),
-          ];
-        })}
+              : renderNode(group, fields, 0, group)
+          )}
 
-        {loose.map(([k, v]) => (
-          <tr key={k} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', verticalAlign: 'top' }}>
-            <td style={cell('#3B82F6')}>{k}</td>
-            <td style={cell('#FCD34D')}>{format(v)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+          {!activeOnly && loose.map(([k, v]) => (
+            <tr key={k} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', verticalAlign: 'top' }}>
+              <td style={cell('#3B82F6')}>{k}</td>
+              <td style={cell('#FCD34D')}>{format(v)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Footer: copy the entire PEAK record to the clipboard as YAML. Sticks to the
+          bottom of the scrolling panel so it's always reachable. */}
+      {item && (
+        <div style={{ position: 'sticky', bottom: 0, zIndex: 2, background: '#1A1D24', padding: '0.35rem 0.4rem', borderTop: '1px solid var(--border-color)' }}>
+          <button className={`btn ${copied ? 'primary' : 'secondary'}`} style={{ width: '100%', padding: '0.3rem 0.4rem', fontSize: '0.72rem' }} onClick={copyYaml}>
+            {copied ? 'Copied!' : 'Copy PEAK data to YAML'}
+          </button>
+        </div>
+      )}
+    </>
   );
 }

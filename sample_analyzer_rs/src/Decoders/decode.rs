@@ -10,6 +10,7 @@
 //! numbers honestly and let the consumer decide how much to trust them; see
 //! `LOSSY_UNRELIABLE` in ucs.rs, which is where that decision is actually made.
 use std::fs::File;
+use std::io::Cursor;
 use std::path::Path;
 
 use symphonia::core::audio::SampleBuffer;
@@ -95,10 +96,54 @@ pub fn read_audio(path: &Path) -> Option<Decoded> {
 
     let file = File::open(path).ok()?;
     let stream = MediaSourceStream::new(Box::new(file), Default::default());
+    decode_symphonia(stream, &ext)
+}
 
+/// Decode from an in-memory buffer instead of a path — the entry point the WASM
+/// build calls so the web front can render a preview for compressed formats
+/// (MP3/OGG/M4A/AAC/FLAC/AIFF) that the browser's own decoder may reject.
+///
+/// `name` is only used for its extension hint. When it is absent or wrong, WAV is
+/// still caught by its RIFF/WAVE magic, and every other codec is content-probed by
+/// symphonia — so a blob URL with no extension still decodes.
+pub fn read_audio_buffer(buffer: &[u8], name: &str) -> Option<Decoded> {
+    let ext = name
+        .rsplit('.')
+        .next()
+        .unwrap_or("")
+        .to_ascii_lowercase();
+
+    // WAV by extension or by RIFF/WAVE magic → the exact, well-tested hound path.
+    let is_wav_magic =
+        buffer.len() >= 12 && &buffer[0..4] == b"RIFF" && &buffer[8..12] == b"WAVE";
+    if ext == "wav" || ext == "wave" || is_wav_magic {
+        if let Some((mono, raw, sample_rate, bit_depth, channels)) =
+            crate::wav::read_wav_buffer(buffer)
+        {
+            return Some(Decoded {
+                mono,
+                raw,
+                sample_rate,
+                bit_depth,
+                channels,
+                source_format: "WAV".to_string(),
+                lossy: false,
+            });
+        }
+    }
+
+    // symphonia's Cursor MediaSource needs an owned, 'static buffer.
+    let stream = MediaSourceStream::new(Box::new(Cursor::new(buffer.to_vec())), Default::default());
+    decode_symphonia(stream, &ext)
+}
+
+/// Shared symphonia decode loop for `read_audio` (file) and `read_audio_buffer`
+/// (in-memory). `ext` is the lowercase extension used as a probe hint and to label
+/// the format; it may be empty, in which case symphonia probes by content.
+fn decode_symphonia(stream: MediaSourceStream, ext: &str) -> Option<Decoded> {
     let mut hint = Hint::new();
     if !ext.is_empty() {
-        hint.with_extension(&ext);
+        hint.with_extension(ext);
     }
 
     let probed = symphonia::default::get_probe()
@@ -171,8 +216,8 @@ pub fn read_audio(path: &Path) -> Option<Decoded> {
         // Lossy codecs have no bit depth; reporting one would be a lie.
         bit_depth: params.bits_per_sample.unwrap_or(0) as u16,
         channels: channels as u16,
-        source_format: format_name(&ext).to_string(),
-        lossy: is_lossy(&ext),
+        source_format: format_name(ext).to_string(),
+        lossy: is_lossy(ext),
     })
 }
 

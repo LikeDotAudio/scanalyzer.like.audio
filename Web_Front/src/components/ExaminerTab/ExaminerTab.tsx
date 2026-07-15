@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { resolveAudioUrl, hasAudio, isTauri } from '../../audioLinking';
 import { generateNewName } from '../../renameConfig';
-import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
+import { computeSpectrum, toMono, noteToFreq, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from '../ScopeBar';
 import { complementColor, ucsColor, ucsSubColor, matchesScope } from '../../groupColors';
@@ -9,11 +9,14 @@ import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { categoryEmoji, categoryLabel, subcategoryLabel } from '../../categoryEmoji';
 import { useIsNarrow } from '../../useIsNarrow';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
-import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
+import { drawEnvelope, drawAxesAndName } from '../examiner/drawEnvelope';
 import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 import RadialWaveform from '../examiner/RadialWaveform';
+import SampleFooter, { type FooterTab } from '../SampleFooter';
+import { decodeWav } from '../examiner/decodeWav';
+import { decodeViaWasm } from '../examiner/wasmDecode';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 
 interface ExaminerTabProps {
@@ -24,6 +27,8 @@ interface ExaminerTabProps {
   onSendToExtractor?: (name: string) => void;
   // "Examine this" from the 3D cloud: filter the list to this name (nonce re-fires repeats).
   filterHint?: { name: string; nonce: number };
+  // Push the current sample to another tab (the footer's Extract / 2D / 3D buttons).
+  onPush?: (tab: FooterTab, name: string) => void;
 }
 
 
@@ -94,7 +99,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor, filterHint }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor, filterHint, onPush }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const isNarrow = useIsNarrow();
   const [autoPlay, setAutoPlay] = useState(true);
@@ -417,17 +422,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     const ccol = complementColor(gcol);
     const spec = computeSpectrum(mono, buffer.sampleRate);
 
-    // BPM: prefer the record's value; for loops with none, estimate in-browser.
-    let bpm = Number(item?.musicality?.beats_per_minute) || 0;
-    let bpmEst = false;
-    if (!bpm && (item?.classification?.timbre === 'Loop' || item?.classification?.length_class === 'Loop')) {
-      bpm = estimateBpm(mono, buffer.sampleRate);
-      bpmEst = bpm > 0;
-    }
-
     // Two stacked panes sharing one time axis: the WAVEFORM(s) live in the top half, the
-    // LOUDNESS (+ stereo PHASE) in the bottom half. The spectrum, envelope, beats and the
-    // root/note markers all span the FULL height, across both panes.
+    // LOUDNESS (+ stereo PHASE) in the bottom half. The spectrum, envelope and the root/note
+    // markers all span the FULL height, across both panes.
     const plotMid = geo.plotTop + geo.plotH / 2;
     const halfH = geo.plotH / 2;
     const geoTop: PlotGeo = {
@@ -478,8 +475,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, plotMid + 0.5); ctx.lineTo(w, plotMid + 0.5); ctx.stroke();
 
-    // Full-height overlays across both panes.
-    drawBeats(ctx, geo, duration, bpm, bpmEst);
+    // Full-height overlay across both panes.
     drawEnvelope(ctx, item, duration, geo);
 
     // Regions found during the scan (silence-separated segments) — a colour bar per
@@ -498,6 +494,40 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     }
 
     drawAxesAndName(ctx, item, duration, geo);
+
+    // Legend (top-right): one clear panel with a colour swatch per overlay, on a dark
+    // backing so it reads against the busy spectrum — replaces the faint inline labels.
+    const legend: { label: string; color: string }[] = [
+      { label: 'spectrum', color: ccol },
+      { label: 'loudness', color: '#FCD34D' },
+    ];
+    if (buffer.numberOfChannels >= 2) legend.push({ label: 'phase', color: '#FB7185' });
+    ctx.font = '600 11px system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    const rowH = 15, sw = 14, padX = 7, gap = 6;
+    const boxW = padX * 2 + sw + gap + Math.max(...legend.map(e => ctx.measureText(e.label).width));
+    const boxH = padX + legend.length * rowH;
+    const bx = w - boxW - 6, by = 4;
+    ctx.fillStyle = 'rgba(0,0,0,0.62)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(bx, by, boxW, boxH, 4); else ctx.rect(bx, by, boxW, boxH);
+    ctx.fill();
+    ctx.stroke();
+    legend.forEach((e, i) => {
+      const cy = by + padX / 2 + rowH / 2 + i * rowH;
+      ctx.strokeStyle = e.color;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(bx + padX, cy);
+      ctx.lineTo(bx + padX + sw, cy);
+      ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.fillText(e.label, bx + padX + sw + gap, cy);
+    });
+    ctx.textAlign = 'left';
   };
 
   // Drive the virtualized window AND the audio prefetch off one scroll event.
@@ -597,8 +627,20 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (!fresh()) return;
-      const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+      // decodeAudioData detaches the buffer, so decode a COPY and keep `buf` for the
+      // fallbacks below — WebKitGTK's Web Audio decode fails on plain WAV intermittently
+      // and on compressed formats outright. decodeWav catches WAV; the WASM analyzer
+      // (symphonia) catches MP3/OGG/M4A/AAC/FLAC/AIFF.
+      let decoded: AudioBuffer | null = null;
+      try {
+        decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0));
+      } catch {
+        decoded =
+          decodeWav(buf, decodeCtxRef.current) ??
+          (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
+      }
       if (!fresh()) return;
+      if (!decoded) return; // couldn't decode by either path — leave the preview blank
       lastBufferRef.current = decoded;
       lastItemRef.current = item;
       setRingSamples(toMono(decoded));
@@ -855,37 +897,29 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
 
           {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece).
               On mobile it's first (order 1) with a fixed height so the canvas has room. */}
-          <div style={{ ...(isNarrow ? { width: '100%', order: 1, minHeight: '260px', borderBottom: '1px solid var(--border-color)' } : { flex: 1, minWidth: 0, borderRight: '1px solid var(--border-color)' }), position: 'relative', background: '#0A0A0A', padding: '0.75rem' }}>
+          <div style={{ ...(isNarrow ? { width: '100%', order: 1, minHeight: '320px', borderBottom: '1px solid var(--border-color)' } : { flex: 1, minWidth: 0, borderRight: '1px solid var(--border-color)' }), display: 'flex', flexDirection: 'column', background: '#0A0A0A' }}>
               {selectedItem ? (
                   <>
-                      <div style={{ width: '100%', height: isNarrow ? '230px' : 'calc(100% - 1.5rem)', position: 'relative' }}>
-                        <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
-                        <div ref={playheadRef} style={{
-                          position: 'absolute', top: 0, bottom: 0, left: 0,
-                          width: '2px', backgroundColor: 'rgb(244, 144, 44)', zIndex: 10,
-                          pointerEvents: 'none', display: 'none'
-                        }}>
-                          <div style={{ position: 'absolute', top: 0, left: '-4px', width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '6px solid rgb(244, 144, 44)' }} />
+                      {/* Waveform fills the pane; the controls live in the footer strip below —
+                          never overlapping the wave. */}
+                      <div style={{ flex: 1, minHeight: 0, position: 'relative', padding: '0.75rem' }}>
+                        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                          <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
+                          <div ref={playheadRef} style={{
+                            position: 'absolute', top: 0, bottom: 0, left: 0,
+                            width: '2px', backgroundColor: 'rgb(244, 144, 44)', zIndex: 10,
+                            pointerEvents: 'none', display: 'none'
+                          }}>
+                            <div style={{ position: 'absolute', top: 0, left: '-4px', width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '6px solid rgb(244, 144, 44)' }} />
+                          </div>
                         </div>
                       </div>
                       <audio ref={audioRef} style={{ display: 'none' }}
                         onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}
                         onEnded={() => { setIsPlaying(false); handleEnded(); }} />
-                      <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                          <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>
-                          {onSendToExtractor && <button className="btn secondary" onClick={() => selectedItem?.metadata?.name && onSendToExtractor(selectedItem.metadata.name)} title="Open this file in the Extractor to slice it">✂ Extractor</button>}
-                          <button className={`btn ${isPlaying ? 'primary' : 'secondary'}`} onClick={togglePlay}>{isPlaying ? '⏸ Pause' : '▶ Play'}</button>
-                          {digging
-                            ? <button className="btn primary" style={{ background: '#ef4444' }} onClick={stopDig}>■ Stop DIG</button>
-                            : <button className="btn primary" onClick={startDig}>⛏ DIG</button>}
-                          <label className="btn secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <input type="checkbox" checked={autoPlay} onChange={e => setAutoPlay(e.target.checked)} /> auto-play
-                          </label>
-                          <span className="text-secondary" style={{ fontSize: '0.8rem' }}>{selectedItem.metadata?.length_seconds ? `${selectedItem.metadata.length_seconds.toFixed(2)} s · ${Math.round(selectedItem.metadata.length_seconds * (Number(selectedItem.metadata.sample_rate) || 44100)).toLocaleString()} smp` : ''}</span>
-                      </div>
                   </>
               ) : (
-                  <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: 'var(--text-secondary)' }}>
+                  <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--text-secondary)' }}>
                       No sample selected
                   </div>
               )}
@@ -909,6 +943,21 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
           </div>
 
       </div>
+
+      {/* The transport now lives in a real footer at the bottom of the tab — Download /
+          Play / DIG / auto-play + push-to-tab — not floating over the waveform. */}
+      <SampleFooter
+        item={selectedItem}
+        playing={isPlaying}
+        digging={digging}
+        autoPlay={autoPlay}
+        onDownload={handleDownload}
+        onPlay={togglePlay}
+        onDig={digging ? stopDig : startDig}
+        onToggleAutoPlay={setAutoPlay}
+        current="examiner"
+        onPush={(tab, name) => { if (onPush) onPush(tab, name); else if (tab === 'extractor') onSendToExtractor?.(name); }}
+      />
     </div>
   );
 }

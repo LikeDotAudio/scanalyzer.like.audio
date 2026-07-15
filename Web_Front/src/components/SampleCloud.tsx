@@ -4,32 +4,6 @@ import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { subKey, ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
 import type { Taxonomy } from '../groupColors'
-import { categoryEmoji } from '../categoryEmoji'
-
-// Emoji → a cached canvas texture, drawn once and reused as the sprite for every point in
-// that category. serif renders colour emoji on most platforms; a transparent background +
-// alphaTest keeps the glyph crisp with no black box.
-const emojiTexCache = new Map<string, THREE.CanvasTexture>();
-function emojiTexture(emoji: string): THREE.CanvasTexture {
-  const cached = emojiTexCache.get(emoji);
-  if (cached) return cached;
-  const S = 64;
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = S;
-  const ctx = canvas.getContext('2d')!;
-  ctx.clearRect(0, 0, S, S);
-  ctx.font = `${Math.floor(S * 0.8)}px serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(emoji, S / 2, S / 2 + 2);
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.needsUpdate = true;
-  emojiTexCache.set(emoji, tex);
-  return tex;
-}
-
-// Points must not steal taps from the shapes beneath them (selection raycasts the shapes).
-const noRaycast = () => {};
 
 // Feature registry: label → how to read it. Numeric features are normalized
 // across the dataset; categorical ones are spread into bands. Mirrors the
@@ -212,21 +186,9 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
   }, [sData, hiddenGroups, allData, dummy, shape, taxonomy]);
 
-  // Tap-to-select that works on both mouse and touch. R3F's onClick is unreliable on
-  // touch — a few px of finger travel during a tap reads as an OrbitControls rotate and
-  // the click never fires. So we track pointer-down and only treat pointer-up as a pick
-  // when the pointer barely moved (a tap, not a drag).
-  const downRef = useRef<{ x: number; y: number; id: number | undefined } | null>(null);
-  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
-    downRef.current = { x: e.clientX, y: e.clientY, id: e.instanceId };
-  };
-  const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
-    const d = downRef.current;
-    downRef.current = null;
-    if (!d) return;
-    if (Math.hypot(e.clientX - d.x, e.clientY - d.y) > 8) return; // a drag (rotate), not a tap
-    const id = e.instanceId ?? d.id;
-    if (id != null) { e.stopPropagation(); onPick(sData.origIndex[id]); }
+  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation();
+    if (e.instanceId != null) onPick(sData.origIndex[e.instanceId]);
   };
 
   if (sData.positions.length === 0) return null;
@@ -243,7 +205,7 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   else geom = <sphereGeometry args={[0.5, 10, 10]} />;
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, sData.positions.length]} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, sData.positions.length]} onClick={handleClick}>
       {geom}
       <meshBasicMaterial toneMapped={false} />
     </instancedMesh>
@@ -297,24 +259,6 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
     }
     return { shapeData: shapes, allPositions, selectedSize, selectedShape };
   }, [data, count, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, selectedIndex]);
-
-  // Emoji billboards overlaid on the shapes: group every visible point by its UCS
-  // category's emoji, so each distinct emoji is one THREE.Points draw call (camera-facing
-  // sprites). Hidden groups are skipped, mirroring the shape meshes.
-  const emojiGroups = useMemo(() => {
-    const groups = new Map<string, number[]>();
-    for (let i = 0; i < allPositions.length; i++) {
-      const [g, sg] = taxonomyKeys(data[i], taxonomy);
-      if (hiddenGroups.has(g) || (sg && hiddenGroups.has(subKey(g, sg)))) continue;
-      const emoji = categoryEmoji(g);
-      if (!emoji) continue;
-      let arr = groups.get(emoji);
-      if (!arr) { arr = []; groups.set(emoji, arr); }
-      const p = allPositions[i];
-      arr.push(p[0], p[1], p[2]);
-    }
-    return Array.from(groups.entries()).map(([emoji, pos]) => ({ emoji, positions: new Float32Array(pos) }));
-  }, [allPositions, data, hiddenGroups, taxonomy]);
 
 
 
@@ -399,16 +343,6 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
     <>
       {Object.entries(shapeData).map(([shape, sData]) => (
         <ShapeMesh key={shape} shape={shape} sData={sData} hiddenGroups={hiddenGroups} allData={data} taxonomy={taxonomy} onPick={onPick} />
-      ))}
-      {/* Emoji billboards, one THREE.Points per category emoji, floating on the shapes.
-          Raycasting disabled so they never intercept a tap meant for the shape below. */}
-      {emojiGroups.map(({ emoji, positions }) => (
-        <points key={emoji} raycast={noRaycast}>
-          <bufferGeometry>
-            <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-          </bufferGeometry>
-          <pointsMaterial map={emojiTexture(emoji)} size={2.4} sizeAttenuation transparent alphaTest={0.1} depthWrite={false} toneMapped={false} />
-        </points>
       ))}
       {selPos && (
         <mesh ref={selMeshRef} position={selPos} rotation={meshRot(selectedShape)} scale={baseScaleRef.current}>

@@ -198,14 +198,21 @@ function App() {
       const report = normalizePeakRecords(Array.isArray(peak) ? peak : []);
       const manifest: { name: string }[] = await (await fetch(`${base}/manifest.json`)).json();
       const files: File[] = [];
+      let skippedAudio = 0;
       for (const m of manifest) {
         try {
-          const blob = await (await fetch(`${base}/${encodeURIComponent(m.name)}`)).blob();
+          const res = await fetch(`${base}/${encodeURIComponent(m.name)}`);
+          const ctype = res.headers.get('content-type') || '';
+          // A missing public file falls back to the SPA index.html (HTTP 200, text/html).
+          // Blobbing that would hand GStreamer an HTML page to "decode" — skip it instead.
+          if (!res.ok || ctype.includes('text/html')) { skippedAudio++; continue; }
+          const blob = await res.blob();
           const f = new File([blob], m.name, { type: blob.type });
           (f as any).relPath = m.name;
           files.push(f);
-        } catch { /* skip a sample that failed to fetch */ }
+        } catch { skippedAudio++; }
       }
+      if (skippedAudio) console.warn(`Demo pack: ${skippedAudio} sample(s) unavailable and skipped.`);
       setAudioFiles(files);
       setAnalysisResult(report.records);
       setSchemaNotice(noticeFor(report.migrated, report.skipped));
@@ -359,7 +366,7 @@ function App() {
           Drop .PEAK file to load
         </div>
       )}
-      <Header isAnalyzing={isAnalyzing} progress={progress} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} audioRoot={audioRootLinked} currentSound={currentSound} hasData={analysisResult.length > 0} activeTab={activeTab} />
+      <Header isAnalyzing={isAnalyzing} progress={progress} onUnloadSounds={handleUnloadSounds} audioCount={audioFiles.length} audioRoot={audioRootLinked} currentSound={currentSound} sample={footerItem} hasData={analysisResult.length > 0} activeTab={activeTab} />
 
       {schemaNotice && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.4rem 0.75rem', background: 'rgba(255,190,60,0.10)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.78rem' }}>
@@ -427,7 +434,7 @@ function App() {
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
           {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
           {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} filterHint={examinerFilter} onSendToExtractor={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} />}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} filterHint={examinerFilter} onSendToExtractor={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} onPush={footerPush} />}
           {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} filterHint={extractorFilter} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
         </Suspense>
@@ -435,8 +442,9 @@ function App() {
       </main>
 
       {/* Global footer — the same transport on every page, driven by whatever sample the
-          active tab last reported. Hidden until a library is loaded. */}
-      {analysisResult.length > 0 && (
+          active tab last reported. Hidden until a library is loaded. The Examiner renders
+          its OWN footer (with DIG + auto-play), so the global one steps aside there. */}
+      {analysisResult.length > 0 && activeTab !== 'examiner' && (
         <SampleFooter
           item={footerItem}
           playing={footerPlaying}

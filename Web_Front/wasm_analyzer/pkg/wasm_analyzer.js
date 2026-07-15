@@ -1,6 +1,56 @@
 /* @ts-self-types="./wasm_analyzer.d.ts" */
 
 /**
+ * PCM decoded from a compressed/lossy file, handed back to JS so the Examiner and
+ * Extractor can draw a waveform preview on the desktop webview (WebKitGTK), whose
+ * Web Audio `decodeAudioData` rejects MP3/OGG/M4A/AAC/FLAC/AIFF. `samples` is
+ * interleaved f32 (frame-major); JS de-interleaves into an AudioBuffer.
+ */
+export class DecodedAudio {
+    static __wrap(ptr) {
+        const obj = Object.create(DecodedAudio.prototype);
+        obj.__wbg_ptr = ptr;
+        DecodedAudioFinalization.register(obj, obj.__wbg_ptr, obj);
+        return obj;
+    }
+    __destroy_into_raw() {
+        const ptr = this.__wbg_ptr;
+        this.__wbg_ptr = 0;
+        DecodedAudioFinalization.unregister(this);
+        return ptr;
+    }
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_decodedaudio_free(ptr, 0);
+    }
+    /**
+     * @returns {number}
+     */
+    get channels() {
+        const ret = wasm.decodedaudio_channels(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    get sample_rate() {
+        const ret = wasm.decodedaudio_sample_rate(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * Interleaved samples, copied into a JS-owned Float32Array.
+     * @returns {Float32Array}
+     */
+    get samples() {
+        const ret = wasm.decodedaudio_samples(this.__wbg_ptr);
+        var v1 = getArrayF32FromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v1;
+    }
+}
+if (Symbol.dispose) DecodedAudio.prototype[Symbol.dispose] = DecodedAudio.prototype.free;
+
+/**
  * @param {Uint8Array} buffer
  * @param {string} name
  * @param {string} folder
@@ -52,9 +102,29 @@ export function analyzer_version() {
         wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
     }
 }
+
+/**
+ * Decode `buffer` to interleaved PCM. `name` supplies the extension hint (may be
+ * empty — WAV is caught by magic bytes and the rest is content-probed). Returns
+ * `undefined` when the bytes can't be decoded by any supported codec.
+ * @param {Uint8Array} buffer
+ * @param {string} name
+ * @returns {DecodedAudio | undefined}
+ */
+export function decode_audio_buffer(buffer, name) {
+    const ptr0 = passArray8ToWasm0(buffer, wasm.__wbindgen_malloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ptr1 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    const ret = wasm.decode_audio_buffer(ptr0, len0, ptr1, len1);
+    return ret === 0 ? undefined : DecodedAudio.__wrap(ret);
+}
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,
+        __wbg___wbindgen_throw_344f42d3211c4765: function(arg0, arg1) {
+            throw new Error(getStringFromWasm0(arg0, arg1));
+        },
         __wbg_error_a6fa202b58aa1cd3: function(arg0, arg1) {
             let deferred0_0;
             let deferred0_1;
@@ -93,12 +163,29 @@ function __wbg_get_imports() {
     };
 }
 
+const DecodedAudioFinalization = (typeof FinalizationRegistry === 'undefined')
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry(ptr => wasm.__wbg_decodedaudio_free(ptr, 1));
+
+function getArrayF32FromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    return getFloat32ArrayMemory0().subarray(ptr / 4, ptr / 4 + len);
+}
+
 let cachedDataViewMemory0 = null;
 function getDataViewMemory0() {
     if (cachedDataViewMemory0 === null || cachedDataViewMemory0.buffer.detached === true || (cachedDataViewMemory0.buffer.detached === undefined && cachedDataViewMemory0.buffer !== wasm.memory.buffer)) {
         cachedDataViewMemory0 = new DataView(wasm.memory.buffer);
     }
     return cachedDataViewMemory0;
+}
+
+let cachedFloat32ArrayMemory0 = null;
+function getFloat32ArrayMemory0() {
+    if (cachedFloat32ArrayMemory0 === null || cachedFloat32ArrayMemory0.byteLength === 0) {
+        cachedFloat32ArrayMemory0 = new Float32Array(wasm.memory.buffer);
+    }
+    return cachedFloat32ArrayMemory0;
 }
 
 function getStringFromWasm0(ptr, len) {
@@ -192,6 +279,7 @@ function __wbg_finalize_init(instance, module) {
     wasm = instance.exports;
     wasmModule = module;
     cachedDataViewMemory0 = null;
+    cachedFloat32ArrayMemory0 = null;
     cachedUint8ArrayMemory0 = null;
     wasm.__wbindgen_start();
     return wasm;
