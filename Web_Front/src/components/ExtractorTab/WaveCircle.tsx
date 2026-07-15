@@ -27,13 +27,8 @@ export default function WaveCircle({ samples, color, arcs, playing, hasSelection
         : { width: 340, flexShrink: 0, borderLeft: '1px solid var(--border-color)' }),
         background: '#0B0E14', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', padding: '1rem' }}>
       {hasSelection ? (
-        <>
-          <RadialWaveform samples={samples} color={color} size={280} regions={arcs}
-            onPlay={onPlay} playing={playing} getProgress={getProgress} onScrub={onScrub} onHover={onHover} />
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
-            starts at 0° (right) · wraps 360°
-          </div>
-        </>
+        <RadialWaveform samples={samples} color={color} size={280} regions={arcs}
+          onPlay={onPlay} playing={playing} getProgress={getProgress} onScrub={onScrub} onHover={onHover} />
       ) : (
         <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Circular waveform</div>
       )}
