@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Synth Pop OS.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Synth Pop OS.wav",
+    "length_seconds": 0.0899546485260771,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 2,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.00018985210752379,
+    "trailing_silence_ms": 0.11337868480725624
+  },
+  "classification": {
+    "group": "Keyboards",
+    "reason": [
+      "1) path matched \"synth\"",
+      "2) envelope Decaying (attack 0 ms, sustain 28%, 1 transient)",
+      "3) Harmonic · mid-band 67% · root C4"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Short",
+    "subgroup": "Synth",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Keyboard",
+      "Electrophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.0076870748299319724,
+    "sustain_ratio": 0.3333333333333333,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.039909297052154194,
+    "envelope_sustain_level": 0.28284786826544606,
+    "envelope_release_seconds": 0.03492063492063492,
+    "envelope_temporal_centroid": 0.12572963682228366,
+    "envelope_skewness": 0.9863276504187793,
+    "envelope_kurtosis": -0.23741636841602354,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 0.15970915875804007,
+    "onset_periodicity": 0.0,
+    "onset_rate_per_second": 11.116712881270482
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.04949782852708579,
+    "crest_factor": 4.960402953239273,
+    "zero_crossings_per_second": 2189.992437610285,
+    "complexity": 1292.1472429315338,
+    "spectral_centroid_hz": 1482.4991567580353,
+    "spectral_rolloff_hz": 2601.310814217293,
+    "spectral_flatness": 0.018862130592752505,
+    "low_band_energy": 0.005963712118401843,
+    "mid_band_energy": 0.6674773609001586,
+    "high_band_energy": 0.32655892698143946,
+    "spectral_flux": 0.03986830536041031,
+    "harmonicity": 0.6788439598386575,
+    "inharmonicity": 0.15715197885820678,
+    "partial_count": 3,
+    "mel_frequency_cepstral_coefficients": [
+      -36.49463875287559,
+      17.312243553646923,
+      6.501470947357806,
+      -3.2228154842055163,
+      -5.959598671479892,
+      -5.343566491227843,
+      -3.211505285076162,
+      -1.2242367662638332,
+      -1.2017371590520223,
+      -3.08110823110142,
+      -5.901672080927222,
+      -5.904871667407121,
+      -2.2030835444620833
+    ],
+    "spectral_centroid_mean_hz": 1036.0285900254567,
+    "spectral_centroid_deviation_hz": 83.34228025516218,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.4660975438580144,
+    "spectral_entropy": 0.2751870698731306,
+    "spectral_slope_db_per_octave": -3.0526080247608425,
+    "band_limit_high_hz": 2627.05078125,
+    "spectral_centroid_slope_hz_per_second": null,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 1.0,
+    "mid_rms": 0.04949782832728753,
+    "side_rms": 0.024409244006318467,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 588.0,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "C4",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 120.0,
+    "root_midi_note": 60,
+    "chromagram": [
+      0.49070710608499507,
+      0.3330383045799163,
+      1.0,
+      0.654596338021784,
+      0.37905982659969895,
+      0.2190097184155698,
+      0.1994526143180798,
+      0.21487955272809584,
+      0.3879114880616621,
+      0.196733187770882,
+      0.15195306459807134,
+      0.15992031512839053
+    ]
+  },
+  "unsupervised": {
+    "cluster": 6,
+    "principal_components": [
+      -1.6313094474748469,
+      -1.0238848282745576,
+      0.9328845945861035
+    ]
+  },
+  "ucs": {
+    "category": "SYNTH",
+    "subcategory": "PLUCK",
+    "id": "SYNTPluck",
+    "confidence": 0.40136616240773665,
+    "alternatives": [
+      {
+        "category": "SYNTH",
+        "subcategory": "LEAD",
+        "id": "SYNTLead",
+        "probability": 0.305,
+        "synonyms": [
+          "synth"
+        ]
+      },
+      {
+        "category": "SYNTH",
+        "subcategory": "KEYS",
+        "id": "SYNTKeys",
+        "probability": 0.162,
+        "synonyms": [
+          "synth"
+        ]
+      },
+      {
+        "category": "DESIGNED",
+        "subcategory": "SYNTHETIC",
+        "id": "DSGNSynth",
+        "probability": 0.058,
+        "synonyms": [
+          "synth"
+        ]
+      }
+    ],
+    "synonyms": [
+      "synth"
+    ],
+    "reason": "name matched [synth]; signal 0.91, tier signal_narrowable, 10 candidates in contention; gate ruled out AIRBlow (length_seconds 0.0900 < min 0.1500)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.08979591836734693,
+        "duration_seconds": 0.08979591836734693,
+        "peak_amplitude": 0.11613030812575113,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

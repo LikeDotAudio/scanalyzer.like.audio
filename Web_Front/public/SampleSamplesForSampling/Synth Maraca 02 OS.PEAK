@@ -1,0 +1,174 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Synth Maraca 02 OS.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Synth Maraca 02 OS.wav",
+    "length_seconds": 0.02505668934240363,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 2,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": -0.0004943157213305996,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Shaker",
+    "reason": [
+      "1) path matched \"maraca\"",
+      "2) envelope Sustained (attack 0 ms, sustain 74%, 1 transient)",
+      "3) Stochastic · high-band 99% · root C4"
+    ],
+    "timbre": "Bright",
+    "length_class": "Short",
+    "subgroup": "Shaker Short",
+    "audit": false,
+    "acoustic_types": [
+      "Stochastic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": []
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.009138321995464853,
+    "sustain_ratio": 0.5,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.004988662131519274,
+    "envelope_sustain_level": 0.7421083401327098,
+    "envelope_release_seconds": 0.009977324263038548,
+    "envelope_temporal_centroid": 0.18614653241683835,
+    "envelope_skewness": 0.10832389733364595,
+    "envelope_kurtosis": -1.8331224205922723,
+    "envelope_shape": "Sustained",
+    "decay_time_seconds_60db": null,
+    "onset_periodicity": null,
+    "onset_rate_per_second": 39.90950226244344
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.13773619588105698,
+    "crest_factor": 4.363398603833108,
+    "zero_crossings_per_second": 11054.932126696833,
+    "complexity": 2706.6971736900655,
+    "spectral_centroid_hz": 6561.906549658098,
+    "spectral_rolloff_hz": 9658.099547511312,
+    "spectral_flatness": 0.17654100562219752,
+    "low_band_energy": 0.0007551049084820763,
+    "mid_band_energy": 0.009395199501703881,
+    "high_band_energy": 0.9898496955898141,
+    "spectral_flux": 0.0,
+    "harmonicity": 0.0,
+    "inharmonicity": 0.0,
+    "partial_count": 0,
+    "mel_frequency_cepstral_coefficients": [
+      4.552366939183698,
+      -12.102646591523825,
+      -14.387841599597353,
+      7.780858027121329,
+      -1.98710314834874,
+      1.4241441440524556,
+      -1.8533557895900261,
+      1.789220452716881,
+      0.6087374726869157,
+      0.5731561476882913,
+      1.5206613826857924,
+      -0.5588463463198021,
+      1.3095760861465158
+    ],
+    "spectral_centroid_mean_hz": 6413.04580956093,
+    "spectral_centroid_deviation_hz": 0.0,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": null,
+    "spectral_entropy": 0.7538397008301734,
+    "spectral_slope_db_per_octave": 5.211594367267008,
+    "band_limit_high_hz": 21662.40234375,
+    "spectral_centroid_slope_hz_per_second": null,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": null,
+    "mid_rms": 0.1377361957655584,
+    "side_rms": 0.06424094216816163,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 0.0,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "C4",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 120.0,
+    "root_midi_note": 60,
+    "chromagram": [
+      0.6225894355878094,
+      0.9523351948092147,
+      0.5921334616508216,
+      1.0,
+      0.8705288469864864,
+      0.7505105542565021,
+      0.7489205408623849,
+      0.7397476599989443,
+      0.44800361476953976,
+      0.465746287257814,
+      0.7012266657001677,
+      0.5889072241959492
+    ]
+  },
+  "unsupervised": {
+    "cluster": 5,
+    "principal_components": [
+      -3.582711533384991,
+      2.637348389824906,
+      -0.6618940958068086
+    ]
+  },
+  "ucs": {
+    "category": "PERCUSSION",
+    "subcategory": "SHAKER",
+    "id": "PERCShak",
+    "confidence": 0.7574489636134044,
+    "alternatives": [
+      {
+        "category": "SYNTH",
+        "subcategory": "KEYS",
+        "id": "SYNTKeys",
+        "probability": 0.149,
+        "synonyms": [
+          "synth"
+        ]
+      },
+      {
+        "category": "DESIGNED",
+        "subcategory": "SYNTHETIC",
+        "id": "DSGNSynth",
+        "probability": 0.054,
+        "synonyms": [
+          "synth"
+        ]
+      },
+      {
+        "category": "SYNTH",
+        "subcategory": "LEAD",
+        "id": "SYNTLead",
+        "probability": 0.022,
+        "synonyms": [
+          "synth"
+        ]
+      }
+    ],
+    "synonyms": [
+      "maraca"
+    ],
+    "reason": "name matched [maraca]; signal 0.29, tier signal_separable, 6 candidates in contention; gate ruled out AIRBlow (length_seconds 0.0251 < min 0.1500)"
+  },
+  "regions": {
+    "count": 0,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": []
+  }
+}

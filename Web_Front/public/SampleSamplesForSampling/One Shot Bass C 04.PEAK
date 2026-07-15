@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "One Shot Bass C 04.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/One Shot Bass C 04.wav",
+    "length_seconds": 0.27997732426303856,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 2,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.010954721780926668,
+    "trailing_silence_ms": 49.77324263038549
+  },
+  "classification": {
+    "group": "Bass",
+    "reason": [
+      "1) path matched \"bass\"",
+      "2) envelope Decaying (attack 25 ms, sustain 47%, 1 transient)",
+      "3) Harmonic · low-band 95% · root D#1"
+    ],
+    "timbre": "Bass",
+    "length_class": "Short",
+    "subgroup": "Bass Short",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic"
+    ],
+    "sound_design_roles": [
+      "Bass"
+    ],
+    "instrument_family": [
+      "String",
+      "Chordophone",
+      "Plucked Chordophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.021383219954648525,
+    "sustain_ratio": 0.5882352941176471,
+    "sustained": false,
+    "envelope_attack_seconds": 0.02494331065759637,
+    "envelope_decay_seconds": 0.009977324263038548,
+    "envelope_sustain_level": 0.47377467430012077,
+    "envelope_release_seconds": 0.03492063492063492,
+    "envelope_temporal_centroid": 0.2746375289114307,
+    "envelope_skewness": 0.5657051062850071,
+    "envelope_kurtosis": -1.032540599953173,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 0.7958453466263206,
+    "onset_periodicity": 0.5748479979887741,
+    "onset_rate_per_second": 3.571717826192597
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.41373405023306215,
+    "crest_factor": 2.356711707275609,
+    "zero_crossings_per_second": 60.71920304527415,
+    "complexity": 570.7169561454812,
+    "spectral_centroid_hz": 103.2560009415852,
+    "spectral_rolloff_hz": 89.29294565481494,
+    "spectral_flatness": 0.004064877374607084,
+    "low_band_energy": 0.9524448832234389,
+    "mid_band_energy": 0.043154734726454744,
+    "high_band_energy": 0.0044003820501063665,
+    "spectral_flux": 0.11457316719788047,
+    "harmonicity": 0.9830975138640133,
+    "inharmonicity": 0.0006901734173121454,
+    "partial_count": 1,
+    "mel_frequency_cepstral_coefficients": [
+      -60.81067632267506,
+      14.053175132552754,
+      11.183781056890309,
+      9.423816762274123,
+      4.939019814013371,
+      4.682130518588944,
+      5.321393172154255,
+      4.308061519123653,
+      1.5874947516132587,
+      2.5297670731130584,
+      2.4869711782827273,
+      1.6746869524332528,
+      1.5551962155404124
+    ],
+    "spectral_centroid_mean_hz": 72.94742434047956,
+    "spectral_centroid_deviation_hz": 13.675609182433693,
+    "total_harmonic_distortion": 0.5642632674390083,
+    "clipping_density": 0.00032396533570907914,
+    "distortion": "Dirty",
+    "stationarity": 0.3950866200170168,
+    "spectral_entropy": 0.19301077524918994,
+    "spectral_slope_db_per_octave": -13.566930063847087,
+    "band_limit_high_hz": 172.265625,
+    "spectral_centroid_slope_hz_per_second": 119.74315483682486,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 1.0,
+    "mid_rms": 0.4137340504638248,
+    "side_rms": 0.00014711570012238795,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "D#1",
+    "root_frequency_hz": 39.107866093515916,
+    "root_cents_offset": 9.632639341398885,
+    "beats_per_minute": 120.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.1346746624932112,
+      0.04701506465692989,
+      0.5509560532303581,
+      1.0,
+      0.1549177981511191,
+      0.3883164332915236,
+      0.11509782889356193,
+      0.1544316060375788,
+      0.034718829239862525,
+      0.06510848480204771,
+      0.12742989470969646,
+      0.04787583726453764
+    ]
+  },
+  "unsupervised": {
+    "cluster": 4,
+    "principal_components": [
+      -2.8190131094375466,
+      -6.2273270088010495,
+      0.048018108397278866
+    ]
+  },
+  "ucs": {
+    "category": "SYNTH",
+    "subcategory": "BASS",
+    "id": "SYNTBass",
+    "confidence": 0.26332189822893093,
+    "alternatives": [
+      {
+        "category": "DRUMS",
+        "subcategory": "KICK",
+        "id": "DRUMKick",
+        "probability": 0.161,
+        "synonyms": [
+          "bass"
+        ]
+      },
+      {
+        "category": "STRINGS",
+        "subcategory": "DOUBLE BASS",
+        "id": "STRGCb",
+        "probability": 0.135,
+        "synonyms": [
+          "bass"
+        ]
+      },
+      {
+        "category": "GAMES",
+        "subcategory": "VIDEO",
+        "id": "GAMEVideo",
+        "probability": 0.126,
+        "synonyms": [
+          "one"
+        ]
+      }
+    ],
+    "synonyms": [
+      "bass"
+    ],
+    "reason": "name matched [bass]; signal 0.66, tier signal_narrowable, 16 candidates in contention; gate ruled out AIRBlow (spectral_flatness 0.0041 < min 0.1200)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.22947845804988662,
+        "duration_seconds": 0.22947845804988662,
+        "peak_amplitude": 0.8593092668556868,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

@@ -235,12 +235,18 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
         }
         const buf = await (await fetch(src)).arrayBuffer();
         if (gen !== loadGenRef.current) return;
-        // decodeWav catches WAV; the WASM analyzer catches MP3/OGG/M4A/AAC/FLAC/AIFF.
-        // `nativePath`/`src` supply the extension hint. This bypasses the native Web
-        // Audio decodeAudioData entirely, which intermittently fails on WebKitGTK.
-        const decoded =
-          decodeWav(buf, decodeCtxRef.current) ??
-          (await decodeViaWasm(buf, nativePath || src || '', decodeCtxRef.current));
+        // decodeAudioData detaches the buffer, so decode a copy and keep `buf` for the
+        // fallbacks (WebKitGTK's Web Audio decode fails on plain WAV intermittently and on
+        // compressed formats outright). decodeWav catches WAV; the WASM analyzer catches
+        // MP3/OGG/M4A/AAC/FLAC/AIFF. `nativePath`/`src` supply the extension hint.
+        let decoded: AudioBuffer | null = null;
+        try { decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0)); }
+        catch (e) {
+          console.warn("ExtractorTab decodeAudioData failed, falling back:", e);
+          decoded =
+            decodeWav(buf, decodeCtxRef.current) ??
+            (await decodeViaWasm(buf, nativePath || src || '', decodeCtxRef.current));
+        }
         if (gen !== loadGenRef.current) return;
         if (!decoded) throw new Error('undecodable');
         const mono = toMono(decoded);

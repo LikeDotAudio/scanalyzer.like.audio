@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Snare 32.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Snare 32.wav",
+    "length_seconds": 0.12514739229024943,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.0043257934327012365,
+    "trailing_silence_ms": 9.773242630385488
+  },
+  "classification": {
+    "group": "Snare",
+    "reason": [
+      "1) path matched \"snare\"",
+      "2) envelope Decaying (attack 0 ms, sustain 18%, 1 transient)",
+      "3) Inharmonic+Impulsive · high-band 57%"
+    ],
+    "timbre": "Bright",
+    "length_class": "Short",
+    "subgroup": "Snare Short",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic",
+      "Impulsive"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Membranophone",
+      "Struck Membranophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.01147392290249433,
+    "sustain_ratio": 0.25,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.05487528344671202,
+    "envelope_sustain_level": 0.17500476466385417,
+    "envelope_release_seconds": 0.044897959183673466,
+    "envelope_temporal_centroid": 0.12186782872621732,
+    "envelope_skewness": 0.939442241801246,
+    "envelope_kurtosis": -0.6136181452066523,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 0.2035227874642816,
+    "onset_periodicity": 0.0,
+    "onset_rate_per_second": 7.990578003261461
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.13300864600118298,
+    "crest_factor": 6.16873887627916,
+    "zero_crossings_per_second": 3699.637615510056,
+    "complexity": 3096.3591880324425,
+    "spectral_centroid_hz": 3415.0929833970804,
+    "spectral_rolloff_hz": 6855.915926798333,
+    "spectral_flatness": 0.11377930736425013,
+    "low_band_energy": 0.011617801093268973,
+    "mid_band_energy": 0.4157244757660612,
+    "high_band_energy": 0.5726577231406698,
+    "spectral_flux": 0.21579491716251975,
+    "harmonicity": 0.28842011630008707,
+    "inharmonicity": 0.35225397600152925,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      23.224253793018132,
+      10.078315152526596,
+      -6.846007031697114,
+      4.495754642213401,
+      -4.630462443379214,
+      0.9397125537663173,
+      -3.4340431081466867,
+      -0.022111343191602302,
+      -1.408890312091926,
+      -0.60929516362511,
+      -1.1691103609703042,
+      -0.41336172914422703,
+      -1.4975268193736089
+    ],
+    "spectral_centroid_mean_hz": 3637.2204259604,
+    "spectral_centroid_deviation_hz": 294.38471607061837,
+    "total_harmonic_distortion": 1.6262661353597025,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.19748330514066914,
+    "spectral_entropy": 0.6339628543867981,
+    "spectral_slope_db_per_octave": 0.2957578140901138,
+    "band_limit_high_hz": 15180.908203125,
+    "spectral_centroid_slope_hz_per_second": -9044.116716731285,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 0.36363636363636365,
+    "mid_rms": 0.1330086455653836,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 167.04545454545453,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 120.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      1.0,
+      0.8048401090096154,
+      0.6624907698103691,
+      0.769460349753262,
+      0.7263500653138107,
+      0.7418246812230583,
+      0.5634432604953291,
+      0.6284533217146534,
+      0.7512214079082532,
+      0.8247937029148708,
+      0.9759310170743997,
+      0.84411637686168
+    ]
+  },
+  "unsupervised": {
+    "cluster": 2,
+    "principal_components": [
+      -0.7829126001771723,
+      0.66273647299771,
+      -0.4749602751009031
+    ]
+  },
+  "ucs": {
+    "category": "DRUMS",
+    "subcategory": "SNARE",
+    "id": "DRUMSnr",
+    "confidence": 0.9972495580232597,
+    "alternatives": [
+      {
+        "category": "ARCHIVED",
+        "subcategory": "IMPULSE RESPONSE",
+        "id": "IR",
+        "probability": 0.003,
+        "synonyms": [
+          "sample"
+        ]
+      }
+    ],
+    "synonyms": [
+      "snare"
+    ],
+    "reason": "name matched [snare]; signal 0.77, tier signal_separable, 2 candidates in contention; gate ruled out AIRBlow (length_seconds 0.1251 < min 0.1500)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.11473922902494331,
+        "duration_seconds": 0.11473922902494331,
+        "peak_amplitude": 0.2934434182900654,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

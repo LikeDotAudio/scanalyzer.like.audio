@@ -1,0 +1,186 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 15 - DRILL, MILITARY - ORDER SHOUTED- 'ATTENTION', MARCHING, SOLDIERS.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 15 - DRILL, MILITARY - ORDER SHOUTED- 'ATTENTION', MARCHING, SOLDIERS.mp3",
+    "length_seconds": 4.048979591836734,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0019892442243921588,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Vocal",
+    "reason": [
+      "1) path matched \"shout\"",
+      "2) envelope Multi (attack 843 ms, sustain 8%, 3 transients)",
+      "3) Harmonic · mid-band 69% · root A3"
+    ],
+    "timbre": "Loop",
+    "length_class": "Long",
+    "subgroup": "Vocal Long",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Voice"
+    ]
+  },
+  "envelope": {
+    "transient_count": 3,
+    "attack_seconds": 1.4047845804988661,
+    "sustain_ratio": 0.037037037037037035,
+    "sustained": false,
+    "envelope_attack_seconds": 0.8430839002267574,
+    "envelope_decay_seconds": 0.5587301587301587,
+    "envelope_sustain_level": 0.08180170504976018,
+    "envelope_release_seconds": 0.7383219954648526,
+    "envelope_temporal_centroid": 0.39953699524465186,
+    "envelope_skewness": 2.590887531522592,
+    "envelope_kurtosis": 7.9991401660866615,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 6.08869308411685,
+    "onset_periodicity": 0.3836013341323961,
+    "onset_rate_per_second": 0.7409274193548387
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.06325188175510084,
+    "crest_factor": 10.873394728909574,
+    "zero_crossings_per_second": 1354.9092741935485,
+    "complexity": 1824.6711533327805,
+    "spectral_centroid_hz": 1851.2417370357596,
+    "spectral_rolloff_hz": 3077.8125,
+    "spectral_flatness": 0.013526519285241841,
+    "low_band_energy": 0.0197234840569516,
+    "mid_band_energy": 0.6863814816621331,
+    "high_band_energy": 0.29389503428090513,
+    "spectral_flux": 0.18130410900802413,
+    "harmonicity": 0.7245494717993699,
+    "inharmonicity": 0.1703667517309877,
+    "partial_count": 9,
+    "mel_frequency_cepstral_coefficients": [
+      -41.149630812361835,
+      26.584766380438126,
+      -7.874453902208781,
+      3.466684284861913,
+      -5.95832402266835,
+      2.0285479439115686,
+      -1.1254186639045665,
+      0.14112687783457506,
+      -0.7535853220120645,
+      0.8601297898154252,
+      0.1612775597994266,
+      -0.710983413712286,
+      0.044123089520535785
+    ],
+    "spectral_centroid_mean_hz": 1174.2953703194728,
+    "spectral_centroid_deviation_hz": 628.0332417095385,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.33533901717112413,
+    "spectral_slope_db_per_octave": -3.8666016523486646,
+    "band_limit_high_hz": 7730.419921875,
+    "spectral_centroid_slope_hz_per_second": -175.83007063959195,
+    "syllabic_modulation_energy": 0.20068027776793695,
+    "voicing_ratio": 0.9295302013422819,
+    "mid_rms": 0.06325188176154488,
+    "side_rms": 0.03882388120535307,
+    "lufs": -16.990867620701927
+  },
+  "musicality": {
+    "pitch_hz": 424.03846153846155,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "A3",
+    "root_frequency_hz": 214.51940096410442,
+    "root_cents_offset": -43.6744727183509,
+    "beats_per_minute": 78.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.3635296996499506,
+      0.3195728963694256,
+      0.3297116005395315,
+      0.7394090461924546,
+      0.7920175228254932,
+      0.38646783542834817,
+      0.44682007325686784,
+      0.47050280689520557,
+      1.0,
+      0.7254581943174899,
+      0.29286755141703075,
+      0.3647278216227323
+    ]
+  },
+  "unsupervised": {
+    "cluster": 0,
+    "principal_components": [
+      1.63222857963488,
+      -0.4442048104126785,
+      -0.0870888528997124
+    ]
+  },
+  "ucs": {
+    "category": "MACHINES",
+    "subcategory": "MEDICAL",
+    "id": "MACHMed",
+    "confidence": 0.33802406680870256,
+    "alternatives": [
+      {
+        "category": "USER INTERFACE",
+        "subcategory": "ALERT",
+        "id": "UIAlert",
+        "probability": 0.261,
+        "synonyms": [
+          "attention"
+        ]
+      },
+      {
+        "category": "TOOLS",
+        "subcategory": "HAND",
+        "id": "TOOLHand",
+        "probability": 0.174,
+        "synonyms": [
+          "drill"
+        ]
+      },
+      {
+        "category": "EQUIPMENT",
+        "subcategory": "TACTICAL",
+        "id": "EQUIPTact",
+        "probability": 0.077,
+        "synonyms": [
+          "military"
+        ]
+      }
+    ],
+    "synonyms": [
+      "drill"
+    ],
+    "reason": "name matched [drill]; signal 0.32, tier semantic_only, 12 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0490 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.528798185941043,
+        "end_seconds": 3.442176870748299,
+        "duration_seconds": 2.913378684807256,
+        "peak_amplitude": 0.3355775307579606,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

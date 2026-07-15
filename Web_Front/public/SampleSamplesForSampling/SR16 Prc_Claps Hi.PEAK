@@ -1,0 +1,161 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "SR16 Prc_Claps Hi.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Claps Hi.wav",
+    "length_seconds": 0.2509297052154195,
+    "sample_rate": 22050,
+    "bit_depth": 16,
+    "channels": 2,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.00005196206461515001,
+    "trailing_silence_ms": 0.045351473922902494
+  },
+  "classification": {
+    "group": "Clap",
+    "reason": [
+      "1) path matched \"clap\"",
+      "2) envelope Plucky (attack 0 ms, sustain 4%, 1 transient)",
+      "3) Stochastic+Impulsive · high-band 64%"
+    ],
+    "timbre": "Bright",
+    "length_class": "Short",
+    "subgroup": "Clap Short",
+    "audit": false,
+    "acoustic_types": [
+      "Stochastic",
+      "Impulsive"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone",
+      "Struck Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.010884353741496598,
+    "sustain_ratio": 0.125,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.11972789115646258,
+    "envelope_sustain_level": 0.04016684827254617,
+    "envelope_release_seconds": 0.06485260770975057,
+    "envelope_temporal_centroid": 0.055272311745419224,
+    "envelope_skewness": 2.1606965650013503,
+    "envelope_kurtosis": 3.639480835439775,
+    "envelope_shape": "Plucky",
+    "decay_time_seconds_60db": 0.25121712911021893,
+    "onset_periodicity": 0.0,
+    "onset_rate_per_second": 3.9851798301102472
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.08027983600400791,
+    "crest_factor": 11.040406478161291,
+    "zero_crossings_per_second": 3817.802277245617,
+    "complexity": 2792.8268858905817,
+    "spectral_centroid_hz": 3729.3471432270976,
+    "spectral_rolloff_hz": 7308.819808422194,
+    "spectral_flatness": 0.6931210160989938,
+    "low_band_energy": 0.010907293584642635,
+    "mid_band_energy": 0.35361186962601476,
+    "high_band_energy": 0.6354808367893426,
+    "spectral_flux": 0.23529970957334725,
+    "harmonicity": 0.11126072744823419,
+    "inharmonicity": 0.4416404027251232,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      7.139870370229526,
+      1.7039243624417528,
+      -5.135318578727009,
+      -1.8229881777811747,
+      -1.380157829438821,
+      0.4045229021286403,
+      -0.2859411528287771,
+      0.3677382716675807,
+      0.05741088167416667,
+      0.019299384541641127,
+      0.03895027032339229,
+      0.35713654200308514,
+      0.403913551604324
+    ],
+    "spectral_centroid_mean_hz": 3115.4428627918533,
+    "spectral_centroid_deviation_hz": 468.50112259717923,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.7937168065804501,
+    "spectral_slope_db_per_octave": 0.5635181492547158,
+    "band_limit_high_hz": 11014.2333984375,
+    "spectral_centroid_slope_hz_per_second": -9874.301617898158,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 0.05,
+    "mid_rms": 0.08027983596233632,
+    "side_rms": 0.028160284306032728,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 200.45454545454547,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.9486819531399978,
+      1.0,
+      0.8869604525799055,
+      0.852163737006296,
+      0.697108905351917,
+      0.8258538511289892,
+      0.9234083010192944,
+      0.7249116996620493,
+      0.9267302012046744,
+      0.9727197550066,
+      0.812047925373616,
+      0.950486191627411
+    ]
+  },
+  "unsupervised": {
+    "cluster": 2,
+    "principal_components": [
+      -0.6385348077719614,
+      1.3379014793480655,
+      0.8807455447975178
+    ]
+  },
+  "ucs": {
+    "category": "ARCHIVED",
+    "subcategory": "IMPULSE RESPONSE",
+    "id": "IR",
+    "confidence": 1.0,
+    "alternatives": [],
+    "synonyms": [
+      "sample"
+    ],
+    "reason": "name matched [sample]; signal 0.32, tier signal_separable, 1 candidate in contention; gate ruled out AIRHiss (length_seconds 0.2509 < min 0.5000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.18458049886621314,
+        "duration_seconds": 0.18458049886621314,
+        "peak_amplitude": 0.2633012867144594,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

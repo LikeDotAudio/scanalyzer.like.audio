@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 66 - TELEPHONE BOOTH - OPEN AND CLOSE DOOR.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 66 - TELEPHONE BOOTH - OPEN AND CLOSE DOOR.mp3",
+    "length_seconds": 4.884897959183673,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0004857909485685534,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 5 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 2255 ms, sustain 1%, 5 transients)",
+      "3) Inharmonic · high-band 63% · root F3"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 5,
+    "attack_seconds": 2.691950113378685,
+    "sustain_ratio": 0.061224489795918366,
+    "sustained": false,
+    "envelope_attack_seconds": 2.254875283446712,
+    "envelope_decay_seconds": 0.8829931972789116,
+    "envelope_sustain_level": 0.009842640242420413,
+    "envelope_release_seconds": 0.37414965986394555,
+    "envelope_temporal_centroid": 0.4531760768366691,
+    "envelope_skewness": 3.0491750043856563,
+    "envelope_kurtosis": 10.073454058781463,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": null,
+    "onset_periodicity": 0.22909789918122064,
+    "onset_rate_per_second": 1.023562834224599
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.023442431326965416,
+    "crest_factor": 13.01170600974037,
+    "zero_crossings_per_second": 1415.5873997326203,
+    "complexity": 3599.200984928327,
+    "spectral_centroid_hz": 3944.1209484314286,
+    "spectral_rolloff_hz": 7486.543282085561,
+    "spectral_flatness": 0.0834173713207374,
+    "low_band_energy": 0.04892079724450522,
+    "mid_band_energy": 0.3240350435493019,
+    "high_band_energy": 0.6270441592061928,
+    "spectral_flux": 0.18460038733854073,
+    "harmonicity": 0.44162413614466345,
+    "inharmonicity": 0.5632543442592476,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -42.230880911882856,
+      18.90127739768939,
+      -1.8015695354703127,
+      5.945236843263014,
+      -2.656805963011245,
+      4.000555214985522,
+      -1.7067548206536083,
+      2.68197982840933,
+      -2.0149811182418085,
+      2.0648024765039263,
+      -1.8030247734063818,
+      1.8635331264670703,
+      -1.1629827927771639
+    ],
+    "spectral_centroid_mean_hz": 1680.2227943260368,
+    "spectral_centroid_deviation_hz": 1229.389177365055,
+    "total_harmonic_distortion": 0.4464984142494827,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.3474988892743056,
+    "spectral_slope_db_per_octave": -3.9378328551803627,
+    "band_limit_high_hz": 15159.375,
+    "spectral_centroid_slope_hz_per_second": -281.357893179589,
+    "syllabic_modulation_energy": 0.4138011914781491,
+    "voicing_ratio": 0.5722070844686649,
+    "mid_rms": 0.023442431328720443,
+    "side_rms": 0.010440564857501174,
+    "lufs": -25.144031548523273
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "F3",
+    "root_frequency_hz": 170.92699727652825,
+    "root_cents_offset": -36.94788857767577,
+    "beats_per_minute": 148.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.7628460242820553,
+      0.6808439376259309,
+      0.6332635202404605,
+      0.5813205934238055,
+      0.5311273369027454,
+      0.550445880225444,
+      0.6240609218477644,
+      0.692008761971546,
+      0.9437800046246229,
+      1.0,
+      0.9105302336067815,
+      0.9395931439496469
+    ]
+  },
+  "unsupervised": {
+    "cluster": 8,
+    "principal_components": [
+      2.4261010667986067,
+      0.363931814823802,
+      -0.05631883126143117
+    ]
+  },
+  "ucs": {
+    "category": "DOORS",
+    "subcategory": "METAL",
+    "id": "DOORMetl",
+    "confidence": 0.21539444321856374,
+    "alternatives": [
+      {
+        "category": "DOORS",
+        "subcategory": "GLASS",
+        "id": "DOORGlas",
+        "probability": 0.142,
+        "synonyms": [
+          "door"
+        ]
+      },
+      {
+        "category": "DOORS",
+        "subcategory": "SLIDING",
+        "id": "DOORSlid",
+        "probability": 0.138,
+        "synonyms": [
+          "door"
+        ]
+      },
+      {
+        "category": "COMMUNICATIONS",
+        "subcategory": "TELEPHONE",
+        "id": "COMTelph",
+        "probability": 0.114,
+        "synonyms": [
+          "telephone"
+        ]
+      }
+    ],
+    "synonyms": [
+      "door"
+    ],
+    "reason": "name matched [door]; signal 0.77, tier signal_narrowable, 22 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.8849 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.47891156462585033,
+        "end_seconds": 4.100680272108844,
+        "duration_seconds": 3.6217687074829934,
+        "peak_amplitude": 0.1358032302200459,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

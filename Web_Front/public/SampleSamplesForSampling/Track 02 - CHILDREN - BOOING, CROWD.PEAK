@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 02 - CHILDREN - BOOING, CROWD.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 02 - CHILDREN - BOOING, CROWD.mp3",
+    "length_seconds": 4.806530612244898,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0012980482543535736,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 4 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 409 ms, sustain 41%, 4 transients)",
+      "3) Inharmonic · mid-band 76% · root A#4"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 4,
+    "attack_seconds": 0.9148526077097505,
+    "sustain_ratio": 0.314878892733564,
+    "sustained": false,
+    "envelope_attack_seconds": 0.4090702947845805,
+    "envelope_decay_seconds": 0.15963718820861678,
+    "envelope_sustain_level": 0.40521099423624557,
+    "envelope_release_seconds": 0.4988662131519274,
+    "envelope_temporal_centroid": 0.36800916280682394,
+    "envelope_skewness": 0.3014659686520612,
+    "envelope_kurtosis": -0.9351358446229807,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 20.054752879686188,
+    "onset_periodicity": 0.37468224551983476,
+    "onset_rate_per_second": 0.8322010869565217
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.046094699187777984,
+    "crest_factor": 4.942069682599977,
+    "zero_crossings_per_second": 1157.3836616847827,
+    "complexity": 1423.0681409326592,
+    "spectral_centroid_hz": 1432.4787427327824,
+    "spectral_rolloff_hz": 2767.9008152173915,
+    "spectral_flatness": 0.008254029772902665,
+    "low_band_energy": 0.013415239347067403,
+    "mid_band_energy": 0.7568730629353272,
+    "high_band_energy": 0.22971169771760275,
+    "spectral_flux": 0.12972330358579656,
+    "harmonicity": 0.5685027067530251,
+    "inharmonicity": 0.7464129230742814,
+    "partial_count": 4,
+    "mel_frequency_cepstral_coefficients": [
+      -42.91304086013675,
+      28.93424689521023,
+      -10.453578253207944,
+      5.761230818835757,
+      -3.8094793377458562,
+      1.2492374058344415,
+      -1.9260781085270062,
+      -1.8969733121862207,
+      0.8285677395391339,
+      -1.7069254436629013,
+      2.4444245481689855,
+      0.4219705642759459,
+      1.5261608222288219
+    ],
+    "spectral_centroid_mean_hz": 1024.0899353316609,
+    "spectral_centroid_deviation_hz": 546.7844798710149,
+    "total_harmonic_distortion": 0.2146842341208344,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.2268453882521677,
+    "spectral_entropy": 0.27942633398683303,
+    "spectral_slope_db_per_octave": -5.318246233479831,
+    "band_limit_high_hz": 6093.896484375,
+    "spectral_centroid_slope_hz_per_second": -45.29859324149658,
+    "syllabic_modulation_energy": 0.16285016150359877,
+    "voicing_ratio": 0.98,
+    "mid_rms": 0.046094699189129826,
+    "side_rms": 0.013822482655801098,
+    "lufs": -22.069410157017725
+  },
+  "musicality": {
+    "pitch_hz": 658.2089552238806,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "A#4",
+    "root_frequency_hz": 462.6274108886719,
+    "root_cents_offset": -13.183329871635863,
+    "beats_per_minute": 99.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.8595818684837215,
+      0.5574817146162679,
+      0.5764530083172116,
+      0.6871521453559949,
+      0.8573914574965039,
+      1.0,
+      0.420650655893987,
+      0.49145458694201405,
+      0.5858191279277758,
+      0.7386702059697455,
+      0.6903302675485425,
+      0.789298981978984
+    ]
+  },
+  "unsupervised": {
+    "cluster": 11,
+    "principal_components": [
+      1.1504437326959107,
+      -0.787967494099048,
+      -1.967220851840714
+    ]
+  },
+  "ucs": {
+    "category": "CROWDS",
+    "subcategory": "REACTION",
+    "id": "CRWDReac",
+    "confidence": 0.4387947736925783,
+    "alternatives": [
+      {
+        "category": "VOICES",
+        "subcategory": "REACTION",
+        "id": "VOXReac",
+        "probability": 0.188,
+        "synonyms": [
+          "booing"
+        ]
+      },
+      {
+        "category": "CROWDS",
+        "subcategory": "SPORT",
+        "id": "CRWDSprt",
+        "probability": 0.141,
+        "synonyms": [
+          "booing"
+        ]
+      },
+      {
+        "category": "CROWDS",
+        "subcategory": "CHILDREN",
+        "id": "CRWDChld",
+        "probability": 0.121,
+        "synonyms": [
+          "children"
+        ]
+      }
+    ],
+    "synonyms": [
+      "booing"
+    ],
+    "reason": "name matched [booing]; signal 0.68, tier signal_narrowable, 7 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.8065 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.02494331065759637,
+        "end_seconds": 4.806530612244898,
+        "duration_seconds": 4.781587301587302,
+        "peak_amplitude": 0.12014140947876302,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

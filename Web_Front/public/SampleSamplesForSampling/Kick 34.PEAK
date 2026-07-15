@@ -1,0 +1,183 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Kick 34.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Kick 34.wav",
+    "length_seconds": 0.149297052154195,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.005183631275867634,
+    "trailing_silence_ms": 0.24943310657596374
+  },
+  "classification": {
+    "group": "Kick",
+    "reason": [
+      "1) path matched \"kick\"",
+      "2) envelope Sustained (attack 5 ms, sustain 57%, 1 transient)",
+      "3) Inharmonic+Stochastic · high-band 49% · root D1"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Short",
+    "subgroup": "Kick Short",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic",
+      "Stochastic"
+    ],
+    "sound_design_roles": [
+      "Lead"
+    ],
+    "instrument_family": [
+      "Percussion",
+      "Membranophone",
+      "Struck Membranophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.005306122448979592,
+    "sustain_ratio": 0.5555555555555556,
+    "sustained": false,
+    "envelope_attack_seconds": 0.004988662131519274,
+    "envelope_decay_seconds": 0.044897959183673466,
+    "envelope_sustain_level": 0.5697097323603351,
+    "envelope_release_seconds": 0.029931972789115645,
+    "envelope_temporal_centroid": 0.22988740737684532,
+    "envelope_skewness": 0.04073182291770624,
+    "envelope_kurtosis": -1.5196267189557455,
+    "envelope_shape": "Sustained",
+    "decay_time_seconds_60db": 0.17194367505860178,
+    "onset_periodicity": 0.30546061749107223,
+    "onset_rate_per_second": 6.69805589307412
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.4903552685291637,
+    "crest_factor": 2.0393377295599002,
+    "zero_crossings_per_second": 442.0716889428919,
+    "complexity": 3824.5791703934924,
+    "spectral_centroid_hz": 3037.4994489945902,
+    "spectral_rolloff_hz": 6483.718104495747,
+    "spectral_flatness": 0.23935993287537283,
+    "low_band_energy": 0.3889519503823431,
+    "mid_band_energy": 0.12285192019023332,
+    "high_band_energy": 0.4881961294274236,
+    "spectral_flux": 0.15172550724555106,
+    "harmonicity": 0.9691040181498884,
+    "inharmonicity": 0.7746160237190464,
+    "partial_count": 4,
+    "mel_frequency_cepstral_coefficients": [
+      5.570477967914887,
+      8.10047675705324,
+      -1.2391540503567897,
+      7.829151417801983,
+      4.782726104120816,
+      3.9527324841430778,
+      3.3362563356558987,
+      2.5223668988358297,
+      1.534214310318444,
+      1.9848904443924298,
+      2.0417095854117417,
+      0.9980736548636542,
+      0.886394939217604
+    ],
+    "spectral_centroid_mean_hz": 1199.043372630951,
+    "spectral_centroid_deviation_hz": 430.17841909448276,
+    "total_harmonic_distortion": 1.140213888453026,
+    "clipping_density": 0.0,
+    "distortion": "Dirty",
+    "stationarity": 0.4577016556277984,
+    "spectral_entropy": 0.15956210998727355,
+    "spectral_slope_db_per_octave": -7.0905087199887,
+    "band_limit_high_hz": 6718.359375,
+    "spectral_centroid_slope_hz_per_second": -11371.782680078326,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 0.8571428571428571,
+    "mid_rms": 0.4903552675938023,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": -59.061264240025295,
+    "root_note_name": "D1",
+    "root_frequency_hz": 36.839307411907654,
+    "root_cents_offset": 6.177184027908567,
+    "beats_per_minute": 120.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      1.0,
+      0.5507616992442083,
+      0.70372776842789,
+      0.4696030356286964,
+      0.7999114996784427,
+      0.5455565594931767,
+      0.6855575907756573,
+      0.6018110765521172,
+      0.3860180208858388,
+      0.9342327490308153,
+      0.6468994337582359,
+      0.9908509962104461
+    ]
+  },
+  "unsupervised": {
+    "cluster": 4,
+    "principal_components": [
+      -2.59296827039505,
+      -3.1087149916618104,
+      -1.4218045941943274
+    ]
+  },
+  "ucs": {
+    "category": "SPORTS",
+    "subcategory": "MISC",
+    "id": "SPRTMisc",
+    "confidence": 0.02396875512839807,
+    "alternatives": [
+      {
+        "category": "GUITAR",
+        "subcategory": "MANDOLIN",
+        "id": "GUITMand",
+        "probability": 0.023,
+        "synonyms": []
+      },
+      {
+        "category": "SPORTS",
+        "subcategory": "FIELD",
+        "id": "SPRTField",
+        "probability": 0.021,
+        "synonyms": []
+      },
+      {
+        "category": "MALLET",
+        "subcategory": "XYLOPHONE",
+        "id": "MALTXylo",
+        "probability": 0.02,
+        "synonyms": []
+      }
+    ],
+    "synonyms": [],
+    "reason": "no name evidence; signal 0.74, tier semantic_only, 315 candidates in contention; gate ruled out AIRBlow (length_seconds 0.1493 < min 0.1500); ABSTAINED to MISC (confidence below threshold)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.13469387755102039,
+        "duration_seconds": 0.13469387755102039,
+        "peak_amplitude": 0.8528141304632763,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

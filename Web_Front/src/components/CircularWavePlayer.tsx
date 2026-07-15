@@ -85,9 +85,15 @@ export default function CircularWavePlayer({
         }
         const buf = await (await fetch(src)).arrayBuffer();
         if (gen !== genRef.current) return;
-        const decoded =
-          decodeWav(buf, ctxRef.current) ??
-          (await decodeViaWasm(buf, name, ctxRef.current));
+        let decoded: AudioBuffer | null = null;
+        try {
+          decoded = await ctxRef.current.decodeAudioData(buf.slice(0));
+        } catch (e) {
+          console.warn("CircularWavePlayer decodeAudioData failed, falling back:", e);
+          decoded =
+            decodeWav(buf, ctxRef.current) ??
+            (await decodeViaWasm(buf, name, ctxRef.current));
+        }
         if (gen !== genRef.current) return;
         if (!decoded) return;
         setSamples(toMono(decoded));

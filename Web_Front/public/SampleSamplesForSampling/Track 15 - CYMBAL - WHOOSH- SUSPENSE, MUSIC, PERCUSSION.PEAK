@@ -1,0 +1,188 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 15 - CYMBAL - WHOOSH- SUSPENSE, MUSIC, PERCUSSION.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 15 - CYMBAL - WHOOSH- SUSPENSE, MUSIC, PERCUSSION.mp3",
+    "length_seconds": 5.825306122448979,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0005655384341873934,
+    "trailing_silence_ms": 1.2925170068027212
+  },
+  "classification": {
+    "group": "Cymbal",
+    "reason": [
+      "1) path matched \"cymbal\"",
+      "2) envelope Decaying (attack 210 ms, sustain 1%, 1 transient)",
+      "3) Inharmonic · high-band 92%"
+    ],
+    "timbre": "Bright",
+    "length_class": "Long",
+    "subgroup": "Cymbal Long",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone",
+      "Struck Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 1.0962585034013606,
+    "sustain_ratio": 0.03142857142857143,
+    "sustained": false,
+    "envelope_attack_seconds": 0.20952380952380953,
+    "envelope_decay_seconds": 2.1351473922902495,
+    "envelope_sustain_level": 0.00932157348512742,
+    "envelope_release_seconds": 0.7034013605442176,
+    "envelope_temporal_centroid": 0.22129639678907112,
+    "envelope_skewness": 2.6255967242875253,
+    "envelope_kurtosis": 7.56069376662327,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 3.7584509297603432,
+    "onset_periodicity": 0.3588546212993836,
+    "onset_rate_per_second": 0.17166479820627803
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.01424339594715162,
+    "crest_factor": 16.988134153480484,
+    "zero_crossings_per_second": 4392.902186098655,
+    "complexity": 3972.801235060286,
+    "spectral_centroid_hz": 7306.984580890803,
+    "spectral_rolloff_hz": 12112.153167040358,
+    "spectral_flatness": 0.06578949544440586,
+    "low_band_energy": 0.0034770823899069577,
+    "mid_band_energy": 0.07162452220824136,
+    "high_band_energy": 0.9248983954018347,
+    "spectral_flux": 0.14334489051992666,
+    "harmonicity": 0.2516363116832177,
+    "inharmonicity": 0.5577926942100376,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -56.638588395884994,
+      15.705474635468935,
+      -8.619592772420472,
+      6.789621159876682,
+      -4.413654677314978,
+      3.823165108138944,
+      -2.2443411480077375,
+      2.2473366834290527,
+      -1.013417355917797,
+      1.047494658917431,
+      -0.14773459700164757,
+      1.970800056398635,
+      0.6010192307013115
+    ],
+    "spectral_centroid_mean_hz": 2959.7422265193336,
+    "spectral_centroid_deviation_hz": 2351.3747015619065,
+    "total_harmonic_distortion": 2.760424856008789,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.37383513879079416,
+    "spectral_slope_db_per_octave": 1.2810027734281626,
+    "band_limit_high_hz": 17592.626953125,
+    "spectral_centroid_slope_hz_per_second": -838.6904861367373,
+    "syllabic_modulation_energy": 0.09618681789154461,
+    "voicing_ratio": 0.2773722627737226,
+    "mid_rms": 0.014243395946897868,
+    "side_rms": 0.013440780804004918,
+    "lufs": -22.109338550161237
+  },
+  "musicality": {
+    "pitch_hz": 326.6666666666667,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.5082349476383656,
+      0.5441330462680729,
+      0.544482057897563,
+      0.5300968185989832,
+      0.7444372143329263,
+      0.641075286878175,
+      0.7412100474435362,
+      0.835527358041854,
+      0.6633177170334807,
+      0.756894331378752,
+      0.9002890801156519,
+      1.0
+    ]
+  },
+  "unsupervised": {
+    "cluster": 7,
+    "principal_components": [
+      2.3665032910255426,
+      2.300622052245946,
+      -0.224225800260829
+    ]
+  },
+  "ucs": {
+    "category": "CYMBALS",
+    "subcategory": "RIDE",
+    "id": "CYMBRide",
+    "confidence": 0.3715728944478802,
+    "alternatives": [
+      {
+        "category": "LOOPS",
+        "subcategory": "TOP LOOP",
+        "id": "LOOPTop",
+        "probability": 0.17,
+        "synonyms": [
+          "percussion"
+        ]
+      },
+      {
+        "category": "CYMBALS",
+        "subcategory": "CRASH",
+        "id": "CYMBCrsh",
+        "probability": 0.123,
+        "synonyms": [
+          "cymbal"
+        ]
+      },
+      {
+        "category": "SWOOSHES",
+        "subcategory": "WHOOSH",
+        "id": "WHSH",
+        "probability": 0.112,
+        "synonyms": [
+          "whoosh"
+        ]
+      }
+    ],
+    "synonyms": [
+      "cymbal"
+    ],
+    "reason": "name matched [cymbal]; signal 0.62, tier signal_narrowable, 12 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 5.8253 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.6585034013605442,
+        "end_seconds": 3.477097505668934,
+        "duration_seconds": 2.8185941043083895,
+        "peak_amplitude": 0.08233803096707024,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

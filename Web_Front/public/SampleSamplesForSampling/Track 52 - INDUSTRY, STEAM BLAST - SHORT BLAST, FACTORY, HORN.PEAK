@@ -1,0 +1,544 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+    "length_seconds": 4.519183673469388,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0029606843630537545,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Horn",
+    "reason": [
+      "1) path matched \"horn\"",
+      "2) envelope Sustained (attack 60 ms, sustain 51%, 1 transient)",
+      "3) Inharmonic · high-band 85%"
+    ],
+    "timbre": "Bright",
+    "length_class": "Long",
+    "subgroup": "Horn Long",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Brass",
+      "Aerophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.8019954648526078,
+    "sustain_ratio": 0.48161764705882354,
+    "sustained": false,
+    "envelope_attack_seconds": 0.05986394557823129,
+    "envelope_decay_seconds": 0.5038548752834467,
+    "envelope_sustain_level": 0.5115291504229972,
+    "envelope_release_seconds": 0.3492063492063492,
+    "envelope_temporal_centroid": 0.3503869430489497,
+    "envelope_skewness": 0.11043829561427425,
+    "envelope_kurtosis": -1.4354876265812129,
+    "envelope_shape": "Sustained",
+    "decay_time_seconds_60db": 10.05046053084601,
+    "onset_periodicity": 0.28839898296652516,
+    "onset_rate_per_second": 0.22127890173410406
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.1110622057868319,
+    "crest_factor": 5.435964980603847,
+    "zero_crossings_per_second": 6311.53811416185,
+    "complexity": 2426.5469900383664,
+    "spectral_centroid_hz": 4606.919098531227,
+    "spectral_rolloff_hz": 6592.783598265896,
+    "spectral_flatness": 0.031946854705454684,
+    "low_band_energy": 0.005394397700355107,
+    "mid_band_energy": 0.1455932399565881,
+    "high_band_energy": 0.8490123623430568,
+    "spectral_flux": 0.18202554400185203,
+    "harmonicity": 0.08058615946596245,
+    "inharmonicity": 0.4967658079412203,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -17.455020052563277,
+      14.666159879106846,
+      -10.725815921760063,
+      7.028037576890183,
+      -4.271290596261499,
+      3.3051090652827084,
+      -1.6704843455791125,
+      1.5533587226713537,
+      -2.0818176197004123,
+      2.4431605726519208,
+      -0.5602447519630608,
+      1.2470027938724009,
+      -1.1366227638175392
+    ],
+    "spectral_centroid_mean_hz": 3176.2931731194144,
+    "spectral_centroid_deviation_hz": 1831.42780566232,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.14645910890840907,
+    "spectral_entropy": 0.5112242562224689,
+    "spectral_slope_db_per_octave": 0.21330238791348965,
+    "band_limit_high_hz": 15826.904296875,
+    "spectral_centroid_slope_hz_per_second": -299.6708374021148,
+    "syllabic_modulation_energy": 0.05934796573235476,
+    "voicing_ratio": 0.16348773841961853,
+    "mid_rms": 0.11106220578458367,
+    "side_rms": 0.048788629451763384,
+    "lufs": -10.336013666135015
+  },
+  "musicality": {
+    "pitch_hz": 773.6842105263158,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.5693971997786705,
+      0.6077280868195685,
+      0.7711320394168233,
+      0.7885669678420981,
+      0.8825900121648944,
+      1.0,
+      0.968986517385313,
+      0.8603614506033312,
+      0.6520304295519107,
+      0.5101034174374208,
+      0.5628578276524886,
+      0.6387135246863868
+    ]
+  },
+  "unsupervised": {
+    "cluster": 7,
+    "principal_components": [
+      0.004291727130222786,
+      1.6394746720849933,
+      -2.684493429296494
+    ]
+  },
+  "ucs": {
+    "category": "EXPLOSIONS",
+    "subcategory": "MISC",
+    "id": "EXPLMisc",
+    "confidence": 0.20926387865001134,
+    "alternatives": [
+      {
+        "category": "FOOD & DRINK",
+        "subcategory": "COOKING",
+        "id": "FOODCook",
+        "probability": 0.17,
+        "synonyms": [
+          "steam"
+        ]
+      },
+      {
+        "category": "AMBIENCE",
+        "subcategory": "INDUSTRIAL",
+        "id": "AMBInd",
+        "probability": 0.093,
+        "synonyms": [
+          "factory",
+          "industry"
+        ]
+      },
+      {
+        "category": "ALARMS",
+        "subcategory": "SIREN",
+        "id": "ALRMSirn",
+        "probability": 0.084,
+        "synonyms": [
+          "horn"
+        ]
+      }
+    ],
+    "synonyms": [
+      "blast"
+    ],
+    "reason": "name matched [blast]; signal 0.61, tier semantic_only, 25 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.5192 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
+  },
+  "regions": {
+    "count": 2,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.02494331065759637,
+        "end_seconds": 0.29931972789115646,
+        "duration_seconds": 0.2743764172335601,
+        "peak_amplitude": 0.004175962251712946,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+            "length_seconds": 0.2743764172335601,
+            "sample_rate": 44100,
+            "bit_depth": 0,
+            "channels": 2,
+            "source_format": "MP3",
+            "lossy_source": true,
+            "dc_offset": -0.0033269441662517893,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Horn",
+            "reason": [
+              "1) path matched \"horn\"",
+              "2) envelope Sustained (attack 0 ms, sustain 81%, 1 transient)",
+              "3) Harmonic · low-band 77% · root B0"
+            ],
+            "timbre": "Bass",
+            "length_class": "Short",
+            "subgroup": "Horn Short",
+            "audit": false,
+            "acoustic_types": [
+              "Harmonic"
+            ],
+            "sound_design_roles": [
+              "Bass"
+            ],
+            "instrument_family": [
+              "Brass",
+              "Aerophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 1,
+            "attack_seconds": 0.003287981859410431,
+            "sustain_ratio": 1.0,
+            "sustained": true,
+            "envelope_attack_seconds": 0.0,
+            "envelope_decay_seconds": 0.07981859410430839,
+            "envelope_sustain_level": 0.8065170501476316,
+            "envelope_release_seconds": 0.0,
+            "envelope_temporal_centroid": 0.4064790462678858,
+            "envelope_skewness": -0.02006839228463824,
+            "envelope_kurtosis": -1.2225638585062077,
+            "envelope_shape": "Sustained",
+            "decay_time_seconds_60db": null,
+            "onset_periodicity": 0.0,
+            "onset_rate_per_second": 3.644628099173554
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.003364112159959417,
+            "crest_factor": 1.2767331305813172,
+            "zero_crossings_per_second": 0.0,
+            "complexity": 3557.2407323092525,
+            "spectral_centroid_hz": 1196.9226580933657,
+            "spectral_rolloff_hz": 1140.7685950413224,
+            "spectral_flatness": 0.14374737093171575,
+            "low_band_energy": 0.7693857589976116,
+            "mid_band_energy": 0.10642098009119778,
+            "high_band_energy": 0.12419326091119061,
+            "spectral_flux": 0.006302189876596126,
+            "harmonicity": 0.9963563278008178,
+            "inharmonicity": 0.0,
+            "partial_count": 0,
+            "mel_frequency_cepstral_coefficients": [
+              -124.87461459941966,
+              24.868481036410902,
+              7.453396558111341,
+              -0.6902542686036907,
+              1.5749325239539143,
+              5.484699540618367,
+              4.878452135982372,
+              1.8101463509604387,
+              1.9933283500792747,
+              2.774259258121899,
+              2.4889546037384167,
+              2.4458772655153145,
+              2.4606280914744287
+            ],
+            "spectral_centroid_mean_hz": 20.632482171887013,
+            "spectral_centroid_deviation_hz": 15.338642730382245,
+            "total_harmonic_distortion": 0.0,
+            "clipping_density": 0.00041322314049586776,
+            "distortion": "Clean",
+            "stationarity": 0.8742213215096082,
+            "spectral_entropy": 0.07229968772207247,
+            "spectral_slope_db_per_octave": -8.906487072364666,
+            "band_limit_high_hz": 7579.6875,
+            "spectral_centroid_slope_hz_per_second": -72.14019498502496,
+            "syllabic_modulation_energy": null,
+            "voicing_ratio": 1.0,
+            "mid_rms": 0.0033641121592663274,
+            "side_rms": 0.0005753572856205324,
+            "lufs": -70.0
+          },
+          "musicality": {
+            "pitch_hz": 2004.5454545454545,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "B0",
+            "root_frequency_hz": 30.550555237976546,
+            "root_cents_offset": -17.87962188788441,
+            "beats_per_minute": 0.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.7851217859789913,
+              0.6746557610829699,
+              0.6984795221387584,
+              0.5940227179697248,
+              0.8256303537054098,
+              1.0,
+              0.7589536429031277,
+              0.6214333185263513,
+              0.95056648130577,
+              0.7505109106503475,
+              0.7740258377382164,
+              0.6580925832849583
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "BRASS",
+            "subcategory": "TUBA",
+            "id": "BRASTuba",
+            "confidence": 0.27198384000012005,
+            "alternatives": [
+              {
+                "category": "WOODWIND",
+                "subcategory": "OBOE",
+                "id": "WWNDOboe",
+                "probability": 0.132,
+                "synonyms": [
+                  "horn"
+                ]
+              },
+              {
+                "category": "BRASS",
+                "subcategory": "SECTION",
+                "id": "BRASSect",
+                "probability": 0.123,
+                "synonyms": [
+                  "horn"
+                ]
+              },
+              {
+                "category": "CARTOON",
+                "subcategory": "HORN",
+                "id": "TOONHorn",
+                "probability": 0.105,
+                "synonyms": [
+                  "horn"
+                ]
+              }
+            ],
+            "synonyms": [
+              "horn"
+            ],
+            "reason": "name matched [horn]; signal 0.51, tier signal_separable, 25 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRHiss (length_seconds 0.2744 < min 0.5000)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.5337868480725623,
+        "end_seconds": 3.911111111111111,
+        "duration_seconds": 3.377324263038549,
+        "peak_amplitude": 0.24563436604577052,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+            "length_seconds": 3.3773469387755104,
+            "sample_rate": 44100,
+            "bit_depth": 0,
+            "channels": 2,
+            "source_format": "MP3",
+            "lossy_source": true,
+            "dc_offset": -0.003400410128822371,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Horn",
+            "reason": [
+              "1) path matched \"horn\"",
+              "2) envelope Sustained (attack 60 ms, sustain 55%, 1 transient)",
+              "3) Inharmonic · high-band 85%"
+            ],
+            "timbre": "Bright",
+            "length_class": "Long",
+            "subgroup": "Horn Long",
+            "audit": false,
+            "acoustic_types": [
+              "Inharmonic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Brass",
+              "Aerophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 1,
+            "attack_seconds": 0.2682312925170068,
+            "sustain_ratio": 0.6650246305418719,
+            "sustained": false,
+            "envelope_attack_seconds": 0.05986394557823129,
+            "envelope_decay_seconds": 0.45396825396825397,
+            "envelope_sustain_level": 0.5454542595616124,
+            "envelope_release_seconds": 0.364172335600907,
+            "envelope_temporal_centroid": 0.310424641674633,
+            "envelope_skewness": -0.44909600402333866,
+            "envelope_kurtosis": -0.7493143240612472,
+            "envelope_shape": "Sustained",
+            "decay_time_seconds_60db": 10.050746005004028,
+            "onset_periodicity": 0.2938180779619317,
+            "onset_rate_per_second": 0.2960903982113723
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.1284665602541516,
+            "crest_factor": 4.69951293263747,
+            "zero_crossings_per_second": 8419.626563538583,
+            "complexity": 2425.438710631126,
+            "spectral_centroid_hz": 4607.056353235199,
+            "spectral_rolloff_hz": 6590.972264185147,
+            "spectral_flatness": 0.03318843995423998,
+            "low_band_energy": 0.0053566170205032295,
+            "mid_band_energy": 0.14543355899800353,
+            "high_band_energy": 0.8492098239814933,
+            "spectral_flux": 0.2245919908724167,
+            "harmonicity": 0.08281019277655398,
+            "inharmonicity": 0.4978865977957025,
+            "partial_count": 12,
+            "mel_frequency_cepstral_coefficients": [
+              15.825762127768565,
+              11.218534918238358,
+              -15.727040416690315,
+              9.593281087716877,
+              -5.984177241740863,
+              2.789679844635745,
+              -3.4657553215894703,
+              1.8606442378853871,
+              -3.3884388555724008,
+              2.4900277855648967,
+              -1.524065104883302,
+              1.3691486127197903,
+              -1.8550233904714417
+            ],
+            "spectral_centroid_mean_hz": 4147.673586730998,
+            "spectral_centroid_deviation_hz": 783.5771371268289,
+            "total_harmonic_distortion": 0.0,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.4481069722807427,
+            "spectral_entropy": 0.6562749288898488,
+            "spectral_slope_db_per_octave": 0.2231317415648652,
+            "band_limit_high_hz": 15826.904296875,
+            "spectral_centroid_slope_hz_per_second": -578.1058774597751,
+            "syllabic_modulation_energy": 0.08425783681793314,
+            "voicing_ratio": 0.1497175141242938,
+            "mid_rms": 0.12846656025155265,
+            "side_rms": 0.05643551990775137,
+            "lufs": -10.161798753044733
+          },
+          "musicality": {
+            "pitch_hz": 773.6842105263158,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "",
+            "root_frequency_hz": 0.0,
+            "root_cents_offset": 0.0,
+            "beats_per_minute": 0.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.5686932150111429,
+              0.6063642668044795,
+              0.7667413063247918,
+              0.7905774921795823,
+              0.8825692895490619,
+              1.0,
+              0.9712997173275983,
+              0.8607207627307141,
+              0.6500355810315993,
+              0.5093627969926279,
+              0.5615583725303727,
+              0.6360142542221193
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "FOOD & DRINK",
+            "subcategory": "MISC",
+            "id": "FOODMisc",
+            "confidence": 0.16930690879175514,
+            "alternatives": [
+              {
+                "category": "EXPLOSIONS",
+                "subcategory": "REAL",
+                "id": "EXPLReal",
+                "probability": 0.158,
+                "synonyms": [
+                  "blast"
+                ]
+              },
+              {
+                "category": "ALARMS",
+                "subcategory": "SIREN",
+                "id": "ALRMSirn",
+                "probability": 0.152,
+                "synonyms": [
+                  "horn"
+                ]
+              },
+              {
+                "category": "AMBIENCE",
+                "subcategory": "INDUSTRIAL",
+                "id": "AMBInd",
+                "probability": 0.125,
+                "synonyms": [
+                  "factory",
+                  "industry"
+                ]
+              }
+            ],
+            "synonyms": [
+              "steam"
+            ],
+            "reason": "name matched [steam]; signal 0.78, tier signal_narrowable, 27 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.3104 < min 0.4000); ABSTAINED to MISC (top two too close to call)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      }
+    ]
+  }
+}

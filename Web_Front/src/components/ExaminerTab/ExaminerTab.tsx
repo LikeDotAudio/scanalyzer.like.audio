@@ -628,12 +628,19 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (!fresh()) return;
-      // decodeWav catches WAV; the WASM analyzer (symphonia) catches
-      // MP3/OGG/M4A/AAC/FLAC/AIFF. This bypasses the native Web Audio decodeAudioData
-      // entirely, which intermittently fails on WebKitGTK and hangs if called too fast.
-      const decoded =
-        decodeWav(buf, decodeCtxRef.current) ??
-        (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
+      // decodeAudioData detaches the buffer, so decode a COPY and keep `buf` for the
+      // fallbacks below — WebKitGTK's Web Audio decode fails on plain WAV intermittently
+      // and on compressed formats outright. decodeWav catches WAV; the WASM analyzer
+      // (symphonia) catches MP3/OGG/M4A/AAC/FLAC/AIFF.
+      let decoded: AudioBuffer | null = null;
+      try {
+        decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0));
+      } catch (e) {
+        console.warn("ExaminerTab decodeAudioData failed, falling back:", e);
+        decoded =
+          decodeWav(buf, decodeCtxRef.current) ??
+          (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
+      }
       if (!fresh()) return;
       if (!decoded) return; // couldn't decode by either path — leave the preview blank
       lastBufferRef.current = decoded;

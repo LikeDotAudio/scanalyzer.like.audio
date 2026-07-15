@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "bell2.WAV",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/bell2.WAV",
+    "length_seconds": 0.16040816326530613,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.00578110090648855,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Bell",
+    "reason": [
+      "1) path matched \"bell\"",
+      "2) envelope Decaying (attack 0 ms, sustain 34%, 1 transient)",
+      "3) Harmonic · high-band 97%"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Short",
+    "subgroup": "Bell Short",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "String",
+      "Chordophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.0037414965986394557,
+    "sustain_ratio": 0.3,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.05986394557823129,
+    "envelope_sustain_level": 0.3395170179257522,
+    "envelope_release_seconds": 0.04988662131519274,
+    "envelope_temporal_centroid": 0.16629075885789946,
+    "envelope_skewness": 0.7285015569797454,
+    "envelope_kurtosis": -0.5669407349966455,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 0.3537732510095014,
+    "onset_periodicity": 0.0,
+    "onset_rate_per_second": 6.234096692111959
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.08226498871043936,
+    "crest_factor": 5.320776552800153,
+    "zero_crossings_per_second": 13309.796437659032,
+    "complexity": 3263.5155585202115,
+    "spectral_centroid_hz": 8026.147908573921,
+    "spectral_rolloff_hz": 10822.39185750636,
+    "spectral_flatness": 0.18148321064496983,
+    "low_band_energy": 0.010370471581635886,
+    "mid_band_energy": 0.017351123098740796,
+    "high_band_energy": 0.9722784053196233,
+    "spectral_flux": 0.14616192367952718,
+    "harmonicity": 0.8786287767720355,
+    "inharmonicity": 0.1260995038599275,
+    "partial_count": 6,
+    "mel_frequency_cepstral_coefficients": [
+      -4.621319539475106,
+      -13.723834414118107,
+      -9.493687011720336,
+      9.873666767652885,
+      -1.0607766155414486,
+      9.550683326235939,
+      -1.2886616981236378,
+      2.686329452258044,
+      1.5177744742658055,
+      0.3996456794173654,
+      -0.88544198238599,
+      7.083099206519747,
+      1.9582800960497038
+    ],
+    "spectral_centroid_mean_hz": 7277.828860678365,
+    "spectral_centroid_deviation_hz": 382.33119158797973,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.47529478896856525,
+    "spectral_entropy": 0.3546858328701142,
+    "spectral_slope_db_per_octave": 3.7401493137608774,
+    "band_limit_high_hz": 15094.775390625,
+    "spectral_centroid_slope_hz_per_second": -10524.644040254278,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 1.0,
+    "mid_rms": 0.08226498825593466,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 558.2278481012659,
+    "pitch_slope_semitones_per_second": -80.5595887016773,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.6790086086978218,
+      0.23064081668298891,
+      0.15887416149127054,
+      0.29836331677603645,
+      1.0,
+      0.17967796489696833,
+      0.30113568651480516,
+      0.18240677011134213,
+      0.6465798283808913,
+      0.2778186698300199,
+      0.45272908001323603,
+      0.6364967361072242
+    ]
+  },
+  "unsupervised": {
+    "cluster": 5,
+    "principal_components": [
+      -2.4399691697439,
+      2.1614614649231463,
+      -0.016463233783216957
+    ]
+  },
+  "ucs": {
+    "category": "SYNTH",
+    "subcategory": "PLUCK",
+    "id": "SYNTPluck",
+    "confidence": 0.4509527690549892,
+    "alternatives": [
+      {
+        "category": "BELLS",
+        "subcategory": "ANIMAL",
+        "id": "BELLAnml",
+        "probability": 0.212,
+        "synonyms": [
+          "bell"
+        ]
+      },
+      {
+        "category": "SYNTH",
+        "subcategory": "KEYS",
+        "id": "SYNTKeys",
+        "probability": 0.161,
+        "synonyms": [
+          "bell"
+        ]
+      },
+      {
+        "category": "KEYBOARD",
+        "subcategory": "CELESTA",
+        "id": "KEYBCele",
+        "probability": 0.138,
+        "synonyms": [
+          "bell"
+        ]
+      }
+    ],
+    "synonyms": [
+      "bell"
+    ],
+    "reason": "name matched [bell]; signal 0.57, tier signal_narrowable, 7 candidates in contention; gate ruled out AIRHiss (length_seconds 0.1604 < min 0.5000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.16040816326530613,
+        "duration_seconds": 0.16040816326530613,
+        "peak_amplitude": 0.1710828346384561,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Synth Clave OS.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Synth Clave OS.wav",
+    "length_seconds": 0.08160997732426303,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": -0.00016388253193161295,
+    "trailing_silence_ms": 27.43764172335601
+  },
+  "classification": {
+    "group": "Woodblock",
+    "reason": [
+      "1) path matched \"clave\"",
+      "2) envelope Decaying (attack 0 ms, sustain 19%, 1 transient)",
+      "3) Harmonic+Impulsive · high-band 76% · root C4"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Short",
+    "subgroup": "Woodblock Short",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic",
+      "Impulsive"
+    ],
+    "sound_design_roles": [
+      "Pluck"
+    ],
+    "instrument_family": [
+      "String",
+      "Chordophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.005124716553287982,
+    "sustain_ratio": 0.2,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.03492063492063492,
+    "envelope_sustain_level": 0.18619654526838977,
+    "envelope_release_seconds": 0.009977324263038548,
+    "envelope_temporal_centroid": 0.09988171600086844,
+    "envelope_skewness": 1.0926207114435889,
+    "envelope_kurtosis": -0.15216512668208493,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": null,
+    "onset_periodicity": 0.0,
+    "onset_rate_per_second": 12.253403723256461
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.09847134452959981,
+    "crest_factor": 3.8103838719708794,
+    "zero_crossings_per_second": 3026.590719644346,
+    "complexity": 942.1324208634979,
+    "spectral_centroid_hz": 2144.3731424761518,
+    "spectral_rolloff_hz": 2487.4409558210614,
+    "spectral_flatness": 0.01204333479105206,
+    "low_band_energy": 0.010248265360836072,
+    "mid_band_energy": 0.2346265004671023,
+    "high_band_energy": 0.7551252341720617,
+    "spectral_flux": 0.19093526506003725,
+    "harmonicity": 0.951846432369543,
+    "inharmonicity": 0.12605553896398902,
+    "partial_count": 1,
+    "mel_frequency_cepstral_coefficients": [
+      -64.34430245987376,
+      6.151079723760179,
+      -11.726776497739403,
+      -8.906489118605773,
+      6.386810120009625,
+      9.035982767502468,
+      -0.9954625889082223,
+      -6.246263046559758,
+      -0.5774467426679782,
+      6.16334151836589,
+      3.929171694528349,
+      -2.287108329166513,
+      -3.960767200397543
+    ],
+    "spectral_centroid_mean_hz": 2507.978618122862,
+    "spectral_centroid_deviation_hz": 58.680828372289746,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.12203539002475461,
+    "spectral_entropy": 0.19681788685668655,
+    "spectral_slope_db_per_octave": -1.2592803924955076,
+    "band_limit_high_hz": 2670.1171875,
+    "spectral_centroid_slope_hz_per_second": null,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 1.0,
+    "mid_rms": 0.09847134390416021,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 1225.0,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "C4",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 120.0,
+    "root_midi_note": 60,
+    "chromagram": [
+      0.06102808314186021,
+      0.06867581924491042,
+      0.26503146764288976,
+      1.0,
+      0.05762122776114837,
+      0.046182559343173425,
+      0.03182383802745258,
+      0.02952453130695323,
+      0.04186685718628207,
+      0.05708646398015547,
+      0.07024643889726234,
+      0.052679602142370996
+    ]
+  },
+  "unsupervised": {
+    "cluster": 2,
+    "principal_components": [
+      -1.7333370766786576,
+      -0.17389642480439943,
+      0.9937372486678488
+    ]
+  },
+  "ucs": {
+    "category": "SYNTH",
+    "subcategory": "PLUCK",
+    "id": "SYNTPluck",
+    "confidence": 0.3446449013322626,
+    "alternatives": [
+      {
+        "category": "SYNTH",
+        "subcategory": "KEYS",
+        "id": "SYNTKeys",
+        "probability": 0.216,
+        "synonyms": [
+          "synth"
+        ]
+      },
+      {
+        "category": "PERCUSSION",
+        "subcategory": "CLAVE",
+        "id": "PERCClav",
+        "probability": 0.18,
+        "synonyms": [
+          "clave"
+        ]
+      },
+      {
+        "category": "SYNTH",
+        "subcategory": "LEAD",
+        "id": "SYNTLead",
+        "probability": 0.162,
+        "synonyms": [
+          "synth"
+        ]
+      }
+    ],
+    "synonyms": [
+      "synth"
+    ],
+    "reason": "name matched [synth]; signal 0.77, tier signal_narrowable, 8 candidates in contention; gate ruled out AIRBlow (length_seconds 0.0816 < min 0.1500)"
+  },
+  "regions": {
+    "count": 0,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": []
+  }
+}

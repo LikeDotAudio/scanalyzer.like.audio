@@ -1,0 +1,195 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 10 - CROWD, CHEERING - STADIUM CROWD, SHORT CHEER, FOOTBALL, SOCCER.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 10 - CROWD, CHEERING - STADIUM CROWD, SHORT CHEER, FOOTBALL, SOCCER.mp3",
+    "length_seconds": 5.485714285714286,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0007071416241195168,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Perc",
+    "reason": [
+      "1) Acoustic ML Fallback (ZCR/Inharmonicity)",
+      "2) envelope Swell (attack 654 ms, sustain 38%, 1 transient)",
+      "3) Inharmonic · mid-band 56%"
+    ],
+    "timbre": "Percussive",
+    "length_class": "Long",
+    "subgroup": "Acoustic Guess",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 1.621904761904762,
+    "sustain_ratio": 0.3090909090909091,
+    "sustained": false,
+    "envelope_attack_seconds": 0.6535147392290249,
+    "envelope_decay_seconds": 0.364172335600907,
+    "envelope_sustain_level": 0.3838872378030764,
+    "envelope_release_seconds": 0.42403628117913833,
+    "envelope_temporal_centroid": 0.38861771731896216,
+    "envelope_skewness": 0.3358954457651631,
+    "envelope_kurtosis": -0.8407608277851693,
+    "envelope_shape": "Swell",
+    "decay_time_seconds_60db": 14.02353995882826,
+    "onset_periodicity": 0.34292504061638673,
+    "onset_rate_per_second": 0.18229166666666666
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.05025100927777666,
+    "crest_factor": 7.473058320592904,
+    "zero_crossings_per_second": 2374.7135416666665,
+    "complexity": 2003.8110134535093,
+    "spectral_centroid_hz": 2210.0283651221985,
+    "spectral_rolloff_hz": 3592.6041666666665,
+    "spectral_flatness": 0.02337465082373593,
+    "low_band_energy": 0.022162012708665028,
+    "mid_band_energy": 0.5610032370330589,
+    "high_band_energy": 0.4168347502582745,
+    "spectral_flux": 0.18998092823696758,
+    "harmonicity": 0.40758500699663897,
+    "inharmonicity": 0.3492490944451693,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -27.83797332804829,
+      19.4473488789533,
+      -8.614162836631664,
+      3.5058249186979094,
+      -3.9911277163959498,
+      2.890374161703936,
+      -2.7854408387857506,
+      2.409287818196761,
+      -1.547137005440712,
+      3.548426207182733,
+      -0.5061635544719525,
+      2.0513317362490264,
+      -0.9629423028193467
+    ],
+    "spectral_centroid_mean_hz": 1724.2368155659735,
+    "spectral_centroid_deviation_hz": 836.0422374751327,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.1786496634419873,
+    "spectral_entropy": 0.46532236174289077,
+    "spectral_slope_db_per_octave": -3.222176256694423,
+    "band_limit_high_hz": 11412.59765625,
+    "spectral_centroid_slope_hz_per_second": -72.93036451722976,
+    "syllabic_modulation_energy": 0.07823537785896977,
+    "voicing_ratio": 0.26450116009280744,
+    "mid_rms": 0.050251009278050436,
+    "side_rms": 0.015860340067856468,
+    "lufs": -19.75888221405533
+  },
+  "musicality": {
+    "pitch_hz": 918.75,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.9742474947541132,
+      0.7945736183220737,
+      0.7691185267077517,
+      0.8495398085262358,
+      0.8568905774366272,
+      0.7181462243473483,
+      0.8103350855377396,
+      0.8025135255992902,
+      0.8516448458560482,
+      1.0,
+      0.8893949175611787,
+      0.9914972120638954
+    ]
+  },
+  "unsupervised": {
+    "cluster": 0,
+    "principal_components": [
+      0.8728191054289283,
+      0.06693464485872487,
+      -1.6909095793625843
+    ]
+  },
+  "ucs": {
+    "category": "CROWDS",
+    "subcategory": "SPORT",
+    "id": "CRWDSprt",
+    "confidence": 0.47040901016342,
+    "alternatives": [
+      {
+        "category": "CROWDS",
+        "subcategory": "CHEERING",
+        "id": "CRWDCheer",
+        "probability": 0.17,
+        "synonyms": [
+          "cheering",
+          "stadium"
+        ]
+      },
+      {
+        "category": "VOICES",
+        "subcategory": "CHEER",
+        "id": "VOXCheer",
+        "probability": 0.166,
+        "synonyms": [
+          "cheer",
+          "cheering"
+        ]
+      },
+      {
+        "category": "AMBIENCE",
+        "subcategory": "SPORT",
+        "id": "AMBSprt",
+        "probability": 0.145,
+        "synonyms": [
+          "football",
+          "soccer",
+          "stadium"
+        ]
+      }
+    ],
+    "synonyms": [
+      "cheer",
+      "cheering",
+      "football",
+      "soccer",
+      "stadium"
+    ],
+    "reason": "name matched [cheer, cheering, football, soccer, stadium]; signal 0.20, tier semantic_only, 10 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 5.4857 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.4988662131519274,
+        "end_seconds": 4.679365079365079,
+        "duration_seconds": 4.180498866213151,
+        "peak_amplitude": 0.14892462434076678,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

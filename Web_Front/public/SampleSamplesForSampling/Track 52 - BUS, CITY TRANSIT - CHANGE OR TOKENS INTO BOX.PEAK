@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 52 - BUS, CITY TRANSIT - CHANGE OR TOKENS INTO BOX.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 52 - BUS, CITY TRANSIT - CHANGE OR TOKENS INTO BOX.mp3",
+    "length_seconds": 4.440816326530612,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.002682254368027194,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 6 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 3083 ms, sustain 1%, 6 transients)",
+      "3) Inharmonic · high-band 59% · root A2"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 6,
+    "attack_seconds": 3.117142857142857,
+    "sustain_ratio": 0.04119850187265917,
+    "sustained": false,
+    "envelope_attack_seconds": 3.0829931972789115,
+    "envelope_decay_seconds": 0.33424036281179137,
+    "envelope_sustain_level": 0.009355956869093534,
+    "envelope_release_seconds": 0.1346938775510204,
+    "envelope_temporal_centroid": 0.517816865417456,
+    "envelope_skewness": 2.8889800884153676,
+    "envelope_kurtosis": 12.685134358869313,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 1.1753554565907096,
+    "onset_periodicity": 0.22029051363928612,
+    "onset_rate_per_second": 1.3511029411764706
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.08001704196046532,
+    "crest_factor": 11.141504688772175,
+    "zero_crossings_per_second": 1754.407169117647,
+    "complexity": 3442.6894864566093,
+    "spectral_centroid_hz": 3911.8284127117677,
+    "spectral_rolloff_hz": 8057.977941176471,
+    "spectral_flatness": 0.1351638477076386,
+    "low_band_energy": 0.06285846287673721,
+    "mid_band_energy": 0.34720429136177006,
+    "high_band_energy": 0.5899372457614928,
+    "spectral_flux": 0.19782833249355633,
+    "harmonicity": 0.29866794546757375,
+    "inharmonicity": 0.4669802573473732,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -23.991783999378367,
+      23.97692970193057,
+      -6.383097641414638,
+      7.3595161913624265,
+      -4.6359090155539135,
+      4.787222597372917,
+      -1.8295830367023016,
+      1.3299558315110698,
+      -0.31785932499469133,
+      0.911974917286923,
+      -0.4880647429406252,
+      0.6222176541320164,
+      0.29024541263923614
+    ],
+    "spectral_centroid_mean_hz": 1555.9124916926066,
+    "spectral_centroid_deviation_hz": 1192.0256118528334,
+    "total_harmonic_distortion": 1.732425950650329,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.06631075896280347,
+    "spectral_entropy": 0.40601332285512776,
+    "spectral_slope_db_per_octave": -4.531914717526284,
+    "band_limit_high_hz": 13070.654296875,
+    "spectral_centroid_slope_hz_per_second": -167.80898183866998,
+    "syllabic_modulation_energy": 0.3942385552536596,
+    "voicing_ratio": 0.4486486486486487,
+    "mid_rms": 0.08001704194508104,
+    "side_rms": 0.03200437162115806,
+    "lufs": -16.310556825765616
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "A2",
+    "root_frequency_hz": 111.7571205363279,
+    "root_cents_offset": 27.43587721917322,
+    "beats_per_minute": 120.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.7235095771735385,
+      0.7772221766466199,
+      0.6094918590023647,
+      0.5345039460290286,
+      0.6885915030227744,
+      0.4788035259659966,
+      0.5507395189293698,
+      0.7153122319162034,
+      0.9148114586131789,
+      0.6668999322186565,
+      0.770873882088416,
+      1.0
+    ]
+  },
+  "unsupervised": {
+    "cluster": 8,
+    "principal_components": [
+      2.664283239514766,
+      0.49162363553012856,
+      -0.7768351524507029
+    ]
+  },
+  "ucs": {
+    "category": "VEHICLES",
+    "subcategory": "BUS",
+    "id": "VEHBus",
+    "confidence": 0.35488530461757783,
+    "alternatives": [
+      {
+        "category": "TRAINS",
+        "subcategory": "SUBWAY",
+        "id": "TRNSbwy",
+        "probability": 0.113,
+        "synonyms": [
+          "city",
+          "transit"
+        ]
+      },
+      {
+        "category": "OBJECTS",
+        "subcategory": "CONTAINER",
+        "id": "OBJCont",
+        "probability": 0.102,
+        "synonyms": [
+          "box"
+        ]
+      },
+      {
+        "category": "OBJECTS",
+        "subcategory": "PACKAGING",
+        "id": "OBJPack",
+        "probability": 0.102,
+        "synonyms": [
+          "box"
+        ]
+      }
+    ],
+    "synonyms": [
+      "bus",
+      "city",
+      "transit"
+    ],
+    "reason": "name matched [bus, city, transit]; signal 0.61, tier semantic_only, 24 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.4408 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.4988662131519274,
+        "end_seconds": 3.931065759637188,
+        "duration_seconds": 3.432199546485261,
+        "peak_amplitude": 0.46232262717783174,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

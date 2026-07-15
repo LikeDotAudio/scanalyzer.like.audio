@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "bell4.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/bell4.wav",
+    "length_seconds": 0.16036281179138323,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": -0.000032312729779411765,
+    "trailing_silence_ms": 3.0158730158730163
+  },
+  "classification": {
+    "group": "Bell",
+    "reason": [
+      "1) path matched \"bell\"",
+      "2) envelope Plucky (attack 0 ms, sustain 5%, 1 transient)",
+      "3) Stochastic+Impulsive · high-band 79% · root G#4"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Short",
+    "subgroup": "Bell Short",
+    "audit": false,
+    "acoustic_types": [
+      "Stochastic",
+      "Impulsive"
+    ],
+    "sound_design_roles": [
+      "Pluck"
+    ],
+    "instrument_family": [
+      "Percussion",
+      "Membranophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.0017233560090702948,
+    "sustain_ratio": 0.1,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.05487528344671202,
+    "envelope_sustain_level": 0.053904288603009734,
+    "envelope_release_seconds": 0.05487528344671202,
+    "envelope_temporal_centroid": 0.0441869254917181,
+    "envelope_skewness": 2.3960772975098217,
+    "envelope_kurtosis": 4.589060155631483,
+    "envelope_shape": "Plucky",
+    "decay_time_seconds_60db": 0.18466220636309225,
+    "onset_periodicity": 0.0,
+    "onset_rate_per_second": 6.235859728506787
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.10316572438794777,
+    "crest_factor": 9.692846033451547,
+    "zero_crossings_per_second": 4390.045248868778,
+    "complexity": 5596.043041768647,
+    "spectral_centroid_hz": 7323.926952772407,
+    "spectral_rolloff_hz": 12502.898755656108,
+    "spectral_flatness": 0.5535262771328701,
+    "low_band_energy": 0.00047549295112957174,
+    "mid_band_energy": 0.20720663876859258,
+    "high_band_energy": 0.7923178682802778,
+    "spectral_flux": 0.19119158612689235,
+    "harmonicity": 0.7353522171123817,
+    "inharmonicity": 0.2702728982777264,
+    "partial_count": 7,
+    "mel_frequency_cepstral_coefficients": [
+      -7.740557210934182,
+      4.924099323761789,
+      -9.019040285421255,
+      0.09065292015341866,
+      -3.2363681238407445,
+      -5.267573232695437,
+      -4.155110457310318,
+      -4.039630122727394,
+      -4.421261942011258,
+      -3.137075247788058,
+      -0.6537782590764889,
+      -0.655060886163646,
+      -1.2867212387883464
+    ],
+    "spectral_centroid_mean_hz": 3963.632429962699,
+    "spectral_centroid_deviation_hz": 874.0715522507114,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.35894943113601785,
+    "spectral_slope_db_per_octave": 4.907726603364082,
+    "band_limit_high_hz": 21490.13671875,
+    "spectral_centroid_slope_hz_per_second": -17499.17015527221,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 1.0,
+    "mid_rms": 0.10316572424114973,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 464.2105263157895,
+    "pitch_slope_semitones_per_second": 5.597931774376363,
+    "root_note_name": "G#4",
+    "root_frequency_hz": 420.9205316742081,
+    "root_cents_offset": 23.25323136038122,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.7790746487988084,
+      0.4886093361243059,
+      0.7587739875548628,
+      0.7836375340514905,
+      0.7599367311070335,
+      0.8911943460314795,
+      0.9235614786119949,
+      0.6228706478024953,
+      0.5110750145940381,
+      0.49883511525180013,
+      1.0,
+      0.9927622423288932
+    ]
+  },
+  "unsupervised": {
+    "cluster": 2,
+    "principal_components": [
+      -1.3942459413290544,
+      1.5794653987742744,
+      1.2175469221470383
+    ]
+  },
+  "ucs": {
+    "category": "SYNTH",
+    "subcategory": "PLUCK",
+    "id": "SYNTPluck",
+    "confidence": 0.43439766663564694,
+    "alternatives": [
+      {
+        "category": "BELLS",
+        "subcategory": "ANIMAL",
+        "id": "BELLAnml",
+        "probability": 0.214,
+        "synonyms": [
+          "bell"
+        ]
+      },
+      {
+        "category": "SYNTH",
+        "subcategory": "KEYS",
+        "id": "SYNTKeys",
+        "probability": 0.139,
+        "synonyms": [
+          "bell"
+        ]
+      },
+      {
+        "category": "KEYBOARD",
+        "subcategory": "CELESTA",
+        "id": "KEYBCele",
+        "probability": 0.124,
+        "synonyms": [
+          "bell"
+        ]
+      }
+    ],
+    "synonyms": [
+      "bell"
+    ],
+    "reason": "name matched [bell]; signal 0.64, tier signal_narrowable, 8 candidates in contention; gate ruled out AIRHiss (length_seconds 0.1604 < min 0.5000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.10476190476190475,
+        "duration_seconds": 0.10476190476190475,
+        "peak_amplitude": 0.3620389727137889,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

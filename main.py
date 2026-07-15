@@ -71,6 +71,14 @@ def main():
 
     env = clean_env()
 
+    # WebKitGTK on Linux segfaults inside the Mesa/Gallium GL driver (libgallium) under its
+    # accelerated DMABUF compositor — a webview+driver bug, NOT app code. It manifests as a
+    # WebKitWebProcess SIGSEGV (the whole webview "crashes"), most readily on GPU-heavy views
+    # like the Extractor's canvas waveforms and the 3D cloud's WebGL. Disabling the DMABUF
+    # renderer routes compositing around the crashing path and is the standard fix for Tauri
+    # apps on Linux. setdefault so an explicit override in the environment still wins.
+    env.setdefault("WEBKIT_DISABLE_DMABUF_RENDERER", "1")
+
     # Rebuild the engine first, so the app that launches uses current code, not a stale
     # binary from a previous session.
     build_analyzer(root_dir, env)

@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Kick 36.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Kick 36.wav",
+    "length_seconds": 0.07866213151927437,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.0003009091264818752,
+    "trailing_silence_ms": 0.022675736961451247
+  },
+  "classification": {
+    "group": "Kick",
+    "reason": [
+      "1) path matched \"kick\"",
+      "2) envelope Decaying (attack 0 ms, sustain 27%, 1 transient)",
+      "3) Inharmonic · mid-band 49%"
+    ],
+    "timbre": "Percussive",
+    "length_class": "Short",
+    "subgroup": "Kick Short",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Membranophone",
+      "Struck Membranophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.002993197278911565,
+    "sustain_ratio": 0.4,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.03492063492063492,
+    "envelope_sustain_level": 0.273698455103056,
+    "envelope_release_seconds": 0.039909297052154194,
+    "envelope_temporal_centroid": 0.15216038057086997,
+    "envelope_skewness": 0.6640536693148508,
+    "envelope_kurtosis": -1.2253802777008713,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 0.17963533851618207,
+    "onset_periodicity": null,
+    "onset_rate_per_second": 12.712597290285386
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.17590544685130366,
+    "crest_factor": 4.028230274662035,
+    "zero_crossings_per_second": 1182.271547996541,
+    "complexity": 1639.0498763612134,
+    "spectral_centroid_hz": 1875.1909816527827,
+    "spectral_rolloff_hz": 3572.2398385701936,
+    "spectral_flatness": 0.031066369439280282,
+    "low_band_energy": 0.11519441401472864,
+    "mid_band_energy": 0.4930807763327057,
+    "high_band_energy": 0.3917248096525657,
+    "spectral_flux": 0.4852070596080992,
+    "harmonicity": 0.38423002012859475,
+    "inharmonicity": 0.6363680598309547,
+    "partial_count": 3,
+    "mel_frequency_cepstral_coefficients": [
+      -12.434476115585692,
+      22.845505291736714,
+      7.65395175970595,
+      2.155742417843335,
+      0.5513860231633286,
+      -0.5648985001846879,
+      -0.968219522814595,
+      -0.9890378963601668,
+      -0.6340969878273992,
+      -0.5945012278739054,
+      -0.4184923803843309,
+      -0.26674948381377966,
+      -0.3160525746898486
+    ],
+    "spectral_centroid_mean_hz": 599.5498809447575,
+    "spectral_centroid_deviation_hz": 259.8619988161532,
+    "total_harmonic_distortion": 2.7344697700855805,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": null,
+    "spectral_entropy": 0.40304736583544476,
+    "spectral_slope_db_per_octave": -8.102743108821352,
+    "band_limit_high_hz": 4435.83984375,
+    "spectral_centroid_slope_hz_per_second": null,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 0.5,
+    "mid_rms": 0.1759054463942014,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 120.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.8405510014898039,
+      0.6612844573765561,
+      0.6701352713115142,
+      0.8616803507978577,
+      0.6271069684860016,
+      0.7085038442045009,
+      0.5332100881258023,
+      0.6408012429082499,
+      1.0,
+      0.6419057559244182,
+      0.6683634814142283,
+      0.631729999181065
+    ]
+  },
+  "unsupervised": {
+    "cluster": 6,
+    "principal_components": [
+      -0.6441959160950548,
+      -1.5687819626781123,
+      -1.1094667884726785
+    ]
+  },
+  "ucs": {
+    "category": "DRUMS",
+    "subcategory": "KICK",
+    "id": "DRUMKick",
+    "confidence": 1.0,
+    "alternatives": [],
+    "synonyms": [
+      "kick"
+    ],
+    "reason": "name matched [kick]; signal 0.01, tier signal_separable, 1 candidate in contention; gate ruled out AIRBlow (length_seconds 0.0787 < min 0.1500)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.07866213151927437,
+        "duration_seconds": 0.07866213151927437,
+        "peak_amplitude": 0.3269844205358543,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

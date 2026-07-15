@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 07 - AIRPLANE, SINGLE PROP - EXT- PASS BY OVERHEAD QUICKLY.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 07 - AIRPLANE, SINGLE PROP - EXT- PASS BY OVERHEAD QUICKLY.mp3",
+    "length_seconds": 6.844081632653062,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0008886521392943413,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 4 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 1437 ms, sustain 9%, 4 transients)",
+      "3) Inharmonic · high-band 54% · root C4"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 4,
+    "attack_seconds": 2.677573696145125,
+    "sustain_ratio": 0.29683698296836986,
+    "sustained": false,
+    "envelope_attack_seconds": 1.436734693877551,
+    "envelope_decay_seconds": 1.636281179138322,
+    "envelope_sustain_level": 0.09024036130850005,
+    "envelope_release_seconds": 0.9378684807256236,
+    "envelope_temporal_centroid": 0.43515326445177405,
+    "envelope_skewness": 0.7922494977502835,
+    "envelope_kurtosis": -0.4612769920790285,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 5.019896075557953,
+    "onset_periodicity": 0.3600751326451475,
+    "onset_rate_per_second": 0.5844465648854962
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.03315490447913364,
+    "crest_factor": 10.880215203509032,
+    "zero_crossings_per_second": 2953.208492366412,
+    "complexity": 2521.9009612908662,
+    "spectral_centroid_hz": 2898.1315830550548,
+    "spectral_rolloff_hz": 5402.647018432617,
+    "spectral_flatness": 0.04325469974738887,
+    "low_band_energy": 0.034901860323136885,
+    "mid_band_energy": 0.42665994554638237,
+    "high_band_energy": 0.5384381941304561,
+    "spectral_flux": 0.18954831055187438,
+    "harmonicity": 0.06404331326045759,
+    "inharmonicity": 0.4244431320013582,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -29.405405356087144,
+      21.208760655480745,
+      -9.988838850834311,
+      4.840740283397976,
+      -3.9707889916343704,
+      3.3207835725555412,
+      -1.1353741542788431,
+      1.8167245452229623,
+      -0.9098032931204367,
+      1.6591392793094855,
+      -0.1450167977218221,
+      1.0769715764887584,
+      -0.4938239558331091
+    ],
+    "spectral_centroid_mean_hz": 2067.8703092758824,
+    "spectral_centroid_deviation_hz": 1106.3382684872415,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.007420143621866715,
+    "spectral_entropy": 0.514732889579841,
+    "spectral_slope_db_per_octave": -3.283985361232751,
+    "band_limit_high_hz": 14922.509765625,
+    "spectral_centroid_slope_hz_per_second": -240.25362352502145,
+    "syllabic_modulation_energy": 0.35991500823946676,
+    "voicing_ratio": 0.05660377358490566,
+    "mid_rms": 0.033154904478757706,
+    "side_rms": 0.016174043011311492,
+    "lufs": -21.340416252863054
+  },
+  "musicality": {
+    "pitch_hz": 864.7058823529412,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "C4",
+    "root_frequency_hz": 256.49642763360043,
+    "root_cents_offset": -34.27774917915656,
+    "beats_per_minute": 99.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.923880312038345,
+      0.8826298859445753,
+      0.8708350959223795,
+      0.9453723403158348,
+      0.8984587469883175,
+      0.8657735419040737,
+      0.924324688098932,
+      0.9580713431525292,
+      0.9841488601561924,
+      1.0,
+      0.9709887608451301,
+      0.8937766595938365
+    ]
+  },
+  "unsupervised": {
+    "cluster": 13,
+    "principal_components": [
+      2.061589846501481,
+      0.9507644053904958,
+      -1.4182180000778095
+    ]
+  },
+  "ucs": {
+    "category": "VEHICLES",
+    "subcategory": "GENERIC BY",
+    "id": "VEHBy",
+    "confidence": 0.5369811009461666,
+    "alternatives": [
+      {
+        "category": "AIRCRAFT",
+        "subcategory": "RADIO CONTROLLED",
+        "id": "AERORadio",
+        "probability": 0.173,
+        "synonyms": [
+          "airplane"
+        ]
+      },
+      {
+        "category": "SWOOSHES",
+        "subcategory": "WHOOSH",
+        "id": "WHSH",
+        "probability": 0.138,
+        "synonyms": [
+          "pass"
+        ]
+      },
+      {
+        "category": "AMBIENCE",
+        "subcategory": "RESIDENTIAL",
+        "id": "AMBHome",
+        "probability": 0.052,
+        "synonyms": [
+          "single"
+        ]
+      }
+    ],
+    "synonyms": [
+      "pass"
+    ],
+    "reason": "name matched [pass]; signal 0.83, tier signal_narrowable, 11 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 6.8441 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.728344671201814,
+        "end_seconds": 6.056235827664398,
+        "duration_seconds": 5.327891156462584,
+        "peak_amplitude": 0.11739724547353228,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 34 - SHIP, HORN - BLAST, MARINE, BOAT.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 34 - SHIP, HORN - BLAST, MARINE, BOAT.mp3",
+    "length_seconds": 4.310204081632653,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.000535281968663798,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Horn",
+    "reason": [
+      "1) path matched \"horn\"",
+      "2) envelope Multi (attack 1352 ms, sustain 17%, 2 transients)",
+      "3) Harmonic · high-band 50% · root C#3"
+    ],
+    "timbre": "Loop",
+    "length_class": "Long",
+    "subgroup": "Horn Long",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Brass",
+      "Aerophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 2,
+    "attack_seconds": 2.188639455782313,
+    "sustain_ratio": 0.47104247104247104,
+    "sustained": false,
+    "envelope_attack_seconds": 1.3519274376417234,
+    "envelope_decay_seconds": 1.107482993197279,
+    "envelope_sustain_level": 0.17260906088341801,
+    "envelope_release_seconds": 0.24444444444444444,
+    "envelope_temporal_centroid": 0.4763925402298173,
+    "envelope_skewness": 0.1373794023256128,
+    "envelope_kurtosis": -1.4273456589006315,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 1.1995962032592402,
+    "onset_periodicity": 0.405495121103315,
+    "onset_rate_per_second": 0.4640151515151515
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.034092732375121254,
+    "crest_factor": 6.9678591749177174,
+    "zero_crossings_per_second": 1928.9109848484848,
+    "complexity": 1623.4186176395915,
+    "spectral_centroid_hz": 2166.1872324044475,
+    "spectral_rolloff_hz": 3577.7888257575755,
+    "spectral_flatness": 0.010044547544429351,
+    "low_band_energy": 0.03967357707667611,
+    "mid_band_energy": 0.46463742115175005,
+    "high_band_energy": 0.4956890017715778,
+    "spectral_flux": 0.15070393891779757,
+    "harmonicity": 0.3719011584247329,
+    "inharmonicity": 0.1828778007932059,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -41.16300272229118,
+      28.79213508077919,
+      -10.207475443181785,
+      5.654842485811558,
+      -2.896964363671167,
+      4.340554605287544,
+      -1.2235574395147948,
+      0.9307158536443398,
+      -0.4432302261486187,
+      -0.7189288676625035,
+      1.3167492103177323,
+      -1.3880052689517233,
+      1.2267641813706214
+    ],
+    "spectral_centroid_mean_hz": 1395.6693513304574,
+    "spectral_centroid_deviation_hz": 785.0862661406067,
+    "total_harmonic_distortion": 2.7357594146535367,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.17791681438819007,
+    "spectral_entropy": 0.43178967999284995,
+    "spectral_slope_db_per_octave": -5.35281272137039,
+    "band_limit_high_hz": 8031.884765625,
+    "spectral_centroid_slope_hz_per_second": -121.88297522634828,
+    "syllabic_modulation_energy": 0.06529745574765056,
+    "voicing_ratio": 0.5653495440729484,
+    "mid_rms": 0.03409273237314612,
+    "side_rms": 0.02474258899530373,
+    "lufs": -22.11681071253908
+  },
+  "musicality": {
+    "pitch_hz": 137.38317757009347,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "C#3",
+    "root_frequency_hz": 137.27246764766767,
+    "root_cents_offset": -16.55347183998188,
+    "beats_per_minute": 99.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.7064373993745502,
+      0.9594675305236526,
+      0.6817090779733761,
+      0.7715721029714547,
+      0.7408653299759754,
+      0.8454864985890833,
+      0.8071248935828284,
+      0.6285290386082646,
+      1.0,
+      0.7112340903200787,
+      0.6827277309606816,
+      0.9223835231116896
+    ]
+  },
+  "unsupervised": {
+    "cluster": 0,
+    "principal_components": [
+      1.6299035282978567,
+      -0.13938954272020976,
+      -1.4153724576832685
+    ]
+  },
+  "ucs": {
+    "category": "ANIMALS",
+    "subcategory": "AQUATIC",
+    "id": "ANMLAqua",
+    "confidence": 0.25549977424346426,
+    "alternatives": [
+      {
+        "category": "ALARMS",
+        "subcategory": "SIREN",
+        "id": "ALRMSirn",
+        "probability": 0.128,
+        "synonyms": [
+          "horn"
+        ]
+      },
+      {
+        "category": "CREATURES",
+        "subcategory": "AQUATIC",
+        "id": "CREAAqua",
+        "probability": 0.107,
+        "synonyms": [
+          "marine"
+        ]
+      },
+      {
+        "category": "FIREWORKS",
+        "subcategory": "RECREATIONAL",
+        "id": "FRWKRec",
+        "probability": 0.105,
+        "synonyms": [
+          "blast"
+        ]
+      }
+    ],
+    "synonyms": [
+      "marine"
+    ],
+    "reason": "name matched [marine]; signal 0.79, tier semantic_only, 32 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.3102 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.4888888888888889,
+        "end_seconds": 3.531972789115646,
+        "duration_seconds": 3.043083900226757,
+        "peak_amplitude": 0.07992080789902542,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

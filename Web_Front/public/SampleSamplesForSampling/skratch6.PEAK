@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "skratch6.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/skratch6.wav",
+    "length_seconds": 0.24888888888888888,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 2,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.00006278680295360331,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 2 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 70 ms, sustain 51%, 2 transients)",
+      "3) Inharmonic · high-band 61% · root E1"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 2,
+    "attack_seconds": 0.07922902494331066,
+    "sustain_ratio": 0.7333333333333333,
+    "sustained": false,
+    "envelope_attack_seconds": 0.06984126984126984,
+    "envelope_decay_seconds": 0.019954648526077097,
+    "envelope_sustain_level": 0.5084547070896507,
+    "envelope_release_seconds": 0.004988662131519274,
+    "envelope_temporal_centroid": 0.45396474422252664,
+    "envelope_skewness": 0.16985477825210543,
+    "envelope_kurtosis": 0.005611931468742171,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": null,
+    "onset_periodicity": 0.2449319347175044,
+    "onset_rate_per_second": 8.035714285714286
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.12340335782710417,
+    "crest_factor": 3.945662156669704,
+    "zero_crossings_per_second": 5054.464285714286,
+    "complexity": 3797.5947961765655,
+    "spectral_centroid_hz": 4156.501614593326,
+    "spectral_rolloff_hz": 8469.642857142859,
+    "spectral_flatness": 0.08465312210121953,
+    "low_band_energy": 0.11750743483472079,
+    "mid_band_energy": 0.2684549055329278,
+    "high_band_energy": 0.6140376596323515,
+    "spectral_flux": 0.23605954881885866,
+    "harmonicity": 0.538834813528351,
+    "inharmonicity": 0.5697983275081504,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      31.215416257588256,
+      9.7191215623447,
+      -6.706150876716538,
+      7.458370865482976,
+      -4.24511610059797,
+      5.065258266373594,
+      -3.694208477947748,
+      4.511532299398631,
+      -2.962361871672041,
+      3.6351642074889043,
+      -2.6475522776568527,
+      3.5241420575609643,
+      -2.0875539917987935
+    ],
+    "spectral_centroid_mean_hz": 4185.813143558769,
+    "spectral_centroid_deviation_hz": 333.5101001314237,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.6470843789386824,
+    "spectral_entropy": 0.6026355972222253,
+    "spectral_slope_db_per_octave": -3.6178306754296066,
+    "band_limit_high_hz": 15913.037109375,
+    "spectral_centroid_slope_hz_per_second": 524.1087081580366,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 0.36,
+    "mid_rms": 0.12340335753926213,
+    "side_rms": 0.049398168781978294,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "E1",
+    "root_frequency_hz": 40.846332385767894,
+    "root_cents_offset": -15.070089780839169,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.7691257133213618,
+      0.7969581303726756,
+      0.80538879586886,
+      0.7875487338918549,
+      0.861119455510908,
+      1.0,
+      0.8158849149059968,
+      0.9234362946136171,
+      0.8506790898061829,
+      0.9511936467869654,
+      0.819243643906521,
+      0.8635865305724376
+    ]
+  },
+  "unsupervised": {
+    "cluster": 12,
+    "principal_components": [
+      -1.225429029009862,
+      0.2598885678387778,
+      -1.7260858521629099
+    ]
+  },
+  "ucs": {
+    "category": "MALLET",
+    "subcategory": "MISC",
+    "id": "MALTMisc",
+    "confidence": 0.018751923061768618,
+    "alternatives": [
+      {
+        "category": "ANIMALS",
+        "subcategory": "RODENT",
+        "id": "ANMLRdnt",
+        "probability": 0.012,
+        "synonyms": []
+      },
+      {
+        "category": "MOTORS",
+        "subcategory": "SERVO",
+        "id": "MOTRSrvo",
+        "probability": 0.012,
+        "synonyms": []
+      },
+      {
+        "category": "FARTS",
+        "subcategory": "REAL",
+        "id": "FARTReal",
+        "probability": 0.011,
+        "synonyms": []
+      }
+    ],
+    "synonyms": [],
+    "reason": "no name evidence; signal 0.99, tier signal_separable, 439 candidates in contention; gate ruled out AIRBlow (spectral_flatness 0.0847 < min 0.1200); ABSTAINED to MISC (confidence below threshold)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.24888888888888888,
+        "duration_seconds": 0.24888888888888888,
+        "peak_amplitude": 0.24350343460508034,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

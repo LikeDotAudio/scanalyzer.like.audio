@@ -1,0 +1,694 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Ooohhh 1 94.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Ooohhh 1 94.wav",
+    "length_seconds": 5.105759637188209,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 2,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.00004633571968133505,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 10 transients + 1 BPM tag → loop",
+      "2) envelope Multi (attack 654 ms, sustain 45%, 10 transients)",
+      "3) Harmonic+Stochastic · high-band 63% · root G#1"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Hi-Hat",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic",
+      "Stochastic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "String",
+      "Chordophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 10,
+    "attack_seconds": 1.9363492063492063,
+    "sustain_ratio": 0.4201954397394137,
+    "sustained": false,
+    "envelope_attack_seconds": 0.6535147392290249,
+    "envelope_decay_seconds": 0.044897959183673466,
+    "envelope_sustain_level": 0.44982581130269556,
+    "envelope_release_seconds": 0.22947845804988662,
+    "envelope_temporal_centroid": 0.42644745059755235,
+    "envelope_skewness": 0.4434103747145541,
+    "envelope_kurtosis": -0.9939129834357487,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 1.076929239307573,
+    "onset_periodicity": 0.1880745909814996,
+    "onset_rate_per_second": 1.9585724183261977
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.16724118787504158,
+    "crest_factor": 4.990365932978713,
+    "zero_crossings_per_second": 3106.491712707182,
+    "complexity": 6410.485341146021,
+    "spectral_centroid_hz": 6818.8668783009525,
+    "spectral_rolloff_hz": 15022.838020287434,
+    "spectral_flatness": 0.5700956667083081,
+    "low_band_energy": 0.19619305201437282,
+    "mid_band_energy": 0.16927980498540113,
+    "high_band_energy": 0.6345271430002261,
+    "spectral_flux": 0.1701293074996126,
+    "harmonicity": 0.9072314596427945,
+    "inharmonicity": 0.0068139797615289766,
+    "partial_count": 1,
+    "mel_frequency_cepstral_coefficients": [
+      -14.267914296873723,
+      2.795627884991627,
+      3.041340425455898,
+      6.000214632740149,
+      3.042519493548433,
+      3.435988488520084,
+      2.1572325411391855,
+      1.975529371209942,
+      1.199826439461873,
+      1.2586278759721985,
+      0.5174531462501728,
+      1.0011115211198884,
+      0.68233698921004
+    ],
+    "spectral_centroid_mean_hz": 4336.634509730072,
+    "spectral_centroid_deviation_hz": 3460.0393362035784,
+    "total_harmonic_distortion": 0.06431753905227362,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.1866595104390384,
+    "spectral_entropy": 0.3038101707193766,
+    "spectral_slope_db_per_octave": -4.762553110527287,
+    "band_limit_high_hz": 18669.287109375,
+    "spectral_centroid_slope_hz_per_second": 596.4882833528453,
+    "syllabic_modulation_energy": 0.36968292250799356,
+    "voicing_ratio": 0.8656036446469249,
+    "mid_rms": 0.1672411877031516,
+    "side_rms": 0.0031759710601582188,
+    "lufs": -14.81158175640226
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "G#1",
+    "root_frequency_hz": 51.96472294141247,
+    "root_cents_offset": 1.7211291856320088,
+    "beats_per_minute": 1.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.8455728482171491,
+      0.8997320787262866,
+      0.7475794305676182,
+      0.7550826190805191,
+      0.8531888048155541,
+      0.8115784330283679,
+      0.8968769751228497,
+      0.8570277403613736,
+      0.9598241256056687,
+      0.9645691365416715,
+      1.0,
+      0.9778899480905922
+    ]
+  },
+  "unsupervised": {
+    "cluster": 12,
+    "principal_components": [
+      -0.7950128342709515,
+      -0.8174959677476044,
+      -1.359179238604428
+    ]
+  },
+  "ucs": {
+    "category": "WATER",
+    "subcategory": "MISC",
+    "id": "WATRMisc",
+    "confidence": 0.01779964222315391,
+    "alternatives": [
+      {
+        "category": "LOOPS",
+        "subcategory": "VOCAL LOOP",
+        "id": "LOOPVox",
+        "probability": 0.015,
+        "synonyms": []
+      },
+      {
+        "category": "VOCALS",
+        "subcategory": "VOCODER",
+        "id": "VOCLVcdr",
+        "probability": 0.012,
+        "synonyms": []
+      },
+      {
+        "category": "DESTRUCTION",
+        "subcategory": "COLLAPSE",
+        "id": "DESTRClpse",
+        "probability": 0.011,
+        "synonyms": []
+      }
+    ],
+    "synonyms": [],
+    "reason": "no name evidence; signal 0.88, tier semantic_only, 582 candidates in contention; gate ruled out AIRBrst (length_seconds 5.1058 > max 4.0000); ABSTAINED to MISC (confidence below threshold)"
+  },
+  "regions": {
+    "count": 3,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.33922902494331064,
+        "duration_seconds": 0.33922902494331064,
+        "peak_amplitude": 0.33774526539717203,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Ooohhh 1 94.wav",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Ooohhh 1 94.wav",
+            "length_seconds": 0.33922902494331064,
+            "sample_rate": 44100,
+            "bit_depth": 16,
+            "channels": 2,
+            "source_format": "WAV",
+            "lossy_source": false,
+            "dc_offset": -0.000017640424922188334,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Hi-Hat",
+            "reason": [
+              "1) path matched \"hh\"",
+              "2) envelope Decaying (attack 15 ms, sustain 44%, 1 transient)",
+              "3) Stochastic · high-band 70% · root D1"
+            ],
+            "timbre": "Tonal",
+            "length_class": "Short",
+            "subgroup": "Hi-Hat Short",
+            "audit": false,
+            "acoustic_types": [
+              "Stochastic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone",
+              "Struck Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 1,
+            "attack_seconds": 0.011292517006802722,
+            "sustain_ratio": 0.5714285714285714,
+            "sustained": false,
+            "envelope_attack_seconds": 0.014965986394557823,
+            "envelope_decay_seconds": 0.0947845804988662,
+            "envelope_sustain_level": 0.4359759248319288,
+            "envelope_release_seconds": 0.06984126984126984,
+            "envelope_temporal_centroid": 0.2735739856990496,
+            "envelope_skewness": 0.15334825542384084,
+            "envelope_kurtosis": -1.1523683735043768,
+            "envelope_shape": "Decaying",
+            "decay_time_seconds_60db": 0.42357214856364006,
+            "onset_periodicity": 0.22728905147556672,
+            "onset_rate_per_second": 2.9478609625668453
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.17827284811006522,
+            "crest_factor": 4.201642057272838,
+            "zero_crossings_per_second": 1812.9344919786097,
+            "complexity": 6734.581981115049,
+            "spectral_centroid_hz": 8610.97032872015,
+            "spectral_rolloff_hz": 16101.216577540106,
+            "spectral_flatness": 0.5552423481882741,
+            "low_band_energy": 0.24624514273647205,
+            "mid_band_energy": 0.05710497940531712,
+            "high_band_energy": 0.6966498778582109,
+            "spectral_flux": 0.12255785520605382,
+            "harmonicity": 0.9872684619567286,
+            "inharmonicity": 0.7842429416234707,
+            "partial_count": 2,
+            "mel_frequency_cepstral_coefficients": [
+              -14.972481636476346,
+              2.8683865590550055,
+              4.565518181664544,
+              8.323981037161934,
+              3.485922009188411,
+              4.5909680438005065,
+              3.639173316108133,
+              2.46141885127359,
+              2.2790597011815317,
+              2.2524093438719435,
+              0.8087521338019268,
+              1.8483425187102163,
+              1.0939898372685066
+            ],
+            "spectral_centroid_mean_hz": 2644.0311526257738,
+            "spectral_centroid_deviation_hz": 3438.8003235696087,
+            "total_harmonic_distortion": 0.8678048726526242,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.4385526196076799,
+            "spectral_entropy": 0.16968809580051258,
+            "spectral_slope_db_per_octave": -5.260004197125785,
+            "band_limit_high_hz": 21920.80078125,
+            "spectral_centroid_slope_hz_per_second": -29167.845320128094,
+            "syllabic_modulation_energy": null,
+            "voicing_ratio": 1.0,
+            "mid_rms": 0.17827284793196949,
+            "side_rms": 0.003383309570845612,
+            "lufs": -70.0
+          },
+          "musicality": {
+            "pitch_hz": 2004.5454545454545,
+            "pitch_slope_semitones_per_second": -216.64377022690365,
+            "root_note_name": "D1",
+            "root_frequency_hz": 36.84826203208556,
+            "root_cents_offset": 6.597948168773371,
+            "beats_per_minute": 0.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.8922005902206713,
+              0.8740963975245581,
+              0.63616948797518,
+              0.7171955157484919,
+              0.8606805769117488,
+              0.8479948226194703,
+              0.8395942357255457,
+              0.7867700231730661,
+              0.8120106895904673,
+              0.9640111699804292,
+              0.9460892919483473,
+              1.0
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "CYMBALS",
+            "subcategory": "MISC",
+            "id": "CYMBMisc",
+            "confidence": 0.02809715026285849,
+            "alternatives": [
+              {
+                "category": "CYMBALS",
+                "subcategory": "HI-HAT",
+                "id": "CYMBHat",
+                "probability": 0.028,
+                "synonyms": []
+              },
+              {
+                "category": "PERCUSSION",
+                "subcategory": "TAMBOURINE",
+                "id": "PERCTamb",
+                "probability": 0.02,
+                "synonyms": []
+              },
+              {
+                "category": "GLASS",
+                "subcategory": "IMPACT",
+                "id": "GLASImpt",
+                "probability": 0.017,
+                "synonyms": []
+              }
+            ],
+            "synonyms": [],
+            "reason": "no name evidence; signal 0.92, tier signal_narrowable, 472 candidates in contention; gate ruled out AIRHiss (length_seconds 0.3392 < min 0.5000); ABSTAINED to MISC (confidence below threshold)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.6385487528344671,
+        "end_seconds": 3.5020408163265304,
+        "duration_seconds": 2.863492063492063,
+        "peak_amplitude": 0.4571463484127713,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Ooohhh 1 94.wav",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Ooohhh 1 94.wav",
+            "length_seconds": 2.8634920634920635,
+            "sample_rate": 44100,
+            "bit_depth": 16,
+            "channels": 2,
+            "source_format": "WAV",
+            "lossy_source": false,
+            "dc_offset": 0.00005466689555978035,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Hi-Hat",
+            "reason": [
+              "1) path matched \"hh\"",
+              "2) envelope Multi (attack 15 ms, sustain 54%, 6 transients)",
+              "3) Harmonic+Stochastic · high-band 62% · root G#1"
+            ],
+            "timbre": "Loop",
+            "length_class": "Long",
+            "subgroup": "Hi-Hat Long",
+            "audit": false,
+            "acoustic_types": [
+              "Harmonic",
+              "Stochastic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone",
+              "Struck Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 6,
+            "attack_seconds": 1.2978004535147392,
+            "sustain_ratio": 0.5930232558139535,
+            "sustained": false,
+            "envelope_attack_seconds": 0.014965986394557823,
+            "envelope_decay_seconds": 0.044897959183673466,
+            "envelope_sustain_level": 0.5436397866510381,
+            "envelope_release_seconds": 0.24444444444444444,
+            "envelope_temporal_centroid": 0.44622798810759484,
+            "envelope_skewness": 0.0288534604951506,
+            "envelope_kurtosis": -0.9184311682442456,
+            "envelope_shape": "Multi",
+            "decay_time_seconds_60db": 1.076929239307573,
+            "onset_periodicity": 0.2230023264371485,
+            "onset_rate_per_second": 2.0953436807095343
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.19288290982784392,
+            "crest_factor": 4.326950103082802,
+            "zero_crossings_per_second": 1545.3159645232815,
+            "complexity": 6344.918822767013,
+            "spectral_centroid_hz": 6554.520385537303,
+            "spectral_rolloff_hz": 14799.412416851443,
+            "spectral_flatness": 0.5593631584644567,
+            "low_band_energy": 0.20396328148887696,
+            "mid_band_energy": 0.17479383098619064,
+            "high_band_energy": 0.6212428875249324,
+            "spectral_flux": 0.14622549706553448,
+            "harmonicity": 0.9368757141296639,
+            "inharmonicity": 0.0,
+            "partial_count": 0,
+            "mel_frequency_cepstral_coefficients": [
+              -8.53075223982843,
+              4.242546368640423,
+              3.665105600165028,
+              7.021330519707124,
+              3.566256647713562,
+              4.089301409430499,
+              2.603772678388155,
+              2.362718346629801,
+              1.5034487067191251,
+              1.5133686880590431,
+              0.6320564938651976,
+              1.1973552718553557,
+              0.7838006115208189
+            ],
+            "spectral_centroid_mean_hz": 3013.2879425265583,
+            "spectral_centroid_deviation_hz": 2967.38739555748,
+            "total_harmonic_distortion": 0.05405697785687948,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.4524985064538506,
+            "spectral_entropy": 0.22677046355875077,
+            "spectral_slope_db_per_octave": -4.853685490567894,
+            "band_limit_high_hz": 18260.15625,
+            "spectral_centroid_slope_hz_per_second": -75.33697351157612,
+            "syllabic_modulation_energy": 0.28272501659177196,
+            "voicing_ratio": 0.902027027027027,
+            "mid_rms": 0.1928829096271817,
+            "side_rms": 0.0036616596863250674,
+            "lufs": -14.349122742122423
+          },
+          "musicality": {
+            "pitch_hz": 2004.5454545454545,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "G#1",
+            "root_frequency_hz": 51.917812169877635,
+            "root_cents_offset": 0.15756452324708903,
+            "beats_per_minute": 94.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.8084162898804306,
+              0.8553154810439781,
+              0.7273022733391367,
+              0.7180577743792536,
+              0.7964485565027484,
+              0.7621281390980879,
+              0.8800707333598486,
+              0.8450623148421815,
+              1.0,
+              0.9153751824087226,
+              0.9467598452019159,
+              0.8891589751356384
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "WATER",
+            "subcategory": "MISC",
+            "id": "WATRMisc",
+            "confidence": 0.011726086161223651,
+            "alternatives": [
+              {
+                "category": "BELLS",
+                "subcategory": "DOORBELL",
+                "id": "BELLDoor",
+                "probability": 0.01,
+                "synonyms": []
+              },
+              {
+                "category": "MAGIC",
+                "subcategory": "ELEMENTAL",
+                "id": "MAGElem",
+                "probability": 0.009,
+                "synonyms": []
+              },
+              {
+                "category": "ICE",
+                "subcategory": "HANDLE",
+                "id": "ICEHndl",
+                "probability": 0.009,
+                "synonyms": []
+              }
+            ],
+            "synonyms": [],
+            "reason": "no name evidence; signal 0.81, tier semantic_only, 576 candidates in contention; gate ruled out AIRHiss (harmonicity 0.9369 > max 0.8891); ABSTAINED to MISC (confidence below threshold)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      },
+      {
+        "index": 2,
+        "start_seconds": 3.8263038548752832,
+        "end_seconds": 4.779138321995465,
+        "duration_seconds": 0.9528344671201814,
+        "peak_amplitude": 0.43336959651493845,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Ooohhh 1 94.wav",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Ooohhh 1 94.wav",
+            "length_seconds": 0.9528344671201814,
+            "sample_rate": 44100,
+            "bit_depth": 16,
+            "channels": 2,
+            "source_format": "WAV",
+            "lossy_source": false,
+            "dc_offset": 0.000048822314894693004,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Hi-Hat",
+            "reason": [
+              "1) path matched \"hh\"",
+              "2) envelope Multi (attack 344 ms, sustain 25%, 4 transients)",
+              "3) Stochastic · high-band 63% · root E1"
+            ],
+            "timbre": "Loop",
+            "length_class": "Medium",
+            "subgroup": "Hi-Hat Medium",
+            "audit": false,
+            "acoustic_types": [
+              "Stochastic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone",
+              "Struck Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 4,
+            "attack_seconds": 0.643015873015873,
+            "sustain_ratio": 0.39655172413793105,
+            "sustained": false,
+            "envelope_attack_seconds": 0.3442176870748299,
+            "envelope_decay_seconds": 0.02494331065759637,
+            "envelope_sustain_level": 0.2520735500957804,
+            "envelope_release_seconds": 0.2145124716553288,
+            "envelope_temporal_centroid": 0.3461130579905611,
+            "envelope_skewness": 0.8004429356440877,
+            "envelope_kurtosis": -0.335828652139194,
+            "envelope_shape": "Multi",
+            "decay_time_seconds_60db": 2.26484324662804,
+            "onset_periodicity": 0.21561664468422997,
+            "onset_rate_per_second": 4.1980009519276535
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.1635645610378976,
+            "crest_factor": 4.810358638974668,
+            "zero_crossings_per_second": 3486.4397905759165,
+            "complexity": 6329.434409622355,
+            "spectral_centroid_hz": 6673.883831676277,
+            "spectral_rolloff_hz": 14870.368871965731,
+            "spectral_flatness": 0.588111853836534,
+            "low_band_energy": 0.17816926212620054,
+            "mid_band_energy": 0.1871912199390821,
+            "high_band_energy": 0.6346395179347174,
+            "spectral_flux": 0.19884414285536628,
+            "harmonicity": 0.7654957111610854,
+            "inharmonicity": 0.7332983102620539,
+            "partial_count": 5,
+            "mel_frequency_cepstral_coefficients": [
+              9.950454751610438,
+              2.1552725771875334,
+              1.150101267239356,
+              5.307661219697252,
+              2.3141206563351857,
+              2.9435717159921158,
+              1.606010135240979,
+              1.8756762048123752,
+              0.6339641819087593,
+              0.8427265550330983,
+              0.2565827620122321,
+              0.92807095136288,
+              0.677919496317478
+            ],
+            "spectral_centroid_mean_hz": 4779.7664902973975,
+            "spectral_centroid_deviation_hz": 2622.4099414932616,
+            "total_harmonic_distortion": 0.7376171609262328,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.27022838569267627,
+            "spectral_entropy": 0.3679200914363915,
+            "spectral_slope_db_per_octave": -4.316491180468306,
+            "band_limit_high_hz": 21382.470703125,
+            "spectral_centroid_slope_hz_per_second": 995.6663284919921,
+            "syllabic_modulation_energy": 0.3404025427142314,
+            "voicing_ratio": 0.7524752475247525,
+            "mid_rms": 0.16356456087635887,
+            "side_rms": 0.003111312529757113,
+            "lufs": -14.097363145650176
+          },
+          "musicality": {
+            "pitch_hz": 2004.5454545454545,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "E1",
+            "root_frequency_hz": 41.39251711438037,
+            "root_cents_offset": 7.926036941969272,
+            "beats_per_minute": 96.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.8385863295895614,
+              0.9073713404189703,
+              0.8350324342119887,
+              0.7883047938180989,
+              0.8752395947433724,
+              0.8392564724078423,
+              0.9448635598349987,
+              0.9134188656404,
+              0.7682078160352256,
+              0.948627389121278,
+              0.9960476867913954,
+              1.0
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "VOCALS",
+            "subcategory": "MISC",
+            "id": "VOCLMisc",
+            "confidence": 0.015701643015384254,
+            "alternatives": [
+              {
+                "category": "VOCALS",
+                "subcategory": "ADLIB",
+                "id": "VOCLAdlb",
+                "probability": 0.013,
+                "synonyms": []
+              },
+              {
+                "category": "CYMBALS",
+                "subcategory": "RIDE",
+                "id": "CYMBRide",
+                "probability": 0.011,
+                "synonyms": []
+              },
+              {
+                "category": "MALLET",
+                "subcategory": "GLOCKENSPIEL",
+                "id": "MALTGlok",
+                "probability": 0.011,
+                "synonyms": []
+              }
+            ],
+            "synonyms": [],
+            "reason": "no name evidence; signal 0.97, tier semantic_only, 526 candidates in contention; gate ruled out AIRBrst (envelope_attack_seconds 0.3442 > max 0.1500); ABSTAINED to MISC (confidence below threshold)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      }
+    ]
+  }
+}

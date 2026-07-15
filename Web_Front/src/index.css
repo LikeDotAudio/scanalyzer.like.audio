@@ -1,4 +1,6 @@
 :root {
+  color-scheme: dark;
+  
   /* Color Palette */
   --bg-main: #0B0E14;
   --bg-surface: rgba(23, 28, 40, 0.7);
@@ -261,4 +263,24 @@ h1, h2, h3, h4 {
   .hide-on-mobile {
     display: none !important;
   }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border: 2px solid var(--bg-main);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+::-webkit-scrollbar-corner {
+  background: var(--bg-main);
 }

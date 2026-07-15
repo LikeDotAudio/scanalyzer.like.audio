@@ -1,0 +1,540 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 06 - ICE TRAY - REMOVAL OF CUBES FROM TRAY.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 06 - ICE TRAY - REMOVAL OF CUBES FROM TRAY.mp3",
+    "length_seconds": 4.728163265306122,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0006852017445477121,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 7 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 1846 ms, sustain 29%, 7 transients)",
+      "3) Inharmonic · high-band 56% · root A2"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 7,
+    "attack_seconds": 2.627233560090703,
+    "sustain_ratio": 0.11619718309859155,
+    "sustained": false,
+    "envelope_attack_seconds": 1.8458049886621315,
+    "envelope_decay_seconds": 0.09977324263038548,
+    "envelope_sustain_level": 0.29167165858337696,
+    "envelope_release_seconds": 0.28435374149659864,
+    "envelope_temporal_centroid": 0.6466234215308624,
+    "envelope_skewness": 1.9690613869176672,
+    "envelope_kurtosis": 3.2047036606726644,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 1.2692132075225389,
+    "onset_periodicity": 0.40078770001817904,
+    "onset_rate_per_second": 1.4804903314917128
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.05920742540997143,
+    "crest_factor": 10.542602380757609,
+    "zero_crossings_per_second": 4377.175414364641,
+    "complexity": 3699.6743380865973,
+    "spectral_centroid_hz": 3755.510922204831,
+    "spectral_rolloff_hz": 7434.176450276243,
+    "spectral_flatness": 0.062075876287378554,
+    "low_band_energy": 0.0318667200181186,
+    "mid_band_energy": 0.4075202970661119,
+    "high_band_energy": 0.5606129829157779,
+    "spectral_flux": 0.1955987245824201,
+    "harmonicity": 0.10555994778997087,
+    "inharmonicity": 0.44205827976458123,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -29.999719106585545,
+      12.553828809745356,
+      -7.300926127450151,
+      5.1416036588760505,
+      -2.446099423495625,
+      4.848371011897666,
+      -2.7289175683208087,
+      3.59916065106877,
+      -2.62897947324024,
+      3.3440719132787167,
+      -2.7419615552739134,
+      2.4804284046284586,
+      -1.8045787470724857
+    ],
+    "spectral_centroid_mean_hz": 3162.9919938181342,
+    "spectral_centroid_deviation_hz": 2112.159670528519,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.5007966240991519,
+    "spectral_slope_db_per_octave": -2.1138618644207092,
+    "band_limit_high_hz": 15999.169921875,
+    "spectral_centroid_slope_hz_per_second": -627.2183943900249,
+    "syllabic_modulation_energy": 0.15944359340819017,
+    "voicing_ratio": 0.19455252918287938,
+    "mid_rms": 0.05920742540928427,
+    "side_rms": 0.026003506655184798,
+    "lufs": -16.38598169261771
+  },
+  "musicality": {
+    "pitch_hz": 420.0,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "A2",
+    "root_frequency_hz": 108.00247192382812,
+    "root_cents_offset": -31.72702928413358,
+    "beats_per_minute": 96.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.8362035725814688,
+      0.7530349919516878,
+      0.8668888911284288,
+      0.8950838161311395,
+      0.9151864618903512,
+      0.9233616572316489,
+      0.9010924071072697,
+      0.9234641489583505,
+      0.9731262894895106,
+      1.0,
+      0.9902356910298076,
+      0.9477444186550054
+    ]
+  },
+  "unsupervised": {
+    "cluster": 12,
+    "principal_components": [
+      1.5859852087689659,
+      1.0415868629096778,
+      -1.4647323926178124
+    ]
+  },
+  "ucs": {
+    "category": "OBJECTS",
+    "subcategory": "LUGGAGE",
+    "id": "OBJLug",
+    "confidence": 0.20556682731482742,
+    "alternatives": [
+      {
+        "category": "OBJECTS",
+        "subcategory": "CONTAINER",
+        "id": "OBJCont",
+        "probability": 0.162,
+        "synonyms": [
+          "tray"
+        ]
+      },
+      {
+        "category": "OBJECTS",
+        "subcategory": "OFFICE",
+        "id": "OBJOffc",
+        "probability": 0.162,
+        "synonyms": [
+          "tray"
+        ]
+      },
+      {
+        "category": "MACHINES",
+        "subcategory": "APPLIANCE",
+        "id": "MACHAppl",
+        "probability": 0.109,
+        "synonyms": [
+          "ice"
+        ]
+      }
+    ],
+    "synonyms": [
+      "cubes"
+    ],
+    "reason": "name matched [cubes]; signal 0.85, tier semantic_only, 17 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.7282 > max 4.0000)"
+  },
+  "regions": {
+    "count": 2,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.4988662131519274,
+        "end_seconds": 1.4317460317460315,
+        "duration_seconds": 0.9328798185941041,
+        "peak_amplitude": 0.05953224991225445,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Track 06 - ICE TRAY - REMOVAL OF CUBES FROM TRAY.mp3",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 06 - ICE TRAY - REMOVAL OF CUBES FROM TRAY.mp3",
+            "length_seconds": 0.9328571428571428,
+            "sample_rate": 44100,
+            "bit_depth": 0,
+            "channels": 2,
+            "source_format": "MP3",
+            "lossy_source": true,
+            "dc_offset": -0.0006451546872092189,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Loops/Patterns",
+            "reason": [
+              "1) 3 transients (>1), no drum/instrument name → loop",
+              "2) envelope Multi (attack 234 ms, sustain 10%, 3 transients)",
+              "3) Inharmonic · high-band 91%"
+            ],
+            "timbre": "Loop",
+            "length_class": "Loop",
+            "subgroup": "Loop",
+            "audit": false,
+            "acoustic_types": [
+              "Inharmonic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 3,
+            "attack_seconds": 0.7719501133786848,
+            "sustain_ratio": 0.03571428571428571,
+            "sustained": false,
+            "envelope_attack_seconds": 0.2344671201814059,
+            "envelope_decay_seconds": 0.044897959183673466,
+            "envelope_sustain_level": 0.09962529983100163,
+            "envelope_release_seconds": 0.044897959183673466,
+            "envelope_temporal_centroid": 0.5122432686884708,
+            "envelope_skewness": 3.7056436714080707,
+            "envelope_kurtosis": 18.03378450576092,
+            "envelope_shape": "Multi",
+            "decay_time_seconds_60db": 0.2575731455719817,
+            "onset_periodicity": 0.11703977647679058,
+            "onset_rate_per_second": 3.215926493108729
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.010072966247453997,
+            "crest_factor": 19.15859202700413,
+            "zero_crossings_per_second": 8979.938744257275,
+            "complexity": 3199.107750392685,
+            "spectral_centroid_hz": 5293.13356206238,
+            "spectral_rolloff_hz": 8189.89280245023,
+            "spectral_flatness": 0.13863165212089693,
+            "low_band_energy": 0.006766637481374933,
+            "mid_band_energy": 0.08144485602252059,
+            "high_band_energy": 0.9117885064961044,
+            "spectral_flux": 0.2358924102197386,
+            "harmonicity": 0.20388764457042965,
+            "inharmonicity": 0.3560930602500663,
+            "partial_count": 10,
+            "mel_frequency_cepstral_coefficients": [
+              -18.862556440135442,
+              2.6985757507030788,
+              -13.408616508658097,
+              7.944429758546893,
+              -3.2984460805115425,
+              6.06959173289935,
+              -3.4483809730005324,
+              5.5340188455836605,
+              -3.703000465779749,
+              4.7195905562577805,
+              -4.7343000701467695,
+              3.6633025712788867,
+              -2.932551364822293
+            ],
+            "spectral_centroid_mean_hz": 5218.212360386871,
+            "spectral_centroid_deviation_hz": 525.2577889783336,
+            "total_harmonic_distortion": 0.0,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.0686866041988885,
+            "spectral_entropy": 0.7189810609696343,
+            "spectral_slope_db_per_octave": 0.5520717296115083,
+            "band_limit_high_hz": 16042.236328125,
+            "spectral_centroid_slope_hz_per_second": 257.4389962962786,
+            "syllabic_modulation_energy": 0.13697126415272953,
+            "voicing_ratio": 0.14,
+            "mid_rms": 0.010072966253144999,
+            "side_rms": 0.006926411405957329,
+            "lufs": -32.9163667667574
+          },
+          "musicality": {
+            "pitch_hz": 864.7058823529412,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "",
+            "root_frequency_hz": 0.0,
+            "root_cents_offset": 0.0,
+            "beats_per_minute": 112.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.6069923337345462,
+              0.7156899296309708,
+              0.6074985897142988,
+              0.6235966921783733,
+              0.7080026567694456,
+              0.8526364440919847,
+              0.6724256772018995,
+              0.7632664725302937,
+              0.8206789493144655,
+              1.0,
+              0.7679618078055169,
+              0.6973602639787007
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "OBJECTS",
+            "subcategory": "LUGGAGE",
+            "id": "OBJLug",
+            "confidence": 0.19021529826517297,
+            "alternatives": [
+              {
+                "category": "OBJECTS",
+                "subcategory": "CONTAINER",
+                "id": "OBJCont",
+                "probability": 0.15,
+                "synonyms": [
+                  "tray"
+                ]
+              },
+              {
+                "category": "OBJECTS",
+                "subcategory": "OFFICE",
+                "id": "OBJOffc",
+                "probability": 0.15,
+                "synonyms": [
+                  "tray"
+                ]
+              },
+              {
+                "category": "FOOD & DRINK",
+                "subcategory": "TABLEWARE",
+                "id": "FOODTware",
+                "probability": 0.14,
+                "synonyms": [
+                  "tray"
+                ]
+              }
+            ],
+            "synonyms": [
+              "cubes"
+            ],
+            "reason": "name matched [cubes]; signal 0.77, tier semantic_only, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.2345 > max 0.1500)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.7809523809523808,
+        "end_seconds": 4.12562358276644,
+        "duration_seconds": 2.3446712018140587,
+        "peak_amplitude": 0.26055727346553587,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Track 06 - ICE TRAY - REMOVAL OF CUBES FROM TRAY.mp3",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 06 - ICE TRAY - REMOVAL OF CUBES FROM TRAY.mp3",
+            "length_seconds": 2.3446712018140587,
+            "sample_rate": 44100,
+            "bit_depth": 0,
+            "channels": 2,
+            "source_format": "MP3",
+            "lossy_source": true,
+            "dc_offset": -0.0007118241795233699,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Loops/Patterns",
+            "reason": [
+              "1) 7 transients (>1), no drum/instrument name → loop",
+              "2) envelope Multi (attack 459 ms, sustain 42%, 7 transients)",
+              "3) Inharmonic · high-band 56% · root E3"
+            ],
+            "timbre": "Loop",
+            "length_class": "Loop",
+            "subgroup": "Loop",
+            "audit": false,
+            "acoustic_types": [
+              "Inharmonic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 7,
+            "attack_seconds": 0.846281179138322,
+            "sustain_ratio": 0.18439716312056736,
+            "sustained": false,
+            "envelope_attack_seconds": 0.45895691609977324,
+            "envelope_decay_seconds": 0.029931972789115645,
+            "envelope_sustain_level": 0.4207781647392253,
+            "envelope_release_seconds": 0.28435374149659864,
+            "envelope_temporal_centroid": 0.5497910542436584,
+            "envelope_skewness": 1.0474625211731616,
+            "envelope_kurtosis": 0.18350719795187098,
+            "envelope_shape": "Multi",
+            "decay_time_seconds_60db": 1.2692132075225389,
+            "onset_periodicity": 0.16164041197340984,
+            "onset_rate_per_second": 2.9854932301740815
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.08383510709702219,
+            "crest_factor": 7.445572215507611,
+            "zero_crossings_per_second": 4855.691489361702,
+            "complexity": 3704.303025341819,
+            "spectral_centroid_hz": 3745.0016598665966,
+            "spectral_rolloff_hz": 7434.304642166345,
+            "spectral_flatness": 0.07113768355231735,
+            "low_band_energy": 0.03204427476968719,
+            "mid_band_energy": 0.41056899260452195,
+            "high_band_energy": 0.5573867326257909,
+            "spectral_flux": 0.2385494553995847,
+            "harmonicity": 0.11192940023301227,
+            "inharmonicity": 0.46023816535092543,
+            "partial_count": 12,
+            "mel_frequency_cepstral_coefficients": [
+              9.204215742586014,
+              12.081495497261209,
+              -8.795350858160216,
+              6.23769016276283,
+              -4.829018529848355,
+              4.393361864453374,
+              -4.7389373981465805,
+              3.8116668511795893,
+              -4.78715430726484,
+              3.644793220649272,
+              -4.103712694015632,
+              2.89159002905786,
+              -3.0025732655980306
+            ],
+            "spectral_centroid_mean_hz": 3509.063543040927,
+            "spectral_centroid_deviation_hz": 1639.0321165087767,
+            "total_harmonic_distortion": 0.0,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.156132430508527,
+            "spectral_entropy": 0.6226543658207778,
+            "spectral_slope_db_per_octave": -2.19037155682716,
+            "band_limit_high_hz": 15999.169921875,
+            "spectral_centroid_slope_hz_per_second": -2095.41151229639,
+            "syllabic_modulation_energy": 0.15277361252795474,
+            "voicing_ratio": 0.22972972972972974,
+            "mid_rms": 0.08383510709577054,
+            "side_rms": 0.03666427009978147,
+            "lufs": -15.970962621948136
+          },
+          "musicality": {
+            "pitch_hz": 420.0,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "E3",
+            "root_frequency_hz": 162.0986753259153,
+            "root_cents_offset": -28.757467099840994,
+            "beats_per_minute": 131.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.8422203982961323,
+              0.7556647330756104,
+              0.8726630267301528,
+              0.9007099276946678,
+              0.9201493503373686,
+              0.9278946196255421,
+              0.9096538258504309,
+              0.9353522533470513,
+              0.9749378086377846,
+              0.9978443161662396,
+              1.0,
+              0.950580466592496
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "OBJECTS",
+            "subcategory": "LUGGAGE",
+            "id": "OBJLug",
+            "confidence": 0.20885157640854926,
+            "alternatives": [
+              {
+                "category": "OBJECTS",
+                "subcategory": "CONTAINER",
+                "id": "OBJCont",
+                "probability": 0.164,
+                "synonyms": [
+                  "tray"
+                ]
+              },
+              {
+                "category": "OBJECTS",
+                "subcategory": "OFFICE",
+                "id": "OBJOffc",
+                "probability": 0.164,
+                "synonyms": [
+                  "tray"
+                ]
+              },
+              {
+                "category": "ICE",
+                "subcategory": "HANDLE",
+                "id": "ICEHndl",
+                "probability": 0.091,
+                "synonyms": [
+                  "ice"
+                ]
+              }
+            ],
+            "synonyms": [
+              "cubes"
+            ],
+            "reason": "name matched [cubes]; signal 0.95, tier semantic_only, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.4590 > max 0.1500)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      }
+    ]
+  }
+}

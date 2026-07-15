@@ -144,9 +144,15 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (gen !== ringGenRef.current) return;
-      const decoded =
-        decodeWav(buf, decodeCtxRef.current) ??
-        (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
+      let decoded: AudioBuffer | null = null;
+      try {
+        decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0));
+      } catch (e) {
+        console.warn("StatsTab decodeAudioData failed, falling back:", e);
+        decoded =
+          decodeWav(buf, decodeCtxRef.current) ??
+          (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
+      }
       if (gen !== ringGenRef.current) return;
       if (!decoded) return;
       setRing({ samples: toMono(decoded), color: pointColor(item), name: item.metadata?.name || '' });

@@ -1,0 +1,721 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+    "length_seconds": 4.048979591836734,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0008363045989057016,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 3 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 110 ms, sustain 1%, 3 transients)",
+      "3) Inharmonic · high-band 61% · root A#0"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 3,
+    "attack_seconds": 3.2784126984126982,
+    "sustain_ratio": 0.0411522633744856,
+    "sustained": false,
+    "envelope_attack_seconds": 0.10975056689342404,
+    "envelope_decay_seconds": 0.7034013605442176,
+    "envelope_sustain_level": 0.006735286048809126,
+    "envelope_release_seconds": 0.05487528344671202,
+    "envelope_temporal_centroid": 0.4481144254677463,
+    "envelope_skewness": 3.725728805461335,
+    "envelope_kurtosis": 15.295750864511302,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 0.34883163737268325,
+    "onset_periodicity": 0.3389505897616618,
+    "onset_rate_per_second": 0.7409274193548387
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.025855309350038113,
+    "crest_factor": 17.02798684083762,
+    "zero_crossings_per_second": 631.2701612903227,
+    "complexity": 4182.383482601426,
+    "spectral_centroid_hz": 4489.092095226924,
+    "spectral_rolloff_hz": 9349.022177419354,
+    "spectral_flatness": 0.09955388860291967,
+    "low_band_energy": 0.13188937475967982,
+    "mid_band_energy": 0.254003692051319,
+    "high_band_energy": 0.6141069331889998,
+    "spectral_flux": 0.14468404913634791,
+    "harmonicity": 0.7750759415888394,
+    "inharmonicity": 0.43764422340211295,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      -73.3578864817651,
+      19.73065007922277,
+      -1.0515562086643593,
+      5.957898706891176,
+      -0.2430337023318093,
+      3.9638036594972395,
+      0.7788777114050393,
+      1.7341338287089159,
+      0.36223157811783735,
+      1.6034481501377278,
+      0.7189113933681321,
+      1.1607233259792116,
+      0.493940110086924
+    ],
+    "spectral_centroid_mean_hz": 1092.418754324471,
+    "spectral_centroid_deviation_hz": 1290.650929621828,
+    "total_harmonic_distortion": 1.870069606575183,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.20162110679734466,
+    "spectral_slope_db_per_octave": -4.915236264783885,
+    "band_limit_high_hz": 16020.703125,
+    "spectral_centroid_slope_hz_per_second": -291.342908191894,
+    "syllabic_modulation_energy": 0.33790967220773266,
+    "voicing_ratio": 0.6708074534161491,
+    "mid_rms": 0.025855309345130112,
+    "side_rms": 0.01698187902722216,
+    "lufs": -22.912020417699644
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "A#0",
+    "root_frequency_hz": 29.271697998046875,
+    "root_cents_offset": 8.089781187577216,
+    "beats_per_minute": 96.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.8195873668278987,
+      0.72812369995005,
+      0.891165878375854,
+      0.8381636975773564,
+      0.6490975618342416,
+      0.7263017883579271,
+      0.7060119265173611,
+      0.7289263537770183,
+      0.7974349551286753,
+      0.8111103021906044,
+      0.8786857014353303,
+      1.0
+    ]
+  },
+  "unsupervised": {
+    "cluster": 8,
+    "principal_components": [
+      2.677420938856988,
+      -0.36603982440790866,
+      0.9401344593786372
+    ]
+  },
+  "ucs": {
+    "category": "VEHICLES",
+    "subcategory": "MISC",
+    "id": "VEHMisc",
+    "confidence": 0.17915471718143836,
+    "alternatives": [
+      {
+        "category": "DOORS",
+        "subcategory": "GATE",
+        "id": "DOORGate",
+        "probability": 0.163,
+        "synonyms": [
+          "park"
+        ]
+      },
+      {
+        "category": "SCIFI",
+        "subcategory": "MACHINE",
+        "id": "SCIMach",
+        "probability": 0.112,
+        "synonyms": [
+          "drive"
+        ]
+      },
+      {
+        "category": "VEHICLES",
+        "subcategory": "HORN",
+        "id": "VEHHorn",
+        "probability": 0.091,
+        "synonyms": [
+          "auto"
+        ]
+      }
+    ],
+    "synonyms": [
+      "auto"
+    ],
+    "reason": "name matched [auto]; signal 0.92, tier semantic_only, 35 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0490 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
+  },
+  "regions": {
+    "count": 3,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.4888888888888889,
+        "end_seconds": 1.4467120181405895,
+        "duration_seconds": 0.9578231292517005,
+        "peak_amplitude": 0.15884867179741435,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+            "length_seconds": 0.9578004535147392,
+            "sample_rate": 44100,
+            "bit_depth": 0,
+            "channels": 2,
+            "source_format": "MP3",
+            "lossy_source": true,
+            "dc_offset": -0.0008349288260777454,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Loops/Patterns",
+            "reason": [
+              "1) 2 transients (>1), no drum/instrument name → loop",
+              "2) envelope Multi (attack 110 ms, sustain 7%, 2 transients)",
+              "3) Inharmonic · high-band 65% · root G1"
+            ],
+            "timbre": "Loop",
+            "length_class": "Loop",
+            "subgroup": "Loop",
+            "audit": false,
+            "acoustic_types": [
+              "Inharmonic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 2,
+            "attack_seconds": 0.3916780045351474,
+            "sustain_ratio": 0.1206896551724138,
+            "sustained": false,
+            "envelope_attack_seconds": 0.10975056689342404,
+            "envelope_decay_seconds": 0.11473922902494331,
+            "envelope_sustain_level": 0.07124211387486107,
+            "envelope_release_seconds": 0.22448979591836735,
+            "envelope_temporal_centroid": 0.33812905628594264,
+            "envelope_skewness": 2.231873352362947,
+            "envelope_kurtosis": 4.5429962619114495,
+            "envelope_shape": "Multi",
+            "decay_time_seconds_60db": 0.34883163737268325,
+            "onset_periodicity": 0.42600905540750766,
+            "onset_rate_per_second": 2.0881176164208433
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.04089738124784062,
+            "crest_factor": 9.127892517141136,
+            "zero_crossings_per_second": 1789.5167972726629,
+            "complexity": 4154.653149701847,
+            "spectral_centroid_hz": 4715.748189684881,
+            "spectral_rolloff_hz": 9643.971211439664,
+            "spectral_flatness": 0.08369124268961328,
+            "low_band_energy": 0.10723233560561093,
+            "mid_band_energy": 0.23938315616503808,
+            "high_band_energy": 0.6533845082293513,
+            "spectral_flux": 0.22681371420772736,
+            "harmonicity": 0.6243044720078437,
+            "inharmonicity": 0.2773694595888046,
+            "partial_count": 12,
+            "mel_frequency_cepstral_coefficients": [
+              -21.754174961926026,
+              13.241440552556268,
+              -3.4918682993289942,
+              9.076987079933195,
+              -3.151476987840323,
+              5.023960089103937,
+              -1.8010211605085817,
+              2.7158466902761393,
+              -1.7562841050431144,
+              1.6688546833420406,
+              -1.1460096808327294,
+              1.8730320819881972,
+              -1.3634085564625935
+            ],
+            "spectral_centroid_mean_hz": 2443.6945882079513,
+            "spectral_centroid_deviation_hz": 1327.6138574644108,
+            "total_harmonic_distortion": 1.2533882429906005,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.0,
+            "spectral_entropy": 0.3640507561794231,
+            "spectral_slope_db_per_octave": -4.3480915931328905,
+            "band_limit_high_hz": 16020.703125,
+            "spectral_centroid_slope_hz_per_second": -2036.2399285718045,
+            "syllabic_modulation_energy": 0.5065313899830727,
+            "voicing_ratio": 0.5802469135802469,
+            "mid_rms": 0.040897381239553894,
+            "side_rms": 0.028912665366310004,
+            "lufs": -20.98201177911376
+          },
+          "musicality": {
+            "pitch_hz": 2004.5454545454545,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "G1",
+            "root_frequency_hz": 48.54873458178461,
+            "root_cents_offset": -15.997511456507851,
+            "beats_per_minute": 96.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.8040091716765537,
+              0.7361309020445452,
+              0.8742230806094818,
+              0.8389747889885214,
+              0.6269001060657639,
+              0.7010429552220747,
+              0.6632627841482387,
+              0.6639692851153854,
+              0.7619655466406271,
+              0.7569358203868647,
+              0.8673004183965198,
+              1.0
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "VEHICLES",
+            "subcategory": "MISC",
+            "id": "VEHMisc",
+            "confidence": 0.15440170698473876,
+            "alternatives": [
+              {
+                "category": "SCIFI",
+                "subcategory": "MACHINE",
+                "id": "SCIMach",
+                "probability": 0.12,
+                "synonyms": [
+                  "drive"
+                ]
+              },
+              {
+                "category": "DOORS",
+                "subcategory": "GATE",
+                "id": "DOORGate",
+                "probability": 0.088,
+                "synonyms": [
+                  "park"
+                ]
+              },
+              {
+                "category": "MOTORS",
+                "subcategory": "SERVO",
+                "id": "MOTRSrvo",
+                "probability": 0.082,
+                "synonyms": [
+                  "drive"
+                ]
+              }
+            ],
+            "synonyms": [
+              "auto"
+            ],
+            "reason": "name matched [auto]; signal 0.84, tier semantic_only, 28 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.3381 < min 0.4000); ABSTAINED to MISC (top two too close to call)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      },
+      {
+        "index": 1,
+        "start_seconds": 2.000453514739229,
+        "end_seconds": 2.40453514739229,
+        "duration_seconds": 0.4040816326530612,
+        "peak_amplitude": 0.01855573329443039,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+            "length_seconds": 0.40408163265306124,
+            "sample_rate": 44100,
+            "bit_depth": 0,
+            "channels": 2,
+            "source_format": "MP3",
+            "lossy_source": true,
+            "dc_offset": -0.0008444367429773226,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Perc",
+            "reason": [
+              "1) Acoustic ML Fallback (ZCR/Inharmonicity)",
+              "2) envelope Decaying (attack 95 ms, sustain 17%, 1 transient)",
+              "3) Inharmonic · high-band 40% · root A#0"
+            ],
+            "timbre": "Tonal",
+            "length_class": "Short",
+            "subgroup": "Acoustic Guess",
+            "audit": false,
+            "acoustic_types": [
+              "Inharmonic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 1,
+            "attack_seconds": 0.10024943310657597,
+            "sustain_ratio": 0.12,
+            "sustained": false,
+            "envelope_attack_seconds": 0.0947845804988662,
+            "envelope_decay_seconds": 0.11972789115646258,
+            "envelope_sustain_level": 0.16550323712614393,
+            "envelope_release_seconds": 0.20952380952380953,
+            "envelope_temporal_centroid": 0.31394301258869867,
+            "envelope_skewness": 2.262996971781196,
+            "envelope_kurtosis": 4.840712597794911,
+            "envelope_shape": "Decaying",
+            "decay_time_seconds_60db": null,
+            "onset_periodicity": 0.0732168690716149,
+            "onset_rate_per_second": 2.4747474747474745
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.005132506300948413,
+            "crest_factor": 9.767146820003985,
+            "zero_crossings_per_second": 663.2323232323232,
+            "complexity": 2962.6663828740666,
+            "spectral_centroid_hz": 2351.7446493844864,
+            "spectral_rolloff_hz": 5122.727272727273,
+            "spectral_flatness": 0.12065948150647186,
+            "low_band_energy": 0.19951291072582075,
+            "mid_band_energy": 0.4001601964245905,
+            "high_band_energy": 0.4003268928495887,
+            "spectral_flux": 0.226570542415808,
+            "harmonicity": 0.816239095562586,
+            "inharmonicity": 0.5093742795541573,
+            "partial_count": 12,
+            "mel_frequency_cepstral_coefficients": [
+              -50.530792842344574,
+              16.427641186694256,
+              -4.76768992187287,
+              8.287166969577443,
+              -1.6710799068968136,
+              3.463103903617009,
+              1.7263103685219565,
+              -0.4635637060816663,
+              2.3828673422054973,
+              -1.0139452825686122,
+              1.9461946013417715,
+              -0.22732837241330123,
+              0.43995546386601025
+            ],
+            "spectral_centroid_mean_hz": 1384.563218738778,
+            "spectral_centroid_deviation_hz": 516.8040659545644,
+            "total_harmonic_distortion": 1.6308652626413331,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.15255514275051774,
+            "spectral_entropy": 0.2564690212281254,
+            "spectral_slope_db_per_octave": -6.144481369723816,
+            "band_limit_high_hz": 10443.603515625,
+            "spectral_centroid_slope_hz_per_second": -906.5980972217592,
+            "syllabic_modulation_energy": null,
+            "voicing_ratio": 0.9285714285714286,
+            "mid_rms": 0.005132506304781908,
+            "side_rms": 0.0028960758184009222,
+            "lufs": -43.377685510005534
+          },
+          "musicality": {
+            "pitch_hz": 2004.5454545454545,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "A#0",
+            "root_frequency_hz": 28.459595959595962,
+            "root_cents_offset": -40.619726253623156,
+            "beats_per_minute": 0.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.9850466877345204,
+              1.0,
+              0.810852557794061,
+              0.6075147012702828,
+              0.7152345486411127,
+              0.8219873102314589,
+              0.7695594675065378,
+              0.8340607625602394,
+              0.8550581750404308,
+              0.9823080501246262,
+              0.8297691343511988,
+              0.8186244970199295
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "MOTORS",
+            "subcategory": "MISC",
+            "id": "MOTRMisc",
+            "confidence": 0.14974738095942391,
+            "alternatives": [
+              {
+                "category": "DOORS",
+                "subcategory": "GATE",
+                "id": "DOORGate",
+                "probability": 0.129,
+                "synonyms": [
+                  "park"
+                ]
+              },
+              {
+                "category": "VEHICLES",
+                "subcategory": "HORN",
+                "id": "VEHHorn",
+                "probability": 0.125,
+                "synonyms": [
+                  "auto"
+                ]
+              },
+              {
+                "category": "SCIFI",
+                "subcategory": "MACHINE",
+                "id": "SCIMach",
+                "probability": 0.106,
+                "synonyms": [
+                  "drive"
+                ]
+              }
+            ],
+            "synonyms": [
+              "drive"
+            ],
+            "reason": "name matched [drive]; signal 0.64, tier signal_narrowable, 23 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRHiss (length_seconds 0.4041 < min 0.5000); ABSTAINED to MISC (top two too close to call)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      },
+      {
+        "index": 2,
+        "start_seconds": 2.9034013605442177,
+        "end_seconds": 3.4870748299319727,
+        "duration_seconds": 0.583673469387755,
+        "peak_amplitude": 0.17015373613178342,
+        "name": "",
+        "analysis": {
+          "metadata": {
+            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "name": "Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+            "folder": "SampleSamplesForSampling",
+            "sub": "SampleSamplesForSampling",
+            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 46 - AUTO, SHIFTER - SHIFT- PARK, DRIVE, PARK.mp3",
+            "length_seconds": 0.5836734693877551,
+            "sample_rate": 44100,
+            "bit_depth": 0,
+            "channels": 2,
+            "source_format": "MP3",
+            "lossy_source": true,
+            "dc_offset": -0.0007938188375828829,
+            "trailing_silence_ms": 0.0
+          },
+          "classification": {
+            "group": "Perc",
+            "reason": [
+              "1) Acoustic ML Fallback (ZCR/Inharmonicity)",
+              "2) envelope Swell (attack 369 ms, sustain 25%, 1 transient)",
+              "3) Inharmonic · high-band 45% · root G1"
+            ],
+            "timbre": "Tonal",
+            "length_class": "Medium",
+            "subgroup": "Acoustic Guess",
+            "audit": false,
+            "acoustic_types": [
+              "Inharmonic"
+            ],
+            "sound_design_roles": [],
+            "instrument_family": [
+              "Percussion",
+              "Idiophone"
+            ]
+          },
+          "envelope": {
+            "transient_count": 1,
+            "attack_seconds": 0.37501133786848073,
+            "sustain_ratio": 0.1388888888888889,
+            "sustained": false,
+            "envelope_attack_seconds": 0.3691609977324263,
+            "envelope_decay_seconds": 0.07981859410430839,
+            "envelope_sustain_level": 0.24894821240847545,
+            "envelope_release_seconds": 0.05487528344671202,
+            "envelope_temporal_centroid": 0.6482198694387037,
+            "envelope_skewness": 1.9016684016170542,
+            "envelope_kurtosis": 3.6711748740395374,
+            "envelope_shape": "Swell",
+            "decay_time_seconds_60db": 0.648616708228537,
+            "onset_periodicity": 0.29181679207185546,
+            "onset_rate_per_second": 1.7132867132867133
+          },
+          "spectral_features": {
+            "root_mean_square_level": 0.043262375266037115,
+            "crest_factor": 10.176599520273255,
+            "zero_crossings_per_second": 806.9580419580419,
+            "complexity": 4219.749664123397,
+            "spectral_centroid_hz": 3597.4059352331574,
+            "spectral_rolloff_hz": 8333.426573426574,
+            "spectral_flatness": 0.1510099144279977,
+            "low_band_energy": 0.23234396061776277,
+            "mid_band_energy": 0.31862195155679507,
+            "high_band_energy": 0.4490340878254422,
+            "spectral_flux": 0.2138081345923505,
+            "harmonicity": 0.7745351162668964,
+            "inharmonicity": 0.40852200601453065,
+            "partial_count": 12,
+            "mel_frequency_cepstral_coefficients": [
+              -26.345972384383856,
+              15.662672213397093,
+              -2.0090347841766314,
+              10.225575306429807,
+              -2.6227910799562193,
+              5.555396357730791,
+              -1.5228700286923735,
+              2.944676898884278,
+              -1.2814675530881194,
+              1.5917050510341084,
+              -0.4173897067389912,
+              1.5485679833748667,
+              -0.027762153575162467
+            ],
+            "spectral_centroid_mean_hz": 1606.7869987224149,
+            "spectral_centroid_deviation_hz": 1329.4024655413018,
+            "total_harmonic_distortion": 0.6954814751794687,
+            "clipping_density": 0.0,
+            "distortion": "Clean",
+            "stationarity": 0.0,
+            "spectral_entropy": 0.2719615170177623,
+            "spectral_slope_db_per_octave": -5.896035076506355,
+            "band_limit_high_hz": 15934.5703125,
+            "spectral_centroid_slope_hz_per_second": 1018.6624396550139,
+            "syllabic_modulation_energy": null,
+            "voicing_ratio": 0.7903225806451613,
+            "mid_rms": 0.043262375258232275,
+            "side_rms": 0.024931305038207504,
+            "lufs": -24.512421052553044
+          },
+          "musicality": {
+            "pitch_hz": 2004.5454545454545,
+            "pitch_slope_semitones_per_second": null,
+            "root_note_name": "G1",
+            "root_frequency_hz": 48.828671328671334,
+            "root_cents_offset": -6.043716562884072,
+            "beats_per_minute": 0.0,
+            "root_midi_note": -1,
+            "chromagram": [
+              0.7601943804922175,
+              0.6495735863176577,
+              0.964120936783989,
+              0.630374644286073,
+              0.660373244783488,
+              0.8646202041742098,
+              0.7848642523772627,
+              1.0,
+              0.9545947740156836,
+              0.9722879027588821,
+              0.8013869668539939,
+              0.9247613043070222
+            ]
+          },
+          "unsupervised": {
+            "cluster": -1,
+            "principal_components": []
+          },
+          "ucs": {
+            "category": "DOORS",
+            "subcategory": "MISC",
+            "id": "DOORMisc",
+            "confidence": 0.18874012032438092,
+            "alternatives": [
+              {
+                "category": "SCIFI",
+                "subcategory": "MACHINE",
+                "id": "SCIMach",
+                "probability": 0.153,
+                "synonyms": [
+                  "drive"
+                ]
+              },
+              {
+                "category": "METAL",
+                "subcategory": "MOVEMENT",
+                "id": "METLMvmt",
+                "probability": 0.088,
+                "synonyms": [
+                  "shift"
+                ]
+              },
+              {
+                "category": "VEHICLES",
+                "subcategory": "BRAKE",
+                "id": "VEHBrake",
+                "probability": 0.07,
+                "synonyms": [
+                  "auto"
+                ]
+              }
+            ],
+            "synonyms": [
+              "park"
+            ],
+            "reason": "name matched [park]; signal 0.62, tier semantic_only, 24 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.3692 > max 0.1500); ABSTAINED to MISC (top two too close to call)"
+          },
+          "regions": {
+            "count": 0,
+            "detection_threshold_decibels": 0.0,
+            "minimum_silence_seconds": 0.0,
+            "minimum_region_seconds": 0.0,
+            "regions": []
+          }
+        }
+      }
+    ]
+  }
+}

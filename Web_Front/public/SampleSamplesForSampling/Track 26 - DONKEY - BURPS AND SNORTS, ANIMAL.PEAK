@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 26 - DONKEY - BURPS AND SNORTS, ANIMAL.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 26 - DONKEY - BURPS AND SNORTS, ANIMAL.mp3",
+    "length_seconds": 7.366530612244898,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0009015544821929359,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 7 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 40 ms, sustain 44%, 7 transients)",
+      "3) Inharmonic · mid-band 81% · root B3"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 7,
+    "attack_seconds": 5.393718820861678,
+    "sustain_ratio": 0.43665158371040724,
+    "sustained": false,
+    "envelope_attack_seconds": 0.039909297052154194,
+    "envelope_decay_seconds": 0.029931972789115645,
+    "envelope_sustain_level": 0.4423647557966837,
+    "envelope_release_seconds": 0.783219954648526,
+    "envelope_temporal_centroid": 0.43159545775781766,
+    "envelope_skewness": 0.23699953064974966,
+    "envelope_kurtosis": -1.5217833410470243,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 40.22927539810335,
+    "onset_periodicity": 0.22673075409234353,
+    "onset_rate_per_second": 0.9502437943262411
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.05023825902646147,
+    "crest_factor": 4.776659190219647,
+    "zero_crossings_per_second": 1506.2721631205673,
+    "complexity": 1244.0071609510046,
+    "spectral_centroid_hz": 1169.0052149461667,
+    "spectral_rolloff_hz": 2061.80419921875,
+    "spectral_flatness": 0.01698198090970952,
+    "low_band_energy": 0.032615734428155095,
+    "mid_band_energy": 0.8122610262765636,
+    "high_band_energy": 0.1551232392952813,
+    "spectral_flux": 0.17305155980843773,
+    "harmonicity": 0.5907930876608072,
+    "inharmonicity": 0.24002959683812683,
+    "partial_count": 6,
+    "mel_frequency_cepstral_coefficients": [
+      -35.78987892539709,
+      31.5857698189908,
+      -9.182168252806184,
+      5.894214760098082,
+      -3.753088680222202,
+      1.409442533168122,
+      -1.8721484410861773,
+      0.4984231043416091,
+      0.47903509694381685,
+      -1.8682280808227498,
+      2.2244717482808447,
+      -1.3908964276824234,
+      -0.07160340838659614
+    ],
+    "spectral_centroid_mean_hz": 1020.844157978361,
+    "spectral_centroid_deviation_hz": 533.091059752148,
+    "total_harmonic_distortion": 0.5500614287000571,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.19795649941103743,
+    "spectral_entropy": 0.34742102519239765,
+    "spectral_slope_db_per_octave": -6.99922454968784,
+    "band_limit_high_hz": 5232.568359375,
+    "spectral_centroid_slope_hz_per_second": -29.543920853804682,
+    "syllabic_modulation_energy": 0.09209559382825568,
+    "voicing_ratio": 0.839541547277937,
+    "mid_rms": 0.050238259030120205,
+    "side_rms": 0.02114436199679164,
+    "lufs": -21.623193901682395
+  },
+  "musicality": {
+    "pitch_hz": 259.4117647058824,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "B3",
+    "root_frequency_hz": 250.99142890718815,
+    "root_cents_offset": 28.161489702285536,
+    "beats_per_minute": 99.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      1.0,
+      0.799765550925357,
+      0.48364532859800385,
+      0.3877003516708565,
+      0.4526496945040726,
+      0.41086553499787537,
+      0.7687413439597839,
+      0.8064057898022262,
+      0.44718529461124207,
+      0.4848233539947297,
+      0.5630023308407475,
+      0.7662429144164128
+    ]
+  },
+  "unsupervised": {
+    "cluster": 11,
+    "principal_components": [
+      2.102137695437345,
+      -1.1227654851308837,
+      -2.451388253767911
+    ]
+  },
+  "ucs": {
+    "category": "ANIMALS",
+    "subcategory": "FARM",
+    "id": "ANMLFarm",
+    "confidence": 0.47457240224377384,
+    "alternatives": [
+      {
+        "category": "ANIMALS",
+        "subcategory": "HORSE",
+        "id": "ANMLHors",
+        "probability": 0.4,
+        "synonyms": [
+          "donkey"
+        ]
+      },
+      {
+        "category": "CARTOON",
+        "subcategory": "ANIMAL",
+        "id": "TOONAnml",
+        "probability": 0.106,
+        "synonyms": [
+          "animal"
+        ]
+      },
+      {
+        "category": "BELLS",
+        "subcategory": "ANIMAL",
+        "id": "BELLAnml",
+        "probability": 0.012,
+        "synonyms": [
+          "animal"
+        ]
+      }
+    ],
+    "synonyms": [
+      "donkey"
+    ],
+    "reason": "name matched [donkey]; signal 0.73, tier semantic_only, 6 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 7.3665 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.47392290249433106,
+        "end_seconds": 6.814512471655329,
+        "duration_seconds": 6.340589569160998,
+        "peak_amplitude": 0.10296511959547273,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

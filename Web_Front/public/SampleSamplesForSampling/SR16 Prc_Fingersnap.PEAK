@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "SR16 Prc_Fingersnap.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Fingersnap.wav",
+    "length_seconds": 0.27215419501133786,
+    "sample_rate": 22050,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": -4.388713534723379e-6,
+    "trailing_silence_ms": 2.675736961451247
+  },
+  "classification": {
+    "group": "Snap",
+    "reason": [
+      "1) path matched \"fingersnap\"",
+      "2) envelope Plucky (attack 0 ms, sustain 4%, 1 transient)",
+      "3) Stochastic+Impulsive · high-band 84%"
+    ],
+    "timbre": "Bright",
+    "length_class": "Short",
+    "subgroup": "Snap Short",
+    "audit": false,
+    "acoustic_types": [
+      "Stochastic",
+      "Impulsive"
+    ],
+    "sound_design_roles": [
+      "Pluck"
+    ],
+    "instrument_family": [
+      "Percussion",
+      "Membranophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.007301587301587302,
+    "sustain_ratio": 0.058823529411764705,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.12471655328798185,
+    "envelope_sustain_level": 0.0433005361059296,
+    "envelope_release_seconds": 0.08480725623582766,
+    "envelope_temporal_centroid": 0.04113089453577905,
+    "envelope_skewness": 4.090272271699138,
+    "envelope_kurtosis": 18.52666490314996,
+    "envelope_shape": "Plucky",
+    "decay_time_seconds_60db": null,
+    "onset_periodicity": 0.0,
+    "onset_rate_per_second": 3.6743876020663224
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.07349178763415341,
+    "crest_factor": 13.606132018743468,
+    "zero_crossings_per_second": 5423.396100649892,
+    "complexity": 2489.7607880824253,
+    "spectral_centroid_hz": 3794.4455110771614,
+    "spectral_rolloff_hz": 6422.829528411931,
+    "spectral_flatness": 0.5941059523202427,
+    "low_band_energy": 0.042358656098784024,
+    "mid_band_energy": 0.11370570227130629,
+    "high_band_energy": 0.8439356416299096,
+    "spectral_flux": 0.22958528438257877,
+    "harmonicity": 0.3401973106612823,
+    "inharmonicity": 0.4540279467712211,
+    "partial_count": 12,
+    "mel_frequency_cepstral_coefficients": [
+      3.2295833578903363,
+      -5.059310752264969,
+      -6.458144567480301,
+      2.66524799930123,
+      1.7692799365460359,
+      0.5725850392673554,
+      -0.8256704566404144,
+      1.4284090231991218,
+      2.1971175274096435,
+      -0.3079075110473521,
+      1.2127679668591462,
+      1.1173347448187454,
+      1.0500438120108406
+    ],
+    "spectral_centroid_mean_hz": 3854.264926533786,
+    "spectral_centroid_deviation_hz": 202.4804021465964,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.16377295250616697,
+    "spectral_entropy": 0.7504152587161481,
+    "spectral_slope_db_per_octave": 1.3355018688383078,
+    "band_limit_high_hz": 11014.2333984375,
+    "spectral_centroid_slope_hz_per_second": -3696.5994966374806,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 0.12,
+    "mid_rms": 0.07349178761831547,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 1225.0,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.546519974889567,
+      0.6520045636769822,
+      0.7085867850391401,
+      0.8879120732335457,
+      1.0,
+      0.7514314881126555,
+      0.5238111367483833,
+      0.45477777831481037,
+      0.34749353839076447,
+      0.34477857182323735,
+      0.36816357080930684,
+      0.37765078748133446
+    ]
+  },
+  "unsupervised": {
+    "cluster": 2,
+    "principal_components": [
+      -0.5644367855997932,
+      1.4142745097293203,
+      1.9329376286474744
+    ]
+  },
+  "ucs": {
+    "category": "ARCHIVED",
+    "subcategory": "IMPULSE RESPONSE",
+    "id": "IR",
+    "confidence": 1.0,
+    "alternatives": [],
+    "synonyms": [
+      "sample"
+    ],
+    "reason": "name matched [sample]; signal 0.64, tier signal_separable, 1 candidate in contention; gate ruled out AIRHiss (length_seconds 0.2722 < min 0.5000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.19455782312925168,
+        "duration_seconds": 0.19455782312925168,
+        "peak_amplitude": 0.40117433645692524,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

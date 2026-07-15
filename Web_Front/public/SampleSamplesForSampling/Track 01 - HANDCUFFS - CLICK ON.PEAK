@@ -1,0 +1,189 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 01 - HANDCUFFS - CLICK ON.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 01 - HANDCUFFS - CLICK ON.mp3",
+    "length_seconds": 4.022857142857143,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.000731134567454018,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Strings",
+    "reason": [
+      "1) Acoustic ML Fallback (Plucked Harmonic)",
+      "2) envelope Decaying (attack 10 ms, sustain 3%, 1 transient)",
+      "3) Harmonic · mid-band 46% · root A#1"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Long",
+    "subgroup": "Unclassified Long",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic"
+    ],
+    "sound_design_roles": [
+      "Pluck"
+    ],
+    "instrument_family": [
+      "String",
+      "Chordophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 2.845215419501134,
+    "sustain_ratio": 0.008264462809917356,
+    "sustained": false,
+    "envelope_attack_seconds": 0.009977324263038548,
+    "envelope_decay_seconds": 0.5736961451247166,
+    "envelope_sustain_level": 0.03232666068648336,
+    "envelope_release_seconds": 0.4090702947845805,
+    "envelope_temporal_centroid": 0.7215609616305244,
+    "envelope_skewness": 7.334745697588358,
+    "envelope_kurtosis": 72.26222514799261,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 1.1391718279921046,
+    "onset_periodicity": 0.5095810248591396,
+    "onset_rate_per_second": 0.24857954545454544
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.009617152511010297,
+    "crest_factor": 29.733525850930093,
+    "zero_crossings_per_second": 58.16761363636363,
+    "complexity": 2042.080409259377,
+    "spectral_centroid_hz": 1652.900102275354,
+    "spectral_rolloff_hz": 3567.116477272727,
+    "spectral_flatness": 0.033724540783231345,
+    "low_band_energy": 0.2203511266349854,
+    "mid_band_energy": 0.4582277461233705,
+    "high_band_energy": 0.32142112724164407,
+    "spectral_flux": 0.05841294329033644,
+    "harmonicity": 0.7700705418317262,
+    "inharmonicity": 0.0,
+    "partial_count": 0,
+    "mel_frequency_cepstral_coefficients": [
+      -110.79512423592057,
+      27.13589200945163,
+      1.8240815273268252,
+      -1.3276273569594137,
+      1.9792498261958367,
+      5.619555407525356,
+      1.3663593725259835,
+      0.3715496470875578,
+      2.132151381582411,
+      2.2438975189078674,
+      1.32396236909322,
+      0.6127952549211837,
+      1.5898592311443203
+    ],
+    "spectral_centroid_mean_hz": 188.4812583982161,
+    "spectral_centroid_deviation_hz": 312.2547244290748,
+    "total_harmonic_distortion": 2.59916007490161,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.10459909253297588,
+    "spectral_slope_db_per_octave": -7.52191266435804,
+    "band_limit_high_hz": 5878.564453125,
+    "spectral_centroid_slope_hz_per_second": 83.46226326971038,
+    "syllabic_modulation_energy": 0.15971114191517333,
+    "voicing_ratio": 0.855072463768116,
+    "mid_rms": 0.009617152519737115,
+    "side_rms": 0.007703066710699812,
+    "lufs": -29.476522306118326
+  },
+  "musicality": {
+    "pitch_hz": 2004.5454545454545,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "A#1",
+    "root_frequency_hz": 59.948601347790685,
+    "root_cents_offset": 49.15337130082449,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.731815607703142,
+      0.7933930128465712,
+      0.6576971588161735,
+      0.6290497997609245,
+      0.61493708128949,
+      0.5813294712190972,
+      0.4913686993768354,
+      0.5731903424271465,
+      0.7270257577673429,
+      0.612094169520015,
+      1.0,
+      0.956222231202389
+    ]
+  },
+  "unsupervised": {
+    "cluster": 0,
+    "principal_components": [
+      3.5434267228198277,
+      -1.5529196296880274,
+      4.018854439175385
+    ]
+  },
+  "ucs": {
+    "category": "CLOCKS",
+    "subcategory": "TICK",
+    "id": "CLOCKTick",
+    "confidence": 0.8342626288257002,
+    "alternatives": [
+      {
+        "category": "EQUIPMENT",
+        "subcategory": "TACTICAL",
+        "id": "EQUIPTact",
+        "probability": 0.111,
+        "synonyms": [
+          "handcuffs"
+        ]
+      },
+      {
+        "category": "MECHANICAL",
+        "subcategory": "SWITCH",
+        "id": "MECHSwtch",
+        "probability": 0.028,
+        "synonyms": [
+          "click"
+        ]
+      },
+      {
+        "category": "MECHANICAL",
+        "subcategory": "RATCHET",
+        "id": "MECHRtch",
+        "probability": 0.025,
+        "synonyms": [
+          "click"
+        ]
+      }
+    ],
+    "synonyms": [
+      "click"
+    ],
+    "reason": "name matched [click]; signal 0.42, tier signal_separable, 5 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0229 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 2.8285714285714283,
+        "end_seconds": 3.442176870748299,
+        "duration_seconds": 0.6136054421768709,
+        "peak_amplitude": 0.1299995073038908,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

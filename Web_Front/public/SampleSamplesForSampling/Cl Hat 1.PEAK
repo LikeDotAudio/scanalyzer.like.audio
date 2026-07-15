@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Cl Hat 1.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Cl Hat 1.wav",
+    "length_seconds": 0.042630385487528344,
+    "sample_rate": 44100,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": -0.0004108185463763298,
+    "trailing_silence_ms": 0.022675736961451247
+  },
+  "classification": {
+    "group": "Hi-Hat",
+    "reason": [
+      "1) path matched \"hat\"",
+      "2) envelope Decaying (attack 0 ms, sustain 28%, 1 transient)",
+      "3) Stochastic · high-band 89%"
+    ],
+    "timbre": "Bright",
+    "length_class": "Short",
+    "subgroup": "Hi-Hat Short",
+    "audit": false,
+    "acoustic_types": [
+      "Stochastic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone",
+      "Struck Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.00040816326530612246,
+    "sustain_ratio": 0.3333333333333333,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.014965986394557823,
+    "envelope_sustain_level": 0.2803660573526825,
+    "envelope_release_seconds": 0.014965986394557823,
+    "envelope_temporal_centroid": 0.06850502171558047,
+    "envelope_skewness": 1.17656958342646,
+    "envelope_kurtosis": 0.0397291773619286,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 0.06479520212859434,
+    "onset_periodicity": null,
+    "onset_rate_per_second": 23.45744680851064
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.24544992113592798,
+    "crest_factor": 4.074150830328477,
+    "zero_crossings_per_second": 14778.191489361703,
+    "complexity": 3894.0193046962486,
+    "spectral_centroid_hz": 7214.713526842515,
+    "spectral_rolloff_hz": 10649.68085106383,
+    "spectral_flatness": 0.44257374313414866,
+    "low_band_energy": 0.008760132663065691,
+    "mid_band_energy": 0.10622552273061293,
+    "high_band_energy": 0.8850143446063213,
+    "spectral_flux": 0.0,
+    "harmonicity": 0.187962470054308,
+    "inharmonicity": 0.0,
+    "partial_count": 0,
+    "mel_frequency_cepstral_coefficients": [
+      34.84363059989892,
+      -2.588514902126937,
+      -3.710313680805354,
+      4.892176150119122,
+      -3.326349590644625,
+      1.2654498454237337,
+      -1.1260863318941732,
+      0.7718260585818495,
+      -0.9135512873135688,
+      -1.2067840034977735,
+      -0.370003738375293,
+      -0.02726661530296096,
+      -0.3079057643094094
+    ],
+    "spectral_centroid_mean_hz": 7360.092782251165,
+    "spectral_centroid_deviation_hz": 0.0,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": null,
+    "spectral_entropy": 0.8245480237873755,
+    "spectral_slope_db_per_octave": 1.3686492517912625,
+    "band_limit_high_hz": 21511.669921875,
+    "spectral_centroid_slope_hz_per_second": null,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 0.0,
+    "mid_rms": 0.24544992097850285,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 484.61538461538464,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 120.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.7937370498306698,
+      0.8513367701294177,
+      0.769324518091568,
+      1.0,
+      0.9970338487871806,
+      0.6802574736149053,
+      0.6638613873193376,
+      0.5609652812934489,
+      0.7509781286358093,
+      0.5543021448242702,
+      0.8260227056480715,
+      0.7392470101734624
+    ]
+  },
+  "unsupervised": {
+    "cluster": 5,
+    "principal_components": [
+      -3.3782476697337604,
+      2.037645204925139,
+      0.5270830970547538
+    ]
+  },
+  "ucs": {
+    "category": "CYMBALS",
+    "subcategory": "HI-HAT",
+    "id": "CYMBHat",
+    "confidence": 0.7725108436536551,
+    "alternatives": [
+      {
+        "category": "OBJECTS",
+        "subcategory": "FASHION",
+        "id": "OBJFash",
+        "probability": 0.227,
+        "synonyms": [
+          "hat"
+        ]
+      }
+    ],
+    "synonyms": [
+      "hat"
+    ],
+    "reason": "name matched [hat]; signal 0.23, tier signal_separable, 2 candidates in contention; gate ruled out AIRBlow (length_seconds 0.0426 < min 0.1500)"
+  },
+  "regions": {
+    "count": 0,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": []
+  }
+}

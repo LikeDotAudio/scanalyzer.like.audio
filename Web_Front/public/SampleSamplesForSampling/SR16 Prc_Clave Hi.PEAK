@@ -1,0 +1,182 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "SR16 Prc_Clave Hi.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Clave Hi.wav",
+    "length_seconds": 0.11877551020408163,
+    "sample_rate": 22050,
+    "bit_depth": 16,
+    "channels": 1,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.00029052874203536655,
+    "trailing_silence_ms": 0.8616780045351474
+  },
+  "classification": {
+    "group": "Woodblock",
+    "reason": [
+      "1) path matched \"clave\"",
+      "2) envelope Plucky (attack 0 ms, sustain 2%, 1 transient)",
+      "3) Harmonic+Stochastic+Impulsive · high-band 90%"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Short",
+    "subgroup": "Woodblock Short",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic",
+      "Stochastic",
+      "Impulsive"
+    ],
+    "sound_design_roles": [
+      "Pluck"
+    ],
+    "instrument_family": [
+      "Percussion",
+      "Membranophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.00018140589569160998,
+    "sustain_ratio": 0.125,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 0.04988662131519274,
+    "envelope_sustain_level": 0.02255768277303376,
+    "envelope_release_seconds": 0.009977324263038548,
+    "envelope_temporal_centroid": 0.011868534693371612,
+    "envelope_skewness": 3.495993406626513,
+    "envelope_kurtosis": 11.594430938171506,
+    "envelope_shape": "Plucky",
+    "decay_time_seconds_60db": null,
+    "onset_periodicity": null,
+    "onset_rate_per_second": 8.419243986254296
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.10583389062185194,
+    "crest_factor": 9.448192435980319,
+    "zero_crossings_per_second": 5346.219931271478,
+    "complexity": 2206.8336184910295,
+    "spectral_centroid_hz": 3755.343819387538,
+    "spectral_rolloff_hz": 6146.048109965636,
+    "spectral_flatness": 0.5395586467415994,
+    "low_band_energy": 0.005969502604955045,
+    "mid_band_energy": 0.09127975596965872,
+    "high_band_energy": 0.9027507414253862,
+    "spectral_flux": 0.1974195092461376,
+    "harmonicity": 0.8498252380662303,
+    "inharmonicity": 0.11528497655052064,
+    "partial_count": 3,
+    "mel_frequency_cepstral_coefficients": [
+      -25.806282722842802,
+      -7.3411367028795365,
+      -7.838427517158924,
+      6.388516948934511,
+      3.289171060511819,
+      -0.9825139881594234,
+      0.16545792000797815,
+      5.280717163047497,
+      -1.5529652743804099,
+      -0.29348983049196237,
+      2.104416404279552,
+      0.5931176705876453,
+      -0.8187407802059818
+    ],
+    "spectral_centroid_mean_hz": 3470.2569719845133,
+    "spectral_centroid_deviation_hz": 15.662200823768899,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": null,
+    "spectral_entropy": 0.4134379025532122,
+    "spectral_slope_db_per_octave": 1.4693913507645837,
+    "band_limit_high_hz": 11014.2333984375,
+    "spectral_centroid_slope_hz_per_second": null,
+    "syllabic_modulation_energy": null,
+    "voicing_ratio": 1.0,
+    "mid_rms": 0.10583389038329162,
+    "side_rms": 0.0,
+    "lufs": -70.0
+  },
+  "musicality": {
+    "pitch_hz": 958.695652173913,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 0.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.16984887668486187,
+      0.19675399870502275,
+      0.20061380449767113,
+      0.2630869673272353,
+      0.3473972580253407,
+      1.0,
+      0.6040986819983355,
+      0.2712396772543903,
+      0.26243250809356194,
+      0.18523516298888304,
+      0.17285450826978263,
+      0.17968352843192897
+    ]
+  },
+  "unsupervised": {
+    "cluster": 2,
+    "principal_components": [
+      -1.5208774541840575,
+      0.7376023630495836,
+      2.1575366640169484
+    ]
+  },
+  "ucs": {
+    "category": "PERCUSSION",
+    "subcategory": "CLAVE",
+    "id": "PERCClav",
+    "confidence": 0.828158897948419,
+    "alternatives": [
+      {
+        "category": "PERCUSSION",
+        "subcategory": "WOODBLOCK",
+        "id": "PERCWood",
+        "probability": 0.157,
+        "synonyms": [
+          "clave"
+        ]
+      },
+      {
+        "category": "ARCHIVED",
+        "subcategory": "IMPULSE RESPONSE",
+        "id": "IR",
+        "probability": 0.015,
+        "synonyms": [
+          "sample"
+        ]
+      }
+    ],
+    "synonyms": [
+      "clave"
+    ],
+    "reason": "name matched [clave]; signal 0.76, tier signal_narrowable, 3 candidates in contention; gate ruled out AIRBlow (length_seconds 0.1188 < min 0.1500)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.06984126984126984,
+        "duration_seconds": 0.06984126984126984,
+        "peak_amplitude": 0.46009663929906547,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

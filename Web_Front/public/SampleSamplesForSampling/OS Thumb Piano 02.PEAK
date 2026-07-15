@@ -1,0 +1,189 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "OS Thumb Piano 02.wav",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/OS Thumb Piano 02.wav",
+    "length_seconds": 2.8629166666666666,
+    "sample_rate": 48000,
+    "bit_depth": 16,
+    "channels": 2,
+    "source_format": "WAV",
+    "lossy_source": false,
+    "dc_offset": 0.0012232452201593428,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Kalimba",
+    "reason": [
+      "1) path matched \"thumb piano\"",
+      "2) envelope Decaying (attack 0 ms, sustain 10%, 1 transient)",
+      "3) Inharmonic · mid-band 64% · root C4"
+    ],
+    "timbre": "Tonal",
+    "length_class": "Long",
+    "subgroup": "Kalimba Long",
+    "audit": false,
+    "acoustic_types": [
+      "Inharmonic"
+    ],
+    "sound_design_roles": [
+      "Pluck"
+    ],
+    "instrument_family": [
+      "Percussion",
+      "Idiophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 1,
+    "attack_seconds": 0.00375,
+    "sustain_ratio": 0.05813953488372093,
+    "sustained": false,
+    "envelope_attack_seconds": 0.0,
+    "envelope_decay_seconds": 1.135,
+    "envelope_sustain_level": 0.10438043384777833,
+    "envelope_release_seconds": 1.935,
+    "envelope_temporal_centroid": 0.14022196397232603,
+    "envelope_skewness": 2.031474638248198,
+    "envelope_kurtosis": 5.337753619938118,
+    "envelope_shape": "Decaying",
+    "decay_time_seconds_60db": 6.957464400121863,
+    "onset_periodicity": 0.12912465029297138,
+    "onset_rate_per_second": 0.34929413476932036
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.03050983213089307,
+    "crest_factor": 16.004562289762074,
+    "zero_crossings_per_second": 526.3862610973657,
+    "complexity": 3262.9112386125134,
+    "spectral_centroid_hz": 2001.5481922652657,
+    "spectral_rolloff_hz": 3967.28278270994,
+    "spectral_flatness": 0.11194372884048208,
+    "low_band_energy": 0.11501365868027615,
+    "mid_band_energy": 0.6413882141069401,
+    "high_band_energy": 0.24359812721278362,
+    "spectral_flux": 0.12372436633392205,
+    "harmonicity": 0.9121355233535527,
+    "inharmonicity": 0.5108153774845293,
+    "partial_count": 7,
+    "mel_frequency_cepstral_coefficients": [
+      -37.79006311018016,
+      14.891515219322223,
+      7.749849346397521,
+      7.582665755911355,
+      3.0668929337841306,
+      0.9971028280240796,
+      -0.44658359260118446,
+      0.29982297818867526,
+      -2.267697334845505,
+      -0.49261098465791126,
+      -0.10763870763026201,
+      -1.3201990642574128,
+      -0.6742566329416746
+    ],
+    "spectral_centroid_mean_hz": 784.0631410469284,
+    "spectral_centroid_deviation_hz": 257.2943464013922,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.16341561866124577,
+    "spectral_entropy": 0.20209498571579165,
+    "spectral_slope_db_per_octave": -8.734852850407023,
+    "band_limit_high_hz": 1781.25,
+    "spectral_centroid_slope_hz_per_second": 236.92808489098883,
+    "syllabic_modulation_energy": 0.31782202022331973,
+    "voicing_ratio": 1.0,
+    "mid_rms": 0.030509832016411994,
+    "side_rms": 0.0015233304156977044,
+    "lufs": -28.512447019153417
+  },
+  "musicality": {
+    "pitch_hz": 263.7362637362637,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "C4",
+    "root_frequency_hz": 0.0,
+    "root_cents_offset": 0.0,
+    "beats_per_minute": 120.0,
+    "root_midi_note": 60,
+    "chromagram": [
+      1.0,
+      0.2845586678003234,
+      0.24570159619184137,
+      0.27780560090424766,
+      0.30113093711581534,
+      0.2898450741209932,
+      0.31976416868019264,
+      0.31414532066833645,
+      0.3193061809706959,
+      0.6321332111287022,
+      0.32682636055305014,
+      0.3793053997014909
+    ]
+  },
+  "unsupervised": {
+    "cluster": 0,
+    "principal_components": [
+      0.7232366134110768,
+      -2.080017311461308,
+      1.572994178784095
+    ]
+  },
+  "ucs": {
+    "category": "PIANO",
+    "subcategory": "UPRIGHT",
+    "id": "PIANUprt",
+    "confidence": 0.2855432700399948,
+    "alternatives": [
+      {
+        "category": "KEYBOARD",
+        "subcategory": "ELECTRIC PIANO",
+        "id": "KEYBEp",
+        "probability": 0.148,
+        "synonyms": [
+          "piano"
+        ]
+      },
+      {
+        "category": "SYNTH",
+        "subcategory": "CHORD",
+        "id": "SYNTChrd",
+        "probability": 0.136,
+        "synonyms": [
+          "piano"
+        ]
+      },
+      {
+        "category": "KEYBOARD",
+        "subcategory": "CELESTA",
+        "id": "KEYBCele",
+        "probability": 0.128,
+        "synonyms": [
+          "piano"
+        ]
+      }
+    ],
+    "synonyms": [
+      "piano"
+    ],
+    "reason": "name matched [piano]; signal 0.50, tier semantic_only, 11 candidates in contention; gate ruled out AIRBlow (spectral_flatness 0.1119 < min 0.1200)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 2.8629166666666666,
+        "duration_seconds": 2.8629166666666666,
+        "peak_amplitude": 0.1513583061217373,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}

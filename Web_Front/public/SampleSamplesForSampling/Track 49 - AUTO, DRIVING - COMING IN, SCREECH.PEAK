@@ -1,0 +1,188 @@
+{
+  "metadata": {
+    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "name": "Track 49 - AUTO, DRIVING - COMING IN, SCREECH.mp3",
+    "folder": "SampleSamplesForSampling",
+    "sub": "SampleSamplesForSampling",
+    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 49 - AUTO, DRIVING - COMING IN, SCREECH.mp3",
+    "length_seconds": 4.780408163265306,
+    "sample_rate": 44100,
+    "bit_depth": 0,
+    "channels": 2,
+    "source_format": "MP3",
+    "lossy_source": true,
+    "dc_offset": -0.0006574178132043126,
+    "trailing_silence_ms": 0.0
+  },
+  "classification": {
+    "group": "Loops/Patterns",
+    "reason": [
+      "1) 6 transients (>1), no drum/instrument name → loop",
+      "2) envelope Multi (attack 624 ms, sustain 6%, 6 transients)",
+      "3) Harmonic · mid-band 64% · root A5"
+    ],
+    "timbre": "Loop",
+    "length_class": "Loop",
+    "subgroup": "Loop",
+    "audit": false,
+    "acoustic_types": [
+      "Harmonic"
+    ],
+    "sound_design_roles": [],
+    "instrument_family": [
+      "String",
+      "Chordophone"
+    ]
+  },
+  "envelope": {
+    "transient_count": 6,
+    "attack_seconds": 1.9047392290249434,
+    "sustain_ratio": 0.13937282229965156,
+    "sustained": false,
+    "envelope_attack_seconds": 0.6235827664399093,
+    "envelope_decay_seconds": 1.3768707482993197,
+    "envelope_sustain_level": 0.06447475666417662,
+    "envelope_release_seconds": 0.6136054421768707,
+    "envelope_temporal_centroid": 0.43819002978874333,
+    "envelope_skewness": 1.7133257866041964,
+    "envelope_kurtosis": 2.2252951284899023,
+    "envelope_shape": "Multi",
+    "decay_time_seconds_60db": 4.470522241284386,
+    "onset_periodicity": 0.30979296977668463,
+    "onset_rate_per_second": 1.2551229508196722
+  },
+  "spectral_features": {
+    "root_mean_square_level": 0.039238061225751256,
+    "crest_factor": 8.026247043399549,
+    "zero_crossings_per_second": 2340.595116120219,
+    "complexity": 1555.234329518443,
+    "spectral_centroid_hz": 2254.524992076025,
+    "spectral_rolloff_hz": 3346.9945355191253,
+    "spectral_flatness": 0.0167750918849082,
+    "low_band_energy": 0.028651777891123158,
+    "mid_band_energy": 0.6416215261044191,
+    "high_band_energy": 0.32972669600445237,
+    "spectral_flux": 0.17788750416234006,
+    "harmonicity": 0.7800975626234361,
+    "inharmonicity": 0.3433051165395812,
+    "partial_count": 2,
+    "mel_frequency_cepstral_coefficients": [
+      -46.18134703161082,
+      21.93338950320061,
+      -10.525134025033225,
+      6.060953917347431,
+      -3.2983266489424508,
+      5.867670873543247,
+      -0.37069889017129143,
+      2.3822730781810892,
+      -0.3500909471161015,
+      -0.04805126219473563,
+      0.6236211514681649,
+      0.8798507845121287,
+      1.3614928664147183
+    ],
+    "spectral_centroid_mean_hz": 1705.293341741473,
+    "spectral_centroid_deviation_hz": 888.1063178661957,
+    "total_harmonic_distortion": 0.0,
+    "clipping_density": 0.0,
+    "distortion": "Clean",
+    "stationarity": 0.0,
+    "spectral_entropy": 0.3765145760448717,
+    "spectral_slope_db_per_octave": -3.732620589038758,
+    "band_limit_high_hz": 9797.607421875,
+    "spectral_centroid_slope_hz_per_second": -60.514363874599525,
+    "syllabic_modulation_energy": 0.11636784574978404,
+    "voicing_ratio": 0.6234177215189873,
+    "mid_rms": 0.039238061224048895,
+    "side_rms": 0.01579440038448659,
+    "lufs": -18.955578848785475
+  },
+  "musicality": {
+    "pitch_hz": 1633.3333333333333,
+    "pitch_slope_semitones_per_second": null,
+    "root_note_name": "A5",
+    "root_frequency_hz": 888.840190514175,
+    "root_cents_offset": 17.30463421592674,
+    "beats_per_minute": 99.0,
+    "root_midi_note": -1,
+    "chromagram": [
+      0.1891148296076974,
+      0.186198626599075,
+      0.18399272966376998,
+      0.19749839846760925,
+      0.29564450511020907,
+      0.5690797837443256,
+      0.9227597120268898,
+      0.7769561149894813,
+      1.0,
+      0.8388578648624582,
+      0.6176521438377167,
+      0.5265024640590024
+    ]
+  },
+  "unsupervised": {
+    "cluster": 13,
+    "principal_components": [
+      1.8225404692550018,
+      -0.34744201046768736,
+      -0.7839546448038797
+    ]
+  },
+  "ucs": {
+    "category": "VEHICLES",
+    "subcategory": "CAR",
+    "id": "VEHCar",
+    "confidence": 0.21648434342802106,
+    "alternatives": [
+      {
+        "category": "VEHICLES",
+        "subcategory": "BRAKE",
+        "id": "VEHBrake",
+        "probability": 0.133,
+        "synonyms": [
+          "auto",
+          "screech"
+        ]
+      },
+      {
+        "category": "VEHICLES",
+        "subcategory": "GENERIC BY",
+        "id": "VEHBy",
+        "probability": 0.086,
+        "synonyms": [
+          "auto"
+        ]
+      },
+      {
+        "category": "VEHICLES",
+        "subcategory": "EMERGENCY",
+        "id": "VEHEmrg",
+        "probability": 0.058,
+        "synonyms": [
+          "auto"
+        ]
+      }
+    ],
+    "synonyms": [
+      "auto"
+    ],
+    "reason": "name matched [auto]; signal 0.93, tier semantic_only, 32 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.7804 > max 4.0000)"
+  },
+  "regions": {
+    "count": 1,
+    "detection_threshold_decibels": -40.0,
+    "minimum_silence_seconds": 0.15,
+    "minimum_region_seconds": 0.05,
+    "regions": [
+      {
+        "index": 0,
+        "start_seconds": 0.7133786848072562,
+        "end_seconds": 3.861224489795918,
+        "duration_seconds": 3.1478458049886617,
+        "peak_amplitude": 0.15840233149145858,
+        "name": "",
+        "analysis": null
+      }
+    ]
+  }
+}
