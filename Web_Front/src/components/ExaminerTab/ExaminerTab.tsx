@@ -425,39 +425,60 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       bpmEst = bpm > 0;
     }
 
-    // Draw order: spectrum fill (behind) → waveform → spectrum → beats → envelope → axes.
+    // Two stacked panes sharing one time axis: the WAVEFORM(s) live in the top half, the
+    // LOUDNESS (+ stereo PHASE) in the bottom half. The spectrum, envelope, beats and the
+    // root/note markers all span the FULL height, across both panes.
+    const plotMid = geo.plotTop + geo.plotH / 2;
+    const halfH = geo.plotH / 2;
+    const geoTop: PlotGeo = {
+      w, h, padTop: geo.padTop,
+      plotTop: geo.plotTop, plotBottom: plotMid, plotH: halfH,
+      mid: geo.plotTop + halfH / 2, halfH: halfH / 2,
+    };
+    const geoBottom: PlotGeo = {
+      w, h, padTop: geo.padTop,
+      plotTop: plotMid, plotBottom: geo.plotBottom, plotH: halfH,
+      mid: plotMid + halfH / 2, halfH: halfH / 2,
+    };
+
+    // Spectrum fill spans the whole height, behind everything.
     if (spec) drawSpectrumFill(ctx, spec, geo, ccol);
-    // Stereo → two lanes (left channel top, right channel bottom) with a faint
-    // divider and L/R labels; mono → one full-height trace as before.
+
+    // --- Top pane: waveform(s) ---
+    // Stereo → two lanes (L top, R bottom) within the top pane; mono → one trace.
     if (buffer.numberOfChannels >= 2) {
-      const quarter = geo.plotH / 4;
-      const topMid = geo.plotTop + quarter;
-      const botMid = geo.plotTop + quarter * 3;
-      drawWaveform(ctx, buffer.getChannelData(0), geo, gcol, topMid, quarter);
-      drawWaveform(ctx, buffer.getChannelData(1), geo, gcol, botMid, quarter);
-      // Divider between the two channel lanes.
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      const laneH = geoTop.plotH / 2;
+      const amp = laneH / 2;
+      const topMid = geoTop.plotTop + laneH / 2;
+      const botMid = geoTop.plotTop + laneH * 1.5;
+      drawWaveform(ctx, buffer.getChannelData(0), geoTop, gcol, topMid, amp);
+      drawWaveform(ctx, buffer.getChannelData(1), geoTop, gcol, botMid, amp);
+      // Divider between the L and R lanes.
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(0, geo.mid + 0.5);
-      ctx.lineTo(geo.w, geo.mid + 0.5);
-      ctx.stroke();
-      // Channel labels, top-left of each lane.
+      ctx.beginPath(); ctx.moveTo(0, geoTop.mid + 0.5); ctx.lineTo(w, geoTop.mid + 0.5); ctx.stroke();
       ctx.fillStyle = gcol + '99';
       ctx.font = '10px system-ui, sans-serif';
       ctx.textBaseline = 'top';
-      ctx.fillText('L', 4, topMid - quarter + 2);
-      ctx.fillText('R', 4, botMid - quarter + 2);
+      ctx.fillText('L', 4, topMid - amp + 2);
+      ctx.fillText('R', 4, botMid - amp + 2);
     } else {
-      drawWaveform(ctx, mono, geo, gcol);
+      drawWaveform(ctx, mono, geoTop, gcol);
     }
     if (spec) drawSpectrumTrace(ctx, spec, geo, ccol, item);
-    // Loudness (windowed RMS → dB) over time — always. Phase (L/R correlation)
-    // over time — stereo only. Both share the waveform's time axis and sit on top.
-    drawLoudness(ctx, mono, geo, '#FCD34D');
+
+    // --- Bottom pane: loudness (always) + phase (stereo only) ---
+    drawLoudness(ctx, mono, geoBottom, '#FCD34D');
     if (buffer.numberOfChannels >= 2) {
-      drawPhase(ctx, buffer.getChannelData(0), buffer.getChannelData(1), geo, '#FB7185');
+      drawPhase(ctx, buffer.getChannelData(0), buffer.getChannelData(1), geoBottom, '#FB7185');
     }
+
+    // Divider between the waveform pane and the loudness/phase pane.
+    ctx.strokeStyle = 'rgba(255,255,255,0.20)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, plotMid + 0.5); ctx.lineTo(w, plotMid + 0.5); ctx.stroke();
+
+    // Full-height overlays across both panes.
     drawBeats(ctx, geo, duration, bpm, bpmEst);
     drawEnvelope(ctx, item, duration, geo);
 
