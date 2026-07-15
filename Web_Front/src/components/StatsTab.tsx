@@ -3,6 +3,8 @@ import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer
 import { ucsColor, ucsSubColor, matchesScope } from '../groupColors'
 import { resolveAudioUrl, isTauri } from '../audioLinking'
 import ScopeBar from './ScopeBar'
+import RadialWaveform from '../examiner/RadialWaveform'
+import { toMono } from '../examiner/audioAnalysis'
 
 interface StatsTabProps {
   analysisResult: any[];
@@ -45,6 +47,10 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [plotAll, setPlotAll] = useState(false);
   const [filterText, setFilterText] = useState('');
   const audioRef = useRef<HTMLAudioElement>(null);
+  // Circular waveform preview of the last-picked point: mono samples + ring colour.
+  const [ring, setRing] = useState<{ samples: Float32Array; color: string; name: string } | null>(null);
+  const decodeCtxRef = useRef<AudioContext | null>(null);
+  const ringGenRef = useRef(0);
 
 
   useEffect(() => {
@@ -52,6 +58,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     setSub(null);
     setFilterText('');
   }, [analysisResult]);
+
+  useEffect(() => () => { decodeCtxRef.current?.close(); }, []);
 
 
 
@@ -111,8 +119,27 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       audioRef.current.src = src;
       audioRef.current.play().catch(() => {});
       setNowPlaying(item.metadata.name);
+      drawRing(item, src);
     } else {
       setNowPlaying((isTauri() || audioFiles.length) ? `No audio file for "${item.metadata.name}"` : 'No audio linked');
+    }
+  };
+
+  // Decode the picked sample and show its circular waveform. Generation-guarded
+  // so rapid clicks can't paint a stale ring, and non-fatal on undecodable files.
+  const drawRing = async (item: any, src: string) => {
+    const gen = ++ringGenRef.current;
+    try {
+      if (!decodeCtxRef.current) {
+        decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const buf = await (await fetch(src)).arrayBuffer();
+      if (gen !== ringGenRef.current) return;
+      const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+      if (gen !== ringGenRef.current) return;
+      setRing({ samples: toMono(decoded), color: pointColor(item), name: item.metadata?.name || '' });
+    } catch {
+      /* undecodable — leave the previous ring in place */
     }
   };
 
@@ -179,7 +206,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', position: 'relative' }}>
       {/* Filter + player bar */}
       <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
         <ScopeBar 
@@ -235,6 +262,24 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
         {chartCard('Scatter A', x1, setX1, y1, setY1)}
         {chartCard('Scatter B', x2, setX2, y2, setY2)}
       </div>
+
+      {/* Circular waveform of the hovered point — anchored dead-centre, loaded on
+          hover. pointerEvents:none so it never blocks hovering the points behind it;
+          starts at 0° (right) and wraps 360°. */}
+      {ring && (
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          zIndex: 20, pointerEvents: 'none',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem',
+        }}>
+          <RadialWaveform samples={ring.samples} color={ring.color} size={240} />
+          <div style={{
+            fontSize: '0.8rem', maxWidth: 260, textAlign: 'center', color: '#fff',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9)',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }} title={ring.name}>{ring.name}</div>
+        </div>
+      )}
     </div>
   );
 }

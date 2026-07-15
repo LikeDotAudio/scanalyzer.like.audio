@@ -168,6 +168,10 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
   const maxBpm = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.musicality?.beats_per_minute || 0), 1), [analysisResult]);
   const maxBrightness = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.spectral_features?.spectral_centroid_hz || 0), 1), [analysisResult]);
+  const maxPitch = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.musicality?.pitch_hz || 0), 1), [analysisResult]);
+  const maxLength = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.metadata?.length_seconds || 0), 0.001), [analysisResult]);
+  const maxTransient = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.envelope?.transient_count || 0), 1), [analysisResult]);
+  const maxHarmonicity = useMemo(() => analysisResult.reduce((max, it) => Math.max(max, it.spectral_features?.harmonicity || 0), 0.001), [analysisResult]);
 
   // Scroll-ahead audio buffering: pre-read a window of rows around the viewport so
   // the next few selections play instantly (see useAudioPrefetch). `scrollDirRef`
@@ -631,26 +635,42 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0])}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[0])}>{altSubcategory(item.ucs?.alternatives?.[0])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_1_probability') && <td style={cell({ color: 'var(--text-secondary)' })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[0])) ? altProbability(item.ucs?.alternatives?.[0]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1_probability') && <td style={cell({ color: 'var(--text-secondary)', background: Number.isFinite(altProbability(item.ucs?.alternatives?.[0])) ? `linear-gradient(90deg, rgba(255, 255, 255, 0.15) ${altProbability(item.ucs?.alternatives?.[0]) * 100}%, transparent ${altProbability(item.ucs?.alternatives?.[0]) * 100}%)` : undefined })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[0])) ? altProbability(item.ucs?.alternatives?.[0]).toFixed(3) : ''}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_2_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[1])}>{altCategory(item.ucs?.alternatives?.[1])}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_2_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[1])}>{altSubcategory(item.ucs?.alternatives?.[1])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_2_probability') && <td style={cell({ color: 'var(--text-secondary)' })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[1])) ? altProbability(item.ucs?.alternatives?.[1]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2_probability') && <td style={cell({ color: 'var(--text-secondary)', background: Number.isFinite(altProbability(item.ucs?.alternatives?.[1])) ? `linear-gradient(90deg, rgba(255, 255, 255, 0.15) ${altProbability(item.ucs?.alternatives?.[1]) * 100}%, transparent ${altProbability(item.ucs?.alternatives?.[1]) * 100}%)` : undefined })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[1])) ? altProbability(item.ucs?.alternatives?.[1]).toFixed(3) : ''}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_3_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[2])}>{altCategory(item.ucs?.alternatives?.[2])}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_3_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[2])}>{altSubcategory(item.ucs?.alternatives?.[2])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_3_probability') && <td style={cell({ color: 'var(--text-secondary)' })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[2])) ? altProbability(item.ucs?.alternatives?.[2]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3_probability') && <td style={cell({ color: 'var(--text-secondary)', background: Number.isFinite(altProbability(item.ucs?.alternatives?.[2])) ? `linear-gradient(90deg, rgba(255, 255, 255, 0.15) ${altProbability(item.ucs?.alternatives?.[2]) * 100}%, transparent ${altProbability(item.ucs?.alternatives?.[2]) * 100}%)` : undefined })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[2])) ? altProbability(item.ucs?.alternatives?.[2]).toFixed(3) : ''}</td>}
                                           {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.reason?.[0] || ''}>{item.classification.reason?.[0] || ''}</td>}
                                           {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.classification.timbre}>{item.classification.timbre ? `${TIMBRE_EMOJI[item.classification.timbre] || '🎚️'} ${item.classification.timbre}` : ''}</td>}
                                           {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.unsupervised.cluster !== -1 ? item.unsupervised.cluster : ''}</td>}
                                           {activeColumns.find(c => c.key === 'root') && <td style={cell({ color: '#8B5CF6' })}>{item.musicality.root_note_name}</td>}
-                                          {activeColumns.find(c => c.key === 'pitch_hz') && <td style={cell()}>{item.musicality.pitch_hz ? Math.round(item.musicality.pitch_hz) : 0}</td>}
-                                          {activeColumns.find(c => c.key === 'length_seconds') && <td style={cell()}>{item.metadata.length_seconds?.toFixed(2)}</td>}
-                                          {activeColumns.find(c => c.key === 'transient_count') && <td style={cell({ color: '#F59E0B' })}>{item.envelope.transient_count}</td>}
+                                          {activeColumns.find(c => c.key === 'pitch_hz') && <td style={cell({
+                                              background: item.musicality?.pitch_hz
+                                                  ? `linear-gradient(90deg, rgba(139, 92, 246, 0.25) ${(item.musicality.pitch_hz / maxPitch) * 100}%, transparent ${(item.musicality.pitch_hz / maxPitch) * 100}%)`
+                                                  : undefined
+                                          })}>{item.musicality.pitch_hz ? Math.round(item.musicality.pitch_hz) : 0}</td>}
+                                          {activeColumns.find(c => c.key === 'length_seconds') && <td style={cell({
+                                              background: item.metadata?.length_seconds
+                                                  ? `linear-gradient(90deg, rgba(6, 182, 212, 0.25) ${(item.metadata.length_seconds / maxLength) * 100}%, transparent ${(item.metadata.length_seconds / maxLength) * 100}%)`
+                                                  : undefined
+                                          })}>{item.metadata.length_seconds?.toFixed(2)}</td>}
+                                          {activeColumns.find(c => c.key === 'transient_count') && <td style={cell({ color: '#F59E0B',
+                                              background: item.envelope?.transient_count
+                                                  ? `linear-gradient(90deg, rgba(245, 158, 11, 0.25) ${(item.envelope.transient_count / maxTransient) * 100}%, transparent ${(item.envelope.transient_count / maxTransient) * 100}%)`
+                                                  : undefined
+                                          })}>{item.envelope.transient_count}</td>}
                                           {activeColumns.find(c => c.key === 'spectral_centroid_hz') && <td style={cell({
                                               background: item.spectral_features?.spectral_centroid_hz 
                                                   ? `linear-gradient(90deg, rgba(244, 144, 44, 0.25) ${(item.spectral_features.spectral_centroid_hz / maxBrightness) * 100}%, transparent ${(item.spectral_features.spectral_centroid_hz / maxBrightness) * 100}%)` 
                                                   : undefined
                                           })}>{item.spectral_features.spectral_centroid_hz ? Math.round(item.spectral_features.spectral_centroid_hz) : 0}</td>}
-                                          {activeColumns.find(c => c.key === 'harmonicity') && <td style={cell()}>{item.spectral_features?.harmonicity?.toFixed(2)}</td>}
+                                          {activeColumns.find(c => c.key === 'harmonicity') && <td style={cell({
+                                              background: item.spectral_features?.harmonicity
+                                                  ? `linear-gradient(90deg, rgba(236, 72, 153, 0.25) ${(item.spectral_features.harmonicity / maxHarmonicity) * 100}%, transparent ${(item.spectral_features.harmonicity / maxHarmonicity) * 100}%)`
+                                                  : undefined
+                                          })}>{item.spectral_features?.harmonicity?.toFixed(2)}</td>}
                                           {activeColumns.find(c => c.key === 'beats_per_minute') && <td style={cell({
                                               background: item.musicality?.beats_per_minute 
                                                   ? `linear-gradient(90deg, rgba(16, 185, 129, 0.25) ${(item.musicality.beats_per_minute / maxBpm) * 100}%, transparent ${(item.musicality.beats_per_minute / maxBpm) * 100}%)` 

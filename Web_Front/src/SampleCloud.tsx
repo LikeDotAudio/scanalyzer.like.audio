@@ -1,5 +1,5 @@
 import { useRef, useMemo, useEffect } from 'react'
-import { Canvas, useThree, type ThreeEvent } from '@react-three/fiber'
+import { Canvas, useThree, useFrame, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { musicProdCategory, subKey, ucsColor, ucsSubColor, taxonomyKeys } from './groupColors'
@@ -144,6 +144,7 @@ interface CloudProps {
   hiddenGroups: Set<string>;
   selectedIndex: number | null;
   onPick: (index: number) => void;
+  playing: boolean;
 }
 
 interface ShapeData {
@@ -208,7 +209,7 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   );
 }
 
-function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hiddenGroups, selectedIndex, onPick }: CloudProps) {
+function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hiddenGroups, selectedIndex, onPick, playing }: CloudProps) {
   const count = data.length
   // UCS is the only taxonomy the cloud speaks.
   const taxonomy = 'UCS' as const;
@@ -291,9 +292,31 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
     return () => window.removeEventListener('keydown', onKey);
   }, [allPositions, selectedIndex, hiddenGroups, data, onPick, camera, taxonomy]);
 
+  // The wireframe highlight over the selected point. While its sample is playing
+  // it breathes — scale + opacity swing on a ~1.6 Hz sine — so the cloud shows,
+  // not just the top-left readout, which dot you're hearing. Idle, it sits static.
+  const selMeshRef = useRef<THREE.Mesh>(null!);
+  const baseScaleRef = useRef(1);
+  useFrame(({ clock }) => {
+    const m = selMeshRef.current;
+    if (!m) return;
+    const base = baseScaleRef.current;
+    if (playing) {
+      const s = 0.5 + 0.5 * Math.sin(clock.getElapsedTime() * 10);
+      m.scale.setScalar(base * (1 + 0.35 * s));
+      const mat = m.material as THREE.MeshBasicMaterial;
+      if (mat) mat.opacity = 0.5 + 0.45 * s;
+    } else {
+      m.scale.setScalar(base);
+      const mat = m.material as THREE.MeshBasicMaterial;
+      if (mat) mat.opacity = 0.9;
+    }
+  });
+
   if (count === 0) return null;
 
   const selPos = selectedIndex != null && selectedIndex < allPositions.length ? allPositions[selectedIndex] : null;
+  baseScaleRef.current = (selectedSize || 0.7) * 0.5 + 0.6;
 
   let selGeom;
   if (selectedShape === 'cylinder') selGeom = <cylinderGeometry args={[0.6, 0.6, 1.1, 16]} />;
@@ -319,7 +342,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
         <ShapeMesh key={shape} shape={shape} sData={sData} hiddenGroups={hiddenGroups} allData={data} taxonomy={taxonomy} onPick={onPick} />
       ))}
       {selPos && (
-        <mesh position={selPos} rotation={meshRot(selectedShape)} scale={(selectedSize || 0.7) * 0.5 + 0.6}>
+        <mesh ref={selMeshRef} position={selPos} rotation={meshRot(selectedShape)} scale={baseScaleRef.current}>
           {selGeom}
           <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.9} />
         </mesh>
@@ -335,12 +358,13 @@ interface SampleCloudProps {
   selectedIndex?: number | null;
   onPick?: (index: number) => void;
   showAxes?: boolean;
+  playing?: boolean;
 }
 
 export default function SampleCloud({
   data = [], xAxis = 'Pitch', yAxis = 'Group', zAxis = 'Complexity',
   sizeAxis = 'Length', colorBy = 'Group', shapeBy = 'Instrument', hiddenGroups = new Set(),
-  selectedIndex = null, onPick = () => {}, showAxes = true,
+  selectedIndex = null, onPick = () => {}, showAxes = true, playing = false,
 }: SampleCloudProps) {
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 0 }}>
@@ -357,7 +381,7 @@ export default function SampleCloud({
         <CloudPoints
           data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
           sizeAxis={sizeAxis} colorBy={colorBy} shapeBy={shapeBy} hiddenGroups={hiddenGroups}
-          selectedIndex={selectedIndex} onPick={onPick}
+          selectedIndex={selectedIndex} onPick={onPick} playing={playing}
         />
         <OrbitControls enablePan enableZoom enableRotate autoRotate={false} />
       </Canvas>

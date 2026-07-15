@@ -157,6 +157,33 @@ pub struct Unsupervised {
     pub principal_components: Vec<f64>,
 }
 
+/// One sounding stretch inside a file, bounded by silence — its in-point and
+/// out-point. `name` is empty from the analyzer and filled in by the user in the
+/// Extractor editor.
+#[derive(Serialize, Deserialize, Clone, Default)]
+#[serde(default)]
+pub struct Region {
+    pub index: usize,
+    pub start_seconds: f64,
+    pub end_seconds: f64,
+    pub duration_seconds: f64,
+    /// Loudest RMS-envelope value inside the region (linear, 0..~1).
+    pub peak_amplitude: f64,
+    pub name: String,
+}
+
+/// Every region found in a file, plus the silence-gate settings that found them.
+/// `count > 1` marks a file as multi-region for library-wide discovery.
+#[derive(Serialize, Deserialize, Clone, Default)]
+#[serde(default)]
+pub struct Regions {
+    pub count: usize,
+    pub detection_threshold_decibels: f64,
+    pub minimum_silence_seconds: f64,
+    pub minimum_region_seconds: f64,
+    pub regions: Vec<Region>,
+}
+
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Peak {
     pub metadata: Metadata,
@@ -166,4 +193,8 @@ pub struct Peak {
     pub musicality: Musicality,
     pub unsupervised: Unsupervised,
     pub ucs: Ucs,
+    // Added after the original schema — old sidecars have no regions, so default it
+    // in rather than fail the whole record on a missing field.
+    #[serde(default)]
+    pub regions: Regions,
 }

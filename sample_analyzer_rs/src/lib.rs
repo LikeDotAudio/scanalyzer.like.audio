@@ -85,6 +85,8 @@ pub mod peak;
 pub mod pitch;
 #[path = "Scananalyzers/Musical/root.rs"]
 pub mod root;
+#[path = "Scananalyzers/Temporal/regions.rs"]
+pub mod regions;
 #[path = "Pipeline/run.rs"]
 pub mod run;
 #[path = "Encoders/sidecar.rs"]

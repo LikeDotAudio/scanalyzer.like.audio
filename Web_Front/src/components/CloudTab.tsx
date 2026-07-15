@@ -79,6 +79,8 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
   const [showGroups, setShowGroups] = useState(false);
   const [showShapes, setShowShapes] = useState(false);
   const [playMsg, setPlayMsg] = useState<string>('');
+  // Drives the selected point's pulse in the 3D cloud — true only while audio sounds.
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Distinct groups → their subgroups, with per-group and per-subgroup file
@@ -170,9 +172,14 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
             data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
             sizeAxis={sizeAxis} colorBy={colorBy} shapeBy={shapeBy} hiddenGroups={hiddenGroups}
             selectedIndex={selectedIndex} onPick={handlePick} showAxes={showAxes}
+            playing={isPlaying}
           />
         </Suspense>
-        <audio ref={audioRef} style={{ display: 'none' }} onError={() => setPlayMsg('Browser could not decode this audio file.')} />
+        <audio ref={audioRef} style={{ display: 'none' }}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onEnded={() => setIsPlaying(false)}
+          onError={() => { setIsPlaying(false); setPlayMsg('Browser could not decode this audio file.'); }} />
 
         {/* Selected sample readout (Top Left) */}
         {selected && (

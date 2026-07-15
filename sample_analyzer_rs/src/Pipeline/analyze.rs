@@ -59,6 +59,8 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     // limit, the two sweep slopes, and syllabic modulation. These ride on the
     // STFT and the amplitude envelope already computed above.
     let (amplitude_track, envelope_rate_hz) = crate::envelope::amplitude_envelope(&data, sr);
+    // Silence-separated regions, off the same RMS track (see Scananalyzers/Temporal/regions.rs).
+    let regions = crate::regions::detect_regions(&amplitude_track, envelope_rate_hz, length);
     let morph = morphology(&frames, sr_f, N_FFT, HOP, &amplitude_track, envelope_rate_hz);
     // One pass answers both "how voiced is this" and "is this a vocal".
     let voicing = crate::vad::voice_activity(&data, sr);
@@ -281,6 +283,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
             principal_components: Vec::new(),
         },
         ucs: crate::peak::Ucs::default(),
+        regions,
     }))
 }
 
@@ -330,6 +333,8 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     // limit, the two sweep slopes, and syllabic modulation. These ride on the
     // STFT and the amplitude envelope already computed above.
     let (amplitude_track, envelope_rate_hz) = crate::envelope::amplitude_envelope(&data, sr);
+    // Silence-separated regions, off the same RMS track (see Scananalyzers/Temporal/regions.rs).
+    let regions = crate::regions::detect_regions(&amplitude_track, envelope_rate_hz, length);
     let morph = morphology(&frames, sr_f, N_FFT, HOP, &amplitude_track, envelope_rate_hz);
     // One pass answers both "how voiced is this" and "is this a vocal".
     let voicing = crate::vad::voice_activity(&data, sr);
@@ -541,5 +546,6 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
             principal_components: Vec::new(),
         },
         ucs: crate::peak::Ucs::default(),
+        regions,
     }))
 }
