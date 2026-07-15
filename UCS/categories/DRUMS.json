@@ -1,0 +1,145 @@
+{
+  "version": "8.2.1",
+  "category": "DRUMS",
+  "subcategories": [
+    {
+      "subcategory": "KICK",
+      "category_id": "DRUMKick",
+      "category_short": "DRUM",
+      "explanation": [
+        "Bass drum / kick drum — the deep, low-end membranophone that carries the pulse.",
+        "Acoustic bass drums and electronic kicks (808/909 and sampled one-shots) alike."
+      ],
+      "synonyms": [
+        "Kick", "Bass Drum", "BD", "Bassdrum", "808", "909", "Boom", "Thump", "Sub Kick", "Four On The Floor"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "spectral_centroid_hz", "max": 2500 },
+          { "feature": "length_seconds", "max": 8.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 130.0, "deviation": 2.2, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 130.0, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "low_band_energy", "mean": 0.78, "deviation": 0.2, "transform": "linear", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.78, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.008, "deviation": 3.0, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.008, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "crest_factor", "mean": 7.0, "deviation": 1.6, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 7.0, "reasoned_deviation_before_calibration": 1.6 } },
+          { "feature": "length_seconds", "mean": 0.5, "deviation": 2.5, "transform": "log", "weight": 0.4,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 2.5 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "SNARE",
+      "category_id": "DRUMSnr",
+      "category_short": "DRUM",
+      "explanation": [
+        "Snare drum — a membranophone with rattling wire snares giving the sharp, noisy backbeat.",
+        "Includes rimshots and the crack of an acoustic or sampled snare."
+      ],
+      "synonyms": [
+        "Snare", "SD", "Rimshot", "Rim", "Backbeat", "Crack", "Snap", "Side Stick", "Brush"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 6.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 2200.0, "deviation": 1.9, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 2200.0, "reasoned_deviation_before_calibration": 1.9 } },
+          { "feature": "spectral_flatness", "mean": 0.35, "deviation": 0.22, "transform": "linear", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.35, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "mid_band_energy", "mean": 0.45, "deviation": 0.25, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.45, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.005, "deviation": 3.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.005, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "harmonicity", "mean": 0.25, "deviation": 0.25, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.25, "reasoned_deviation_before_calibration": 0.25 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "TOM",
+      "category_id": "DRUMTom",
+      "category_short": "DRUM",
+      "explanation": [
+        "Tom-tom — a cylindrical membranophone with a definite-ish pitch, used for fills and tribal grooves.",
+        "Floor toms, rack toms, and roto-toms."
+      ],
+      "synonyms": [
+        "Tom", "Tom-Tom", "Floor Tom", "Rack Tom", "Roto Tom", "Fill", "Tribal"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "length_seconds", "max": 8.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 350.0, "deviation": 2.0, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 350.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "harmonicity", "mean": 0.5, "deviation": 0.25, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.4, "deviation": 2.5, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.4, "reasoned_deviation_before_calibration": 2.5 } },
+          { "feature": "low_band_energy", "mean": 0.5, "deviation": 0.25, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.25 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "HAND DRUM",
+      "category_id": "DRUMHand",
+      "category_short": "DRUM",
+      "explanation": [
+        "Hand-struck membranophones from world and Latin traditions — bass tones and sharp slaps.",
+        "Conga, bongo, djembe, darbuka/doumbek, tabla, cajon, talking drum, timbale-adjacent hand drums."
+      ],
+      "synonyms": [
+        "Conga", "Bongo", "Djembe", "Darbuka", "Doumbek", "Tabla", "Cajon", "Talking Drum",
+        "Hand Drum", "Frame Drum", "Bodhran", "Tar", "Udu", "Slap", "Tone", "World Perc"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "length_seconds", "max": 6.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 700.0, "deviation": 2.2, "transform": "log", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 700.0, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.006, "deviation": 3.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.006, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "harmonicity", "mean": 0.4, "deviation": 0.3, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.4, "reasoned_deviation_before_calibration": 0.3 } },
+          { "feature": "crest_factor", "mean": 6.5, "deviation": 1.6, "transform": "log", "weight": 0.4,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 6.5, "reasoned_deviation_before_calibration": 1.6 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "DRUMMisc",
+      "category_short": "DRUM",
+      "explanation": [
+        "A drum / membranophone that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Drum", "Drums", "Percussion", "Membranophone", "Kit"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

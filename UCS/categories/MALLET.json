@@ -1,0 +1,274 @@
+{
+  "version": "8.2.1",
+  "category": "MALLET",
+  "subcategories": [
+    {
+      "subcategory": "MARIMBA",
+      "category_id": "MALTMrmb",
+      "category_short": "MALT",
+      "explanation": [
+        "Marimba — pitched percussion of warm wooden bars struck with mallets over tuned resonators.",
+        "Mellow, tonal, harmonic tone with a medium decay and a mid-low spectral centroid."
+      ],
+      "synonyms": [
+        "Marimba"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 12.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 700.0, "deviation": 2.0, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 700.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "harmonicity", "mean": 0.75, "deviation": 0.2, "transform": "linear", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.75, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.004, "deviation": 3.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.004, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.5, "deviation": 2.2, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "inharmonicity", "mean": 0.2, "deviation": 0.18, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.2, "reasoned_deviation_before_calibration": 0.18 } },
+          { "feature": "pitch_hz", "mean": 350.0, "deviation": 2.2, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 350.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "XYLOPHONE",
+      "category_id": "MALTXylo",
+      "category_short": "MALT",
+      "explanation": [
+        "Xylophone — bright, hard wooden bars struck with mallets, sharp attack and short decay.",
+        "Higher spectral centroid than the marimba, dry and percussive with a clear pitch."
+      ],
+      "synonyms": [
+        "Xylophone", "Xylo"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 8.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 2200.0, "deviation": 1.9, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 2200.0, "reasoned_deviation_before_calibration": 1.9 } },
+          { "feature": "harmonicity", "mean": 0.65, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.002, "deviation": 3.0, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.002, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.18, "deviation": 2.2, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.18, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "high_band_energy", "mean": 0.5, "deviation": 0.25, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.25 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "VIBRAPHONE",
+      "category_id": "MALTVibe",
+      "category_short": "MALT",
+      "explanation": [
+        "Vibraphone — metal bars struck with soft mallets, with motor-driven vibrato and a sustained ring.",
+        "Harmonic-metallic tone, long decay, warm shimmer from the rotating resonator vanes."
+      ],
+      "synonyms": [
+        "Vibraphone", "Vibes", "Vibe"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 20.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 900.0, "deviation": 2.0, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 900.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "harmonicity", "mean": 0.7, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "decay_time_seconds_60db", "mean": 2.5, "deviation": 2.2, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 2.5, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "sustain_ratio", "mean": 0.5, "deviation": 0.25, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "inharmonicity", "mean": 0.35, "deviation": 0.2, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.35, "reasoned_deviation_before_calibration": 0.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "GLOCKENSPIEL",
+      "category_id": "MALTGlok",
+      "category_short": "MALT",
+      "explanation": [
+        "Glockenspiel — small hard metal bars struck with mallets, giving a very high, piercing bell tone.",
+        "Inharmonic partials, high spectral centroid and a long, bright ring."
+      ],
+      "synonyms": [
+        "Glockenspiel", "Bells", "Orchestra Bells"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 16.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 4500.0, "deviation": 1.9, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 4500.0, "reasoned_deviation_before_calibration": 1.9 } },
+          { "feature": "inharmonicity", "mean": 0.55, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.55, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "high_band_energy", "mean": 0.65, "deviation": 0.22, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "decay_time_seconds_60db", "mean": 1.5, "deviation": 2.2, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1.5, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "pitch_hz", "mean": 2000.0, "deviation": 2.0, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 2000.0, "reasoned_deviation_before_calibration": 2.0 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "TIMPANI",
+      "category_id": "MALTTimp",
+      "category_short": "MALT",
+      "explanation": [
+        "Timpani — tuned kettledrums struck with mallets, producing a low, resonant boom with a definite pitch.",
+        "A membranophone by construction, but placed here because it is pitched, tuned percussion."
+      ],
+      "synonyms": [
+        "Timpani", "Kettledrum", "Timp"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "length_seconds", "max": 12.0 },
+          { "feature": "spectral_centroid_hz", "max": 2000 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 200.0, "deviation": 2.0, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 200.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "low_band_energy", "mean": 0.7, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "harmonicity", "mean": 0.55, "deviation": 0.25, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.55, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "pitch_hz", "mean": 90.0, "deviation": 2.0, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 90.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "decay_time_seconds_60db", "mean": 1.2, "deviation": 2.2, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1.2, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "STEELPAN",
+      "category_id": "MALTStl",
+      "category_short": "MALT",
+      "explanation": [
+        "Steelpan — Caribbean steel drum struck with mallets, giving a bright, metallic yet tonal note.",
+        "Harmonic-metallic ring with a clear pitch and a shimmering upper spectrum."
+      ],
+      "synonyms": [
+        "Steelpan", "Steel Drum", "Steel Pan", "Pan"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 12.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 1400.0, "deviation": 2.0, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1400.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "harmonicity", "mean": 0.6, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "inharmonicity", "mean": 0.4, "deviation": 0.22, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.4, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.8, "deviation": 2.2, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.8, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "pitch_hz", "mean": 450.0, "deviation": 2.2, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 450.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "TUBULAR BELLS",
+      "category_id": "MALTTube",
+      "category_short": "MALT",
+      "explanation": [
+        "Tubular bells — long hanging metal tubes struck with a hammer, producing a deep chime.",
+        "Strongly inharmonic partials and a very long ringing decay."
+      ],
+      "synonyms": [
+        "Tubular Bells", "Chimes", "Chime"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 30.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 1600.0, "deviation": 2.0, "transform": "log", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1600.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "inharmonicity", "mean": 0.6, "deviation": 0.22, "transform": "linear", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "decay_time_seconds_60db", "mean": 5.0, "deviation": 2.2, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 5.0, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "sustain_ratio", "mean": 0.55, "deviation": 0.25, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.55, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "pitch_hz", "mean": 500.0, "deviation": 2.2, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 500.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "KALIMBA",
+      "category_id": "MALTKlmb",
+      "category_short": "MALT",
+      "explanation": [
+        "Kalimba — thumb piano whose metal tines are plucked to give a soft, tonal, bell-like pluck.",
+        "Warm harmonic tone with a gentle attack and moderate decay."
+      ],
+      "synonyms": [
+        "Kalimba", "Mbira", "Thumb Piano"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "length_seconds", "max": 10.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 1100.0, "deviation": 2.0, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1100.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "harmonicity", "mean": 0.7, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.006, "deviation": 3.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.006, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.6, "deviation": 2.2, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "pitch_hz", "mean": 500.0, "deviation": 2.2, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 500.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "MALTMisc",
+      "category_short": "MALT",
+      "explanation": [
+        "A mallet / pitched-percussion instrument that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Mallet", "Tuned Percussion", "Pitched Percussion", "Bells"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

@@ -163,7 +163,12 @@ export const UCS_CATEGORIES: string[] = [
   'MUSICAL', 'NATURAL DISASTER', 'OBJECTS', 'PAPER', 'PLASTIC', 'RAIN', 'ROBOTS', 'ROCKS',
   'ROPE', 'RUBBER', 'SCIFI', 'SNOW', 'SPORTS', 'SWOOSHES', 'TOOLS', 'TOYS', 'TRAINS',
   'USER INTERFACE', 'VEGETATION', 'VEHICLES', 'VOICES', 'WATER', 'WEAPONS', 'WEATHER',
-  'WHISTLES', 'WIND', 'WINDOWS', 'WINGS', 'WOOD'
+  'WHISTLES', 'WIND', 'WINDOWS', 'WINGS', 'WOOD',
+  // Music-instrument explosion — the fine-grained top-level categories that replace
+  // the coarse MUSICAL/MUSICPROD lumps. Appended (not inserted) so every existing
+  // category keeps its index and therefore its hue.
+  'DRUMS', 'CYMBALS', 'PERCUSSION', 'MALLET', 'STRINGS', 'GUITAR', 'BRASS', 'WOODWIND',
+  'KEYBOARD', 'PIANO', 'SYNTH', 'VOCALS'
 ];
 
 const UCS_INDEX: Record<string, number> = {};

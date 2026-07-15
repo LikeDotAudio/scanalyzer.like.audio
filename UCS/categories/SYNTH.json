@@ -1,0 +1,271 @@
+{
+  "version": "8.2.1",
+  "category": "SYNTH",
+  "subcategories": [
+    {
+      "subcategory": "BASS",
+      "category_id": "SYNTBass",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth bass — deep low-end synthesizer voice that anchors the low register, usually monophonic.",
+        "Sub basses, Reese, acid, and 808-style bass tones, subtractive or otherwise; role is low-frequency foundation."
+      ],
+      "synonyms": [
+        "Synth Bass", "Sub Bass", "Reese", "Acid Bass", "808 Bass", "Bass", "Mono Bass",
+        "Mono", "Monophonic", "Subtractive", "Analog Bass", "Bassline"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "spectral_centroid_hz", "max": 2000 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 180.0, "deviation": 2.2, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 180.0, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "low_band_energy", "mean": 0.75, "deviation": 0.2, "transform": "linear", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.75, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "harmonicity", "mean": 0.7, "deviation": 0.25, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "pitch_hz", "mean": 70.0, "deviation": 2.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 70.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "high_band_energy", "mean": 0.1, "deviation": 0.15, "transform": "linear", "weight": 0.4,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.1, "reasoned_deviation_before_calibration": 0.15 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "LEAD",
+      "category_id": "SYNTLead",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth lead — a bold, prominent melodic voice that sits forward in the mix, mid-bright and sustained.",
+        "Saw, square, and mono leads carrying the main melodic line; role is the featured melodic voice."
+      ],
+      "synonyms": [
+        "Lead", "Synth Lead", "Saw Lead", "Square Lead", "Mono Lead", "Solo",
+        "Supersaw", "Unison", "Portamento", "Glide", "Screech Lead", "Hoover"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 1800.0, "deviation": 2.0, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1800.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "harmonicity", "mean": 0.75, "deviation": 0.2, "transform": "linear", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.75, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "sustain_ratio", "mean": 0.6, "deviation": 0.25, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "mid_band_energy", "mean": 0.55, "deviation": 0.25, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.55, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "spectral_flatness", "mean": 0.15, "deviation": 0.15, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.15, "reasoned_deviation_before_calibration": 0.15 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "PAD",
+      "category_id": "SYNTPad",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth pad — a soft, sustained, polyphonic wash with a slow attack and long release that evolves over time.",
+        "Warm pads, ambient pads, and string-style pads; role is harmonic bed and atmosphere."
+      ],
+      "synonyms": [
+        "Pad", "Warm Pad", "Ambient Pad", "Strings Pad", "Poly", "Unison",
+        "Polyphonic", "Paraphonic", "Wavetable", "Evolving Pad", "Wash", "Soft Pad"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [],
+        "priors": [
+          { "feature": "envelope_attack_seconds", "mean": 0.6, "deviation": 2.5, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 2.5 } },
+          { "feature": "envelope_release_seconds", "mean": 2.5, "deviation": 2.2, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 2.5, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "sustain_ratio", "mean": 0.85, "deviation": 0.15, "transform": "linear", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.85, "reasoned_deviation_before_calibration": 0.15 } },
+          { "feature": "harmonicity", "mean": 0.7, "deviation": 0.22, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "length_seconds", "mean": 4.0, "deviation": 2.2, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 4.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "PLUCK",
+      "category_id": "SYNTPluck",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth pluck — a short, snappy plucked-style synth voice with a fast attack and fast decay.",
+        "Plucks, stabs, and pizzicato-style synth notes; role is a percussive tonal accent."
+      ],
+      "synonyms": [
+        "Pluck", "Synth Pluck", "Stab", "Pizz Synth", "Pizzicato Synth", "Plucked",
+        "Bell Pluck", "Karplus", "Physical Modeling", "Short Synth"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "length_seconds", "max": 4.0 }
+        ],
+        "priors": [
+          { "feature": "envelope_attack_seconds", "mean": 0.005, "deviation": 3.0, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.005, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.25, "deviation": 2.5, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.25, "reasoned_deviation_before_calibration": 2.5 } },
+          { "feature": "harmonicity", "mean": 0.7, "deviation": 0.22, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "sustain_ratio", "mean": 0.2, "deviation": 0.2, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.2, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "spectral_centroid_hz", "mean": 1500.0, "deviation": 2.2, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1500.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "ARP",
+      "category_id": "SYNTArp",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth arp — a rhythmic arpeggiated or sequenced pattern with repeating, evenly spaced onsets.",
+        "Arpeggios, sequences, and gated patterns; role is a rhythmic melodic motion."
+      ],
+      "synonyms": [
+        "Arp", "Arpeggio", "Arpeggiator", "Sequence", "Seq", "Gate",
+        "Gated", "Sequenced", "Pattern", "Rhythmic Synth", "Trance Gate"
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [],
+        "priors": [
+          { "feature": "onset_rate_per_second", "mean": 6.0, "deviation": 2.0, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 6.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "transient_count", "mean": 12.0, "deviation": 2.5, "transform": "log", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 12.0, "reasoned_deviation_before_calibration": 2.5 } },
+          { "feature": "onset_periodicity", "mean": 0.8, "deviation": 0.2, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.8, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "harmonicity", "mean": 0.65, "deviation": 0.25, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "length_seconds", "mean": 3.0, "deviation": 2.2, "transform": "log", "weight": 0.4,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 3.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "KEYS",
+      "category_id": "SYNTKeys",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth keys — keyboard, bell, and mallet-style synth voices, often FM, with a bell-like tonal character.",
+        "Digital pianos, FM bells, and synth mallets; role is a struck-key tonal voice."
+      ],
+      "synonyms": [
+        "Synth Keys", "FM Keys", "Digital Piano", "Synth Bell", "DX7", "FM Bell",
+        "FM", "Electric Piano Synth", "Mallet Synth", "Kalimba Synth", "Music Box"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "length_seconds", "max": 8.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 1600.0, "deviation": 2.2, "transform": "log", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1600.0, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "inharmonicity", "mean": 0.35, "deviation": 0.22, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.35, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.01, "deviation": 3.0, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.01, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.8, "deviation": 2.5, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.8, "reasoned_deviation_before_calibration": 2.5 } },
+          { "feature": "harmonicity", "mean": 0.6, "deviation": 0.25, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 0.25 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "DRONE",
+      "category_id": "SYNTDron",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth drone — a long, sustained, evolving non-melodic texture, riser, sweep, or atmosphere.",
+        "Drones, risers, downlifters, sweeps, and cinematic FX beds; role is atmospheric or transitional texture."
+      ],
+      "synonyms": [
+        "Drone", "Riser", "Sweep", "FX", "Atmosphere", "Texture",
+        "Impact", "Downlifter", "Uplifter", "Ambience", "Soundscape", "Granular", "Noise Sweep"
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [],
+        "priors": [
+          { "feature": "length_seconds", "mean": 8.0, "deviation": 2.2, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 8.0, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "sustain_ratio", "mean": 0.85, "deviation": 0.15, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.85, "reasoned_deviation_before_calibration": 0.15 } },
+          { "feature": "stationarity", "mean": 0.7, "deviation": 0.25, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "spectral_flatness", "mean": 0.4, "deviation": 0.25, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.4, "reasoned_deviation_before_calibration": 0.25 } },
+          { "feature": "harmonicity", "mean": 0.35, "deviation": 0.28, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.35, "reasoned_deviation_before_calibration": 0.28 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "CHORD",
+      "category_id": "SYNTChrd",
+      "category_short": "SYNT",
+      "explanation": [
+        "Synth chord — a polyphonic synth chord stab or hit, several tones sounding together.",
+        "Chord stabs, poly hits, and stacked-note synth chords; role is a harmonic accent."
+      ],
+      "synonyms": [
+        "Chord", "Stab", "Hit", "Chord Stab", "Poly Chord", "Chords",
+        "Polyphonic", "Organ Stab", "House Chord", "Piano Stab"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "length_seconds", "max": 8.0 }
+        ],
+        "priors": [
+          { "feature": "harmonicity", "mean": 0.65, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "partial_count", "mean": 20.0, "deviation": 2.0, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 20.0, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.02, "deviation": 3.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.02, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "spectral_centroid_hz", "mean": 1200.0, "deviation": 2.2, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1200.0, "reasoned_deviation_before_calibration": 2.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "SYNTMisc",
+      "category_short": "SYNT",
+      "explanation": [
+        "An electronic synthesizer sound that does not fit a specific role subcategory, or the abstention target when the scorer is unsure.",
+        "Synthesis-type words (subtractive, FM, wavetable, granular) live here because the method is not audible from a sample."
+      ],
+      "synonyms": [
+        "Synth", "Synthesizer", "Synthesized", "Electronic", "Subtractive", "FM",
+        "Wavetable", "Additive", "Granular", "Analog", "Digital", "Wavefolding", "Rompler"
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

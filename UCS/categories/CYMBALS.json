@@ -1,0 +1,216 @@
+{
+  "version": "8.2.1",
+  "category": "CYMBALS",
+  "subcategories": [
+    {
+      "subcategory": "CRASH",
+      "category_id": "CYMBCrsh",
+      "category_short": "CYMB",
+      "explanation": [
+        "Crash cymbal — an explosive, bright wash of noise struck for accents.",
+        "Very high spectral centroid with a shimmering, inharmonic medium-long decay."
+      ],
+      "synonyms": [
+        "Crash", "Crash Cymbal", "Wash", "Accent", "Cymbal Crash", "Bright Crash"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "spectral_centroid_hz", "min": 2500 },
+          { "feature": "length_seconds", "max": 12.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 6500.0, "deviation": 1.5, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 6500.0, "reasoned_deviation_before_calibration": 1.5 } },
+          { "feature": "high_band_energy", "mean": 0.7, "deviation": 0.2, "transform": "linear", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "spectral_flatness", "mean": 0.45, "deviation": 0.2, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.45, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "inharmonicity", "mean": 0.85, "deviation": 0.15, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.85, "reasoned_deviation_before_calibration": 0.15 } },
+          { "feature": "decay_time_seconds_60db", "mean": 1.6, "deviation": 2.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1.6, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "harmonicity", "mean": 0.15, "deviation": 0.2, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.15, "reasoned_deviation_before_calibration": 0.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "RIDE",
+      "category_id": "CYMBRide",
+      "category_short": "CYMB",
+      "explanation": [
+        "Ride cymbal — a sustained ping riding over a shimmering wash, with a pronounced bell tone.",
+        "Bright, articulate, and long-decaying; the timekeeping cymbal of the kit."
+      ],
+      "synonyms": [
+        "Ride", "Ride Cymbal", "Ping", "Bell", "Ride Bell", "Sizzle Ride"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "spectral_centroid_hz", "min": 2000 },
+          { "feature": "length_seconds", "max": 12.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 5000.0, "deviation": 1.5, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 5000.0, "reasoned_deviation_before_calibration": 1.5 } },
+          { "feature": "high_band_energy", "mean": 0.6, "deviation": 0.22, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "decay_time_seconds_60db", "mean": 2.5, "deviation": 2.0, "transform": "log", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 2.5, "reasoned_deviation_before_calibration": 2.0 } },
+          { "feature": "inharmonicity", "mean": 0.75, "deviation": 0.2, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.75, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "spectral_flatness", "mean": 0.35, "deviation": 0.2, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.35, "reasoned_deviation_before_calibration": 0.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "HI-HAT",
+      "category_id": "CYMBHat",
+      "category_short": "CYMB",
+      "explanation": [
+        "Hi-hat — paired cymbals ranging from a short closed tick to an open sizzle.",
+        "Very high spectral centroid; closed hats are very short, open hats sustain into a wash."
+      ],
+      "synonyms": [
+        "Hi-Hat", "Hihat", "Hat", "Closed Hat", "Open Hat", "Pedal Hat", "HH", "Tick", "Sizzle"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          { "feature": "spectral_centroid_hz", "min": 3000 },
+          { "feature": "length_seconds", "max": 6.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 8000.0, "deviation": 1.5, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 8000.0, "reasoned_deviation_before_calibration": 1.5 } },
+          { "feature": "high_band_energy", "mean": 0.8, "deviation": 0.18, "transform": "linear", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.8, "reasoned_deviation_before_calibration": 0.18 } },
+          { "feature": "spectral_flatness", "mean": 0.5, "deviation": 0.2, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "inharmonicity", "mean": 0.85, "deviation": 0.15, "transform": "linear", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.85, "reasoned_deviation_before_calibration": 0.15 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.25, "deviation": 2.5, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.25, "reasoned_deviation_before_calibration": 2.5 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "SPLASH",
+      "category_id": "CYMBSpl",
+      "category_short": "CYMB",
+      "explanation": [
+        "Splash cymbal — a small, fast, bright crash with a quick decay.",
+        "Effect cymbal used for accents; short and shimmery."
+      ],
+      "synonyms": [
+        "Splash", "Splash Cymbal", "Mini Crash", "Effect Cymbal", "Accent Splash"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "spectral_centroid_hz", "min": 2500 },
+          { "feature": "length_seconds", "max": 6.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 7000.0, "deviation": 1.5, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 7000.0, "reasoned_deviation_before_calibration": 1.5 } },
+          { "feature": "high_band_energy", "mean": 0.72, "deviation": 0.2, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.72, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "spectral_flatness", "mean": 0.45, "deviation": 0.2, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.45, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "decay_time_seconds_60db", "mean": 0.6, "deviation": 2.2, "transform": "log", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "inharmonicity", "mean": 0.82, "deviation": 0.15, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.82, "reasoned_deviation_before_calibration": 0.15 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "CHINA",
+      "category_id": "CYMBChin",
+      "category_short": "CYMB",
+      "explanation": [
+        "China cymbal — a trashy, dark-yet-bright effect cymbal with a fast attack and noisy body.",
+        "Upturned-edge cymbal giving an aggressive, gong-like crash."
+      ],
+      "synonyms": [
+        "China", "China Cymbal", "Trash", "Trashy", "Pang", "Effect China"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "spectral_centroid_hz", "min": 2000 },
+          { "feature": "length_seconds", "max": 10.0 }
+        ],
+        "priors": [
+          { "feature": "spectral_centroid_hz", "mean": 4500.0, "deviation": 1.6, "transform": "log", "weight": 0.9,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 4500.0, "reasoned_deviation_before_calibration": 1.6 } },
+          { "feature": "spectral_flatness", "mean": 0.55, "deviation": 0.2, "transform": "linear", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.55, "reasoned_deviation_before_calibration": 0.2 } },
+          { "feature": "high_band_energy", "mean": 0.6, "deviation": 0.22, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 0.22 } },
+          { "feature": "inharmonicity", "mean": 0.88, "deviation": 0.12, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.88, "reasoned_deviation_before_calibration": 0.12 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.004, "deviation": 3.0, "transform": "log", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.004, "reasoned_deviation_before_calibration": 3.0 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "GONG",
+      "category_id": "CYMBGong",
+      "category_short": "CYMB",
+      "explanation": [
+        "Gong / tam-tam — a large metal idiophone with a huge, slow swell and very long decay.",
+        "Deep, inharmonic shimmer that blooms and rings out over many seconds."
+      ],
+      "synonyms": [
+        "Gong", "Tam-Tam", "Tam Tam", "Tamtam", "Orchestral Gong", "Nipple Gong"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_noise",
+        "separability": "signal_narrowable",
+        "gates": [
+          { "feature": "length_seconds", "max": 60.0 }
+        ],
+        "priors": [
+          { "feature": "decay_time_seconds_60db", "mean": 8.0, "deviation": 2.2, "transform": "log", "weight": 1.0,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 8.0, "reasoned_deviation_before_calibration": 2.2 } },
+          { "feature": "spectral_centroid_hz", "mean": 2500.0, "deviation": 1.8, "transform": "log", "weight": 0.8,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 2500.0, "reasoned_deviation_before_calibration": 1.8 } },
+          { "feature": "inharmonicity", "mean": 0.85, "deviation": 0.15, "transform": "linear", "weight": 0.7,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.85, "reasoned_deviation_before_calibration": 0.15 } },
+          { "feature": "envelope_attack_seconds", "mean": 0.15, "deviation": 3.0, "transform": "log", "weight": 0.6,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.15, "reasoned_deviation_before_calibration": 3.0 } },
+          { "feature": "harmonicity", "mean": 0.2, "deviation": 0.2, "transform": "linear", "weight": 0.5,
+            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.2, "reasoned_deviation_before_calibration": 0.2 } }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "CYMBMisc",
+      "category_short": "CYMB",
+      "explanation": [
+        "A cymbal / metal idiophone that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Cymbal", "Cymbals", "Idiophone", "Metal"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}
