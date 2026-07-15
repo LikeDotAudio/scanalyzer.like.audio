@@ -27,9 +27,6 @@ const COLS_KEY = 'scanalyzer_examiner_cols_v4';
 
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
   { key: 'name', label: 'File', width: '17%', get: it => it.metadata?.name || '' },
-  // UCS production role — MUSICPROD.json, carried over from UCS MUSICAL. This replaces the
-  // old filename Group/Subgroup columns, which were a separate non-UCS taxonomy.
-  { key: 'music_production_category', label: 'UCS Prod', width: '10%', get: it => it.classification?.music_production_category || '' },
   { key: 'ucs_category', label: 'UCS Category', width: '9%', get: it => it.ucs?.category || '' },
   { key: 'ucs_subcategory', label: 'UCS Subcategory', width: '10%', get: it => it.ucs?.subcategory || '' },
   // The runners-up the UCS matcher scored, best first. Each is "<category_id> <confidence>".
@@ -627,7 +624,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                               opacity: !isSelected && viaAlt.has(item) ? 0.75 : 1,
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
-                                          {activeColumns.find(c => c.key === 'music_production_category') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.music_production_category}>{item.classification.music_production_category}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0])}</td>}

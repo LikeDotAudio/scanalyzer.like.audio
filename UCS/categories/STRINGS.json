@@ -1,5 +1,5 @@
 {
-  "version": "8.2.1",
+  "version": "8.2.APK",
   "category": "STRINGS",
   "subcategories": [
     {
@@ -7,31 +7,99 @@
       "category_id": "STRGVln",
       "category_short": "STRG",
       "explanation": [
-        "Violin — the highest-register bowed chordophone of the orchestral string family, sustained and tonal with expressive vibrato.",
+        "Violin \u2014 the highest-register bowed chordophone of the orchestral string family, sustained and tonal with expressive vibrato.",
         "Solo and section violins, arco lines, harmonics, and fiddle playing."
       ],
       "synonyms": [
-        "Violin", "Fiddle", "Vln", "Solo Violin", "Arco", "Bowed"
+        "Violin",
+        "Fiddle",
+        "Vln",
+        "Solo Violin",
+        "Arco",
+        "Bowed"
       ],
       "acoustic_signature": {
         "morphology": "sustained_tonal",
         "separability": "signal_separable",
         "gates": [
-          { "feature": "harmonicity", "min": 0.4 }
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
         ],
         "priors": [
-          { "feature": "spectral_centroid_hz", "mean": 1400.0, "deviation": 1.8, "transform": "log", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1400.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "harmonicity", "mean": 0.9, "deviation": 0.1, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.9, "reasoned_deviation_before_calibration": 0.1 } },
-          { "feature": "pitch_hz", "mean": 660.0, "deviation": 1.8, "transform": "log", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 660.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "sustain_ratio", "mean": 0.7, "deviation": 0.2, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.2 } },
-          { "feature": "envelope_attack_seconds", "mean": 0.08, "deviation": 2.2, "transform": "log", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.08, "reasoned_deviation_before_calibration": 2.2 } },
-          { "feature": "spectral_flatness", "mean": 0.1, "deviation": 0.1, "transform": "linear", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.1, "reasoned_deviation_before_calibration": 0.1 } }
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1400.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.9,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.9,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 660.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 660.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.08,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.08,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.1,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          }
         ]
       }
     },
@@ -40,31 +108,98 @@
       "category_id": "STRGVla",
       "category_short": "STRG",
       "explanation": [
-        "Viola — the mid-register bowed chordophone, warmer and darker than the violin, sustained and tonal.",
+        "Viola \u2014 the mid-register bowed chordophone, warmer and darker than the violin, sustained and tonal.",
         "Solo and section violas, arco lines and inner-voice string parts."
       ],
       "synonyms": [
-        "Viola", "Vla", "Alto Violin", "Arco", "Bowed"
+        "Viola",
+        "Vla",
+        "Alto Violin",
+        "Arco",
+        "Bowed"
       ],
       "acoustic_signature": {
         "morphology": "sustained_tonal",
         "separability": "signal_separable",
         "gates": [
-          { "feature": "harmonicity", "min": 0.4 }
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
         ],
         "priors": [
-          { "feature": "spectral_centroid_hz", "mean": 900.0, "deviation": 1.8, "transform": "log", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 900.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "harmonicity", "mean": 0.9, "deviation": 0.1, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.9, "reasoned_deviation_before_calibration": 0.1 } },
-          { "feature": "pitch_hz", "mean": 340.0, "deviation": 1.8, "transform": "log", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 340.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "sustain_ratio", "mean": 0.7, "deviation": 0.2, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.2 } },
-          { "feature": "envelope_attack_seconds", "mean": 0.09, "deviation": 2.2, "transform": "log", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.09, "reasoned_deviation_before_calibration": 2.2 } },
-          { "feature": "spectral_flatness", "mean": 0.1, "deviation": 0.1, "transform": "linear", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.1, "reasoned_deviation_before_calibration": 0.1 } }
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 900.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.9,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.9,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 340.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 340.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.09,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.09,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.1,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          }
         ]
       }
     },
@@ -73,31 +208,98 @@
       "category_id": "STRGVc",
       "category_short": "STRG",
       "explanation": [
-        "Cello (violoncello) — the low-mid bowed chordophone with a warm, rich, singing tone, sustained and tonal.",
+        "Cello (violoncello) \u2014 the low-mid bowed chordophone with a warm, rich, singing tone, sustained and tonal.",
         "Solo and section cellos, arco lines and lyrical bass-tenor string parts."
       ],
       "synonyms": [
-        "Cello", "Violoncello", "Vc", "Arco", "Bowed"
+        "Cello",
+        "Violoncello",
+        "Vc",
+        "Arco",
+        "Bowed"
       ],
       "acoustic_signature": {
         "morphology": "sustained_tonal",
         "separability": "signal_separable",
         "gates": [
-          { "feature": "harmonicity", "min": 0.4 }
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
         ],
         "priors": [
-          { "feature": "spectral_centroid_hz", "mean": 500.0, "deviation": 1.8, "transform": "log", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 500.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "harmonicity", "mean": 0.9, "deviation": 0.1, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.9, "reasoned_deviation_before_calibration": 0.1 } },
-          { "feature": "pitch_hz", "mean": 180.0, "deviation": 1.8, "transform": "log", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 180.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "sustain_ratio", "mean": 0.7, "deviation": 0.2, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.2 } },
-          { "feature": "low_band_energy", "mean": 0.5, "deviation": 0.25, "transform": "linear", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.25 } },
-          { "feature": "spectral_flatness", "mean": 0.09, "deviation": 0.1, "transform": "linear", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.09, "reasoned_deviation_before_calibration": 0.1 } }
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 500.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 500.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.9,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.9,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 180.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 180.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.09,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.09,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          }
         ]
       }
     },
@@ -106,29 +308,88 @@
       "category_id": "STRGCb",
       "category_short": "STRG",
       "explanation": [
-        "Double bass — the lowest-register bowed chordophone, deep and dark, sustained and tonal.",
+        "Double bass \u2014 the lowest-register bowed chordophone, deep and dark, sustained and tonal.",
         "Arco upright/contrabass and bass viol lines anchoring the string section."
       ],
       "synonyms": [
-        "Double Bass", "Contrabass", "Upright Bass", "Bass Viol", "Cb", "Arco", "Bowed"
+        "Double Bass",
+        "Contrabass",
+        "Upright Bass",
+        "Bass Viol",
+        "Cb",
+        "Arco",
+        "Bowed"
       ],
       "acoustic_signature": {
         "morphology": "sustained_tonal",
         "separability": "signal_separable",
         "gates": [
-          { "feature": "harmonicity", "min": 0.4 }
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
         ],
         "priors": [
-          { "feature": "spectral_centroid_hz", "mean": 300.0, "deviation": 1.9, "transform": "log", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 300.0, "reasoned_deviation_before_calibration": 1.9 } },
-          { "feature": "harmonicity", "mean": 0.88, "deviation": 0.12, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.88, "reasoned_deviation_before_calibration": 0.12 } },
-          { "feature": "pitch_hz", "mean": 90.0, "deviation": 1.8, "transform": "log", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 90.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "low_band_energy", "mean": 0.7, "deviation": 0.2, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.2 } },
-          { "feature": "sustain_ratio", "mean": 0.65, "deviation": 0.2, "transform": "linear", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.2 } }
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 300.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 300.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.88,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.88,
+              "reasoned_deviation_before_calibration": 0.12
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 90.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 90.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.65,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          }
         ]
       }
     },
@@ -137,31 +398,101 @@
       "category_id": "STRGEns",
       "category_short": "STRG",
       "explanation": [
-        "String ensemble — the full string section or orchestra playing together, lush and sustained with a pad-like wash.",
+        "String ensemble \u2014 the full string section or orchestra playing together, lush and sustained with a pad-like wash.",
         "Massed arco strings, sustains, and orchestral string beds."
       ],
       "synonyms": [
-        "Strings", "String Section", "String Ensemble", "Orchestra", "Orchestral Strings", "Sustain", "Section", "Ens"
+        "Strings",
+        "String Section",
+        "String Ensemble",
+        "Orchestra",
+        "Orchestral Strings",
+        "Sustain",
+        "Section",
+        "Ens"
       ],
       "acoustic_signature": {
         "morphology": "sustained_tonal",
         "separability": "signal_narrowable",
         "gates": [
-          { "feature": "harmonicity", "min": 0.35 }
+          {
+            "feature": "harmonicity",
+            "min": 0.35
+          }
         ],
         "priors": [
-          { "feature": "harmonicity", "mean": 0.85, "deviation": 0.15, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.85, "reasoned_deviation_before_calibration": 0.15 } },
-          { "feature": "sustain_ratio", "mean": 0.82, "deviation": 0.15, "transform": "linear", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.82, "reasoned_deviation_before_calibration": 0.15 } },
-          { "feature": "envelope_release_seconds", "mean": 1.2, "deviation": 2.2, "transform": "log", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1.2, "reasoned_deviation_before_calibration": 2.2 } },
-          { "feature": "spectral_centroid_hz", "mean": 800.0, "deviation": 2.0, "transform": "log", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 800.0, "reasoned_deviation_before_calibration": 2.0 } },
-          { "feature": "stereo_width", "mean": 0.7, "deviation": 0.25, "transform": "linear", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.25 } },
-          { "feature": "envelope_attack_seconds", "mean": 0.15, "deviation": 2.2, "transform": "log", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.15, "reasoned_deviation_before_calibration": 2.2 } }
+          {
+            "feature": "harmonicity",
+            "mean": 0.85,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.85,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.82,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.82,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "envelope_release_seconds",
+            "mean": 1.2,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1.2,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 800.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 800.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "stereo_width",
+            "mean": 0.7,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.15,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.15,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
         ]
       }
     },
@@ -170,29 +501,87 @@
       "category_id": "STRGPizz",
       "category_short": "STRG",
       "explanation": [
-        "Pizzicato — plucked bowed-string notes, short and snappy with a fast attack and a quick decaying tail.",
+        "Pizzicato \u2014 plucked bowed-string notes, short and snappy with a fast attack and a quick decaying tail.",
         "Pizz violin, viola, cello, and bass; plucked orchestral string one-shots."
       ],
       "synonyms": [
-        "Pizzicato", "Pizz", "Plucked Strings", "Plucked", "Pluck", "Spiccato"
+        "Pizzicato",
+        "Pizz",
+        "Plucked Strings",
+        "Plucked",
+        "Pluck",
+        "Spiccato"
       ],
       "acoustic_signature": {
         "morphology": "impulsive_with_tail",
         "separability": "signal_separable",
         "gates": [
-          { "feature": "length_seconds", "max": 6.0 }
+          {
+            "feature": "length_seconds",
+            "max": 6.0
+          }
         ],
         "priors": [
-          { "feature": "envelope_attack_seconds", "mean": 0.006, "deviation": 3.0, "transform": "log", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.006, "reasoned_deviation_before_calibration": 3.0 } },
-          { "feature": "harmonicity", "mean": 0.8, "deviation": 0.15, "transform": "linear", "weight": 0.8,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.8, "reasoned_deviation_before_calibration": 0.15 } },
-          { "feature": "sustain_ratio", "mean": 0.2, "deviation": 0.15, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.2, "reasoned_deviation_before_calibration": 0.15 } },
-          { "feature": "decay_time_seconds_60db", "mean": 0.3, "deviation": 2.5, "transform": "log", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.3, "reasoned_deviation_before_calibration": 2.5 } },
-          { "feature": "spectral_centroid_hz", "mean": 900.0, "deviation": 2.0, "transform": "log", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 900.0, "reasoned_deviation_before_calibration": 2.0 } }
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.006,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.006,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.8,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.8,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.2,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.2,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.3,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.3,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 900.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          }
         ]
       }
     },
@@ -204,7 +593,17 @@
         "A bowed string / chordophone that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
       ],
       "synonyms": [
-        "Strings", "Bowed", "Chordophone", "String", "Arco"
+        "Strings",
+        "Bowed",
+        "Chordophone",
+        "String",
+        "Arco",
+        "violin",
+        "viola",
+        "cello",
+        "orchestra",
+        "ensemble",
+        "pizz"
       ],
       "acoustic_signature": {
         "morphology": "sustained_tonal",

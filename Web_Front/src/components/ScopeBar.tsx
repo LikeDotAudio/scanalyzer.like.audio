@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { type Taxonomy, taxonomyKeys, prodRoleOf, isProdRole, scopeSubgroups, scopeChipColor, scopeSubColor } from '../groupColors';
+import { type Taxonomy, taxonomyKeys, scopeSubgroups, scopeChipColor, scopeSubColor } from '../groupColors';
 import { altCategory } from '../ucsIndex';
 
 interface ScopeBarProps {
@@ -22,16 +22,9 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   const useAlts = taxonomy === 'UCS' && !!altRanks?.size;
   const ranks = useMemo(() => (useAlts ? Array.from(altRanks!) : []), [useAlts, altRanks]);
 
-  // Two families of top-level chip, side by side: the music-production ROLES
-  // (Percussion, Keyed, Loop…) and the UCS CATEGORIES (Musical, Doors, Water…). Their
-  // names never collide, so a chip's name alone says which axis it scopes. Roles come
-  // first — this is a sample library, and the role is what a producer reaches for.
-  const prodRoles = useMemo(() => {
-    const s = new Set<string>();
-    for (const it of analysisResult) s.add(prodRoleOf(it));
-    return Array.from(s).filter(Boolean).sort();
-  }, [analysisResult]);
-
+  // Top-level scope chips are the UCS categories the library actually contains.
+  // (The old music-production ROLE chips were retired when MUSICPROD folded into
+  // the exploded instrument categories.)
   const ucsCats = useMemo(() => {
     const s = new Set<string>();
     for (const it of analysisResult) {
@@ -61,15 +54,11 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
         {filterBtn('All', !group, () => { setGroup(null); setSub(null); })}
-        {prodRoles.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g)))}
-        {prodRoles.length > 0 && ucsCats.length > 0 && (
-          <span style={{ width: '1px', alignSelf: 'stretch', background: 'var(--border-color)', margin: '0 0.25rem' }} />
-        )}
         {ucsCats.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g)))}
       </div>
       {group && subgroups.length > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} {isProdRole(group) ? 'instruments' : 'subgroups'}:</span>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} subgroups:</span>
           {filterBtn('All', !sub, () => setSub(null))}
           {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), scopeSubColor(group, sg)))}
         </div>

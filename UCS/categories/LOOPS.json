@@ -1,0 +1,497 @@
+{
+  "version": "8.2.APK",
+  "category": "LOOPS",
+  "subcategories": [
+    {
+      "subcategory": "DRUM LOOP",
+      "category_id": "LOOPDrum",
+      "category_short": "LOOP",
+      "explanation": [
+        "A full rhythmic drum groove designed to repeat seamlessly \u2014 kick, snare and hats mixed together.",
+        "Tempo-locked, periodic, broadband and percussive."
+      ],
+      "synonyms": [
+        "Drum Loop",
+        "Beat",
+        "Groove",
+        "Break",
+        "Breakbeat",
+        "Full Loop",
+        "Drum Break",
+        "Drums Loop",
+        "Kit Loop"
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 4.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.7,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 6.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 6.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.28,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.28,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "TOP LOOP",
+      "category_id": "LOOPTop",
+      "category_short": "LOOP",
+      "explanation": [
+        "A top/percussion loop \u2014 the high-frequency rhythm (hats, shakers, rides) with no kick, meant to layer over your own low end."
+      ],
+      "synonyms": [
+        "Top Loop",
+        "Perc Loop",
+        "Percussion Loop",
+        "Hat Loop",
+        "Hats Loop",
+        "Tops",
+        "Shaker Loop"
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.72,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.72,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5000.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 5000.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 4.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MELODIC LOOP",
+      "category_id": "LOOPMel",
+      "category_short": "LOOP",
+      "explanation": [
+        "A repeating melodic or chordal phrase \u2014 synth, piano, guitar or strings \u2014 that loops in tempo.",
+        "Tonal and harmonic rather than percussive."
+      ],
+      "synonyms": [
+        "Melodic Loop",
+        "Melody Loop",
+        "Chord Loop",
+        "Music Loop",
+        "Synth Loop",
+        "Riff",
+        "Progression",
+        "Harmony Loop",
+        "Instrument Loop"
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 4.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.72,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.72,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.6,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.28
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "BASS LOOP",
+      "category_id": "LOOPBass",
+      "category_short": "LOOP",
+      "explanation": [
+        "A repeating low-end groove that anchors the chord progression, usually 1, 2 or 4 bars."
+      ],
+      "synonyms": [
+        "Bass Loop",
+        "Bassline",
+        "Bass Line",
+        "Sub Loop",
+        "808 Loop",
+        "Low End Loop"
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 220.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 220.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.72,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.72,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "onset_periodicity",
+            "mean": 0.6,
+            "deviation": 0.28,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.28
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 4.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 4.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "VOCAL LOOP",
+      "category_id": "LOOPVox",
+      "category_short": "LOOP",
+      "explanation": [
+        "A rhythmic, chopped-up vocal phrase that repeats \u2014 vocals treated as another rhythmic/synth element."
+      ],
+      "synonyms": [
+        "Vocal Loop",
+        "Vox Loop",
+        "Acapella",
+        "Acapella Loop",
+        "Vocal Chop Loop",
+        "Sung Loop",
+        "Vocal Phrase"
+      ],
+      "acoustic_signature": {
+        "morphology": "voiced",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.7,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 3.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 3.5,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "FX LOOP",
+      "category_id": "LOOPFx",
+      "category_short": "LOOP",
+      "explanation": [
+        "A looped texture, atmosphere or foley bed \u2014 longer, non-rhythmic background (vinyl crackle, crowd, rain, noise)."
+      ],
+      "synonyms": [
+        "FX Loop",
+        "Texture",
+        "Texture Loop",
+        "Atmosphere",
+        "Ambient Loop",
+        "Foley Loop",
+        "Noise Loop",
+        "Background Loop",
+        "Drone Loop"
+      ],
+      "acoustic_signature": {
+        "morphology": "texture",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "min": 0.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "stationarity",
+            "mean": 0.7,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.75,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.75,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 6.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 6.0,
+              "reasoned_deviation_before_calibration": 2.4
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MIDI",
+      "category_id": "LOOPMidi",
+      "category_short": "LOOP",
+      "explanation": [
+        "A MIDI loop \u2014 note/timing/velocity DATA rather than recorded audio; identified by name/extension, not by signal."
+      ],
+      "synonyms": [
+        "MIDI",
+        "MID",
+        "MIDI Loop",
+        "MIDI Pattern",
+        "MIDI File"
+      ],
+      "acoustic_signature": {
+        "morphology": "silence",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "LOOPMisc",
+      "category_short": "LOOP",
+      "explanation": [
+        "A loop or repeating phrase that does not fit a specific subcategory, or the abstention target when unsure."
+      ],
+      "synonyms": [
+        "Loop",
+        "Loops",
+        "Phrase",
+        "Pattern",
+        "Sample Loop",
+        "Seamless",
+        "groove",
+        "beat",
+        "LP"
+      ],
+      "acoustic_signature": {
+        "morphology": "rhythmic",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

@@ -10,6 +10,39 @@ existing `.PEAK` sidecars and forces a re-scan. That is by design.
 
 ## [Unreleased]
 
+### 2026-07-14 — music taxonomy explosion
+
+#### Added
+
+- **The music side of the UCS taxonomy exploded into 13 fine-grained top-level
+  categories**, each with reasoned acoustic signatures (gates + priors) and a MISC
+  abstention bucket — ~93 subcategories in all:
+  **DRUMS, CYMBALS, PERCUSSION, MALLET, STRINGS, GUITAR, BRASS, WOODWIND, KEYBOARD,
+  PIANO, SYNTH, VOCALS, LOOPS**. PIANO is split from KEYBOARD (piano *size* is not
+  audible, so those stay name-only); SYNTH is organized by patch role
+  (Bass/Lead/Pad/Pluck/Arp…), not synthesis type; LOOPS covers looped material
+  (a one-shot classifies as its instrument).
+- These custom, non-standard-UCS categories carry **`"version": "8.2.APK"`** so they
+  are distinguishable from the stock UCS `8.2.1` categories.
+- The full MUSICPROD producer file-name vocabulary (instrument phrases + abbreviations)
+  was captured into the new categories' synonyms, plus the standard producer shorthand
+  (BD, SD, Vln, EP, Sax, Xylo, Vox, Tops, MID…).
+
+#### Changed
+
+- **The Examiner / scope bar is UCS-only.** Top-level scope chips are the UCS
+  categories the library contains; sub-chips are their UCS subcategories.
+
+#### Removed
+
+- **MUSICAL retired.** Its 21 subcategories are superseded by the new instrument
+  categories; its `producer_synonyms.json` overlay was re-homed onto them.
+- **MUSICPROD retired as a user-facing axis.** The `music_production_category` field,
+  the Examiner's "UCS Prod" column, and the production-role scope chips are gone — the
+  new instrument categories are the sole music taxonomy. (`categorize.rs` remains for
+  now as internal name-hint plumbing feeding `group`/`subgroup` → family, clustering
+  and labels.)
+
 ### 2026-07-14
 
 #### Added

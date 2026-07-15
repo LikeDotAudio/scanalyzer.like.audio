@@ -1,5 +1,5 @@
 {
-  "version": "8.2.1",
+  "version": "8.2.APK",
   "category": "VOCALS",
   "subcategories": [
     {
@@ -7,29 +7,91 @@
       "category_id": "VOCLLead",
       "category_short": "VOCL",
       "explanation": [
-        "Solo sung lead vocal — a single human voice carrying the melody, voiced and pitched with syllabic phrasing.",
+        "Solo sung lead vocal \u2014 a single human voice carrying the melody, voiced and pitched with syllabic phrasing.",
         "Toplines, acapellas, and dry or lightly-processed lead vox performances."
       ],
       "synonyms": [
-        "Lead Vocal", "Vocal", "Vox", "Singer", "Sung", "Topline", "Acapella", "Acappella", "Lead Vox", "Melody Vocal"
+        "Lead Vocal",
+        "Vocal",
+        "Vox",
+        "Singer",
+        "Sung",
+        "Topline",
+        "Acapella",
+        "Acappella",
+        "Lead Vox",
+        "Melody Vocal"
       ],
       "acoustic_signature": {
         "morphology": "voiced",
         "separability": "signal_narrowable",
         "gates": [
-          { "feature": "length_seconds", "min": 0.3 }
+          {
+            "feature": "length_seconds",
+            "min": 0.3
+          }
         ],
         "priors": [
-          { "feature": "voicing_ratio", "mean": 0.85, "deviation": 0.12, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.85, "reasoned_deviation_before_calibration": 0.12 } },
-          { "feature": "harmonicity", "mean": 0.75, "deviation": 0.2, "transform": "linear", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.75, "reasoned_deviation_before_calibration": 0.2 } },
-          { "feature": "syllabic_modulation_energy", "mean": 0.5, "deviation": 0.25, "transform": "linear", "weight": 0.8,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.25 } },
-          { "feature": "pitch_hz", "mean": 260.0, "deviation": 1.8, "transform": "log", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 260.0, "reasoned_deviation_before_calibration": 1.8 } },
-          { "feature": "spectral_centroid_hz", "mean": 1400.0, "deviation": 1.8, "transform": "log", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1400.0, "reasoned_deviation_before_calibration": 1.8 } }
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.85,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.85,
+              "reasoned_deviation_before_calibration": 0.12
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.75,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.75,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 260.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 260.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1400.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          }
         ]
       }
     },
@@ -38,27 +100,85 @@
       "category_id": "VOCLChr",
       "category_short": "VOCL",
       "explanation": [
-        "Ensemble/choral voices — multiple singers blended into a sustained, pad-like texture of aahs and oohs.",
+        "Ensemble/choral voices \u2014 multiple singers blended into a sustained, pad-like texture of aahs and oohs.",
         "Gospel choirs, choral ensembles, and vocal pads with long release and smeared pitch."
       ],
       "synonyms": [
-        "Choir", "Choral", "Aahs", "Oohs", "Ensemble Vocal", "Gospel", "Vocal Pad", "Chorus", "Voices"
+        "Choir",
+        "Choral",
+        "Aahs",
+        "Oohs",
+        "Ensemble Vocal",
+        "Gospel",
+        "Vocal Pad",
+        "Chorus",
+        "Voices"
       ],
       "acoustic_signature": {
         "morphology": "sustained_tonal",
         "separability": "signal_separable",
         "gates": [],
         "priors": [
-          { "feature": "voicing_ratio", "mean": 0.8, "deviation": 0.15, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.8, "reasoned_deviation_before_calibration": 0.15 } },
-          { "feature": "sustain_ratio", "mean": 0.7, "deviation": 0.22, "transform": "linear", "weight": 0.8,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.22 } },
-          { "feature": "envelope_release_seconds", "mean": 1.2, "deviation": 2.2, "transform": "log", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 1.2, "reasoned_deviation_before_calibration": 2.2 } },
-          { "feature": "harmonicity", "mean": 0.7, "deviation": 0.22, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.22 } },
-          { "feature": "syllabic_modulation_energy", "mean": 0.2, "deviation": 0.18, "transform": "linear", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.2, "reasoned_deviation_before_calibration": 0.18 } }
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.8,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.8,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.7,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "envelope_release_seconds",
+            "mean": 1.2,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1.2,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.7,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.2,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.2,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          }
         ]
       }
     },
@@ -67,27 +187,76 @@
       "category_id": "VOCLChop",
       "category_short": "VOCL",
       "explanation": [
-        "Chopped, pitched vocal sample — a short slice of voice sequenced and re-pitched into a melodic or rhythmic stab.",
+        "Chopped, pitched vocal sample \u2014 a short slice of voice sequenced and re-pitched into a melodic or rhythmic stab.",
         "Vocal chops, vocal stabs, and pitched one-shot vox hits common in electronic and pop production."
       ],
       "synonyms": [
-        "Vocal Chop", "Chop", "Vocal Stab", "Pitched Vocal", "Vox Chop", "Chopped Vocal", "Vocal Hit"
+        "Vocal Chop",
+        "Chop",
+        "Vocal Stab",
+        "Pitched Vocal",
+        "Vox Chop",
+        "Chopped Vocal",
+        "Vocal Hit"
       ],
       "acoustic_signature": {
         "morphology": "voiced",
         "separability": "signal_narrowable",
         "gates": [
-          { "feature": "length_seconds", "max": 4.0 }
+          {
+            "feature": "length_seconds",
+            "max": 4.0
+          }
         ],
         "priors": [
-          { "feature": "voicing_ratio", "mean": 0.75, "deviation": 0.18, "transform": "linear", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.75, "reasoned_deviation_before_calibration": 0.18 } },
-          { "feature": "length_seconds", "mean": 0.4, "deviation": 2.2, "transform": "log", "weight": 0.8,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.4, "reasoned_deviation_before_calibration": 2.2 } },
-          { "feature": "harmonicity", "mean": 0.65, "deviation": 0.25, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.25 } },
-          { "feature": "envelope_attack_seconds", "mean": 0.02, "deviation": 3.0, "transform": "log", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.02, "reasoned_deviation_before_calibration": 3.0 } }
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.75,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.75,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.4,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.4,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.65,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.65,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.02,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.02,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          }
         ]
       }
     },
@@ -96,21 +265,47 @@
       "category_id": "VOCLVcdr",
       "category_short": "VOCL",
       "explanation": [
-        "Robotic or synthesized voice — a vocoder, talkbox, or voder imposing a voice's formants onto a synth carrier.",
+        "Robotic or synthesized voice \u2014 a vocoder, talkbox, or voder imposing a voice's formants onto a synth carrier.",
         "Decided mostly by name: the signal is voice-like but its synthesis type does not reliably separate from other voiced material."
       ],
       "synonyms": [
-        "Vocoder", "Talkbox", "Robot Voice", "Voder", "Robotic Vocal", "Vocoded", "Talk Box"
+        "Vocoder",
+        "Talkbox",
+        "Robot Voice",
+        "Voder",
+        "Robotic Vocal",
+        "Vocoded",
+        "Talk Box"
       ],
       "acoustic_signature": {
         "morphology": "voiced",
         "separability": "semantic_only",
         "gates": [],
         "priors": [
-          { "feature": "voicing_ratio", "mean": 0.7, "deviation": 0.2, "transform": "linear", "weight": 0.7,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.2 } },
-          { "feature": "harmonicity", "mean": 0.7, "deviation": 0.25, "transform": "linear", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.25 } }
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.7,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          }
         ]
       }
     },
@@ -119,27 +314,79 @@
       "category_id": "VOCLAdlb",
       "category_short": "VOCL",
       "explanation": [
-        "Short vocal ad-libs, shouts, and hooks — brief exclamatory voiced bursts that punctuate a track.",
+        "Short vocal ad-libs, shouts, and hooks \u2014 brief exclamatory voiced bursts that punctuate a track.",
         "Yeahs, heys, shouts, and vocal hooks, typically short and high-energy."
       ],
       "synonyms": [
-        "Adlib", "Ad-lib", "Ad Lib", "Shout", "Hook", "Yeah", "Hey", "Uh", "Woo", "Vocal Shout"
+        "Adlib",
+        "Ad-lib",
+        "Ad Lib",
+        "Shout",
+        "Hook",
+        "Yeah",
+        "Hey",
+        "Uh",
+        "Woo",
+        "Vocal Shout"
       ],
       "acoustic_signature": {
         "morphology": "voiced",
         "separability": "signal_narrowable",
         "gates": [
-          { "feature": "length_seconds", "max": 3.0 }
+          {
+            "feature": "length_seconds",
+            "max": 3.0
+          }
         ],
         "priors": [
-          { "feature": "voicing_ratio", "mean": 0.78, "deviation": 0.18, "transform": "linear", "weight": 0.9,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.78, "reasoned_deviation_before_calibration": 0.18 } },
-          { "feature": "length_seconds", "mean": 0.6, "deviation": 2.2, "transform": "log", "weight": 0.8,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.6, "reasoned_deviation_before_calibration": 2.2 } },
-          { "feature": "syllabic_modulation_energy", "mean": 0.45, "deviation": 0.25, "transform": "linear", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.45, "reasoned_deviation_before_calibration": 0.25 } },
-          { "feature": "harmonicity", "mean": 0.65, "deviation": 0.25, "transform": "linear", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.25 } }
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.78,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.78,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.6,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.45,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.65,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.65,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          }
         ]
       }
     },
@@ -148,25 +395,72 @@
       "category_id": "VOCLSpkn",
       "category_short": "VOCL",
       "explanation": [
-        "Spoken-word and rap — voiced speech with strong syllabic modulation but weak, low sustained pitch content.",
+        "Spoken-word and rap \u2014 voiced speech with strong syllabic modulation but weak, low sustained pitch content.",
         "Rap verses, spoken word, and speech-like vocal performances within a musical context."
       ],
       "synonyms": [
-        "Spoken", "Rap", "Speech", "Spoken Word", "Verse", "Rapping", "Talking", "Spoken Vocal"
+        "Spoken",
+        "Rap",
+        "Speech",
+        "Spoken Word",
+        "Verse",
+        "Rapping",
+        "Talking",
+        "Spoken Vocal"
       ],
       "acoustic_signature": {
         "morphology": "voiced",
         "separability": "signal_narrowable",
         "gates": [],
         "priors": [
-          { "feature": "syllabic_modulation_energy", "mean": 0.65, "deviation": 0.22, "transform": "linear", "weight": 1.0,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.65, "reasoned_deviation_before_calibration": 0.22 } },
-          { "feature": "voicing_ratio", "mean": 0.7, "deviation": 0.18, "transform": "linear", "weight": 0.8,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.7, "reasoned_deviation_before_calibration": 0.18 } },
-          { "feature": "harmonicity", "mean": 0.5, "deviation": 0.25, "transform": "linear", "weight": 0.6,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 0.5, "reasoned_deviation_before_calibration": 0.25 } },
-          { "feature": "pitch_hz", "mean": 160.0, "deviation": 1.8, "transform": "log", "weight": 0.5,
-            "provenance": { "source": "reasoned", "reasoned_mean_before_calibration": 160.0, "reasoned_deviation_before_calibration": 1.8 } }
+          {
+            "feature": "syllabic_modulation_energy",
+            "mean": 0.65,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.65,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "voicing_ratio",
+            "mean": 0.7,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 160.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 160.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          }
         ]
       }
     },
@@ -178,7 +472,19 @@
         "A musical vocal that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
       ],
       "synonyms": [
-        "Vocals", "Voice", "Vocal", "Singing"
+        "Vocals",
+        "Voice",
+        "Vocal",
+        "Singing",
+        "chant",
+        "shout",
+        "adlib",
+        "choir",
+        "acapella",
+        "acappella",
+        "VOX",
+        "VX",
+        "VOC"
       ],
       "acoustic_signature": {
         "morphology": "voiced",

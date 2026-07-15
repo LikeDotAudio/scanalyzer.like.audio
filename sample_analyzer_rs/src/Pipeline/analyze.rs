@@ -216,7 +216,6 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
             acoustic_types: acoustic,
             sound_design_roles: sound_design,
             instrument_family: family,
-            music_production_category: music_class,
         },
         envelope: crate::peak::Envelope {
             transient_count: transients,
@@ -477,7 +476,6 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
             acoustic_types: acoustic,
             sound_design_roles: sound_design,
             instrument_family: family,
-            music_production_category: music_class,
         },
         envelope: crate::peak::Envelope {
             transient_count: transients,

@@ -1,76 +1,168 @@
 {
   "version": 1,
-  "note": [
-    "Producer vocabulary, layered onto the vendored UCS v8.2.1 synonym table at build time.",
-    "",
-    "UCS is a sound-effects standard. Its synonyms were written for a library of doors and",
-    "footsteps, so a music-production library falls straight through it: no UCS subcategory",
-    "anywhere contains 'hihat', 'cymbal', '808' or 'oneshot'; 'hat' belongs to OBJECTS/FASHION",
-    "(clothing) and 'clap' to CERAMICS/IMPACT. A 36,864-file drum library scored 0.35% MUSICAL.",
-    "",
-    "These entries are ADDITIVE and live outside UCS/categories/ on purpose: the vendored spec",
-    "stays pristine and upgradeable, and build.rs merges this overlay into the match index. The",
-    "keys are UCS category_ids, so nothing here can invent a category that UCS does not define.",
-    "",
-    "Scope discipline: only words a producer would actually put in a file or folder name, and",
-    "only where the UCS subcategory genuinely is the right home for the sound. Adding a word to",
-    "a subcategory it does not belong in is worse than leaving it out — text evidence outranks",
-    "acoustic signal for most tiers, so a wrong synonym is a confident wrong answer."
-  ],
+  "note": "Producer vocabulary overlaid onto the exploded instrument categories (MISC buckets). Re-homed from the retired MUSICAL MUSC* ids.",
   "additions": {
-    "MUSCPerc": [
-      "kick", "kik", "kck", "bd", "bassdrum", "808", "909", "707", "606", "boom",
-      "snare", "sd", "snr", "rimshot", "rim",
-      "hihat", "hat", "hh", "ch", "oh", "closedhat", "openhat", "pedalhat",
-      "cymbal", "crash", "ride", "splash", "china",
-      "clap", "clp", "handclap", "snap", "fingersnap",
-      "tom", "floortom", "racktom", "drumkit", "kit", "drumloop", "breakbeat",
-      "perc", "percloop", "cowbell", "clave", "woodblock", "tabla", "djembe", "cajon"
+    "PERCMisc": [
+      "kick",
+      "kik",
+      "kck",
+      "bd",
+      "bassdrum",
+      "808",
+      "909",
+      "707",
+      "606",
+      "boom",
+      "snare",
+      "sd",
+      "snr",
+      "rimshot",
+      "rim",
+      "hihat",
+      "hat",
+      "hh",
+      "ch",
+      "oh",
+      "closedhat",
+      "openhat",
+      "pedalhat",
+      "cymbal",
+      "crash",
+      "ride",
+      "splash",
+      "china",
+      "clap",
+      "clp",
+      "handclap",
+      "snap",
+      "fingersnap",
+      "tom",
+      "floortom",
+      "racktom",
+      "drumkit",
+      "kit",
+      "drumloop",
+      "breakbeat",
+      "perc",
+      "percloop",
+      "cowbell",
+      "clave",
+      "woodblock",
+      "tabla",
+      "djembe",
+      "cajon",
+      "shaker",
+      "shakers",
+      "tambourine",
+      "tamb",
+      "maraca",
+      "maracas",
+      "cabasa"
     ],
-    "MUSCSynth": [
-      "synth", "synthesizer", "saw", "sawtooth", "square", "pulse", "wavetable",
-      "pad", "lead", "arp", "arpeggio", "osc", "oscillator", "patch", "preset",
-      "fm", "analog", "analogue", "juno", "jupiter", "prophet", "oberheim", "moog",
-      "acid", "303", "supersaw", "reese", "subbass", "sub", "bassline"
+    "SYNTMisc": [
+      "synth",
+      "synthesizer",
+      "saw",
+      "sawtooth",
+      "square",
+      "pulse",
+      "wavetable",
+      "pad",
+      "lead",
+      "arp",
+      "arpeggio",
+      "osc",
+      "oscillator",
+      "patch",
+      "preset",
+      "fm",
+      "analog",
+      "analogue",
+      "juno",
+      "jupiter",
+      "prophet",
+      "oberheim",
+      "moog",
+      "acid",
+      "303",
+      "supersaw",
+      "reese",
+      "subbass",
+      "sub",
+      "bassline"
     ],
-    "MUSCLoop": [
-      "loop", "looped", "bpm", "groove", "pattern", "phrase", "riff", "bar", "bars",
-      "beat", "beats", "breakbeat", "break", "fill", "turnaround", "ostinato"
+    "GUITMisc": [
+      "guitar",
+      "gtr",
+      "electricguitar",
+      "acousticguitar",
+      "banjo",
+      "uke",
+      "ukulele",
+      "pluck",
+      "plucked",
+      "picked",
+      "strum",
+      "strummed",
+      "bassguitar"
     ],
-    "MUSCSmpl": [
-      "oneshot", "one", "shot", "hit", "chop", "chopped", "slice", "sliced", "stab"
+    "STRGMisc": [
+      "strings",
+      "violin",
+      "viola",
+      "cello",
+      "arco",
+      "bowed",
+      "pizzicato",
+      "pizz",
+      "ensemble",
+      "orchestral"
     ],
-    "MUSCPluck": [
-      "guitar", "gtr", "electricguitar", "acousticguitar", "banjo", "uke", "ukulele",
-      "pluck", "plucked", "picked", "strum", "strummed", "bassguitar"
+    "KEYBMisc": [
+      "piano",
+      "epiano",
+      "electricpiano",
+      "rhodes",
+      "wurlitzer",
+      "wurli",
+      "clav",
+      "clavinet",
+      "organ",
+      "hammond",
+      "keys",
+      "keyboard",
+      "harpsichord"
     ],
-    "MUSCStr": [
-      "strings", "violin", "viola", "cello", "arco", "bowed", "pizzicato", "pizz",
-      "ensemble", "orchestral"
+    "WWNDMisc": [
+      "sax",
+      "saxophone",
+      "flute",
+      "clarinet",
+      "oboe",
+      "bassoon",
+      "recorder"
     ],
-    "MUSCKeyd": [
-      "piano", "epiano", "electricpiano", "rhodes", "wurlitzer", "wurli", "clav",
-      "clavinet", "organ", "hammond", "keys", "keyboard", "harpsichord"
+    "BRASMisc": [
+      "trumpet",
+      "trombone",
+      "tuba",
+      "horns",
+      "brassstab"
     ],
-    "MUSCWind": [
-      "sax", "saxophone", "flute", "clarinet", "oboe", "bassoon", "recorder"
-    ],
-    "MUSCBrass": [
-      "trumpet", "trombone", "tuba", "horns", "brassstab"
-    ],
-    "MUSCPrfm": [
-      "vocal", "vocals", "vox", "acapella", "acappella", "adlib", "adlibs",
-      "scratch", "scratches", "turntable", "turntablism", "dj", "cut", "cuts"
-    ],
-    "MUSCTnprc": [
-      "kalimba", "marimba", "xylophone", "vibraphone", "glockenspiel", "handpan",
-      "steelpan", "steeldrum", "tunedperc"
-    ],
-    "MUSCShake": [
-      "shaker", "shakers", "tambourine", "tamb", "maraca", "maracas", "cabasa"
-    ],
-    "MUSCBell": [
-      "bell", "bells", "cowbells", "chimebar"
+    "MALTMisc": [
+      "kalimba",
+      "marimba",
+      "xylophone",
+      "vibraphone",
+      "glockenspiel",
+      "handpan",
+      "steelpan",
+      "steeldrum",
+      "tunedperc",
+      "bell",
+      "bells",
+      "cowbells",
+      "chimebar"
     ]
   }
 }

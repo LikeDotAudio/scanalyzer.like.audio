@@ -168,7 +168,7 @@ export const UCS_CATEGORIES: string[] = [
   // the coarse MUSICAL/MUSICPROD lumps. Appended (not inserted) so every existing
   // category keeps its index and therefore its hue.
   'DRUMS', 'CYMBALS', 'PERCUSSION', 'MALLET', 'STRINGS', 'GUITAR', 'BRASS', 'WOODWIND',
-  'KEYBOARD', 'PIANO', 'SYNTH', 'VOCALS'
+  'KEYBOARD', 'PIANO', 'SYNTH', 'VOCALS', 'LOOPS'
 ];
 
 const UCS_INDEX: Record<string, number> = {};
