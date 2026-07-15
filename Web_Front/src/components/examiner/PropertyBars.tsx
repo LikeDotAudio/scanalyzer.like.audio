@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { getField } from '../../peakSchema';
 
 // A bar: where the value lives in the grouped record, what to call it, and how
@@ -40,8 +40,6 @@ interface Props {
 }
 
 export default function PropertyBars({ item, analysisResult }: Props) {
-  const [showUcs, setShowUcs] = useState(false);
-
   const ranges = useMemo(() => {
     const r: Record<string, { min: number; max: number }> = {};
     for (const bar of [...BAR_PROPS, ...UCS_PROPS]) {
@@ -60,19 +58,12 @@ export default function PropertyBars({ item, analysisResult }: Props) {
   // Sample rate for converting seconds → samples (attack & length).
   const sr = Number(item.metadata?.sample_rate) || 44100;
 
-  const activeProps = showUcs ? UCS_PROPS : BAR_PROPS;
+  // The UCS feature values (stationarity, spectral entropy/slope, band limit, voicing,
+  // ucs.confidence, …) live in the Field/Value table now — no separate bars view here.
+  const activeProps = BAR_PROPS;
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.25rem' }}>
-        <button
-          className="btn secondary"
-          style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem' }}
-          onClick={() => setShowUcs(!showUcs)}
-        >
-          {showUcs ? 'View Main Stats' : 'View UCS values'}
-        </button>
-      </div>
       {activeProps.map(bar => {
         const raw = Number(getField(item, bar.path));
         // A record analyzed before this feature existed simply has no value.

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { resolveAudioUrl, isTauri, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
 import { toMono } from '../examiner/audioAnalysis';
+import { decodeWav } from '../examiner/decodeWav';
 import { ucsSubColor, matchesScope } from '../../groupColors';
 import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examiner/detectRegions';
 import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
@@ -227,8 +228,13 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
         }
         const buf = await (await fetch(src)).arrayBuffer();
         if (gen !== loadGenRef.current) return;
-        const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+        // decodeAudioData detaches the buffer, so decode a copy and keep `buf` for the WAV
+        // fallback (WebKitGTK's Web Audio decode intermittently fails on plain WAV).
+        let decoded: AudioBuffer | null = null;
+        try { decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0)); }
+        catch { decoded = decodeWav(buf, decodeCtxRef.current); }
         if (gen !== loadGenRef.current) return;
+        if (!decoded) throw new Error('undecodable');
         const mono = toMono(decoded);
         samplesRef.current = mono;
         lengthRef.current = decoded.duration;

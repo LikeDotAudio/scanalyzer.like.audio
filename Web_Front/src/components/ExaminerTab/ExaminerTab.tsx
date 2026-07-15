@@ -14,6 +14,9 @@ import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 import RadialWaveform from '../examiner/RadialWaveform';
+import SampleFooter, { type FooterTab } from '../SampleFooter';
+import { decodeWav } from '../examiner/decodeWav';
+import { decodeViaWasm } from '../examiner/wasmDecode';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 
 interface ExaminerTabProps {
@@ -24,6 +27,8 @@ interface ExaminerTabProps {
   onSendToExtractor?: (name: string) => void;
   // "Examine this" from the 3D cloud: filter the list to this name (nonce re-fires repeats).
   filterHint?: { name: string; nonce: number };
+  // Push the current sample to another tab (the footer's Extract / 2D / 3D buttons).
+  onPush?: (tab: FooterTab, name: string) => void;
 }
 
 
@@ -94,7 +99,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor, filterHint }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor, filterHint, onPush }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const isNarrow = useIsNarrow();
   const [autoPlay, setAutoPlay] = useState(true);
@@ -622,8 +627,20 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (!fresh()) return;
-      const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+      // decodeAudioData detaches the buffer, so decode a COPY and keep `buf` for the
+      // fallbacks below — WebKitGTK's Web Audio decode fails on plain WAV intermittently
+      // and on compressed formats outright. decodeWav catches WAV; the WASM analyzer
+      // (symphonia) catches MP3/OGG/M4A/AAC/FLAC/AIFF.
+      let decoded: AudioBuffer | null = null;
+      try {
+        decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0));
+      } catch {
+        decoded =
+          decodeWav(buf, decodeCtxRef.current) ??
+          (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
+      }
       if (!fresh()) return;
+      if (!decoded) return; // couldn't decode by either path — leave the preview blank
       lastBufferRef.current = decoded;
       lastItemRef.current = item;
       setRingSamples(toMono(decoded));
@@ -900,19 +917,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                       <audio ref={audioRef} style={{ display: 'none' }}
                         onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}
                         onEnded={() => { setIsPlaying(false); handleEnded(); }} />
-                      {/* Footer bar — a real strip beneath the waveform (not an overlay). */}
-                      <div style={{ flexShrink: 0, display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end', padding: '0.5rem 0.75rem', borderTop: '1px solid var(--border-color)', background: '#0d1017' }}>
-                          <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>
-                          {onSendToExtractor && <button className="btn secondary" onClick={() => selectedItem?.metadata?.name && onSendToExtractor(selectedItem.metadata.name)} title="Open this file in the Extractor to slice it">✂ Extractor</button>}
-                          <button className={`btn ${isPlaying ? 'primary' : 'secondary'}`} onClick={togglePlay}>{isPlaying ? '⏸ Pause' : '▶ Play'}</button>
-                          {digging
-                            ? <button className="btn primary" style={{ background: '#ef4444' }} onClick={stopDig}>■ Stop DIG</button>
-                            : <button className="btn primary" onClick={startDig}>⛏ DIG</button>}
-                          <label className="btn secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <input type="checkbox" checked={autoPlay} onChange={e => setAutoPlay(e.target.checked)} /> auto-play
-                          </label>
-                          <span className="text-secondary" style={{ fontSize: '0.8rem' }}>{selectedItem.metadata?.length_seconds ? `${selectedItem.metadata.length_seconds.toFixed(2)} s · ${Math.round(selectedItem.metadata.length_seconds * (Number(selectedItem.metadata.sample_rate) || 44100)).toLocaleString()} smp` : ''}</span>
-                      </div>
                   </>
               ) : (
                   <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--text-secondary)' }}>
@@ -939,6 +943,21 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
           </div>
 
       </div>
+
+      {/* The transport now lives in a real footer at the bottom of the tab — Download /
+          Play / DIG / auto-play + push-to-tab — not floating over the waveform. */}
+      <SampleFooter
+        item={selectedItem}
+        playing={isPlaying}
+        digging={digging}
+        autoPlay={autoPlay}
+        onDownload={handleDownload}
+        onPlay={togglePlay}
+        onDig={digging ? stopDig : startDig}
+        onToggleAutoPlay={setAutoPlay}
+        current="examiner"
+        onPush={(tab, name) => { if (onPush) onPush(tab, name); else if (tab === 'extractor') onSendToExtractor?.(name); }}
+      />
     </div>
   );
 }

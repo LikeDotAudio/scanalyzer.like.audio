@@ -434,7 +434,7 @@ function App() {
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
           {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
           {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} filterHint={examinerFilter} onSendToExtractor={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} />}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} filterHint={examinerFilter} onSendToExtractor={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} onPush={footerPush} />}
           {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} filterHint={extractorFilter} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
         </Suspense>
@@ -442,8 +442,9 @@ function App() {
       </main>
 
       {/* Global footer — the same transport on every page, driven by whatever sample the
-          active tab last reported. Hidden until a library is loaded. */}
-      {analysisResult.length > 0 && (
+          active tab last reported. Hidden until a library is loaded. The Examiner renders
+          its OWN footer (with DIG + auto-play), so the global one steps aside there. */}
+      {analysisResult.length > 0 && activeTab !== 'examiner' && (
         <SampleFooter
           item={footerItem}
           playing={footerPlaying}
