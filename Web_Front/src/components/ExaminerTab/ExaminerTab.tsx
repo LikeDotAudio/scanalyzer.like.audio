@@ -634,11 +634,18 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     advanceDig(rows.indexOf(selectedItem) + 1);
   };
 
-  // Play/stop the current selection from the circular player's centre button.
+  // Play/stop the current selection — shared by the footer ▶ button and the circular
+  // player's centre button. Both players' playheads (linear + ring) poll audioRef, so this
+  // one call starts them together. Restarts from the top if playback sat at the end.
   const togglePlay = () => {
     const el = audioRef.current;
     if (!el) return;
-    if (el.paused) el.play().catch(() => {}); else el.pause();
+    if (el.paused) {
+      if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
+      el.play().catch(() => {});
+    } else {
+      el.pause();
+    }
   };
   // Playback position as a fraction of the file, polled by the circular playhead.
   const ringProgress = () => {
@@ -867,7 +874,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                       <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                           <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>
                           {onSendToExtractor && <button className="btn secondary" onClick={() => selectedItem?.metadata?.name && onSendToExtractor(selectedItem.metadata.name)} title="Open this file in the Extractor to slice it">✂ Extractor</button>}
-                          <button className="btn secondary" onClick={() => audioRef.current?.play()}>▶ Play</button>
+                          <button className={`btn ${isPlaying ? 'primary' : 'secondary'}`} onClick={togglePlay}>{isPlaying ? '⏸ Pause' : '▶ Play'}</button>
                           {digging
                             ? <button className="btn primary" style={{ background: '#ef4444' }} onClick={stopDig}>■ Stop DIG</button>
                             : <button className="btn primary" onClick={startDig}>⛏ DIG</button>}
