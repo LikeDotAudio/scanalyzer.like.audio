@@ -46,6 +46,39 @@ existing `.PEAK` sidecars and forces a re-scan. That is by design.
   the internal `group`/`subgroup` that family, clustering and labels read — behaviour
   unchanged, but it is out of the UCS taxonomy and the build's category bundle.
 
+### 2026-07-14 — examiner playback & analyzer
+
+#### Added
+
+- **`onset_rate_per_second` is a first-class metric.** Emitted on every record
+  (`envelope.onset_rate_per_second` = `transient_count / length_seconds`, `None` only
+  for a zero-length clip) so consumers read it off the record instead of re-deriving it;
+  the UCS matcher now reads the stored field, falling back to the on-the-fly derivation
+  for older sidecars.
+- **Scroll-ahead audio buffering in the Examiner.** Selecting or scrolling pre-reads a
+  window of ±10 rows around the viewport, biased toward the scroll direction, so the next
+  plays are instant — a real win on desktop, where each play reads the file over IPC.
+  Bounded cache with blob-URL eviction; the playing track is pinned. (`useAudioPrefetch.ts`)
+- **Stereo waveforms.** The Examiner preview draws the left and right channels as separate
+  top/bottom lanes (with an L/R divider) for stereo files; mono is unchanged.
+
+#### Changed
+
+- **k-means clustering standardizes with Z-score** (was min-max), matching PCA — so the
+  cluster space and the PCA map share one geometry and a single outlier can no longer
+  crush a feature's contribution. A shared `standardize()` is the single normalization
+  both paths use.
+- **Source modules regrouped into purpose folders** — `Clustering`, `Core`, `Pipeline`,
+  and a `Scananalyzers` split into `Musical` / `Spectral` / `Temporal`. No behaviour change.
+
+#### Fixed
+
+- **The Examiner froze on fast arrow-key navigation (desktop).** Every ↓/↑ ran the full
+  read → decode → play pipeline; holding the key piled up dozens of concurrent
+  `decodeAudioData` calls and deadlocked WebKitGTK's WebAudio. The heavy work is now
+  debounced (90 ms) behind the selection with a generation guard, so hammering the keys
+  triggers a single load when you settle, not one per row.
+
 ### 2026-07-14
 
 #### Added
