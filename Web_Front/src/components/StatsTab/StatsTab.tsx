@@ -6,7 +6,7 @@ import ScopeBar from '../ScopeBar'
 import RadialWaveform from '../examiner/RadialWaveform'
 import { toMono } from '../examiner/audioAnalysis'
 import { useIsNarrow } from '../../useIsNarrow'
-import { categoryLabel } from '../../categoryEmoji'
+import { categoryLabel, subcategoryLabel } from '../../categoryEmoji'
 
 interface StatsTabProps {
   analysisResult: any[];
@@ -263,9 +263,10 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
             <BarChart data={group ? subgroupData : categoryData} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={false} />
               <XAxis type="number" stroke="var(--text-secondary)" fontSize={11} />
-              <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" width={group ? 130 : 110} fontSize={11}
-                tickFormatter={group ? undefined : (v) => categoryLabel(String(v))} />
-              <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} />
+              <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" width={group ? 150 : 110} fontSize={11}
+                tickFormatter={group ? (v) => subcategoryLabel(group, String(v)) : (v) => categoryLabel(String(v))} />
+              <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }}
+                labelFormatter={(label) => group ? subcategoryLabel(group, String(label)) : categoryLabel(String(label))} />
               <Bar dataKey="value">
                 {(group ? subgroupData : categoryData).map((e: any, i) => (
                   <Cell key={i} fill={group ? ucsSubColor(e.cat, e.sub) : ucsColor(e.name)} />

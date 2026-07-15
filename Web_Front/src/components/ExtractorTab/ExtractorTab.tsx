@@ -523,6 +523,19 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
           ) : (
             <>
               <div style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                {/* Classification at a glance: the file's category emoji, then its alt 1/2/3
+                    category emojis (muted), sitting beside the file name. */}
+                {(() => {
+                  const primary = categoryEmoji(selectedItem.ucs?.category || '') || subcategoryEmoji(selectedItem.ucs?.category || '', (selectedItem.ucs?.subcategory || '').trim());
+                  const alts = [0, 1, 2].map(i => categoryEmoji(altCategory(selectedItem.ucs?.alternatives?.[i] || ''))).filter(Boolean);
+                  if (!primary && !alts.length) return null;
+                  return (
+                    <span style={{ fontSize: '1rem', flexShrink: 0 }} title={`${selectedItem.ucs?.category || ''}${alts.length ? ` · alts: ${alts.join(' ')}` : ''}`}>
+                      {primary}
+                      {alts.length > 0 && <span style={{ opacity: 0.55, marginLeft: 4, fontSize: '0.85rem' }}>{alts.join(' ')}</span>}
+                    </span>
+                  );
+                })()}
                 <strong style={{ fontSize: '0.85rem', color: '#fff', maxWidth: 320, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={selectedItem.metadata?.name}>{selectedItem.metadata?.name}</strong>
                 <span style={{ fontSize: '0.75rem', color: 'var(--accent-primary)' }}>{regions.length} region{regions.length === 1 ? '' : 's'}</span>
                 {decoding && <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>decoding…</span>}
