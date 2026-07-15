@@ -1,4 +1,4 @@
-import { SHAPE_OPTIONS } from '../../SampleCloud';
+import { SHAPE_OPTIONS } from '../SampleCloud';
 
 const selStyle: React.CSSProperties = {
   background: '#fff', color: '#000',

@@ -2,8 +2,8 @@ import { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useThree, useFrame, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
-import { musicProdCategory, subKey, ucsColor, ucsSubColor, taxonomyKeys } from './groupColors'
-import type { Taxonomy } from './groupColors'
+import { musicProdCategory, subKey, ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
+import type { Taxonomy } from '../groupColors'
 
 // Feature registry: label → how to read it. Numeric features are normalized
 // across the dataset; categorical ones are spread into bands. Mirrors the

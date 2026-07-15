@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { getField } from '../peakSchema';
+import { getField } from '../../peakSchema';
 
 // A bar: where the value lives in the grouped record, what to call it, and how
 // to print it. `seconds` also gets a sample count, so times read in both units.

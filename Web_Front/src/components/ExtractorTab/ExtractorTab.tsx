@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { resolveAudioUrl, isTauri, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
-import { toMono, type PlotGeo } from '../../examiner/audioAnalysis';
-import { drawWaveform } from '../../examiner/drawWaveform';
-import RadialWaveform from '../../examiner/RadialWaveform';
+import { toMono, type PlotGeo } from '../examiner/audioAnalysis';
+import { drawWaveform } from '../examiner/drawWaveform';
+import RadialWaveform from '../examiner/RadialWaveform';
 import { ucsSubColor, ucsColor } from '../../groupColors';
 import {
   amplitudeEnvelope, detectRegionsFromEnvelope, DEFAULT_REGION_PARAMS,
   type Region, type RegionParams,
-} from '../../examiner/detectRegions';
+} from '../examiner/detectRegions';
 
 interface ExtractorTabProps {
   analysisResult: any[];
@@ -19,6 +19,7 @@ interface ExtractorTabProps {
 // A distinct hue per region, reused by the arcs, the waveform spans and the table.
 const regionColor = (i: number) => `hsl(${(i * 47) % 360} 75% 58%)`;
 const fmt = (s: number) => `${s.toFixed(3)}s`;
+const HANDLE_H = 8; // px height of the drag tabs on the in/out boundary lines
 
 export default function ExtractorTab({ analysisResult, audioFiles, onSound, setAnalysisResult }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
@@ -67,6 +68,25 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     });
   }, [analysisResult, filter, multiOnly]);
 
+  // The list grouped by UCS category, flattened to header/file rows so the user can see
+  // the categories in the browser. Capped so a 37k-file library still renders instantly.
+  const groupedRows = useMemo(() => {
+    const byCat = new Map<string, any[]>();
+    for (const it of rows) {
+      const cat = it.ucs?.category || '(unclassified)';
+      const bucket = byCat.get(cat);
+      if (bucket) bucket.push(it); else byCat.set(cat, [it]);
+    }
+    const out: ({ kind: 'header'; category: string; count: number } | { kind: 'file'; item: any })[] = [];
+    for (const cat of Array.from(byCat.keys()).sort()) {
+      const items = byCat.get(cat)!;
+      out.push({ kind: 'header', category: cat, count: items.length });
+      for (const it of items) out.push({ kind: 'file', item: it });
+      if (out.length > 3000) break;
+    }
+    return out;
+  }, [rows]);
+
   // Carry user-typed names across a re-detect: match a new region to the closest
   // old one whose start is within 30 ms, so nudging a slider doesn't wipe labels.
   const reseedNames = (next: Region[], prev: Region[]): Region[] => {
@@ -114,17 +134,20 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
       ctx.fillRect(x0, 0, Math.max(1, x1 - x0), h);
     });
     drawWaveform(ctx, samples, geo, color);
-    // In/out lines + index label on top.
+    // In/out lines + draggable handles + index label on top.
     regions.forEach((r, i) => {
       const x0 = xOf(r.start_seconds), x1 = xOf(r.end_seconds);
       ctx.strokeStyle = regionColor(i);
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(x0 + 0.5, 0); ctx.lineTo(x0 + 0.5, h);
       ctx.moveTo(x1 - 0.5, 0); ctx.lineTo(x1 - 0.5, h); ctx.stroke();
+      // Grab handles: a tab at the top of the in-line and the bottom of the out-line.
       ctx.fillStyle = regionColor(i);
+      ctx.fillRect(x0 - 1, 0, 5, HANDLE_H);           // in handle (top-left)
+      ctx.fillRect(x1 - 4, h - HANDLE_H, 5, HANDLE_H); // out handle (bottom-right)
       ctx.font = '10px system-ui, sans-serif';
       ctx.textBaseline = 'top';
-      ctx.fillText(r.name || `${i + 1}`, x0 + 3, 3);
+      ctx.fillText(r.name || `${i + 1}`, x0 + 6, 3);
     });
   }, [regions, color]);
 
@@ -245,9 +268,117 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     if (!el) return;
     if (!el.paused) { el.pause(); return; }
     stopAtRef.current = null;
+    loopRegionRef.current = null; // start a full-file loop; hovering narrows it
     if (el.currentTime >= (lengthRef.current || 0)) el.currentTime = 0;
     el.play().catch(() => {});
   };
+
+  // The region that contains time `t`, or -1.
+  const regionAtTime = (t: number) => regions.findIndex(r => t >= r.start_seconds && t <= r.end_seconds);
+
+  // Hovering a position on either waveform: if it falls inside a region, loop that region
+  // (and, if already playing, jump to its start to audition it). Leaving (t = null) or
+  // hovering between regions returns to the full-file loop.
+  const hoverAtTime = (t: number | null) => {
+    if (t == null) { loopRegionRef.current = null; return; }
+    const i = regionAtTime(t);
+    if (i < 0) { loopRegionRef.current = null; return; }
+    const r = regions[i];
+    const prev = loopRegionRef.current;
+    loopRegionRef.current = { start: r.start_seconds, end: r.end_seconds };
+    const el = audioRef.current;
+    if (el && !el.paused && (!prev || Math.abs(prev.start - r.start_seconds) > 1e-4)) {
+      el.currentTime = r.start_seconds;
+    }
+  };
+
+  // Encode a mono Float32 slice as a 16-bit PCM WAV.
+  const encodeWav = (samples: Float32Array, sampleRate: number): Blob => {
+    const n = samples.length;
+    const b = new ArrayBuffer(44 + n * 2);
+    const v = new DataView(b);
+    const str = (o: number, s: string) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVE');
+    str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, sampleRate, true); v.setUint32(28, sampleRate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    str(36, 'data'); v.setUint32(40, n * 2, true);
+    let o = 44;
+    for (let i = 0; i < n; i++) { const s = Math.max(-1, Math.min(1, samples[i])); v.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7fff, true); o += 2; }
+    return new Blob([b], { type: 'audio/wav' });
+  };
+
+  // Slice a region out of the decoded mono buffer, applying its fade-in/out.
+  const sliceRegion = (r: Region): Float32Array | null => {
+    const src = samplesRef.current;
+    if (!src) return null;
+    const sr = sampleRateRef.current;
+    const a = Math.max(0, Math.floor(r.start_seconds * sr));
+    const bb = Math.min(src.length, Math.floor(r.end_seconds * sr));
+    if (bb <= a) return null;
+    const out = src.slice(a, bb);
+    const fi = Math.floor((r.fade_in_seconds || 0) * sr);
+    const fo = Math.floor((r.fade_out_seconds || 0) * sr);
+    for (let i = 0; i < fi && i < out.length; i++) out[i] *= i / fi;
+    for (let i = 0; i < fo && i < out.length; i++) out[out.length - 1 - i] *= i / fo;
+    return out;
+  };
+
+  const exportSlices = () => {
+    if (!samplesRef.current || !regions.length) return;
+    const base = (selectedItem?.metadata?.name || 'slice').replace(/\.[^.]+$/, '');
+    const sr = sampleRateRef.current;
+    regions.forEach((r, i) => {
+      const slice = sliceRegion(r);
+      if (!slice) return;
+      const name = `${base}_${(r.name || `region_${i + 1}`).replace(/[^\w.-]+/g, '_')}.wav`;
+      // Stagger so the browser doesn't drop simultaneous downloads.
+      setTimeout(() => download(name, encodeWav(slice, sr), 'audio/wav'), i * 150);
+    });
+  };
+
+  // --- linear-waveform pointer interaction: drag in/out handles, else hover-to-loop ---
+  const linearTimeAt = (clientX: number): number => {
+    const canvas = canvasRef.current;
+    if (!canvas) return 0;
+    const rect = canvas.getBoundingClientRect();
+    const frac = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    return frac * (lengthRef.current || 0);
+  };
+  // The nearest region boundary within ~6px of the pointer, or null.
+  const boundaryHit = (clientX: number): { region: number; edge: 'start' | 'end' } | null => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    const tol = (6 / rect.width) * (lengthRef.current || 0);
+    const t = linearTimeAt(clientX);
+    let best: { region: number; edge: 'start' | 'end' } | null = null, bestD = tol;
+    regions.forEach((r, i) => {
+      const ds = Math.abs(t - r.start_seconds), de = Math.abs(t - r.end_seconds);
+      if (ds < bestD) { bestD = ds; best = { region: i, edge: 'start' }; }
+      if (de < bestD) { bestD = de; best = { region: i, edge: 'end' }; }
+    });
+    return best;
+  };
+  const onWaveDown = (e: React.PointerEvent) => {
+    const hit = boundaryHit(e.clientX);
+    if (hit) { dragRef.current = hit; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); }
+  };
+  const onWaveMove = (e: React.PointerEvent) => {
+    const canvas = canvasRef.current;
+    if (dragRef.current) {
+      const t = linearTimeAt(e.clientX);
+      const { region, edge } = dragRef.current;
+      const r = regions[region];
+      if (!r) return;
+      if (edge === 'start') updateRegion(region, { start_seconds: Math.max(0, Math.min(t, r.end_seconds - 0.01)) });
+      else updateRegion(region, { end_seconds: Math.min(lengthRef.current || t, Math.max(t, r.start_seconds + 0.01)) });
+    } else {
+      if (canvas) canvas.style.cursor = boundaryHit(e.clientX) ? 'ew-resize' : 'pointer';
+      hoverAtTime(linearTimeAt(e.clientX));
+    }
+  };
+  const onWaveUp = () => { dragRef.current = null; };
+  const onWaveLeave = () => { dragRef.current = null; hoverAtTime(null); };
 
   const updateRegion = (i: number, patch: Partial<Region>) => {
     setRegions(rs => rs.map((r, j) => {
@@ -279,8 +410,8 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     })),
   });
 
-  const download = (name: string, text: string, type: string) => {
-    const blob = new Blob([text], { type });
+  const download = (name: string, text: BlobPart, type: string) => {
+    const blob = text instanceof Blob ? text : new Blob([text], { type });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url; a.download = name;
@@ -339,7 +470,23 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const numInput: React.CSSProperties = { width: 70, background: '#0d1017', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.72rem', padding: '0.1rem 0.2rem' };
 
   return (
-    <div style={{ display: 'flex', height: '100%', width: '100%' }}>
+    <div style={{ display: 'flex', height: '100%', width: '100%', position: 'relative' }}
+      onDragOver={(e) => { e.preventDefault(); if (!dropActive) setDropActive(true); }}
+      onDragLeave={(e) => { if (e.currentTarget === e.target) setDropActive(false); }}
+      onDrop={(e) => {
+        e.preventDefault();
+        setDropActive(false);
+        const file = e.dataTransfer.files?.[0];
+        if (file) loadDroppedFile(file);
+      }}>
+      {dropActive && (
+        <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'rgba(59,130,246,0.12)', border: '2px dashed var(--accent-primary)',
+          color: '#fff', fontSize: '1rem', fontWeight: 600 }}>
+          Drop an audio file to extract its regions
+        </div>
+      )}
       {/* Left: file list */}
       <div style={{ width: 280, flexShrink: 0, borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', background: '#0B0E14' }}>
         <div style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
@@ -352,12 +499,24 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
           <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{rows.length.toLocaleString()} file(s)</div>
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          {rows.slice(0, 2000).map((it, i) => {
+          {groupedRows.map((row, i) => {
+            if (row.kind === 'header') {
+              return (
+                <div key={`h${i}`} style={{ position: 'sticky', top: 0, zIndex: 1, background: '#12151c',
+                  padding: '0.25rem 0.5rem', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase',
+                  letterSpacing: '0.03em', color: ucsColor(row.category), borderTop: '1px solid var(--border-color)',
+                  borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.category}</span>
+                  <span style={{ opacity: 0.6, flexShrink: 0 }}>{row.count}</span>
+                </div>
+              );
+            }
+            const it = row.item;
             const count = it.regions?.count ?? null;
             const sel = it === selectedItem;
             return (
               <div key={i} onClick={() => handleSelect(it)}
-                style={{ padding: '0.3rem 0.5rem', cursor: 'pointer', fontSize: '0.76rem', display: 'flex', justifyContent: 'space-between', gap: '0.5rem',
+                style={{ padding: '0.3rem 0.5rem 0.3rem 1rem', cursor: 'pointer', fontSize: '0.76rem', display: 'flex', justifyContent: 'space-between', gap: '0.5rem',
                   background: sel ? 'rgba(59,130,246,0.25)' : (i % 2 ? 'rgba(255,255,255,0.02)' : 'transparent'),
                   color: sel ? '#fff' : 'var(--accent-secondary)' }}>
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={it.metadata?.name}>{it.metadata?.name}</span>
@@ -385,7 +544,10 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
             {/* Linear waveform with region spans + playhead */}
             <div style={{ height: 180, flexShrink: 0, position: 'relative', padding: '0.5rem 0.75rem' }}>
               <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', border: '1px solid rgba(255,255,255,0.1)' }} />
+                <canvas ref={canvasRef}
+                  onPointerDown={onWaveDown} onPointerMove={onWaveMove} onPointerUp={onWaveUp}
+                  onPointerCancel={onWaveUp} onPointerLeave={onWaveLeave}
+                  style={{ width: '100%', height: '100%', display: 'block', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }} />
                 <div ref={playheadRef} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 2, background: 'rgb(244,144,44)', pointerEvents: 'none', display: 'none' }} />
               </div>
             </div>
@@ -413,7 +575,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.74rem' }}>
                 <thead style={{ position: 'sticky', top: 0, background: '#12151c' }}>
                   <tr style={{ color: 'var(--text-secondary)', textAlign: 'left' }}>
-                    <th style={cell}>#</th><th style={cell}>Name</th><th style={cell}>In (s)</th><th style={cell}>Out (s)</th><th style={cell}>Dur</th><th style={cell}></th>
+                    <th style={cell}>#</th><th style={cell}>Name</th><th style={cell}>In (s)</th><th style={cell}>Out (s)</th><th style={cell}>Dur</th><th style={cell}>Fade in</th><th style={cell}>Fade out</th><th style={cell}></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -427,6 +589,8 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
                       <td style={cell}><input type="number" step={0.001} value={Number(r.start_seconds.toFixed(3))} onChange={e => updateRegion(i, { start_seconds: Number(e.target.value) })} style={numInput} /></td>
                       <td style={cell}><input type="number" step={0.001} value={Number(r.end_seconds.toFixed(3))} onChange={e => updateRegion(i, { end_seconds: Number(e.target.value) })} style={numInput} /></td>
                       <td style={{ ...cell, color: 'var(--text-secondary)' }}>{fmt(r.duration_seconds)}</td>
+                      <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_in_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_in_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
+                      <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_out_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_out_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
                       <td style={cell}>
                         <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem' }} onClick={() => playRegion(r)} title="Play region">▶</button>
                         <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem', marginLeft: 4 }} onClick={() => deleteRegion(i)} title="Delete region">✕</button>
@@ -434,7 +598,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
                     </tr>
                   ))}
                   {regions.length === 0 && !decoding && (
-                    <tr><td colSpan={6} style={{ ...cell, color: 'var(--text-secondary)', padding: '1rem' }}>No regions at these settings — lower the threshold or the minimums.</td></tr>
+                    <tr><td colSpan={8} style={{ ...cell, color: 'var(--text-secondary)', padding: '1rem' }}>No regions at these settings — lower the threshold or the minimums.</td></tr>
                   )}
                 </tbody>
               </table>
@@ -446,6 +610,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
               <div style={{ flex: 1 }} />
               <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={exportJson} disabled={!regions.length}>⬇ JSON</button>
               <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={exportCsv} disabled={!regions.length}>⬇ CSV</button>
+              <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={exportSlices} disabled={!regions.length || !samplesRef.current} title="Export each region as a .wav (with fades)">⬇ Slices</button>
               <button className="btn primary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={saveToRecord}>💾 Save regions</button>
               {saveMsg && <span style={{ fontSize: '0.72rem', color: 'var(--accent-primary)' }}>{saveMsg}</span>}
             </div>
@@ -458,7 +623,21 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
         {selectedItem ? (
           <>
             <RadialWaveform samples={samplesRef.current} color={color} size={280} regions={arcs}
-              onPlay={playAll} playing={playing} />
+              onPlay={playAll} playing={playing}
+              getProgress={() => {
+                const el = audioRef.current;
+                const len = lengthRef.current || el?.duration || 0;
+                return el && len > 0 ? el.currentTime / len : null;
+              }}
+              onScrub={(f) => {
+                const el = audioRef.current;
+                if (!el) return;
+                stopAtRef.current = null;
+                loopRegionRef.current = null;
+                el.currentTime = f * (lengthRef.current || el.duration || 0);
+                if (el.paused) el.play().catch(() => {});
+              }}
+              onHover={(f) => hoverAtTime(f == null ? null : f * (lengthRef.current || 0))} />
             <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
               starts at 0° (right) · wraps 360°
             </div>

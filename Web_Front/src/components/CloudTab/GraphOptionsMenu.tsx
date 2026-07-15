@@ -1,4 +1,4 @@
-import { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS } from '../../SampleCloud';
+import { AXIS_OPTIONS, SIZE_OPTIONS, COLOR_OPTIONS } from '../SampleCloud';
 
 const PRESETS: [string, string, string, string, string][] = [
   ['A', 'Pitch', 'Group', 'Complexity', 'Length'],

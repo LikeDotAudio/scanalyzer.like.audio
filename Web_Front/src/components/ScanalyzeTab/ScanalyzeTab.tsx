@@ -229,13 +229,7 @@ export default function ScanalyzeTab({
     if (absorbed.length) setAnalysisResult([...analysisResult, ...absorbed]);
 
     if (toProcess.length === 0) {
-      if (mode === 'open') {
-        alert(
-          `Opened ${absorbed.length.toLocaleString()} existing .PEAK sidecar(s) — nothing was re-analyzed.` +
-          (staleSidecars ? `\n\n${staleSidecars.toLocaleString()} of them were written by a different analyzer version, so their numbers came from older extractor code. Rescan to bring them up to date.` : '') +
-          (noSidecar ? `\n\n${noSidecar.toLocaleString()} file(s) had no usable sidecar and were left out.` : '')
-        );
-      } else {
+      if (mode !== 'open') {
         alert(absorbed.length
           ? `Nothing to analyze — absorbed ${absorbed.length} up-to-date .PEAK sidecar(s).`
           : "All files in this folder have already been analyzed!");
@@ -264,7 +258,7 @@ export default function ScanalyzeTab({
     const numWorkers = navigator.hardwareConcurrency || 4;
     threadsRef.current = numWorkers;
     const workers = Array.from({ length: numWorkers }).map(() => 
-        new Worker(new URL('../wasmWorker.ts', import.meta.url), { type: 'module' })
+        new Worker(new URL('../../wasmWorker.ts', import.meta.url), { type: 'module' })
     );
 
     let nextFileIdx = 0;

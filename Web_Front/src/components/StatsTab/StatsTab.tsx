@@ -3,8 +3,8 @@ import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer
 import { ucsColor, ucsSubColor, matchesScope } from '../../groupColors'
 import { resolveAudioUrl, isTauri } from '../../audioLinking'
 import ScopeBar from '../ScopeBar'
-import RadialWaveform from '../../examiner/RadialWaveform'
-import { toMono } from '../../examiner/audioAnalysis'
+import RadialWaveform from '../examiner/RadialWaveform'
+import { toMono } from '../examiner/audioAnalysis'
 
 interface StatsTabProps {
   analysisResult: any[];

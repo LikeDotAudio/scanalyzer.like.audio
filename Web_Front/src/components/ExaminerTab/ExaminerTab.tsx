@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { resolveAudioUrl, hasAudio, isTauri } from '../../audioLinking';
 import { generateNewName } from '../../renameConfig';
-import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../../examiner/audioAnalysis';
-import { drawWaveform } from '../../examiner/drawWaveform';
+import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
+import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from '../ScopeBar';
 import { complementColor, ucsColor, ucsSubColor, matchesScope, isProdRole } from '../../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
-import { drawSpectrumFill, drawSpectrumTrace } from '../../examiner/drawSpectrum';
-import { drawEnvelope, drawAxesAndName, drawBeats } from '../../examiner/drawEnvelope';
-import PropertyBars from '../../examiner/PropertyBars';
-import FieldValueTable from '../../examiner/FieldValueTable';
-import { useAudioPrefetch } from '../../examiner/useAudioPrefetch';
+import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
+import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
+import PropertyBars from '../examiner/PropertyBars';
+import FieldValueTable from '../examiner/FieldValueTable';
+import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 
 interface ExaminerTabProps {
   analysisResult: any[];

@@ -46,6 +46,7 @@ export default function RadialWaveform({
   regions,
   getProgress,
   onScrub,
+  onHover,
   className,
   style,
 }: RadialWaveformProps) {

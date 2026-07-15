@@ -1,5 +1,5 @@
 import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
-import SampleCloud from '../../SampleCloud';
+import SampleCloud from '../SampleCloud';
 import { resolveAudioUrl, isTauri } from '../../audioLinking';
 import ScopeBar from '../ScopeBar';
 import GraphOptionsMenu from './GraphOptionsMenu';

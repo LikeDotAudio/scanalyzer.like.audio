@@ -16,7 +16,7 @@
 // <audio> element mid-play.
 
 import { useCallback, useEffect, useRef } from 'react';
-import { resolveAudioUrl } from '../audioLinking';
+import { resolveAudioUrl } from '../../audioLinking';
 
 // Rows to keep buffered ahead of / behind the anchor. "10 up and down", with the
 // larger LEAD spent on whichever side the user is scrolling toward.
