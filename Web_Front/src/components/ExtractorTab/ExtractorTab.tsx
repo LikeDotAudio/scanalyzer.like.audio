@@ -53,8 +53,14 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
-  // Apply a "Send to Extractor" filter hint (keyed on its nonce so repeats re-fire).
-  useEffect(() => { if (filterHint?.name) setFilter(filterHint.name); }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Apply a "Send to Extractor" filter hint (keyed on its nonce so repeats re-fire) — and
+  // auto-select the matching file so it loads straight into the slicer, no extra click.
+  useEffect(() => {
+    if (!filterHint?.name) return;
+    setFilter(filterHint.name);
+    const match = analysisResult.find(it => (it.metadata?.name || '') === filterHint.name);
+    if (match) handleSelect(match);
+  }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
   const [multiOnly, setMultiOnly] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [params, setParams] = useState<RegionParams>(DEFAULT_REGION_PARAMS);

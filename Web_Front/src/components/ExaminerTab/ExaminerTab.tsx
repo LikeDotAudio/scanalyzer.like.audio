@@ -880,23 +880,28 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
 
           {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece).
               On mobile it's first (order 1) with a fixed height so the canvas has room. */}
-          <div style={{ ...(isNarrow ? { width: '100%', order: 1, minHeight: '260px', borderBottom: '1px solid var(--border-color)' } : { flex: 1, minWidth: 0, borderRight: '1px solid var(--border-color)' }), position: 'relative', background: '#0A0A0A', padding: '0.75rem' }}>
+          <div style={{ ...(isNarrow ? { width: '100%', order: 1, minHeight: '320px', borderBottom: '1px solid var(--border-color)' } : { flex: 1, minWidth: 0, borderRight: '1px solid var(--border-color)' }), display: 'flex', flexDirection: 'column', background: '#0A0A0A' }}>
               {selectedItem ? (
                   <>
-                      <div style={{ width: '100%', height: isNarrow ? '230px' : 'calc(100% - 1.5rem)', position: 'relative' }}>
-                        <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
-                        <div ref={playheadRef} style={{
-                          position: 'absolute', top: 0, bottom: 0, left: 0,
-                          width: '2px', backgroundColor: 'rgb(244, 144, 44)', zIndex: 10,
-                          pointerEvents: 'none', display: 'none'
-                        }}>
-                          <div style={{ position: 'absolute', top: 0, left: '-4px', width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '6px solid rgb(244, 144, 44)' }} />
+                      {/* Waveform fills the pane; the controls live in the footer strip below —
+                          never overlapping the wave. */}
+                      <div style={{ flex: 1, minHeight: 0, position: 'relative', padding: '0.75rem' }}>
+                        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                          <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
+                          <div ref={playheadRef} style={{
+                            position: 'absolute', top: 0, bottom: 0, left: 0,
+                            width: '2px', backgroundColor: 'rgb(244, 144, 44)', zIndex: 10,
+                            pointerEvents: 'none', display: 'none'
+                          }}>
+                            <div style={{ position: 'absolute', top: 0, left: '-4px', width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '6px solid rgb(244, 144, 44)' }} />
+                          </div>
                         </div>
                       </div>
                       <audio ref={audioRef} style={{ display: 'none' }}
                         onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}
                         onEnded={() => { setIsPlaying(false); handleEnded(); }} />
-                      <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                      {/* Footer bar — a real strip beneath the waveform (not an overlay). */}
+                      <div style={{ flexShrink: 0, display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end', padding: '0.5rem 0.75rem', borderTop: '1px solid var(--border-color)', background: '#0d1017' }}>
                           <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>
                           {onSendToExtractor && <button className="btn secondary" onClick={() => selectedItem?.metadata?.name && onSendToExtractor(selectedItem.metadata.name)} title="Open this file in the Extractor to slice it">✂ Extractor</button>}
                           <button className={`btn ${isPlaying ? 'primary' : 'secondary'}`} onClick={togglePlay}>{isPlaying ? '⏸ Pause' : '▶ Play'}</button>
@@ -910,7 +915,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                       </div>
                   </>
               ) : (
-                  <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: 'var(--text-secondary)' }}>
+                  <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--text-secondary)' }}>
                       No sample selected
                   </div>
               )}

@@ -1,10 +1,7 @@
-import { ucsColor, ucsSubColor } from '../groupColors';
-import { categoryLabel, subcategoryLabel } from '../categoryEmoji';
-
 // One footer shared by every tab: the selected sample's transport (download / play-stop /
-// dig / autoplay), its length + UCS category + subcategory, and "push to" buttons that
-// send the selected file to any other tab. Each tab supplies its own handlers; anything
-// omitted simply doesn't render, so a tab only shows the controls it actually has.
+// dig / autoplay) and "push to" buttons that send the selected file to any other tab. Each
+// tab supplies its own handlers; anything omitted simply doesn't render, so a tab only shows
+// the controls it actually has. (The name / length / category readout lives in the header.)
 export type FooterTab = 'extractor' | 'examiner' | 'stats' | 'cloud';
 
 interface SampleFooterProps {
@@ -28,9 +25,6 @@ export default function SampleFooter({
   item, playing, digging, autoPlay, onDownload, onPlay, onDig, onToggleAutoPlay, current, onPush,
 }: SampleFooterProps) {
   const name = item?.metadata?.name || '';
-  const len = item?.metadata?.length_seconds;
-  const cat = item?.ucs?.category || '';
-  const sub = (item?.ucs?.subcategory || '').trim();
   const btn: React.CSSProperties = { padding: '0.25rem 0.6rem', fontSize: '0.78rem' };
 
   return (
@@ -46,14 +40,8 @@ export default function SampleFooter({
         </label>
       )}
 
-      {/* Selected-sample readout */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0, marginLeft: '0.25rem', fontSize: '0.78rem' }}>
-        <span style={{ color: 'var(--accent-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 240 }} title={name}>{name || '—'}</span>
-        {Number.isFinite(len) && <span className="text-secondary">· {len.toFixed(2)} s</span>}
-        {cat && <span style={{ color: ucsColor(cat) }} title={cat}>· {categoryLabel(cat)}</span>}
-        {sub && <span style={{ color: ucsSubColor(cat, sub) }} title={sub}>/ {subcategoryLabel(cat, sub)}</span>}
-      </div>
-
+      {/* The selected-sample readout (name · length · category / subcategory) lives in the
+          header now, below the track name — the footer is transport + push only. */}
       <div style={{ flex: 1 }} />
 
       {/* Push to any other tab */}

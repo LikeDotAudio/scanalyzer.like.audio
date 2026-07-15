@@ -212,21 +212,9 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
   }, [sData, hiddenGroups, allData, dummy, shape, taxonomy]);
 
-  // Tap-to-select that works on both mouse and touch. R3F's onClick is unreliable on
-  // touch — a few px of finger travel during a tap reads as an OrbitControls rotate and
-  // the click never fires. So we track pointer-down and only treat pointer-up as a pick
-  // when the pointer barely moved (a tap, not a drag).
-  const downRef = useRef<{ x: number; y: number; id: number | undefined } | null>(null);
-  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
-    downRef.current = { x: e.clientX, y: e.clientY, id: e.instanceId };
-  };
-  const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
-    const d = downRef.current;
-    downRef.current = null;
-    if (!d) return;
-    if (Math.hypot(e.clientX - d.x, e.clientY - d.y) > 8) return; // a drag (rotate), not a tap
-    const id = e.instanceId ?? d.id;
-    if (id != null) { e.stopPropagation(); onPick(sData.origIndex[id]); }
+  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation();
+    if (e.instanceId != null) onPick(sData.origIndex[e.instanceId]);
   };
 
   if (sData.positions.length === 0) return null;
@@ -243,7 +231,7 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   else geom = <sphereGeometry args={[0.5, 10, 10]} />;
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, sData.positions.length]} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, sData.positions.length]} onClick={handleClick}>
       {geom}
       <meshBasicMaterial toneMapped={false} />
     </instancedMesh>

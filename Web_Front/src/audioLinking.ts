@@ -261,11 +261,11 @@ export async function resolveAudioUrl(files: File[], item: any): Promise<string 
         if (url) return url;
       }
     }
-    // Last resort: a matching in-memory File (e.g. the bundled demo pack fetched into
-    // `files` as blobs) — resolved by name, the same way the browser build plays audio.
-    const fromFiles = resolveAudioSrc(files, item);
-    if (fromFiles) return fromFiles;
-    console.warn('[audio] read_audio_bytes failed for', path,
+    // No blob (checked above) and nothing readable off disk. Do NOT fall back to the asset
+    // protocol here: for a bundled/relative path (e.g. the demo pack when a file didn't
+    // bundle) that only yields a guessed asset:// URL joined onto whatever root is linked,
+    // which 404s and spams `tauri::protocol::asset` errors. Report no audio instead.
+    console.warn('[audio] no playable file for', path,
       root ? `(also tried under linked root "${root}")` : '(no audio root linked — link the folder to resolve relative paths)');
     return null;
   }
