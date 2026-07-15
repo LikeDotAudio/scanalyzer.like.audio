@@ -87,6 +87,13 @@ def main():
             check=True
         )
     except subprocess.CalledProcessError as e:
+        # `tauri dev` returns a signal-death code when it's shut down rather than crashing:
+        # 143 = SIGTERM (the app window was closed, or the debugger's Stop button was hit),
+        # 130 = SIGINT (Ctrl-C). Those are normal exits, not failures — return cleanly so the
+        # debugger doesn't surface a SystemExit "exception" on every ordinary shutdown.
+        if e.returncode in (130, 143):
+            print("\nScanalyzer closed.")
+            return
         print(f"\nError: The Tauri application exited with code {e.returncode}")
         sys.exit(e.returncode)
     except FileNotFoundError:

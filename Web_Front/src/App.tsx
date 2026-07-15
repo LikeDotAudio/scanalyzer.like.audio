@@ -201,7 +201,12 @@ function App() {
       let skippedAudio = 0;
       for (const m of manifest) {
         try {
-          const res = await fetch(`${base}/${encodeURIComponent(m.name)}`);
+          // Encode the filename as a path segment, but keep commas literal. Vite's dev
+          // static server (sirv) does NOT decode %2C back to a comma — it 404s and falls
+          // through to the SPA index.html — so a comma-named sample (e.g. "AUTO, SHIFTER")
+          // would be silently skipped here and later report "File not found" on playback.
+          // A literal comma is valid in a path segment and every host we serve from accepts it.
+          const res = await fetch(`${base}/${encodeURIComponent(m.name).replace(/%2C/g, ',')}`);
           const ctype = res.headers.get('content-type') || '';
           // A missing public file falls back to the SPA index.html (HTTP 200, text/html).
           // Blobbing that would hand GStreamer an HTML page to "decode" — skip it instead.
