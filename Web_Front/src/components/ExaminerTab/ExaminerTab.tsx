@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { resolveAudioUrl, hasAudio, isTauri } from '../../audioLinking';
 import { generateNewName } from '../../renameConfig';
-import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
+import { computeSpectrum, toMono, noteToFreq, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from '../ScopeBar';
 import { complementColor, ucsColor, ucsSubColor, matchesScope } from '../../groupColors';
@@ -9,7 +9,7 @@ import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { categoryEmoji, categoryLabel, subcategoryLabel } from '../../categoryEmoji';
 import { useIsNarrow } from '../../useIsNarrow';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
-import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
+import { drawEnvelope, drawAxesAndName } from '../examiner/drawEnvelope';
 import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
@@ -417,17 +417,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     const ccol = complementColor(gcol);
     const spec = computeSpectrum(mono, buffer.sampleRate);
 
-    // BPM: prefer the record's value; for loops with none, estimate in-browser.
-    let bpm = Number(item?.musicality?.beats_per_minute) || 0;
-    let bpmEst = false;
-    if (!bpm && (item?.classification?.timbre === 'Loop' || item?.classification?.length_class === 'Loop')) {
-      bpm = estimateBpm(mono, buffer.sampleRate);
-      bpmEst = bpm > 0;
-    }
-
     // Two stacked panes sharing one time axis: the WAVEFORM(s) live in the top half, the
-    // LOUDNESS (+ stereo PHASE) in the bottom half. The spectrum, envelope, beats and the
-    // root/note markers all span the FULL height, across both panes.
+    // LOUDNESS (+ stereo PHASE) in the bottom half. The spectrum, envelope and the root/note
+    // markers all span the FULL height, across both panes.
     const plotMid = geo.plotTop + geo.plotH / 2;
     const halfH = geo.plotH / 2;
     const geoTop: PlotGeo = {
@@ -478,8 +470,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, plotMid + 0.5); ctx.lineTo(w, plotMid + 0.5); ctx.stroke();
 
-    // Full-height overlays across both panes.
-    drawBeats(ctx, geo, duration, bpm, bpmEst);
+    // Full-height overlay across both panes.
     drawEnvelope(ctx, item, duration, geo);
 
     // Regions found during the scan (silence-separated segments) — a colour bar per
@@ -498,6 +489,40 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     }
 
     drawAxesAndName(ctx, item, duration, geo);
+
+    // Legend (top-right): one clear panel with a colour swatch per overlay, on a dark
+    // backing so it reads against the busy spectrum — replaces the faint inline labels.
+    const legend: { label: string; color: string }[] = [
+      { label: 'spectrum', color: ccol },
+      { label: 'loudness', color: '#FCD34D' },
+    ];
+    if (buffer.numberOfChannels >= 2) legend.push({ label: 'phase', color: '#FB7185' });
+    ctx.font = '600 11px system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    const rowH = 15, sw = 14, padX = 7, gap = 6;
+    const boxW = padX * 2 + sw + gap + Math.max(...legend.map(e => ctx.measureText(e.label).width));
+    const boxH = padX + legend.length * rowH;
+    const bx = w - boxW - 6, by = 4;
+    ctx.fillStyle = 'rgba(0,0,0,0.62)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(bx, by, boxW, boxH, 4); else ctx.rect(bx, by, boxW, boxH);
+    ctx.fill();
+    ctx.stroke();
+    legend.forEach((e, i) => {
+      const cy = by + padX / 2 + rowH / 2 + i * rowH;
+      ctx.strokeStyle = e.color;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(bx + padX, cy);
+      ctx.lineTo(bx + padX + sw, cy);
+      ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.fillText(e.label, bx + padX + sw + gap, cy);
+    });
+    ctx.textAlign = 'left';
   };
 
   // Drive the virtualized window AND the audio prefetch off one scroll event.
