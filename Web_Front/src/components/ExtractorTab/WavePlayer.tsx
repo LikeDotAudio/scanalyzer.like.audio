@@ -60,10 +60,15 @@ export default function WavePlayer({ samples, length, regions, color, onUpdateRe
       ctx.strokeStyle = regionColor(i);
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(x0 + 0.5, 0); ctx.lineTo(x0 + 0.5, h); ctx.moveTo(x1 - 0.5, 0); ctx.lineTo(x1 - 0.5, h); ctx.stroke();
-      ctx.lineWidth = 1;
+      // Fade ramps drawn full height — bottom (silence) to top (unity): a fade-in rises
+      // from the in-point at the bottom up to full at the end of the fade; a fade-out falls
+      // from full back down to silence at the out-point. Brightened so it reads as a fade,
+      // not a region edge.
       const span = r.end_seconds - r.start_seconds;
-      if ((r.fade_in_seconds || 0) > 0) { const xf = xOf(r.start_seconds + Math.min(r.fade_in_seconds!, span)); ctx.beginPath(); ctx.moveTo(x0, h / 2); ctx.lineTo(xf, 0); ctx.stroke(); }
-      if ((r.fade_out_seconds || 0) > 0) { const xf = xOf(r.end_seconds - Math.min(r.fade_out_seconds!, span)); ctx.beginPath(); ctx.moveTo(xf, 0); ctx.lineTo(x1, h / 2); ctx.stroke(); }
+      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.lineWidth = 1.5;
+      if ((r.fade_in_seconds || 0) > 0) { const xf = xOf(r.start_seconds + Math.min(r.fade_in_seconds!, span)); ctx.beginPath(); ctx.moveTo(x0, h); ctx.lineTo(xf, 0); ctx.stroke(); }
+      if ((r.fade_out_seconds || 0) > 0) { const xf = xOf(r.end_seconds - Math.min(r.fade_out_seconds!, span)); ctx.beginPath(); ctx.moveTo(xf, 0); ctx.lineTo(x1, h); ctx.stroke(); }
       ctx.fillStyle = regionColor(i);
       ctx.fillRect(x0 - 1, 0, 5, HANDLE_H);
       ctx.fillRect(x1 - 4, h - HANDLE_H, 5, HANDLE_H);

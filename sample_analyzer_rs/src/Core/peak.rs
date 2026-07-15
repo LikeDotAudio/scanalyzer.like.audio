@@ -170,6 +170,13 @@ pub struct Region {
     /// Loudest RMS-envelope value inside the region (linear, 0..~1).
     pub peak_amplitude: f64,
     pub name: String,
+    /// The full analysis of JUST this sub-clip's audio — every feature + classification a
+    /// standalone file gets, computed by re-running the pipeline on the region's slice.
+    /// `None` on records from before per-region analysis, and on single-region files (the
+    /// one region is the whole file, so its analysis equals the parent's). Boxed because a
+    /// `Peak` contains `Regions`, so a `Region` owning a `Peak` would be infinitely sized.
+    #[serde(default)]
+    pub analysis: Option<Box<Peak>>,
 }
 
 /// Every region found in a file, plus the silence-gate settings that found them.

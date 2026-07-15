@@ -10,6 +10,7 @@ import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
+import RadialWaveform from '../examiner/RadialWaveform';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 
 interface ExaminerTabProps {
@@ -28,6 +29,10 @@ const ROW_H = 24; // fixed row height (px) used by the virtualized sample list
 // Bumped when the column set changes: a saved v1 set would hide every new column
 // (Music Prod, UCS Alt 1-3) and keep pointing at the dropped god_category.
 const COLS_KEY = 'scanalyzer_examiner_cols_v4';
+// Per-column pixel widths the user has dragged (sash handles on the header dividers).
+const COLW_KEY = 'scanalyzer_examiner_colw_v1';
+const MIN_COL_W = 44;
+const defaultColWidth = (key: string) => parseInt(COLUMNS.find(c => c.key === key)?.width || '100', 10) || 100;
 
 const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; get: (it: any) => any }[] = [
   { key: 'name', label: 'File', width: '250px', get: it => it.metadata?.name || '' },
@@ -127,6 +132,40 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
 
   const activeColumns = COLUMNS.filter(c => visibleColumns.has(c.key));
 
+  // Draggable ("sash") column widths, so a runaway filename can be shrunk instead of
+  // blowing out the layout. Persisted like the visible-columns set.
+  const [colWidths, setColWidths] = useState<Record<string, number>>(() => {
+    try {
+      const saved = localStorage.getItem(COLW_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch { /* ignore */ }
+    return {};
+  });
+  const widthOf = (key: string) => colWidths[key] ?? defaultColWidth(key);
+  // Active drag: which column, where the pointer grabbed, and its width at grab time.
+  const colResizeRef = useRef<{ key: string; startX: number; startW: number } | null>(null);
+
+  const startColResize = (e: React.PointerEvent, key: string) => {
+    e.preventDefault();
+    e.stopPropagation(); // don't trigger the header's sort-on-click
+    colResizeRef.current = { key, startX: e.clientX, startW: widthOf(key) };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+  const onColResizeMove = (e: React.PointerEvent) => {
+    const r = colResizeRef.current;
+    if (!r) return;
+    const next = Math.max(MIN_COL_W, Math.round(r.startW + (e.clientX - r.startX)));
+    setColWidths(w => ({ ...w, [r.key]: next }));
+  };
+  const endColResize = () => {
+    if (!colResizeRef.current) return;
+    colResizeRef.current = null;
+    setColWidths(w => {
+      localStorage.setItem(COLW_KEY, JSON.stringify(w));
+      return w;
+    });
+  };
+
   // Rows matching the group/subgroup scope AND the filter text.
   //
   // The UCS scorer reports runners-up as well as a winner, and the winner is often only
@@ -218,6 +257,11 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
   const [scrollTop, setScrollTop] = useState(0);
   const [viewportH, setViewportH] = useState(400);
   const [bottomHeight, setBottomHeight] = useState(400); // draggable visualizer height
+  // Mono samples of the selected file, for the circular player in the detail panel, and
+  // whether it's currently sounding (drives the ring's centre play/stop button).
+  const [ringSamples, setRingSamples] = useState<Float32Array | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  useEffect(() => { setRingSamples(null); setIsPlaying(false); }, [selectedItem]);
   // A lightweight context used only to decode audio for the static preview.
   const decodeCtxRef = useRef<AudioContext | null>(null);
   // Last decoded buffer/item so the preview can be re-drawn on resize.
@@ -526,6 +570,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       if (!fresh()) return;
       lastBufferRef.current = decoded;
       lastItemRef.current = item;
+      setRingSamples(toMono(decoded));
       renderPreview(decoded, item);
     } catch {
       /* undecodable file — leave the preview blank */
@@ -556,6 +601,27 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
   const handleEnded = () => {
     if (!digging) return;
     advanceDig(rows.indexOf(selectedItem) + 1);
+  };
+
+  // Play/stop the current selection from the circular player's centre button.
+  const togglePlay = () => {
+    const el = audioRef.current;
+    if (!el) return;
+    if (el.paused) el.play().catch(() => {}); else el.pause();
+  };
+  // Playback position as a fraction of the file, polled by the circular playhead.
+  const ringProgress = () => {
+    const el = audioRef.current;
+    return el && el.duration && Number.isFinite(el.duration) ? el.currentTime / el.duration : null;
+  };
+  // Ring colour = the sample's UCS colour, matching the waveform trace.
+  const detailColor = ucsSubColor(selectedItem?.ucs?.category || '', (selectedItem?.ucs?.subcategory || '').trim());
+  // Wheel over the circular player scrubs the playhead back/forth (~2% of the file a tick).
+  const wheelScrub = (e: React.WheelEvent) => {
+    const el = audioRef.current;
+    if (!el || !el.duration || !Number.isFinite(el.duration)) return;
+    const step = el.duration * 0.02 * (e.deltaY > 0 ? 1 : -1);
+    el.currentTime = Math.max(0, Math.min(el.duration, el.currentTime + step));
   };
 
   const handleDownload = async () => {
@@ -625,15 +691,26 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
           <div ref={scrollRef} onScroll={handleListScroll} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ minWidth: '100%', width: 'max-content', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
                   <colgroup>
-                      {activeColumns.map(c => <col key={c.key} style={{ width: c.width }} />)}
+                      {activeColumns.map(c => <col key={c.key} style={{ width: `${widthOf(c.key)}px` }} />)}
                   </colgroup>
                   <thead style={{ position: 'sticky', top: 0, background: '#1A1D24', zIndex: 1 }}>
                       <tr>
                           {activeColumns.map(c => (
                               <th key={c.key} onClick={() => toggleSort(c.key)}
                                   title={`Sort by ${c.label}`}
-                                  style={{ padding: '0.4rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', cursor: 'pointer', userSelect: 'none', color: sort?.key === c.key ? 'var(--accent-secondary)' : undefined }}>
+                                  style={{ position: 'relative', padding: '0.4rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', cursor: 'pointer', userSelect: 'none', color: sort?.key === c.key ? 'var(--accent-secondary)' : undefined }}>
                                   {c.label}{sort?.key === c.key ? (sort.dir === 1 ? ' ▲' : ' ▼') : ''}
+                                  {/* Sash handle: drag the divider to resize this column. */}
+                                  <span
+                                    onPointerDown={(e) => startColResize(e, c.key)}
+                                    onPointerMove={onColResizeMove}
+                                    onPointerUp={endColResize}
+                                    onPointerCancel={endColResize}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onDoubleClick={(e) => { e.stopPropagation(); setColWidths(w => { const n = { ...w }; delete n[c.key]; localStorage.setItem(COLW_KEY, JSON.stringify(n)); return n; }); }}
+                                    title="Drag to resize · double-click to reset"
+                                    style={{ position: 'absolute', top: 0, right: 0, width: 7, height: '100%', cursor: 'col-resize', userSelect: 'none', touchAction: 'none' }}
+                                  />
                               </th>
                           ))}
                       </tr>
@@ -735,13 +812,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
               <FieldValueTable item={selectedItem} />
           </div>
 
-          {/* Bottom Middle: property bar graph */}
-          <div style={{ width: '250px', borderRight: '1px solid var(--border-color)', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto' }}>
-              <PropertyBars item={selectedItem} analysisResult={analysisResult} />
-          </div>
-
-          {/* Bottom Right: Static waveform + FFT preview */}
-          <div style={{ flex: 1, position: 'relative', background: '#0A0A0A', padding: '0.75rem' }}>
+          {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece). */}
+          <div style={{ flex: 1, minWidth: 0, position: 'relative', background: '#0A0A0A', padding: '0.75rem', borderRight: '1px solid var(--border-color)' }}>
               {selectedItem ? (
                   <>
                       <div style={{ width: '100%', height: 'calc(100% - 1.5rem)', position: 'relative' }}>
@@ -754,8 +826,10 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                           <div style={{ position: 'absolute', top: 0, left: '-4px', width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '6px solid rgb(244, 144, 44)' }} />
                         </div>
                       </div>
-                      <audio ref={audioRef} style={{ display: 'none' }} onEnded={handleEnded} />
-                      <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <audio ref={audioRef} style={{ display: 'none' }}
+                        onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}
+                        onEnded={() => { setIsPlaying(false); handleEnded(); }} />
+                      <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                           <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>
                           {onSendToExtractor && <button className="btn secondary" onClick={() => selectedItem?.metadata?.name && onSendToExtractor(selectedItem.metadata.name)} title="Open this file in the Extractor to slice it">✂ Extractor</button>}
                           <button className="btn secondary" onClick={() => audioRef.current?.play()}>▶ Play</button>
@@ -773,6 +847,23 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                       No sample selected
                   </div>
               )}
+          </div>
+
+          {/* Right column: circular player on top, property bar graphs below it. */}
+          <div style={{ width: '280px', flexShrink: 0, background: '#0B0E14', display: 'flex', flexDirection: 'column' }}>
+              <div onWheel={wheelScrub}
+                style={{ flexShrink: 0, borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.75rem' }}>
+                  {selectedItem ? (
+                      <RadialWaveform samples={ringSamples} color={detailColor} size={200}
+                        onPlay={togglePlay} playing={isPlaying} getProgress={ringProgress}
+                        onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
+                  ) : (
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Circular wave</div>
+                  )}
+              </div>
+              <div style={{ flex: 1, minHeight: 0, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto' }}>
+                  <PropertyBars item={selectedItem} analysisResult={analysisResult} />
+              </div>
           </div>
 
       </div>

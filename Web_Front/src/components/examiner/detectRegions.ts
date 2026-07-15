@@ -1,8 +1,7 @@
-// Client-side mirror of the Rust `detect_regions` scananalyzer
-// (sample_analyzer_rs/src/Scananalyzers/Temporal/regions.rs). The engine stores
-// regions in each .PEAK at the DEFAULT settings; this re-runs the identical
-// state machine in the browser so the Extractor's sliders can re-detect live.
-// Keep the two in lock-step: same RMS envelope, same gate, same merge rule.
+// Region types shared across the Extractor UI. Detection itself lives in the Rust
+// `extractor_engine` crate, run as WASM in a worker (see `src/extractorEngine.ts`) — the
+// single source of truth, so there is no TypeScript detector to drift from it. These
+// interfaces are just the wire shape the engine returns and the UI edits.
 
 export interface Region {
   index: number;

@@ -1,7 +1,17 @@
 import initWasm, { analyze_audio_buffer, analyzer_version } from 'wasm_analyzer';
+import wasmUrl from 'wasm_analyzer/wasm_analyzer_bg.wasm?url';
+
+// Fetch the wasm as bytes and instantiate those, rather than letting wasm-bindgen use
+// WebAssembly.instantiateStreaming — which warns and falls back on any server that serves
+// .wasm as application/octet-stream (Python's http.server, some static hosts). Streaming
+// buys nothing for a local file, so this just silences the MIME warning everywhere.
+export async function initWasmBytes() {
+  const bytes = await (await fetch(wasmUrl)).arrayBuffer();
+  return initWasm(bytes);
+}
 
 let ready = false;
-initWasm().then(() => {
+initWasmBytes().then(() => {
     ready = true;
     postMessage({ type: 'ready', version: analyzer_version() });
 });

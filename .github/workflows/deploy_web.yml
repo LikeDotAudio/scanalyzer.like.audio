@@ -28,11 +28,15 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'Web_Front/package-lock.json'
 
-      - name: 🦀 Build Wasm Module
+      - name: 🦀 Build Analyzer Wasm Module
         working-directory: ./Web_Front/wasm_analyzer
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
           wasm-pack build --target web
+
+      - name: 🦀 Build Extractor Wasm Module
+        working-directory: ./Web_Front/wasm_extractor
+        run: wasm-pack build --target web
 
       - name: 📦 Install Dependencies
         working-directory: ./Web_Front

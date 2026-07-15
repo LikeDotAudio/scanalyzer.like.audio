@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import initWasm, { analyzer_version } from 'wasm_analyzer';
+import wasmUrl from 'wasm_analyzer/wasm_analyzer_bg.wasm?url';
 import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
 import { normalizePeakRecords } from '../../peakSchema';
 import TauriScan from './TauriScan';
@@ -71,10 +72,13 @@ export default function ScanalyzeTab({
   }
 
   useEffect(() => {
-    initWasm().then(() => {
+    // Instantiate from fetched bytes (see wasmWorker) so a wrong .wasm MIME type doesn't
+    // trigger the instantiateStreaming warning/fallback.
+    (async () => {
+        await initWasm(await (await fetch(wasmUrl)).arrayBuffer());
         setWasmReady(true);
         setVersion(analyzer_version());
-    }).catch(console.error);
+    })().catch(console.error);
   }, []);
 
   // Discover WAV files in the picked folder. everyNth > 1 samples the library
@@ -429,9 +433,15 @@ export default function ScanalyzeTab({
     // decides the whole choice, so say it plainly instead of quietly re-analyzing 41k
     // files because a version string moved.
     const engine = version;
-    const staleScan = withSidecar > 0 && sidecarEngine !== null && sidecarEngine !== engine;
+    // The version stamp is `<timestamp>-<sourceHash>`. The hash is what actually decides
+    // whether re-analysis could change anything: identical extractor sources produce
+    // identical numbers, so a hash match means a rescan is pointless even if the timestamp
+    // moved. Compare on the hash, not the whole stamp.
+    const engineHash = (v: string | null) => (v ? v.split('-').pop() || v : null);
+    const sameHash = withSidecar > 0 && !!sidecarEngine && engineHash(sidecarEngine) === engineHash(engine);
+    const staleScan = withSidecar > 0 && sidecarEngine !== null && !sameHash;
     const mixedScan = withSidecar > 0 && sidecarEngine === null;
-    const currentScan = withSidecar > 0 && sidecarEngine === engine;
+    const currentScan = sameHash;
     const mono: React.CSSProperties = { fontFamily: 'monospace', fontSize: '0.78rem' };
 
     return (
@@ -495,11 +505,15 @@ export default function ScanalyzeTab({
               Open the {withSidecar.toLocaleString()} peak{withSidecar === 1 ? '' : 's'} as-is
             </button>
           )}
-          <button className={`btn ${withSidecar > 0 ? '' : 'primary'}`} style={{ padding: '0.6rem 1.5rem' }}
-            title="Ignore every existing sidecar and analyze every file from scratch."
-            onClick={() => { void confirmPreview('rescan'); }}>
-            Rescan all {wavFiles.length.toLocaleString()}
-          </button>
+          {/* Hidden when the sidecars were written by this exact engine source (same hash):
+              re-analyzing could only reproduce identical numbers. */}
+          {!sameHash && (
+            <button className={`btn ${withSidecar > 0 ? '' : 'primary'}`} style={{ padding: '0.6rem 1.5rem' }}
+              title="Ignore every existing sidecar and analyze every file from scratch."
+              onClick={() => { void confirmPreview('rescan'); }}>
+              Rescan all {wavFiles.length.toLocaleString()}
+            </button>
+          )}
           {withSidecar > 0 && toAnalyze > 0 && (
             <button className="btn" style={{ padding: '0.6rem 1.5rem' }}
               title="Reuse sidecars written by this engine; analyze only what is missing or out of date."

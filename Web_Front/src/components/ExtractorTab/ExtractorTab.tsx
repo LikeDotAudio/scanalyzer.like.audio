@@ -2,10 +2,8 @@ import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { resolveAudioUrl, isTauri, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
 import { toMono } from '../examiner/audioAnalysis';
 import { ucsSubColor, matchesScope } from '../../groupColors';
-import {
-  amplitudeEnvelope, detectRegionsFromEnvelope, DEFAULT_REGION_PARAMS,
-  type Region, type RegionParams,
-} from '../examiner/detectRegions';
+import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examiner/detectRegions';
+import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
 import ScopeBar from '../ScopeBar';
 import FileGroups from './FileGroups';
 import WavePlayer from './WavePlayer';
@@ -36,6 +34,18 @@ const parseNameOptions = (fileName: string): string[] => {
     .filter(s => s.length > 0 && !/^\d+$/.test(s) && !seen.has(s) && seen.add(s));
 };
 
+// The UI keeps three sliders (threshold / min gap / min region); the engine takes the
+// richer improved-algorithm params. Derive them: the threshold is the gate's OPEN floor,
+// and CLOSE sits 6 dB below it for hysteresis (no chatter). Padding, transient-onset and
+// zero-cross snapping use the improved defaults (clean, tight cuts).
+const toEngineParams = (p: RegionParams): EngineParams => ({
+  ...DEFAULT_ENGINE_PARAMS,
+  open_threshold_db: p.threshold_decibels,
+  close_threshold_db: p.threshold_decibels - 6,
+  minimum_silence_seconds: p.minimum_silence_seconds,
+  minimum_region_seconds: p.minimum_region_seconds,
+});
+
 export default function ExtractorTab({ analysisResult, audioFiles, onSound, setAnalysisResult, filterHint }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
@@ -46,17 +56,34 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [params, setParams] = useState<RegionParams>(DEFAULT_REGION_PARAMS);
   const [regions, setRegions] = useState<Region[]>([]);
+  // The chunk row the user has selected (highlighted; its loop is auditioned on play).
+  const [selRegion, setSelRegion] = useState<number | null>(null);
+  // Per-chunk UCS analysis (slice → full analyzer → Peak), keyed by region index, plus the
+  // set currently being analyzed. A chunk too short to analyze comes back {status:'too_short'}.
+  const [chunkUcs, setChunkUcs] = useState<Record<number, ChunkAnalysis>>({});
+  const [examining, setExamining] = useState<Set<number>>(new Set());
   const [decoding, setDecoding] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const decodeCtxRef = useRef<AudioContext | null>(null);
+  // Playback graph: the <audio> routed through a GainNode so preview playback can sound
+  // each region's fades (what you hear matches what you export), not just show them.
+  const playCtxRef = useRef<AudioContext | null>(null);
+  const gainRef = useRef<GainNode | null>(null);
   const samplesRef = useRef<Float32Array | null>(null);
-  const envelopeRef = useRef<{ envelope: Float64Array; rateHz: number } | null>(null);
   const lengthRef = useRef(0);
   const sampleRateRef = useRef(44100);
   const loadGenRef = useRef(0);
+  // Latest regions, for the debounced slider re-detect to reseed names against without
+  // re-creating the callback each render.
+  const regionsRef = useRef<Region[]>([]);
+  useEffect(() => { regionsRef.current = regions; });
+  // Monotonic detect sequence: a slower detect that resolves after a newer one is dropped.
+  const detectSeqRef = useRef(0);
+  // Debounce handle for slider-driven re-detects.
+  const detectTimerRef = useRef<number | null>(null);
   // While set, playback stops at this time — used to preview a single region (the ▶
   // button in the table). One-shot, no loop.
   const stopAtRef = useRef<number | null>(null);
@@ -65,7 +92,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const loopRegionRef = useRef<{ start: number; end: number } | null>(null);
   const [dropActive, setDropActive] = useState(false);
 
-  useEffect(() => () => { decodeCtxRef.current?.close(); }, []);
+  useEffect(() => () => { decodeCtxRef.current?.close(); playCtxRef.current?.close(); }, []);
 
   const color = useMemo(
     () => ucsSubColor(selectedItem?.ucs?.category || '', (selectedItem?.ucs?.subcategory || '').trim()),
@@ -112,10 +139,13 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     });
   };
 
-  const recompute = useCallback((p: RegionParams, prev: Region[]) => {
-    const env = envelopeRef.current;
-    if (!env) { setRegions([]); return; }
-    const fresh = detectRegionsFromEnvelope(env.envelope, env.rateHz, lengthRef.current, p);
+  // Re-detect on the loaded session (the Rust engine, in a worker). Sequence-guarded so a
+  // slow detect that lands after a newer one is dropped, and it reseeds user-typed names.
+  const runDetect = useCallback(async (p: RegionParams, prev: Region[]) => {
+    if (!samplesRef.current) { setRegions([]); return; }
+    const seq = ++detectSeqRef.current;
+    const fresh = await extractorEngine.detect(toEngineParams(p));
+    if (seq !== detectSeqRef.current) return;
     setRegions(reseedNames(fresh, prev));
   }, []);
 
@@ -135,6 +165,20 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
           const end = loop ? loop.end : (lengthRef.current || el.duration || 0);
           if (end > 0 && (el.currentTime >= end - 0.004 || el.currentTime < start - 0.05)) el.currentTime = start;
         }
+        // Sound the fades: duck the gain over the containing region's fade-in/out windows,
+        // matching the linear ramp the exporter applies.
+        const g = gainRef.current;
+        if (g) {
+          const t = el.currentTime;
+          const r = regionsRef.current.find(rr => t >= rr.start_seconds && t <= rr.end_seconds);
+          let gain = 1;
+          if (r) {
+            const fi = r.fade_in_seconds || 0, fo = r.fade_out_seconds || 0;
+            if (fi > 0 && t < r.start_seconds + fi) gain = Math.max(0, (t - r.start_seconds) / fi);
+            else if (fo > 0 && t > r.end_seconds - fo) gain = Math.max(0, (r.end_seconds - t) / fo);
+          }
+          g.gain.value = gain;
+        }
       }
       id = requestAnimationFrame(tick);
     };
@@ -146,13 +190,20 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     const gen = ++loadGenRef.current;
     setDecoding(true);
     samplesRef.current = null;
-    envelopeRef.current = null;
     setRegions([]);
+    setSelRegion(null);
+    setChunkUcs({});
+    setExamining(new Set());
     try {
       if (audioRef.current) {
         document.querySelectorAll('audio').forEach(a => a.pause());
         audioRef.current.src = src;
         audioRef.current.currentTime = 0;
+        // Auto-play on select (the click that selected the file is the user gesture).
+        stopAtRef.current = null;
+        loopRegionRef.current = null;
+        ensureAudioGraph();
+        audioRef.current.play().catch(() => {});
       }
       if (!decodeCtxRef.current) {
         decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -165,8 +216,11 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
       samplesRef.current = mono;
       lengthRef.current = decoded.duration;
       sampleRateRef.current = decoded.sampleRate;
-      envelopeRef.current = amplitudeEnvelope(mono, decoded.sampleRate);
-      const fresh = detectRegionsFromEnvelope(envelopeRef.current.envelope, envelopeRef.current.rateHz, decoded.duration, params);
+      // Hand the decoded PCM to the engine worker once; it holds it for every re-detect.
+      await extractorEngine.load(mono, decoded.sampleRate);
+      if (gen !== loadGenRef.current) return;
+      const fresh = await extractorEngine.detect(toEngineParams(params));
+      if (gen !== loadGenRef.current) return;
       setRegions(reseedNames(fresh, savedRegions));
     } catch {
       samplesRef.current = null;
@@ -197,20 +251,78 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const changeParam = (key: keyof RegionParams, value: number) => {
     const next = { ...params, [key]: value };
     setParams(next);
-    recompute(next, regions);
+    // Debounce: dragging a slider fires many changes; re-detect once it settles (~40 ms).
+    if (detectTimerRef.current) clearTimeout(detectTimerRef.current);
+    detectTimerRef.current = window.setTimeout(() => runDetect(next, regionsRef.current), 40);
+  };
+
+  // Route the <audio> through a GainNode once, so the playback loop can duck the volume
+  // over each region's fade windows. createMediaElementSource can only run once per
+  // element, so it's lazy and guarded. Resumed on the user gesture that triggers play.
+  const ensureAudioGraph = () => {
+    const el = audioRef.current;
+    if (!el) return;
+    if (!playCtxRef.current) {
+      try {
+        const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const src = ctx.createMediaElementSource(el);
+        const gain = ctx.createGain();
+        src.connect(gain);
+        gain.connect(ctx.destination);
+        playCtxRef.current = ctx;
+        gainRef.current = gain;
+      } catch { /* older webview without MediaElementSource — playback just skips fades */ }
+    }
+    playCtxRef.current?.resume().catch(() => {});
   };
 
   const playRegion = (r: Region) => {
     const el = audioRef.current;
     if (!el) return;
+    ensureAudioGraph();
     el.currentTime = r.start_seconds;
     stopAtRef.current = r.end_seconds;
     el.play().catch(() => {});
   };
+  // Select (highlight) a chunk row and focus the players' loop on it, so pressing play
+  // auditions that chunk. Does not auto-play — the row's ▶ button does that.
+  const selectRegion = (i: number) => {
+    setSelRegion(i);
+    const r = regions[i];
+    if (r) loopRegionRef.current = { start: r.start_seconds, end: r.end_seconds };
+  };
+  // Wheel over the circular player steps to the next (+1) / previous (-1) slice and
+  // auditions it. From no selection, down → first, up → last.
+  const stepRegion = (dir: 1 | -1) => {
+    if (!regions.length) return;
+    const cur = selRegion ?? (dir > 0 ? -1 : regions.length);
+    const next = Math.max(0, Math.min(regions.length - 1, cur + dir));
+    selectRegion(next);
+    playRegion(regions[next]);
+  };
+
+  // Run one chunk through the full UCS analyzer (slice → WAV → analyze in the engine
+  // worker) and stash the Peak (or the too-short sentinel) for the row to show.
+  const examineChunk = async (i: number) => {
+    const r = regions[i];
+    if (!r) return;
+    setExamining(s => new Set(s).add(i));
+    const base = (selectedItem?.metadata?.name || 'chunk').replace(/\.[^.]+$/, '');
+    const name = `${base}_${(r.name || `region_${i + 1}`).replace(/[^\w.-]+/g, '_')}`;
+    const folder = selectedItem?.metadata?.folder || '';
+    try {
+      const res = await extractorEngine.analyzeChunk(r, name, folder);
+      setChunkUcs(u => ({ ...u, [i]: res }));
+    } finally {
+      setExamining(s => { const n = new Set(s); n.delete(i); return n; });
+    }
+  };
+  const examineAll = async () => { for (let i = 0; i < regions.length; i++) await examineChunk(i); };
   const playAll = () => {
     const el = audioRef.current;
     if (!el) return;
     if (!el.paused) { el.pause(); return; }
+    ensureAudioGraph();
     stopAtRef.current = null;
     loopRegionRef.current = null;
     if (el.currentTime >= (lengthRef.current || 0)) el.currentTime = 0;
@@ -246,43 +358,23 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     if (el.paused) el.play().catch(() => {});
   };
 
-  const encodeWav = (samples: Float32Array, sampleRate: number): Blob => {
-    const n = samples.length;
-    const b = new ArrayBuffer(44 + n * 2);
-    const v = new DataView(b);
-    const str = (o: number, s: string) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
-    str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVE');
-    str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
-    v.setUint32(24, sampleRate, true); v.setUint32(28, sampleRate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
-    str(36, 'data'); v.setUint32(40, n * 2, true);
-    let o = 44;
-    for (let i = 0; i < n; i++) { const s = Math.max(-1, Math.min(1, samples[i])); v.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7fff, true); o += 2; }
-    return new Blob([b], { type: 'audio/wav' });
-  };
-  const sliceRegion = (r: Region): Float32Array | null => {
-    const src = samplesRef.current;
-    if (!src) return null;
-    const sr = sampleRateRef.current;
-    const a = Math.max(0, Math.floor(r.start_seconds * sr));
-    const bb = Math.min(src.length, Math.floor(r.end_seconds * sr));
-    if (bb <= a) return null;
-    const out = src.slice(a, bb);
-    const fi = Math.floor((r.fade_in_seconds || 0) * sr);
-    const fo = Math.floor((r.fade_out_seconds || 0) * sr);
-    for (let i = 0; i < fi && i < out.length; i++) out[i] *= i / fi;
-    for (let i = 0; i < fo && i < out.length; i++) out[out.length - 1 - i] *= i / fo;
-    return out;
-  };
-  const exportSlices = () => {
+  // Each slice is cut + faded + WAV-encoded by the Rust engine (in the worker), so the
+  // exported file is byte-identical to what the analyzer would read back and never janks
+  // the UI. Downloads are staggered so the browser doesn't drop simultaneous ones.
+  const exportSlices = async () => {
     if (!samplesRef.current || !regions.length) return;
     const base = (selectedItem?.metadata?.name || 'slice').replace(/\.[^.]+$/, '');
-    const sr = sampleRateRef.current;
-    regions.forEach((r, i) => {
-      const slice = sliceRegion(r);
-      if (!slice) return;
+    for (let i = 0; i < regions.length; i++) {
+      const r = regions[i];
+      const wav = await extractorEngine.sliceWav(r);
+      if (!wav.length) continue;
+      // Copy into a plain-ArrayBuffer-backed view so it's a valid BlobPart.
+      const bytes = new Uint8Array(wav.length);
+      bytes.set(wav);
       const name = `${base}_${(r.name || `region_${i + 1}`).replace(/[^\w.-]+/g, '_')}.wav`;
-      setTimeout(() => download(name, encodeWav(slice, sr), 'audio/wav'), i * 150);
-    });
+      download(name, new Blob([bytes], { type: 'audio/wav' }), 'audio/wav');
+      await new Promise(res => setTimeout(res, 120));
+    }
   };
 
   const updateRegion = (i: number, patch: Partial<Region>) => {
@@ -369,6 +461,19 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const cell: React.CSSProperties = { padding: '0.2rem 0.4rem', whiteSpace: 'nowrap' };
   const numInput: React.CSSProperties = { width: 70, background: '#0d1017', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.72rem', padding: '0.1rem 0.2rem' };
 
+  // The UCS result for a chunk row: a spinner while analyzing, the category/subcategory
+  // coloured like the cloud once it lands, or a "too short" note the analyzer couldn't score.
+  const ucsResult = (i: number) => {
+    if (examining.has(i)) return <span style={{ color: 'var(--text-secondary)' }}>…</span>;
+    const a: ChunkAnalysis | undefined = chunkUcs[i];
+    if (!a) return null;
+    if (a.status === 'too_short') return <span style={{ color: '#f59e0b' }} title="Too short for the analyzer to score">too short</span>;
+    if (a.status === 'error') return <span style={{ color: '#ef4444' }} title={a.message}>error</span>;
+    const cat = (a as any).ucs?.category || '—';
+    const sub = ((a as any).ucs?.subcategory || '').trim();
+    return <span style={{ color: ucsSubColor(cat, sub) }} title={`${cat}${sub ? ` / ${sub}` : ''}`}>{cat}{sub ? ` / ${sub}` : ''}</span>;
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', position: 'relative' }}
       onDragOver={(e) => { e.preventDefault(); if (!dropActive) setDropActive(true); }}
@@ -421,7 +526,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
                   <input type="range" min={0.01} max={1} step={0.01} value={params.minimum_region_seconds} onChange={e => changeParam('minimum_region_seconds', Number(e.target.value))} />
                 </label>
                 <button className="btn secondary" style={{ alignSelf: 'flex-end', padding: '0.15rem 0.5rem', fontSize: '0.72rem' }}
-                  onClick={() => { setParams(DEFAULT_REGION_PARAMS); recompute(DEFAULT_REGION_PARAMS, regions); }}>Reset</button>
+                  onClick={() => { setParams(DEFAULT_REGION_PARAMS); runDetect(DEFAULT_REGION_PARAMS, regions); }}>Reset</button>
               </div>
 
               {nameOptions.length > 0 && (
@@ -433,12 +538,14 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.74rem' }}>
                   <thead style={{ position: 'sticky', top: 0, background: '#12151c' }}>
                     <tr style={{ color: 'var(--text-secondary)', textAlign: 'left' }}>
-                      <th style={cell}>#</th><th style={cell}>Name</th><th style={cell}>In (s)</th><th style={cell}>Out (s)</th><th style={cell}>Dur</th><th style={cell}>Fade in</th><th style={cell}>Fade out</th><th style={cell}></th>
+                      <th style={cell}>#</th><th style={cell}>Name</th><th style={cell}>In (s)</th><th style={cell}>Out (s)</th><th style={cell}>Dur</th><th style={cell}>Fade in</th><th style={cell}>Fade out</th><th style={cell}>UCS</th><th style={cell}></th>
                     </tr>
                   </thead>
                   <tbody>
                     {regions.map((r, i) => (
-                      <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <tr key={i} onClick={() => selectRegion(i)}
+                        style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer',
+                          background: selRegion === i ? 'rgba(59,130,246,0.22)' : undefined }}>
                         <td style={cell}><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: regionColor(i), marginRight: 4 }} />{i + 1}</td>
                         <td style={cell}><input value={r.name} placeholder={`region_${i + 1}`} onChange={e => updateRegion(i, { name: e.target.value })} list={nameOptions.length ? 'region-name-options' : undefined} style={{ ...numInput, width: 150 }} /></td>
                         <td style={cell}><input type="number" step={0.001} value={Number(r.start_seconds.toFixed(3))} onChange={e => updateRegion(i, { start_seconds: Number(e.target.value) })} style={numInput} /></td>
@@ -446,14 +553,16 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
                         <td style={{ ...cell, color: 'var(--text-secondary)' }}>{fmt(r.duration_seconds)}</td>
                         <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_in_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_in_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
                         <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_out_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_out_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
+                        <td style={{ ...cell, fontSize: '0.72rem', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis' }}>{ucsResult(i)}</td>
                         <td style={cell}>
-                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem' }} onClick={() => playRegion(r)} title="Play region">▶</button>
-                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem', marginLeft: 4 }} onClick={() => deleteRegion(i)} title="Delete region">✕</button>
+                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem' }} onClick={(e) => { e.stopPropagation(); playRegion(r); }} title="Play region">▶</button>
+                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem', marginLeft: 4 }} onClick={(e) => { e.stopPropagation(); examineChunk(i); }} disabled={examining.has(i)} title="Analyze this chunk through the full UCS analyzer">🔬</button>
+                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem', marginLeft: 4 }} onClick={(e) => { e.stopPropagation(); deleteRegion(i); }} title="Delete region">✕</button>
                         </td>
                       </tr>
                     ))}
                     {regions.length === 0 && !decoding && (
-                      <tr><td colSpan={8} style={{ ...cell, color: 'var(--text-secondary)', padding: '1rem' }}>No regions at these settings — lower the threshold or the minimums.</td></tr>
+                      <tr><td colSpan={9} style={{ ...cell, color: 'var(--text-secondary)', padding: '1rem' }}>No regions at these settings — lower the threshold or the minimums.</td></tr>
                     )}
                   </tbody>
                 </table>
@@ -462,6 +571,8 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
               {/* Export row */}
               <div style={{ padding: '0.5rem 0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={addRegion}>＋ Add region</button>
+                <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={examineAll} disabled={!regions.length || examining.size > 0}
+                  title="Run every chunk through the full UCS analyzer">🔬 Examine all</button>
                 {nameOptions.length > 0 && (
                   <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={applyNameOptions} disabled={!regions.length}
                     title={`Assign the ${nameOptions.length} pre-made name(s) from the filename to the regions in order`}>🏷 Apply names ({nameOptions.length})</button>
@@ -478,7 +589,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
         </div>
 
         <WaveCircle samples={samplesRef.current} color={color} arcs={arcs} playing={playing} hasSelection={!!selectedItem}
-          onPlay={playAll} getProgress={progress} onScrub={onScrub}
+          onPlay={playAll} getProgress={progress} onScrub={onScrub} onWheel={stepRegion}
           onHover={(f) => hoverAtTime(f == null ? null : f * (lengthRef.current || 0))} />
       </div>
 

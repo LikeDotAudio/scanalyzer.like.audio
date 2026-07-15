@@ -42,9 +42,15 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
     [analysisResult, group]
   );
 
-  const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string) => (
-    <button key={label} onClick={onClick} className={`btn ${active ? 'primary' : 'secondary'}`}
-      style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: color ? `3px solid ${color}` : undefined }}>
+  // A text filter isolates by name across the whole library, so the scope chips would
+  // fight it — grey them out while filtering, and offer an X to clear the filter and hand
+  // scoping back.
+  const filtering = !!(filterText && filterText.trim());
+
+  const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string, disabled = false) => (
+    <button key={label} onClick={onClick} disabled={disabled} className={`btn ${active ? 'primary' : 'secondary'}`}
+      style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: color ? `3px solid ${color}` : undefined,
+        opacity: disabled ? 0.35 : 1, cursor: disabled ? 'not-allowed' : 'pointer' }}>
       {label}
     </button>
   );
@@ -53,20 +59,27 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
-        {filterBtn('All', !group, () => { setGroup(null); setSub(null); })}
-        {ucsCats.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g)))}
+        {filterBtn('All', !group, () => { setGroup(null); setSub(null); }, undefined, filtering)}
+        {ucsCats.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g), filtering))}
       </div>
       {group && subgroups.length > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} subgroups:</span>
-          {filterBtn('All', !sub, () => setSub(null))}
-          {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), scopeSubColor(group, sg)))}
+          {filterBtn('All', !sub, () => setSub(null), undefined, filtering)}
+          {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), scopeSubColor(group, sg), filtering))}
         </div>
       )}
       {(setFilterText || rightContent) && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.1rem' }}>
           {setFilterText && (
-            <input type="text" placeholder="Filter by name, group, timbre..." value={filterText || ''} onChange={e => setFilterText(e.target.value)} style={{ flex: 1, maxWidth: '300px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', color: 'white', padding: '0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem' }} />
+            <div style={{ position: 'relative', flex: 1, maxWidth: '300px', display: 'flex', alignItems: 'center' }}>
+              <input type="text" placeholder="Filter by name, group, timbre..." value={filterText || ''} onChange={e => setFilterText(e.target.value)}
+                style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: `1px solid ${filtering ? 'var(--accent-primary)' : 'var(--border-color)'}`, color: 'white', padding: '0.3rem 1.6rem 0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', width: '100%' }} />
+              {filtering && (
+                <button onClick={() => setFilterText('')} title="Clear filter — re-enable scope"
+                  style={{ position: 'absolute', right: 4, background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.85rem', lineHeight: 1, padding: '0 0.3rem' }}>✕</button>
+              )}
+            </div>
           )}
           <div style={{ flex: 1 }} />
           {rightContent}

@@ -220,14 +220,33 @@ export async function resolveAudioUrl(files: File[], item: any): Promise<string 
   if (isTauri()) {
     const path = String(item?.metadata?.path || '');
     if (!path) return null;
-    try {
-      const { invoke } = await import('@tauri-apps/api/core');
-      const bytes = await invoke<ArrayBuffer>('read_audio_bytes', { path });
-      return URL.createObjectURL(new Blob([bytes]));
-    } catch (e) {
-      console.warn('[audio] read_audio_bytes failed', path, e);
-      return null;
+    const { invoke } = await import('@tauri-apps/api/core');
+    const tryRead = async (p: string): Promise<string | null> => {
+      try {
+        const bytes = await invoke<ArrayBuffer>('read_audio_bytes', { path: p });
+        return URL.createObjectURL(new Blob([bytes]));
+      } catch { return null; }
+    };
+    // 1) The recorded path as-is (a real absolute path from a native scan).
+    let url = await tryRead(path);
+    if (url) return url;
+    // 2) Records loaded from an aggregate / relative-path source can carry a bare
+    //    "/name.wav" that is NOT a real absolute path. If an audio root is linked, retry
+    //    the path (leading slash stripped) — and then just the basename — under it.
+    const root = getAudioRoot().replace(/[/\\]+$/, '');
+    if (root) {
+      const rel = path.replace(/^[/\\]+/, '');
+      url = await tryRead(`${root}/${rel}`);
+      if (url) return url;
+      const base = path.split(/[\\/]/).pop() || '';
+      if (base && base !== rel) {
+        url = await tryRead(`${root}/${base}`);
+        if (url) return url;
+      }
     }
+    console.warn('[audio] read_audio_bytes failed for', path,
+      root ? `(also tried under linked root "${root}")` : '(no audio root linked — link the folder to resolve relative paths)');
+    return null;
   }
   return resolveAudioSrc(files, item);
 }

@@ -118,9 +118,28 @@ function App() {
     setReopening(true);
     try {
       if (isTauri()) {
-        // The desktop scans natively; send the user to the Scanalyze tab, where
-        // re-scanning the remembered root reads its sidecars straight back.
-        goToTab('scanalyze');
+        // Desktop: the native scan wrote an aggregate .PEAK in the folder. Read it back
+        // directly (paged) — the same path the scan itself uses — so reopening loads the
+        // cached analysis with no re-scan. Fall back to the Scanalyze tab if there's no
+        // cached .PEAK to read.
+        const dir = getAudioRoot();
+        if (!dir) { goToTab('scanalyze'); return; }
+        try {
+          const { invoke } = await import('@tauri-apps/api/core');
+          const count = await invoke<number>('open_peak_file', { directory: dir });
+          const PAGE = 2000;
+          const all: any[] = [];
+          for (let offset = 0; offset < count; offset += PAGE) {
+            const page = await invoke<string>('read_peak_page', { offset, limit: PAGE });
+            all.push(...normalizePeakRecords(JSON.parse(page)).records);
+          }
+          await invoke('close_peak_file');
+          if (all.length) { setAnalysisResult(all); goToTab('cloud'); }
+          else goToTab('scanalyze');
+        } catch (err) {
+          console.warn('Reopen: no cached .PEAK for', dir, '— falling back to Scanalyze.', err);
+          goToTab('scanalyze');
+        }
         return;
       }
       const handle = await getDirHandle();
