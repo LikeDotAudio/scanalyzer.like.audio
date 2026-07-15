@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 
 // The bottom-left field/value explorer for the selected sample. A COMPLETE, dynamic dump:
 // it walks the record recursively, so every field at every depth shows — nested objects
@@ -98,19 +98,20 @@ export default function FieldValueTable({ item }: Props) {
             <tr><td colSpan={2} style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>Select a sample</td></tr>
           )}
 
-          {shownGroups.flatMap(([group, fields]) =>
-            // An empty group means "analyzed structure exists but has no fields yet".
-            isPlainObj(fields) && Object.keys(fields).length === 0
-              ? [
-                  <tr key={`${group}::h`} style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <td colSpan={2} style={{ padding: '0.25rem 0.4rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{group}</td>
-                  </tr>,
-                  <tr key={`${group}::empty`} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td colSpan={2} style={{ ...cell('var(--text-secondary)'), paddingLeft: '1.25rem', fontStyle: 'italic' }}>not analyzed — re-scan to fill in</td>
-                  </tr>,
-                ]
-              : renderNode(group, fields, 0, group)
-          )}
+          {shownGroups.map(([group, fields]) => (
+            <Fragment key={group}>
+              {isPlainObj(fields) && Object.keys(fields).length === 0
+                ? [
+                    <tr key={`${group}::h`} style={{ background: 'rgba(255,255,255,0.05)' }}>
+                      <td colSpan={2} style={{ padding: '0.25rem 0.4rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{group}</td>
+                    </tr>,
+                    <tr key={`${group}::empty`} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td colSpan={2} style={{ ...cell('var(--text-secondary)'), paddingLeft: '1.25rem', fontStyle: 'italic' }}>not analyzed — re-scan to fill in</td>
+                    </tr>,
+                  ]
+                : renderNode(group, fields, 0, group)}
+            </Fragment>
+          ))}
 
           {!activeOnly && loose.map(([k, v]) => (
             <tr key={k} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', verticalAlign: 'top' }}>

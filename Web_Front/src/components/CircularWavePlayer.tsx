@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import RadialWaveform from './examiner/RadialWaveform';
 import { toMono } from './examiner/audioAnalysis';
+import { decodeWav } from './examiner/decodeWav';
+import { decodeViaWasm } from './examiner/wasmDecode';
 
 interface CircularWavePlayerProps {
   // Resolved audio URL of the sample to play, or null to hide the player.
@@ -83,8 +85,11 @@ export default function CircularWavePlayer({
         }
         const buf = await (await fetch(src)).arrayBuffer();
         if (gen !== genRef.current) return;
-        const decoded = await ctxRef.current.decodeAudioData(buf);
+        const decoded =
+          decodeWav(buf, ctxRef.current) ??
+          (await decodeViaWasm(buf, name, ctxRef.current));
         if (gen !== genRef.current) return;
+        if (!decoded) return;
         setSamples(toMono(decoded));
       } catch {
         /* undecodable — leave the ring empty, playback may still work */

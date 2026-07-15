@@ -18,8 +18,17 @@ function ensureWasm(): Promise<void> {
   // Instantiate from bytes (not instantiateStreaming) for the same MIME reason as wasmWorker.
   if (!readyPromise) {
     readyPromise = (async () => {
-      const bytes = await (await fetch(wasmUrl)).arrayBuffer();
-      await initWasm(bytes);
+      try {
+        const bytes = await (await fetch(wasmUrl)).arrayBuffer();
+        await initWasm(bytes);
+      } catch (e: any) {
+        if (e?.message && e.message.includes('already')) {
+          // Already initialized by another component, ignore.
+        } else {
+          console.error("WASM init failed:", e);
+          throw e;
+        }
+      }
     })();
   }
   return readyPromise;
@@ -38,13 +47,19 @@ export async function decodeViaWasm(
   try {
     await ensureWasm();
     decoded = decode_audio_buffer(new Uint8Array(data), name);
-    if (!decoded) return null;
+    if (!decoded) {
+      console.warn("WASM decode_audio_buffer returned null for:", name);
+      return null;
+    }
 
     const channels = decoded.channels || 1;
     const sampleRate = decoded.sample_rate;
     const interleaved = decoded.samples; // copied into JS heap; safe after free()
     const frames = Math.floor(interleaved.length / channels);
-    if (frames <= 0 || !sampleRate) return null;
+    if (frames <= 0 || !sampleRate) {
+      console.warn("WASM decoded invalid frames/sampleRate for:", name, frames, sampleRate);
+      return null;
+    }
 
     const buffer = ctx.createBuffer(channels, frames, sampleRate);
     for (let ch = 0; ch < channels; ch++) {
@@ -52,7 +67,8 @@ export async function decodeViaWasm(
       for (let i = 0; i < frames; i++) out[i] = interleaved[i * channels + ch];
     }
     return buffer;
-  } catch {
+  } catch (e) {
+    console.error("decodeViaWasm failed for:", name, e);
     return null;
   } finally {
     decoded?.free(); // release the Rust-side struct held in WASM memory

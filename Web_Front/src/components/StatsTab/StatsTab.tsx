@@ -5,6 +5,8 @@ import { resolveAudioUrl, isTauri } from '../../audioLinking'
 import ScopeBar from '../ScopeBar'
 import RadialWaveform from '../examiner/RadialWaveform'
 import { toMono } from '../examiner/audioAnalysis'
+import { decodeWav } from '../examiner/decodeWav'
+import { decodeViaWasm } from '../examiner/wasmDecode'
 import { useIsNarrow } from '../../useIsNarrow'
 import { categoryLabel, subcategoryLabel } from '../../categoryEmoji'
 
@@ -142,8 +144,11 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (gen !== ringGenRef.current) return;
-      const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+      const decoded =
+        decodeWav(buf, decodeCtxRef.current) ??
+        (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
       if (gen !== ringGenRef.current) return;
+      if (!decoded) return;
       setRing({ samples: toMono(decoded), color: pointColor(item), name: item.metadata?.name || '' });
     } catch {
       /* undecodable — leave the previous ring in place */
