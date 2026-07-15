@@ -14,7 +14,7 @@ const LOUDNESS_FLOOR_DB = -60;
  *  full plot height (quiet at the bottom, loud at the top) and stroked as a line.
  *  This is the "level of loudness" riding over the waveform's instantaneous peaks. */
 export function drawLoudness(ctx: CanvasRenderingContext2D, mono: Float32Array, geo: PlotGeo, color: string) {
-  const { w, plotTop, plotBottom, plotH } = geo;
+  const { w, plotBottom, plotH } = geo;
   const n = mono.length;
   if (n === 0 || w < 2) return;
 
