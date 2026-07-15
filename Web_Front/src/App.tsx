@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import './index.css'
-import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot, filterAudioFiles, isTauri, getLastFolderName, clearLastFolderName } from './audioLinking'
+import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot, filterAudioFiles, isTauri, getLastFolderName, clearLastFolderName, resolveAudioUrl } from './audioLinking'
+import SampleFooter, { type FooterTab } from './components/SampleFooter'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
@@ -45,6 +46,16 @@ function App() {
   // name still re-triggers the Extractor's filter.
   const [extractorFilter, setExtractorFilter] = useState<{ name: string; nonce: number }>({ name: '', nonce: 0 })
   const [examinerFilter, setExaminerFilter] = useState<{ name: string; nonce: number }>({ name: '', nonce: 0 })
+
+  // Global footer transport: every tab reports the sample it's playing via onSound
+  // (its name), so we can resolve the whole record here and drive one shared footer —
+  // download / play-stop and "push to any tab" — from any page.
+  const footerAudioRef = useRef<HTMLAudioElement>(null)
+  const [footerPlaying, setFooterPlaying] = useState(false)
+  const footerItem = useMemo(
+    () => (currentSound ? analysisResult.find(it => (it.metadata?.name || '') === currentSound) || null : null),
+    [currentSound, analysisResult],
+  )
 
   // Keep the active tab in sync with the URL hash (linkable / back-forward).
   useEffect(() => {
@@ -222,6 +233,37 @@ function App() {
 
   const goToTab = (id: string) => { window.location.hash = `#/${id}`; setActiveTab(id); }
 
+  // Footer transport handlers. Playback uses a footer-owned <audio>; pressing play first
+  // pauses any tab's own audio so the two never overlap. The URL is resolved the same way
+  // every tab does (desktop bytes→blob, or an in-memory File in the browser).
+  const footerPlay = async () => {
+    const el = footerAudioRef.current
+    if (!el || !footerItem) return
+    if (!el.paused) { el.pause(); return }
+    document.querySelectorAll('audio').forEach(a => { if (a !== el) a.pause() })
+    const url = await resolveAudioUrl(audioFiles, footerItem)
+    if (!url) return
+    if (el.src && el.src.startsWith('blob:')) URL.revokeObjectURL(el.src)
+    el.src = url
+    el.currentTime = 0
+    el.play().catch(() => {})
+  }
+  const footerDownload = async () => {
+    if (!footerItem) return
+    const url = await resolveAudioUrl(audioFiles, footerItem)
+    if (!url) return
+    const a = document.createElement('a')
+    a.href = url
+    a.download = footerItem.metadata?.name || 'sample'
+    document.body.appendChild(a); a.click(); document.body.removeChild(a)
+  }
+  const footerPush = (tab: FooterTab, name: string) => {
+    if (tab === 'examiner') { setExaminerFilter({ name, nonce: Date.now() }); goToTab('examiner'); }
+    else if (tab === 'extractor') { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }
+    else if (tab === 'stats') goToTab('stats')
+    else if (tab === 'cloud') goToTab('cloud')
+  }
+
   const loadPeakFiles = (fileList: File[]) => {
     const files = fileList.filter(f => /\.peak$|\.json$/i.test(f.name) || f.type === 'application/json');
     if (files.length === 0) return;
@@ -389,8 +431,23 @@ function App() {
           {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} filterHint={extractorFilter} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
         </Suspense>
-        
+
       </main>
+
+      {/* Global footer — the same transport on every page, driven by whatever sample the
+          active tab last reported. Hidden until a library is loaded. */}
+      {analysisResult.length > 0 && (
+        <SampleFooter
+          item={footerItem}
+          playing={footerPlaying}
+          current={activeTab as FooterTab}
+          onPlay={footerPlay}
+          onDownload={footerDownload}
+          onPush={footerPush}
+        />
+      )}
+      <audio ref={footerAudioRef} style={{ display: 'none' }}
+        onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={() => setFooterPlaying(false)} />
     </div>
   )
 }
