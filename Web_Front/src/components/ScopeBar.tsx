@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { type Taxonomy, taxonomyKeys, scopeSubgroups, scopeChipColor, scopeSubColor } from '../groupColors';
 import { altCategory } from '../ucsIndex';
+import { useIsNarrow } from '../useIsNarrow';
 
 interface ScopeBarProps {
   analysisResult: any[];
@@ -47,6 +48,8 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   // scoping back.
   const filtering = !!(filterText && filterText.trim());
 
+  const isNarrow = useIsNarrow();
+
   const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string, disabled = false) => (
     <button key={label} onClick={onClick} disabled={disabled} className={`btn ${active ? 'primary' : 'secondary'}`}
       style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: color ? `3px solid ${color}` : undefined,
@@ -55,19 +58,46 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
     </button>
   );
 
+  // Mobile: a <select> in place of a chip grid. Empty value ("") means "All".
+  // A colored left border echoes the selected category's chip colour.
+  const scopeSelect = (
+    label: string, value: string, options: string[], onPick: (v: string | null) => void,
+    colorOf: (o: string) => string | undefined,
+  ) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+      <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{label}</span>
+      <select value={value} disabled={filtering} onChange={e => onPick(e.target.value || null)}
+        style={{ flex: 1, minWidth: 0, background: 'rgba(255,255,255,0.05)', color: 'white',
+          border: '1px solid var(--border-color)', borderLeft: `3px solid ${(value && colorOf(value)) || 'var(--border-color)'}`,
+          borderRadius: '4px', padding: '0.3rem 0.4rem', fontSize: '0.8rem',
+          opacity: filtering ? 0.35 : 1, cursor: filtering ? 'not-allowed' : 'pointer' }}>
+        <option value="">All</option>
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  );
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
-        {filterBtn('All', !group, () => { setGroup(null); setSub(null); }, undefined, filtering)}
-        {ucsCats.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g), filtering))}
-      </div>
+      {isNarrow ? (
+        scopeSelect('Scope:', group || '', ucsCats, g => { setGroup(g); setSub(null); }, scopeChipColor)
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
+          {filterBtn('All', !group, () => { setGroup(null); setSub(null); }, undefined, filtering)}
+          {ucsCats.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g), filtering))}
+        </div>
+      )}
       {group && subgroups.length > 0 && (
+        isNarrow ? (
+          scopeSelect(`${group} subgroups:`, sub || '', subgroups, setSub, sg => scopeSubColor(group, sg))
+        ) : (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} subgroups:</span>
           {filterBtn('All', !sub, () => setSub(null), undefined, filtering)}
           {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), scopeSubColor(group, sg), filtering))}
         </div>
+        )
       )}
       {(setFilterText || rightContent) && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.1rem' }}>

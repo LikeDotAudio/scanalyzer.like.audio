@@ -97,7 +97,9 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onExamin
     setSelectedIndex(null);
   }, [scopeGroup, scopeSub]);
 
-  const [showGraphOptions, setShowGraphOptions] = useState(() => window.innerWidth > 768);
+  // Hidden on first view — the cloud shows unobstructed, and the ⚙ button opens the
+  // options overlay when wanted (on any screen size).
+  const [showGraphOptions, setShowGraphOptions] = useState(false);
   const [showGroups, setShowGroups] = useState(false);
   const [showShapes, setShowShapes] = useState(false);
   const [playMsg, setPlayMsg] = useState<string>('');

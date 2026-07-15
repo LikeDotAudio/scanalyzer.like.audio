@@ -5,6 +5,7 @@ import { resolveAudioUrl, isTauri } from '../../audioLinking'
 import ScopeBar from '../ScopeBar'
 import RadialWaveform from '../examiner/RadialWaveform'
 import { toMono } from '../examiner/audioAnalysis'
+import { useIsNarrow } from '../../useIsNarrow'
 
 interface StatsTabProps {
   analysisResult: any[];
@@ -48,6 +49,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [filterText, setFilterText] = useState('');
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
+  const isNarrow = useIsNarrow();
   // Circular waveform preview of the last-picked point: mono samples + ring colour.
   const [ring, setRing] = useState<{ samples: Float32Array; color: string; name: string } | null>(null);
   const decodeCtxRef = useRef<AudioContext | null>(null);
@@ -230,8 +232,13 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
         />
       </div>
 
-      {/* Charts grid */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '0.5rem', padding: '0.5rem', minHeight: 0 }}>
+      {/* Charts grid — 2×2 on desktop; on mobile each chart is full screen-width,
+          stacked in a single scrolling column so none is squeezed into a corner. */}
+      <div style={{ flex: 1, display: 'grid', minHeight: 0,
+        ...(isNarrow
+          ? { gridTemplateColumns: '1fr', gridAutoRows: '260px', overflowY: 'auto' }
+          : { gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr' }),
+        gap: '0.5rem', padding: '0.5rem' }}>
         {/* God Categories donut */}
         <div className="glass-panel" style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <h3 style={{ marginBottom: '0.25rem', color: 'var(--accent-primary)', fontSize: '0.85rem' }}>UCS Categories</h3>

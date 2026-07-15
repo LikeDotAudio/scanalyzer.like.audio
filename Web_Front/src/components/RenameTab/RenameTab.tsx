@@ -3,6 +3,7 @@ import { buildScript, type RenamePlan, type ScriptKind, type Mode, type BitDepth
 import { TOKEN_LABELS, type Slot, getSavedSubfolders, getSavedPrepend, getSavedAppend, tokenValue, generateNewName } from '../../renameConfig';
 import ScopeBar from '../ScopeBar';
 import { taxonomyKeys } from '../../groupColors';
+import { useIsNarrow } from '../../useIsNarrow';
 
 interface RenameTabProps {
   analysisResult: any[];
@@ -15,6 +16,7 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
   const [scopeGroup, setScopeGroup] = useState<string | null>(null);
   const [scopeSub, setScopeSub] = useState<string | null>(null);
   const [filterText, setFilterText] = useState('');
+  const isNarrow = useIsNarrow();
 
   useEffect(() => {
     setScopeGroup(null);
@@ -138,6 +140,19 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
       ))}
     </div>
   );
+
+  // The renamer's dense multi-column grid (subfolders / prepend / append token lists,
+  // live preview, script export) has no workable mobile layout — tell the user plainly
+  // rather than render a broken, unusable version.
+  if (isNarrow) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', padding: '2rem', gap: '0.75rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+        <div style={{ fontSize: '2rem' }}>🗂️</div>
+        <div style={{ fontSize: '1rem', color: '#fff' }}>Sorry — this feature isn't available on mobile devices.</div>
+        <div style={{ fontSize: '0.85rem', maxWidth: 320 }}>The File Names renamer needs a wider screen. Open it on a desktop to build and export rename scripts.</div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', padding: '0.5rem', gap: '0.5rem', overflow: 'hidden' }}>

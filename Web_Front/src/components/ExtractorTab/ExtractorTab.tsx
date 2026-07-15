@@ -5,6 +5,7 @@ import { ucsSubColor, matchesScope } from '../../groupColors';
 import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examiner/detectRegions';
 import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
 import ScopeBar from '../ScopeBar';
+import { useIsNarrow } from '../../useIsNarrow';
 import FileGroups from './FileGroups';
 import WavePlayer from './WavePlayer';
 import WaveCircle from './WaveCircle';
@@ -91,6 +92,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   // whole file. Set by hovering a region on either waveform.
   const loopRegionRef = useRef<{ start: number; end: number } | null>(null);
   const [dropActive, setDropActive] = useState(false);
+  const isNarrow = useIsNarrow();
 
   useEffect(() => () => { decodeCtxRef.current?.close(); playCtxRef.current?.close(); }, []);
 
@@ -480,6 +482,14 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     return <span style={{ color: ucsSubColor(cat, sub) }} title={`${cat}${sub ? ` / ${sub}` : ''}`}>{cat}{sub ? ` / ${sub}` : ''}</span>;
   };
 
+  // The circular player. Desktop: a fixed right-hand column. Mobile: full-width, tucked
+  // into the vertical stack directly under the waveform (the "slices").
+  const waveCircle = (
+    <WaveCircle samples={samplesRef.current} color={color} arcs={arcs} playing={playing} hasSelection={!!selectedItem}
+      onPlay={playAll} getProgress={progress} onScrub={onScrub} onWheel={stepRegion} isNarrow={isNarrow}
+      onHover={(f) => hoverAtTime(f == null ? null : f * (lengthRef.current || 0))} />
+  );
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', position: 'relative' }}
       onDragOver={(e) => { e.preventDefault(); if (!dropActive) setDropActive(true); }}
@@ -497,8 +507,8 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
           setGroup={setScopeGroup} setSub={setScopeSub} filterText={filter} setFilterText={setFilter} />
       </div>
 
-      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
-        <FileGroups groupedRows={groupedRows} rowsCount={rows.length} multiOnly={multiOnly} setMultiOnly={setMultiOnly} selectedItem={selectedItem} onSelect={handleSelect} />
+      <div style={{ display: 'flex', flexDirection: isNarrow ? 'column' : 'row', flex: 1, minHeight: 0, overflowY: isNarrow ? 'auto' : undefined }}>
+        <FileGroups groupedRows={groupedRows} rowsCount={rows.length} multiOnly={multiOnly} setMultiOnly={setMultiOnly} selectedItem={selectedItem} onSelect={handleSelect} isNarrow={isNarrow} />
 
         {/* Center: waveform + controls + region table */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#0A0A0A' }}>
@@ -516,6 +526,9 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
 
               <WavePlayer samples={samplesRef.current} length={lengthRef.current} regions={regions} color={color}
                 onUpdateRegion={updateRegion} onHoverTime={hoverAtTime} getProgress={progress} />
+
+              {/* Mobile: the play circle sits right under the slices, before the text fields. */}
+              {isNarrow && waveCircle}
 
               {/* Detection sliders — live re-detect */}
               <div style={{ padding: '0.4rem 0.75rem', display: 'flex', gap: '1.25rem', flexWrap: 'wrap', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
@@ -594,9 +607,8 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
           )}
         </div>
 
-        <WaveCircle samples={samplesRef.current} color={color} arcs={arcs} playing={playing} hasSelection={!!selectedItem}
-          onPlay={playAll} getProgress={progress} onScrub={onScrub} onWheel={stepRegion}
-          onHover={(f) => hoverAtTime(f == null ? null : f * (lengthRef.current || 0))} />
+        {/* Desktop: the play circle is the right-hand column. */}
+        {!isNarrow && waveCircle}
       </div>
 
       <audio ref={audioRef} style={{ display: 'none' }}
