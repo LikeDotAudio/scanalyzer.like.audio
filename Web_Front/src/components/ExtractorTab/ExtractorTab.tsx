@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { resolveAudioUrl, isTauri, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
 import { toMono } from '../examiner/audioAnalysis';
 import { decodeWav } from '../examiner/decodeWav';
+import { decodeViaWasm } from '../examiner/wasmDecode';
 import { ucsSubColor, matchesScope } from '../../groupColors';
 import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examiner/detectRegions';
 import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
@@ -75,6 +76,11 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   const [decoding, setDecoding] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
+  // Bumped the moment the decoded PCM (samplesRef / lengthRef) is ready. samples & length
+  // are refs, so the waveform/circle would otherwise not redraw until the next state change
+  // (post-detect); bumping this forces the render that draws them, so playback can start in
+  // sync with a visible waveform rather than running ahead of a blank one.
+  const [, setWaveNonce] = useState(0);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const decodeCtxRef = useRef<AudioContext | null>(null);
@@ -217,32 +223,44 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
           document.querySelectorAll('audio').forEach(a => a.pause());
           audioRef.current.src = src;
           audioRef.current.currentTime = 0;
-          // Auto-play on select (the click that selected the file is the user gesture).
+          // Prime the source, but DON'T play yet: the waveform/circle can't draw until the
+          // decode below fills samplesRef/lengthRef, so starting here runs the audio ahead of
+          // a blank wave. Auto-play begins once the PCM is ready (or on decode failure).
           stopAtRef.current = null;
           loopRegionRef.current = null;
           ensureAudioGraph();
-          audioRef.current.play().catch(() => {});
         }
         if (!decodeCtxRef.current) {
           decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
         }
         const buf = await (await fetch(src)).arrayBuffer();
         if (gen !== loadGenRef.current) return;
-        // decodeAudioData detaches the buffer, so decode a copy and keep `buf` for the WAV
-        // fallback (WebKitGTK's Web Audio decode intermittently fails on plain WAV).
-        let decoded: AudioBuffer | null = null;
-        try { decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0)); }
-        catch { decoded = decodeWav(buf, decodeCtxRef.current); }
+        // decodeWav catches WAV; the WASM analyzer catches MP3/OGG/M4A/AAC/FLAC/AIFF.
+        // `nativePath`/`src` supply the extension hint. This bypasses the native Web
+        // Audio decodeAudioData entirely, which intermittently fails on WebKitGTK.
+        const decoded =
+          decodeWav(buf, decodeCtxRef.current) ??
+          (await decodeViaWasm(buf, nativePath || src || '', decodeCtxRef.current));
         if (gen !== loadGenRef.current) return;
         if (!decoded) throw new Error('undecodable');
         const mono = toMono(decoded);
         samplesRef.current = mono;
         lengthRef.current = decoded.duration;
         sampleRateRef.current = decoded.sampleRate;
-        if (!nativePath) await extractorEngine.load(mono, decoded.sampleRate); // web worker session
         decodedOk = true;
+        // The PCM (and true length) are ready. Force the render that draws the waveform and
+        // circle off the freshly-filled refs, then start playback from the top — so the audio,
+        // the linear playhead and the ring all begin together, in sync.
+        setWaveNonce(n => n + 1);
+        const el = audioRef.current;
+        if (el && gen === loadGenRef.current) { el.currentTime = 0; el.play().catch(() => {}); }
+        if (!nativePath) await extractorEngine.load(mono, decoded.sampleRate); // web worker session
       } catch {
         samplesRef.current = null; // waveform trace stays blank, but detection can still run
+        // No decoded waveform to sync to (e.g. an MP3 the webview's Web Audio couldn't decode).
+        // The <audio> element can still play the file directly — auto-play best-effort.
+        const el = audioRef.current;
+        if (el && gen === loadGenRef.current) el.play().catch(() => {});
       }
     }
     if (!decodedOk && nativePath && lengthHint > 0) lengthRef.current = lengthHint; // give the overlay a time base

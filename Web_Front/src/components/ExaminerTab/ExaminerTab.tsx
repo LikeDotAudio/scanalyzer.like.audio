@@ -103,6 +103,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const isNarrow = useIsNarrow();
   const [autoPlay, setAutoPlay] = useState(true);
+  const [autoLoop, setAutoLoop] = useState(false); // repeat the selected sample while it plays (off by default)
   const [digging, setDigging] = useState(false);
   const playheadRef = useRef<HTMLDivElement>(null);
   const [filter, setFilter] = useState('');
@@ -627,18 +628,12 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (!fresh()) return;
-      // decodeAudioData detaches the buffer, so decode a COPY and keep `buf` for the
-      // fallbacks below — WebKitGTK's Web Audio decode fails on plain WAV intermittently
-      // and on compressed formats outright. decodeWav catches WAV; the WASM analyzer
-      // (symphonia) catches MP3/OGG/M4A/AAC/FLAC/AIFF.
-      let decoded: AudioBuffer | null = null;
-      try {
-        decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0));
-      } catch {
-        decoded =
-          decodeWav(buf, decodeCtxRef.current) ??
-          (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
-      }
+      // decodeWav catches WAV; the WASM analyzer (symphonia) catches
+      // MP3/OGG/M4A/AAC/FLAC/AIFF. This bypasses the native Web Audio decodeAudioData
+      // entirely, which intermittently fails on WebKitGTK and hangs if called too fast.
+      const decoded =
+        decodeWav(buf, decodeCtxRef.current) ??
+        (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
       if (!fresh()) return;
       if (!decoded) return; // couldn't decode by either path — leave the preview blank
       lastBufferRef.current = decoded;
@@ -718,6 +713,18 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  // Copy the selected sample's full .PEAK record (every group: metadata, classification,
+  // envelope, spectral_features, musicality, unsupervised, ucs, regions, …) to the clipboard
+  // as pretty-printed JSON.
+  const handleCopyData = async () => {
+    if (!selectedItem) return;
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(selectedItem, null, 2));
+    } catch (err) {
+      console.warn('[examiner] clipboard write failed', err);
+    }
   };
 
   return (
@@ -915,6 +922,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                         </div>
                       </div>
                       <audio ref={audioRef} style={{ display: 'none' }}
+                        loop={autoLoop && !digging}
                         onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}
                         onEnded={() => { setIsPlaying(false); handleEnded(); }} />
                   </>
@@ -951,10 +959,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
         playing={isPlaying}
         digging={digging}
         autoPlay={autoPlay}
+        autoLoop={autoLoop}
         onDownload={handleDownload}
+        onCopyData={handleCopyData}
         onPlay={togglePlay}
         onDig={digging ? stopDig : startDig}
         onToggleAutoPlay={setAutoPlay}
+        onToggleAutoLoop={setAutoLoop}
         current="examiner"
         onPush={(tab, name) => { if (onPush) onPush(tab, name); else if (tab === 'extractor') onSendToExtractor?.(name); }}
       />
