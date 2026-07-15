@@ -1,50 +1,14 @@
-// Group / music-production colour system. The taxonomy — FAMILY
-// (music_production_category) → its member INSTRUMENTS (classification.group) — and the
-// per-family hues are GENERATED from UCS/categories/MUSICPROD.json, the same file the Rust
-// engine reads. Edit the JSON and run `npm run gen:musicprod`; never edit the taxonomy here.
-import { MUSIC_PROD_CATEGORIES, MUSIC_PROD_HUES } from './musicprodTaxonomy';
-export { MUSIC_PROD_CATEGORIES };
+// Colour system for the sample cloud. There is one taxonomy now — UCS CATEGORY ->
+// SUBCATEGORY — and this file maps a record to its colour and answers the scope queries
+// the cloud, its legend and the scope bars run. (The old music-production role taxonomy,
+// generated from MUSICPROD.json, was removed once every instrument became a first-class
+// UCS category with subcategories.)
 
-export const CATEGORY_ORDER = MUSIC_PROD_CATEGORIES.map(([cat]) => cat);
-
-const GROUP_TO_CATEGORY: Record<string, string> = {};
-for (const [cat, groups] of MUSIC_PROD_CATEGORIES) for (const g of groups) GROUP_TO_CATEGORY[g] = cat;
-
-// Every named group in taxonomy order — used to build the legend.
-export const ALL_GROUPS: string[] = MUSIC_PROD_CATEGORIES.flatMap(([, groups]) => groups);
-
-/** The music-production role a name group implies. Prefer a record's own
- *  `classification.music_production_category`; this is the fallback for a bare group. */
-export function musicProdCategory(group: string): string {
-  return GROUP_TO_CATEGORY[group] ?? 'MISC';
-}
-
-// Composite key for a group+subgroup (used for show/hide sets). The unit-
+// Composite key for a category+subcategory (used for show/hide sets). The unit-
 // separator (0x1F) can't occur in a real name, so there are no collisions.
 export function subKey(group: string, subgroup: string): string {
   return group + String.fromCharCode(31) + subgroup;
 }
-
-// Same palette the desktop cloud uses.
-export const CLOUD_PALETTE = [
-  '#f4902c', '#8ab4f8', '#4caf50', '#e57373', '#ba68c8', '#4dd0e1',
-  '#ffd54f', '#a1887f', '#90a4ae', '#f06292', '#aed581', '#7986cb',
-  '#ff8a65', '#4db6ac', '#dce775', '#9575cd', '#ffffff',
-];
-
-// One hue per family (generated from MUSICPROD.json). MISC is null → the grey ramp.
-const CATEGORY_HUES = MUSIC_PROD_HUES;
-
-const CATEGORY_GROUPS: Record<string, string[]> = {};
-for (const [cat, groups] of MUSIC_PROD_CATEGORIES) CATEGORY_GROUPS[cat] = groups;
-
-// The curated variation subgroups the engine emits (categorize.rs). Their only job here
-// is a stable, distinct shade offset; an unlisted subgroup falls back to a hash.
-const KNOWN_SUBGROUPS = [
-  'Rimshot', 'Cross-stick', 'Closed', 'Open', 'Pedal', 'Hi', 'Mid', 'Floor',
-  'Gong', 'Riser', 'Impact', 'Slap', 'Piano', 'Electric Piano', 'Organ', 'Clav', 'Synth',
-  'Drum',
-];
 
 // CRC-32 (matches Python's zlib.crc32) for stable hashing of unknown names.
 const CRC_TABLE = (() => {
@@ -88,13 +52,6 @@ function hsv(h: number, s: number, v: number): string {
   return `#${hx(r)}${hx(g)}${hx(b)}`;
 }
 
-function subgroupNudge(subgroup: string): number {
-  if (!subgroup) return 0;
-  const idx = KNOWN_SUBGROUPS.indexOf(subgroup);
-  if (idx >= 0) return (idx % 9) - 4;
-  return (crc32(subgroup) % 9) - 4;
-}
-
 // Complementary colour (hue rotated 180°) of a hex colour — used to paint the
 // spectrum trace opposite the group-coloured waveform, matching the desktop app.
 export function complementColor(hex: string): string {
@@ -113,31 +70,6 @@ export function complementColor(hex: string): string {
   }
   const s = max === 0 ? 0 : d / max;
   return hsv(h + 0.5, s, max);
-}
-
-export function musicProdColor(category: string): string {
-  const hue = CATEGORY_HUES[category];
-  if (hue == null) return '#9a9a9a';
-  return hsv(hue, 0.78, 0.95);
-}
-
-// Deterministic shade for a name group (+ optional subgroup) — identical to the
-// desktop app's group_color().
-export function groupColor(group: string, subgroup = ''): string {
-  if ((group === 'Perc' || group === 'Loops/Patterns') && subgroup) {
-    const idx = KNOWN_SUBGROUPS.indexOf(subgroup);
-    const i = idx >= 0 ? idx : crc32(subgroup);
-    return CLOUD_PALETTE[i % CLOUD_PALETTE.length];
-  }
-  const cat = musicProdCategory(group);
-  const hue = CATEGORY_HUES[cat];
-  const members = CATEGORY_GROUPS[cat] ?? [];
-  const gi = members.indexOf(group) >= 0 ? members.indexOf(group) : crc32(group || '') % 8;
-  const n = Math.max(members.length, 2);
-  const t = (gi % n) / (n - 1);
-  const sj = subgroupNudge(subgroup);
-  if (hue == null) return hsv(0.0, 0.0, 0.5 + 0.35 * t + 0.03 * sj);
-  return hsv(hue + (t - 0.5) * 0.09 + 0.005 * sj, 0.85 - 0.3 * t, 0.92 - 0.18 * t + 0.045 * sj);
 }
 
 // ---- UCS colour system ------------------------------------------------------

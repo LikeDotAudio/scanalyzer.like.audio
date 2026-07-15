@@ -399,6 +399,22 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     if (spec) drawSpectrumTrace(ctx, spec, geo, ccol, item);
     drawBeats(ctx, geo, duration, bpm, bpmEst);
     drawEnvelope(ctx, item, duration, geo);
+
+    // Regions found during the scan (silence-separated segments) — a colour bar per
+    // region along the bottom edge, matching the Extractor's palette. Only drawn when
+    // the record actually carries regions.
+    const regs = item?.regions?.regions as { start_seconds: number; end_seconds: number }[] | undefined;
+    if (regs && regs.length && duration > 0) {
+      const barH = 5;
+      const y = geo.plotBottom - barH;
+      regs.forEach((r, i) => {
+        const x0 = (r.start_seconds / duration) * w;
+        const x1 = (r.end_seconds / duration) * w;
+        ctx.fillStyle = `hsl(${(i * 47) % 360} 75% 58%)`;
+        ctx.fillRect(x0, y, Math.max(1, x1 - x0), barH);
+      });
+    }
+
     drawAxesAndName(ctx, item, duration, geo);
   };
 

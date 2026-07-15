@@ -1,11 +1,12 @@
-import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
+import { Suspense, useState, useEffect, useMemo } from 'react';
 import SampleCloud from '../SampleCloud';
 import { resolveAudioUrl, isTauri } from '../../audioLinking';
 import ScopeBar from '../ScopeBar';
 import GraphOptionsMenu from './GraphOptionsMenu';
 import GroupsMenu from './GroupsMenu'
-import { taxonomyKeys, matchesScope } from '../../groupColors';
+import { taxonomyKeys, matchesScope, ucsSubColor } from '../../groupColors';
 import ShapesMenu from './ShapesMenu';
+import CircularWavePlayer from '../CircularWavePlayer';
 
 interface CloudTabProps {
   analysisResult: any[];
@@ -81,7 +82,9 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
   const [playMsg, setPlayMsg] = useState<string>('');
   // Drives the selected point's pulse in the 3D cloud — true only while audio sounds.
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  // Resolved audio URL of the picked sample; handed to the corner CircularWavePlayer,
+  // which owns decode + transport (there is no <audio> element in this tab any more).
+  const [selectedSrc, setSelectedSrc] = useState<string | null>(null);
 
   // Distinct groups → their subgroups, with per-group and per-subgroup file
   // counts, for the nested legend.
@@ -128,9 +131,10 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
     const item = data[index];
     if (!item) return;
     onSound?.(item.metadata.name || '');
-    if (!isTauri() && audioFiles.length === 0) { setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
+    if (!isTauri() && audioFiles.length === 0) { setSelectedSrc(null); setPlayMsg('No audio linked — click "Load Sounds" in the header.'); return; }
     const src = await resolveAudioUrl(audioFiles, item);
     if (!src) {
+      setSelectedSrc(null);
       if (!isTauri()) {
           setPlayMsg(`Click 'Load Sounds' above to pick the ${item.metadata.folder} directory and enable playback.`);
       } else {
@@ -138,21 +142,14 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
       }
       return;
     }
-    const el = audioRef.current;
-    if (el) {
-      document.querySelectorAll('audio').forEach(a => a.pause());
-      if (el.src.startsWith('blob:')) URL.revokeObjectURL(el.src);
-      el.currentTime = 0;
-      el.src = src;
-      el.volume = 1;
-      setPlayMsg('');
-      el.play().then(() => setPlayMsg('')).catch(err => setPlayMsg(`Playback failed: ${err?.message || err}`));
-    }
+    // The corner player takes it from here: it points its audio at src, plays (the pick
+    // is the user gesture), decodes the ring, and reports play/stop via onPlayingChange.
+    setPlayMsg('');
+    setSelectedSrc(src);
   };
 
-  const replay = () => { audioRef.current?.play().catch(() => {}); };
-
   const selected = selectedIndex != null ? data[selectedIndex] : null;
+  const selectedColor = selected ? ucsSubColor(selected.ucs?.category || '', (selected.ucs?.subcategory || '').trim()) : '#f4902c';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
@@ -175,28 +172,33 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
             playing={isPlaying}
           />
         </Suspense>
-        <audio ref={audioRef} style={{ display: 'none' }}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          onEnded={() => setIsPlaying(false)}
-          onError={() => { setIsPlaying(false); setPlayMsg('Browser could not decode this audio file.'); }} />
-
         {/* Selected sample readout (Top Left) */}
         {selected && (
           <div style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.65)', padding: '0.6rem 0.9rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '340px' }}>
             <div style={{ color: '#FCD34D', fontSize: '0.85rem', marginBottom: '0.2rem' }}>{selected.metadata?.name}</div>
             <div className="text-secondary" style={{ fontSize: '0.75rem' }}>{selected.classification?.group}{selected.classification?.subgroup ? ` / ${selected.classification?.subgroup}` : ''} · {selected.classification?.timbre} · {selected.metadata?.length_seconds?.toFixed(2)}s</div>
-            <button className="btn secondary" style={{ marginTop: '0.4rem', padding: '0.15rem 0.6rem', fontSize: '0.75rem' }} onClick={replay}>▶ Play</button>
             {playMsg && <div style={{ marginTop: '0.35rem', fontSize: '0.72rem', color: '#f59e0b' }}>{playMsg}</div>}
           </div>
         )}
 
-        {/* Instructions (Bottom Right) */}
-        <div className="hide-on-mobile" style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', zIndex: 10 }}>
-             <p className="text-secondary" style={{ background: 'rgba(0,0,0,0.6)', padding: '0.6rem 1rem', border: '1px solid rgba(255,255,255,0.1)', margin: 0 }}>
-               🖱️ Click a dot to hear it • Drag: orbit • Scroll: zoom
-             </p>
-        </div>
+        {/* Bottom Right: the circular wave player once a sample is picked, otherwise the hint. */}
+        {selectedSrc ? (
+          <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', zIndex: 15 }}>
+            <CircularWavePlayer
+              src={selectedSrc}
+              name={selected?.metadata?.name || ''}
+              color={selectedColor}
+              size={180}
+              onPlayingChange={setIsPlaying}
+            />
+          </div>
+        ) : (
+          <div className="hide-on-mobile" style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', zIndex: 10 }}>
+               <p className="text-secondary" style={{ background: 'rgba(0,0,0,0.6)', padding: '0.6rem 1rem', border: '1px solid rgba(255,255,255,0.1)', margin: 0 }}>
+                 🖱️ Click a dot to hear it • Drag: orbit • Scroll: zoom
+               </p>
+          </div>
+        )}
 
         {/* Overlay Toggles (Top Right) */}
         <div style={{ position: 'absolute', top: '1rem', right: '1rem', zIndex: 20, display: 'flex', gap: '0.5rem' }}>

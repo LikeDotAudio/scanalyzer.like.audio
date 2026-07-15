@@ -21,6 +21,18 @@ const regionColor = (i: number) => `hsl(${(i * 47) % 360} 75% 58%)`;
 const fmt = (s: number) => `${s.toFixed(3)}s`;
 const HANDLE_H = 8; // px height of the drag tabs on the in/out boundary lines
 
+// A source filename often packs several pre-made names, dash-separated, e.g.
+//   "93 - CRASHES WOOD - CRASHES CONCRETE - HEAVY WOOD CRASH.mp3"
+// Split those into individual name options (dropping the extension and any pure-number
+// index token like the leading "93") so each can be offered as a region name.
+const parseNameOptions = (fileName: string): string[] => {
+  const stem = (fileName || '').replace(/\.[^.]+$/, '');
+  const seen = new Set<string>();
+  return stem.split(/\s+-\s+/)
+    .map(s => s.trim())
+    .filter(s => s.length > 0 && !/^\d+$/.test(s) && !seen.has(s) && seen.add(s));
+};
+
 export default function ExtractorTab({ analysisResult, audioFiles, onSound, setAnalysisResult }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
   const [multiOnly, setMultiOnly] = useState(false);
@@ -54,6 +66,13 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
 
   const color = useMemo(
     () => ucsSubColor(selectedItem?.ucs?.category || '', (selectedItem?.ucs?.subcategory || '').trim()),
+    [selectedItem],
+  );
+
+  // Pre-made names packed into the source filename (dash-separated), offered as options
+  // for each region's name — via a datalist on the inputs and an assign-in-order button.
+  const nameOptions = useMemo(
+    () => parseNameOptions(selectedItem?.metadata?.name || ''),
     [selectedItem],
   );
 
@@ -389,6 +408,12 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     }));
   };
   const deleteRegion = (i: number) => setRegions(rs => rs.filter((_, j) => j !== i).map((r, j) => ({ ...r, index: j })));
+  // Fill region names from the filename's pre-made names, in order (region 1 ← first name).
+  // Regions past the last available name keep whatever they already had.
+  const applyNameOptions = () => {
+    if (!nameOptions.length) return;
+    setRegions(rs => rs.map((r, i) => (i < nameOptions.length ? { ...r, name: nameOptions[i] } : r)));
+  };
   const addRegion = () => setRegions(rs => {
     const start = rs.length ? rs[rs.length - 1].end_seconds : 0;
     const end = Math.min(lengthRef.current || start + 0.5, start + 0.5);
@@ -570,6 +595,13 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
                 onClick={() => { setParams(DEFAULT_REGION_PARAMS); recompute(DEFAULT_REGION_PARAMS, regions); }}>Reset</button>
             </div>
 
+            {/* Pre-made names parsed from the filename — offered on every region name input. */}
+            {nameOptions.length > 0 && (
+              <datalist id="region-name-options">
+                {nameOptions.map((n, i) => <option key={i} value={n} />)}
+              </datalist>
+            )}
+
             {/* Region table */}
             <div style={{ flex: 1, overflowY: 'auto', padding: '0.25rem 0.5rem' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.74rem' }}>
@@ -584,6 +616,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
                       <td style={cell}><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: regionColor(i), marginRight: 4 }} />{i + 1}</td>
                       <td style={cell}>
                         <input value={r.name} placeholder={`region_${i + 1}`} onChange={e => updateRegion(i, { name: e.target.value })}
+                          list={nameOptions.length ? 'region-name-options' : undefined}
                           style={{ ...numInput, width: 150 }} />
                       </td>
                       <td style={cell}><input type="number" step={0.001} value={Number(r.start_seconds.toFixed(3))} onChange={e => updateRegion(i, { start_seconds: Number(e.target.value) })} style={numInput} /></td>
@@ -607,6 +640,13 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
             {/* Export row */}
             <div style={{ padding: '0.5rem 0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
               <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={addRegion}>＋ Add region</button>
+              {nameOptions.length > 0 && (
+                <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
+                  onClick={applyNameOptions} disabled={!regions.length}
+                  title={`Assign the ${nameOptions.length} pre-made name(s) from the filename to the regions in order`}>
+                  🏷 Apply names ({nameOptions.length})
+                </button>
+              )}
               <div style={{ flex: 1 }} />
               <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={exportJson} disabled={!regions.length}>⬇ JSON</button>
               <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={exportCsv} disabled={!regions.length}>⬇ CSV</button>
