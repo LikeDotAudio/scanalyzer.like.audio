@@ -27,6 +27,23 @@ interface CloudTabProps {
 const PREF = 'scanalyzer_cloud_v2_';
 const getPref = (key: string, def: string) => localStorage.getItem(PREF + key) || def;
 
+// Shown in place of the 3D cloud when WebGL can't start. The rest of the app (the 2D view,
+// Stats, Examiner, Extractor) doesn't need the GPU and keeps working.
+function WebGLUnavailable() {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', padding: '2rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+      <div style={{ fontSize: '2rem' }}>🧊</div>
+      <div style={{ color: 'var(--text-primary)', fontSize: '1rem', fontWeight: 600 }}>3D view unavailable</div>
+      <div style={{ fontSize: '0.85rem', maxWidth: 460, lineHeight: 1.5 }}>
+        WebGL couldn't start in this environment (GPU disabled, a sandboxed webview, or
+        hardware acceleration turned off). Everything else — the 2D view, Stats, Examiner and
+        Extractor — works without it. Enable hardware acceleration / GPU access to restore the
+        3D cloud.
+      </div>
+    </div>
+  );
+}
+
 export default function CloudTab({ analysisResult, audioFiles, onSound, onExamine, onExtract }: CloudTabProps) {
   const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
   const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
@@ -171,14 +188,20 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onExamin
       </div>
       {/* 3D WebGL Canvas Area */}
       <section className="main-view glass-panel" style={{ margin: 0, padding: 0, overflow: 'hidden', flex: 1, position: 'relative' }}>
-        <Suspense fallback={<div style={{ color: 'white', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>Initializing 3D Engine...</div>}>
-          <SampleCloud
-            data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
-            sizeAxis={sizeAxis} colorBy={colorBy} shapeBy={shapeBy} hiddenGroups={hiddenGroups}
-            selectedIndex={selectedIndex} onPick={handlePick} showAxes={showAxes}
-            playing={isPlaying}
-          />
-        </Suspense>
+        {glOk ? (
+          <WebGLBoundary fallback={<WebGLUnavailable />}>
+            <Suspense fallback={<div style={{ color: 'white', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>Initializing 3D Engine...</div>}>
+              <SampleCloud
+                data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
+                sizeAxis={sizeAxis} colorBy={colorBy} shapeBy={shapeBy} hiddenGroups={hiddenGroups}
+                selectedIndex={selectedIndex} onPick={handlePick} showAxes={showAxes}
+                playing={isPlaying}
+              />
+            </Suspense>
+          </WebGLBoundary>
+        ) : (
+          <WebGLUnavailable />
+        )}
         {/* Selected sample readout (Top Left) */}
         {selected && (
           <div style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.65)', padding: '0.6rem 0.9rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '340px' }}>
