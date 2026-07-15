@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/gen-musicprod.mjs && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
     "gen:logo": "node scripts/gen-logo.mjs",
-    "tauri": "tauri",
-    "gen:musicprod": "node scripts/gen-musicprod.mjs"
+    "tauri": "tauri"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

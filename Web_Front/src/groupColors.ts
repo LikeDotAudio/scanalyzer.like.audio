@@ -139,102 +139,53 @@ export function ucsSubKey(category: string, subcategory: string): string {
 }
 
 /**
- * The two axes the analyzer actually computes, behind one accessor, so the cloud,
- * its legend, the scope bars and the hide/show filters all read a record the same
- * way. These are the only two taxonomies:
+ * The single taxonomy the analyzer computes, behind one accessor so the cloud, its
+ * legend, the scope bars and the hide/show filters all read a record the same way:
  *
- *   'Music production' — music_production_category -> group   (what ROLE it plays)
- *   'UCS'              — ucs.category -> ucs.subcategory      (what the sound IS)
+ *   'UCS' — ucs.category -> ucs.subcategory   (what the sound IS)
  *
- * The standalone "Name groups" taxonomy is gone: the drum-pack group (Kick, Snare,
- * Guitar, …) is now the SECOND level under its music-production role, so nothing
- * is lost — a role opens into its groups.
+ * It is kept as a named type (rather than inlined) because the cloud, legend and scope
+ * components still thread a `taxonomy` value through; there is just one value now.
  */
-export type Taxonomy = 'UCS' | 'Music production';
+export type Taxonomy = 'UCS';
 
-export function taxonomyOf(colorBy: string): Taxonomy {
-  return colorBy.startsWith('UCS') ? 'UCS' : 'Music production';
+/** [category, subcategory] for a record. */
+export function taxonomyKeys(item: any, _taxonomy: Taxonomy = 'UCS'): [string, string] {
+  return [item.ucs?.category || '(unclassified)', (item.ucs?.subcategory || '').trim()];
 }
 
-/** [top, sub] for a record under the given taxonomy. */
-export function taxonomyKeys(item: any, taxonomy: Taxonomy): [string, string] {
-  if (taxonomy === 'UCS') {
-    return [item.ucs?.category || '(unclassified)', (item.ucs?.subcategory || '').trim()];
-  }
-  const group = (item.classification?.group || 'Unclassified').trim();
-  // A record analyzed before MUSICPROD has no role — derive it from the group.
-  const role = item.classification?.music_production_category || musicProdCategory(group);
-  return [role, group];
+export function taxonomyColor(top: string, sub: string, _taxonomy: Taxonomy = 'UCS'): string {
+  return ucsSubColor(top, sub);
 }
 
-export function taxonomyColor(top: string, sub: string, taxonomy: Taxonomy): string {
-  if (taxonomy === 'UCS') return ucsSubColor(top, sub);
-  // The role fixes the hue; the group under it is a shade of that hue.
-  return sub ? groupColor(sub, '') : musicProdColor(top);
-}
-
-// --- UCS-Prod-as-a-top-level-scope ---------------------------------------------------
-// The 17 music-production roles (MUSICPROD.json) sit ALONGSIDE the UCS categories at the
-// top of the scope, not under MUSICAL. Every record has both a ucs.category and a role,
-// and the two name sets are disjoint (no UCS category is called "PERCUSSION"), so a chip's
-// name alone says which axis it scopes — no extra state, no taxonomy switch.
-
-/** The music-production role names — the top-level MUSICPROD categories. */
-export const PROD_ROLES: ReadonlySet<string> = new Set(CATEGORY_ORDER);
-
-/** True when a scope chip is a production role rather than a UCS category. */
-export function isProdRole(name: string): boolean {
-  return PROD_ROLES.has(name);
-}
-
-/** A record's production role, deriving it from the group for pre-MUSICPROD records. */
-export function prodRoleOf(item: any): string {
-  return item?.classification?.music_production_category
-    || musicProdCategory(item?.classification?.group || '');
-}
-
-/** Does a record fall in the selected scope? `group` may be a UCS category OR a
- *  production role; the sub level is the UCS subcategory under a category, or the
- *  filename group under a role. */
+/** Does a record fall in the selected scope? `group` is a UCS category and `sub` its
+ *  UCS subcategory. */
 export function matchesScope(item: any, group: string | null, sub: string | null): boolean {
   if (!group) return true;
-  if (isProdRole(group)) {
-    if (prodRoleOf(item) !== group) return false;
-    if (sub && (item?.classification?.group || 'Unclassified').trim() !== sub) return false;
-    return true;
-  }
   const [g, sg] = taxonomyKeys(item, 'UCS');
   if (g !== group) return false;
   if (sub && sg !== sub) return false;
   return true;
 }
 
-/** The sub-level chips available under a selected top-level scope. */
+/** The UCS subcategory chips available under a selected category. */
 export function scopeSubgroups(items: any[], group: string): string[] {
   const s = new Set<string>();
-  if (isProdRole(group)) {
-    for (const it of items) {
-      if (prodRoleOf(it) !== group) continue;
-      const g = (it?.classification?.group || '').trim();
-      if (g && g !== 'Unclassified') s.add(g);
-    }
-  } else {
-    for (const it of items) {
-      const [g, sg] = taxonomyKeys(it, 'UCS');
-      if (g === group && sg) s.add(sg);
-    }
+  for (const it of items) {
+    const [g, sg] = taxonomyKeys(it, 'UCS');
+    if (g === group && sg) s.add(sg);
   }
   return Array.from(s).sort();
 }
 
-/** Colour for a top-level scope chip, whichever axis it belongs to. */
+/** Colour for a top-level scope chip (a UCS category). */
 export function scopeChipColor(name: string): string {
-  return isProdRole(name) ? musicProdColor(name) : ucsColor(name);
+  return ucsColor(name);
 }
 
-/** Colour for a sub-level scope chip under a selected top-level scope. */
+/** Colour for a sub-level scope chip (a UCS subcategory under a category). */
 export function scopeSubColor(group: string, sub: string): string {
-  return isProdRole(group) ? groupColor(sub, '') : ucsSubColor(group, sub);
+  return ucsSubColor(group, sub);
 }
 
 /** One candidate placement for a record: the matcher's winner, or a runner-up. */
@@ -277,20 +228,15 @@ export function ucsCandidates(item: any): Candidate[] {
 }
 
 /**
- * Does a record belong in [group, sub] under this taxonomy, and did it get there
- * on its primary classification or only via an alternative?
+ * Does a record belong in [group, sub], and did it get there on its primary UCS
+ * classification or only via an alternative (runner-up) candidate?
  */
 export function taxonomyMatch(
   item: any,
-  taxonomy: Taxonomy,
+  _taxonomy: Taxonomy,
   group: string | null,
   sub: string | null,
 ): { match: boolean; viaAlternative: boolean } {
-  if (taxonomy !== 'UCS') {
-    const [top, s] = taxonomyKeys(item, taxonomy);
-    const match = (!group || top === group) && (!sub || s === sub);
-    return { match, viaAlternative: false };
-  }
   const hits = ucsCandidates(item).filter(c =>
     (!group || c.category === group) && (!sub || c.subcategory === sub));
   if (!hits.length) return { match: false, viaAlternative: false };

@@ -47,6 +47,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const [plotAll, setPlotAll] = useState(false);
   const [filterText, setFilterText] = useState('');
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
   // Circular waveform preview of the last-picked point: mono samples + ring colour.
   const [ring, setRing] = useState<{ samples: Float32Array; color: string; name: string } | null>(null);
   const decodeCtxRef = useRef<AudioContext | null>(null);
@@ -117,6 +118,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       if (audioRef.current.src.startsWith('blob:')) URL.revokeObjectURL(audioRef.current.src);
       audioRef.current.currentTime = 0;
       audioRef.current.src = src;
+      audioRef.current.loop = true; // the circular player loops, like the 3D view
       audioRef.current.play().catch(() => {});
       setNowPlaying(item.metadata.name);
       drawRing(item, src);
@@ -217,7 +219,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
               <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} samples in scope</span>
               <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', marginLeft: '0.5rem' }} onClick={() => audioRef.current?.play()}>▶</button>
               <span className="text-secondary" style={{ fontSize: '0.72rem', minWidth: '120px' }}>{nowPlaying || 'click a point to play'}</span>
-              <audio ref={audioRef} style={{ display: 'none' }} />
+              <audio ref={audioRef} style={{ display: 'none' }} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
             </>
           }
         />
@@ -272,7 +274,11 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
           zIndex: 20, pointerEvents: 'none',
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem',
         }}>
-          <RadialWaveform samples={ring.samples} color={ring.color} size={240} />
+          <RadialWaveform samples={ring.samples} color={ring.color} size={240}
+            playing={playing}
+            onPlay={() => { const el = audioRef.current; if (!el) return; el.paused ? el.play().catch(() => {}) : el.pause(); }}
+            getProgress={() => { const el = audioRef.current; return el && el.duration ? el.currentTime / el.duration : null; }}
+            onScrub={(f) => { const el = audioRef.current; if (!el || !el.duration) return; el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); }} />
           <div style={{
             fontSize: '0.8rem', maxWidth: 260, textAlign: 'center', color: '#fff',
             textShadow: '0 1px 3px rgba(0,0,0,0.9)',

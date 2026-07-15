@@ -2,7 +2,7 @@ import { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useThree, useFrame, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
-import { musicProdCategory, subKey, ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
+import { subKey, ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
 import type { Taxonomy } from '../groupColors'
 
 // Feature registry: label → how to read it. Numeric features are normalized
@@ -93,10 +93,11 @@ function getShapeFor(it: any, shapeBy: string): string {
   if (shapeBy === 'Uniform') return 'sphere';
 
   const g = (it.classification?.group || '').toLowerCase();
-  // Not a scope taxonomy — just a shape heuristic. Instrument-family shapes lean on the
-  // production role where the group name is ambiguous.
+  // Not a scope taxonomy — just a shape heuristic. `role` is the record's stored
+  // music-production field when present, else its UCS category — which now carries the
+  // instrument family (DRUMS, CYMBALS, …) since MUSICPROD folded into UCS.
   const role = it.classification?.music_production_category
-    || musicProdCategory(it.classification?.group || '');
+    || it.ucs?.category || '';
   const t = (it.classification?.timbre || '').toLowerCase();
   const transient_count = it.envelope?.transient_count ?? 0;
 
@@ -111,14 +112,16 @@ function getShapeFor(it: any, shapeBy: string): string {
     return 'sphere';
   }
 
-  // Instrument (default)
-  if (g.includes('kick') || g.includes('snare') || g.includes('tom') || g.includes('clap')) return 'cylinder';
-  if (g.includes('cymbal') || g.includes('hi-hat') || g.includes('ride') || g.includes('crash') || g.includes('hihat')) return 'disc';
+  // Instrument (default). Group-name substrings first, then the UCS-category / role name.
+  if (g.includes('kick') || g.includes('snare') || g.includes('tom') || g.includes('clap') || role === 'DRUMS') return 'cylinder';
+  if (g.includes('cymbal') || g.includes('hi-hat') || g.includes('ride') || g.includes('crash') || g.includes('hihat') || role === 'CYMBALS') return 'disc';
   if (g === 'ir' || role === 'IMPULSE RESPONSE') return 'diamond';
-  if (g === 'perc' || role === 'PERCUSSION' || role === 'PERCUSSION TUNED' || role === 'SHAKEN') return 'pyramid';
-  if (transient_count > 1 || role === 'LOOP' || role === 'EXPERIMENTAL' || g.includes('loop') || g === 'fx') return 'torus';
-  if (g === 'bass' || g.includes('synth') || role === 'SYNTHESIZED' || role === 'KEYED' || role === 'INSTRUMENT') return 'cube';
-  if (g === 'voice' || g.includes('voice') || role === 'PERFORMANCE') return 'icosahedron';
+  if (g === 'perc' || role === 'PERCUSSION' || role === 'PERCUSSION TUNED' || role === 'SHAKEN' || role === 'MALLET') return 'pyramid';
+  if (transient_count > 1 || role === 'LOOP' || role === 'LOOPS' || role === 'EXPERIMENTAL' || g.includes('loop') || g === 'fx') return 'torus';
+  if (g === 'bass' || g.includes('synth') || role === 'SYNTHESIZED' || role === 'KEYED' || role === 'INSTRUMENT'
+      || role === 'SYNTH' || role === 'KEYBOARD' || role === 'PIANO' || role === 'STRINGS' || role === 'GUITAR'
+      || role === 'BRASS' || role === 'WOODWIND') return 'cube';
+  if (g === 'voice' || g.includes('voice') || role === 'PERFORMANCE' || role === 'VOCALS') return 'icosahedron';
   return 'sphere'; // default for unclassified
 }
 

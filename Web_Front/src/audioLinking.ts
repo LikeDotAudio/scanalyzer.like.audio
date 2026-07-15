@@ -18,8 +18,24 @@ export function filterAudioFiles(files: File[]): File[] {
   return files.filter(f => AUDIO_RE.test(f.name));
 }
 
+// A lightweight, always-readable memory of the last scanned folder's NAME, kept in
+// localStorage — a "cookie" the startup prompt reads synchronously to decide whether to
+// offer a reopen, without first awaiting the IndexedDB handle (which may not even be
+// granted any more). The handle in IndexedDB is what actually reopens it.
+const LAST_FOLDER_KEY = 'scanalyzer_last_folder';
+export function setLastFolderName(name: string) {
+  try { localStorage.setItem(LAST_FOLDER_KEY, name); } catch { /* private mode */ }
+}
+export function getLastFolderName(): string {
+  try { return localStorage.getItem(LAST_FOLDER_KEY) || ''; } catch { return ''; }
+}
+export function clearLastFolderName() {
+  try { localStorage.removeItem(LAST_FOLDER_KEY); } catch { /* private mode */ }
+}
+
 // Simple IndexedDB wrapper for persisting the directory handle
 export async function setDirHandle(handle: any) {
+  if (handle?.name) setLastFolderName(handle.name); // remember its name for the reopen prompt
   return new Promise((resolve) => {
     const req = indexedDB.open('ScanalyzerDB', 1);
     req.onupgradeneeded = (e: any) => { e.target.result.createObjectStore('handles'); };
@@ -52,6 +68,7 @@ export async function getDirHandle(): Promise<any> {
 // so a folder that has since been moved, renamed or deleted leaves a handle that
 // still reads as permission-granted but throws NotFoundError on the first walk.
 export async function clearDirHandle() {
+  clearLastFolderName();
   return new Promise((resolve) => {
     const req = indexedDB.open('ScanalyzerDB', 1);
     req.onupgradeneeded = (e: any) => { e.target.result.createObjectStore('handles'); };

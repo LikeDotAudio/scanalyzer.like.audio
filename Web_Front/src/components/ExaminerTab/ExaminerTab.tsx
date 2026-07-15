@@ -4,7 +4,7 @@ import { generateNewName } from '../../renameConfig';
 import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from '../ScopeBar';
-import { complementColor, ucsColor, ucsSubColor, matchesScope, isProdRole } from '../../groupColors';
+import { complementColor, ucsColor, ucsSubColor, matchesScope } from '../../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
@@ -16,6 +16,8 @@ interface ExaminerTabProps {
   analysisResult: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
+  // Jump to the Extractor tab, filtered to this file name.
+  onSendToExtractor?: (name: string) => void;
 }
 
 
@@ -82,7 +84,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, audioFiles, onSound }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [autoPlay, setAutoPlay] = useState(true);
   const [digging, setDigging] = useState(false);
@@ -139,8 +141,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     const out = analysisResult.filter(it => {
       if (scopeGroup) {
         let hit = matchesScope(it, scopeGroup, scopeSub);
-        // Runner-up matching applies only to UCS categories (a role has no alternatives).
-        if (!hit && !isProdRole(scopeGroup) && ranks.length) {
+        // The scope missed on the primary UCS category — try the runner-up ranks too.
+        if (!hit && ranks.length) {
           hit = ranks.some(r => {
             const alt = it.ucs?.alternatives?.[r];
             if (!alt) return false;
@@ -750,6 +752,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                       <audio ref={audioRef} style={{ display: 'none' }} onEnded={handleEnded} />
                       <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           <button className="btn secondary" onClick={handleDownload} title="Download with rename options">⬇ Download</button>
+                          {onSendToExtractor && <button className="btn secondary" onClick={() => selectedItem?.metadata?.name && onSendToExtractor(selectedItem.metadata.name)} title="Open this file in the Extractor to slice it">✂ Extractor</button>}
                           <button className="btn secondary" onClick={() => audioRef.current?.play()}>▶ Play</button>
                           {digging
                             ? <button className="btn primary" style={{ background: '#ef4444' }} onClick={stopDig}>■ Stop DIG</button>

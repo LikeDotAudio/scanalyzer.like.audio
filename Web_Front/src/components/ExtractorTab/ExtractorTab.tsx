@@ -14,6 +14,9 @@ interface ExtractorTabProps {
   audioFiles: File[];
   onSound?: (name: string) => void;
   setAnalysisResult: (results: any[]) => void;
+  // "Send to Extractor" from the Examiner: filter the file list to this name. The nonce
+  // makes re-sending the same name re-apply the filter.
+  filterHint?: { name: string; nonce: number };
 }
 
 // A distinct hue per region, reused by the arcs, the waveform spans and the table.
@@ -33,8 +36,10 @@ const parseNameOptions = (fileName: string): string[] => {
     .filter(s => s.length > 0 && !/^\d+$/.test(s) && !seen.has(s) && seen.add(s));
 };
 
-export default function ExtractorTab({ analysisResult, audioFiles, onSound, setAnalysisResult }: ExtractorTabProps) {
+export default function ExtractorTab({ analysisResult, audioFiles, onSound, setAnalysisResult, filterHint }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
+  // Apply a "Send to Extractor" filter hint (keyed on its nonce so repeats re-fire).
+  useEffect(() => { if (filterHint?.name) setFilter(filterHint.name); }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
   const [multiOnly, setMultiOnly] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [params, setParams] = useState<RegionParams>(DEFAULT_REGION_PARAMS);
@@ -58,8 +63,10 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   // Active loop window while playing: a hovered region [start,end], or null to loop the
   // whole file. Set by hovering a region on either waveform.
   const loopRegionRef = useRef<{ start: number; end: number } | null>(null);
-  // Which region boundary is being dragged on the linear waveform.
-  const dragRef = useRef<{ region: number; edge: 'start' | 'end' } | null>(null);
+  // Which region boundary is being dragged on the linear waveform, and the tool: 'move'
+  // (grabbed below the centre line → moves the in/out point) or 'fade' (grabbed above the
+  // centre line → adjusts that edge's fade length, leaving the boundary put).
+  const dragRef = useRef<{ region: number; edge: 'start' | 'end'; mode: 'move' | 'fade' } | null>(null);
   const [dropActive, setDropActive] = useState(false);
 
   useEffect(() => () => { decodeCtxRef.current?.close(); }, []);
@@ -160,6 +167,18 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(x0 + 0.5, 0); ctx.lineTo(x0 + 0.5, h);
       ctx.moveTo(x1 - 0.5, 0); ctx.lineTo(x1 - 0.5, h); ctx.stroke();
+      // Fade ramps (drawn in the upper half — the fade tool lives above the centre line):
+      // fade-in climbs 0→full over [start, start+fade]; fade-out falls over [end-fade, end].
+      ctx.strokeStyle = regionColor(i);
+      ctx.lineWidth = 1;
+      if ((r.fade_in_seconds || 0) > 0) {
+        const xf = xOf(r.start_seconds + Math.min(r.fade_in_seconds!, r.end_seconds - r.start_seconds));
+        ctx.beginPath(); ctx.moveTo(x0, h / 2); ctx.lineTo(xf, 0); ctx.stroke();
+      }
+      if ((r.fade_out_seconds || 0) > 0) {
+        const xf = xOf(r.end_seconds - Math.min(r.fade_out_seconds!, r.end_seconds - r.start_seconds));
+        ctx.beginPath(); ctx.moveTo(xf, 0); ctx.lineTo(x1, h / 2); ctx.stroke();
+      }
       // Grab handles: a tab at the top of the in-line and the bottom of the out-line.
       ctx.fillStyle = regionColor(i);
       ctx.fillRect(x0 - 1, 0, 5, HANDLE_H);           // in handle (top-left)
@@ -378,21 +397,40 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     });
     return best;
   };
+  // Above the canvas centre line → the fade tool; below (or on) it → move the boundary.
+  const aboveCenter = (clientY: number): boolean => {
+    const canvas = canvasRef.current;
+    if (!canvas) return false;
+    const rect = canvas.getBoundingClientRect();
+    return (clientY - rect.top) < rect.height / 2;
+  };
   const onWaveDown = (e: React.PointerEvent) => {
     const hit = boundaryHit(e.clientX);
-    if (hit) { dragRef.current = hit; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); }
+    if (hit) {
+      dragRef.current = { ...hit, mode: aboveCenter(e.clientY) ? 'fade' : 'move' };
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    }
   };
   const onWaveMove = (e: React.PointerEvent) => {
     const canvas = canvasRef.current;
     if (dragRef.current) {
       const t = linearTimeAt(e.clientX);
-      const { region, edge } = dragRef.current;
+      const { region, edge, mode } = dragRef.current;
       const r = regions[region];
       if (!r) return;
-      if (edge === 'start') updateRegion(region, { start_seconds: Math.max(0, Math.min(t, r.end_seconds - 0.01)) });
-      else updateRegion(region, { end_seconds: Math.min(lengthRef.current || t, Math.max(t, r.start_seconds + 0.01)) });
+      const span = r.end_seconds - r.start_seconds;
+      if (mode === 'fade') {
+        // Boundary stays put; the drag sets this edge's fade length.
+        if (edge === 'start') updateRegion(region, { fade_in_seconds: Math.max(0, Math.min(t - r.start_seconds, span)) });
+        else updateRegion(region, { fade_out_seconds: Math.max(0, Math.min(r.end_seconds - t, span)) });
+      } else if (edge === 'start') {
+        updateRegion(region, { start_seconds: Math.max(0, Math.min(t, r.end_seconds - 0.01)) });
+      } else {
+        updateRegion(region, { end_seconds: Math.min(lengthRef.current || t, Math.max(t, r.start_seconds + 0.01)) });
+      }
     } else {
-      if (canvas) canvas.style.cursor = boundaryHit(e.clientX) ? 'ew-resize' : 'pointer';
+      // Cursor hints which tool the vertical position will use near a boundary.
+      if (canvas) canvas.style.cursor = boundaryHit(e.clientX) ? (aboveCenter(e.clientY) ? 'crosshair' : 'ew-resize') : 'pointer';
       hoverAtTime(linearTimeAt(e.clientX));
     }
   };
