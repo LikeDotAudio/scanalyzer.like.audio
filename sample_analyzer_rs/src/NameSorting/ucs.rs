@@ -309,14 +309,21 @@ fn unreliable(feature_name: &str, lossy: bool) -> bool {
 
 // ------------------------------------------------------------------- scoring
 
-/// α (signal) and β (text) exponents per honesty tier — spec §5.
+/// α (signal) and β (text) exponents per honesty tier. Rebalanced so the ACOUSTIC
+/// ANALYSIS leads and the name is secondary — the extracted features are strong, so a
+/// bare word ("bass", "kick") should no longer out-vote the physics. Each pair sums to
+/// 1.0, making the posterior a clean weighted geometric mean S^α·T^β (the (α+β)-th root
+/// downstream becomes a no-op) and directly readable as "α% analysis, β% name":
+///   signal_separable / signal_narrowable → 60% analysis, 40% name
+///   semantic_only (weak/no signature)    → 50/50 (name still gets a fair half)
+///   provenance_only                      → name/provenance only, by definition
 fn tier_exponents(tier: &str) -> (f64, f64) {
     match tier {
-        "signal_separable" => (1.0, 1.0),
-        "signal_narrowable" => (0.6, 1.5),
-        "semantic_only" => (0.15, 3.0),
-        "provenance_only" => (0.0, 3.0),
-        _ => (0.5, 1.5),
+        "signal_separable" => (0.6, 0.4),
+        "signal_narrowable" => (0.6, 0.4),
+        "semantic_only" => (0.5, 0.5),
+        "provenance_only" => (0.0, 1.0),
+        _ => (0.55, 0.45),
     }
 }
 
@@ -377,7 +384,11 @@ fn signal_likelihood(sig: &Signature, p: &Peak, lossy: bool) -> f64 {
         wsum += w;
     }
     if wsum <= 0.0 {
-        return 1.0; // no usable priors -> uninformative, not impossible
+        // No usable priors -> NEUTRAL (0.5), not a free perfect 1.0. A category that offers
+        // no acoustic evidence for itself must not out-score one whose physics actually fit
+        // the sound: the old 1.0 is exactly why a signature-less "bass boat" / "impact" could
+        // beat a real bass/kick on a bare word. It is still not 0.0 (that would be "impossible").
+        return 0.5;
     }
     (acc / wsum).exp()
 }
