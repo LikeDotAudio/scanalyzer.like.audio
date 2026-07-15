@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { type Taxonomy, taxonomyKeys, scopeSubgroups, scopeChipColor, scopeSubColor } from '../groupColors';
 import { altCategory } from '../ucsIndex';
 import { useIsNarrow } from '../useIsNarrow';
+import { categoryLabel } from '../categoryEmoji';
 
 interface ScopeBarProps {
   analysisResult: any[];
@@ -62,7 +63,7 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   // A colored left border echoes the selected category's chip colour.
   const scopeSelect = (
     label: string, value: string, options: string[], onPick: (v: string | null) => void,
-    colorOf: (o: string) => string | undefined,
+    colorOf: (o: string) => string | undefined, labelOf: (o: string) => string = (o) => o,
   ) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
       <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{label}</span>
@@ -72,7 +73,7 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
           borderRadius: '4px', padding: '0.3rem 0.4rem', fontSize: '0.8rem',
           opacity: filtering ? 0.35 : 1, cursor: filtering ? 'not-allowed' : 'pointer' }}>
         <option value="">All</option>
-        {options.map(o => <option key={o} value={o}>{o}</option>)}
+        {options.map(o => <option key={o} value={o}>{labelOf(o)}</option>)}
       </select>
     </div>
   );
@@ -80,12 +81,12 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
       {isNarrow ? (
-        scopeSelect('Scope:', group || '', ucsCats, g => { setGroup(g); setSub(null); }, scopeChipColor)
+        scopeSelect('Scope:', group || '', ucsCats, g => { setGroup(g); setSub(null); }, scopeChipColor, categoryLabel)
       ) : (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
           {filterBtn('All', !group, () => { setGroup(null); setSub(null); }, undefined, filtering)}
-          {ucsCats.map(g => filterBtn(g, group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g), filtering))}
+          {ucsCats.map(g => filterBtn(categoryLabel(g), group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g), filtering))}
         </div>
       )}
       {group && subgroups.length > 0 && (

@@ -1,4 +1,5 @@
 import { ucsColor, ucsSubColor } from '../groupColors';
+import { categoryLabel } from '../categoryEmoji';
 
 // One footer shared by every tab: the selected sample's transport (download / play-stop /
 // dig / autoplay), its length + UCS category + subcategory, and "push to" buttons that
@@ -49,7 +50,7 @@ export default function SampleFooter({
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0, marginLeft: '0.25rem', fontSize: '0.78rem' }}>
         <span style={{ color: 'var(--accent-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 240 }} title={name}>{name || '—'}</span>
         {Number.isFinite(len) && <span className="text-secondary">· {len.toFixed(2)} s</span>}
-        {cat && <span style={{ color: ucsColor(cat) }}>· {cat}</span>}
+        {cat && <span style={{ color: ucsColor(cat) }} title={cat}>· {categoryLabel(cat)}</span>}
         {sub && <span style={{ color: ucsSubColor(cat, sub) }}>/ {sub}</span>}
       </div>
 

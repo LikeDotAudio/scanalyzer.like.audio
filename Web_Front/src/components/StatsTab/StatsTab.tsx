@@ -6,6 +6,7 @@ import ScopeBar from '../ScopeBar'
 import RadialWaveform from '../examiner/RadialWaveform'
 import { toMono } from '../examiner/audioAnalysis'
 import { useIsNarrow } from '../../useIsNarrow'
+import { categoryLabel } from '../../categoryEmoji'
 
 interface StatsTabProps {
   analysisResult: any[];
@@ -247,8 +248,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
               <Pie data={categoryData} cx="50%" cy="50%" innerRadius={45} outerRadius={80} paddingAngle={3} dataKey="value" nameKey="name">
                 {categoryData.map((e, i) => <Cell key={i} fill={ucsColor(e.name)} />)}
               </Pie>
-              <Tooltip contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} />
-              <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
+              <Tooltip contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} formatter={(v, n) => [v, categoryLabel(String(n))]} />
+              <Legend wrapperStyle={{ fontSize: '0.7rem' }} formatter={(v) => categoryLabel(String(v))} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -262,7 +263,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
             <BarChart data={group ? subgroupData : categoryData} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={false} />
               <XAxis type="number" stroke="var(--text-secondary)" fontSize={11} />
-              <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" width={group ? 130 : 90} fontSize={11} />
+              <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" width={group ? 130 : 110} fontSize={11}
+                tickFormatter={group ? undefined : (v) => categoryLabel(String(v))} />
               <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }} />
               <Bar dataKey="value">
                 {(group ? subgroupData : categoryData).map((e: any, i) => (

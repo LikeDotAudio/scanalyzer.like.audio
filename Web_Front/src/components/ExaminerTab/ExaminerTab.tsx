@@ -6,6 +6,8 @@ import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from '../ScopeBar';
 import { complementColor, ucsColor, ucsSubColor, matchesScope } from '../../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
+import { categoryEmoji, categoryLabel } from '../../categoryEmoji';
+import { useIsNarrow } from '../../useIsNarrow';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
@@ -94,6 +96,7 @@ function subCell(text: string, prob: number, textColor: string) {
 
 export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor, filterHint }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const isNarrow = useIsNarrow();
   const [autoPlay, setAutoPlay] = useState(true);
   const [digging, setDigging] = useState(false);
   const playheadRef = useRef<HTMLDivElement>(null);
@@ -753,7 +756,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                                               opacity: !isSelected && viaAlt.has(item) ? 0.75 : 1,
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category ? (isNarrow ? (categoryEmoji(item.ucs.category) || item.ucs.category) : categoryLabel(item.ucs.category)) : ''}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell()} title={item.ucs.subcategory}>{subCell(item.ucs.subcategory, item.ucs.confidence, item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)')}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0])}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[0])}>{subCell(altSubcategory(item.ucs?.alternatives?.[0]), altProbability(item.ucs?.alternatives?.[0]), 'var(--text-secondary)')}</td>}

@@ -6,6 +6,7 @@ import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examin
 import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
 import ScopeBar from '../ScopeBar';
 import { useIsNarrow } from '../../useIsNarrow';
+import { categoryEmoji, categoryLabel } from '../../categoryEmoji';
 import FileGroups from './FileGroups';
 import WavePlayer from './WavePlayer';
 import WaveCircle from './WaveCircle';
@@ -479,7 +480,9 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     if (a.status === 'error') return <span style={{ color: '#ef4444' }} title={a.message}>error</span>;
     const cat = (a as any).ucs?.category || '—';
     const sub = ((a as any).ucs?.subcategory || '').trim();
-    return <span style={{ color: ucsSubColor(cat, sub) }} title={`${cat}${sub ? ` / ${sub}` : ''}`}>{cat}{sub ? ` / ${sub}` : ''}</span>;
+    // Emoji + name normally; on narrow (column shrunk) just the category emoji.
+    const disp = isNarrow ? (categoryEmoji(cat) || cat) : `${categoryLabel(cat)}${sub ? ` / ${sub}` : ''}`;
+    return <span style={{ color: ucsSubColor(cat, sub) }} title={`${cat}${sub ? ` / ${sub}` : ''}`}>{disp}</span>;
   };
 
   // The circular player. Desktop: a fixed right-hand column. Mobile: full-width, tucked

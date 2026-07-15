@@ -1,5 +1,6 @@
 import { subKey, taxonomyColor } from '../../groupColors';
 import type { Taxonomy } from '../../groupColors';
+import { categoryLabel } from '../../categoryEmoji';
 
 interface GroupsMenuProps {
   groupTree: { group: string; count: number; subs: { name: string; count: number }[] }[];
@@ -42,7 +43,7 @@ export default function GroupsMenu({ groupTree, taxonomy, hiddenGroups, setHidde
               </span>
               <div onClick={() => toggleKey(group)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', opacity: gHidden ? 0.35 : 1, flex: 1 }}>
                 <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: taxonomyColor(group, '', taxonomy), flexShrink: 0 }} />
-                <span style={{ textDecoration: gHidden ? 'line-through' : 'none' }}>{group}</span>
+                <span style={{ textDecoration: gHidden ? 'line-through' : 'none' }} title={group}>{categoryLabel(group)}</span>
                 <span className="text-secondary" style={{ fontSize: '0.65rem' }}>({count.toLocaleString()})</span>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ucsColor } from '../../groupColors';
+import { categoryLabel } from '../../categoryEmoji';
 
 type GroupRow = { kind: 'header'; category: string; count: number } | { kind: 'file'; item: any };
 
@@ -45,7 +46,7 @@ export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMulti
                 padding: '0.25rem 0.5rem', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase',
                 letterSpacing: '0.03em', color: ucsColor(row.category), borderTop: '1px solid var(--border-color)',
                 borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.category}</span>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={row.category}>{categoryLabel(row.category)}</span>
                 <span style={{ opacity: 0.6, flexShrink: 0 }}>{row.count}</span>
               </div>
             );
