@@ -170,19 +170,14 @@ export function setAudioRoot(dir: string) {
 
 const isAbsolutePath = (p: string) => p.startsWith('/') || /^[A-Za-z]:[\\/]/.test(p);
 
-export function resolveAudioSrc(files: File[], item: any): string | null {
-  const recorded = String(item?.metadata?.path || '');
-
-  if (isTauri() && recorded) {
-    if (isAbsolutePath(recorded)) return convertFileSrc(recorded);
-    // Relative path (a .PEAK scanned in the browser): join it onto the linked root.
-    const root = getAudioRoot().replace(/[/\\]+$/, '');
-    return root ? convertFileSrc(`${root}/${recorded}`) : null;
-  }
-
-  const wantPath = recorded.replace(/^\.?\/+/, '');
+/** Find the in-memory File that backs a record — by relative path first, then by basename
+ *  / recorded name. This is how the browser build (and the bundled demo pack, fetched into
+ *  `files` as blobs) resolves audio; the desktop build also uses it so those blobs play
+ *  without going through the filesystem asset protocol. */
+export function findAudioFile(files: File[], item: any): File | undefined {
+  const wantPath = String(item?.metadata?.path || '').replace(/^\.?\/+/, '');
   const wantName = String(item?.metadata?.name || '').toLowerCase();
-  
+
   let found: File | undefined;
   if (wantPath) {
     found = files.find(f => {
@@ -195,7 +190,24 @@ export function resolveAudioSrc(files: File[], item: any): string | null {
     found = files.find(f => f.name.toLowerCase() === wantBase)
         || (wantName ? files.find(f => f.name.toLowerCase() === wantName) : undefined);
   }
-  
+  return found;
+}
+
+export function resolveAudioSrc(files: File[], item: any): string | null {
+  const recorded = String(item?.metadata?.path || '');
+
+  if (isTauri() && recorded) {
+    // A matching in-memory blob (demo pack / drag-drop) wins even on desktop — its recorded
+    // path is a bundled web path, not a real file on disk.
+    const mem = findAudioFile(files, item);
+    if (mem) return URL.createObjectURL(mem);
+    if (isAbsolutePath(recorded)) return convertFileSrc(recorded);
+    // Relative path (a .PEAK scanned in the browser): join it onto the linked root.
+    const root = getAudioRoot().replace(/[/\\]+$/, '');
+    return root ? convertFileSrc(`${root}/${recorded}`) : null;
+  }
+
+  const found = findAudioFile(files, item);
   return found ? URL.createObjectURL(found) : null;
 }
 
@@ -220,6 +232,11 @@ export async function resolveAudioUrl(files: File[], item: any): Promise<string 
   if (isTauri()) {
     const path = String(item?.metadata?.path || '');
     if (!path) return null;
+    // Bundled demo pack (and drag-dropped files) live in memory as blobs, with a recorded
+    // path that is NOT a real file on disk. Play those straight from the blob — trying to
+    // read them off the filesystem (or via the asset protocol) just 404s.
+    const mem = findAudioFile(files, item);
+    if (mem) return URL.createObjectURL(mem);
     const { invoke } = await import('@tauri-apps/api/core');
     const tryRead = async (p: string): Promise<string | null> => {
       try {
