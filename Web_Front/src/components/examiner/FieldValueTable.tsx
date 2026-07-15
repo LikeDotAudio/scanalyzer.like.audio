@@ -35,6 +35,59 @@ function format(v: any): string {
 const childEntries = (v: any): [string, any][] =>
   Array.isArray(v) ? v.map((e, i) => [`#${i + 1}`, e] as [string, any]) : Object.entries(v);
 
+// A tiny, dependency-free YAML emitter for the PEAK record (plain JSON: objects, arrays,
+// numbers, strings, booleans, null). Enough for a faithful, human-readable clipboard dump.
+function yamlScalar(v: any): string {
+  if (v === null || v === undefined) return 'null';
+  if (typeof v === 'boolean') return v ? 'true' : 'false';
+  if (typeof v === 'number') return Number.isFinite(v) ? String(v) : 'null';
+  const s = String(v);
+  // Quote when the string could be misread as another type or would break flow parsing.
+  const needsQuote =
+    s === '' ||
+    /^\s|\s$/.test(s) ||
+    /[:#\-?,[\]{}&*!|>'"%@`]/.test(s) ||
+    /^(true|false|null|yes|no|on|off|~)$/i.test(s) ||
+    /^[+-]?(\d|\.\d)/.test(s);
+  return needsQuote
+    ? `"${s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`
+    : s;
+}
+
+function yamlLines(value: any, indent: number): string[] {
+  const pad = '  '.repeat(indent);
+  if (Array.isArray(value)) {
+    if (value.length === 0) return [`${pad}[]`];
+    return value.flatMap((el) => {
+      if (isObj(el)) {
+        const sub = yamlLines(el, indent + 1);
+        // Fold the item's first child onto the "- " marker so it reads as one block.
+        return sub.length
+          ? [`${pad}- ${sub[0].slice((indent + 1) * 2)}`, ...sub.slice(1)]
+          : [`${pad}-`];
+      }
+      return [`${pad}- ${yamlScalar(el)}`];
+    });
+  }
+  if (isPlainObj(value)) {
+    const keys = Object.keys(value);
+    if (keys.length === 0) return [`${pad}{}`];
+    return keys.flatMap((k) => {
+      const v = value[k];
+      const filled = isObj(v) && (Array.isArray(v) ? v.length : Object.keys(v).length);
+      if (filled) return [`${pad}${k}:`, ...yamlLines(v, indent + 1)];
+      if (isObj(v)) return [`${pad}${k}: ${Array.isArray(v) ? '[]' : '{}'}`];
+      return [`${pad}${k}: ${yamlScalar(v)}`];
+    });
+  }
+  return [`${pad}${yamlScalar(value)}`];
+}
+
+/** Serialize the whole PEAK record to a YAML document string. */
+function toYaml(item: any): string {
+  return yamlLines(item, 0).join('\n') + '\n';
+}
+
 /** Recursively render rows for one (label, value). Depth drives the indent. */
 function renderNode(label: string, value: any, depth: number, keyPath: string): React.ReactNode[] {
   const indent = { paddingLeft: `${0.4 + depth * 0.85}rem` };
@@ -75,6 +128,19 @@ export default function FieldValueTable({ item }: Props) {
   const shownGroups = activeOnly ? groups.filter(([g]) => g === activeOnly) : groups;
 
   const groupBtn: React.CSSProperties = { padding: '0.1rem 0.4rem', fontSize: '0.68rem' };
+
+  // Copy the whole PEAK record as YAML to the clipboard, with a brief "Copied!" confirmation.
+  const [copied, setCopied] = useState(false);
+  const copyYaml = async () => {
+    if (!item) return;
+    try {
+      await navigator.clipboard.writeText(toYaml(item));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <>
@@ -120,6 +186,16 @@ export default function FieldValueTable({ item }: Props) {
           ))}
         </tbody>
       </table>
+
+      {/* Footer: copy the entire PEAK record to the clipboard as YAML. Sticks to the
+          bottom of the scrolling panel so it's always reachable. */}
+      {item && (
+        <div style={{ position: 'sticky', bottom: 0, zIndex: 2, background: '#1A1D24', padding: '0.35rem 0.4rem', borderTop: '1px solid var(--border-color)' }}>
+          <button className={`btn ${copied ? 'primary' : 'secondary'}`} style={{ width: '100%', padding: '0.3rem 0.4rem', fontSize: '0.72rem' }} onClick={copyYaml}>
+            {copied ? 'Copied!' : 'Copy PEAK data to YAML'}
+          </button>
+        </div>
+      )}
     </>
   );
 }
