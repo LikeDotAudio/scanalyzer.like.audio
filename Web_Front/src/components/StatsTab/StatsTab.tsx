@@ -118,7 +118,9 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       if (audioRef.current.src.startsWith('blob:')) URL.revokeObjectURL(audioRef.current.src);
       audioRef.current.currentTime = 0;
       audioRef.current.src = src;
-      audioRef.current.loop = true; // the circular player loops, like the 3D view
+      // Short samples (<4s) play, wait 1s, then replay (set on loadedmetadata below);
+      // longer ones loop gaplessly. Loop is decided once the duration is known.
+      audioRef.current.loop = false;
       audioRef.current.play().catch(() => {});
       setNowPlaying(item.metadata.name);
       drawRing(item, src);
@@ -219,7 +221,10 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
               <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} samples in scope</span>
               <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', marginLeft: '0.5rem' }} onClick={() => audioRef.current?.play()}>▶</button>
               <span className="text-secondary" style={{ fontSize: '0.72rem', minWidth: '120px' }}>{nowPlaying || 'click a point to play'}</span>
-              <audio ref={audioRef} style={{ display: 'none' }} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
+              <audio ref={audioRef} style={{ display: 'none' }}
+                onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
+                onLoadedMetadata={e => { const el = e.currentTarget; el.loop = el.duration >= 4; }}
+                onEnded={e => { const el = e.currentTarget; const src = el.src; if (el.duration < 4) setTimeout(() => { if (el.src === src && el.paused) el.play().catch(() => {}); }, 1000); }} />
             </>
           }
         />

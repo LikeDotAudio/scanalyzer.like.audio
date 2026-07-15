@@ -12,6 +12,9 @@ interface CloudTabProps {
   analysisResult: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
+  // Open the selected file in the Examiner / Extractor (filtered to its name).
+  onExamine?: (name: string) => void;
+  onExtract?: (name: string) => void;
 }
 
 
@@ -23,7 +26,7 @@ interface CloudTabProps {
 const PREF = 'scanalyzer_cloud_v2_';
 const getPref = (key: string, def: string) => localStorage.getItem(PREF + key) || def;
 
-export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudTabProps) {
+export default function CloudTab({ analysisResult, audioFiles, onSound, onExamine, onExtract }: CloudTabProps) {
   const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
   const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
   const [zAxis, setZAxis] = useState(() => getPref('zAxis', 'Complexity'));
@@ -177,6 +180,12 @@ export default function CloudTab({ analysisResult, audioFiles, onSound }: CloudT
           <div style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.65)', padding: '0.6rem 0.9rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '340px' }}>
             <div style={{ color: '#FCD34D', fontSize: '0.85rem', marginBottom: '0.2rem' }}>{selected.metadata?.name}</div>
             <div className="text-secondary" style={{ fontSize: '0.75rem' }}>{selected.classification?.group}{selected.classification?.subgroup ? ` / ${selected.classification?.subgroup}` : ''} · {selected.classification?.timbre} · {selected.metadata?.length_seconds?.toFixed(2)}s</div>
+            {(onExamine || onExtract) && (
+              <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.45rem' }}>
+                {onExamine && <button className="btn secondary" style={{ padding: '0.15rem 0.5rem', fontSize: '0.72rem' }} onClick={() => selected.metadata?.name && onExamine(selected.metadata.name)} title="Open this file in the Examiner">🔍 Examine</button>}
+                {onExtract && <button className="btn secondary" style={{ padding: '0.15rem 0.5rem', fontSize: '0.72rem' }} onClick={() => selected.metadata?.name && onExtract(selected.metadata.name)} title="Open this file in the Extractor">✂ Extract</button>}
+              </div>
+            )}
             {playMsg && <div style={{ marginTop: '0.35rem', fontSize: '0.72rem', color: '#f59e0b' }}>{playMsg}</div>}
           </div>
         )}

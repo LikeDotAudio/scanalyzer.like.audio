@@ -43,6 +43,7 @@ function App() {
   // "Send to Extractor" from the Examiner: a file name + a nonce so re-sending the same
   // name still re-triggers the Extractor's filter.
   const [extractorFilter, setExtractorFilter] = useState<{ name: string; nonce: number }>({ name: '', nonce: 0 })
+  const [examinerFilter, setExaminerFilter] = useState<{ name: string; nonce: number }>({ name: '', nonce: 0 })
 
   // Keep the active tab in sync with the URL hash (linkable / back-forward).
   useEffect(() => {
@@ -317,13 +318,15 @@ function App() {
         </div>
 
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-          <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />
+          <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound}
+            onExamine={(name) => { setExaminerFilter({ name, nonce: Date.now() }); goToTab('examiner'); }}
+            onExtract={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} />
         </div>
 
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
           {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
           {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} onSendToExtractor={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} />}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} filterHint={examinerFilter} onSendToExtractor={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} />}
           {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} filterHint={extractorFilter} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
         </Suspense>

@@ -18,6 +18,8 @@ interface ExaminerTabProps {
   onSound?: (name: string) => void;
   // Jump to the Extractor tab, filtered to this file name.
   onSendToExtractor?: (name: string) => void;
+  // "Examine this" from the 3D cloud: filter the list to this name (nonce re-fires repeats).
+  filterHint?: { name: string; nonce: number };
 }
 
 
@@ -84,7 +86,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor, filterHint }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [autoPlay, setAutoPlay] = useState(true);
   const [digging, setDigging] = useState(false);
@@ -104,6 +106,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     setScopeSub(null);
     setFilter('');
   }, [analysisResult, taxonomy]);
+  // Apply an "Examine this" filter hint from the cloud. Defined AFTER the reset effect
+  // above so, on mount, it runs last and wins (keyed on nonce so repeats re-fire).
+  useEffect(() => { if (filterHint?.name) setFilter(filterHint.name); }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem(COLS_KEY);
