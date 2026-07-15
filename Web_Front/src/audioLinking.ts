@@ -244,6 +244,10 @@ export async function resolveAudioUrl(files: File[], item: any): Promise<string 
         if (url) return url;
       }
     }
+    // Last resort: a matching in-memory File (e.g. the bundled demo pack fetched into
+    // `files` as blobs) — resolved by name, the same way the browser build plays audio.
+    const fromFiles = resolveAudioSrc(files, item);
+    if (fromFiles) return fromFiles;
     console.warn('[audio] read_audio_bytes failed for', path,
       root ? `(also tried under linked root "${root}")` : '(no audio root linked — link the folder to resolve relative paths)');
     return null;

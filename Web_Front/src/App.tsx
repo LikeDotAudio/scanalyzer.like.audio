@@ -40,6 +40,7 @@ function App() {
   // plus a busy flag while its cached sidecars are being read back in.
   const [reopenName, setReopenName] = useState<string | null>(null)
   const [reopening, setReopening] = useState(false)
+  const [demoLoading, setDemoLoading] = useState(false)
   // "Send to Extractor" from the Examiner: a file name + a nonce so re-sending the same
   // name still re-triggers the Extractor's filter.
   const [extractorFilter, setExtractorFilter] = useState<{ name: string; nonce: number }>({ name: '', nonce: 0 })
@@ -174,6 +175,38 @@ function App() {
     }
   };
 
+  // Load the bundled demo pack — 60 curated samples (music + SFX) with pre-computed
+  // analysis, served from public/SampleSamplesForSampling — so a first-time visitor can
+  // explore without picking a folder. Fetches the aggregate .PEAK for the analysis and
+  // each audio file as a File (so playback resolves it by name, on web and desktop).
+  const loadDemoPack = async () => {
+    setDemoLoading(true);
+    try {
+      const base = `${import.meta.env.BASE_URL || '/'}SampleSamplesForSampling`;
+      const peak = await (await fetch(`${base}/samples.PEAK`)).json();
+      const report = normalizePeakRecords(Array.isArray(peak) ? peak : []);
+      const manifest: { name: string }[] = await (await fetch(`${base}/manifest.json`)).json();
+      const files: File[] = [];
+      for (const m of manifest) {
+        try {
+          const blob = await (await fetch(`${base}/${encodeURIComponent(m.name)}`)).blob();
+          const f = new File([blob], m.name, { type: blob.type });
+          (f as any).relPath = m.name;
+          files.push(f);
+        } catch { /* skip a sample that failed to fetch */ }
+      }
+      setAudioFiles(files);
+      setAnalysisResult(report.records);
+      setSchemaNotice(noticeFor(report.migrated, report.skipped));
+      setReopenName(null);
+      goToTab('cloud');
+    } catch (err) {
+      console.warn('Could not load the demo sample pack.', err);
+    } finally {
+      setDemoLoading(false);
+    }
+  };
+
   // Describe what a migration cost, so blank UCS/loudness columns aren't a mystery.
   const noticeFor = (migrated: number, skipped: number) => {
     const parts: string[] = [];
@@ -298,6 +331,13 @@ function App() {
           <span style={{ flex: 1 }}>Reopen previously scanned folder <strong>“{reopenName}”</strong>? Its cached analysis loads without re-scanning.</span>
           <button className="btn primary" disabled={reopening} onClick={reopenFolder} style={{ padding: '0.2rem 0.7rem', fontSize: '0.75rem' }}>{reopening ? 'Opening…' : 'Open'}</button>
           <button className="btn" onClick={() => setReopenName(null)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '0.2rem 0.6rem', fontSize: '0.75rem' }}>Not now</button>
+        </div>
+      )}
+
+      {!analysisResult.length && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.4rem 0.75rem', background: 'rgba(16,185,129,0.10)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)', fontSize: '0.8rem' }}>
+          <span style={{ flex: 1 }}>New here? Load a curated pack of 30 music + 30 sound-effect samples to explore right away — no folder needed.</span>
+          <button className="btn primary" disabled={demoLoading} onClick={loadDemoPack} style={{ padding: '0.2rem 0.7rem', fontSize: '0.75rem' }}>{demoLoading ? 'Loading…' : '🎧 Sample samples for sampling'}</button>
         </div>
       )}
 
