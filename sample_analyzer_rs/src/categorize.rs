@@ -9,7 +9,24 @@ use std::sync::OnceLock;
 
 use serde::Deserialize;
 
+use crate::envelope::Envelope;
 use crate::normalize::normalize_name;
+
+// Anchor families the fallback logic names directly. They are validated against the JSON
+// at load, so renaming a family in MUSICPROD.json without updating here fails fast rather
+// than silently misfiling every unnamed sound.
+const LOOP: &str = "LOOP";
+const MELODIC: &str = "MELODIC";
+const CORE_KIT: &str = "CORE KIT";
+const IMPULSE_RESPONSE: &str = "IMPULSE RESPONSE";
+const MISC: &str = "MISC";
+
+#[derive(Deserialize)]
+struct FamilyMeta {
+    family: String,
+    #[serde(default)]
+    percussive: bool,
+}
 
 #[derive(Deserialize)]
 struct Variation {
@@ -34,6 +51,7 @@ struct Instrument {
 
 #[derive(Deserialize)]
 struct MusicProd {
+    families: Vec<FamilyMeta>,
     instruments: Vec<Instrument>,
 }
 
@@ -42,6 +60,8 @@ pub struct Taxonomy {
     /// instrument name -> its family. First wins, so a duplicated instrument (the
     /// generic-drum Perc rule appears twice) keeps the family of its first entry.
     family_of: HashMap<String, String>,
+    /// family name -> is it a struck/hit family (root note is usually noise).
+    percussive: HashMap<String, bool>,
 }
 
 /// The non-matchable UCS files bundled by build.rs — MUSICPROD is the only one.
@@ -63,7 +83,26 @@ fn load() -> Taxonomy {
             .entry(inst.instrument.clone())
             .or_insert_with(|| inst.family.clone());
     }
-    Taxonomy { doc, family_of }
+
+    let percussive: HashMap<String, bool> = doc
+        .families
+        .iter()
+        .map(|f| (f.family.clone(), f.percussive))
+        .collect();
+
+    // Fail fast if the JSON renamed a family the fallback logic names by hand.
+    for anchor in [LOOP, MELODIC, CORE_KIT, IMPULSE_RESPONSE, MISC] {
+        assert!(
+            percussive.contains_key(anchor),
+            "MUSICPROD.json has no family {anchor:?} — the fallback logic in categorize.rs \
+             names it directly and would misfile every unnamed sound"
+        );
+    }
+    Taxonomy {
+        doc,
+        family_of,
+        percussive,
+    }
 }
 
 pub fn taxonomy() -> &'static Taxonomy {
@@ -75,6 +114,47 @@ pub fn taxonomy() -> &'static Taxonomy {
 /// falls back to the measured envelope). References into the 'static taxonomy.
 pub fn family_of(group: &str) -> Option<&'static str> {
     taxonomy().family_of.get(group).map(String::as_str)
+}
+
+/// Assign the production FAMILY. A loop is a LOOP whatever it contains; a recognized
+/// instrument maps to its family (MUSICPROD.json); anything the name could not place is
+/// classified by its measured envelope. `subgroup` is unused — the family is decided by
+/// the instrument alone — but kept so the call site and record schema do not change.
+pub fn music_prod_category(
+    group: &str,
+    _subgroup: &str,
+    is_loop: bool,
+    env: &Envelope,
+) -> &'static str {
+    if is_loop {
+        return LOOP;
+    }
+    family_of(group).unwrap_or_else(|| from_envelope(env))
+}
+
+/// A struck / hit family, where a root note is usually meaningless noise. Read from the
+/// `percussive` flag in MUSICPROD.json.
+pub fn is_percussive_family(family: &str) -> bool {
+    taxonomy().percussive.get(family).copied().unwrap_or(false)
+}
+
+/// Family for a file whose name told us nothing — decided by the envelope shape.
+fn from_envelope(env: &Envelope) -> &'static str {
+    match env.shape {
+        "Multi" => LOOP,
+        "Sustained" | "Swell" => MELODIC,
+        "Plucky" => CORE_KIT,
+        "Decaying" => {
+            // Fast attack, no plateau: the length of the die-off separates a hit from a
+            // ringing wash (a reverb-like tail rings well past half a second).
+            if env.decay + env.release > 0.5 {
+                IMPULSE_RESPONSE
+            } else {
+                CORE_KIT
+            }
+        }
+        _ => MISC, // "Silent" or unmeasurable
+    }
 }
 
 /// Categorize a sample by its (full-path) name, tolerant of the many spelling /
@@ -117,7 +197,61 @@ pub fn categorize(name: &str) -> (&'static str, &'static str, &'static str) {
 
 #[cfg(test)]
 mod tests {
-    use super::categorize;
+    use super::{categorize, is_percussive_family, music_prod_category};
+    use crate::envelope::Envelope;
+
+    fn env(shape: &'static str, decay: f64, release: f64) -> Envelope {
+        Envelope {
+            attack: 0.005,
+            decay,
+            sustain: 0.05,
+            release,
+            centroid: 0.2,
+            skew: 0.0,
+            kurt: 0.0,
+            shape,
+            decay_time_60db: None,
+        }
+    }
+
+    #[test]
+    fn instruments_map_to_their_families() {
+        let e = env("Plucky", 0.05, 0.05);
+        assert_eq!(music_prod_category("Kick", "", false, &e), "CORE KIT");
+        assert_eq!(music_prod_category("Snare", "Rimshot", false, &e), "CORE KIT");
+        assert_eq!(music_prod_category("Crash", "", false, &e), "CYMBALS & METALS");
+        assert_eq!(music_prod_category("Shaker", "", false, &e), "HAND PERCUSSION");
+        assert_eq!(music_prod_category("Perc", "", false, &e), "HAND PERCUSSION");
+        assert_eq!(music_prod_category("Conga", "", false, &e), "WORLD & REGIONAL");
+        assert_eq!(music_prod_category("Marimba", "", false, &e), "ORCHESTRAL & PITCHED");
+        assert_eq!(music_prod_category("808", "", false, &e), "ELECTRONIC & DESIGN");
+        assert_eq!(music_prod_category("Vocal", "", false, &e), "ELECTRONIC & DESIGN");
+        assert_eq!(music_prod_category("Guitar", "", false, &e), "MELODIC");
+        assert_eq!(music_prod_category("Keyboards", "Synth", false, &e), "MELODIC");
+        assert_eq!(music_prod_category("IR", "", false, &e), "IMPULSE RESPONSE");
+    }
+
+    #[test]
+    fn loop_wins_and_envelope_fallback() {
+        let e = env("Plucky", 0.05, 0.05);
+        assert_eq!(music_prod_category("Kick", "", true, &e), "LOOP");
+        assert_eq!(music_prod_category("Loops/Patterns", "", false, &e), "LOOP");
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Plucky", 0.05, 0.05)), "CORE KIT");
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Decaying", 1.2, 0.8)), "IMPULSE RESPONSE");
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Decaying", 0.1, 0.1)), "CORE KIT");
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Sustained", 0.1, 0.4)), "MELODIC");
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Multi", 0.1, 0.1)), "LOOP");
+        assert_eq!(music_prod_category("Unclassified", "", false, &env("Silent", 0.0, 0.0)), "MISC");
+    }
+
+    #[test]
+    fn percussive_flag_comes_from_the_json() {
+        assert!(is_percussive_family("CORE KIT"));
+        assert!(is_percussive_family("CYMBALS & METALS"));
+        assert!(is_percussive_family("WORLD & REGIONAL"));
+        assert!(!is_percussive_family("MELODIC"));
+        assert!(!is_percussive_family("ELECTRONIC & DESIGN"));
+    }
 
     #[test]
     fn naming_conventions() {

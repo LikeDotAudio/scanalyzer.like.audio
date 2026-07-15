@@ -47,7 +47,6 @@ pub mod family;
 pub mod feature_vec;
 pub mod flux;
 pub mod framestats;
-pub mod music_prod;
 pub mod kmeans;
 pub mod label;
 pub mod mfcc;

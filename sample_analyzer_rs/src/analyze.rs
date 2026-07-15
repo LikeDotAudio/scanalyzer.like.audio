@@ -9,7 +9,7 @@ use crate::envelope::envelope_analysis;
 use crate::family::classify_family;
 use crate::flux::spectral_flux;
 use crate::framestats::centroid_stats;
-use crate::music_prod::music_prod_category;
+use crate::categorize::music_prod_category;
 use crate::label::label_sample;
 use crate::mfcc::mfcc_mean;
 use crate::morphology::morphology;
@@ -154,14 +154,14 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     // old god map let the vocal flag clobber Complex here, so every vocal-ish
     // loop lost its loop-ness.)
     if is_vocal && !is_loop {
-        music_class = crate::music_prod::ELECTRONIC.to_string();
+        music_class = crate::categorize::family_of("Vocal").unwrap_or("MISC").to_string();
     }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
     // harmonic, e.g. an 808 or a pitched tom), report none — nil is fine.
     let (root_name, root_hz, root_cents) =
-        if crate::music_prod::is_percussive_family(&music_class)
+        if crate::categorize::is_percussive_family(&music_class)
             && root_note < 0
             && harmonicity < 0.6
         {
@@ -412,14 +412,14 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     // old god map let the vocal flag clobber Complex here, so every vocal-ish
     // loop lost its loop-ness.)
     if is_vocal && !is_loop {
-        music_class = crate::music_prod::ELECTRONIC.to_string();
+        music_class = crate::categorize::family_of("Vocal").unwrap_or("MISC").to_string();
     }
 
     // Percussive hits rarely carry a meaningful root note. Unless an embedded
     // ACID root says otherwise or the pitch evidence is strong (clearly
     // harmonic, e.g. an 808 or a pitched tom), report none — nil is fine.
     let (root_name, root_hz, root_cents) =
-        if crate::music_prod::is_percussive_family(&music_class)
+        if crate::categorize::is_percussive_family(&music_class)
             && root_note < 0
             && harmonicity < 0.6
         {
