@@ -7,6 +7,7 @@ import GroupsMenu from './GroupsMenu'
 import { taxonomyKeys, matchesScope, ucsSubColor } from '../../groupColors';
 import ShapesMenu from './ShapesMenu';
 import CircularWavePlayer from '../CircularWavePlayer';
+import { WebGLBoundary, webglAvailable } from './WebGLBoundary';
 
 interface CloudTabProps {
   analysisResult: any[];
@@ -88,6 +89,9 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onExamin
   // Resolved audio URL of the picked sample; handed to the corner CircularWavePlayer,
   // which owns decode + transport (there is no <audio> element in this tab any more).
   const [selectedSrc, setSelectedSrc] = useState<string | null>(null);
+  // Checked once: if WebGL can't start (GPU disabled / sandboxed webview / headless), the
+  // 3D view shows a message instead of throwing an uncaught three.js error.
+  const [glOk] = useState(webglAvailable);
 
   // Distinct groups → their subgroups, with per-group and per-subgroup file
   // counts, for the nested legend.

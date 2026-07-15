@@ -8,6 +8,7 @@ import { complementColor, ucsColor, ucsSubColor, matchesScope } from '../../grou
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
+import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 import RadialWaveform from '../examiner/RadialWaveform';
@@ -448,6 +449,12 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       drawWaveform(ctx, mono, geo, gcol);
     }
     if (spec) drawSpectrumTrace(ctx, spec, geo, ccol, item);
+    // Loudness (windowed RMS → dB) over time — always. Phase (L/R correlation)
+    // over time — stereo only. Both share the waveform's time axis and sit on top.
+    drawLoudness(ctx, mono, geo, '#FCD34D');
+    if (buffer.numberOfChannels >= 2) {
+      drawPhase(ctx, buffer.getChannelData(0), buffer.getChannelData(1), geo, '#FB7185');
+    }
     drawBeats(ctx, geo, duration, bpm, bpmEst);
     drawEnvelope(ctx, item, duration, geo);
 
