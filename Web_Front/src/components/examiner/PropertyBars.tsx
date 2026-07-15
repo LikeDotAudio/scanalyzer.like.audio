@@ -89,7 +89,7 @@ export default function PropertyBars({ item, analysisResult }: Props) {
                 {has ? `${raw.toFixed(2)}${bar.unit ?? ''}${inSamples}` : '—'}
               </span>
             </div>
-            <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)' }}>
+            <div style={{ width: '100%', height: '16px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
               <div style={{ width: `${pct}%`, height: '100%', background: '#10B981' }} />
             </div>
           </div>

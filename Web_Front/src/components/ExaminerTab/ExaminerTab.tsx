@@ -852,9 +852,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
           {/* Right column: circular player on top, property bar graphs below it. */}
           <div style={{ width: '280px', flexShrink: 0, background: '#0B0E14', display: 'flex', flexDirection: 'column' }}>
               <div onWheel={wheelScrub}
-                style={{ flexShrink: 0, borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.75rem' }}>
+                style={{ flexShrink: 0, borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem' }}>
                   {selectedItem ? (
-                      <RadialWaveform samples={ringSamples} color={detailColor} size={200}
+                      <RadialWaveform samples={ringSamples} color={detailColor} size={264}
                         onPlay={togglePlay} playing={isPlaying} getProgress={ringProgress}
                         onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
                   ) : (
