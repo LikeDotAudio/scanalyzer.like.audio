@@ -29,25 +29,14 @@ const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; g
   { key: 'name', label: 'File', width: '250px', get: it => it.metadata?.name || '' },
   { key: 'ucs_category', label: 'UCS Category', width: '130px', get: it => it.ucs?.category || '' },
   { key: 'ucs_subcategory', label: 'UCS Subcategory', width: '140px', get: it => it.ucs?.subcategory || '' },
-  // The runners-up the UCS matcher scored, best first. Each is "<category_id> <confidence>".
+  // The runners-up the UCS matcher scored, best first. Their probability is shown as a
+  // resistor-coloured bar UNDER the subcategory (see subCell), not as a separate number.
   { key: 'ucs_alt_1_group', label: 'Alt 1 Group', width: '100px', get: it => altCategory(it.ucs?.alternatives?.[0]) },
-  { key: 'ucs_alt_1_subgroup', label: 'Alt 1 Sub', width: '100px', get: it => altSubcategory(it.ucs?.alternatives?.[0]) },
-  { key: 'ucs_alt_1_probability', label: 'Alt 1 Prob', numeric: true, width: '80px', get: it => {
-      const p = altProbability(it.ucs?.alternatives?.[0]);
-      return Number.isFinite(p) ? p : -1;
-  } },
+  { key: 'ucs_alt_1_subgroup', label: 'Alt 1 Sub', width: '110px', get: it => altSubcategory(it.ucs?.alternatives?.[0]) },
   { key: 'ucs_alt_2_group', label: 'Alt 2 Group', width: '100px', get: it => altCategory(it.ucs?.alternatives?.[1]) },
-  { key: 'ucs_alt_2_subgroup', label: 'Alt 2 Sub', width: '100px', get: it => altSubcategory(it.ucs?.alternatives?.[1]) },
-  { key: 'ucs_alt_2_probability', label: 'Alt 2 Prob', numeric: true, width: '80px', get: it => {
-      const p = altProbability(it.ucs?.alternatives?.[1]);
-      return Number.isFinite(p) ? p : -1;
-  } },
+  { key: 'ucs_alt_2_subgroup', label: 'Alt 2 Sub', width: '110px', get: it => altSubcategory(it.ucs?.alternatives?.[1]) },
   { key: 'ucs_alt_3_group', label: 'Alt 3 Group', width: '100px', get: it => altCategory(it.ucs?.alternatives?.[2]) },
-  { key: 'ucs_alt_3_subgroup', label: 'Alt 3 Sub', width: '100px', get: it => altSubcategory(it.ucs?.alternatives?.[2]) },
-  { key: 'ucs_alt_3_probability', label: 'Alt 3 Prob', numeric: true, width: '80px', get: it => {
-      const p = altProbability(it.ucs?.alternatives?.[2]);
-      return Number.isFinite(p) ? p : -1;
-  } },
+  { key: 'ucs_alt_3_subgroup', label: 'Alt 3 Sub', width: '110px', get: it => altSubcategory(it.ucs?.alternatives?.[2]) },
 
   { key: 'reason', label: 'Reason', width: '200px', get: it => it.classification?.reason?.[0] || '' },
   { key: 'timbre', label: 'Timbre', width: '110px', get: it => it.classification?.timbre || '' },
@@ -66,6 +55,32 @@ const TIMBRE_EMOJI: Record<string, string> = {
   Percussive: '🥁', Tonal: '🎵', Noise: '🌫️', Bass: '🔈',
   Bright: '✨', Loop: '🔁', Pad: '☁️',
 };
+
+// Resistor colour code, low → high: brown, red, orange, yellow, green, blue, violet, grey.
+// The probability bar climbs this scale as confidence rises, the way a resistor's bands
+// count up — so a glance at the colour reads the strength without a number.
+const RESISTOR = ['#8B4513', '#EF4444', '#F97316', '#EAB308', '#22C55E', '#3B82F6', '#8B5CF6', '#9CA3AF'];
+const probColor = (p: number): string => {
+  if (!Number.isFinite(p) || p <= 0) return 'transparent';
+  return RESISTOR[Math.max(0, Math.min(RESISTOR.length - 1, Math.floor(p * RESISTOR.length)))];
+};
+
+// A UCS subcategory cell: the name, with a resistor-coloured probability bar underneath
+// (width = probability × 100, colour by the resistor scale). The number itself is not
+// shown — the bar's length and colour carry it.
+function subCell(text: string, prob: number, textColor: string) {
+  const pct = Number.isFinite(prob) && prob > 0 ? Math.max(3, Math.min(100, prob * 100)) : 0;
+  return (
+    <div style={{ position: 'relative', height: ROW_H, display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+      <span style={{ color: textColor, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{text}</span>
+      {pct > 0 && (
+        <span style={{ position: 'absolute', left: 0, right: 0, bottom: 1, height: 3, background: 'rgba(255,255,255,0.09)', borderRadius: 2 }}>
+          <span style={{ display: 'block', width: `${pct}%`, height: '100%', background: probColor(prob), borderRadius: 2 }} />
+        </span>
+      )}
+    </div>
+  );
+}
 
 export default function ExaminerTab({ analysisResult, audioFiles, onSound }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -632,16 +647,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell({ color: item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)' })} title={item.ucs.subcategory}>{item.ucs.subcategory}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell()} title={item.ucs.subcategory}>{subCell(item.ucs.subcategory, item.ucs.confidence, item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)')}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_1_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[0])}>{altSubcategory(item.ucs?.alternatives?.[0])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_1_probability') && <td style={cell({ color: 'var(--text-secondary)', background: Number.isFinite(altProbability(item.ucs?.alternatives?.[0])) ? `linear-gradient(90deg, rgba(255, 255, 255, 0.15) ${altProbability(item.ucs?.alternatives?.[0]) * 100}%, transparent ${altProbability(item.ucs?.alternatives?.[0]) * 100}%)` : undefined })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[0])) ? altProbability(item.ucs?.alternatives?.[0]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[0])}>{subCell(altSubcategory(item.ucs?.alternatives?.[0]), altProbability(item.ucs?.alternatives?.[0]), 'var(--text-secondary)')}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_2_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[1])}>{altCategory(item.ucs?.alternatives?.[1])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_2_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[1])}>{altSubcategory(item.ucs?.alternatives?.[1])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_2_probability') && <td style={cell({ color: 'var(--text-secondary)', background: Number.isFinite(altProbability(item.ucs?.alternatives?.[1])) ? `linear-gradient(90deg, rgba(255, 255, 255, 0.15) ${altProbability(item.ucs?.alternatives?.[1]) * 100}%, transparent ${altProbability(item.ucs?.alternatives?.[1]) * 100}%)` : undefined })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[1])) ? altProbability(item.ucs?.alternatives?.[1]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[1])}>{subCell(altSubcategory(item.ucs?.alternatives?.[1]), altProbability(item.ucs?.alternatives?.[1]), 'var(--text-secondary)')}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_3_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[2])}>{altCategory(item.ucs?.alternatives?.[2])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_3_subgroup') && <td style={cell({ color: 'var(--text-secondary)' })} title={altSubcategory(item.ucs?.alternatives?.[2])}>{altSubcategory(item.ucs?.alternatives?.[2])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_3_probability') && <td style={cell({ color: 'var(--text-secondary)', background: Number.isFinite(altProbability(item.ucs?.alternatives?.[2])) ? `linear-gradient(90deg, rgba(255, 255, 255, 0.15) ${altProbability(item.ucs?.alternatives?.[2]) * 100}%, transparent ${altProbability(item.ucs?.alternatives?.[2]) * 100}%)` : undefined })}>{Number.isFinite(altProbability(item.ucs?.alternatives?.[2])) ? altProbability(item.ucs?.alternatives?.[2]).toFixed(3) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[2])}>{subCell(altSubcategory(item.ucs?.alternatives?.[2]), altProbability(item.ucs?.alternatives?.[2]), 'var(--text-secondary)')}</td>}
                                           {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.reason?.[0] || ''}>{item.classification.reason?.[0] || ''}</td>}
                                           {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.classification.timbre}>{item.classification.timbre ? `${TIMBRE_EMOJI[item.classification.timbre] || '🎚️'} ${item.classification.timbre}` : ''}</td>}
                                           {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.unsupervised.cluster !== -1 ? item.unsupervised.cluster : ''}</td>}

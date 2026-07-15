@@ -8,15 +8,17 @@ import CloudTab from './components/CloudTab'
 import StatsTabRaw from './components/StatsTab'
 import GroupsTabRaw from './components/GroupsTab'
 import ExaminerTabRaw from './components/ExaminerTab'
+import ExtractorTabRaw from './components/ExtractorTab'
 import RenameTabRaw from './components/RenameTab'
 import { lazy, Suspense } from 'react'
 
 const StatsTab = lazy(async () => ({ default: StatsTabRaw }))
 const GroupsTab = lazy(async () => ({ default: GroupsTabRaw }))
 const ExaminerTab = lazy(async () => ({ default: ExaminerTabRaw }))
+const ExtractorTab = lazy(async () => ({ default: ExtractorTabRaw }))
 const RenameTab = lazy(async () => ({ default: RenameTabRaw }))
 
-const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'rename'] as const;
+const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'extractor', 'rename'] as const;
 
 function tabFromHash(): string {
   const h = window.location.hash.replace(/^#\/?/, '');
@@ -174,6 +176,7 @@ function App() {
     { id: 'stats', label: '2D' },
     // { id: 'groups', label: 'Groups' },
     { id: 'examiner', label: 'Examiner' },
+    { id: 'extractor', label: 'Extractor' },
     { id: 'rename', label: 'File Names' }
   ];
 
@@ -246,6 +249,7 @@ function App() {
           {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
           {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
           {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
+          {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
         </Suspense>
         

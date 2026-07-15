@@ -11,6 +11,9 @@ export interface Region {
   duration_seconds: number;
   peak_amplitude: number;
   name: string;
+  // Per-slice fade envelope, in seconds. Applied when exporting the sliced audio.
+  fade_in_seconds?: number;
+  fade_out_seconds?: number;
 }
 
 export interface RegionParams {
