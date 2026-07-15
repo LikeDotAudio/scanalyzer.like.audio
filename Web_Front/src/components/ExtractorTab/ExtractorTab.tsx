@@ -186,7 +186,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     return () => cancelAnimationFrame(id);
   }, []);
 
-  const setupAudioAndDetect = async (src: string, savedRegions: Region[]) => {
+  const setupAudioAndDetect = async (src: string, savedRegions: Region[], nativePath: string | null) => {
     const gen = ++loadGenRef.current;
     setDecoding(true);
     samplesRef.current = null;
@@ -194,6 +194,9 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     setSelRegion(null);
     setChunkUcs({});
     setExamining(new Set());
+    // On desktop with a real path, detect/slice/analyze run natively in-process; otherwise
+    // (web, or a dropped file with no path) they run in the WASM worker.
+    extractorEngine.setNative(nativePath);
     try {
       if (audioRef.current) {
         document.querySelectorAll('audio').forEach(a => a.pause());
@@ -236,7 +239,9 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     onSound?.(item?.metadata?.name || '');
     const src = await resolveAudioUrl(audioFiles, item);
     if (!src) { setDecoding(false); return; }
-    await setupAudioAndDetect(src, item.regions?.regions || []);
+    // Desktop can decode the real file natively; the record's path is the filesystem path.
+    const nativePath = isTauri() ? (item?.metadata?.path || null) : null;
+    await setupAudioAndDetect(src, item.regions?.regions || [], nativePath);
   };
 
   const loadDroppedFile = async (file: File) => {
@@ -245,7 +250,8 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     setSelectedItem(item);
     setSaveMsg('');
     onSound?.(file.name);
-    await setupAudioAndDetect(URL.createObjectURL(file), []);
+    // A dropped file has no on-disk path we can hand the native decoder — use the worker.
+    await setupAudioAndDetect(URL.createObjectURL(file), [], null);
   };
 
   const changeParam = (key: keyof RegionParams, value: number) => {

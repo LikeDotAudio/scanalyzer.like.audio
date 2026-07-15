@@ -25,3 +25,8 @@ tauri = { version = "2.11.3", features = ["protocol-asset"] }
 tauri-plugin-log = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
+# In-process extractor: the same cutting DSP the web build runs as WASM, called natively
+# so a desktop scan/slice/analyze never leaves the process. `oa-sample-analyzer` supplies
+# the native decoder + the per-chunk UCS analysis.
+extractor_engine = { path = "../../extractor_engine_rs" }
+oa-sample-analyzer = { path = "../../sample_analyzer_rs" }

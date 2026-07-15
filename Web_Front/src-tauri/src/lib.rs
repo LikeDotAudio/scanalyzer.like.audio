@@ -202,6 +202,75 @@ fn read_audio_bytes(path: String) -> Result<tauri::ipc::Response, String> {
     Ok(tauri::ipc::Response::new(bytes))
 }
 
+// ---- In-process extractor ----------------------------------------------------------
+// The desktop Extractor calls these instead of the WASM worker. They run the SAME
+// `extractor_engine` code, so cuts are identical to the web build. Decoding is done here
+// with symphonia (native), and the last-decoded file is cached so re-detecting on a
+// slider drag or analyzing every chunk decodes the file once, not once per call.
+
+#[derive(Default)]
+struct ExtractorCache(Mutex<Option<(String, oa_sample_analyzer::decode::Decoded)>>);
+
+/// Mono PCM + sample rate for `path`, reusing the cached decode when the path is unchanged.
+fn extractor_pcm(cache: &ExtractorCache, path: &str) -> Result<(Vec<f32>, u32), String> {
+    let mut guard = cache.0.lock().unwrap();
+    if let Some((p, d)) = guard.as_ref() {
+        if p == path {
+            return Ok((d.mono.clone(), d.sample_rate));
+        }
+    }
+    let decoded = oa_sample_analyzer::decode::read_audio(std::path::Path::new(path))
+        .ok_or_else(|| format!("could not decode {path}"))?;
+    let out = (decoded.mono.clone(), decoded.sample_rate);
+    *guard = Some((path.to_string(), decoded));
+    Ok(out)
+}
+
+#[tauri::command]
+fn extractor_detect(
+    cache: tauri::State<ExtractorCache>,
+    path: String,
+    params_json: String,
+) -> Result<String, String> {
+    let (mono, sr) = extractor_pcm(&cache, &path)?;
+    let params: extractor_engine::DetectParams = serde_json::from_str(&params_json).unwrap_or_default();
+    let regions = extractor_engine::detect_regions_from_samples(&mono, sr, &params);
+    serde_json::to_string(&regions).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+fn extractor_slice_wav(
+    cache: tauri::State<ExtractorCache>,
+    path: String,
+    region_json: String,
+) -> Result<tauri::ipc::Response, String> {
+    let (mono, sr) = extractor_pcm(&cache, &path)?;
+    let region: extractor_engine::Region = serde_json::from_str(&region_json).map_err(|e| e.to_string())?;
+    let slice = extractor_engine::slice_region(&mono, sr, &region, extractor_engine::FadeCurve::Linear);
+    Ok(tauri::ipc::Response::new(extractor_engine::encode_wav_pcm16(&slice, sr)))
+}
+
+#[tauri::command]
+fn extractor_analyze_chunk(
+    cache: tauri::State<ExtractorCache>,
+    path: String,
+    region_json: String,
+    name: String,
+    folder: String,
+) -> Result<String, String> {
+    let (mono, sr) = extractor_pcm(&cache, &path)?;
+    let region: extractor_engine::Region = serde_json::from_str(&region_json).map_err(|e| e.to_string())?;
+    let slice = extractor_engine::slice_region(&mono, sr, &region, extractor_engine::FadeCurve::Linear);
+    if slice.len() < 2 {
+        return Ok("{\"status\":\"too_short\"}".to_string());
+    }
+    let wav = extractor_engine::encode_wav_pcm16(&slice, sr);
+    match oa_sample_analyzer::analyze::analyze_buffer(&wav, &name, &folder, 600.0) {
+        Some(peak) => serde_json::to_string(&peak).map_err(|e| e.to_string()),
+        None => Ok("{\"status\":\"too_short\"}".to_string()),
+    }
+}
+
 #[tauri::command]
 fn start_analysis(
     app: AppHandle,
@@ -313,6 +382,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_log::Builder::new().build())
         .manage(PeakCache::default())
+        .manage(ExtractorCache::default())
         .invoke_handler(tauri::generate_handler![
             survey_directory,
             open_sidecars,
@@ -320,7 +390,10 @@ pub fn run() {
             start_analysis,
             open_peak_file,
             read_peak_page,
-            close_peak_file
+            close_peak_file,
+            extractor_detect,
+            extractor_slice_wav,
+            extractor_analyze_chunk
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,0 +1,16 @@
+{
+  "name": "wasm_extractor",
+  "type": "module",
+  "description": "WASM wrapper for the Extractor cutting engine — region detection, slicing/fades, WAV export, and per-chunk UCS analysis. Mirrors the native path so web and desktop cut identically.",
+  "version": "0.1.0",
+  "files": [
+    "wasm_extractor_bg.wasm",
+    "wasm_extractor.js",
+    "wasm_extractor.d.ts"
+  ],
+  "main": "wasm_extractor.js",
+  "types": "wasm_extractor.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
