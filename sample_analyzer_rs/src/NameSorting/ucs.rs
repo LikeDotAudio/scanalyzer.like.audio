@@ -249,13 +249,14 @@ fn feature(p: &Peak, name: &str) -> Option<f64> {
         "voicing_ratio" => p.spectral_features.voicing_ratio?,
         "onset_periodicity" => p.envelope.onset_periodicity?,
 
-        // --- derived on the fly from what the record already stores.
-        "onset_rate_per_second" => {
+        // Prefer the stored field; fall back to deriving it for older records that
+        // predate the field (transient_count / length, guarded against zero length).
+        "onset_rate_per_second" => p.envelope.onset_rate_per_second.or_else(|| {
             if p.metadata.length_seconds <= 0.0 {
                 return None;
             }
-            p.envelope.transient_count as f64 / p.metadata.length_seconds
-        }
+            Some(p.envelope.transient_count as f64 / p.metadata.length_seconds)
+        })?,
         "stereo_width" => p.spectral_features.side_rms / (p.spectral_features.mid_rms + 1e-9),
 
         _ => return None,

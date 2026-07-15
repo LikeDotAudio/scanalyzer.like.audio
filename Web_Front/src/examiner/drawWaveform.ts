@@ -1,9 +1,19 @@
 import type { PlotGeo } from './audioAnalysis';
 
 // Whole-file waveform: min/max amplitude per pixel column, in the group colour.
-export function drawWaveform(ctx: CanvasRenderingContext2D, mono: Float32Array, geo: PlotGeo, color: string) {
-  const { w, mid, halfH } = geo;
-  const len = mono.length;
+// Draws one channel into a vertical band centred on `centerY` with `halfHeight`
+// vertical reach. Defaults to the full plot (geo.mid / geo.halfH) so the mono
+// call site is unchanged; stereo passes a half-height band per channel.
+export function drawWaveform(
+  ctx: CanvasRenderingContext2D,
+  samples: Float32Array,
+  geo: PlotGeo,
+  color: string,
+  centerY: number = geo.mid,
+  halfHeight: number = geo.halfH,
+) {
+  const { w } = geo;
+  const len = samples.length;
   const samplesPerCol = len / w;
   ctx.strokeStyle = color + 'B3';
   ctx.lineWidth = 1;
@@ -13,13 +23,13 @@ export function drawWaveform(ctx: CanvasRenderingContext2D, mono: Float32Array, 
     const end = Math.min(len, Math.floor((x + 1) * samplesPerCol));
     let min = 1.0, max = -1.0;
     for (let i = start; i < end; i++) {
-      const v = mono[i];
+      const v = samples[i];
       if (v < min) min = v;
       if (v > max) max = v;
     }
     if (min > max) { min = 0; max = 0; }
-    ctx.moveTo(x + 0.5, mid - max * halfH * 0.97);
-    ctx.lineTo(x + 0.5, mid - min * halfH * 0.97);
+    ctx.moveTo(x + 0.5, centerY - max * halfHeight * 0.97);
+    ctx.lineTo(x + 0.5, centerY - min * halfHeight * 0.97);
   }
   ctx.stroke();
 }

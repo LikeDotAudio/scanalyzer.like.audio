@@ -2,7 +2,7 @@
 //! down to the 3 axes of greatest variance, so the whole library can be laid
 //! out on a plain X/Y(/Z) map where statistically similar samples land close
 //! together. Deterministic (fixed-seed power iteration with deflation).
-use crate::feature_vec::feature_vec;
+use crate::feature_vec::{feature_vec, standardize};
 use crate::peak::Peak;
 
 pub const N_COMPONENTS: usize = 3;
@@ -22,16 +22,10 @@ pub fn pca_assign(results: &mut [Peak]) {
     }
 
     // Z-score standardize each column (PCA on the correlation structure, so
-    // Hz-scaled features don't drown the 0..1 ones).
+    // Hz-scaled features don't drown the 0..1 ones) — shared with k-means so both
+    // views share one geometry.
     let nf = n as f64;
-    let mean: Vec<f64> = (0..d).map(|j| feats.iter().map(|f| f[j]).sum::<f64>() / nf).collect();
-    let std: Vec<f64> = (0..d)
-        .map(|j| (feats.iter().map(|f| (f[j] - mean[j]).powi(2)).sum::<f64>() / nf).sqrt())
-        .collect();
-    let x: Vec<Vec<f64>> = feats
-        .iter()
-        .map(|f| (0..d).map(|j| if std[j] > 1e-12 { (f[j] - mean[j]) / std[j] } else { 0.0 }).collect())
-        .collect();
+    let x = standardize(&feats);
 
     // Covariance matrix C = XᵀX / (n-1).
     let mut cov = vec![vec![0.0f64; d]; d];

@@ -1,6 +1,6 @@
 //! Deterministic K-Means++ over a subset of the analyzed samples. Writes the
 //! chosen cluster id (offset by `offset`) back into each `Peak`.
-use crate::feature_vec::feature_vec;
+use crate::feature_vec::{feature_vec, standardize};
 use crate::peak::Peak;
 use crate::sqdist::sqdist;
 
@@ -11,32 +11,12 @@ pub fn kmeans_assign(results: &mut [Peak], idx: &[usize], k: usize, offset: i32)
     }
     let k = k.max(1).min(n);
 
-    // Min-max normalize each feature column so no dimension dominates.
+    // Z-score standardize each feature column so no dimension dominates — the same
+    // prep PCA uses, so clusters and the PCA map share one geometry. (Was min-max,
+    // which a single outlier could crush.)
     let feats: Vec<Vec<f64>> = idx.iter().map(|&i| feature_vec(&results[i])).collect();
     let d = feats[0].len();
-    let mut mn = vec![f64::INFINITY; d];
-    let mut mx = vec![f64::NEG_INFINITY; d];
-    for f in &feats {
-        for j in 0..d {
-            mn[j] = mn[j].min(f[j]);
-            mx[j] = mx[j].max(f[j]);
-        }
-    }
-    let norm: Vec<Vec<f64>> = feats
-        .iter()
-        .map(|f| {
-            (0..d)
-                .map(|j| {
-                    let r = mx[j] - mn[j];
-                    if r > 1e-12 {
-                        (f[j] - mn[j]) / r
-                    } else {
-                        0.0
-                    }
-                })
-                .collect()
-        })
-        .collect();
+    let norm = standardize(&feats);
 
     // Deterministic PRNG (xorshift) for K-Means++ seeding.
     let mut seed = 0x9E3779B97F4A7C15u64;

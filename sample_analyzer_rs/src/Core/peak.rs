@@ -90,6 +90,11 @@ pub struct Envelope {
     pub decay_time_seconds_60db: Option<f64>,
     #[serde(default)]
     pub onset_periodicity: Option<f64>,
+    // Distinct onsets per second — transient_count over the clip length. None only
+    // for a zero-length clip. Emitted so consumers read it off the record rather
+    // than re-deriving it (the UCS matcher used to compute it on the fly).
+    #[serde(default)]
+    pub onset_rate_per_second: Option<f64>,
 }
 
 #[derive(Serialize, Deserialize, Clone)]

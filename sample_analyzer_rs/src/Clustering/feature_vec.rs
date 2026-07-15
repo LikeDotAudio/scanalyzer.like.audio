@@ -32,3 +32,28 @@ pub fn feature_vec(p: &Peak) -> Vec<f64> {
     }
     v
 }
+
+/// Z-score standardize each feature column to mean 0, standard deviation 1, so no
+/// dimension dominates a Euclidean distance (k-means) or a covariance (PCA) just
+/// because its raw units are larger — an 8 kHz centroid must not outweigh a 0..1
+/// harmonicity. Columns with ~zero variance collapse to 0. Population std (÷n),
+/// the convention PCA's correlation-structure decomposition expects.
+///
+/// This is the single normalization both clustering paths share, so the k-means
+/// grouping and the PCA map are laid out on the same geometry. It replaces the
+/// old min-max scaling k-means used, which a single outlier could crush.
+pub fn standardize(feats: &[Vec<f64>]) -> Vec<Vec<f64>> {
+    if feats.is_empty() {
+        return Vec::new();
+    }
+    let n = feats.len() as f64;
+    let d = feats[0].len();
+    let mean: Vec<f64> = (0..d).map(|j| feats.iter().map(|f| f[j]).sum::<f64>() / n).collect();
+    let std: Vec<f64> = (0..d)
+        .map(|j| (feats.iter().map(|f| (f[j] - mean[j]).powi(2)).sum::<f64>() / n).sqrt())
+        .collect();
+    feats
+        .iter()
+        .map(|f| (0..d).map(|j| if std[j] > 1e-12 { (f[j] - mean[j]) / std[j] } else { 0.0 }).collect())
+        .collect()
+}

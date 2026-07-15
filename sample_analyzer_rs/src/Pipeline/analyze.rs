@@ -233,6 +233,7 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
             envelope_shape: env.shape.to_string(),
             decay_time_seconds_60db: env.decay_time_60db,
             onset_periodicity,
+            onset_rate_per_second: if length > 0.0 { Some(transients as f64 / length) } else { None },
         },
         spectral_features: crate::peak::SpectralFeatures {
             root_mean_square_level: amp.rms,
@@ -493,6 +494,7 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
             envelope_shape: env.shape.to_string(),
             decay_time_seconds_60db: env.decay_time_60db,
             onset_periodicity,
+            onset_rate_per_second: if length > 0.0 { Some(transients as f64 / length) } else { None },
         },
         spectral_features: crate::peak::SpectralFeatures {
             root_mean_square_level: amp.rms,

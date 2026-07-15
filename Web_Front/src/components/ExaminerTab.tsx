@@ -10,6 +10,7 @@ import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
+import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 
 interface ExaminerTabProps {
   analysisResult: any[];
@@ -168,6 +169,20 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
   const toggleSort = (key: string) =>
     setSort(prev => prev?.key === key ? { key, dir: (prev.dir === 1 ? -1 : 1) } : { key, dir: 1 });
 
+  // Scroll-ahead audio buffering: pre-read a window of rows around the viewport so
+  // the next few selections play instantly (see useAudioPrefetch). `scrollDirRef`
+  // remembers which way the list last moved so the window leans that way.
+  const prefetch = useAudioPrefetch(rows, audioFiles);
+  const scrollDirRef = useRef<1 | -1>(1);
+  const lastScrollTopRef = useRef(0);
+  const lastAnchorRef = useRef(-1);
+  const prefetchRafRef = useRef(0);
+  // The heavy per-selection work (read bytes, decode, draw preview, play) is
+  // debounced behind selection and generation-guarded, so hammering ↑/↓ can't
+  // pile up dozens of concurrent decodeAudioData calls and freeze the webview.
+  const loadGenRef = useRef(0);
+  const loadTimerRef = useRef(0);
+
   // Per-feature min/max across the dataset, so each property bar fills relative
   // (property-bar scaling lives in the PropertyBars component)
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -185,6 +200,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
   useEffect(() => {
     return () => {
+      if (loadTimerRef.current) clearTimeout(loadTimerRef.current);
       if (decodeCtxRef.current) decodeCtxRef.current.close();
     };
   }, []);
@@ -337,18 +353,89 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
 
     // Draw order: spectrum fill (behind) → waveform → spectrum → beats → envelope → axes.
     if (spec) drawSpectrumFill(ctx, spec, geo, ccol);
-    drawWaveform(ctx, mono, geo, gcol);
+    // Stereo → two lanes (left channel top, right channel bottom) with a faint
+    // divider and L/R labels; mono → one full-height trace as before.
+    if (buffer.numberOfChannels >= 2) {
+      const quarter = geo.plotH / 4;
+      const topMid = geo.plotTop + quarter;
+      const botMid = geo.plotTop + quarter * 3;
+      drawWaveform(ctx, buffer.getChannelData(0), geo, gcol, topMid, quarter);
+      drawWaveform(ctx, buffer.getChannelData(1), geo, gcol, botMid, quarter);
+      // Divider between the two channel lanes.
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, geo.mid + 0.5);
+      ctx.lineTo(geo.w, geo.mid + 0.5);
+      ctx.stroke();
+      // Channel labels, top-left of each lane.
+      ctx.fillStyle = gcol + '99';
+      ctx.font = '10px system-ui, sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillText('L', 4, topMid - quarter + 2);
+      ctx.fillText('R', 4, botMid - quarter + 2);
+    } else {
+      drawWaveform(ctx, mono, geo, gcol);
+    }
     if (spec) drawSpectrumTrace(ctx, spec, geo, ccol, item);
     drawBeats(ctx, geo, duration, bpm, bpmEst);
     drawEnvelope(ctx, item, duration, geo);
     drawAxesAndName(ctx, item, duration, geo);
   };
 
-  const handleSelect = async (item: any, forcePlay = false) => {
+  // Drive the virtualized window AND the audio prefetch off one scroll event.
+  // Direction = sign of the scroll delta; anchor = the row at the viewport centre.
+  // Coalesced to one prefetch per frame, and only when the anchor row changes.
+  const handleListScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const st = e.currentTarget.scrollTop;
+    setScrollTop(st);
+    if (st !== lastScrollTopRef.current) {
+      scrollDirRef.current = st > lastScrollTopRef.current ? 1 : -1;
+      lastScrollTopRef.current = st;
+    }
+    if (prefetchRafRef.current) return;
+    prefetchRafRef.current = requestAnimationFrame(() => {
+      prefetchRafRef.current = 0;
+      const anchor = Math.floor((st + viewportH / 2) / ROW_H);
+      if (anchor === lastAnchorRef.current) return;
+      lastAnchorRef.current = anchor;
+      prefetch.prefetchWindow(anchor, scrollDirRef.current);
+    });
+  };
+
+  // Prime the buffer once rows are known (initial load, new scan) so the first
+  // clicks are instant before the user has scrolled at all.
+  useEffect(() => {
+    lastAnchorRef.current = -1;
+    if (rows.length) prefetch.prefetchWindow(0, 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows]);
+
+  // Select instantly (highlight only), then debounce the expensive audio work.
+  // Holding ↓ through 50 rows reschedules the timer each keypress, so exactly one
+  // load+decode runs when you settle — not one per row.
+  const DEBOUNCE_MS = 90;
+  const handleSelect = (item: any, forcePlay = false) => {
     setSelectedItem(item);
     onSound?.(item?.metadata?.name || '');
+    // Pin the playing item so a scroll can't evict its blob, and buffer around it
+    // (covers arrow-key stepping and DIG, which move selection without scrolling).
+    prefetch.pin(item);
+    const gen = ++loadGenRef.current;
+    if (loadTimerRef.current) clearTimeout(loadTimerRef.current);
+    // DIG advances only on 'ended' (never rapid), but the 90ms delay is imperceptible
+    // there too, so it takes the same debounced path.
+    loadTimerRef.current = window.setTimeout(() => loadSelected(item, gen, forcePlay), DEBOUNCE_MS);
+  };
 
-    const src = await resolveAudioUrl(audioFiles, item);
+  const loadSelected = async (item: any, gen: number, forcePlay: boolean) => {
+    // Bail if a newer selection has superseded this one (guards every await below).
+    const fresh = () => gen === loadGenRef.current;
+    const selIdx = rows.indexOf(item);
+    if (selIdx >= 0) prefetch.prefetchWindow(selIdx, scrollDirRef.current);
+
+    const src = await prefetch.ensure(item);
+    if (!fresh()) return;
     if (!src) {
       // Say WHY, rather than just going quiet. Silence here has different causes that
       // need different fixes, so guessing between them wastes an afternoon.
@@ -374,8 +461,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
       const el = audioRef.current;
       if (!el) return false;
       document.querySelectorAll('audio').forEach(a => a.pause());
-      // Free the previous blob: URL before replacing it, or every selection leaks one.
-      if (el.src.startsWith('blob:')) URL.revokeObjectURL(el.src);
+      // Don't revoke the previous src here — the prefetch cache owns every URL it
+      // hands out and revokes on eviction/unmount. Revoking a buffered URL would
+      // break it for the next selection that reuses it.
       el.currentTime = 0;
       el.src = src;
       if (autoPlay || forcePlay) el.play().catch(err => console.warn('[examiner] play rejected', err));
@@ -383,13 +471,17 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
     };
     if (!load()) requestAnimationFrame(load);
 
-    // Decode the whole file and draw the static preview.
+    // Decode the whole file and draw the static preview. Each await is gated on
+    // `fresh()` so a superseded selection never reaches decodeAudioData (the step
+    // that piles up and freezes WebKitGTK) or paints a stale preview.
     try {
       if (!decodeCtxRef.current) {
         decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
       const buf = await (await fetch(src)).arrayBuffer();
+      if (!fresh()) return;
       const decoded = await decodeCtxRef.current.decodeAudioData(buf);
+      if (!fresh()) return;
       lastBufferRef.current = decoded;
       lastItemRef.current = item;
       renderPreview(decoded, item);
@@ -488,7 +580,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound }: Exa
                 }
               />
           </div>
-          <div ref={scrollRef} onScroll={e => setScrollTop(e.currentTarget.scrollTop)} style={{ flex: 1, overflow: 'auto' }}>
+          <div ref={scrollRef} onScroll={handleListScroll} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
                   <colgroup>
                       {activeColumns.map(c => <col key={c.key} style={{ width: c.width }} />)}
