@@ -6,7 +6,8 @@ import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examin
 import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
 import ScopeBar from '../ScopeBar';
 import { useIsNarrow } from '../../useIsNarrow';
-import { categoryEmoji, categoryLabel } from '../../categoryEmoji';
+import { categoryEmoji, categoryLabel, subcategoryEmoji, subcategoryLabel } from '../../categoryEmoji';
+import { altCategory } from '../../ucsIndex';
 import FileGroups from './FileGroups';
 import WavePlayer from './WavePlayer';
 import WaveCircle from './WaveCircle';
@@ -481,7 +482,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
     const cat = (a as any).ucs?.category || '—';
     const sub = ((a as any).ucs?.subcategory || '').trim();
     // Emoji + name normally; on narrow (column shrunk) just the category emoji.
-    const disp = isNarrow ? (categoryEmoji(cat) || cat) : `${categoryLabel(cat)}${sub ? ` / ${sub}` : ''}`;
+    const disp = isNarrow ? (categoryEmoji(cat) || cat) : `${categoryLabel(cat)}${sub ? ` / ${subcategoryLabel(cat, sub)}` : ''}`;
     return <span style={{ color: ucsSubColor(cat, sub) }} title={`${cat}${sub ? ` / ${sub}` : ''}`}>{disp}</span>;
   };
 
@@ -514,7 +515,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
         <FileGroups groupedRows={groupedRows} rowsCount={rows.length} multiOnly={multiOnly} setMultiOnly={setMultiOnly} selectedItem={selectedItem} onSelect={handleSelect} isNarrow={isNarrow} />
 
         {/* Center: waveform + controls + region table */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#0A0A0A' }}>
+        <div style={{ flex: isNarrow ? 'none' : 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#0A0A0A' }}>
           {!selectedItem ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
               Select a file (or drop one) to detect its regions.
@@ -556,7 +557,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
               )}
 
               {/* Region table */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '0.25rem 0.5rem' }}>
+              <div style={{ flex: isNarrow ? 'none' : 1, overflowY: isNarrow ? 'visible' : 'auto', padding: '0.25rem 0.5rem' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.74rem' }}>
                   <thead style={{ position: 'sticky', top: 0, background: '#12151c' }}>
                     <tr style={{ color: 'var(--text-secondary)', textAlign: 'left' }}>

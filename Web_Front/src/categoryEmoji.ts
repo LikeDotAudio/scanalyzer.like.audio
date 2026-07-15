@@ -1,7 +1,7 @@
 // GENERATED from UCS/categories/*.json — do not edit by hand.
-// Each UCS category carries an emoji in its category JSON (the top-level "emoji"
-// field). This mirrors them for the UI. Regenerate whenever the taxonomy changes:
-//   node -e (see the generator in the commit that introduced this file).
+// Each UCS category (and each of its subcategories) carries an emoji in its category
+// JSON (the top-level "emoji" field, and each subcategory's "emoji"). This mirrors
+// them for the UI. Regenerate whenever the taxonomy changes (scratchpad/gen-emoji.cjs).
 
 export const CATEGORY_EMOJI: Record<string, string> = {
   "AIR": "💨",
@@ -100,16 +100,128 @@ export const CATEGORY_EMOJI: Record<string, string> = {
   "WOODWIND": "🎷",
 };
 
+// Nested by category → subcategory → emoji. A subcategory name only means something
+// inside its parent category (MISC exists under ~70 categories), so it is never a flat map.
+export const SUBCATEGORY_EMOJI: Record<string, Record<string, string>> = {
+  "AIR": { "BLOW": "💨", "BURST": "💨", "HISS": "💨", "MISC": "💨", "SUCTION": "💨" },
+  "AIRCRAFT": { "BALLOON": "🎈", "DOOR": "🚪", "HELICOPTER": "🚁", "INTERIOR": "✈️", "JET": "✈️", "MECHANISM": "✈️", "MILITARY": "✈️", "MISC": "✈️", "PROP": "✈️", "RADIO CONTROLLED": "📻", "ROCKET": "🪨" },
+  "ALARMS": { "BELL": "🔔", "BUZZER": "📳", "CLOCK": "🕰️", "ELECTRONIC": "🚨", "MISC": "🚨", "SIREN": "🚨" },
+  "AMBIENCE": { "AIR": "🌫️", "ALPINE": "🌫️", "AMUSEMENT": "🌫️", "BIRDSONG": "🐦", "CELEBRATION": "🐀", "CONSTRUCTION": "🌫️", "DESERT": "🌫️", "DESIGNED": "🌫️", "EMERGENCY": "🌫️", "FANTASY": "🌫️", "FARM": "🌫️", "FOREST": "🌫️", "GRASSLAND": "🌿", "HISTORICAL": "🌫️", "HITECH": "🌫️", "HOSPITAL": "🌫️", "INDUSTRIAL": "🌫️", "INSECT": "🐛", "LAKESIDE": "🌫️", "MARKET": "🌫️", "MISC": "🌫️", "NAUTICAL": "🌫️", "OFFICE": "🧊", "PARK": "🌫️", "PRISON": "🌫️", "PROTEST": "🌫️", "PUBLIC PLACE": "🌫️", "RELIGIOUS": "🌫️", "RESIDENTIAL": "🌫️", "RESTAURANT & BAR": "🌫️", "ROOM TONE": "🌫️", "RURAL": "🌫️", "SCHOOL": "🌫️", "SCIFI": "🌫️", "SEASIDE": "🌫️", "SPORT": "🌫️", "SUBURBAN": "🌫️", "SWAMP": "🌫️", "TOWN": "🌫️", "TRAFFIC": "🌫️", "TRANSPORTATION": "🌫️", "TROPICAL": "🌫️", "TUNDRA": "🌫️", "UNDERGROUND": "🌫️", "UNDERWATER": "💧", "URBAN": "🌫️", "WARFARE": "🌫️" },
+  "ANIMALS": { "AMPHIBIAN": "🐾", "AQUATIC": "🐾", "BAT": "🦇", "CAT DOMESTIC": "🐈", "CAT WILD": "🐈", "DOG": "🐕", "DOG WILD": "🐕", "FARM": "🐾", "HORSE": "🐎", "INSECT": "🐛", "MISC": "🐾", "PRIMATE": "🐾", "REPTILE": "🐾", "RODENT": "🐾", "WILD": "🐾" },
+  "ARCHIVED": { "ADR": "🗄️", "ASSET": "🗄️", "BOUNCE": "🗄️", "IMPULSE RESPONSE": "🗄️", "LOOP GROUP": "🗄️", "MIX": "🗄️", "PFX": "🗄️", "PRODUCTION": "🗄️", "RAW": "🗄️", "REFERENCE": "🗄️", "SCENE": "🗄️", "TEST TONE": "🗄️", "TRADEMARKED": "🗄️", "WORK IN PROGRESS": "🗄️", "WTF": "🗄️" },
+  "BEEPS": { "APPLIANCE": "📟", "GENERAL": "📟", "LOFI": "📟", "MEDICAL": "📟", "TIMER": "📟", "VEHICLE": "📟" },
+  "BELLS": { "ANIMAL": "🔔", "DOORBELL": "🚪", "GONG": "🔔", "HANDBELL": "🔔", "LARGE": "🔔", "MISC": "🔔" },
+  "BIRDS": { "BIRD OF PREY": "🐦", "CROW": "🐦", "FOWL": "🦉", "MISC": "🐦", "SEA": "🐦", "SONGBIRD": "🐦", "TROPICAL": "🐦", "WADING": "🔔" },
+  "BOATS": { "AIR BOAT": "⛵", "BOW WASH": "🏹", "DOOR": "🚪", "ELECTRIC": "⚡", "FISHING": "🐟", "HORN": "⛵", "INTERIOR": "⛵", "MECHANISM": "⛵", "MILITARY": "⛵", "MISC": "⛵", "MOTORBOAT": "⛵", "RACING": "⛵", "ROWBOAT": "⛵", "SAILBOAT": "⛵", "SHIP": "🚢", "STEAM": "⛵", "SUBMARINE": "🛥️", "UNDERWATER": "💧" },
+  "BRASS": { "FRENCH HORN": "🎺", "MISC": "🎺", "SECTION": "🎺", "TROMBONE": "🎺", "TRUMPET": "🎺", "TUBA": "🎺" },
+  "BULLETS": { "BY": "🎯", "IMPACT": "💥", "MISC": "🎯", "RICOCHET": "🎯", "SHELL": "🎯" },
+  "CARTOON": { "ANIMAL": "🎪", "BOING": "🎪", "CLANG": "🎪", "CREAK": "🚪", "HORN": "🎪", "IMPACT": "💥", "MACHINE": "🎪", "MISC": "🎪", "MUSICAL": "🎪", "PLUCK": "🎪", "POP": "🎈", "SHAKE": "🎪", "SPLAT": "🎪", "SQUEAK": "🐭", "STRETCH": "🎪", "SWISH": "🌀", "TWANG": "🎪", "VEHICLE": "🎪", "VOCAL": "🎤", "WARBLE": "🎪", "WHISTLE": "😗", "ZIP": "🎪" },
+  "CERAMICS": { "BREAK": "🏺", "CRASH & DEBRIS": "🏺", "FRICTION": "🏺", "HANDLE": "🏺", "IMPACT": "💥", "MISC": "🏺", "MOVEMENT": "🏺", "TONAL": "🏺" },
+  "CHAINS": { "BREAK": "⛓️", "HANDLE": "⛓️", "IMPACT": "💥", "MISC": "⛓️", "MOVEMENT": "⛓️" },
+  "CHEMICALS": { "ACID": "🧪", "MISC": "🧪", "REACTION": "🧪" },
+  "CLOCKS": { "CHIME": "🎐", "MECHANICS": "🕰️", "MISC": "🕰️", "TICK": "🕰️" },
+  "CLOTH": { "FLAP": "🧵", "HANDLE": "🧵", "IMPACT": "💥", "MISC": "🧵", "MOVEMENT": "🧵", "RIP": "🧵" },
+  "COMMUNICATIONS": { "AUDIO VISUAL": "📡", "CAMERA": "📷", "CELLPHONE": "📱", "MICROPHONE": "📱", "MISC": "📡", "PHONOGRAPH": "📡", "RADIO": "📻", "STATIC": "📺", "TELEMETRY": "📡", "TELEPHONE": "📱", "TELEVISION": "📺", "TRANSCEIVER": "📡", "TYPEWRITER": "⌨️" },
+  "COMPUTERS": { "HARD DRIVE": "💻", "KEYBOARD & MOUSE": "🐭", "MISC": "💻" },
+  "CREATURES": { "AQUATIC": "👹", "AVIAN": "👹", "BEAST": "👹", "BLOB": "👹", "DINOSAUR": "👹", "DRAGON": "👹", "ELEMENTAL": "👹", "ETHEREAL": "👹", "HUMANOID": "🎤", "INSECTOID": "🐛", "MISC": "👹", "MONSTER": "👹", "REPTILIAN": "👹", "SMALL": "👹", "SOURCE": "👹" },
+  "CROWDS": { "ANGRY": "👥", "APPLAUSE": "👏", "BATTLE": "🦇", "CELEBRATION": "🐀", "CHEERING": "👥", "CHILDREN": "🧒", "CONVERSATION": "👥", "LAUGHTER": "😂", "LOOP GROUP": "👥", "MISC": "👥", "PANIC": "👥", "QUIET": "👥", "REACTION": "👥", "SINGING": "🎤", "SPORT": "👥", "WALLA": "👥" },
+  "CYMBALS": { "CHINA": "💿", "CRASH": "💿", "GONG": "🔔", "HI-HAT": "💿", "MISC": "💿", "RIDE": "💿", "SPLASH": "💧" },
+  "DESIGNED": { "BASS DIVE": "🎨", "BOOM": "🎨", "BRAAM": "🎨", "DISTORTION": "🎨", "DRONE": "🌫️", "EERIE": "🎨", "ETHEREAL": "🎨", "GRANULAR": "🎨", "IMPACT": "💥", "MISC": "🎨", "MORPH": "🎨", "RHYTHMIC": "🎨", "RISER": "📈", "RUMBLE": "🎨", "SOURCE": "🎨", "STINGER": "🎨", "SYNTHETIC": "🎨", "TONAL": "🎨", "VOCAL": "🎤", "WHOOSH": "🌀" },
+  "DESTRUCTION": { "COLLAPSE": "🏚️", "CRASH & DEBRIS": "🏚️", "MISC": "🏚️" },
+  "DIRT & SAND": { "CRASH & DEBRIS": "🏜️", "DUST": "🏜️", "HANDLE": "🏜️", "IMPACT": "💥", "MISC": "🏜️", "MOVEMENT": "🏜️", "TONAL": "🏜️" },
+  "DOORS": { "ANTIQUE": "🚪", "APPLIANCE": "🚪", "CABINET": "🚪", "COMPOSITE": "🚪", "CREAK": "🚪", "DUNGEON": "🚪", "ELECTRIC": "⚡", "GATE": "🚪", "GLASS": "🥂", "HARDWARE": "🚪", "HITECH": "🚪", "HYDRAULIC & PNEUMATIC": "🚪", "KNOCK": "🚪", "METAL": "🔗", "MISC": "🚪", "PLASTIC": "🧴", "PRISON": "🚪", "REVOLVING": "🚪", "SLIDING": "🔔", "STONE": "🪨", "SWINGING": "🚪", "WOOD": "🪵" },
+  "DRAWERS": { "METAL": "🔗", "MISC": "🗃️", "PLASTIC": "🧴", "WOOD": "🪵" },
+  "DRUMS": { "HAND DRUM": "🥁", "KICK": "🥁", "MISC": "🥁", "SNARE": "🥁", "TOM": "🥁" },
+  "ELECTRICITY": { "ARC": "⚡", "BUZZ & HUM": "🎤", "ELECTROMAGNETIC": "⚡", "MISC": "⚡", "SPARKS": "⚡", "ZAP": "⚡" },
+  "EQUIPMENT": { "BRIDLE & TACK": "🧰", "HITECH": "🧰", "MISC": "🧰", "RECREATIONAL": "🍽️", "SPORT": "🧰", "TACTICAL": "🧰" },
+  "EXPLOSIONS": { "DESIGNED": "💥", "MISC": "💥", "REAL": "💥" },
+  "FARTS": { "DESIGNED": "💩", "MISC": "💩", "REAL": "💩" },
+  "FIGHT": { "BODYFALL": "🥊", "CLOTH": "🧵", "GRAB": "🥊", "IMPACT": "💥", "MISC": "🥊" },
+  "FIRE": { "BURNING": "🔥", "BURST": "🔥", "CRACKLE": "🔥", "GAS": "🔥", "IGNITE": "🔥", "MISC": "🔥", "SIZZLE": "🍳", "TORCH": "🔥", "TURBULENT": "🔥", "WHOOSH": "🌀" },
+  "FIREWORKS": { "COMMERCIAL": "🎆", "MISC": "🎆", "RECREATIONAL": "🍽️" },
+  "FOLEY": { "CLOTH": "🧵", "FEET": "🎬", "HANDS": "🎬", "MISC": "🎬", "PROP": "🎬" },
+  "FOOD & DRINK": { "COOKING": "🍽️", "DRINKING": "🥤", "EATING": "🍽️", "GLASSWARE": "🥂", "INGREDIENTS": "🍽️", "KITCHENWARE": "🍽️", "MISC": "🍽️", "POUR": "🍽️", "TABLEWARE": "🍽️" },
+  "FOOTSTEPS": { "ANIMAL": "👣", "CREATURE": "🍽️", "HORSE": "🐎", "HUMAN": "🎤", "MISC": "👣" },
+  "GAMES": { "ARCADE": "🎮", "BOARD": "🎮", "CASINO": "🎮", "MISC": "🎮", "VIDEO": "🎮" },
+  "GEOTHERMAL": { "FUMAROLE": "♨️", "GEYSER": "♨️", "LAVA": "🌋", "MISC": "♨️", "MUD POTS": "🟤" },
+  "GLASS": { "BREAK": "🥂", "CRASH & DEBRIS": "🥂", "FRICTION": "🥂", "HANDLE": "🥂", "IMPACT": "💥", "MISC": "🥂", "MOVEMENT": "🥂", "TONAL": "🥂" },
+  "GORE": { "BLOOD": "🩸", "BONE": "🩸", "BURN": "🔥", "FLESH": "🩸", "MISC": "🩸", "OOZE": "🩸", "SOURCE": "🩸", "SPLAT": "🩸", "SQUISH": "🩸", "STAB": "🩸" },
+  "GUITAR": { "ACOUSTIC": "🎸", "BANJO": "🪕", "BASS GUITAR": "🎸", "ELECTRIC": "⚡", "HARP": "🎵", "MANDOLIN": "🎸", "MISC": "🎸", "SITAR": "🎸", "UKULELE": "🎸" },
+  "GUNS": { "ANTIQUE": "🔫", "ARTILLERY": "🔫", "AUTOMATIC": "🔫", "CANNON": "💥", "HANDLE": "🔫", "HITECH": "🔫", "MECHANISM": "🔫", "MISC": "🔫", "PISTOL": "🔫", "RIFLE": "🔫", "SHOTGUN": "🔫", "SUPPRESSED": "🔫" },
+  "HORNS": { "AIR POWERED": "📯", "CELEBRATION": "🐀", "MISC": "📯", "TRADITIONAL": "📯" },
+  "HUMAN": { "BLOW": "🧍", "BREATH": "😮‍💨", "BURP": "😮", "COUGH": "😷", "HEARTBEAT": "🫀", "KISS": "💋", "MISC": "🧍", "PEE": "🧍", "SKIN": "🧍", "SNEEZE": "🤧", "SNIFF": "🧍", "SNORE": "😴", "SPIT": "🧍", "VOMIT": "🧍" },
+  "ICE": { "BREAK": "🧊", "CRASH & DEBRIS": "🧊", "FRICTION": "🧊", "HANDLE": "🧊", "IMPACT": "💥", "MISC": "🧊", "MOVEMENT": "🧊", "TONAL": "🧊" },
+  "KEYBOARD": { "ACCORDION": "🪗", "CELESTA": "🪗", "CLAVINET": "🪗", "ELECTRIC PIANO": "🎹", "HARPSICHORD": "🎵", "MISC": "🪗", "ORGAN": "🎹" },
+  "LASERS": { "BEAM": "🔦", "GUN": "🔫", "IMPACT": "💥", "MISC": "🔦" },
+  "LEATHER": { "CREAK": "🚪", "HANDLE": "🧥", "IMPACT": "💥", "MISC": "🧥", "MOVEMENT": "🧥" },
+  "LIQUID & MUD": { "BUBBLES": "🫧", "IMPACT": "💥", "MISC": "🫗", "MOVEMENT": "🫗", "SUCTION": "🫗" },
+  "LOOPS": { "BASS LOOP": "🔁", "DRUM LOOP": "🔁", "FX LOOP": "🔁", "MELODIC LOOP": "🔁", "MIDI": "🔁", "MISC": "🔁", "TOP LOOP": "🔁", "VOCAL LOOP": "🎤" },
+  "MACHINES": { "AMUSEMENT": "🏭", "ANTIQUE": "🏭", "APPLIANCE": "🏭", "CONSTRUCTION": "🏭", "ELEVATOR": "🏭", "ESCALATOR": "🏭", "FAN": "🏭", "GARDEN": "🏭", "GYM": "🏭", "HITECH": "🏭", "HVAC": "🏭", "INDUSTRIAL": "🏭", "MECHANISM": "🏭", "MEDICAL": "🏭", "MISC": "🏭", "OFFICE": "🧊", "PUMP": "🏭" },
+  "MAGIC": { "ANGELIC": "✨", "ELEMENTAL": "✨", "EVIL": "✨", "MISC": "✨", "POOF": "✨", "SHIMMER": "✨", "SPELL": "✨" },
+  "MALLET": { "GLOCKENSPIEL": "🎵", "KALIMBA": "🎶", "MARIMBA": "🎵", "MISC": "🎶", "STEELPAN": "🎶", "TIMPANI": "🥁", "TUBULAR BELLS": "🔔", "VIBRAPHONE": "🎵", "XYLOPHONE": "🎵" },
+  "MECHANICAL": { "CLICK": "🖱️", "GEARS": "🔩", "HYDRAULIC & PNEUMATIC": "🔩", "LATCH": "🔩", "LEVER": "🔩", "LOCK": "🔒", "MISC": "🔩", "PULLEY": "🔩", "RATCHET": "🐀", "RELAY": "🔩", "ROLLER": "🔩", "SWITCH": "🔩" },
+  "METAL": { "BREAK": "🔗", "CRASH & DEBRIS": "🔗", "FRICTION": "🔗", "HANDLE": "🔗", "IMPACT": "💥", "MISC": "🔗", "MOVEMENT": "🔗", "TONAL": "🔗" },
+  "MOTORS": { "ANTIQUE": "⚙️", "COMBUSTION": "🚌", "ELECTRIC": "⚡", "MISC": "⚙️", "SERVO": "⚙️", "TURBINE": "⚙️" },
+  "MOVEMENT": { "ACTIVITY": "🏃", "ANIMAL": "🏃", "CREATURE": "🍽️", "CROWD": "🐦", "HUMAN": "🎤", "INSECT": "🐛", "MISC": "🏃", "PRESENCE": "🏃" },
+  "NATURAL DISASTER": { "AVALANCHE": "🏔️", "EARTHQUAKE": "🌍", "MISC": "🌪️", "TORNADO": "🌪️", "TSUNAMI": "🌪️", "TYPHOON": "🌪️", "VOLCANO": "🌋" },
+  "OBJECTS": { "BAG": "🛍️", "BOOK": "📖", "COIN": "🪙", "CONTAINER": "📦", "FASHION": "📦", "FURNITURE": "📦", "GARDEN": "📦", "GYM": "📦", "HOUSEHOLD": "📦", "JEWELRY": "📦", "KEYS": "🔑", "LUGGAGE": "📦", "MEDICAL": "📦", "MISC": "📦", "OFFICE": "🧊", "PACKAGING": "📦", "TAPE": "🦍", "UMBRELLA": "☂️", "WHEELED": "📦", "WRITING": "📦", "ZIPPER": "🤐" },
+  "PAPER": { "FLUTTER": "📄", "FRICTION": "📄", "HANDLE": "📄", "IMPACT": "💥", "MISC": "📄", "RIP": "📄", "TONAL": "📄" },
+  "PERCUSSION": { "CLAVE": "🪘", "COWBELL": "🔔", "GUIRO": "🪘", "MISC": "🪘", "SHAKER": "🪇", "TAMBOURINE": "🪇", "TRIANGLE": "📐", "WOODBLOCK": "🔒" },
+  "PIANO": { "GRAND": "🎹", "HONKY-TONK": "🎹", "MISC": "🎹", "PREPARED": "🎹", "UPRIGHT": "🎹" },
+  "PLASTIC": { "BREAK": "🧴", "CRASH & DEBRIS": "🧴", "FRICTION": "🧴", "HANDLE": "🧴", "IMPACT": "💥", "MISC": "🧴", "MOVEMENT": "🧴", "TONAL": "🧴" },
+  "RAIN": { "CLOTH": "🧵", "CONCRETE": "🌧️", "GENERAL": "🌧️", "GLASS": "🥂", "INTERIOR": "🌧️", "METAL": "🔗", "PLASTIC": "🧴", "VEGETATION": "🌧️", "WATER": "💧", "WOOD": "🪵" },
+  "ROBOTS": { "MISC": "🤖", "MOVEMENT": "🤖", "VOCAL": "🎤" },
+  "ROCKS": { "BREAK": "🪨", "CRASH & DEBRIS": "🪨", "FRICTION": "🪨", "HANDLE": "🪨", "IMPACT": "💥", "MISC": "🪨", "MOVEMENT": "🪨", "TONAL": "🪨" },
+  "ROPE": { "CREAK": "🚪", "HANDLE": "🪢", "IMPACT": "💥", "MISC": "🪢", "MOVEMENT": "🪢" },
+  "RUBBER": { "CRASH & DEBRIS": "🧤", "FRICTION": "🧤", "HANDLE": "🧤", "IMPACT": "💥", "MISC": "🧤", "MOVEMENT": "🧤", "TONAL": "🧤" },
+  "SCIFI": { "ALARM": "🚨", "COMPUTER": "💻", "DOOR": "🚪", "ENERGY": "⚡", "IMPACT": "💥", "MACHINE": "🛸", "MECHANISM": "🛸", "MISC": "🛸", "RETRO": "🛸", "SPACESHIP": "🛸", "VEHICLE": "🛸", "WEAPON": "🛸" },
+  "SNOW": { "CRASH & DEBRIS": "❄️", "FRICTION": "❄️", "HANDLE": "❄️", "IMPACT": "💥", "MISC": "❄️", "MOVEMENT": "❄️" },
+  "SPORTS": { "CLIMBING": "⚽", "COURT": "⚽", "EQUESTRIAN": "⚽", "FIELD": "⚽", "GYM": "⚽", "INDOOR": "🚪", "MISC": "⚽", "SKATE": "⚽", "TRACK & FIELD": "⚽", "WATER": "💧", "WINTER": "⚽" },
+  "STRINGS": { "CELLO": "🎻", "DOUBLE BASS": "🎻", "ENSEMBLE": "🎻", "MISC": "🎻", "PIZZICATO": "🐈", "VIOLA": "🎻", "VIOLIN": "🎻" },
+  "SWOOSHES": { "SWISH": "🌀", "WHOOSH": "🌀" },
+  "SYNTH": { "ARP": "🎛️", "BASS": "🎛️", "CHORD": "🎛️", "DRONE": "🌫️", "KEYS": "🔑", "LEAD": "🎛️", "MISC": "🎛️", "PAD": "🎛️", "PLUCK": "🎛️" },
+  "TOOLS": { "GARDEN": "🔧", "HAND": "🔧", "MISC": "🔧", "PNEUMATIC": "🔧", "POWER": "🔧" },
+  "TOYS": { "ELECTRONIC": "🧸", "MECHANICAL": "🧸", "MISC": "🧸" },
+  "TRAINS": { "BRAKE": "🛑", "CLACK": "🚂", "DIESEL": "🚂", "DOOR": "🚪", "ELECTRIC": "⚡", "HIGH SPEED": "🚂", "HORN": "🚂", "INTERIOR": "🚂", "MECHANISM": "🚂", "MISC": "🚂", "STEAM": "🚂", "SUBWAY": "🚇", "TRAM": "🚊" },
+  "USER INTERFACE": { "ALERT": "🖱️", "BEEP": "🐝", "CLICK": "🖱️", "DATA": "🖱️", "GLITCH": "📺", "MISC": "🖱️", "MOTION": "🖱️" },
+  "VEGETATION": { "GRASS": "🌿", "LEAVES": "🌿", "MISC": "🌿", "TREE": "🌳" },
+  "VEHICLES": { "ALARM": "🚨", "ANTIQUE": "🚗", "ATV": "🚗", "BICYCLE": "🚲", "BRAKE": "🛑", "BUS": "🚌", "CAR": "🚗", "CONSTRUCTION": "🚗", "DOOR": "🚪", "ELECTRIC": "⚡", "EMERGENCY": "🚗", "FARM": "🚗", "FREIGHT": "🚗", "GENERIC BY": "🚗", "HORN": "🚗", "INTERIOR": "🚗", "JALOPY": "🚗", "MECHANISM": "🚗", "MILITARY": "🚗", "MISC": "🚗", "MOTORCYCLE": "🏍️", "RACING": "🚗", "SIREN": "🚨", "SKID": "🚗", "SUSPENSION": "🚗", "TIRE": "🛞", "TRUCK VAN & SUV": "🚚", "UTILITY": "🚗", "WAGON": "🚗", "WINDOW": "🌬️" },
+  "VOCALS": { "ADLIB": "🎤", "CHOIR": "🎤", "CHOP": "🎤", "LEAD VOCAL": "🎤", "MISC": "🎤", "SPOKEN": "🎤", "VOCODER": "🎤" },
+  "VOICES": { "ALIEN": "👽", "BABY": "👶", "CHEER": "🗣️", "CHILD": "🧒", "CRYING": "😭", "EFFORTS": "🗣️", "FEMALE": "🗣️", "FUTZED": "🗣️", "HISTORICAL": "🗣️", "LAUGH": "😂", "MALE": "🗣️", "MISC": "🗣️", "REACTION": "🗣️", "SCREAM": "😱", "SINGING": "🎤", "WHISPER": "🤫" },
+  "WATER": { "BUBBLES": "🫧", "DRAIN": "🌧️", "DRIP": "💧", "FIZZ": "💧", "FLOW": "💧", "FOUNTAIN": "💧", "IMPACT": "💥", "LAP": "💧", "MISC": "💧", "MOVEMENT": "💧", "PLUMBING": "💧", "POUR": "💧", "SPLASH": "💧", "SPRAY": "💧", "STEAM": "💧", "SURF": "💧", "TURBULENT": "💧", "UNDERWATER": "💧", "WATERFALL": "💧", "WAVE": "🌊" },
+  "WEAPONS": { "ARMOR": "🛡️", "ARROW": "🏹", "AXE": "⚔️", "BLUNT": "⚔️", "BOW": "🏹", "KNIFE": "🔪", "MISC": "⚔️", "POLEARM": "⚔️", "SIEGE": "⚔️", "SWORD": "⚔️", "WHIP": "〰️" },
+  "WEATHER": { "HAIL": "🌨️", "MISC": "🌦️", "STORM": "🌩️", "THUNDER": "⛈️" },
+  "WHISTLES": { "HUMAN": "🎤", "MECHANICAL": "😗", "MISC": "😗" },
+  "WIND": { "DESIGNED": "🌬️", "GENERAL": "🌬️", "GUST": "🌬️", "INTERIOR": "🌬️", "TONAL": "🌬️", "TURBULENT": "🌬️", "VEGETATION": "🌬️" },
+  "WINDOWS": { "COVERING": "🪟", "HARDWARE": "🪟", "KNOCK": "🪟", "METAL": "🔗", "MISC": "🪟", "PLASTIC": "🧴", "WOOD": "🪵" },
+  "WINGS": { "BIRD": "🐦", "CREATURE": "🍽️", "INSECT": "🐛", "MISC": "🪽" },
+  "WOOD": { "BREAK": "🪵", "CRASH & DEBRIS": "🪵", "FRICTION": "🪵", "HANDLE": "🪵", "IMPACT": "💥", "MISC": "🪵", "MOVEMENT": "🪵", "TONAL": "🪵" },
+  "WOODWIND": { "BASSOON": "🎶", "CLARINET": "🎶", "FLUTE": "🪈", "MISC": "🎷", "OBOE": "🎶", "SAXOPHONE": "🎷" },
+};
+
 /** The emoji for a UCS category, or "" if unknown (e.g. "(unclassified)"). */
 export function categoryEmoji(category: string): string {
   return CATEGORY_EMOJI[category] || "";
 }
 
+/** The emoji for a UCS subcategory within its category, or "" if unknown. */
+export function subcategoryEmoji(category: string, subcategory: string): string {
+  return (SUBCATEGORY_EMOJI[category] && SUBCATEGORY_EMOJI[category][subcategory]) || "";
+}
+
 /** A category label for display: "🎷 WOODWIND" normally, or just "🎷" when
- *  `emojiOnly` (a column too narrow for the name). Falls back to the bare name
- *  when the category has no emoji. */
+ *  `emojiOnly` (a column too narrow for the name). Falls back to the bare name if no emoji. */
 export function categoryLabel(category: string, emojiOnly = false): string {
   const e = categoryEmoji(category);
   if (!e) return category;
   return emojiOnly ? e : e + " " + category;
+}
+
+/** A subcategory label for display: "🪈 FLUTE" normally, or just "🪈" when
+ *  `emojiOnly`. Falls back to the bare subcategory name when it has no emoji. */
+export function subcategoryLabel(category: string, subcategory: string, emojiOnly = false): string {
+  if (!subcategory) return subcategory;
+  const e = subcategoryEmoji(category, subcategory);
+  if (!e) return subcategory;
+  return emojiOnly ? e : e + " " + subcategory;
 }

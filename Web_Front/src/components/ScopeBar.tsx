@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { type Taxonomy, taxonomyKeys, scopeSubgroups, scopeChipColor, scopeSubColor } from '../groupColors';
 import { altCategory } from '../ucsIndex';
 import { useIsNarrow } from '../useIsNarrow';
-import { categoryLabel } from '../categoryEmoji';
+import { categoryLabel, subcategoryLabel } from '../categoryEmoji';
 
 interface ScopeBarProps {
   analysisResult: any[];
@@ -91,12 +91,12 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
       )}
       {group && subgroups.length > 0 && (
         isNarrow ? (
-          scopeSelect(`${group} subgroups:`, sub || '', subgroups, setSub, sg => scopeSubColor(group, sg))
+          scopeSelect(`${categoryLabel(group)} subgroups:`, sub || '', subgroups, setSub, sg => scopeSubColor(group, sg), sg => subcategoryLabel(group, sg))
         ) : (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{group} subgroups:</span>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{categoryLabel(group)} subgroups:</span>
           {filterBtn('All', !sub, () => setSub(null), undefined, filtering)}
-          {subgroups.map(sg => filterBtn(sg, sub === sg, () => setSub(sg), scopeSubColor(group, sg), filtering))}
+          {subgroups.map(sg => filterBtn(subcategoryLabel(group, sg), sub === sg, () => setSub(sg), scopeSubColor(group, sg), filtering))}
         </div>
         )
       )}

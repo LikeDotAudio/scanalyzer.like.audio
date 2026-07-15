@@ -6,7 +6,7 @@ import { drawWaveform } from '../examiner/drawWaveform';
 import ScopeBar from '../ScopeBar';
 import { complementColor, ucsColor, ucsSubColor, matchesScope } from '../../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
-import { categoryEmoji, categoryLabel } from '../../categoryEmoji';
+import { categoryEmoji, categoryLabel, subcategoryLabel } from '../../categoryEmoji';
 import { useIsNarrow } from '../../useIsNarrow';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
 import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
@@ -651,10 +651,11 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
   };
 
   return (
-    <div ref={outerRef} style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
+    <div ref={outerRef} style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', overflowY: isNarrow ? 'auto' : undefined }}>
 
-      {/* Top Half: Data Table */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
+      {/* Top Half: Data Table. On mobile it's height-capped (not flex:1) so the stacked
+          detail panes below it flow into the scrolling page. */}
+      <div style={{ ...(isNarrow ? { flex: 'none', height: '45vh' } : { flex: 1 }), display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
           <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
               <ScopeBar 
                 analysisResult={analysisResult} 
@@ -757,13 +758,13 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category ? (isNarrow ? (categoryEmoji(item.ucs.category) || item.ucs.category) : categoryLabel(item.ucs.category)) : ''}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell()} title={item.ucs.subcategory}>{subCell(item.ucs.subcategory, item.ucs.confidence, item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)')}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_1_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[0])}>{subCell(altSubcategory(item.ucs?.alternatives?.[0]), altProbability(item.ucs?.alternatives?.[0]), 'var(--text-secondary)')}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_2_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[1])}>{altCategory(item.ucs?.alternatives?.[1])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_2_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[1])}>{subCell(altSubcategory(item.ucs?.alternatives?.[1]), altProbability(item.ucs?.alternatives?.[1]), 'var(--text-secondary)')}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_3_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[2])}>{altCategory(item.ucs?.alternatives?.[2])}</td>}
-                                          {activeColumns.find(c => c.key === 'ucs_alt_3_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[2])}>{subCell(altSubcategory(item.ucs?.alternatives?.[2]), altProbability(item.ucs?.alternatives?.[2]), 'var(--text-secondary)')}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell()} title={item.ucs.subcategory}>{subCell(subcategoryLabel(item.ucs.category || '', item.ucs.subcategory, isNarrow), item.ucs.confidence, item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)')}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0]) ? (isNarrow ? (categoryEmoji(altCategory(item.ucs?.alternatives?.[0])) || altCategory(item.ucs?.alternatives?.[0])) : categoryLabel(altCategory(item.ucs?.alternatives?.[0]))) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_1_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[0])}>{subCell(subcategoryLabel(altCategory(item.ucs?.alternatives?.[0]), altSubcategory(item.ucs?.alternatives?.[0]), isNarrow), altProbability(item.ucs?.alternatives?.[0]), 'var(--text-secondary)')}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[1])}>{altCategory(item.ucs?.alternatives?.[1]) ? (isNarrow ? (categoryEmoji(altCategory(item.ucs?.alternatives?.[1])) || altCategory(item.ucs?.alternatives?.[1])) : categoryLabel(altCategory(item.ucs?.alternatives?.[1]))) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_2_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[1])}>{subCell(subcategoryLabel(altCategory(item.ucs?.alternatives?.[1]), altSubcategory(item.ucs?.alternatives?.[1]), isNarrow), altProbability(item.ucs?.alternatives?.[1]), 'var(--text-secondary)')}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[2])}>{altCategory(item.ucs?.alternatives?.[2]) ? (isNarrow ? (categoryEmoji(altCategory(item.ucs?.alternatives?.[2])) || altCategory(item.ucs?.alternatives?.[2])) : categoryLabel(altCategory(item.ucs?.alternatives?.[2]))) : ''}</td>}
+                                          {activeColumns.find(c => c.key === 'ucs_alt_3_subgroup') && <td style={cell()} title={altSubcategory(item.ucs?.alternatives?.[2])}>{subCell(subcategoryLabel(altCategory(item.ucs?.alternatives?.[2]), altSubcategory(item.ucs?.alternatives?.[2]), isNarrow), altProbability(item.ucs?.alternatives?.[2]), 'var(--text-secondary)')}</td>}
                                           {activeColumns.find(c => c.key === 'reason') && <td style={cell({ color: 'var(--text-secondary)' })} title={item.classification.reason?.[0] || ''}>{item.classification.reason?.[0] || ''}</td>}
                                           {activeColumns.find(c => c.key === 'timbre') && <td style={cell()} title={item.classification.timbre}>{item.classification.timbre ? `${TIMBRE_EMOJI[item.classification.timbre] || '🎚️'} ${item.classification.timbre}` : ''}</td>}
                                           {activeColumns.find(c => c.key === 'cluster') && <td style={cell({ color: '#10B981' })}>{item.unsupervised.cluster !== -1 ? item.unsupervised.cluster : ''}</td>}
@@ -814,19 +815,22 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       <div onMouseDown={startResize} title="Drag to resize"
            style={{ height: '6px', cursor: 'row-resize', background: 'var(--border-color)', flexShrink: 0, borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }} />
 
-      {/* Bottom Half: Details, Bar Chart, Waveform */}
-      <div style={{ height: `${bottomHeight}px`, flexShrink: 0, display: 'flex', background: '#0B0E14' }}>
+      {/* Bottom Half: Details, Bar Chart, Waveform. On mobile it stacks into a column and,
+          via flex `order`, reflows to: waveform → circular player → bar graphs → field/values
+          (the right column already holds circular-above-bars, so it just slots between). */}
+      <div style={{ ...(isNarrow ? { height: 'auto', flexDirection: 'column' } : { height: `${bottomHeight}px` }), flexShrink: 0, display: 'flex', background: '#0B0E14' }}>
 
           {/* Bottom Left: Field/Value details */}
-          <div style={{ width: '300px', borderRight: '1px solid var(--border-color)', overflowY: 'auto' }}>
+          <div style={{ ...(isNarrow ? { width: '100%', order: 3, borderTop: '1px solid var(--border-color)' } : { width: '300px', borderRight: '1px solid var(--border-color)' }), overflowY: 'auto' }}>
               <FieldValueTable item={selectedItem} />
           </div>
 
-          {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece). */}
-          <div style={{ flex: 1, minWidth: 0, position: 'relative', background: '#0A0A0A', padding: '0.75rem', borderRight: '1px solid var(--border-color)' }}>
+          {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece).
+              On mobile it's first (order 1) with a fixed height so the canvas has room. */}
+          <div style={{ ...(isNarrow ? { width: '100%', order: 1, minHeight: '260px', borderBottom: '1px solid var(--border-color)' } : { flex: 1, minWidth: 0, borderRight: '1px solid var(--border-color)' }), position: 'relative', background: '#0A0A0A', padding: '0.75rem' }}>
               {selectedItem ? (
                   <>
-                      <div style={{ width: '100%', height: 'calc(100% - 1.5rem)', position: 'relative' }}>
+                      <div style={{ width: '100%', height: isNarrow ? '230px' : 'calc(100% - 1.5rem)', position: 'relative' }}>
                         <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
                         <div ref={playheadRef} style={{
                           position: 'absolute', top: 0, bottom: 0, left: 0,
@@ -860,7 +864,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
           </div>
 
           {/* Right column: circular player on top, property bar graphs below it. */}
-          <div style={{ width: '280px', flexShrink: 0, background: '#0B0E14', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ ...(isNarrow ? { width: '100%', order: 2 } : { width: '280px', flexShrink: 0 }), background: '#0B0E14', display: 'flex', flexDirection: 'column' }}>
               <div onWheel={wheelScrub}
                 style={{ flexShrink: 0, borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem' }}>
                   {selectedItem ? (
@@ -871,7 +875,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                       <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Circular wave</div>
                   )}
               </div>
-              <div style={{ flex: 1, minHeight: 0, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto' }}>
+              <div style={{ flex: isNarrow ? 'none' : 1, minHeight: 0, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: isNarrow ? 'visible' : 'auto' }}>
                   <PropertyBars item={selectedItem} analysisResult={analysisResult} />
               </div>
           </div>

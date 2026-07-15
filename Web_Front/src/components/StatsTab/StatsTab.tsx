@@ -235,7 +235,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
 
       {/* Charts grid — 2×2 on desktop; on mobile each chart is full screen-width,
           stacked in a single scrolling column so none is squeezed into a corner. */}
-      <div style={{ flex: 1, display: 'grid', minHeight: 0,
+      <div style={{ flex: 1, display: 'grid', minHeight: 0, position: 'relative',
         ...(isNarrow
           ? { gridTemplateColumns: '1fr', gridAutoRows: '260px', overflowY: 'auto' }
           : { gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr' }),
@@ -277,19 +277,19 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
 
         {chartCard('Scatter A', x1, setX1, y1, setY1)}
         {chartCard('Scatter B', x2, setX2, y2, setY2)}
-      </div>
 
-      {/* Circular waveform of the hovered point — anchored dead-centre, loaded on
-          hover. pointerEvents:none so it never blocks hovering the points behind it;
-          starts at 0° (right) and wraps 360°. */}
-      {ring && (
+        {/* Circular player — always visible, floating in the gutter BETWEEN the two
+            scatter plots (bottom-row centre). Loaded from the last hovered/clicked point;
+            a placeholder ring before the first pick. The wrapper is click-through so it
+            never blocks hovering the points around it, but the ring itself (play + scrub)
+            stays interactive. Starts at 0° (right) and wraps 360°. */}
         <div style={{
-          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          position: 'absolute', top: isNarrow ? '50%' : '75%', left: '50%', transform: 'translate(-50%, -50%)',
           zIndex: 20, pointerEvents: 'none',
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem',
         }}>
-          <RadialWaveform samples={ring.samples} color={ring.color} size={240}
-            playing={playing}
+          <RadialWaveform samples={ring?.samples ?? null} color={ring?.color || '#f4902c'} size={isNarrow ? 200 : 240}
+            playing={playing} style={{ pointerEvents: 'auto' }}
             onPlay={() => { const el = audioRef.current; if (!el) return; el.paused ? el.play().catch(() => {}) : el.pause(); }}
             getProgress={() => { const el = audioRef.current; return el && el.duration ? el.currentTime / el.duration : null; }}
             onScrub={(f) => { const el = audioRef.current; if (!el || !el.duration) return; el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); }} />
@@ -297,9 +297,9 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
             fontSize: '0.8rem', maxWidth: 260, textAlign: 'center', color: '#fff',
             textShadow: '0 1px 3px rgba(0,0,0,0.9)',
             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-          }} title={ring.name}>{ring.name}</div>
+          }} title={ring?.name || ''}>{ring?.name || 'hover or click a point'}</div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
