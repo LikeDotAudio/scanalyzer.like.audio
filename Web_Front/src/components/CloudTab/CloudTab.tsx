@@ -44,7 +44,7 @@ function WebGLUnavailable() {
 }
 
 export default function CloudTab({
-  analysisResult, filteredData, audioFiles, onSound, selectedItem, playing
+  filteredData, audioFiles, onSound, selectedItem, playing
 }: CloudTabProps) {
   const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
   const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
