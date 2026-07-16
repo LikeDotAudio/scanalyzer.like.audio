@@ -239,10 +239,20 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
         // fallbacks (WebKitGTK's Web Audio decode fails on plain WAV intermittently and on
         // compressed formats outright). decodeWav catches WAV; the WASM analyzer catches
         // MP3/OGG/M4A/AAC/FLAC/AIFF. `nativePath`/`src` supply the extension hint.
-        let decoded: AudioBuffer | null = null;
-        try { decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0)); }
-        catch (e) {
-          console.warn("ExtractorTab decodeAudioData failed, falling back:", e);
+        let decoded: AudioBuffer | null | undefined = null;
+        try {
+          const decodePromise = decodeCtxRef.current.decodeAudioData(buf.slice(0));
+          if (decodePromise) {
+            decoded = await Promise.race([
+              decodePromise,
+              new Promise<null>((_, reject) => setTimeout(() => reject(new Error("timeout")), 150))
+            ]);
+          }
+        } catch (e) {
+          // decodeAudioData rejected or timed out
+        }
+
+        if (!decoded) {
           decoded =
             decodeWav(buf, decodeCtxRef.current) ??
             (await decodeViaWasm(buf, nativePath || src || '', decodeCtxRef.current));

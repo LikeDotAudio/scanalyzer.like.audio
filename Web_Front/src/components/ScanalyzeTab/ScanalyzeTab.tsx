@@ -599,6 +599,7 @@ export default function ScanalyzeTab({
               View 3D Cloud
             </button>
           </div>
+          <p className="text-secondary" style={{ marginTop: '1rem', fontSize: '0.9rem', fontStyle: 'italic' }}>Note: Select a category to hear the sounds.</p>
         </div>
       )}
     </div>

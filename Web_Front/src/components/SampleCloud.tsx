@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect } from 'react'
+import { useRef, useMemo, useEffect, useState } from 'react'
 import { Canvas, useThree, useFrame, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
@@ -13,6 +13,7 @@ export const CLOUD_FEATURES: Record<string, Feature> = {
   Group: { categorical: true, get: (it) => it.classification?.group || 'Unclassified' },
   Subgroup: { categorical: true, get: (it) => it.classification?.subgroup || '—' },
   Timbre: { categorical: true, get: (it) => it.classification?.timbre || '?' },
+  Cluster: { categorical: true, get: (it) => it.unsupervised?.cluster != null && it.unsupervised.cluster !== -1 ? 'C' + it.unsupervised.cluster : '—' },
   Length: { get: (it) => it.metadata?.length_seconds ?? 0 },
   Complexity: { get: (it) => it.spectral_features?.complexity ?? 0 },
   'Brightness (centroid)': { get: (it) => it.spectral_features?.spectral_centroid_hz ?? 0 },
@@ -23,6 +24,9 @@ export const CLOUD_FEATURES: Record<string, Feature> = {
   BPM: { get: (it) => it.musicality?.beats_per_minute ?? 0 },
   RMS: { get: (it) => it.spectral_features?.root_mean_square_level ?? 0 },
   ZCR: { get: (it) => it.spectral_features?.zero_crossings_per_second ?? 0 },
+  Transients: { get: (it) => it.envelope?.transient_count ?? 0 },
+  'Crest Factor': { get: (it) => it.spectral_features?.crest_factor ?? 0 },
+  Flatness: { get: (it) => it.spectral_features?.spectral_flatness ?? 0 },
 };
 
 export const AXIS_OPTIONS = Object.keys(CLOUD_FEATURES);
@@ -160,6 +164,7 @@ interface ShapeData {
 function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { shape: string, sData: ShapeData, hiddenGroups: Set<string>, allData: any[], taxonomy: Taxonomy, onPick: (i: number) => void }) {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   
   useEffect(() => {
     const mesh = meshRef.current;
@@ -191,6 +196,20 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
     if (e.instanceId != null) onPick(sData.origIndex[e.instanceId]);
   };
 
+  const handlePointerOver = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    if (e.instanceId != null) {
+      setHoveredIdx(e.instanceId);
+      document.body.style.cursor = 'pointer';
+    }
+  };
+
+  const handlePointerOut = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    setHoveredIdx(null);
+    document.body.style.cursor = 'auto';
+  };
+
   if (sData.positions.length === 0) return null;
 
   let geom;
@@ -204,10 +223,38 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   else if (shape === 'dodecahedron') geom = <dodecahedronGeometry args={[0.55, 0]} />;
   else geom = <sphereGeometry args={[0.5, 10, 10]} />;
 
+  // Clean up cursor if unmounted while hovered
+  useEffect(() => {
+    return () => { document.body.style.cursor = 'auto'; };
+  }, []);
+
   return (
-    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, sData.positions.length]} onClick={handleClick}>
+    <instancedMesh 
+      ref={meshRef} 
+      args={[undefined as any, undefined as any, sData.positions.length]} 
+      onClick={handleClick}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+    >
       {geom}
       <meshBasicMaterial toneMapped={false} />
+      {hoveredIdx != null && sData.positions[hoveredIdx] && (
+        <Html position={sData.positions[hoveredIdx]} center style={{ pointerEvents: 'none', zIndex: 100 }}>
+          <div style={{
+            background: 'rgba(15, 19, 27, 0.9)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            color: '#f8fafc',
+            fontSize: '11px',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+            userSelect: 'none',
+          }}>
+            {allData[sData.origIndex[hoveredIdx]]?.metadata?.name || 'Unknown'}
+          </div>
+        </Html>
+      )}
     </instancedMesh>
   );
 }

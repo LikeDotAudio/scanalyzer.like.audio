@@ -16,6 +16,7 @@ export interface RadialWaveformOpts {
   bins?: number;          // angular columns (spokes) around the ring
   lineWidth?: number;     // spoke stroke width
   startMarker?: boolean;  // draw a tick at 0° marking where the file starts
+  regions?: { start: number; end: number; color?: string }[];
 }
 
 // Screen-space note: canvas Y grows downward, so increasing the math angle
@@ -28,7 +29,7 @@ export function drawRadialWaveform(
 ) {
   const {
     cx, cy, innerRadius, outerRadius, color,
-    bins = 720, lineWidth = 1, startMarker = true,
+    bins = 720, lineWidth = 1, startMarker = true, regions
   } = opts;
 
   const len = samples.length;
@@ -46,12 +47,37 @@ export function drawRadialWaveform(
   ctx.arc(cx, cy, baseR, 0, Math.PI * 2);
   ctx.stroke();
 
-  ctx.strokeStyle = color + 'B3';
   ctx.lineWidth = lineWidth;
+  let activeColor = color + 'B3';
+  ctx.strokeStyle = activeColor;
   ctx.beginPath();
+  
   for (let b = 0; b < bins; b++) {
     const start = Math.floor(b * samplesPerBin);
     const end = Math.min(len, Math.floor((b + 1) * samplesPerBin));
+    
+    // Check if this bin falls inside any region
+    const fraction = b / bins;
+    let inRegion = !regions || regions.length === 0;
+    if (!inRegion && regions) {
+      for (let i = 0; i < regions.length; i++) {
+        if (fraction >= regions[i].start && fraction <= regions[i].end) {
+          inRegion = true;
+          break;
+        }
+      }
+    }
+    
+    const targetColor = inRegion ? color + 'B3' : color + '33';
+    
+    // If color changes, stroke the current path and start a new one
+    if (targetColor !== activeColor) {
+      ctx.stroke();
+      activeColor = targetColor;
+      ctx.strokeStyle = activeColor;
+      ctx.beginPath();
+    }
+    
     let min = 1.0, max = -1.0;
     for (let i = start; i < end; i++) {
       const v = samples[i];
@@ -60,7 +86,7 @@ export function drawRadialWaveform(
     }
     if (min > max) { min = 0; max = 0; }
 
-    const angle = (b / bins) * Math.PI * 2; // 0 → 2π, clockwise on screen
+    const angle = fraction * Math.PI * 2; // 0 → 2π, clockwise on screen
     const cos = Math.cos(angle), sin = Math.sin(angle);
     const rInner = baseR + min * reach * 0.97; // min ≤ 0 → reaches inward
     const rOuter = baseR + max * reach * 0.97; // max ≥ 0 → reaches outward

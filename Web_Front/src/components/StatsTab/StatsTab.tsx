@@ -27,6 +27,9 @@ const NUM_FEATURES: Record<string, string> = {
   Sustain: 'envelope.envelope_sustain_level',
   BPM: 'musicality.beats_per_minute',
   Transients: 'envelope.transient_count',
+  Cluster: 'unsupervised.cluster',
+  'Crest Factor': 'spectral_features.crest_factor',
+  Flatness: 'spectral_features.spectral_flatness',
 };
 const NUM_LABELS = Object.keys(NUM_FEATURES);
 
@@ -39,6 +42,20 @@ const selStyle: React.CSSProperties = {
 // a group pick / explicit "plot all", and above SAMPLE_MAX it's downsampled.
 const SCATTER_LIMIT = 3000;
 const SAMPLE_MAX = 5000;
+
+const PulsingDot = (props: any) => {
+  const { cx, cy } = props;
+  if (cx == null || cy == null) return null;
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={6} fill="var(--accent-primary)" />
+      <circle cx={cx} cy={cy} r={6} stroke="var(--accent-primary)" strokeWidth={2} fill="none">
+        <animate attributeName="r" values="6; 24" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1; 0" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  );
+};
 
 export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsTabProps) {
   const [group, setGroup] = useState<string | null>(null);      // null = All
@@ -144,11 +161,20 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (gen !== ringGenRef.current) return;
-      let decoded: AudioBuffer | null = null;
+      let decoded: AudioBuffer | null | undefined = null;
       try {
-        decoded = await decodeCtxRef.current.decodeAudioData(buf.slice(0));
+        const decodePromise = decodeCtxRef.current.decodeAudioData(buf.slice(0));
+        if (decodePromise) {
+          decoded = await Promise.race([
+            decodePromise,
+            new Promise<null>((_, reject) => setTimeout(() => reject(new Error("timeout")), 150))
+          ]);
+        }
       } catch (e) {
-        console.warn("StatsTab decodeAudioData failed, falling back:", e);
+        // decodeAudioData rejected or timed out
+      }
+
+      if (!decoded) {
         decoded =
           decodeWav(buf, decodeCtxRef.current) ??
           (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
@@ -160,6 +186,68 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
       /* undecodable — leave the previous ring in place */
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+      if (!keys.includes(e.key)) return;
+      if (plotData.length === 0) return;
+
+      e.preventDefault();
+
+      let current = plotData.find((d: any) => d.metadata?.name === nowPlaying);
+      if (!current) {
+        playItem(plotData[0]);
+        return;
+      }
+
+      const getX = (it: any) => {
+        const path = NUM_FEATURES[x1];
+        return Number(path.split('.').reduce((o: any, k: string) => (o || {})[k], it)) || 0;
+      };
+      const getY = (it: any) => {
+        const path = NUM_FEATURES[y1];
+        return Number(path.split('.').reduce((o: any, k: string) => (o || {})[k], it)) || 0;
+      };
+
+      const cx = getX(current);
+      const cy = getY(current);
+
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const pt of plotData) {
+        const px = getX(pt), py = getY(pt);
+        if (px < minX) minX = px; if (px > maxX) maxX = px;
+        if (py < minY) minY = py; if (py > maxY) maxY = py;
+      }
+      const rangeX = maxX - minX || 1;
+      const rangeY = maxY - minY || 1;
+
+      let bestDist = Infinity;
+      let bestPoint = null;
+
+      for (const pt of plotData) {
+        if (pt === current) continue;
+        const dx = (getX(pt) - cx) / rangeX;
+        const dy = (getY(pt) - cy) / rangeY;
+        
+        let valid = false;
+        let dist = 0;
+        if (e.key === 'ArrowRight' && dx > 0) { valid = true; dist = dx * dx + 4 * dy * dy; }
+        else if (e.key === 'ArrowLeft' && dx < 0) { valid = true; dist = dx * dx + 4 * dy * dy; }
+        else if (e.key === 'ArrowUp' && dy > 0) { valid = true; dist = 4 * dx * dx + dy * dy; }
+        else if (e.key === 'ArrowDown' && dy < 0) { valid = true; dist = 4 * dx * dx + dy * dy; }
+        
+        if (valid && dist < bestDist) {
+          bestDist = dist;
+          bestPoint = pt;
+        }
+      }
+      if (bestPoint) playItem(bestPoint);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nowPlaying, plotData, x1, y1]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (analysisResult.length === 0) {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', color: 'var(--text-secondary)' }}>No data to graph. Scan a folder or load a .PEAK file.</div>;
@@ -187,6 +275,10 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     }
     return null;
   };
+
+  const selectedPointData = useMemo(() => {
+    return nowPlaying ? plotData.filter((d: any) => d.metadata?.name === nowPlaying) : [];
+  }, [nowPlaying, plotData]);
 
   const chartCard = (title: string, xLabel: string, setX: (v: string) => void, yLabel: string, setY: (v: string) => void) => {
     const xk = NUM_FEATURES[xLabel], yk = NUM_FEATURES[yLabel];
@@ -216,6 +308,9 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
                   <Cell key={i} fill={pointColor(entry)} />
                 ))}
               </Scatter>
+              {selectedPointData.length > 0 && (
+                <Scatter data={selectedPointData} shape={<PulsingDot />} isAnimationActive={false} />
+              )}
             </ScatterChart>
           </ResponsiveContainer>
         )}

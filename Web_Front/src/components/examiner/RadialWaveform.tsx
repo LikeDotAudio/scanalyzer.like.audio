@@ -84,6 +84,7 @@ export default function RadialWaveform({
       cx, cy, innerRadius, outerRadius, color,
       lineWidth: Math.max(1, dpr),
       startMarker,
+      regions,
     });
 
     // Region arcs sit just outside the ring — each spans its slice of the file.

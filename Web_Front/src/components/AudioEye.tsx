@@ -4,7 +4,7 @@ import { toMono } from './examiner/audioAnalysis';
 import { decodeWav } from './examiner/decodeWav';
 import { decodeViaWasm } from './examiner/wasmDecode';
 
-interface CircularWavePlayerProps {
+interface AudioEyeProps {
   // Resolved audio URL of the sample to play, or null to hide the player.
   src: string | null;
   // Filename label shown under the ring.
@@ -15,6 +15,8 @@ interface CircularWavePlayerProps {
   size?: number;
   // Start playing as soon as a new src arrives (the pick itself is the user gesture).
   autoPlay?: boolean;
+  // Regions to highlight around the outside (start/end fraction 0..1)
+  regions?: { start: number; end: number; color: string }[];
   // Bubbles playback state up so the caller can, e.g., pulse the selected point.
   onPlayingChange?: (playing: boolean) => void;
   className?: string;
@@ -25,16 +27,17 @@ interface CircularWavePlayerProps {
 // the file to a radial waveform, plays it through its own (DOM-less) <audio>, and wires
 // the ring's centre button, playhead and scrubbing to that playback. Composes the pure
 // RadialWaveform widget with the decode+transport that used to live inline in StatsTab.
-export default function CircularWavePlayer({
+export default function AudioEye({
   src,
   name = '',
   color = '#f4902c',
   size = 180,
   autoPlay = true,
+  regions,
   onPlayingChange,
   className,
   style,
-}: CircularWavePlayerProps) {
+}: AudioEyeProps) {
   const [samples, setSamples] = useState<Float32Array | null>(null);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -85,11 +88,20 @@ export default function CircularWavePlayer({
         }
         const buf = await (await fetch(src)).arrayBuffer();
         if (gen !== genRef.current) return;
-        let decoded: AudioBuffer | null = null;
+        let decoded: AudioBuffer | null | undefined = null;
         try {
-          decoded = await ctxRef.current.decodeAudioData(buf.slice(0));
+          const decodePromise = ctxRef.current.decodeAudioData(buf.slice(0));
+          if (decodePromise) {
+            decoded = await Promise.race([
+              decodePromise,
+              new Promise<null>((_, reject) => setTimeout(() => reject(new Error("timeout")), 150))
+            ]);
+          }
         } catch (e) {
-          console.warn("CircularWavePlayer decodeAudioData failed, falling back:", e);
+          // decodeAudioData rejected or timed out
+        }
+
+        if (!decoded) {
           decoded =
             decodeWav(buf, ctxRef.current) ??
             (await decodeViaWasm(buf, name, ctxRef.current));
@@ -132,6 +144,7 @@ export default function CircularWavePlayer({
         samples={samples}
         color={color}
         size={size}
+        regions={regions}
         onPlay={togglePlay}
         playing={playing}
         getProgress={getProgress}

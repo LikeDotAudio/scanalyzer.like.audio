@@ -6,7 +6,7 @@ import GraphOptionsMenu from './GraphOptionsMenu';
 import GroupsMenu from './GroupsMenu'
 import { taxonomyKeys, matchesScope, ucsSubColor } from '../../groupColors';
 import ShapesMenu from './ShapesMenu';
-import CircularWavePlayer from '../CircularWavePlayer';
+import AudioEye from '../AudioEye';
 import { WebGLBoundary, webglAvailable } from './WebGLBoundary';
 
 interface CloudTabProps {
@@ -105,7 +105,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onExamin
   const [playMsg, setPlayMsg] = useState<string>('');
   // Drives the selected point's pulse in the 3D cloud — true only while audio sounds.
   const [isPlaying, setIsPlaying] = useState(false);
-  // Resolved audio URL of the picked sample; handed to the corner CircularWavePlayer,
+  // Resolved audio URL of the picked sample; handed to the corner AudioEye,
   // which owns decode + transport (there is no <audio> element in this tab any more).
   const [selectedSrc, setSelectedSrc] = useState<string | null>(null);
   // Checked once: if WebGL can't start (GPU disabled / sandboxed webview / headless), the
@@ -222,7 +222,7 @@ export default function CloudTab({ analysisResult, audioFiles, onSound, onExamin
         {/* Bottom Right: the circular wave player once a sample is picked, otherwise the hint. */}
         {selectedSrc ? (
           <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', zIndex: 15 }}>
-            <CircularWavePlayer
+            <AudioEye
               src={selectedSrc}
               name={selected?.metadata?.name || ''}
               color={selectedColor}
