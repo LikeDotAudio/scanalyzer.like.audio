@@ -11,8 +11,7 @@ working" is the two disagreeing.
 
 ## The two systems
 
-### 1. The scope selector — th
-e "group dropdown"
+### 1. The scope selector — the "group dropdown"
 `ScopeBar.tsx` (top of the window, shared by every tab).
 
 - **State (global, in `App.tsx:50-54`):** `scopeGroup`, `scopeSub`, `filterText`, `altRanks`,

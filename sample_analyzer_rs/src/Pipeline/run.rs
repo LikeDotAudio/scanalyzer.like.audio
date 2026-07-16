@@ -45,6 +45,15 @@ pub fn run(cfg: &Config) {
     let mut results: Vec<Peak> = pool.install(|| {
         files
             .par_iter()
+            // Force one file per Rayon job. Per-file analysis cost is wildly
+            // uneven (a 30 s ambience takes far longer than a one-shot), and the
+            // default adaptive splitter hands out contiguous sub-ranges that can
+            // only be rebalanced while still un-started. Near the end that left a
+            // single thread grinding the last heavy leaf alone while the rest sat
+            // idle. At max_len(1) every remaining file stays individually
+            // stealable, so all workers stay busy right down to the last file;
+            // the extra split overhead is nothing next to a DSP pass.
+            .with_max_len(1)
             .filter_map(|f| {
                 // Reuse the existing sidecar when its analyzer version matches
                 // this binary — same extractor code yields the same results,

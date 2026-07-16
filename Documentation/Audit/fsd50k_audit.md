@@ -62,7 +62,7 @@ If we ever decide to replace our heuristic fallback tree (`Inharmonic` + `Stocha
 
 ## 6. Calibrating the UCS Acoustic Signatures (added July 2026)
 
-The 753 UCS signatures in `UCS/categories/*.json` (see `ucs_signature_spec.md`) currently
+The 753 UCS signatures in `UCS/categories/*.json` (see `../Specs/ucs_signature_spec.md`) currently
 carry **reasoned** priors, not **measured** ones. Every `mean` and `deviation` was
 derived from physics and from the UCS explanation text — none of it from data.
 FSD50K is the obvious ground truth to fix that. This section records what it can
