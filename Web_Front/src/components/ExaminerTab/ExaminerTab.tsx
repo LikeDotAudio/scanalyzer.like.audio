@@ -200,7 +200,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   const outerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [viewportH, setViewportH] = useState(400);
-  const [bottomHeight, setBottomHeight] = useState(400); // draggable visualizer height
+  const [bottomHeight, setBottomHeight] = useState(() => Math.round(window.innerHeight * 0.5)); // draggable visualizer height — defaults to half the viewport
   // Mono samples of the selected file, for the circular player in the detail panel, and
   // whether it's currently sounding (drives the ring's centre play/stop button).
   const [ringSamples, setRingSamples] = useState<Float32Array | null>(null);
