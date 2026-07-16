@@ -166,11 +166,21 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   
+  // Track the max capacity we've needed so far. We never shrink args, only grow it,
+  // to prevent R3F from destroying and recreating the WebGL buffers during filtering.
+  const [capacity, setCapacity] = useState(sData.positions.length || 100);
+  if (sData.positions.length > capacity) {
+    setCapacity(sData.positions.length);
+  }
+  
   useEffect(() => {
     const mesh = meshRef.current;
     if (!mesh || sData.positions.length === 0) return;
-    const capacity = mesh.instanceMatrix.array.length / 16;
-    const limit = Math.min(sData.positions.length, capacity);
+    const currentCapacity = mesh.instanceMatrix.array.length / 16;
+    const limit = Math.min(sData.positions.length, currentCapacity);
+    
+    // Explicitly set how many instances to draw!
+    mesh.count = limit;
     
     for (let i = 0; i < limit; i++) {
       const origIdx = sData.origIndex[i];
@@ -234,7 +244,7 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   return (
     <instancedMesh 
       ref={meshRef} 
-      args={[undefined as any, undefined as any, sData.positions.length]} 
+      args={[undefined as any, undefined as any, capacity]} 
       onClick={handleClick}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}

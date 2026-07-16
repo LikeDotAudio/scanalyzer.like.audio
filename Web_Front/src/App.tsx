@@ -285,7 +285,7 @@ function App() {
     footerAudioRef.current.play().catch(() => {});
   };
 
-  const [autoPlay, setAutoPlay] = useState(false);
+  const [autoPlay, setAutoPlay] = useState(true);
   const [autoLoop, setAutoLoop] = useState(false);
   const [digging, setDigging] = useState(false);
 

@@ -32,8 +32,8 @@ export class WebGLBoundary extends Component<Props, State> {
   static getDerivedStateFromError(): State {
     return { failed: true };
   }
-  componentDidCatch() {
-    /* swallow — the fallback already explains the 3D view is unavailable */
+  componentDidCatch(error: Error, info: any) {
+    console.error("WebGLBoundary caught an error:", error, info);
   }
   render() {
     return this.state.failed ? this.props.fallback : this.props.children;

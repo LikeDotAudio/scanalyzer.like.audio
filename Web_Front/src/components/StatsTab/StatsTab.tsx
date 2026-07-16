@@ -64,8 +64,16 @@ export default function StatsTab({ filteredData, onSound, selectedItem }: StatsT
   const [plotAll, setPlotAll] = useState(false);
   const isNarrow = useIsNarrow();
   const decodeCtxRef = useRef<AudioContext | null>(null);
+  const ignoreHoverRef = useRef(false);
 
-  useEffect(() => () => { decodeCtxRef.current?.close(); }, []);
+  useEffect(() => {
+    const onMove = () => { ignoreHoverRef.current = false; };
+    window.addEventListener('mousemove', onMove);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      decodeCtxRef.current?.close();
+    };
+  }, []);
 
   // The filtered dataset all charts are relative to.
   const data = filteredData;
@@ -170,6 +178,7 @@ export default function StatsTab({ filteredData, onSound, selectedItem }: StatsT
           bestPoint = pt;
         }
       }
+      ignoreHoverRef.current = true;
       if (bestPoint) playItem(bestPoint);
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -226,7 +235,7 @@ export default function StatsTab({ filteredData, onSound, selectedItem }: StatsT
               <XAxis type="number" dataKey={xk} name={xLabel} stroke="var(--text-secondary)" fontSize={11} />
               <YAxis type="number" dataKey={yk} name={yLabel} stroke="var(--text-secondary)" fontSize={11} />
               <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ScatterTooltip />} />
-              <Scatter data={plotData} onClick={(pt: any) => playItem(pt?.payload || pt)} onMouseEnter={(pt: any) => playItem(pt?.payload || pt)} cursor="pointer" isAnimationActive={false}>
+              <Scatter data={plotData} onClick={(pt: any) => playItem(pt?.payload || pt)} onMouseEnter={(pt: any) => { if (!ignoreHoverRef.current) playItem(pt?.payload || pt); }} cursor="pointer" isAnimationActive={false}>
                 {plotData.map((entry, i) => (
                   <Cell key={i} fill={pointColor(entry)} />
                 ))}
