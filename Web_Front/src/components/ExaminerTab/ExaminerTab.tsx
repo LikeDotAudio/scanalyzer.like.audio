@@ -20,6 +20,11 @@ interface ExaminerTabProps {
   filteredData: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
+  // The Examiner owns its own <audio> (it feeds the eye + VU/phase meters), so it registers
+  // its transport with App and the global footer's Play/Dig drive THIS player. See App.tsx.
+  registerTransport?: (t: { play: () => void; dig: () => void } | null) => void;
+  onPlayingChange?: (playing: boolean) => void;
+  onDiggingChange?: (digging: boolean) => void;
 }
 
 
@@ -90,7 +95,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const isNarrow = useIsNarrow();
   const [autoPlay] = useState(true);
@@ -650,12 +655,37 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     const el = audioRef.current;
     if (!el) return;
     if (el.paused) {
+      ensureMeterGraph(); // user gesture — lets the meter context start
       if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
       el.play().catch(() => {});
     } else {
       el.pause();
     }
   };
+
+  // DIG (from the footer ⛏ button): play the current selection IN FULL from the top, then
+  // auto-advance to the next sample when it ends (handleEnded → advanceDig) and play that in
+  // full, and so on until pressed again. Toggles off by pausing.
+  const startDig = () => {
+    if (digging) { setDigging(false); audioRef.current?.pause(); return; }
+    setDigging(true);
+    const el = audioRef.current;
+    if (el) { ensureMeterGraph(); el.currentTime = 0; el.play().catch(() => {}); }
+  };
+
+  // Mirror this player's state up to the footer so its Play/Dig labels track THIS audio.
+  useEffect(() => { onPlayingChange?.(isPlaying); }, [isPlaying, onPlayingChange]);
+  useEffect(() => { onDiggingChange?.(digging); }, [digging, onDiggingChange]);
+
+  // Register the transport with App (footer Play/Dig delegate here). A ref wrapper keeps a
+  // stable identity that always calls the latest closures, so the effect never re-subscribes.
+  const togglePlayRef = useRef(togglePlay); togglePlayRef.current = togglePlay;
+  const startDigRef = useRef(startDig); startDigRef.current = startDig;
+  useEffect(() => {
+    registerTransport?.({ play: () => togglePlayRef.current(), dig: () => startDigRef.current() });
+    return () => registerTransport?.(null);
+  }, [registerTransport]);
+
   // Playback position as a fraction of the file, polled by the circular playhead.
   const ringProgress = () => {
     const el = audioRef.current;

@@ -11,7 +11,8 @@ working" is the two disagreeing.
 
 ## The two systems
 
-### 1. The scope selector — the "group dropdown"
+### 1. The scope selector — th
+e "group dropdown"
 `ScopeBar.tsx` (top of the window, shared by every tab).
 
 - **State (global, in `App.tsx:50-54`):** `scopeGroup`, `scopeSub`, `filterText`, `altRanks`,
@@ -131,3 +132,72 @@ options **B**/**C** above):
 *Note: the screenshot shows "3D view unavailable" (WebGL couldn't start), so none of the
 cloud masking is visible in that environment at all — only the 2D/Stats path (which honors the
 scope selector but never `hiddenGroups`) is live there.*
+
+---
+
+## Re-audit — the real root cause (supersedes the framing above)
+
+The original audit was investigating the wrong control. It repeatedly calls the scope selector
+"the group dropdown." **There is no dropdown.** The only category control in `ScopeBar` is an
+`AlphabetScrubber` (`ScopeBar.tsx:70`), and it emits *two* independent outputs:
+
+- `onSelect(g)` → `scopeGroup` — the explicit category filter (what everyone assumes is "the filter").
+- `onActiveLettersChange(letters)` → `scopeLetters` — a letter-window that **also filters the data**.
+
+### What actually broke the cloud
+
+The scrubber's window defaults to the first `windowSize` letters and its mount effect fires
+immediately:
+
+1. `progress = 0`, `windowSize = 5` → `activeLetters = ['A','B','C','D','E']` (`AlphabetScrubber.tsx:81-82`).
+2. Mount effect → `onActiveLettersChange(['A'…'E'])` → `setScopeLetters(['A'…'E'])` (`AlphabetScrubber.tsx:84-86`).
+3. `filteredData` then drops every record whose UCS category doesn't start with **A–E**
+   (old `App.tsx` letter block).
+
+So the app **booted with a hidden filter already on** — only categories A–E, on *every* tab
+(`ScopeBar` is rendered once at `App.tsx`, above all tabs; `filteredData` feeds Cloud, Examiner,
+Extractor, Stats, Rename). Nobody set it. That is the "group filtering is fucked up" the user saw.
+
+The earlier audit **listed this exact mechanism as symptom #5** ("a third, hidden dimension") and
+then dismissed it as a footnote, shipping Option A (which only changed where `groupTree` reads its
+list). Option A never touched the boot-filter, which is why it "still didn't work."
+
+### Fix applied — decouple the scrubber from the data
+
+The alphabet scrubber now *only pages the category chips*; it no longer filters data. Only an
+explicit category click (`scopeGroup`) or the free-text box filters `filteredData`.
+
+- `App.tsx`: removed the `scopeLetters` state, the letter-window block in `filteredData`, its dep,
+  and the `setScopeLetters` prop; dropped the now-unused `taxonomyKeys` import.
+- `ScopeBar.tsx`: removed the `setScopeLetters` prop and the `onActiveLettersChange` wiring.
+- `AlphabetScrubber.tsx`: unchanged — `onActiveLettersChange` stays an optional prop (now unused),
+  and `visibleItems` still windows which chips are shown (the legitimate paging behaviour).
+
+Result: on load, **everything is visible**. Picking a category filters the cloud and all tabs;
+scrubbing the alphabet just changes which chips you can click.
+
+### Follow-up fixes (the two open items)
+
+**1. `hiddenGroups` lifted to a global filter (was cloud-only, #4).** The hide/show set now lives
+in `App.tsx`, not `CloudTab`. App derives two arrays:
+
+- `scopedData` — scope bar + text filter only.
+- `filteredData` — `scopedData` minus `hiddenGroups` (via `taxonomyKeys` + `subKey`).
+
+Every tab except the cloud renders `filteredData`, so hiding a category now removes it from
+Examiner / Extractor / Stats / Rename too — it does something even when WebGL is off. The cloud
+still receives `scopedData` (pre-hide) and masks hidden points itself, so the Groups menu can
+list a hidden category to toggle it back (building the menu from post-hide data would drop the
+control for its own hidden entries). Bonus: because the state is in App, hides now survive tab
+switches (previously reset on `CloudTab` remount).
+
+**2. `GroupsTab` rebuilt on UCS.** It bucketed on the removed `classification.group` field and
+ignored every filter. It now counts `filteredData` by UCS **category → subcategory**
+(`GroupsTab.tsx`), so it matches the current scoped/filtered/hidden view and speaks the same
+taxonomy as the rest of the app.
+
+### Still open (deliberately)
+
+- Scope bar (category chips) and the Groups menu (hide set) are still **separate controls** (#2,
+  #3): both filter by category globally now, but picking a scope doesn't tick menu boxes and
+  vice-versa. Unifying them into one control is a larger UX decision, not done here.

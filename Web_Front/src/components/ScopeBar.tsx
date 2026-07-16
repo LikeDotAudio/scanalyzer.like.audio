@@ -21,10 +21,9 @@ interface ScopeBarProps {
    *  match rows the user has no way to scope to. */
   altRanks?: Set<number>;
   setAltRanks?: React.Dispatch<React.SetStateAction<Set<number>>>;
-  setScopeLetters?: (letters: string[]) => void;
 }
 
-export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'UCS', altRanks, setAltRanks, setScopeLetters }: ScopeBarProps) {
+export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'UCS', altRanks, setAltRanks }: ScopeBarProps) {
   const isNarrow = useIsNarrow();
   const useAlts = taxonomy === 'UCS' && !!altRanks?.size;
   const ranks = useMemo(() => (useAlts ? Array.from(altRanks!) : []), [useAlts, altRanks]);
@@ -67,12 +66,11 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         <div style={{ flex: 1, minWidth: 0, opacity: filtering ? 0.35 : 1, pointerEvents: filtering ? 'none' : 'auto' }}>
-          <AlphabetScrubber 
-            items={ucsCats} 
-            activeItem={group} 
-            onSelect={g => { setGroup(g); setSub(null); }} 
-            windowSize={5} 
-            onActiveLettersChange={setScopeLetters}
+          <AlphabetScrubber
+            items={ucsCats}
+            activeItem={group}
+            onSelect={g => { setGroup(g); setSub(null); }}
+            windowSize={5}
           />
         </div>
       </div>

@@ -12,7 +12,7 @@ import ExaminerTabRaw from './components/ExaminerTab'
 import ExtractorTabRaw from './components/ExtractorTab'
 import RenameTabRaw from './components/RenameTab'
 import ScopeBar from './components/ScopeBar'
-import { matchesScope, taxonomyKeys } from './groupColors'
+import { matchesScope, taxonomyKeys, subKey } from './groupColors'
 import { altCategory, altSubcategory } from './ucsIndex'
 import { lazy, Suspense } from 'react'
 
@@ -50,21 +50,23 @@ function App() {
   const [scopeGroup, setScopeGroup] = useState<string | null>(null)
   const [scopeSub, setScopeSub] = useState<string | null>(null)
   const [filterText, setFilterText] = useState('')
-  const [scopeLetters, setScopeLetters] = useState<string[]>([])
   const [altRanks, setAltRanks] = useState<Set<number>>(new Set())
+  // The 📁 Groups menu's hide/show set, lifted out of CloudTab so it's a real GLOBAL filter:
+  // hidden categories drop out of every tab (Examiner, Extractor, Stats, Rename), not just
+  // the 3D cloud — so it still does something when WebGL is off. Keyed by UCS category name
+  // and `subKey(cat, sub)` composites, exactly like the cloud's mask. Lives here (not in
+  // CloudTab) so it also survives tab switches.
+  const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set())
 
-  const filteredData = useMemo(() => {
+  // Scope = an explicitly-picked category/subcategory (matchesScope) plus the free-text
+  // filter. The alphabet scrubber only pages the category CHIPS in ScopeBar; it no longer
+  // filters the data. (It used to also drive a `scopeLetters` window that defaulted to A–E
+  // on mount, so the whole app booted showing only categories A–E — a hidden filter nobody
+  // set. That coupling is gone.)
+  const scopedData = useMemo(() => {
     const q = filterText.trim().toLowerCase();
     return analysisResult.filter(it => {
       if (!matchesScope(it, scopeGroup, scopeSub, altRanks)) return false;
-
-      if (!scopeGroup && scopeLetters.length > 0) {
-        const cat = taxonomyKeys(it, 'UCS')[0] || '';
-        const char = cat.charAt(0).toUpperCase();
-        // Only drop it if it's an alphabet letter and not in our active scrubber window.
-        // (If it's a number/symbol, keep it visible).
-        if (char >= 'A' && char <= 'Z' && !scopeLetters.includes(char)) return false;
-      }
 
       const altText = (it.ucs?.alternatives || [])
         .map((a: any) => `${altCategory(a)} ${altSubcategory(a)}`).join(' ');
@@ -72,7 +74,18 @@ function App() {
         .toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [analysisResult, scopeGroup, scopeSub, filterText, altRanks, scopeLetters])
+  }, [analysisResult, scopeGroup, scopeSub, filterText, altRanks])
+
+  // What every tab EXCEPT the cloud renders: the scoped set with hidden groups removed.
+  // (The cloud gets `scopedData` and masks hidden points itself, so the Groups menu can
+  // still list a hidden category to toggle it back — see CloudTab.)
+  const filteredData = useMemo(() => {
+    if (hiddenGroups.size === 0) return scopedData;
+    return scopedData.filter(it => {
+      const [g, sg] = taxonomyKeys(it, 'UCS');
+      return !hiddenGroups.has(g) && !(sg && hiddenGroups.has(subKey(g, sg)));
+    });
+  }, [scopedData, hiddenGroups])
 
   // Global footer transport: every tab reports the sample it's playing via onSound
   // (its name), so we can resolve the whole record here and drive one shared footer —
@@ -83,6 +96,17 @@ function App() {
     () => (currentSound ? analysisResult.find(it => (it.metadata?.name || '') === currentSound) || null : null),
     [currentSound, analysisResult],
   )
+
+  // Some tabs own their OWN <audio> element because it feeds a live visual (the Examiner's
+  // eye + VU/phase meters, the Extractor's wave circle and region loops). On those tabs the
+  // shared footer audio would be a SECOND element playing the same file — out of sync with
+  // the eye, and audible as a double. So an audio-owning tab registers its transport here,
+  // and the footer's Play/Dig delegate to it (and mirror ITS playing/digging state) instead
+  // of driving footerAudioRef. See ExaminerTab / ExtractorTab `registerTransport`.
+  const tabTransportRef = useRef<{ play: () => void; dig: () => void } | null>(null)
+  const [tabPlaying, setTabPlaying] = useState(false)
+  const [tabDigging, setTabDigging] = useState(false)
+  const tabOwnsAudio = activeTab === 'examiner' || activeTab === 'extractor'
 
   // Keep the active tab in sync with the URL hash (linkable / back-forward).
   useEffect(() => {
@@ -273,6 +297,9 @@ function App() {
   const goToTab = (id: string) => { window.location.hash = `#/${id}`; setActiveTab(id); }
 
   const footerPlay = async () => {
+    // On an audio-owning tab, the footer Play IS that tab's play — drive its player (and its
+    // eye), not a second element.
+    if (tabOwnsAudio && tabTransportRef.current) { tabTransportRef.current.play(); return; }
     if (!footerItem || !footerAudioRef.current) return;
     if (footerPlaying) {
       footerAudioRef.current.pause();
@@ -289,9 +316,11 @@ function App() {
   const [autoLoop, setAutoLoop] = useState(false);
   const [digging, setDigging] = useState(false);
 
-  // Play a newly selected item if autoPlay or DIG is active
+  // Play a newly selected item if autoPlay or DIG is active. Skipped on audio-owning tabs:
+  // those play the selection through their OWN element (so their eye/meters follow it), and
+  // letting the footer element ALSO start it would double the audio.
   useEffect(() => {
-    if ((autoPlay || digging) && footerItem && footerAudioRef.current) {
+    if ((autoPlay || digging) && footerItem && footerAudioRef.current && !tabOwnsAudio) {
       (async () => {
         const src = await resolveAudioUrl(audioFiles, footerItem);
         if (src) {
@@ -479,7 +508,6 @@ function App() {
             group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub}
             filterText={filterText} setFilterText={setFilterText}
             altRanks={altRanks} setAltRanks={setAltRanks}
-            setScopeLetters={setScopeLetters}
           />
         </div>
       )}
@@ -500,16 +528,19 @@ function App() {
         </div>
 
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-          <CloudTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} playing={footerPlaying}
+          <CloudTab analysisResult={analysisResult} filteredData={scopedData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} playing={footerPlaying}
+            hiddenGroups={hiddenGroups} setHiddenGroups={setHiddenGroups}
             onExamine={(name) => footerPush('examiner', name)}
             onExtract={(name) => footerPush('extractor', name)} />
         </div>
 
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
           {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} />}
-          {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} />}
-          {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} />}
+          {activeTab === 'groups' && <GroupsTab filteredData={filteredData} />}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound}
+            registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
+          {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult}
+            registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} />}
         </Suspense>
 
@@ -519,13 +550,13 @@ function App() {
       {analysisResult.length > 0 && (
         <SampleFooter
           item={footerItem}
-          playing={footerPlaying}
-          digging={digging}
+          playing={tabOwnsAudio ? tabPlaying : footerPlaying}
+          digging={tabOwnsAudio ? tabDigging : digging}
           autoPlay={autoPlay}
           autoLoop={autoLoop}
           current={activeTab as FooterTab}
           onPlay={footerPlay}
-          onDig={() => setDigging(!digging)}
+          onDig={() => { if (tabOwnsAudio && tabTransportRef.current) tabTransportRef.current.dig(); else setDigging(!digging); }}
           onToggleAutoPlay={setAutoPlay}
           onToggleAutoLoop={setAutoLoop}
           onDownload={footerDownload}

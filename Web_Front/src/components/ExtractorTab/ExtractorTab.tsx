@@ -20,6 +20,10 @@ interface ExtractorTabProps {
   audioFiles: File[];
   onSound?: (name: string) => void;
   setAnalysisResult: (results: any[]) => void;
+  // The Extractor owns its own <audio> (it drives the wave circle eye, region loops and
+  // fades), so it registers its transport and the footer's Play drives THIS player. See App.
+  registerTransport?: (t: { play: () => void; dig: () => void } | null) => void;
+  onPlayingChange?: (playing: boolean) => void;
 }
 
 const fmt = (s: number) => `${s.toFixed(3)}s`;
@@ -48,7 +52,7 @@ const toEngineParams = (p: RegionParams): EngineParams => ({
   minimum_region_seconds: p.minimum_region_seconds,
 });
 
-export default function ExtractorTab({ analysisResult, filteredData, audioFiles, onSound, setAnalysisResult }: ExtractorTabProps) {
+export default function ExtractorTab({ analysisResult, filteredData, audioFiles, onSound, setAnalysisResult, registerTransport, onPlayingChange }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
   useEffect(() => { setFilter(''); }, [analysisResult]);
 
@@ -422,6 +426,17 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
     el.play().catch(() => {});
   };
+
+  // Mirror playing state up, and register the transport so the footer Play drives THIS
+  // player (and thus the wave circle eye). Dig isn't a concept here → no-op. A ref wrapper
+  // keeps a stable identity that always calls the latest playAll.
+  useEffect(() => { onPlayingChange?.(playing); }, [playing, onPlayingChange]);
+  const playAllRef = useRef(playAll);
+  playAllRef.current = playAll;
+  useEffect(() => {
+    registerTransport?.({ play: () => playAllRef.current(), dig: () => {} });
+    return () => registerTransport?.(null);
+  }, [registerTransport]);
 
   // Current playback position as a fraction of the file (for the playheads).
   const progress = () => {

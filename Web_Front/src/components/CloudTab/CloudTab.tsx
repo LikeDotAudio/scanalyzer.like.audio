@@ -1,4 +1,5 @@
 import { Suspense, useState, useEffect, useMemo } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import SampleCloud from '../SampleCloud';
 import { isTauri } from '../../audioLinking';
 import GraphOptionsMenu from './GraphOptionsMenu';
@@ -9,7 +10,13 @@ import { WebGLBoundary, webglAvailable } from './WebGLBoundary';
 
 interface CloudTabProps {
   analysisResult: any[];
+  // The SCOPED set (scope bar + text filter), BEFORE the Groups-menu hide is applied — so the
+  // menu can still list a hidden category to toggle it back. The cloud masks hidden points
+  // itself; hiding removes them from every OTHER tab via App's post-hide `filteredData`.
   filteredData: any[];
+  // The Groups-menu hide/show set, now owned by App (global filter). See App.tsx.
+  hiddenGroups: Set<string>;
+  setHiddenGroups: Dispatch<SetStateAction<Set<string>>>;
   audioFiles: File[];
   onSound?: (name: string) => void;
   selectedItem?: any;
@@ -44,7 +51,7 @@ function WebGLUnavailable() {
 }
 
 export default function CloudTab({
-  filteredData, audioFiles, onSound, selectedItem, playing
+  filteredData, hiddenGroups, setHiddenGroups, audioFiles, onSound, selectedItem, playing
 }: CloudTabProps) {
   const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
   const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
@@ -73,7 +80,6 @@ export default function CloudTab({
     localStorage.setItem(PREF + 'shapeBy', shapeBy);
   }, [xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy]);
   const [showAxes, setShowAxes] = useState(true);
-  const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   // Hidden on first view — the cloud shows unobstructed, and the ⚙ button opens the
