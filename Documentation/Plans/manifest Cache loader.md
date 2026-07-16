@@ -1,8 +1,34 @@
 # Manifest Cache Loader — audit & plan
 
-**Date:** 2026-07-16 · **Status:** proposal (nothing built yet) · **Scope:** how the app
+**Date:** 2026-07-16 · **Status:** IMPLEMENTED (v1) · **Scope:** how the app
 loads an analyzed library, and a three-tier manifest that replaces "load all 70k full
 records" with "load a slim index, lazy-load the rest."
+
+## Implementation status (2026-07-16)
+
+Built and verified. The per-file `.PEAK` sidecars remain canonical and untouched; the
+manifest is an additive, rebuildable cache written beside them as
+`sample_cloud_manifest.json`.
+
+| Piece | Where | Verified |
+|---|---|---|
+| Slim projection + manifest writer | `sample_analyzer_rs/src/Encoders/manifest.rs`, wired in `Pipeline/run.rs` | ✅ built + **ran** on demo audio — manifest written, sidecars kept |
+| Tauri `open_manifest` (fast load + version gate), `build_manifest` (reindex from sidecars), `read_full_record` (lazy detail) | `Web_Front/src-tauri/src/lib.rs` | ✅ `cargo check` |
+| Desktop load prefers manifest, falls back to aggregate/sidecars | `TauriScan.tsx`, `App.tsx` | ✅ `tsc` + `vite build` |
+| Examiner lazy-loads the full record on select (`detailItem`) | `ExaminerTab.tsx` | ✅ typecheck |
+| Web read-manifest fast path (1-sidecar version probe) + write-manifest after scan | `App.tsx`, `ScanalyzeTab.tsx`, `manifest.ts`, `audioLinking.ts` | ✅ typecheck; TS↔Rust projectors **byte-identical** |
+| Project-index histogram (categories) in the manifest header | both writers | ✅ verified in output |
+| Staleness gate (`analyzer_version` + `manifest_version`) | `manifest::is_current`, `manifestIsCurrent` | ✅ |
+
+**Known limitation (v1):** on the *web* manifest fast path, the Examiner detail panel
+falls back to slim fields (no regions/MFCC/spectral extras) because the full sidecar
+isn't re-read over FSA on select — the waveform still decodes from audio. Desktop has no
+such limit (`read_full_record`). Wiring the web sidecar re-read is the one follow-up.
+Phase 6 (columnar v2) intentionally deferred.
+
+---
+
+*Original proposal follows.*
 
 Grounded in three code audits (load path, per-view field consumption, on-disk byte
 measurements). Every "today" claim carries a `file:line`; everything under **Proposed**

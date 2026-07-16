@@ -97,6 +97,10 @@ function subCell(text: string, prob: number, textColor: string) {
 
 export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  // The full record for the detail panels. `selectedItem` stays the (possibly slim)
+  // manifest row so row-identity/index logic is untouched; `detailItem` is that row
+  // upgraded to the complete .PEAK once it's fetched. See fetchFull/loadSelected.
+  const [detailItem, setDetailItem] = useState<any>(null);
   const isNarrow = useIsNarrow();
   const [autoPlay] = useState(true);
   const [autoLoop] = useState(false); // repeat the selected sample while it plays (off by default)
@@ -538,8 +542,36 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   // Holding ↓ through 50 rows reschedules the timer each keypress, so exactly one
   // load+decode runs when you settle — not one per row.
   const DEBOUNCE_MS = 90;
+  // A slim manifest row carries no heavy sections; a full .PEAK does. Any one of these
+  // arrays present means we already hold the whole record and needn't fetch it.
+  const isFullRecord = (r: any) =>
+    !!r && (Array.isArray(r?.regions?.regions)
+      || Array.isArray(r?.spectral_features?.mel_frequency_cepstral_coefficients)
+      || Array.isArray(r?.unsupervised?.principal_components));
+
+  // Upgrade a slim row to its full record for the detail panels. Desktop reads the
+  // sidecar beside the audio; on any failure (or web, where records are already full)
+  // it returns the row unchanged — the panels optional-access every field, so a slim
+  // fallback still renders, just without the heavy extras.
+  const fetchFull = async (item: any): Promise<any> => {
+    if (isFullRecord(item)) return item;
+    const path = item?.metadata?.path;
+    if (isTauri() && path) {
+      try {
+        const { invoke } = await import('@tauri-apps/api/core');
+        const txt = await invoke<string>('read_full_record', { path });
+        const parsed = JSON.parse(txt);
+        if (parsed && typeof parsed === 'object') return parsed;
+      } catch (e) {
+        console.warn('[examiner] could not load full record for', path, e);
+      }
+    }
+    return item;
+  };
+
   const handleSelect = (item: any, forcePlay = false) => {
     setSelectedItem(item);
+    setDetailItem(item); // show the slim row instantly; upgraded in loadSelected
     onSound?.(item?.metadata?.name || '');
     // Pin the playing item so a scroll can't evict its blob, and buffer around it
     // (covers arrow-key stepping and DIG, which move selection without scrolling).
@@ -594,6 +626,12 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     };
     if (!load()) requestAnimationFrame(load);
 
+    // Upgrade the (possibly slim) row to its full record for the detail panels and the
+    // preview, which reads regions / envelope shape / beat grid the manifest omits.
+    const full = await fetchFull(item);
+    if (!fresh()) return;
+    if (full !== item) setDetailItem(full);
+
     // Decode the whole file and draw the static preview. Each await is gated on
     // `fresh()` so a superseded selection never reaches decodeAudioData (the step
     // that piles up and freezes WebKitGTK) or paints a stale preview.
@@ -626,9 +664,9 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       if (!fresh()) return;
       if (!decoded) return; // couldn't decode by either path — leave the preview blank
       lastBufferRef.current = decoded;
-      lastItemRef.current = item;
+      lastItemRef.current = full;
       setRingSamples(toMono(decoded));
-      renderPreview(decoded, item);
+      renderPreview(decoded, full);
     } catch {
       /* undecodable file — leave the preview blank */
     }
@@ -842,7 +880,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
 
           {/* Bottom Left: Field/Value details */}
           <div style={{ ...(isNarrow ? { width: '100%', order: 3, borderTop: '1px solid var(--border-color)' } : { width: '300px', borderRight: '1px solid var(--border-color)' }), overflowY: 'auto' }}>
-              <FieldValueTable item={selectedItem} />
+              <FieldValueTable item={detailItem || selectedItem} />
           </div>
 
           {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece).
@@ -891,7 +929,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
                   )}
               </div>
               <div style={{ flex: isNarrow ? 'none' : 1, minHeight: 0, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: isNarrow ? 'visible' : 'auto' }}>
-                  <PropertyBars item={selectedItem} analysisResult={analysisResult} />
+                  <PropertyBars item={detailItem || selectedItem} analysisResult={analysisResult} />
               </div>
           </div>
 

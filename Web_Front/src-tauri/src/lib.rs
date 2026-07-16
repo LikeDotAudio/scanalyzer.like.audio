@@ -375,6 +375,74 @@ fn close_peak_file(cache: tauri::State<'_, PeakCache>) -> Result<(), String> {
     Ok(())
 }
 
+// ---- Slim manifest --------------------------------------------------------------------
+// A compact index over the full .PEAK sidecars (see oa_sample_analyzer::manifest). The
+// sidecars stay canonical; the manifest is a rebuildable cache that lets the UI load a
+// huge library fast and lazy-load a full record only when a file is opened.
+
+/// Load the slim manifest into the page cache — the fast path. Its rows come back through
+/// `read_peak_page` like any other record. Returns the count, or Err when the manifest is
+/// absent or was written by a different analyzer version, so the caller can fall back to
+/// `open_sidecars` / a rescan rather than trust a stale index.
+#[tauri::command]
+fn open_manifest(directory: String, cache: tauri::State<'_, PeakCache>) -> Result<usize, String> {
+    let path = std::path::Path::new(&directory).join(oa_sample_analyzer::manifest::MANIFEST_NAME);
+    let text = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
+    let manifest: serde_json::Value = serde_json::from_str(&text).map_err(|e| e.to_string())?;
+    if !oa_sample_analyzer::manifest::is_current(&manifest) {
+        return Err("manifest was written by a different analyzer version".into());
+    }
+    let records = manifest
+        .get("records")
+        .and_then(|r| r.as_array())
+        .ok_or("manifest has no records array")?
+        .clone();
+    let n = records.len();
+    *cache.0.lock().map_err(|e| e.to_string())? = records;
+    Ok(n)
+}
+
+/// Build (or rebuild) the slim manifest from the `.PEAK` sidecars already on disk, WITHOUT
+/// re-analyzing. Upgrades a library that was scanned before manifests existed, and refreshes
+/// one whose sidecars changed. Returns how many records went into the manifest.
+#[tauri::command]
+fn build_manifest(directory: String) -> Result<usize, String> {
+    let root = std::path::Path::new(&directory);
+    if !root.is_dir() {
+        return Err(format!("{directory} is not a folder"));
+    }
+    let mut files = Vec::new();
+    walk_audio(root, &mut files);
+    files.sort();
+
+    let mut records: Vec<serde_json::Value> = Vec::new();
+    for f in &files {
+        let side = f.with_extension("PEAK");
+        if !side.exists() {
+            continue;
+        }
+        let Ok(text) = std::fs::read_to_string(&side) else { continue };
+        if let Ok(v) = serde_json::from_str::<serde_json::Value>(&text) {
+            if v.is_object() {
+                records.push(v);
+            }
+        }
+    }
+    if !oa_sample_analyzer::manifest::write_manifest(root, &records) {
+        return Err("could not write manifest.json".into());
+    }
+    Ok(records.len())
+}
+
+/// Read one file's full `.PEAK` sidecar — the Examiner detail panel's lazy load. The
+/// manifest holds only slim rows, so opening a file fetches its complete record here.
+/// `path` is the audio file's path; the sidecar sits beside it as `<basename>.PEAK`.
+#[tauri::command]
+fn read_full_record(path: String) -> Result<String, String> {
+    let side = std::path::Path::new(&path).with_extension("PEAK");
+    std::fs::read_to_string(&side).map_err(|e| format!("{}: {e}", side.display()))
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -391,6 +459,9 @@ pub fn run() {
             open_peak_file,
             read_peak_page,
             close_peak_file,
+            open_manifest,
+            build_manifest,
+            read_full_record,
             extractor_detect,
             extractor_slice_wav,
             extractor_analyze_chunk

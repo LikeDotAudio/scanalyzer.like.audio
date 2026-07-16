@@ -133,6 +133,16 @@ pub fn run(cfg: &Config) {
             let _ = fh.write_all(json.as_bytes());
         }
     }
+
+    // Slim manifest: a compact index over the full sidecars so the UI can load a huge
+    // library fast and lazy-load full records on demand. Additive and best-effort — the
+    // per-file .PEAK sidecars remain canonical, so a failure here never fails the scan.
+    let slim_src: Vec<serde_json::Value> =
+        results.iter().filter_map(|p| serde_json::to_value(p).ok()).collect();
+    if crate::manifest::write_manifest(&cfg.root, &slim_src) {
+        emit(&serde_json::json!({ "type": "manifest", "count": slim_src.len(),
+            "path": cfg.root.join(crate::manifest::MANIFEST_NAME).to_string_lossy() }));
+    }
     emit(&serde_json::json!({ "type": "done", "count": results.len(), "out": cfg.out.to_string_lossy(),
                               "per_file": cfg.per_file, "reused": reused.load(Ordering::Relaxed),
                               "analyzer_version": ANALYZER_VERSION }));

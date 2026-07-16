@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import initWasm, { analyzer_version } from 'wasm_analyzer';
 import wasmUrl from 'wasm_analyzer/wasm_analyzer_bg.wasm?url';
-import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
+import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar, writeRootFile, relPathOf } from '../../audioLinking';
 import { normalizePeakRecords } from '../../peakSchema';
+import { MANIFEST_FILE, buildManifest } from '../../manifest';
 import TauriScan from './TauriScan';
 
 /** The folder a record is filed under — the file's parent path, or '' at the root.
@@ -341,7 +342,18 @@ export default function ScanalyzeTab({
     // Keep whatever was scanned. Every finished file already wrote its own .PEAK
     // sidecar next to the audio, so there is nothing to download and nothing to
     // ask about on a manual stop — the partial analysis is on disk either way.
-    setAnalysisResult([...analysisResult, ...newResults]);
+    const finalSet = [...analysisResult, ...newResults];
+    setAnalysisResult(finalSet);
+
+    // Cache a slim manifest at the folder root (readwrite handle is already granted for
+    // sidecar writes) so the next reopen skips reading every per-file sidecar.
+    if (dirHandle && newResults.length) {
+      try {
+        const engine = newResults[0]?.metadata?.analyzer_version || analyzer_version();
+        await writeRootFile(dirHandle, MANIFEST_FILE, JSON.stringify(buildManifest('', finalSet, engine)));
+      } catch (e) { console.warn('Could not write manifest', e); }
+    }
+
     stopRef.current = false;
     setIsAnalyzing(false);
     if (newResults.length) onViewCloud();   // the analysis is the point — show it

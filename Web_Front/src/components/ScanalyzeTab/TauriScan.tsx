@@ -103,10 +103,17 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
         const dir = targetDirRef.current;
         if (dir) {
             try {
-                // Pull the finished .PEAK in pages. Reading it as one string used to
-                // push ~150 MB through IPC on a library the size of FSD50K and kill
-                // the webview; Rust parses it once and hands us slices.
-                const count: number = await invoke('open_peak_file', { directory: dir });
+                // Pull the finished analysis in pages. Prefer the slim manifest the scan
+                // just wrote (a fraction of the bytes); fall back to the full aggregate
+                // .PEAK if it's missing. Reading either as one string used to push ~150 MB
+                // through IPC on a library the size of FSD50K and kill the webview; Rust
+                // parses it once and hands us slices.
+                let count: number;
+                try {
+                    count = await invoke('open_manifest', { directory: dir });
+                } catch {
+                    count = await invoke('open_peak_file', { directory: dir });
+                }
                 const PAGE = 2000;
                 const all: any[] = [];
                 for (let offset = 0; offset < count; offset += PAGE) {
@@ -176,7 +183,16 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
     if (!dir) return;
     setSurvey(null);
     try {
-      const count: number = await invoke('open_sidecars', { directory: dir });
+      // Prefer the slim manifest (one small file); fall back to walking every sidecar.
+      // On the fallback, seed a manifest in the background so the next open is fast.
+      let count: number;
+      let fromManifest = true;
+      try {
+        count = await invoke('open_manifest', { directory: dir });
+      } catch {
+        fromManifest = false;
+        count = await invoke('open_sidecars', { directory: dir });
+      }
       const PAGE = 2000;
       const all: any[] = [];
       for (let offset = 0; offset < count; offset += PAGE) {
@@ -186,6 +202,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       }
       await invoke('close_peak_file');
       setLoaded(null);
+      if (!fromManifest) void invoke('build_manifest', { directory: dir }).catch(() => {});
       if (all.length) {
         setAnalysisResult([...analysisResultRef.current, ...all]);
         onViewCloud?.();

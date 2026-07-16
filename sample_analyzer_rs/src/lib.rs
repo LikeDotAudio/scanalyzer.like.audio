@@ -53,6 +53,8 @@ pub mod discover;
 pub mod distortion;
 #[path = "Encoders/emit.rs"]
 pub mod emit;
+#[path = "Encoders/manifest.rs"]
+pub mod manifest;
 #[path = "Scananalyzers/Temporal/envelope.rs"]
 pub mod envelope;
 #[path = "NameSorting/family.rs"]

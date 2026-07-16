@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import './index.css'
-import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot, filterAudioFiles, isTauri, getLastFolderName, clearLastFolderName, resolveAudioUrl } from './audioLinking'
+import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot, filterAudioFiles, isTauri, getLastFolderName, clearLastFolderName, resolveAudioUrl, readRootFile } from './audioLinking'
+import { MANIFEST_FILE, manifestIsCurrent } from './manifest'
 import SampleFooter, { type FooterTab } from './components/SampleFooter'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
@@ -189,7 +190,14 @@ function App() {
         if (!dir) { goToTab('scanalyze'); return; }
         try {
           const { invoke } = await import('@tauri-apps/api/core');
-          const count = await invoke<number>('open_peak_file', { directory: dir });
+          // Prefer the slim manifest (fast — a fraction of the bytes); fall back to the
+          // full aggregate .PEAK if the manifest is absent or written by another engine.
+          let count: number;
+          try {
+            count = await invoke<number>('open_manifest', { directory: dir });
+          } catch {
+            count = await invoke<number>('open_peak_file', { directory: dir });
+          }
           const PAGE = 2000;
           const all: any[] = [];
           for (let offset = 0; offset < count; offset += PAGE) {
@@ -211,8 +219,32 @@ function App() {
       if (perm !== 'granted') return;
       const all = await scanDirectoryHandle(handle, true); // audio + .PEAK sidecars
       setAudioFiles(filterAudioFiles(all));
-      // Read the per-file sidecars back, chunked so a 40k-file library keeps the UI alive.
       const peaks = all.filter(f => /\.peak$/i.test(f.name));
+
+      // Fast path: a slim manifest cached at the root lets us skip reading every
+      // per-file sidecar. Trust it only when a one-sidecar version probe agrees it was
+      // written by the same engine as the sidecars now on disk.
+      const manifestText = await readRootFile(handle, MANIFEST_FILE);
+      if (manifestText) {
+        try {
+          const m = JSON.parse(manifestText);
+          let engine = m?.analyzer_version;
+          if (peaks.length) {
+            const probe = await peaks[0].text().catch(() => null);
+            const pv = probe ? JSON.parse(probe)?.metadata?.analyzer_version : undefined;
+            if (pv && pv !== engine) engine = '__stale__';
+          }
+          if (manifestIsCurrent(m, engine) && Array.isArray(m.records)) {
+            const report = normalizePeakRecords(m.records);
+            setAnalysisResult(report.records);
+            setSchemaNotice(noticeFor(report.migrated, report.skipped));
+            if (report.records.length) goToTab('cloud');
+            return;
+          }
+        } catch { /* unreadable manifest — fall through to reading the sidecars */ }
+      }
+
+      // Read the per-file sidecars back, chunked so a 40k-file library keeps the UI alive.
       const records: any[] = [];
       const CHUNK = 300;
       for (let i = 0; i < peaks.length; i += CHUNK) {

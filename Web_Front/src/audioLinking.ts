@@ -140,6 +140,31 @@ export async function writePeakSidecar(rootHandle: any, relPath: string, json: a
   }
 }
 
+/** Read a named file at the root of the picked directory handle, or null if it isn't
+ *  there / can't be read. Used to load the slim manifest without walking every sidecar. */
+export async function readRootFile(rootHandle: any, fileName: string): Promise<string | null> {
+  try {
+    const fileHandle = await rootHandle.getFileHandle(fileName);
+    const file = await fileHandle.getFile();
+    return await file.text();
+  } catch {
+    return null;
+  }
+}
+
+/** Write a named file at the root of the picked directory handle (needs a readwrite
+ *  handle). Best-effort — a failure just means no manifest cache this time. */
+export async function writeRootFile(rootHandle: any, fileName: string, text: string) {
+  try {
+    const fileHandle = await rootHandle.getFileHandle(fileName, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(text);
+    await writable.close();
+  } catch (err) {
+    console.warn('Could not write', fileName, err);
+  }
+}
+
 /** Where a file sits in the picked tree. The FSA picker cannot write the read-only
  *  `webkitRelativePath`, so it stashes the path on `relPath`; the <input webkitdirectory>
  *  fallback populates the real one. Read both, or half the callers key on a bare name. */
