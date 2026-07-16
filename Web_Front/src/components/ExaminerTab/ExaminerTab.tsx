@@ -206,55 +206,41 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   // whether it's currently sounding (drives the ring's centre play/stop button).
   const [ringSamples, setRingSamples] = useState<Float32Array | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  useEffect(() => { setRingSamples(null); setIsPlaying(false); }, [selectedItem]);
+  // On selection change, drop the previous decoded buffer too, so the meters (which read
+  // it at the playhead) don't briefly show the old sample while the new one decodes.
+  useEffect(() => { setRingSamples(null); setIsPlaying(false); lastBufferRef.current = null; }, [selectedItem]);
   // A lightweight context used only to decode audio for the static preview.
   const decodeCtxRef = useRef<AudioContext | null>(null);
   // Last decoded buffer/item so the preview can be re-drawn on resize.
   const lastBufferRef = useRef<AudioBuffer | null>(null);
   const lastItemRef = useRef<any>(null);
 
-  // Live metering graph for the audio eye: the <audio> element routed through a channel
-  // splitter into per-channel analysers (L/R VU + phase correlation). Built lazily on the
-  // first play — createMediaElementSource can run only once per element and captures its
-  // audio, so we also fan it out to `destination` to keep hearing it. A separate context
-  // from decodeCtx (which only decodes). Older webviews without MediaElementSource just
-  // never get meters; playback is untouched.
-  const meterCtxRef = useRef<AudioContext | null>(null);
-  const meterSrcRef = useRef<MediaElementAudioSourceNode | null>(null);
-  const analyserLRef = useRef<AnalyserNode | null>(null);
-  const analyserRRef = useRef<AnalyserNode | null>(null);
-  const getAnalysers = useRef(() => ({ left: analyserLRef.current, right: analyserRRef.current })).current;
-
-  const ensureMeterGraph = () => {
+  // Meter feed for the audio eye (L/R VU + stereo correlation). Read straight from the
+  // decoded buffer at the playhead rather than a live Web Audio graph: WebKitGTK's
+  // createMediaElementSource path is crash-prone and re-routes the element's audio, so
+  // touching it on every autoplay was hard-crashing the webview. The whole file is already
+  // decoded for the preview (lastBufferRef), so we just window it at el.currentTime — no
+  // AudioContext, no gesture requirement, and it works on autoplay. Returns the L/R sample
+  // windows ending at the playhead (mono files reuse channel 0 for both), or null when
+  // nothing is playing / decoded yet.
+  const getFrame = useRef((n: number): { left: Float32Array; right: Float32Array } | null => {
     const el = audioRef.current;
-    if (!el) return;
-    if (!meterCtxRef.current) {
-      try {
-        const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const src = ctx.createMediaElementSource(el);
-        const splitter = ctx.createChannelSplitter(2);
-        src.connect(splitter);
-        src.connect(ctx.destination); // keep the sound audible
-        const aL = ctx.createAnalyser(); aL.fftSize = 1024; aL.smoothingTimeConstant = 0;
-        const aR = ctx.createAnalyser(); aR.fftSize = 1024; aR.smoothingTimeConstant = 0;
-        splitter.connect(aL, 0);
-        splitter.connect(aR, 1);
-        meterCtxRef.current = ctx;
-        meterSrcRef.current = src;
-        analyserLRef.current = aL;
-        analyserRRef.current = aR;
-      } catch {
-        /* no MediaElementSource support — meters stay idle, playback unaffected */
-      }
-    }
-    meterCtxRef.current?.resume().catch(() => {});
-  };
+    const buf = lastBufferRef.current;
+    if (!el || !buf || el.paused || !el.duration) return null;
+    let end = Math.floor(el.currentTime * buf.sampleRate);
+    let start = end - n;
+    if (start < 0) { start = 0; end = Math.min(buf.length, n); }
+    if (end > buf.length) { end = buf.length; start = Math.max(0, end - n); }
+    if (end - start < 2) return null;
+    const left = buf.getChannelData(0).subarray(start, end);
+    const right = buf.numberOfChannels >= 2 ? buf.getChannelData(1).subarray(start, end) : left;
+    return { left, right };
+  }).current;
 
   useEffect(() => {
     return () => {
       if (loadTimerRef.current) clearTimeout(loadTimerRef.current);
       if (decodeCtxRef.current) decodeCtxRef.current.close();
-      if (meterCtxRef.current) meterCtxRef.current.close();
     };
   }, []);
 
@@ -598,15 +584,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       // break it for the next selection that reuses it.
       el.currentTime = 0;
       el.src = src;
-      if (autoPlay || forcePlay) {
-        // Build the metering graph here too, not only in togglePlay: autoplayed
-        // selections would otherwise leave the L/R + correlation meters with null
-        // analysers (dead) until the user manually hit play or scrubbed. The page
-        // has sticky activation by now (a row click/arrow key got us here), so the
-        // AudioContext resumes fine and playback is unaffected.
-        ensureMeterGraph();
-        el.play().catch(err => console.warn('[examiner] play rejected', err));
-      }
+      if (autoPlay || forcePlay) el.play().catch(err => console.warn('[examiner] play rejected', err));
       return true;
     };
     if (!load()) requestAnimationFrame(load);
@@ -672,7 +650,6 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     const el = audioRef.current;
     if (!el) return;
     if (el.paused) {
-      ensureMeterGraph(); // this click is the user gesture that lets the meter context start
       if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
       el.play().catch(() => {});
     } else {
@@ -875,10 +852,10 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
               <div onWheel={wheelScrub}
                 style={{ flexShrink: 0, borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem' }}>
                   {selectedItem ? (
-                      <EyeMeters getAnalysers={getAnalysers} size={224} color={detailColor}>
+                      <EyeMeters getFrame={getFrame} size={224} color={detailColor}>
                         <RadialWaveform samples={ringSamples} color={detailColor} size={224}
                           onPlay={togglePlay} playing={isPlaying} getProgress={ringProgress}
-                          onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { ensureMeterGraph(); el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
+                          onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
                       </EyeMeters>
                   ) : (
                       <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Audio Eye</div>

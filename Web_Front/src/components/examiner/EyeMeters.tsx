@@ -1,15 +1,18 @@
 import { useEffect, useRef } from 'react';
 
 interface EyeMetersProps {
-  // Reads the current L/R analysers. They come up null until the metering graph is
-  // built (on the first play), so this is a getter, polled each frame — not a prop that
-  // would need the parent to re-render when the graph appears.
-  getAnalysers: () => { left: AnalyserNode | null; right: AnalyserNode | null };
+  // Returns the current L/R sample windows (n samples each) at the playhead, or null when
+  // nothing is playing / decoded. Polled each frame. Fed from the decoded buffer rather
+  // than a live Web Audio graph — see getFrame in ExaminerTab for why.
+  getFrame: (n: number) => { left: Float32Array; right: Float32Array } | null;
   // Edge length of the eye the meters flank, in CSS px (bar height = this).
   size: number;
   color: string;
   children: React.ReactNode;
 }
+
+// Samples per metering window — a snapshot of the audio just before the playhead.
+const FRAME = 1024;
 
 // dBFS of a linear RMS, floored so log(0) is finite.
 const dbfs = (rms: number) => 20 * Math.log10(Math.max(rms, 1e-7));
@@ -30,7 +33,7 @@ const vuColor = (fill: number) =>
 // when the signal is silent. Reading corr straight — rather than the old (1−corr)/2 —
 // means the needle actually tracks: the instantaneous window correlation dances across
 // the whole range instead of sitting pinned at dead-centre.
-export default function EyeMeters({ getAnalysers, size, color, children }: EyeMetersProps) {
+export default function EyeMeters({ getFrame, size, color, children }: EyeMetersProps) {
   const vuLRef = useRef<HTMLDivElement>(null);
   const vuRRef = useRef<HTMLDivElement>(null);
   const needleRef = useRef<HTMLDivElement>(null);
@@ -40,22 +43,14 @@ export default function EyeMeters({ getAnalysers, size, color, children }: EyeMe
     // Exponentially-smoothed display values, so the meters glide instead of flickering.
     let dispL = 0, dispR = 0, dispX = 0, dispOp = 0.15;
     let raf = 0;
-    // Explicit ArrayBuffer backing so the type is Float32Array<ArrayBuffer>, which is what
-    // getFloatTimeDomainData accepts under the current DOM lib (a plain `new Float32Array(n)`
-    // infers the wider ArrayBufferLike and is rejected).
-    let bufL: Float32Array<ArrayBuffer> | null = null;
-    let bufR: Float32Array<ArrayBuffer> | null = null;
 
     const tick = () => {
-      const { left, right } = getAnalysers();
+      const frame = getFrame(FRAME);
       let fillL = 0, fillR = 0, targetX = 0, targetOp = 0.15;
 
-      if (left && right) {
-        const n = left.fftSize;
-        if (!bufL || bufL.length !== n) { bufL = new Float32Array(new ArrayBuffer(n * 4)); bufR = new Float32Array(new ArrayBuffer(n * 4)); }
-        left.getFloatTimeDomainData(bufL);
-        right.getFloatTimeDomainData(bufR!);
-        const L = bufL, R = bufR!;
+      if (frame) {
+        const L = frame.left, R = frame.right;
+        const n = Math.min(L.length, R.length);
 
         let sumL = 0, sumR = 0, sumLR = 0;
         for (let i = 0; i < n; i++) {
