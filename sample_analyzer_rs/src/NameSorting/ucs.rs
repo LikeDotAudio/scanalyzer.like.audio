@@ -189,6 +189,26 @@ const MODIFIER_STOPWORDS: &[&str] = &[
     "dark", "loose", "tight",
 ];
 
+/// Descriptor idioms a whole-token matcher otherwise shatters into a misleading
+/// category noun. "old school" is a vintage descriptor — an old-school hip-hop
+/// beat, a synth patch that sounds old school — not a school; but tokenized to
+/// `["old", "school"]` the common noun "school" fires SCHOOL BELL, SCHOOL BUS and
+/// CROWDS/CHILDREN, none of which the file is about. We drop the idiom's trailing
+/// noun so it stops injecting a category it never meant. "old" itself is already a
+/// MODIFIER_STOPWORD and carries no evidence, so the pair goes silent. Rare literal
+/// uses ("old school bell.wav") lose the school-noun hit — an acceptable trade for
+/// killing the far more common vintage-descriptor false positive.
+fn strip_descriptor_idioms(tokens: &mut Vec<String>) {
+    let mut i = 0;
+    while i + 1 < tokens.len() {
+        if tokens[i] == "old" && tokens[i + 1] == "school" {
+            tokens.remove(i + 1);
+        } else {
+            i += 1;
+        }
+    }
+}
+
 /// Tokens too short or too generic to carry category evidence.
 fn is_useful_token(t: &str) -> bool {
     if SHORT_EVIDENCE.contains(&t) {
@@ -555,16 +575,18 @@ pub fn classify(p: &Peak) -> Verdict {
         .map(|(s, _)| s)
         .unwrap_or(&p.metadata.name)
         .to_string();
-    let name_tokens: Vec<String> = normalize_name_words(&stem)
+    let mut name_tokens: Vec<String> = normalize_name_words(&stem)
         .split_whitespace()
         .filter(|t| is_useful_token(t))
         .map(str::to_string)
         .collect();
-    let folder_tokens: Vec<String> = normalize_name_words(&p.metadata.folder)
+    strip_descriptor_idioms(&mut name_tokens);
+    let mut folder_tokens: Vec<String> = normalize_name_words(&p.metadata.folder)
         .split_whitespace()
         .filter(|t| is_useful_token(t))
         .map(str::to_string)
         .collect();
+    strip_descriptor_idioms(&mut folder_tokens);
 
     struct Cand {
         i: usize,
@@ -838,5 +860,34 @@ mod tests {
                 "missing {id}"
             );
         }
+    }
+
+    // A hip-hop beat used to land in BELLS/MISC: the only name token that matched
+    // anything was "school" (from ".../Old school"), while "hip", "hop" and the
+    // plural "beats" matched no synonym at all. LOOPS now carries the hip-hop
+    // vocabulary, so the folder points the verdict at the LOOP category it belongs to.
+    #[test]
+    fn a_hip_hop_beat_lands_in_loops_not_bells() {
+        let p: Peak = serde_json::from_str(include_str!("testdata/hiphop_beat.peak.json"))
+            .expect("fixture must match the current Peak schema");
+        let v = classify(&p);
+        assert_eq!(
+            v.category, "LOOPS",
+            "hip-hop beat should be a LOOP, got {}/{} — {}",
+            v.category, v.subcategory, v.reason
+        );
+    }
+
+    // "old school" is a vintage descriptor, not a school — it must not fire the
+    // school-noun categories (SCHOOL BELL / SCHOOL BUS / CROWDS CHILDREN).
+    #[test]
+    fn old_school_idiom_does_not_fire_school_categories() {
+        let mut toks = vec!["old".to_string(), "school".to_string(), "beat".to_string()];
+        strip_descriptor_idioms(&mut toks);
+        assert_eq!(toks, vec!["old".to_string(), "beat".to_string()]);
+        // A real school (not preceded by "old") still carries its evidence.
+        let mut real = vec!["school".to_string(), "bell".to_string()];
+        strip_descriptor_idioms(&mut real);
+        assert_eq!(real, vec!["school".to_string(), "bell".to_string()]);
     }
 }
