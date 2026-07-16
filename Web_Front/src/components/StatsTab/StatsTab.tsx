@@ -32,7 +32,11 @@ const NUM_FEATURES: Record<string, string> = {
 const NUM_LABELS = Object.keys(NUM_FEATURES);
 
 const selStyle: React.CSSProperties = {
-  background: '#fff', color: '#000', border: '1px solid var(--border-color)',
+  // Dark control + light text to match the near-black theme. `colorScheme: dark` makes the
+  // native OPEN option list render dark too (light text on dark), instead of the unreadable
+  // black-on-dark the old `#000` gave once a value was picked.
+  background: '#0d1017', color: '#fff', border: '1px solid var(--border-color)',
+  colorScheme: 'dark',
   borderRadius: 0, padding: '0.15rem 0.3rem', fontSize: '0.75rem',
 };
 

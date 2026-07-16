@@ -127,6 +127,8 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     const out: ({ kind: 'header'; category: string; count: number } | { kind: 'file'; item: any })[] = [];
     for (const cat of Array.from(byCat.keys()).sort()) {
       const items = byCat.get(cat)!;
+      // Most-cut files first: sort by region/cut count, highest to lowest.
+      items.sort((a, b) => (b.regions?.count ?? 0) - (a.regions?.count ?? 0));
       out.push({ kind: 'header', category: cat, count: items.length });
       for (const it of items) out.push({ kind: 'file', item: it });
       if (out.length > 3000) break;
@@ -303,6 +305,33 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     if (!src && !nativePath) { setDecoding(false); return; }
     await setupAudioAndDetect(src || '', item.regions?.regions || [], nativePath, Number(item?.metadata?.length_seconds) || 0);
   };
+
+  // Flat file list in the exact display order, for arrow-key navigation.
+  const flatFiles = useMemo(
+    () => groupedRows.filter((r): r is { kind: 'file'; item: any } => r.kind === 'file').map(r => r.item),
+    [groupedRows],
+  );
+
+  // ↑/↓ move the file SELECTION (and load it) rather than scrolling the panel — the
+  // page's default arrow-scroll is suppressed. Ignored while a text/number field is
+  // focused, so editing region names and in/out points still works normally. From no
+  // selection, ↓ picks the first file and ↑ the last.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      const tag = (document.activeElement as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (!flatFiles.length) return;
+      e.preventDefault();
+      const cur = flatFiles.indexOf(selectedItem);
+      const next = cur === -1
+        ? (e.key === 'ArrowDown' ? 0 : flatFiles.length - 1)
+        : Math.max(0, Math.min(flatFiles.length - 1, cur + (e.key === 'ArrowDown' ? 1 : -1)));
+      if (next !== cur) handleSelect(flatFiles[next]);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [flatFiles, selectedItem]);
 
   const loadDroppedFile = async (file: File) => {
     if (!/\.(wav|wave|mp3|flac|aif|aiff|aifc|ogg|oga|m4a|mp4|aac)$/i.test(file.name)) return;

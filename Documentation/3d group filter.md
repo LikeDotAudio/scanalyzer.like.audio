@@ -1,0 +1,133 @@
+# Audit — cloud group filtering: the scope selector vs. the Groups menu
+
+**Question:** the group filtering in the cloud "still isn't working." Why?
+
+**Short answer:** there are **two completely independent filter systems** that both claim to
+control "which groups you see," they are computed from **different source arrays**, they have
+**different scopes of effect**, and nothing keeps them in sync. What reads as "the filter not
+working" is the two disagreeing.
+
+---
+
+## The two systems
+
+### 1. The scope selector — the "group dropdown"
+`ScopeBar.tsx` (top of the window, shared by every tab).
+
+- **State (global, in `App.tsx:50-54`):** `scopeGroup`, `scopeSub`, `filterText`, `altRanks`,
+  and `scopeLetters` (the AlphabetScrubber window).
+- **What it produces:** `filteredData` — a **subset** of `analysisResult`
+  (`App.tsx:56-75`), built by:
+  - `matchesScope(it, scopeGroup, scopeSub, altRanks)` — category/subcategory membership,
+    optionally including UCS runner-up ranks (`groupColors.ts:164-179`);
+  - the letter-window (`scopeLetters`), applied **only when no category is picked**
+    (`App.tsx:61-67`);
+  - the free-text `filterText` over name/category/timbre/etc. (`App.tsx:69-72`).
+- **Scope of effect:** `filteredData` is passed to **every** tab — Cloud, 2D/Stats, Examiner,
+  Extractor, Rename (`App.tsx:503-513`). It is a true subset: rows not in it don't exist
+  downstream.
+- **In the cloud:** `CloudTab` sets `const data = filteredData` (`CloudTab.tsx:70`) and hands
+  `data` to `SampleCloud`. The cloud only ever lays out and renders these rows.
+
+### 2. The Groups menu — the "groups"
+The `📁 Groups` overlay, `GroupsMenu.tsx` (the panel in the screenshot).
+
+- **State (local to `CloudTab`, `CloudTab.tsx:83`):** `hiddenGroups` — a `Set<string>` of
+  category names and `subKey(group, sub)` composites.
+- **What it produces:** nothing new. It is a **per-point visibility mask** applied *inside*
+  `SampleCloud`, not a subset. Hidden instances are drawn at `scale 0.0001`
+  (`SampleCloud.tsx:190,198`); the arrow-key neighbour search skips them
+  (`SampleCloud.tsx:344-345`).
+- **Scope of effect:** **cloud only.** `hiddenGroups` never leaves `CloudTab`. Toggling a
+  group here changes nothing in 2D/Stats, Examiner, Extractor, or Rename.
+- **Its menu contents:** `groupTree` is built from **`analysisResult`** — the *whole,
+  unfiltered library* (`CloudTab.tsx:96-116`), **not** from `data`/`filteredData`.
+
+---
+
+## The delta — where they diverge
+
+| | Scope selector (dropdown) | Groups menu |
+|---|---|---|
+| Source array | filters `analysisResult` → `filteredData` | masks within `data` (=`filteredData`) |
+| Menu/labels computed from | `analysisResult` (`ScopeBar`, `ucsCats`) | `analysisResult` (`groupTree`) |
+| Mechanism | **subset** the data | **hide** individual points (scale→0) |
+| Affects other tabs? | **Yes**, all of them | **No**, cloud only |
+| State location | `App.tsx` (global) | `CloudTab.tsx` (local) |
+| Persisted? | lives with the shared scope | resets on remount; not saved |
+| Composition order | applied **first** | applied **second**, on the survivors |
+
+### Why it looks broken
+
+1. **The menu describes a different population than the cloud.** `groupTree` counts come from
+   the full library (`CloudTab.tsx:96-116`). If the scope dropdown has already narrowed
+   `filteredData` to, say, AMBIENCE, the menu still lists **every** category with
+   **whole-library** counts (ANIMALS 1,876, …). Hiding a category that the scope already
+   excluded is a **no-op** — the click does nothing visible, so the menu feels dead.
+
+2. **They stack instead of agreeing.** Effective visibility is
+   `row ∈ filteredData  AND  not in hiddenGroups`. The two are ANDed, but the user sees two
+   separate UIs each implying it is *the* control. Selecting AMBIENCE in the dropdown while the
+   menu still shows "all visible" reads as a contradiction.
+
+3. **No synchronization, either direction.** Picking a scope does **not** populate
+   `hiddenGroups`; "Show none + reveal one" does **not** set `scopeGroup`. Two mental models of
+   "what's shown," never reconciled.
+
+4. **Cloud-only masking.** Because `hiddenGroups` is local to `CloudTab`, a user who hides
+   groups in the cloud and switches to 2D/Stats sees them all again — the "filter" appears to
+   have been forgotten.
+
+5. **A third, hidden dimension.** The AlphabetScrubber feeds `scopeLetters`, folded into
+   `filteredData` (`App.tsx:61-67`) — but only when no category is selected. So the "dropdown"
+   is really *three* filters (category/sub, letter-window, text) with order-dependent
+   interactions, none of which the Groups menu is aware of.
+
+*(Keys themselves are consistent: both sides derive `[g, sg]` via `taxonomyKeys` and composite
+via `subKey` — `groupColors.ts:10,154`. The bug is architectural, not a key mismatch.)*
+
+---
+
+## Options to reconcile (not yet applied)
+
+- **A — Make the menu reflect the cloud.** Build `groupTree` from `data`/`filteredData`
+  instead of `analysisResult` (`CloudTab.tsx:96`). Counts then match what's on screen and
+  scope-excluded rows drop out of the list. Smallest change; kills symptom #1.
+- **B — One filter model.** Drive `hiddenGroups` from the scope (or vice-versa) so the menu's
+  checkboxes and the dropdown are the same state. Eliminates #2–#4.
+- **C — Promote or drop the split deliberately.** If per-point hide is genuinely cloud-only by
+  design, label it that way ("hide in cloud") so it doesn't read as a global filter; otherwise
+  lift `hiddenGroups` into the shared scope in `App.tsx`.
+
+Recommended first step: **A** (menu from `filteredData`) — it's one line of source change and
+removes the most confusing symptom, the menu that lists categories the scope already hid.
+
+---
+
+## Fix applied — Option A
+
+`CloudTab.tsx` `groupTree` now iterates **`data` (= `filteredData`)** instead of
+`analysisResult` (deps changed to `[data, taxonomy]`). Effects:
+
+- The Groups menu lists **only the categories currently on screen**, with counts that match
+  the scoped/filtered view — no more whole-library totals next to a narrowed cloud.
+- Hiding a category the scope already excluded is now **impossible** (it isn't in the list),
+  so the "dead click" symptom (#1) is gone.
+- `Show all` / `Show none` / `Expand all` operate on the visible set, because they read
+  `groupTree`.
+
+Still true after the fix (deliberately not addressed here — they need a design decision,
+options **B**/**C** above):
+
+- `hiddenGroups` remains **cloud-only** (#4) — 2D/Stats/Examiner/Extractor don't honour it.
+  In a WebGL-off environment the Groups menu therefore has no visible effect anywhere.
+- The two controls still aren't **synced** (#2, #3): the scope bar and the menu are separate
+  state; picking a scope doesn't tick menu boxes and vice-versa.
+- `hiddenGroups` can retain a group that later leaves `filteredData`; it stays hidden if it
+  re-enters. Harmless, but a scope change won't "reset" hides.
+
+---
+
+*Note: the screenshot shows "3D view unavailable" (WebGL couldn't start), so none of the
+cloud masking is visible in that environment at all — only the 2D/Stats path (which honors the
+scope selector but never `hiddenGroups`) is live there.*

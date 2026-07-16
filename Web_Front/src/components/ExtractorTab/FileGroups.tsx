@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ucsColor } from '../../groupColors';
 import { categoryLabel } from '../../categoryEmoji';
 
@@ -19,6 +19,9 @@ interface FileGroupsProps {
 // The left-hand "groups" panel: the file list grouped under UCS category headers.
 export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMultiOnly, selectedItem, onSelect, isNarrow }: FileGroupsProps) {
   const [folded, setFolded] = useState(false);
+  // Keep the selected row visible when it's moved by the keyboard (↑/↓) rather than a click.
+  const selRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => { selRef.current?.scrollIntoView({ block: 'nearest' }); }, [selectedItem]);
   return (
     <div style={{ ...(isNarrow
         ? { width: '100%', borderBottom: '1px solid var(--border-color)' }
@@ -55,7 +58,7 @@ export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMulti
           const count = it.regions?.count ?? null;
           const sel = it === selectedItem;
           return (
-            <div key={i} onClick={() => onSelect(it)}
+            <div key={i} ref={sel ? selRef : undefined} onClick={() => onSelect(it)}
               style={{ padding: '0.3rem 0.5rem 0.3rem 1rem', cursor: 'pointer', fontSize: '0.76rem', display: 'flex', justifyContent: 'space-between', gap: '0.5rem',
                 background: sel ? 'rgba(59,130,246,0.25)' : (i % 2 ? 'rgba(255,255,255,0.02)' : 'transparent'),
                 color: sel ? '#fff' : 'var(--accent-secondary)' }}>

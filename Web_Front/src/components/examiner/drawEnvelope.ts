@@ -45,7 +45,10 @@ export function drawBeats(ctx: CanvasRenderingContext2D, geo: PlotGeo, duration:
   if (!bpm || bpm <= 0 || duration <= 0) return;
   const { w, plotTop, plotBottom } = geo;
   const beat = 60 / bpm;
-  const y = plotTop + 9;
+  // Beat dots ride along the bottom of the plot; the downbeat dot is 2× the radius
+  // of the off-beats so beat 1 reads at a glance.
+  const R = 3.5;
+  const y = plotBottom - 2 * R - 3;
   let i = 0;
   for (let t = 0; t <= duration + 1e-6; t += beat, i++) {
     const x = (t / duration) * w;
@@ -58,7 +61,7 @@ export function drawBeats(ctx: CanvasRenderingContext2D, geo: PlotGeo, duration:
     ctx.lineTo(x, plotBottom);
     ctx.stroke();
     ctx.beginPath();
-    ctx.arc(x, y, down ? 5 : 3.5, 0, Math.PI * 2);
+    ctx.arc(x, y, down ? 2 * R : R, 0, Math.PI * 2);
     ctx.fillStyle = BEAT_COLORS[i % 4];
     ctx.fill();
     ctx.strokeStyle = 'rgba(0,0,0,0.6)';

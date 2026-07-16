@@ -1,17 +1,18 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { hasAudio, isTauri } from '../../audioLinking';
-import { computeSpectrum, toMono, noteToFreq, type PlotGeo } from '../examiner/audioAnalysis';
+import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
 import { complementColor, ucsColor, ucsSubColor } from '../../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { categoryEmoji, categoryLabel, subcategoryLabel } from '../../categoryEmoji';
 import { useIsNarrow } from '../../useIsNarrow';
 import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
-import { drawEnvelope, drawAxesAndName } from '../examiner/drawEnvelope';
+import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
 import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 import RadialWaveform from '../examiner/RadialWaveform';
+import EyeMeters from '../examiner/EyeMeters';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 
 interface ExaminerTabProps {
@@ -47,13 +48,13 @@ const COLUMNS: { key: string; label: string; numeric?: boolean; width: string; g
 
   { key: 'reason', label: 'Reason', width: '200px', get: it => it.classification?.reason?.[0] || '' },
   { key: 'timbre', label: 'Timbre', width: '110px', get: it => it.classification?.timbre || '' },
-  { key: 'cluster', label: 'Clust', numeric: true, width: '60px', get: it => (it.unsupervised?.cluster ?? -1) },
+  { key: 'cluster', label: 'Cluster', numeric: true, width: '70px', get: it => (it.unsupervised?.cluster ?? -1) },
   { key: 'root', label: 'Root', numeric: true, width: '60px', get: it => (noteToFreq(it.musicality?.root_note_name) ?? -1) },
   { key: 'pitch_hz', label: 'Pitch', numeric: true, width: '70px', get: it => (it.musicality?.pitch_hz || 0) },
-  { key: 'length_seconds', label: 'Len', numeric: true, width: '60px', get: it => (it.metadata?.length_seconds || 0) },
-  { key: 'transient_count', label: 'Tr', numeric: true, width: '50px', get: it => (it.envelope?.transient_count || 0) },
-  { key: 'spectral_centroid_hz', label: 'Cntrd', numeric: true, width: '80px', get: it => (it.spectral_features?.spectral_centroid_hz || 0) },
-  { key: 'harmonicity', label: 'Harm', numeric: true, width: '60px', get: it => (it.spectral_features?.harmonicity || 0) },
+  { key: 'length_seconds', label: 'Length', numeric: true, width: '70px', get: it => (it.metadata?.length_seconds || 0) },
+  { key: 'transient_count', label: 'Transients', numeric: true, width: '90px', get: it => (it.envelope?.transient_count || 0) },
+  { key: 'spectral_centroid_hz', label: 'Spectral Centroid', numeric: true, width: '130px', get: it => (it.spectral_features?.spectral_centroid_hz || 0) },
+  { key: 'harmonicity', label: 'Harmonicity', numeric: true, width: '100px', get: it => (it.spectral_features?.harmonicity || 0) },
   { key: 'beats_per_minute', label: 'BPM', numeric: true, width: '80px', get: it => (it.musicality?.beats_per_minute || 0) },
 ];
 
@@ -212,10 +213,48 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   const lastBufferRef = useRef<AudioBuffer | null>(null);
   const lastItemRef = useRef<any>(null);
 
+  // Live metering graph for the audio eye: the <audio> element routed through a channel
+  // splitter into per-channel analysers (L/R VU + phase correlation). Built lazily on the
+  // first play — createMediaElementSource can run only once per element and captures its
+  // audio, so we also fan it out to `destination` to keep hearing it. A separate context
+  // from decodeCtx (which only decodes). Older webviews without MediaElementSource just
+  // never get meters; playback is untouched.
+  const meterCtxRef = useRef<AudioContext | null>(null);
+  const meterSrcRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const analyserLRef = useRef<AnalyserNode | null>(null);
+  const analyserRRef = useRef<AnalyserNode | null>(null);
+  const getAnalysers = useRef(() => ({ left: analyserLRef.current, right: analyserRRef.current })).current;
+
+  const ensureMeterGraph = () => {
+    const el = audioRef.current;
+    if (!el) return;
+    if (!meterCtxRef.current) {
+      try {
+        const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const src = ctx.createMediaElementSource(el);
+        const splitter = ctx.createChannelSplitter(2);
+        src.connect(splitter);
+        src.connect(ctx.destination); // keep the sound audible
+        const aL = ctx.createAnalyser(); aL.fftSize = 1024; aL.smoothingTimeConstant = 0;
+        const aR = ctx.createAnalyser(); aR.fftSize = 1024; aR.smoothingTimeConstant = 0;
+        splitter.connect(aL, 0);
+        splitter.connect(aR, 1);
+        meterCtxRef.current = ctx;
+        meterSrcRef.current = src;
+        analyserLRef.current = aL;
+        analyserRRef.current = aR;
+      } catch {
+        /* no MediaElementSource support — meters stay idle, playback unaffected */
+      }
+    }
+    meterCtxRef.current?.resume().catch(() => {});
+  };
+
   useEffect(() => {
     return () => {
       if (loadTimerRef.current) clearTimeout(loadTimerRef.current);
       if (decodeCtxRef.current) decodeCtxRef.current.close();
+      if (meterCtxRef.current) meterCtxRef.current.close();
     };
   }, []);
 
@@ -413,6 +452,17 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     // Full-height overlay across both panes.
     drawEnvelope(ctx, item, duration, geo);
 
+    // Beat grid (red 1 / orange 2 / yellow 3 / green 4 dots + gridlines): prefer the
+    // record's BPM; for loops that carry none, estimate it in-browser. A zero BPM is
+    // never a loop, so drawBeats no-ops and no markers are drawn.
+    let bpm = Number(item?.musicality?.beats_per_minute) || 0;
+    let bpmEst = false;
+    if (!bpm && (item?.classification?.timbre === 'Loop' || item?.classification?.length_class === 'Loop')) {
+      bpm = estimateBpm(mono, buffer.sampleRate);
+      bpmEst = bpm > 0;
+    }
+    drawBeats(ctx, geo, duration, bpm, bpmEst);
+
     // Regions found during the scan (silence-separated segments) — a colour bar per
     // region along the bottom edge, matching the Extractor's palette. Only drawn when
     // the record actually carries regions.
@@ -548,7 +598,15 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       // break it for the next selection that reuses it.
       el.currentTime = 0;
       el.src = src;
-      if (autoPlay || forcePlay) el.play().catch(err => console.warn('[examiner] play rejected', err));
+      if (autoPlay || forcePlay) {
+        // Build the metering graph here too, not only in togglePlay: autoplayed
+        // selections would otherwise leave the L/R + correlation meters with null
+        // analysers (dead) until the user manually hit play or scrubbed. The page
+        // has sticky activation by now (a row click/arrow key got us here), so the
+        // AudioContext resumes fine and playback is unaffected.
+        ensureMeterGraph();
+        el.play().catch(err => console.warn('[examiner] play rejected', err));
+      }
       return true;
     };
     if (!load()) requestAnimationFrame(load);
@@ -614,6 +672,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     const el = audioRef.current;
     if (!el) return;
     if (el.paused) {
+      ensureMeterGraph(); // this click is the user gesture that lets the meter context start
       if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
       el.play().catch(() => {});
     } else {
@@ -816,9 +875,11 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
               <div onWheel={wheelScrub}
                 style={{ flexShrink: 0, borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem' }}>
                   {selectedItem ? (
-                      <RadialWaveform samples={ringSamples} color={detailColor} size={264}
-                        onPlay={togglePlay} playing={isPlaying} getProgress={ringProgress}
-                        onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
+                      <EyeMeters getAnalysers={getAnalysers} size={224} color={detailColor}>
+                        <RadialWaveform samples={ringSamples} color={detailColor} size={224}
+                          onPlay={togglePlay} playing={isPlaying} getProgress={ringProgress}
+                          onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { ensureMeterGraph(); el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
+                      </EyeMeters>
                   ) : (
                       <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Audio Eye</div>
                   )}

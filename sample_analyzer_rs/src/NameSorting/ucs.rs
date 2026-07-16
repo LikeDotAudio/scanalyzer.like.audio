@@ -100,6 +100,14 @@ fn build_index() -> Index {
     for f in files {
         for sub in f.subcategories {
             let mut tokens: Vec<String> = Vec::new();
+            // The subcategory's OWN name words ("CAT WILD" -> cat, wild). A generic
+            // modifier adjective (see MODIFIER_STOPWORDS) is real evidence only when it
+            // is one of these; borrowed into a synonym it is dropped.
+            let own: Vec<String> = normalize_name_words(&sub.subcategory)
+                .split_whitespace()
+                .filter(|t| is_useful_token(t))
+                .map(|t| t.to_string())
+                .collect();
             // Synonyms, plus the subcategory name itself ("SLIDING", "HORSE").
             let sources = sub
                 .synonyms
@@ -108,7 +116,15 @@ fn build_index() -> Index {
                 .chain(std::iter::once(sub.subcategory.clone()));
             for s in sources {
                 for t in normalize_name_words(&s).split_whitespace() {
-                    if is_useful_token(t) && !tokens.iter().any(|x| x == t) {
+                    if !is_useful_token(t) {
+                        continue;
+                    }
+                    // A borrowed generic modifier ("big" in a CAT WILD synonym) carries no
+                    // category evidence — keep it only as the subcategory's own word.
+                    if MODIFIER_STOPWORDS.contains(&t) && !own.iter().any(|x| x == t) {
+                        continue;
+                    }
+                    if !tokens.iter().any(|x| x == t) {
                         tokens.push(t.to_string());
                     }
                 }
@@ -156,6 +172,21 @@ pub fn index() -> &'static Index {
 /// no synonym table claims still scores nothing, because its IDF is zero.
 const SHORT_EVIDENCE: &[&str] = &[
     "bd", "sd", "hh", "ch", "oh", "kk", "tom", "dj", "ir", "fx", "808", "909", "707", "606", "303",
+];
+
+/// Generic size/quality modifier adjectives. Flattened out of a descriptive phrase
+/// into a standalone synonym — "Big" from "big cat", "Large" from "large drum" — these
+/// become rare, high-IDF tokens that hijack any file name containing the adjective. A
+/// `BigDrum_...wav` scored as ANIMALS/CAT WILD because "big" (df 3, so high IDF) beat
+/// the far more on-topic but common "drum" (df 8, so low IDF). We keep such a word ONLY
+/// when it is the subcategory's own name word; borrowed into a synonym it carries no
+/// category evidence and is dropped (see build_index). Deliberately excludes nouns like
+/// "snow"/"ice" whose category may name itself only via synonyms.
+const MODIFIER_STOPWORDS: &[&str] = &[
+    "big", "small", "large", "little", "tiny", "huge", "giant", "massive", "long",
+    "short", "deep", "low", "high", "fat", "thin", "heavy", "light", "soft", "hard",
+    "wet", "dry", "hot", "cold", "old", "new", "fast", "slow", "loud", "quiet",
+    "dark", "loose", "tight",
 ];
 
 /// Tokens too short or too generic to carry category evidence.

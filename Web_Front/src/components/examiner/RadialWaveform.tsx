@@ -10,7 +10,7 @@ interface RadialWaveformProps {
   color?: string;
   // Fraction of the radius left hollow in the centre (0–1).
   holeRatio?: number;
-  // Draw the green 0°/start tick at the 3 o'clock position.
+  // Draw the 0°/start tick (rgb(244,144,44)) at the 3 o'clock position.
   startMarker?: boolean;
   // When provided, a play/stop button sits in the hollow centre of the ring.
   onPlay?: () => void;
@@ -39,7 +39,9 @@ export default function RadialWaveform({
   samples,
   size = 180,
   color = '#f4902c',
-  holeRatio = 0.35,
+  // No hollow centre: the spokes reach all the way in. The play button below floats
+  // over the middle at a fixed size rather than filling a hole.
+  holeRatio = 0,
   startMarker = true,
   onPlay,
   playing = false,
@@ -173,8 +175,9 @@ export default function RadialWaveform({
   const endDrag = () => { draggingRef.current = false; };
   const onLeave = () => { draggingRef.current = false; onHover?.(null); };
 
-  // Diameter of the central button so it sits inside the ring's hollow core.
-  const btn = Math.round(size * holeRatio * 1.15);
+  // Diameter of the central play button. Fixed to the widget size (not the hole, which
+  // may be zero) so it stays a usable target and floats over the centre of the spokes.
+  const btn = Math.round(size * 0.2);
 
   return (
     <div className={className} style={{ position: 'relative', width: size, height: size, ...style }}>
@@ -200,7 +203,7 @@ export default function RadialWaveform({
           style={{
             position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
             width: btn, height: btn, borderRadius: '50%', cursor: 'pointer', zIndex: 1,
-            border: `1px solid ${color}`, background: 'rgba(0,0,0,0.55)', color,
+            border: 'none', background: 'transparent', color,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: Math.max(12, btn * 0.4), lineHeight: 1, padding: 0,
           }}

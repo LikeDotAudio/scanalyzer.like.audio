@@ -99,7 +99,7 @@ export function drawRadialWaveform(
 
   // A tick at 0° (right) showing where the file starts and the sweep begins.
   if (startMarker) {
-    ctx.strokeStyle = '#22c55e';
+    ctx.strokeStyle = '#f4902c'; // rgb(244,144,44)
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(cx + innerRadius - reach * 0.15, cy);

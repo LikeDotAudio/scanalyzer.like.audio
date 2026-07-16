@@ -90,9 +90,16 @@ export default function CloudTab({
   // Which taxonomy the cloud is showing. Derived from the colour choice, so the
   // legend and the hide/show filters always describe what you are actually
   // looking at — colour by UCS and the tree becomes UCS category -> subcategory.
+  //
+  // Built from `data` (= filteredData), NOT the whole `analysisResult`. The Groups menu is
+  // the cloud's own show/hide control, so it must describe the SAME population the cloud is
+  // drawing: after the scope bar / text filter narrows the view, the menu lists only the
+  // categories actually on screen, with matching counts. Building it from the full library
+  // was the "filter doesn't work" bug — it listed every category with whole-library counts,
+  // so hiding one the scope had already excluded was a no-op the user read as a dead click.
   const groupTree = useMemo(() => {
     const map = new Map<string, { count: number; subs: Map<string, number> }>();
-    for (const it of analysisResult) {
+    for (const it of data) {
       const [g, sg] = taxonomyKeys(it, taxonomy);
       const entry = map.get(g) || { count: 0, subs: new Map<string, number>() };
       entry.count++;
@@ -106,7 +113,7 @@ export default function CloudTab({
         count,
         subs: Array.from(subs.entries()).sort((a, b) => a[0].localeCompare(b[0])).map(([name, c]) => ({ name, count: c })),
       }));
-  }, [analysisResult, taxonomy]);
+  }, [data, taxonomy]);
 
   const toggleKey = (key: string) => {
     setHiddenGroups(prev => {
