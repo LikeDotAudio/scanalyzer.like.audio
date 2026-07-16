@@ -1,6 +1,56 @@
 import { useRef, useEffect } from 'react';
 import { drawRadialWaveform } from './drawRadialWaveform';
 
+// Approx momentary loudness (LUFS-ish) of a short window around a playback fraction.
+// This is the ungated BS.1770 mean-square loudness without the K-weighting filter —
+// plenty accurate for driving the playhead's colour, and cheap enough to run per-frame.
+function loudnessAt(samples: Float32Array, frac: number): number {
+  const half = 2048; // ~85 ms at 48 kHz; short enough to "dance", long enough to be stable
+  const center = Math.round(frac * samples.length);
+  const start = Math.max(0, center - half);
+  const end = Math.min(samples.length, center + half);
+  let sum = 0;
+  for (let i = start; i < end; i++) sum += samples[i] * samples[i];
+  const ms = sum / Math.max(1, end - start);
+  if (ms <= 1e-12) return -100;
+  return -0.691 + 10 * Math.log10(ms);
+}
+
+// Heat ramp for the playhead: white (quiet) → yellow → orange → red hot (loud).
+// -50 LUFS and below is white; -20 LUFS and above is full red.
+const HEAT_STOPS: [number, [number, number, number]][] = [
+  [0.0, [255, 255, 255]],
+  [0.45, [255, 236, 120]],
+  [0.75, [255, 150, 45]],
+  [1.0, [255, 42, 18]],
+];
+// The complementary ("opposite") colour of a #RGB / #RRGGBB hex — each channel inverted.
+// Falls back to white for anything it can't parse.
+function invertHex(hex: string): string {
+  let h = hex.trim().replace('#', '');
+  if (h.length === 3) h = h.split('').map((c) => c + c).join('');
+  if (h.length !== 6 || /[^0-9a-fA-F]/.test(h)) return '#ffffff';
+  const inv = (i: number) => (255 - parseInt(h.slice(i, i + 2), 16)).toString(16).padStart(2, '0');
+  return `#${inv(0)}${inv(2)}${inv(4)}`;
+}
+
+function heatColor(lufs: number): [number, number, number] {
+  const t = Math.max(0, Math.min(1, (lufs + 50) / 30)); // -50→0, -20→1
+  for (let i = 1; i < HEAT_STOPS.length; i++) {
+    const [t1, c1] = HEAT_STOPS[i];
+    if (t <= t1) {
+      const [t0, c0] = HEAT_STOPS[i - 1];
+      const k = (t - t0) / (t1 - t0);
+      return [
+        Math.round(c0[0] + (c1[0] - c0[0]) * k),
+        Math.round(c0[1] + (c1[1] - c0[1]) * k),
+        Math.round(c0[2] + (c1[2] - c0[2]) * k),
+      ];
+    }
+  }
+  return HEAT_STOPS[HEAT_STOPS.length - 1][1];
+}
+
 interface RadialWaveformProps {
   // Mono PCM samples of the whole file (e.g. from toMono(audioBuffer)).
   samples: Float32Array | null;
@@ -58,6 +108,10 @@ export default function RadialWaveform({
   // below is set up once and never resubscribes.
   const getProgressRef = useRef(getProgress);
   getProgressRef.current = getProgress;
+  // The playhead loop reads samples through a ref so it stays a stable rAF loop while
+  // still colouring itself from whatever waveform is currently loaded.
+  const samplesRef = useRef(samples);
+  samplesRef.current = samples;
   const draggingRef = useRef(false);
 
   // Ring geometry in device px — shared by the waveform draw, the playhead and the
@@ -120,18 +174,47 @@ export default function RadialWaveform({
       ctx.clearRect(0, 0, dim, dim);
       const frac = getProgressRef.current?.();
       if (frac != null && Number.isFinite(frac)) {
-        const a = Math.max(0, Math.min(1, frac)) * Math.PI * 2;
+        const f = Math.max(0, Math.min(1, frac));
+        const a = f * Math.PI * 2;
         const ca = Math.cos(a), sa = Math.sin(a);
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2 * dpr;
+
+        // Colour + heft the playhead by the loudness right under it.
+        const s = samplesRef.current;
+        const lufs = s && s.length ? loudnessAt(s, f) : -100;
+        const [r, g, b] = heatColor(lufs);
+        const rgb = `rgb(${r}, ${g}, ${b})`;
+        const hot = lufs > -20;             // above -20 LUFS the tip goes red-hot and glows
+        const level = Math.max(0, Math.min(1, (lufs + 50) / 30)); // 0 quiet … 1 loud
+
+        // Spoke: thicker than before and swelling a touch with loudness, tinted + softly glowing.
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = rgb;
+        ctx.lineWidth = (3 + level * 2.5) * dpr;
+        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.9)`;
+        ctx.shadowBlur = (4 + level * 10) * dpr;
         ctx.beginPath();
         ctx.moveTo(cx + (innerRadius - 2 * dpr) * ca, cy + (innerRadius - 2 * dpr) * sa);
         ctx.lineTo(cx + (outerRadius + 2 * dpr) * ca, cy + (outerRadius + 2 * dpr) * sa);
         ctx.stroke();
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(cx + outerRadius * ca, cy + outerRadius * sa, 3 * dpr, 0, Math.PI * 2);
-        ctx.fill();
+
+        // Tip dot: red-hot with a strong glow past -20 LUFS, otherwise it follows the heat ramp.
+        const dotX = cx + outerRadius * ca, dotY = cy + outerRadius * sa;
+        if (hot) {
+          ctx.fillStyle = '#ff2810';
+          ctx.shadowColor = 'rgba(255, 40, 16, 0.95)';
+          ctx.shadowBlur = (14 + level * 12) * dpr;
+          ctx.beginPath();
+          ctx.arc(dotX, dotY, (4 + level * 2) * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = rgb;
+          ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+          ctx.shadowBlur = (3 + level * 6) * dpr;
+          ctx.beginPath();
+          ctx.arc(dotX, dotY, (3.5 + level * 1.5) * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
       }
       id = requestAnimationFrame(tick);
     };
@@ -203,9 +286,9 @@ export default function RadialWaveform({
           style={{
             position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
             width: btn, height: btn, borderRadius: '50%', cursor: 'pointer', zIndex: 1,
-            border: 'none', background: 'transparent', color,
+            border: 'none', background: 'transparent', color: invertHex(color),
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: Math.max(12, btn * 0.4), lineHeight: 1, padding: 0,
+            fontSize: Math.max(24, btn * 0.8), lineHeight: 1, padding: 0,
           }}
         >{playing ? '■' : '▶'}</button>
       )}

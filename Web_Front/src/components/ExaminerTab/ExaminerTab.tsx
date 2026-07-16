@@ -877,12 +877,12 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
           </div>
 
           {/* Right column: circular player on top, property bar graphs below it. */}
-          <div style={{ ...(isNarrow ? { width: '100%', order: 2 } : { width: '280px', flexShrink: 0 }), background: '#0B0E14', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ ...(isNarrow ? { width: '100%', order: 2 } : { width: '20%', minWidth: 370, flexShrink: 0 }), background: '#0B0E14', display: 'flex', flexDirection: 'column' }}>
               <div onWheel={wheelScrub}
                 style={{ flexShrink: 0, borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem' }}>
                   {selectedItem ? (
-                      <EyeMeters getFrame={getFrame} size={224} color={detailColor}>
-                        <RadialWaveform samples={ringSamples} color={detailColor} size={224}
+                      <EyeMeters getFrame={getFrame} size={310} color={detailColor}>
+                        <RadialWaveform samples={ringSamples} color={detailColor} size={310}
                           onPlay={togglePlay} playing={isPlaying} getProgress={ringProgress}
                           onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
                       </EyeMeters>
