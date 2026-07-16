@@ -655,7 +655,6 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     const el = audioRef.current;
     if (!el) return;
     if (el.paused) {
-      ensureMeterGraph(); // user gesture — lets the meter context start
       if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
       el.play().catch(() => {});
     } else {
@@ -670,7 +669,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     if (digging) { setDigging(false); audioRef.current?.pause(); return; }
     setDigging(true);
     const el = audioRef.current;
-    if (el) { ensureMeterGraph(); el.currentTime = 0; el.play().catch(() => {}); }
+    if (el) { el.currentTime = 0; el.play().catch(() => {}); }
   };
 
   // Mirror this player's state up to the footer so its Play/Dig labels track THIS audio.
