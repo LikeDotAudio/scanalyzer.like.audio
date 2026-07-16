@@ -743,7 +743,9 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
 
       {/* Top Half: Data Table. On mobile it's height-capped (not flex:1) so the stacked
           detail panes below it flow into the scrolling page. */}
-      <div style={{ ...(isNarrow ? { flex: 'none', height: '45vh' } : { flex: 1 }), display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
+      <div style={{ ...(isNarrow ? { flex: 'none', position: 'sticky', top: 0, zIndex: 20, background: '#0A0A0A' } : { flex: 1 }), display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
+          {/* Toolbar (sample count + column config) is desktop-only — hidden on mobile. */}
+          {!isNarrow && (
           <div style={{ padding: '0.2rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{rows.length} / {analysisResult.length} samples{(isTauri() || audioFiles.length) ? ` · ${isTauri() ? 'Native Audio' : audioFiles.length + ' audio linked'}` : ''}</div>
             <div style={{ position: 'relative' }}>
@@ -761,7 +763,8 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
                     )}
             </div>
           </div>
-          <div ref={scrollRef} onScroll={handleListScroll} style={{ flex: 1, overflow: 'auto' }}>
+          )}
+          <div ref={scrollRef} onScroll={handleListScroll} style={{ ...(isNarrow ? { height: ROW_H * 5 + 34 } : { flex: 1 }), overflow: 'auto' }}>
               <table style={{ minWidth: '100%', width: 'max-content', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
                   <colgroup>
                       {activeColumns.map(c => <col key={c.key} style={{ width: `${widthOf(c.key)}px` }} />)}
@@ -885,7 +888,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
 
           {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece).
               On mobile it's first (order 1) with a fixed height so the canvas has room. */}
-          <div style={{ ...(isNarrow ? { width: '100%', order: 1, minHeight: '320px', borderBottom: '1px solid var(--border-color)' } : { flex: 1, minWidth: 0, borderRight: '1px solid var(--border-color)' }), display: 'flex', flexDirection: 'column', background: '#0A0A0A' }}>
+          <div style={{ ...(isNarrow ? { width: '100%', order: 1, height: 260, borderBottom: '1px solid var(--border-color)' } : { flex: 1, minWidth: 0, borderRight: '1px solid var(--border-color)' }), display: 'flex', flexDirection: 'column', background: '#0A0A0A' }}>
               {selectedItem ? (
                   <>
                       {/* Waveform fills the pane; the controls live in the footer strip below —

@@ -13,7 +13,7 @@ import ExaminerTabRaw from './components/ExaminerTab'
 import ExtractorTabRaw from './components/ExtractorTab'
 import RenameTabRaw from './components/RenameTab'
 import ScopeBar from './components/ScopeBar'
-import { matchesScope, taxonomyKeys, subKey } from './groupColors'
+import { matchesScope } from './groupColors'
 import { altCategory, altSubcategory } from './ucsIndex'
 import { lazy, Suspense } from 'react'
 
@@ -52,13 +52,6 @@ function App() {
   const [scopeSub, setScopeSub] = useState<string | null>(null)
   const [filterText, setFilterText] = useState('')
   const [altRanks, setAltRanks] = useState<Set<number>>(new Set())
-  // The 📁 Groups menu's hide/show set, lifted out of CloudTab so it's a real GLOBAL filter:
-  // hidden categories drop out of every tab (Examiner, Extractor, Stats, Rename), not just
-  // the 3D cloud — so it still does something when WebGL is off. Keyed by UCS category name
-  // and `subKey(cat, sub)` composites, exactly like the cloud's mask. Lives here (not in
-  // CloudTab) so it also survives tab switches.
-  const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set())
-
   // Scope = an explicitly-picked category/subcategory (matchesScope) plus the free-text
   // filter. The alphabet scrubber only pages the category CHIPS in ScopeBar; it no longer
   // filters the data. (It used to also drive a `scopeLetters` window that defaulted to A–E
@@ -77,16 +70,8 @@ function App() {
     });
   }, [analysisResult, scopeGroup, scopeSub, filterText, altRanks])
 
-  // What every tab EXCEPT the cloud renders: the scoped set with hidden groups removed.
-  // (The cloud gets `scopedData` and masks hidden points itself, so the Groups menu can
-  // still list a hidden category to toggle it back — see CloudTab.)
-  const filteredData = useMemo(() => {
-    if (hiddenGroups.size === 0) return scopedData;
-    return scopedData.filter(it => {
-      const [g, sg] = taxonomyKeys(it, 'UCS');
-      return !hiddenGroups.has(g) && !(sg && hiddenGroups.has(subKey(g, sg)));
-    });
-  }, [scopedData, hiddenGroups])
+  // What every tab renders: the scoped set. (The old Groups hide/show filter was retired.)
+  const filteredData = scopedData
 
   // Global footer transport: every tab reports the sample it's playing via onSound
   // (its name), so we can resolve the whole record here and drive one shared footer —
@@ -464,7 +449,7 @@ function App() {
     { id: 'stats', label: '2D' },
     { id: 'examiner', label: 'Examiner' },
     { id: 'extractor', label: 'Extractor' },
-    { id: 'rename', label: 'File Names' }
+    { id: 'rename', label: 'Rename' }
   ];
 
   return (
@@ -522,7 +507,8 @@ function App() {
               background: activeTab === tab.id ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
               color: activeTab === tab.id ? 'black' : 'var(--text-primary)',
               border: 'none',
-              padding: '0.5rem 1rem',
+              padding: '0.25rem 1rem',
+              whiteSpace: 'nowrap',
               fontWeight: activeTab === tab.id ? 'bold' : 'normal',
               borderRadius: '2px',
             }}
@@ -561,7 +547,6 @@ function App() {
 
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
           <CloudTab analysisResult={analysisResult} filteredData={scopedData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} playing={footerPlaying}
-            hiddenGroups={hiddenGroups} setHiddenGroups={setHiddenGroups}
             onExamine={(name) => footerPush('examiner', name)}
             onExtract={(name) => footerPush('extractor', name)} />
         </div>

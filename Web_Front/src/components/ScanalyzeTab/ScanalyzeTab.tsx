@@ -238,18 +238,38 @@ export default function ScanalyzeTab({
         alert(absorbed.length
           ? `Nothing to analyze — absorbed ${absorbed.length} up-to-date .PEAK sidecar(s).`
           : "All files in this folder have already been analyzed!");
+        // Everything was already current — no scan runs, but still (re)build the manifest
+        // so a library that predates it, or one with new sidecars, gets a fresh index.
+        if (absorbed.length) void cacheManifest([...analysisResult, ...absorbed]);
       }
       if (absorbed.length) onViewCloud();   // opened existing peaks — show them
       return;
     }
     // The survey screen already showed the file list and the user picked an action there,
     // so go straight to work rather than asking them to confirm the same folder twice.
-    void startAnalysis(toProcess);
+    // Pass the reused records so the rebuilt manifest covers the whole folder, not just
+    // the newly analyzed delta.
+    void startAnalysis(toProcess, absorbed);
   };
 
   const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => { void discover(e.target.files, 1); };
 
-  const startAnalysis = async (files: File[]) => {
+  // Rebuild the slim manifest at the folder root from the given (same-engine) record set,
+  // so it always covers the WHOLE folder — reused + newly analyzed — not just the delta.
+  const cacheManifest = async (records: any[]) => {
+    if (!records.length) return;
+    try {
+      const dirHandle = await getDirHandle();
+      if (!dirHandle) return;
+      await writeRootFile(dirHandle, MANIFEST_FILE, JSON.stringify(buildManifest('', records, analyzer_version())));
+    } catch (e) { console.warn('Could not write manifest', e); }
+  };
+
+  // `priorAbsorbed` are records reused from up-to-date sidecars this run (the "only analyze
+  // what's missing" case). They're threaded in explicitly because the setAnalysisResult that
+  // added them hasn't propagated to this closure yet — without them the rebuilt manifest
+  // would omit every reused file.
+  const startAnalysis = async (files: File[], priorAbsorbed: any[] = []) => {
     if (files.length === 0) return;
     setIsAnalyzing(true);
     setProgress(0);
@@ -342,17 +362,12 @@ export default function ScanalyzeTab({
     // Keep whatever was scanned. Every finished file already wrote its own .PEAK
     // sidecar next to the audio, so there is nothing to download and nothing to
     // ask about on a manual stop — the partial analysis is on disk either way.
-    const finalSet = [...analysisResult, ...newResults];
+    const finalSet = [...analysisResult, ...priorAbsorbed, ...newResults];
     setAnalysisResult(finalSet);
 
-    // Cache a slim manifest at the folder root (readwrite handle is already granted for
-    // sidecar writes) so the next reopen skips reading every per-file sidecar.
-    if (dirHandle && newResults.length) {
-      try {
-        const engine = newResults[0]?.metadata?.analyzer_version || analyzer_version();
-        await writeRootFile(dirHandle, MANIFEST_FILE, JSON.stringify(buildManifest('', finalSet, engine)));
-      } catch (e) { console.warn('Could not write manifest', e); }
-    }
+    // Rebuild the manifest to cover the whole folder (reused sidecars included), so the
+    // next reopen skips reading every per-file sidecar.
+    await cacheManifest(finalSet);
 
     stopRef.current = false;
     setIsAnalyzing(false);

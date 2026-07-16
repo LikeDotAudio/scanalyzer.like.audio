@@ -5,6 +5,7 @@ Design docs for the Sample Analysis toolchain, filed by type:
 | Folder | Contents |
 |---|---|
 | [`Specs/`](#specifications) | Specifications — the exact grammar/math/design a component must follow |
+| [`Features/`](#features) | Shipped features — how a built thing works, as-built |
 | [`Plans/`](#plans) | Plans — verified-open engineering to-dos |
 | [`Audit/`](Audit/README.md) | Audits — retrospective findings, bug investigations, dataset reviews |
 | [`Fixes/`](#fixes) | One-shot migration / patch scripts (not documentation) |
@@ -18,6 +19,12 @@ Design docs for the Sample Analysis toolchain, filed by type:
 - [Specs/sample_conversion_architecture.md](Specs/sample_conversion_architecture.md) —
   design for the `Sample_Conversion_rs` engine (WAV/FLAC, channel mixing, high-quality
   resampling) and its job-manifest IPC.
+
+## Features
+
+- [Features/manifest-cache-loader/](Features/manifest-cache-loader/README.md) — the slim
+  `sample_cloud_manifest.json` index that loads a large library fast and lazy-loads full
+  `.PEAK` records on demand (sidecars stay canonical). Shipped 2026-07-16.
 
 ## Plans
 

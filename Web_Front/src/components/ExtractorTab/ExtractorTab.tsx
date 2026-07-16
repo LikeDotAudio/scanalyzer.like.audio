@@ -67,6 +67,11 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
   const [chunkUcs, setChunkUcs] = useState<Record<number, ChunkAnalysis>>({});
   const [examining, setExamining] = useState<Set<number>>(new Set());
   const [decoding, setDecoding] = useState(false);
+  // Automatic anti-click micro-fade applied to every exported slice, in SAMPLES. A couple of
+  // samples in and a short tail out removes the boundary click without audibly altering the
+  // slice. Acts as a floor: a larger per-region fade (the Fade in/out columns) still wins.
+  const [rampInSamples, setRampInSamples] = useState(2);
+  const [tailOutSamples, setTailOutSamples] = useState(20);
   const [playing, setPlaying] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
   // Bumped the moment the decoded PCM (samplesRef / lengthRef) is ready. samples & length
@@ -145,8 +150,12 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
   const reseedNames = (next: Region[], prev: Region[]): Region[] => {
     if (!prev.length) return next;
     return next.map(r => {
-      const near = prev.find(p => p.name && Math.abs(p.start_seconds - r.start_seconds) < 0.03);
-      return near ? { ...r, name: near.name } : r;
+      // Match a freshly-detected region to the closest stored one (start within 30 ms) and
+      // carry across BOTH the user-typed name AND the stored offline analysis — so a default
+      // re-detect keeps the precomputed per-region UCS instead of blanking the column.
+      const near = prev.find(p => Math.abs(p.start_seconds - r.start_seconds) < 0.03);
+      if (!near) return r;
+      return { ...r, name: (near as any).name || (r as any).name, analysis: (near as any).analysis ?? (r as any).analysis } as Region;
     });
   };
 
@@ -294,6 +303,24 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     }
   };
 
+  // A slim manifest row carries only regions.count; the full .PEAK carries every region
+  // plus its stored offline analysis. Fetch the full record (desktop) so the Extractor can
+  // show the precomputed per-region UCS and boundaries without re-analyzing. On any failure,
+  // or on web, fall back to whatever the row already has.
+  const fetchFull = async (item: any): Promise<any> => {
+    if (Array.isArray(item?.regions?.regions)) return item;
+    const path = item?.metadata?.path;
+    if (isTauri() && path) {
+      try {
+        const { invoke } = await import('@tauri-apps/api/core');
+        const txt = await invoke<string>('read_full_record', { path });
+        const parsed = JSON.parse(txt);
+        if (parsed && typeof parsed === 'object') return parsed;
+      } catch (e) { console.warn('[extractor] could not load full record', path, e); }
+    }
+    return item;
+  };
+
   const handleSelect = async (item: any) => {
     setSelectedItem(item);
     setSaveMsg('');
@@ -307,7 +334,9 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     const isAbs = /^([A-Za-z]:[\\/]|\/)/.test(path);
     const nativePath = isTauri() && isAbs ? path : null;
     if (!src && !nativePath) { setDecoding(false); return; }
-    await setupAudioAndDetect(src || '', item.regions?.regions || [], nativePath, Number(item?.metadata?.length_seconds) || 0);
+    // Load the full record first (stored regions + their offline analysis), then detect.
+    const full = await fetchFull(item);
+    await setupAudioAndDetect(src || '', full.regions?.regions || [], nativePath, Number(item?.metadata?.length_seconds) || 0);
   };
 
   // Flat file list in the exact display order, for arrow-key navigation.
@@ -383,12 +412,15 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     stopAtRef.current = r.end_seconds;
     el.play().catch(() => {});
   };
-  // Select (highlight) a chunk row and focus the players' loop on it, so pressing play
-  // auditions that chunk. Does not auto-play — the row's ▶ button does that.
+  // Select (highlight) a chunk row, focus the players' loop on it, and audition it right
+  // away — selecting IS playing, so there's no separate per-row play button.
   const selectRegion = (i: number) => {
     setSelRegion(i);
     const r = regions[i];
-    if (r) loopRegionRef.current = { start: r.start_seconds, end: r.end_seconds };
+    if (r) {
+      loopRegionRef.current = { start: r.start_seconds, end: r.end_seconds };
+      playRegion(r);
+    }
   };
   // Wheel over the circular player steps to the next (+1) / previous (-1) slice and
   // auditions it. From no selection, down → first, up → last.
@@ -396,8 +428,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     if (!regions.length) return;
     const cur = selRegion ?? (dir > 0 ? -1 : regions.length);
     const next = Math.max(0, Math.min(regions.length - 1, cur + dir));
-    selectRegion(next);
-    playRegion(regions[next]);
+    selectRegion(next); // selecting auditions the region
   };
 
   // Run one chunk through the full UCS analyzer (slice → WAV → analyze in the engine
@@ -470,9 +501,16 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
   const exportSlices = async () => {
     if (!samplesRef.current || !regions.length) return;
     const base = (selectedItem?.metadata?.name || 'slice').replace(/\.[^.]+$/, '');
+    const sr = sampleRateRef.current || 44100;
     for (let i = 0; i < regions.length; i++) {
       const r = regions[i];
-      const wav = await extractorEngine.sliceWav(r);
+      // Apply the anti-click micro-fade as a floor on this region's fades (samples → seconds).
+      const eff: Region = {
+        ...r,
+        fade_in_seconds: Math.max(r.fade_in_seconds || 0, rampInSamples / sr),
+        fade_out_seconds: Math.max(r.fade_out_seconds || 0, tailOutSamples / sr),
+      };
+      const wav = await extractorEngine.sliceWav(eff);
       if (!wav.length) continue;
       // Copy into a plain-ArrayBuffer-backed view so it's a valid BlobPart.
       const bytes = new Uint8Array(wav.length);
@@ -571,7 +609,9 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
   // coloured like the cloud once it lands, or a "too short" note the analyzer couldn't score.
   const ucsResult = (i: number) => {
     if (examining.has(i)) return <span style={{ color: 'var(--text-secondary)' }}>…</span>;
-    const a: ChunkAnalysis | undefined = chunkUcs[i];
+    // Prefer a live re-examination; otherwise show the stored offline per-region analysis
+    // that shipped in the .PEAK, so the UCS column is filled the instant the file loads.
+    const a: ChunkAnalysis | undefined = chunkUcs[i] ?? (regions[i] as any)?.analysis;
     if (!a) return null;
     if (a.status === 'too_short') return <span style={{ color: '#f59e0b' }} title="Too short for the analyzer to score">too short</span>;
     if (a.status === 'error') return <span style={{ color: '#ef4444' }} title={a.message}>error</span>;
@@ -653,51 +693,20 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
                   <span>Min region {Math.round(params.minimum_region_seconds * 1000)} ms</span>
                   <input type="range" min={0.01} max={1} step={0.01} value={params.minimum_region_seconds} onChange={e => changeParam('minimum_region_seconds', Number(e.target.value))} />
                 </label>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: 2 }} title="Anti-click fade-in applied to every exported slice (a floor; a larger per-region fade still wins)">
+                  <span>Ramp in {rampInSamples} smp</span>
+                  <input type="number" min={0} step={1} value={rampInSamples} onChange={e => setRampInSamples(Math.max(0, Math.round(Number(e.target.value))))} style={{ width: 64, background: '#0d1017', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.72rem', padding: '0.1rem 0.2rem' }} />
+                </label>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: 2 }} title="Anti-click fade-out (tail) applied to every exported slice (a floor; a larger per-region fade still wins)">
+                  <span>Tail out {tailOutSamples} smp</span>
+                  <input type="number" min={0} step={1} value={tailOutSamples} onChange={e => setTailOutSamples(Math.max(0, Math.round(Number(e.target.value))))} style={{ width: 64, background: '#0d1017', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.72rem', padding: '0.1rem 0.2rem' }} />
+                </label>
                 <button className="btn secondary" style={{ alignSelf: 'flex-end', padding: '0.15rem 0.5rem', fontSize: '0.72rem' }}
                   onClick={() => { setParams(DEFAULT_REGION_PARAMS); runDetect(DEFAULT_REGION_PARAMS, regions); }}>Reset</button>
               </div>
 
-              {nameOptions.length > 0 && (
-                <datalist id="region-name-options">{nameOptions.map((n, i) => <option key={i} value={n} />)}</datalist>
-              )}
-
-              {/* Region table */}
-              <div style={{ flex: isNarrow ? 'none' : 1, overflowY: isNarrow ? 'visible' : 'auto', padding: '0.25rem 0.5rem' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.74rem' }}>
-                  <thead style={{ position: 'sticky', top: 0, background: '#12151c' }}>
-                    <tr style={{ color: 'var(--text-secondary)', textAlign: 'left' }}>
-                      <th style={cell}>#</th><th style={cell}>Name</th><th style={cell}>In (s)</th><th style={cell}>Out (s)</th><th style={cell}>Dur</th><th style={cell}>Fade in</th><th style={cell}>Fade out</th><th style={cell}>UCS</th><th style={cell}></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {regions.map((r, i) => (
-                      <tr key={i} onClick={() => selectRegion(i)}
-                        style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer',
-                          background: selRegion === i ? 'rgba(59,130,246,0.22)' : undefined }}>
-                        <td style={cell}><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: regionColor(i), marginRight: 4 }} />{i + 1}</td>
-                        <td style={cell}><input value={r.name} placeholder={`region_${i + 1}`} onChange={e => updateRegion(i, { name: e.target.value })} list={nameOptions.length ? 'region-name-options' : undefined} style={{ ...numInput, width: 150 }} /></td>
-                        <td style={cell}><input type="number" step={0.001} value={Number(r.start_seconds.toFixed(3))} onChange={e => updateRegion(i, { start_seconds: Number(e.target.value) })} style={numInput} /></td>
-                        <td style={cell}><input type="number" step={0.001} value={Number(r.end_seconds.toFixed(3))} onChange={e => updateRegion(i, { end_seconds: Number(e.target.value) })} style={numInput} /></td>
-                        <td style={{ ...cell, color: 'var(--text-secondary)' }}>{fmt(r.duration_seconds)}</td>
-                        <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_in_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_in_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
-                        <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_out_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_out_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
-                        <td style={{ ...cell, fontSize: '0.72rem', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis' }}>{ucsResult(i)}</td>
-                        <td style={cell}>
-                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem' }} onClick={(e) => { e.stopPropagation(); playRegion(r); }} title="Play region">▶</button>
-                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem', marginLeft: 4 }} onClick={(e) => { e.stopPropagation(); examineChunk(i); }} disabled={examining.has(i)} title="Analyze this chunk through the full UCS analyzer">🔬</button>
-                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem', marginLeft: 4 }} onClick={(e) => { e.stopPropagation(); deleteRegion(i); }} title="Delete region">✕</button>
-                        </td>
-                      </tr>
-                    ))}
-                    {regions.length === 0 && !decoding && (
-                      <tr><td colSpan={9} style={{ ...cell, color: 'var(--text-secondary)', padding: '1rem' }}>No regions at these settings — lower the threshold or the minimums.</td></tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Export row */}
-              <div style={{ padding: '0.5rem 0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              {/* Region actions + export — sits between the detection controls and the table. */}
+              <div style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={addRegion}>＋ Add region</button>
                 <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={examineAll} disabled={!regions.length || examining.size > 0}
                   title="Run every chunk through the full UCS analyzer">🔬 Examine all</button>
@@ -711,6 +720,44 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
                 <button className="btn secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={exportSlices} disabled={!regions.length || !samplesRef.current} title="Export each region as a .wav (with fades)">⬇ Slices</button>
                 <button className="btn primary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }} onClick={saveToRecord}>💾 Save regions</button>
                 {saveMsg && <span style={{ fontSize: '0.72rem', color: 'var(--accent-primary)' }}>{saveMsg}</span>}
+              </div>
+
+              {nameOptions.length > 0 && (
+                <datalist id="region-name-options">{nameOptions.map((n, i) => <option key={i} value={n} />)}</datalist>
+              )}
+
+              {/* Region table */}
+              <div style={{ flex: isNarrow ? 'none' : 1, overflowY: isNarrow ? 'visible' : 'auto', padding: '0.25rem 0.5rem' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.74rem' }}>
+                  <thead style={{ position: 'sticky', top: 0, background: '#12151c' }}>
+                    <tr style={{ color: 'var(--text-secondary)', textAlign: 'left' }}>
+                      <th style={cell}>#</th><th style={cell}>Name</th><th style={cell}>UCS</th><th style={cell}>In (s)</th><th style={cell}>Out (s)</th><th style={cell}>Dur</th><th style={cell}>Fade in</th><th style={cell}>Fade out</th><th style={cell}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {regions.map((r, i) => (
+                      <tr key={i} onClick={() => selectRegion(i)}
+                        style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer',
+                          background: selRegion === i ? 'rgba(59,130,246,0.22)' : undefined }}>
+                        <td style={cell}><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: regionColor(i), marginRight: 4 }} />{i + 1}</td>
+                        <td style={cell}><input value={r.name} placeholder={`region_${i + 1}`} onChange={e => updateRegion(i, { name: e.target.value })} list={nameOptions.length ? 'region-name-options' : undefined} style={{ ...numInput, width: 150 }} /></td>
+                        <td style={{ ...cell, fontSize: '0.72rem', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis' }}>{ucsResult(i)}</td>
+                        <td style={cell}><input type="number" step={0.001} value={Number(r.start_seconds.toFixed(3))} onChange={e => updateRegion(i, { start_seconds: Number(e.target.value) })} style={numInput} /></td>
+                        <td style={cell}><input type="number" step={0.001} value={Number(r.end_seconds.toFixed(3))} onChange={e => updateRegion(i, { end_seconds: Number(e.target.value) })} style={numInput} /></td>
+                        <td style={{ ...cell, color: 'var(--text-secondary)' }}>{fmt(r.duration_seconds)}</td>
+                        <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_in_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_in_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
+                        <td style={cell}><input type="number" min={0} step={0.005} value={Number((r.fade_out_seconds || 0).toFixed(3))} onChange={e => updateRegion(i, { fade_out_seconds: Math.max(0, Number(e.target.value)) })} style={numInput} /></td>
+                        <td style={cell}>
+                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem' }} onClick={(e) => { e.stopPropagation(); examineChunk(i); }} disabled={examining.has(i)} title="Analyze this chunk through the full UCS analyzer">🔬</button>
+                          <button className="btn secondary" style={{ padding: '0 0.35rem', fontSize: '0.72rem', marginLeft: 4 }} onClick={(e) => { e.stopPropagation(); deleteRegion(i); }} title="Delete region">✕</button>
+                        </td>
+                      </tr>
+                    ))}
+                    {regions.length === 0 && !decoding && (
+                      <tr><td colSpan={9} style={{ ...cell, color: 'var(--text-secondary)', padding: '1rem' }}>No regions at these settings — lower the threshold or the minimums.</td></tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </>
           )}
