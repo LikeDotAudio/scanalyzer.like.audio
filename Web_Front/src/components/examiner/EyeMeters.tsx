@@ -23,8 +23,8 @@ const vuColor = (fill: number) =>
   fill > 0.9 ? '#ef4444' : fill > 0.75 ? '#f59e0b' : '#22c55e';
 
 // L/R VU meters flanking the audio eye, plus a horizontal stereo-correlation meter
-// mounted BELOW it. Everything is driven by the two channel AnalyserNodes on a single
-// rAF loop that writes DOM styles directly — the parent never re-renders per frame.
+// mounted BELOW it. Everything is driven by the L/R sample windows from getFrame on a
+// single rAF loop that writes DOM styles directly — the parent never re-renders per frame.
 //
 // Correlation meter: the needle reads the Pearson correlation of the L/R windows
 // directly. +1 (right) = mono / perfectly in phase, 0 (centre) = fully decorrelated
@@ -93,7 +93,7 @@ export default function EyeMeters({ getFrame, size, color, children }: EyeMeters
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [getAnalysers, color]);
+  }, [getFrame, color]);
 
   const barW = 12;
   const vuTrack: React.CSSProperties = {
