@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { open } from '@tauri-apps/plugin-dialog';
@@ -16,7 +17,16 @@ interface Survey {
   sample: { path: string; has_sidecar: boolean }[];
 }
 
-export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzing, setIsAnalyzing, setProgress, onViewCloud }: any) {
+interface TauriScanProps {
+  analysisResult: any[];
+  setAnalysisResult: (results: any[]) => void;
+  isAnalyzing: boolean;
+  setIsAnalyzing: (is: boolean) => void;
+  setProgress: (p: number) => void;
+  onViewCloud: () => void;
+}
+
+export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzing, setIsAnalyzing, setProgress, onViewCloud }: TauriScanProps) {
   // What the picked folder holds, shown before a single file is decoded.
   const [survey, setSurvey] = useState<Survey | null>(null);
   const strideRef = useRef<number | undefined>(undefined);
@@ -356,7 +366,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       </button>
       
       {analysisResult.length > 0 && (
-        <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+        <div style={{ marginTop: '2.5rem', textAlign: 'center', width: '100%', maxWidth: '1200px' }}>
           <h3 style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem' }}>Analysis Complete</h3>
           <p className="text-secondary">{analysisResult.length} files successfully processed.</p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>

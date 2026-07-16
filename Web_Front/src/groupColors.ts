@@ -3,6 +3,7 @@
 // the cloud, its legend and the scope bars run. (The old music-production role taxonomy,
 // generated from MUSICPROD.json, was removed once every instrument became a first-class
 // UCS category with subcategories.)
+import { altCategory, altSubcategory } from './ucsIndex';
 
 // Composite key for a category+subcategory (used for show/hide sets). The unit-
 // separator (0x1F) can't occur in a real name, so there are no collisions.
@@ -159,13 +160,22 @@ export function taxonomyColor(top: string, sub: string, _taxonomy: Taxonomy = 'U
 }
 
 /** Does a record fall in the selected scope? `group` is a UCS category and `sub` its
- *  UCS subcategory. */
-export function matchesScope(item: any, group: string | null, sub: string | null): boolean {
+ *  UCS subcategory. Optionally matches against runner-up ranks. */
+export function matchesScope(item: any, group: string | null, sub: string | null, altRanks?: Set<number>): boolean {
   if (!group) return true;
   const [g, sg] = taxonomyKeys(item, 'UCS');
-  if (g !== group) return false;
-  if (sub && sg !== sub) return false;
-  return true;
+  if (g === group && (!sub || sg === sub)) return true;
+
+  if (altRanks && item.ucs?.alternatives) {
+    for (const r of altRanks) {
+      const alt = item.ucs.alternatives[r];
+      if (alt && altCategory(alt) === group && (!sub || altSubcategory(alt) === sub)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /** The UCS subcategory chips available under a selected category. */

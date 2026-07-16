@@ -169,7 +169,10 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   useEffect(() => {
     const mesh = meshRef.current;
     if (!mesh || sData.positions.length === 0) return;
-    for (let i = 0; i < sData.positions.length; i++) {
+    const capacity = mesh.instanceMatrix.array.length / 16;
+    const limit = Math.min(sData.positions.length, capacity);
+    
+    for (let i = 0; i < limit; i++) {
       const origIdx = sData.origIndex[i];
       const [x, y, z] = sData.positions[i];
       const origIt = allData[origIdx];
@@ -251,7 +254,12 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
             boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
             userSelect: 'none',
           }}>
-            {allData[sData.origIndex[hoveredIdx]]?.metadata?.name || 'Unknown'}
+            <div style={{ fontWeight: 'bold', color: 'var(--accent-primary)', marginBottom: '0.2rem' }}>
+              {allData[sData.origIndex[hoveredIdx]]?.metadata?.name || 'Unknown'}
+            </div>
+            <div><strong style={{ color: 'var(--text-secondary)' }}>Category:</strong> {allData[sData.origIndex[hoveredIdx]]?.ucs?.category || '(unclassified)'} {allData[sData.origIndex[hoveredIdx]]?.ucs?.subcategory ? `/ ${allData[sData.origIndex[hoveredIdx]]?.ucs?.subcategory}` : ''}</div>
+            <div><strong style={{ color: 'var(--text-secondary)' }}>Instrument:</strong> {allData[sData.origIndex[hoveredIdx]]?.classification?.timbre || 'Unknown'}</div>
+            <div><strong style={{ color: 'var(--text-secondary)' }}>Length:</strong> {allData[sData.origIndex[hoveredIdx]]?.metadata?.length_seconds?.toFixed(2)}s</div>
           </div>
         </Html>
       )}
@@ -316,7 +324,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
-      if (selectedIndex == null || selectedIndex >= allPositions.length) return;
+      if (selectedIndex == null || selectedIndex < 0 || selectedIndex >= allPositions.length) return;
       e.preventDefault();
       const sel = new THREE.Vector3(...allPositions[selectedIndex]).project(camera);
       const p = new THREE.Vector3();
@@ -365,7 +373,7 @@ function CloudPoints({ data, xAxis, yAxis, zAxis, sizeAxis, colorBy, shapeBy, hi
 
   if (count === 0) return null;
 
-  const selPos = selectedIndex != null && selectedIndex < allPositions.length ? allPositions[selectedIndex] : null;
+  const selPos = selectedIndex != null && selectedIndex >= 0 && selectedIndex < allPositions.length ? allPositions[selectedIndex] : null;
   baseScaleRef.current = (selectedSize || 0.7) * 0.5 + 0.6;
 
   let selGeom;

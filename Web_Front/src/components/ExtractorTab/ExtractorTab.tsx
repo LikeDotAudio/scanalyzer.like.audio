@@ -3,10 +3,9 @@ import { resolveAudioUrl, isTauri, getDirHandle, writePeakSidecar, relPathOf } f
 import { toMono } from '../examiner/audioAnalysis';
 import { decodeWav } from '../examiner/decodeWav';
 import { decodeViaWasm } from '../examiner/wasmDecode';
-import { ucsSubColor, matchesScope } from '../../groupColors';
+import { ucsSubColor } from '../../groupColors';
 import { DEFAULT_REGION_PARAMS, type Region, type RegionParams } from '../examiner/detectRegions';
 import { extractorEngine, DEFAULT_ENGINE_PARAMS, type EngineParams, type ChunkAnalysis } from '../../extractorEngine';
-import ScopeBar from '../ScopeBar';
 import { useIsNarrow } from '../../useIsNarrow';
 import { categoryEmoji, categoryLabel, subcategoryEmoji, subcategoryLabel } from '../../categoryEmoji';
 import { altCategory } from '../../ucsIndex';
@@ -17,12 +16,10 @@ import { regionColor } from './shared';
 
 interface ExtractorTabProps {
   analysisResult: any[];
+  filteredData: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
   setAnalysisResult: (results: any[]) => void;
-  // "Send to Extractor" from the Examiner: filter the file list to this name. The nonce
-  // makes re-sending the same name re-apply the filter.
-  filterHint?: { name: string; nonce: number };
 }
 
 const fmt = (s: number) => `${s.toFixed(3)}s`;
@@ -51,18 +48,10 @@ const toEngineParams = (p: RegionParams): EngineParams => ({
   minimum_region_seconds: p.minimum_region_seconds,
 });
 
-export default function ExtractorTab({ analysisResult, audioFiles, onSound, setAnalysisResult, filterHint }: ExtractorTabProps) {
+export default function ExtractorTab({ analysisResult, filteredData, audioFiles, onSound, setAnalysisResult }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
-  const [scopeGroup, setScopeGroup] = useState<string | null>(null);
-  const [scopeSub, setScopeSub] = useState<string | null>(null);
-  // Apply a "Send to Extractor" filter hint (keyed on its nonce so repeats re-fire) — and
-  // auto-select the matching file so it loads straight into the slicer, no extra click.
-  useEffect(() => {
-    if (!filterHint?.name) return;
-    setFilter(filterHint.name);
-    const match = analysisResult.find(it => (it.metadata?.name || '') === filterHint.name);
-    if (match) handleSelect(match);
-  }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setFilter(''); }, [analysisResult]);
+
   const [multiOnly, setMultiOnly] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [params, setParams] = useState<RegionParams>(DEFAULT_REGION_PARAMS);
@@ -120,13 +109,12 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
   // The file list: scope chips + filter text + optional "multiple regions only".
   const rows = useMemo(() => {
     const q = filter.trim().toLowerCase();
-    return analysisResult.filter(it => {
+    return filteredData.filter((it: any) => {
       if (multiOnly && !((it.regions?.count ?? 0) > 1)) return false;
-      if (scopeGroup && !matchesScope(it, scopeGroup, scopeSub)) return false;
       if (q && !`${it.metadata?.name || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''}`.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [analysisResult, filter, multiOnly, scopeGroup, scopeSub]);
+  }, [filteredData, filter, multiOnly]);
 
   // Grouped under UCS category headers, capped so a 37k-file library renders instantly.
   const groupedRows = useMemo(() => {
@@ -569,11 +557,7 @@ export default function ExtractorTab({ analysisResult, audioFiles, onSound, setA
         </div>
       )}
 
-      {/* Scope bar — same UI as the Examiner: category chips + filter. */}
-      <div style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)', background: '#0d1017' }}>
-        <ScopeBar analysisResult={analysisResult} group={scopeGroup} sub={scopeSub}
-          setGroup={setScopeGroup} setSub={setScopeSub} filterText={filter} setFilterText={setFilter} />
-      </div>
+      {/* Extractor uses the global ScopeBar now */}
 
       <div style={{ display: 'flex', flexDirection: isNarrow ? 'column' : 'row', flex: 1, minHeight: 0, overflowY: isNarrow ? 'auto' : undefined }}>
         <FileGroups groupedRows={groupedRows} rowsCount={rows.length} multiOnly={multiOnly} setMultiOnly={setMultiOnly} selectedItem={selectedItem} onSelect={handleSelect} isNarrow={isNarrow} />

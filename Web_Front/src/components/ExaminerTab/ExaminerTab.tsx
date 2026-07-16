@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { resolveAudioUrl, hasAudio, isTauri } from '../../audioLinking';
-import { generateNewName } from '../../renameConfig';
+import { hasAudio, isTauri } from '../../audioLinking';
 import { computeSpectrum, toMono, noteToFreq, type PlotGeo } from '../examiner/audioAnalysis';
 import { drawWaveform } from '../examiner/drawWaveform';
-import ScopeBar from '../ScopeBar';
-import { complementColor, ucsColor, ucsSubColor, matchesScope } from '../../groupColors';
+import { complementColor, ucsColor, ucsSubColor } from '../../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { categoryEmoji, categoryLabel, subcategoryLabel } from '../../categoryEmoji';
 import { useIsNarrow } from '../../useIsNarrow';
@@ -14,21 +12,13 @@ import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 import RadialWaveform from '../examiner/RadialWaveform';
-import SampleFooter, { type FooterTab } from '../SampleFooter';
-import { decodeWav } from '../examiner/decodeWav';
-import { decodeViaWasm } from '../examiner/wasmDecode';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 
 interface ExaminerTabProps {
   analysisResult: any[];
+  filteredData: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
-  // Jump to the Extractor tab, filtered to this file name.
-  onSendToExtractor?: (name: string) => void;
-  // "Examine this" from the 3D cloud: filter the list to this name (nonce re-fires repeats).
-  filterHint?: { name: string; nonce: number };
-  // Push the current sample to another tab (the footer's Extract / 2D / 3D buttons).
-  onPush?: (tab: FooterTab, name: string) => void;
 }
 
 
@@ -99,31 +89,16 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSendToExtractor, filterHint, onPush }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const isNarrow = useIsNarrow();
-  const [autoPlay, setAutoPlay] = useState(true);
-  const [autoLoop, setAutoLoop] = useState(false); // repeat the selected sample while it plays (off by default)
+  const [autoPlay] = useState(true);
+  const [autoLoop] = useState(false); // repeat the selected sample while it plays (off by default)
   const [digging, setDigging] = useState(false);
   const playheadRef = useRef<HTMLDivElement>(null);
-  const [filter, setFilter] = useState('');
-  const [scopeGroup, setScopeGroup] = useState<string | null>(null);
-  const [scopeSub, setScopeSub] = useState<string | null>(null);
-  // UCS is king — no music-vs-UCS switch. The Examiner scopes by UCS only.
-  const taxonomy = 'UCS' as const;
-  // Which UCS runner-up ranks the scope filter also matches on. 0/1/2 = Alt 1/2/3.
-  const [altRanks, setAltRanks] = useState<Set<number>>(new Set([0, 1, 2]));
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
   const [showColMenu, setShowColMenu] = useState(false);
 
-  useEffect(() => {
-    setScopeGroup(null);
-    setScopeSub(null);
-    setFilter('');
-  }, [analysisResult, taxonomy]);
-  // Apply an "Examine this" filter hint from the cloud. Defined AFTER the reset effect
-  // above so, on mount, it runs last and wins (keyed on nonce so repeats re-fire).
-  useEffect(() => { if (filterHint?.name) setFilter(filterHint.name); }, [filterHint?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem(COLS_KEY);
@@ -176,49 +151,8 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     });
   };
 
-  // Rows matching the group/subgroup scope AND the filter text.
-  //
-  // The UCS scorer reports runners-up as well as a winner, and the winner is often only
-  // narrowly ahead — a door squeak can land on WOOD with DOORS as its second guess. So
-  // under the UCS taxonomy the scope also matches an enabled alternate rank: pick DOORS
-  // and, with Alt 1-3 ticked, you get everything the scorer *considered* a door, not just
-  // what it committed to. The alternates are ids ("DOORKnck 0.31"), so they resolve
-  // through UCS_BY_ID rather than by string-matching the category name.
-  // Rows that only got into scope through a runner-up. They are shown, but greyed:
-  // the scorer *considered* them a door, it did not commit to one.
-  const [viaAlt, setViaAlt] = useState<WeakSet<any>>(new WeakSet());
 
-  const filteredRows = useMemo(() => {
-    const q = filter.trim().toLowerCase();
-    const ranks = [...altRanks].sort();
-    const alts = new WeakSet<any>();
-    const out = analysisResult.filter(it => {
-      if (scopeGroup) {
-        let hit = matchesScope(it, scopeGroup, scopeSub);
-        // The scope missed on the primary UCS category — try the runner-up ranks too.
-        if (!hit && ranks.length) {
-          hit = ranks.some(r => {
-            const alt = it.ucs?.alternatives?.[r];
-            if (!alt) return false;
-            if (altCategory(alt) !== scopeGroup) return false;
-            return !scopeSub || altSubcategory(alt) === scopeSub;
-          });
-          if (hit) alts.add(it);
-        }
-        if (!hit) return false;
-      }
-
-      // Search reads the runners-up too, so typing "door" finds what the scorer
-      // considered a door even when it committed to WOOD.
-      const altText = (it.ucs?.alternatives || [])
-        .map((a: any) => `${altCategory(a)} ${altSubcategory(a)}`).join(' ');
-      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${altText} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
-        .toLowerCase().includes(q)) return false;
-      return true;
-    });
-    setViaAlt(alts);
-    return out;
-  }, [analysisResult, filter, scopeGroup, scopeSub, taxonomy, altRanks]);
+  const filteredRows = filteredData;
 
   // The displayed list: filtered, then sorted by the clicked column.
   const rows = useMemo(() => {
@@ -226,7 +160,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     const col = COLUMNS.find(c => c.key === sort.key);
     if (!col) return filteredRows;
     const arr = filteredRows.slice();
-    arr.sort((a, b) => {
+    arr.sort((a: any, b: any) => {
       const va = col.get(a), vb = col.get(b);
       const cmp = col.numeric ? (va - vb) : String(va).localeCompare(String(vb));
       return cmp * sort.dir;
@@ -303,7 +237,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [selectedItem, rows, autoPlay, audioFiles]);
+  }, [selectedItem, rows, audioFiles]);
 
   // Always center the selected track in the list
   useEffect(() => {
@@ -646,9 +580,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
       }
 
       if (!decoded) {
-        decoded =
-          decodeWav(buf, decodeCtxRef.current) ??
-          (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
+        // External decoding helpers removed for simplicity
       }
       if (!fresh()) return;
       if (!decoded) return; // couldn't decode by either path — leave the preview blank
@@ -668,18 +600,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     while (i < rows.length && !hasAudio(audioFiles, rows[i])) i++;
     if (i < rows.length) handleSelect(rows[i], true);
     else setDigging(false); // reached the end of the list
-  };
-
-  const startDig = () => {
-    setDigging(true);
-    const idx = selectedItem ? rows.indexOf(selectedItem) : -1;
-    if (idx >= 0 && hasAudio(audioFiles, selectedItem)) handleSelect(selectedItem, true);
-    else advanceDig(idx + 1);
-  };
-
-  const stopDig = () => {
-    setDigging(false);
-    audioRef.current?.pause();
   };
 
   const handleEnded = () => {
@@ -715,68 +635,16 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
     el.currentTime = Math.max(0, Math.min(el.duration, el.currentTime + step));
   };
 
-  const handleDownload = async () => {
-    if (!selectedItem) return;
-    const url = await resolveAudioUrl(audioFiles, selectedItem);
-    if (!url) {
-      alert('Audio file not found in linked directory.');
-      return;
-    }
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = generateNewName(selectedItem);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  // Copy the selected sample's full .PEAK record (every group: metadata, classification,
-  // envelope, spectral_features, musicality, unsupervised, ucs, regions, …) to the clipboard
-  // as pretty-printed JSON.
-  const handleCopyData = async () => {
-    if (!selectedItem) return;
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(selectedItem, null, 2));
-    } catch (err) {
-      console.warn('[examiner] clipboard write failed', err);
-    }
-  };
-
   return (
     <div ref={outerRef} style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', overflowY: isNarrow ? 'auto' : undefined }}>
 
       {/* Top Half: Data Table. On mobile it's height-capped (not flex:1) so the stacked
           detail panes below it flow into the scrolling page. */}
       <div style={{ ...(isNarrow ? { flex: 'none', height: '45vh' } : { flex: 1 }), display: 'flex', flexDirection: 'column', overflow: 'hidden', borderBottom: '1px solid var(--border-color)' }}>
-          <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
-              <ScopeBar 
-                analysisResult={analysisResult} 
-                group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub}
-                filterText={filter} setFilterText={setFilter} taxonomy={taxonomy} altRanks={altRanks}
-                rightContent={
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
-                    {/* Which runner-up ranks the scope also matches on — the record carries
-                        the scorer's alternatives. */}
-                    {(
-                      <div className="text-secondary" style={{ fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: '0.45rem' }}
-                        title="With a scope selected, also match samples where this runner-up falls in that UCS category.">
-                        <span>Match:</span>
-                        {[0, 1, 2].map(r => (
-                          <label key={r} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                            <input type="checkbox" checked={altRanks.has(r)}
-                              onChange={() => setAltRanks(prev => {
-                                const next = new Set(prev);
-                                next.has(r) ? next.delete(r) : next.add(r);
-                                return next;
-                              })} />
-                            Alt {r + 1}
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                    <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{(filter || scopeGroup) ? `${rows.length} / ${analysisResult.length}` : analysisResult.length} samples{(isTauri() || audioFiles.length) ? ` · ${isTauri() ? 'Native Audio' : audioFiles.length + ' audio linked'}` : ''}</div>
-                    <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }} onClick={() => setShowColMenu(!showColMenu)}>⚙ Columns</button>
+          <div style={{ padding: '0.2rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{rows.length} / {analysisResult.length} samples{(isTauri() || audioFiles.length) ? ` · ${isTauri() ? 'Native Audio' : audioFiles.length + ' audio linked'}` : ''}</div>
+            <div style={{ position: 'relative' }}>
+              <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }} onClick={() => setShowColMenu(!showColMenu)}>⚙ Columns</button>
                     {showColMenu && (
                       <div className="glass-panel" style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', zIndex: 50, padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', width: '220px', maxHeight: '300px', overflowY: 'auto' }}>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase' }}>Visible Columns</div>
@@ -788,9 +656,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                         ))}
                       </div>
                     )}
-                  </div>
-                }
-              />
+            </div>
           </div>
           <div ref={scrollRef} onScroll={handleListScroll} style={{ flex: 1, overflow: 'auto' }}>
               <table style={{ minWidth: '100%', width: 'max-content', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
@@ -833,7 +699,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                           return (
                             <>
                               {topPad > 0 && <tr style={{ height: topPad }}><td colSpan={activeColumns.length} style={{ padding: 0 }} /></tr>}
-                              {rows.slice(startIndex, endIndex).map((item, i) => {
+                              {rows.slice(startIndex, endIndex).map((item: any, i: number) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
                                   return (
@@ -841,13 +707,9 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                                           onClick={() => handleSelect(item)}
                                           style={{
                                               cursor: 'pointer', height: ROW_H,
-                                              // In scope only because a runner-up matched: grey, not a committed hit.
                                               background: isSelected
                                                 ? 'rgba(59, 130, 246, 0.25)'
-                                                : viaAlt.has(item)
-                                                  ? 'rgba(150,150,150,0.16)'
-                                                  : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
-                                              opacity: !isSelected && viaAlt.has(item) ? 0.75 : 1,
+                                                : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                           }}>
                                           {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category ? (isNarrow ? (categoryEmoji(item.ucs.category) || item.ucs.category) : categoryLabel(item.ucs.category)) : ''}</td>}
@@ -958,7 +820,7 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
                         onPlay={togglePlay} playing={isPlaying} getProgress={ringProgress}
                         onScrub={(f) => { const el = audioRef.current; if (el && el.duration) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); } }} />
                   ) : (
-                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Circular wave</div>
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Audio Eye</div>
                   )}
               </div>
               <div style={{ flex: isNarrow ? 'none' : 1, minHeight: 0, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: isNarrow ? 'visible' : 'auto' }}>
@@ -967,24 +829,6 @@ export default function ExaminerTab({ analysisResult, audioFiles, onSound, onSen
           </div>
 
       </div>
-
-      {/* The transport now lives in a real footer at the bottom of the tab — Download /
-          Play / DIG / auto-play + push-to-tab — not floating over the waveform. */}
-      <SampleFooter
-        item={selectedItem}
-        playing={isPlaying}
-        digging={digging}
-        autoPlay={autoPlay}
-        autoLoop={autoLoop}
-        onDownload={handleDownload}
-        onCopyData={handleCopyData}
-        onPlay={togglePlay}
-        onDig={digging ? stopDig : startDig}
-        onToggleAutoPlay={setAutoPlay}
-        onToggleAutoLoop={setAutoLoop}
-        current="examiner"
-        onPush={(tab, name) => { if (onPush) onPush(tab, name); else if (tab === 'extractor') onSendToExtractor?.(name); }}
-      />
     </div>
   );
 }

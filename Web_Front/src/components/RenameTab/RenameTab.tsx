@@ -1,43 +1,25 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { buildScript, type RenamePlan, type ScriptKind, type Mode, type BitDepth } from '../../renameScript';
 import { TOKEN_LABELS, type Slot, getSavedSubfolders, getSavedPrepend, getSavedAppend, tokenValue, generateNewName } from '../../renameConfig';
-import ScopeBar from '../ScopeBar';
-import { taxonomyKeys } from '../../groupColors';
 import { useIsNarrow } from '../../useIsNarrow';
 
 interface RenameTabProps {
   analysisResult: any[];
+  filteredData: any[];
   audioFiles: File[];
 }
 
 const PREVIEW_ROW_H = 26; // virtualized preview row height (px)
 
-export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps) {
-  const [scopeGroup, setScopeGroup] = useState<string | null>(null);
-  const [scopeSub, setScopeSub] = useState<string | null>(null);
-  const [filterText, setFilterText] = useState('');
+export default function RenameTab({ analysisResult, filteredData }: RenameTabProps) {
   const isNarrow = useIsNarrow();
 
   useEffect(() => {
-    setScopeGroup(null);
-    setScopeSub(null);
-    setFilterText('');
     const ts = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
     setDestRoot(`Renamed_Samples_${ts}`);
   }, [analysisResult]);
 
-  const data = useMemo(() => {
-    const q = filterText.trim().toLowerCase();
-    return analysisResult.filter(it => {
-      // The ScopeBar scopes by UCS category -> subcategory; match what it renders.
-      const [role, g] = taxonomyKeys(it, 'UCS');
-      if (scopeGroup && role !== scopeGroup) return false;
-      if (scopeSub && g !== scopeSub) return false;
-      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
-        .toLowerCase().includes(q)) return false;
-      return true;
-    });
-  }, [analysisResult, scopeGroup, scopeSub, filterText]);
+  const data = filteredData;
 
   const [flatten, setFlatten] = useState(false);
 
@@ -89,8 +71,6 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
     return () => ro.disconnect();
   }, []);
 
-
-
   // Destination subfolder path for a record, from the enabled subfolder tokens.
   const folderFor = (item: any): string =>
     subfolders.filter(s => s.enabled)
@@ -113,10 +93,11 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
     URL.revokeObjectURL(url);
   };
 
-  const boxStyle: React.CSSProperties = {
-    background: 'rgba(0,0,0,0.25)', padding: '0.5rem', border: '1px solid var(--border-color)',
+  const boxStyle = {
+    flex: 1, padding: '0.6rem',
+    background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '6px'
   };
-  const rowBtn: React.CSSProperties = {
+  const rowBtn = {
     background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border-color)', color: '#fff',
     cursor: 'pointer', width: '20px', height: '20px', lineHeight: '1', fontSize: '0.7rem', padding: 0,
   };
@@ -141,9 +122,6 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
     </div>
   );
 
-  // The renamer's dense multi-column grid (subfolders / prepend / append token lists,
-  // live preview, script export) has no workable mobile layout — tell the user plainly
-  // rather than render a broken, unusable version.
   if (isNarrow) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', padding: '2rem', gap: '0.75rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
@@ -156,19 +134,6 @@ export default function RenameTab({ analysisResult, audioFiles }: RenameTabProps
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', padding: '0.5rem', gap: '0.5rem', overflow: 'hidden' }}>
-
-      <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-        <ScopeBar 
-          analysisResult={analysisResult} group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub} 
-          filterText={filterText} setFilterText={setFilterText}
-          rightContent={
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
-              {data.length} / {analysisResult.length} files
-              {audioFiles.length > 0 && ` · ${audioFiles.length} audio linked`}
-            </span>
-          }
-        />
-      </div>
 
       {/* Top Controls */}
       <div className="glass-panel" style={{ padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

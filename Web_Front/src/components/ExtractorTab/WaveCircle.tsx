@@ -30,7 +30,7 @@ export default function WaveCircle({ samples, color, arcs, playing, hasSelection
         <RadialWaveform samples={samples} color={color} size={280} regions={arcs}
           onPlay={onPlay} playing={playing} getProgress={getProgress} onScrub={onScrub} onHover={onHover} />
       ) : (
-        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Circular waveform</div>
+        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center' }}>Audio Eye</div>
       )}
     </div>
   );

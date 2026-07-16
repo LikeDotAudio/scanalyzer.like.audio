@@ -78,6 +78,8 @@ export function drawRadialWaveform(
       ctx.beginPath();
     }
     
+    if (!inRegion) continue;
+    
     let min = 1.0, max = -1.0;
     for (let i = start; i < end; i++) {
       const v = samples[i];

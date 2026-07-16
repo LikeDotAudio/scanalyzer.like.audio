@@ -1,19 +1,15 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, PieChart, Pie, Legend, BarChart, Bar, Tooltip } from 'recharts'
-import { ucsColor, ucsSubColor, matchesScope } from '../../groupColors'
-import { resolveAudioUrl, isTauri } from '../../audioLinking'
-import ScopeBar from '../ScopeBar'
-import RadialWaveform from '../examiner/RadialWaveform'
-import { toMono } from '../examiner/audioAnalysis'
-import { decodeWav } from '../examiner/decodeWav'
-import { decodeViaWasm } from '../examiner/wasmDecode'
+import { ucsColor, ucsSubColor } from '../../groupColors'
 import { useIsNarrow } from '../../useIsNarrow'
 import { categoryLabel, subcategoryLabel } from '../../categoryEmoji'
 
 interface StatsTabProps {
   analysisResult: any[];
+  filteredData: any[];
   audioFiles: File[];
   onSound?: (name: string) => void;
+  selectedItem?: any;
 }
 
 // Numeric features selectable on the configurable scatter charts.
@@ -30,6 +26,8 @@ const NUM_FEATURES: Record<string, string> = {
   Cluster: 'unsupervised.cluster',
   'Crest Factor': 'spectral_features.crest_factor',
   Flatness: 'spectral_features.spectral_flatness',
+  RMS: 'spectral_features.root_mean_square_level',
+  ZCR: 'spectral_features.zero_crossings_per_second',
 };
 const NUM_LABELS = Object.keys(NUM_FEATURES);
 
@@ -57,46 +55,26 @@ const PulsingDot = (props: any) => {
   );
 };
 
-export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsTabProps) {
-  const [group, setGroup] = useState<string | null>(null);      // null = All
-  const [sub, setSub] = useState<string | null>(null);
+export default function StatsTab({ filteredData, onSound, selectedItem }: StatsTabProps) {
   const [x1, setX1] = useState('Pitch');
   const [y1, setY1] = useState('Brightness');
   const [x2, setX2] = useState('Attack');
   const [y2, setY2] = useState('Sustain');
-  const [nowPlaying, setNowPlaying] = useState<string>('');
+  const nowPlaying = selectedItem?.metadata?.name || '';
   const [plotAll, setPlotAll] = useState(false);
-  const [filterText, setFilterText] = useState('');
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useState(false);
   const isNarrow = useIsNarrow();
-  // Circular waveform preview of the last-picked point: mono samples + ring colour.
-  const [ring, setRing] = useState<{ samples: Float32Array; color: string; name: string } | null>(null);
   const decodeCtxRef = useRef<AudioContext | null>(null);
-  const ringGenRef = useRef(0);
-
-
-  useEffect(() => {
-    setGroup(null);
-    setSub(null);
-    setFilterText('');
-  }, [analysisResult]);
 
   useEffect(() => () => { decodeCtxRef.current?.close(); }, []);
 
-
-
   // The filtered dataset all charts are relative to.
-  const data = useMemo(() => {
-    const q = filterText.trim().toLowerCase();
-    return analysisResult.filter(it => {
-      // The ScopeBar scopes by a UCS category OR a production role; matchesScope knows both.
-      if (!matchesScope(it, group, sub)) return false;
-      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
-        .toLowerCase().includes(q)) return false;
-      return true;
-    });
-  }, [analysisResult, group, sub, filterText]);
+  const data = filteredData;
+
+  const currentCategory = useMemo(() => {
+    if (data.length === 0) return null;
+    const cats = new Set(data.map((it: any) => it.ucs?.category || '(unclassified)'));
+    return cats.size === 1 ? Array.from(cats)[0] : null;
+  }, [data]);
 
   // UCS category counts — the coarse level, shown in the donut and, unscoped, the bar.
   const categoryData = useMemo(() => {
@@ -134,57 +112,6 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   const playItem = async (item: any) => {
     if (!item) return;
     onSound?.(item.metadata.name || '');
-    const src = await resolveAudioUrl(audioFiles, item);
-    if (src && audioRef.current) {
-      document.querySelectorAll('audio').forEach(a => a.pause());
-      if (audioRef.current.src.startsWith('blob:')) URL.revokeObjectURL(audioRef.current.src);
-      audioRef.current.currentTime = 0;
-      audioRef.current.src = src;
-      // Short samples (<4s) play, wait 1s, then replay (set on loadedmetadata below);
-      // longer ones loop gaplessly. Loop is decided once the duration is known.
-      audioRef.current.loop = false;
-      audioRef.current.play().catch(() => {});
-      setNowPlaying(item.metadata.name);
-      drawRing(item, src);
-    } else {
-      setNowPlaying((isTauri() || audioFiles.length) ? `No audio file for "${item.metadata.name}"` : 'No audio linked');
-    }
-  };
-
-  // Decode the picked sample and show its circular waveform. Generation-guarded
-  // so rapid clicks can't paint a stale ring, and non-fatal on undecodable files.
-  const drawRing = async (item: any, src: string) => {
-    const gen = ++ringGenRef.current;
-    try {
-      if (!decodeCtxRef.current) {
-        decodeCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      const buf = await (await fetch(src)).arrayBuffer();
-      if (gen !== ringGenRef.current) return;
-      let decoded: AudioBuffer | null | undefined = null;
-      try {
-        const decodePromise = decodeCtxRef.current.decodeAudioData(buf.slice(0));
-        if (decodePromise) {
-          decoded = await Promise.race([
-            decodePromise,
-            new Promise<null>((_, reject) => setTimeout(() => reject(new Error("timeout")), 150))
-          ]);
-        }
-      } catch (e) {
-        // decodeAudioData rejected or timed out
-      }
-
-      if (!decoded) {
-        decoded =
-          decodeWav(buf, decodeCtxRef.current) ??
-          (await decodeViaWasm(buf, item?.metadata?.name || '', decodeCtxRef.current));
-      }
-      if (gen !== ringGenRef.current) return;
-      if (!decoded) return;
-      setRing({ samples: toMono(decoded), color: pointColor(item), name: item.metadata?.name || '' });
-    } catch {
-      /* undecodable — leave the previous ring in place */
-    }
   };
 
   useEffect(() => {
@@ -249,12 +176,8 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nowPlaying, plotData, x1, y1]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (analysisResult.length === 0) {
-    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', color: 'var(--text-secondary)' }}>No data to graph. Scan a folder or load a .PEAK file.</div>;
-  }
-
   // Gate the (expensive) scatter behind a group pick when the scope is huge.
-  const gated = !group && !plotAll && data.length > SCATTER_LIMIT;
+  const gated = !currentCategory && !plotAll && data.length > SCATTER_LIMIT;
 
   const ScatterTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
@@ -319,34 +242,17 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', position: 'relative' }}>
-      {/* Filter + player bar */}
-      <div style={{ padding: '0.5rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)' }}>
-        <ScopeBar 
-          analysisResult={analysisResult} group={group} sub={sub} setGroup={(g) => { setGroup(g); setPlotAll(false); }} setSub={setSub} 
-          filterText={filterText} setFilterText={setFilterText}
-          rightContent={
-            <>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{data.length} samples in scope</span>
-              <button className="btn secondary" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', marginLeft: '0.5rem' }} onClick={() => audioRef.current?.play()}>▶</button>
-              <span className="text-secondary" style={{ fontSize: '0.72rem', minWidth: '120px' }}>{nowPlaying || 'click a point to play'}</span>
-              <audio ref={audioRef} style={{ display: 'none' }}
-                onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
-                onLoadedMetadata={e => { const el = e.currentTarget; el.loop = el.duration >= 4; }}
-                onEnded={e => { const el = e.currentTarget; const src = el.src; if (el.duration < 4) setTimeout(() => { if (el.src === src && el.paused) el.play().catch(() => {}); }, 1000); }} />
-            </>
-          }
-        />
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', padding: '0.75rem', background: 'rgba(0,0,0,0.2)', borderBottom: '1px solid var(--border-color)', alignItems: 'center' }}>
+        <h2 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Library Stats</h2>
+        <div style={{ flex: 1 }} />
       </div>
 
-      {/* Charts grid — 2×2 on desktop; on mobile each chart is full screen-width,
-          stacked in a single scrolling column so none is squeezed into a corner. */}
       <div style={{ flex: 1, display: 'grid', minHeight: 0, position: 'relative',
         ...(isNarrow
           ? { gridTemplateColumns: '1fr', gridAutoRows: '260px', overflowY: 'auto' }
           : { gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr' }),
         gap: '0.5rem', padding: '0.5rem' }}>
-        {/* God Categories donut */}
         <div className="glass-panel" style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <h3 style={{ marginBottom: '0.25rem', color: 'var(--accent-primary)', fontSize: '0.85rem' }}>UCS Categories</h3>
           <ResponsiveContainer width="100%" height="100%">
@@ -360,22 +266,21 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
           </ResponsiveContainer>
         </div>
 
-        {/* Identified Groups / Subgroups bar */}
         <div className="glass-panel" style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <h3 style={{ marginBottom: '0.25rem', color: 'var(--accent-secondary)', fontSize: '0.85rem' }}>
-            {group ? `Subcategories in ${group}` : 'UCS Categories'}
+            {currentCategory ? `Subcategories in ${currentCategory}` : 'UCS Categories'}
           </h3>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={group ? subgroupData : categoryData} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+            <BarChart data={currentCategory ? subgroupData : categoryData} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={false} />
               <XAxis type="number" stroke="var(--text-secondary)" fontSize={11} />
-              <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" width={group ? 150 : 110} fontSize={11}
-                tickFormatter={group ? (v) => subcategoryLabel(group, String(v)) : (v) => categoryLabel(String(v))} />
+              <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" width={currentCategory ? 150 : 110} fontSize={11}
+                tickFormatter={currentCategory ? (v) => subcategoryLabel(currentCategory, String(v)) : (v) => categoryLabel(String(v))} />
               <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid var(--border-color)' }}
-                labelFormatter={(label) => group ? subcategoryLabel(group, String(label)) : categoryLabel(String(label))} />
+                labelFormatter={(label) => currentCategory ? subcategoryLabel(currentCategory, String(label)) : categoryLabel(String(label))} />
               <Bar dataKey="value">
-                {(group ? subgroupData : categoryData).map((e: any, i) => (
-                  <Cell key={i} fill={group ? ucsSubColor(e.cat, e.sub) : ucsColor(e.name)} />
+                {(currentCategory ? subgroupData : categoryData).map((e: any, i) => (
+                  <Cell key={i} fill={currentCategory ? ucsSubColor(e.cat, e.sub) : ucsColor(e.name)} />
                 ))}
               </Bar>
             </BarChart>
@@ -385,27 +290,7 @@ export default function StatsTab({ analysisResult, audioFiles, onSound }: StatsT
         {chartCard('Scatter A', x1, setX1, y1, setY1)}
         {chartCard('Scatter B', x2, setX2, y2, setY2)}
 
-        {/* Circular player — always visible, floating in the gutter BETWEEN the two
-            scatter plots (bottom-row centre). Loaded from the last hovered/clicked point;
-            a placeholder ring before the first pick. The wrapper is click-through so it
-            never blocks hovering the points around it, but the ring itself (play + scrub)
-            stays interactive. Starts at 0° (right) and wraps 360°. */}
-        <div style={{
-          position: 'absolute', top: isNarrow ? '50%' : '75%', left: '50%', transform: 'translate(-50%, -50%)',
-          zIndex: 20, pointerEvents: 'none',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem',
-        }}>
-          <RadialWaveform samples={ring?.samples ?? null} color={ring?.color || '#f4902c'} size={isNarrow ? 200 : 240}
-            playing={playing} style={{ pointerEvents: 'auto' }}
-            onPlay={() => { const el = audioRef.current; if (!el) return; el.paused ? el.play().catch(() => {}) : el.pause(); }}
-            getProgress={() => { const el = audioRef.current; return el && el.duration ? el.currentTime / el.duration : null; }}
-            onScrub={(f) => { const el = audioRef.current; if (!el || !el.duration) return; el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); }} />
-          <div style={{
-            fontSize: '0.8rem', maxWidth: 260, textAlign: 'center', color: '#fff',
-            textShadow: '0 1px 3px rgba(0,0,0,0.9)',
-            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-          }} title={ring?.name || ''}>{ring?.name || 'hover or click a point'}</div>
-        </div>
+
       </div>
     </div>
   );

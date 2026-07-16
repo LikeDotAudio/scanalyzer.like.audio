@@ -11,6 +11,9 @@ import GroupsTabRaw from './components/GroupsTab'
 import ExaminerTabRaw from './components/ExaminerTab'
 import ExtractorTabRaw from './components/ExtractorTab'
 import RenameTabRaw from './components/RenameTab'
+import ScopeBar from './components/ScopeBar'
+import { matchesScope, taxonomyKeys } from './groupColors'
+import { altCategory, altSubcategory } from './ucsIndex'
 import { lazy, Suspense } from 'react'
 
 const StatsTab = lazy(async () => ({ default: StatsTabRaw }))
@@ -23,7 +26,7 @@ const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'extractor
 
 function tabFromHash(): string {
   const h = window.location.hash.replace(/^#\/?/, '');
-  return (TAB_IDS as readonly string[]).includes(h) ? h : 'cloud';
+  return (TAB_IDS as readonly string[]).includes(h) ? h : 'scanalyze';
 }
 
 function App() {
@@ -42,10 +45,34 @@ function App() {
   const [reopenName, setReopenName] = useState<string | null>(null)
   const [reopening, setReopening] = useState(false)
   const [demoLoading, setDemoLoading] = useState(false)
-  // "Send to Extractor" from the Examiner: a file name + a nonce so re-sending the same
-  // name still re-triggers the Extractor's filter.
-  const [extractorFilter, setExtractorFilter] = useState<{ name: string; nonce: number }>({ name: '', nonce: 0 })
-  const [examinerFilter, setExaminerFilter] = useState<{ name: string; nonce: number }>({ name: '', nonce: 0 })
+
+  // Global Scope State
+  const [scopeGroup, setScopeGroup] = useState<string | null>(null)
+  const [scopeSub, setScopeSub] = useState<string | null>(null)
+  const [filterText, setFilterText] = useState('')
+  const [scopeLetters, setScopeLetters] = useState<string[]>([])
+  const [altRanks, setAltRanks] = useState<Set<number>>(new Set())
+
+  const filteredData = useMemo(() => {
+    const q = filterText.trim().toLowerCase();
+    return analysisResult.filter(it => {
+      if (!matchesScope(it, scopeGroup, scopeSub, altRanks)) return false;
+
+      if (!scopeGroup && scopeLetters.length > 0) {
+        const cat = taxonomyKeys(it, 'UCS')[0] || '';
+        const char = cat.charAt(0).toUpperCase();
+        // Only drop it if it's an alphabet letter and not in our active scrubber window.
+        // (If it's a number/symbol, keep it visible).
+        if (char >= 'A' && char <= 'Z' && !scopeLetters.includes(char)) return false;
+      }
+
+      const altText = (it.ucs?.alternatives || [])
+        .map((a: any) => `${altCategory(a)} ${altSubcategory(a)}`).join(' ');
+      if (q && !`${it.metadata?.name || ''} ${it.classification?.group || ''} ${it.classification?.subgroup || ''} ${it.ucs?.category || ''} ${it.ucs?.subcategory || ''} ${altText} ${it.classification?.timbre || ''} ${it.musicality?.root_note_name || ''} ${it.classification?.reason?.[0] || ''}`
+        .toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [analysisResult, scopeGroup, scopeSub, filterText, altRanks, scopeLetters])
 
   // Global footer transport: every tab reports the sample it's playing via onSound
   // (its name), so we can resolve the whole record here and drive one shared footer —
@@ -61,7 +88,7 @@ function App() {
   useEffect(() => {
     const onHash = () => setActiveTab(tabFromHash());
     window.addEventListener('hashchange', onHash);
-    if (!window.location.hash) window.location.hash = '#/cloud';
+    if (!window.location.hash) window.location.hash = '#/scanalyze';
     return () => window.removeEventListener('hashchange', onHash);
   }, [])
 
@@ -245,23 +272,51 @@ function App() {
 
   const goToTab = (id: string) => { window.location.hash = `#/${id}`; setActiveTab(id); }
 
-  // Footer transport handlers. Playback uses a footer-owned <audio>; pressing play first
-  // pauses any tab's own audio so the two never overlap. The URL is resolved the same way
-  // every tab does (desktop bytes→blob, or an in-memory File in the browser).
   const footerPlay = async () => {
-    const el = footerAudioRef.current
-    if (!el || !footerItem) return
-    if (!el.paused) { el.pause(); return }
-    document.querySelectorAll('audio').forEach(a => { if (a !== el) a.pause() })
-    const url = await resolveAudioUrl(audioFiles, footerItem)
-    if (!url) return
-    if (el.src && el.src.startsWith('blob:')) URL.revokeObjectURL(el.src)
-    el.src = url
-    el.currentTime = 0
-    el.play().catch(() => {})
-  }
+    if (!footerItem || !footerAudioRef.current) return;
+    if (footerPlaying) {
+      footerAudioRef.current.pause();
+      return;
+    }
+    const src = await resolveAudioUrl(audioFiles, footerItem);
+    if (!src) return;
+    if (footerAudioRef.current.src.startsWith('blob:')) URL.revokeObjectURL(footerAudioRef.current.src);
+    footerAudioRef.current.src = src;
+    footerAudioRef.current.play().catch(() => {});
+  };
+
+  const [autoPlay, setAutoPlay] = useState(false);
+  const [autoLoop, setAutoLoop] = useState(false);
+  const [digging, setDigging] = useState(false);
+
+  // Play a newly selected item if autoPlay or DIG is active
+  useEffect(() => {
+    if ((autoPlay || digging) && footerItem && footerAudioRef.current) {
+      (async () => {
+        const src = await resolveAudioUrl(audioFiles, footerItem);
+        if (src) {
+          if (footerAudioRef.current!.src.startsWith('blob:')) URL.revokeObjectURL(footerAudioRef.current!.src);
+          footerAudioRef.current!.src = src;
+          footerAudioRef.current!.play().catch(() => {});
+        }
+      })();
+    }
+  }, [currentSound, autoPlay, digging]); // footerItem updates when currentSound updates
+
+  const handleFooterEnded = () => {
+    setFooterPlaying(false);
+    if (digging) {
+      const idx = filteredData.findIndex(it => it === footerItem);
+      if (idx !== -1 && idx + 1 < filteredData.length) {
+        setCurrentSound(filteredData[idx + 1].metadata?.name || '');
+      } else {
+        setDigging(false); // Reached end of list
+      }
+    }
+  };
+
   const footerDownload = async () => {
-    if (!footerItem) return
+    if (!footerItem) return;
     const url = await resolveAudioUrl(audioFiles, footerItem)
     if (!url) return
     const a = document.createElement('a')
@@ -270,10 +325,8 @@ function App() {
     document.body.appendChild(a); a.click(); document.body.removeChild(a)
   }
   const footerPush = (tab: FooterTab, name: string) => {
-    if (tab === 'examiner') { setExaminerFilter({ name, nonce: Date.now() }); goToTab('examiner'); }
-    else if (tab === 'extractor') { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }
-    else if (tab === 'stats') goToTab('stats')
-    else if (tab === 'cloud') goToTab('cloud')
+    setFilterText(name);
+    goToTab(tab);
   }
 
   const loadPeakFiles = (fileList: File[]) => {
@@ -345,10 +398,9 @@ function App() {
   }
 
   const tabs = [
-    { id: 'scanalyze', label: 'SCANALIZE' },
+    { id: 'scanalyze', label: 'SCANALYZE' },
     { id: 'cloud', label: '3D' },
     { id: 'stats', label: '2D' },
-    // { id: 'groups', label: 'Groups' },
     { id: 'examiner', label: 'Examiner' },
     { id: 'extractor', label: 'Extractor' },
     { id: 'rename', label: 'File Names' }
@@ -395,19 +447,23 @@ function App() {
         </div>
       )}
 
+
+
       {/* Tabs Navigation */}
-      <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '2px', padding: '2px', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0' }}>
+      <nav className="tabs-nav glass-panel" style={{ display: 'flex', gap: '2px', padding: '2px', borderTop: 'none', borderBottom: '1px solid var(--border-color)', borderRadius: '0', zIndex: 40 }}>
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => goToTab(tab.id)}
             className={`btn ${activeTab === tab.id ? 'primary' : ''}`}
             style={{ 
+              flex: 1,
               background: activeTab === tab.id ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
               color: activeTab === tab.id ? 'black' : 'var(--text-primary)',
               border: 'none',
               padding: '0.5rem 1rem',
               fontWeight: activeTab === tab.id ? 'bold' : 'normal',
+              borderRadius: '2px',
             }}
           >
             {tab.label}
@@ -415,8 +471,21 @@ function App() {
         ))}
       </nav>
 
+      {/* Global Scope Bar */}
+      {analysisResult.length > 0 && (
+        <div style={{ padding: '0.1rem 1rem', background: '#0d1017', borderBottom: '1px solid var(--border-color)', zIndex: 50 }}>
+          <ScopeBar
+            analysisResult={analysisResult}
+            group={scopeGroup} sub={scopeSub} setGroup={setScopeGroup} setSub={setScopeSub}
+            filterText={filterText} setFilterText={setFilterText}
+            altRanks={altRanks} setAltRanks={setAltRanks}
+            setScopeLetters={setScopeLetters}
+          />
+        </div>
+      )}
+
       {/* Main Content Area */}
-      <main className="app-main" style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', padding: 0 }}>
+      <main className="app-main" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden', padding: 0 }}>
         
         <div style={{ display: activeTab === 'scanalyze' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
           <ScanalyzeTab 
@@ -431,36 +500,45 @@ function App() {
         </div>
 
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-          <CloudTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound}
-            onExamine={(name) => { setExaminerFilter({ name, nonce: Date.now() }); goToTab('examiner'); }}
-            onExtract={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} />
+          <CloudTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} playing={footerPlaying}
+            onExamine={(name) => footerPush('examiner', name)}
+            onExtract={(name) => footerPush('extractor', name)} />
         </div>
 
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
-          {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} />}
+          {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} />}
           {activeTab === 'groups' && <GroupsTab analysisResult={analysisResult} />}
-          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} filterHint={examinerFilter} onSendToExtractor={(name) => { setExtractorFilter({ name, nonce: Date.now() }); goToTab('extractor'); }} onPush={footerPush} />}
-          {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} filterHint={extractorFilter} />}
-          {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} audioFiles={audioFiles} />}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} />}
+          {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult} />}
+          {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} />}
         </Suspense>
 
       </main>
 
-      {/* Global footer — the same transport on every page, driven by whatever sample the
-          active tab last reported. Hidden until a library is loaded. The Examiner renders
-          its OWN footer (with DIG + auto-play), so the global one steps aside there. */}
-      {analysisResult.length > 0 && activeTab !== 'examiner' && (
+      {/* Global footer */}
+      {analysisResult.length > 0 && (
         <SampleFooter
           item={footerItem}
           playing={footerPlaying}
+          digging={digging}
+          autoPlay={autoPlay}
+          autoLoop={autoLoop}
           current={activeTab as FooterTab}
           onPlay={footerPlay}
+          onDig={() => setDigging(!digging)}
+          onToggleAutoPlay={setAutoPlay}
+          onToggleAutoLoop={setAutoLoop}
           onDownload={footerDownload}
+          onCopyData={() => {
+            if (footerItem) {
+              navigator.clipboard.writeText(JSON.stringify(footerItem, null, 2));
+            }
+          }}
           onPush={footerPush}
         />
       )}
-      <audio ref={footerAudioRef} style={{ display: 'none' }}
-        onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={() => setFooterPlaying(false)} />
+      <audio ref={footerAudioRef} style={{ display: 'none' }} loop={autoLoop && !digging}
+        onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={handleFooterEnded} />
     </div>
   )
 }

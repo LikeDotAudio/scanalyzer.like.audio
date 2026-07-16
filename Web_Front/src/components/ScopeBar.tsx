@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
-import { type Taxonomy, taxonomyKeys, scopeSubgroups, scopeChipColor, scopeSubColor } from '../groupColors';
+import { type Taxonomy, taxonomyKeys, scopeSubgroups, scopeSubColor } from '../groupColors';
 import { altCategory } from '../ucsIndex';
-import { useIsNarrow } from '../useIsNarrow';
+
 import { categoryLabel, subcategoryLabel } from '../categoryEmoji';
+import AlphabetScrubber from './AlphabetScrubber';
+import { useIsNarrow } from '../useIsNarrow';
 
 interface ScopeBarProps {
   analysisResult: any[];
@@ -18,9 +20,12 @@ interface ScopeBarProps {
    *  that only ever appears as a runner-up still gets a chip — otherwise the filter could
    *  match rows the user has no way to scope to. */
   altRanks?: Set<number>;
+  setAltRanks?: React.Dispatch<React.SetStateAction<Set<number>>>;
+  setScopeLetters?: (letters: string[]) => void;
 }
 
-export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'UCS', altRanks }: ScopeBarProps) {
+export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub, filterText, setFilterText, rightContent, taxonomy = 'UCS', altRanks, setAltRanks, setScopeLetters }: ScopeBarProps) {
+  const isNarrow = useIsNarrow();
   const useAlts = taxonomy === 'UCS' && !!altRanks?.size;
   const ranks = useMemo(() => (useAlts ? Array.from(altRanks!) : []), [useAlts, altRanks]);
 
@@ -49,73 +54,88 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   // scoping back.
   const filtering = !!(filterText && filterText.trim());
 
-  const isNarrow = useIsNarrow();
 
   const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string, disabled = false) => (
     <button key={label} onClick={onClick} disabled={disabled} className={`btn ${active ? 'primary' : 'secondary'}`}
       style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem', borderLeft: color ? `3px solid ${color}` : undefined,
-        opacity: disabled ? 0.35 : 1, cursor: disabled ? 'not-allowed' : 'pointer' }}>
+        opacity: disabled ? 0.35 : 1, cursor: disabled ? 'not-allowed' : 'pointer', animation: 'fadeIn 0.2s ease-out' }}>
       {label}
     </button>
   );
 
-  // Mobile: a <select> in place of a chip grid. Empty value ("") means "All".
-  // A colored left border echoes the selected category's chip colour.
-  const scopeSelect = (
-    label: string, value: string, options: string[], onPick: (v: string | null) => void,
-    colorOf: (o: string) => string | undefined, labelOf: (o: string) => string = (o) => o,
-  ) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-      <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{label}</span>
-      <select value={value} disabled={filtering} onChange={e => onPick(e.target.value || null)}
-        style={{ flex: 1, minWidth: 0, background: 'rgba(255,255,255,0.05)', color: 'white',
-          border: '1px solid var(--border-color)', borderLeft: `3px solid ${(value && colorOf(value)) || 'var(--border-color)'}`,
-          borderRadius: '4px', padding: '0.3rem 0.4rem', fontSize: '0.8rem',
-          opacity: filtering ? 0.35 : 1, cursor: filtering ? 'not-allowed' : 'pointer' }}>
-        <option value="">All</option>
-        {options.map(o => <option key={o} value={o}>{labelOf(o)}</option>)}
-      </select>
-    </div>
-  );
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-      {isNarrow ? (
-        scopeSelect('Scope:', group || '', ucsCats, g => { setGroup(g); setSub(null); }, scopeChipColor, categoryLabel)
-      ) : (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>Scope:</span>
-          {filterBtn('All', !group, () => { setGroup(null); setSub(null); }, undefined, filtering)}
-          {ucsCats.map(g => filterBtn(categoryLabel(g), group === g, () => { setGroup(g); setSub(null); }, scopeChipColor(g), filtering))}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+        <div style={{ flex: 1, minWidth: 0, opacity: filtering ? 0.35 : 1, pointerEvents: filtering ? 'none' : 'auto' }}>
+          <AlphabetScrubber 
+            items={ucsCats} 
+            activeItem={group} 
+            onSelect={g => { setGroup(g); setSub(null); }} 
+            windowSize={5} 
+            onActiveLettersChange={setScopeLetters}
+          />
         </div>
-      )}
-      {group && subgroups.length > 0 && (
-        isNarrow ? (
-          scopeSelect(`${categoryLabel(group)} subgroups:`, sub || '', subgroups, setSub, sg => scopeSubColor(group, sg), sg => subcategoryLabel(group, sg))
-        ) : (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{categoryLabel(group)} subgroups:</span>
-          {filterBtn('All', !sub, () => setSub(null), undefined, filtering)}
-          {subgroups.map(sg => filterBtn(subcategoryLabel(group, sg), sub === sg, () => setSub(sg), scopeSubColor(group, sg), filtering))}
-        </div>
-        )
-      )}
-      {(setFilterText || rightContent) && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.1rem' }}>
-          {setFilterText && (
-            <div style={{ position: 'relative', flex: 1, maxWidth: '300px', display: 'flex', alignItems: 'center' }}>
-              <input type="text" placeholder="Filter by name, group, timbre..." value={filterText || ''} onChange={e => setFilterText(e.target.value)}
-                style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: `1px solid ${filtering ? 'var(--accent-primary)' : 'var(--border-color)'}`, color: 'white', padding: '0.3rem 1.6rem 0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', width: '100%' }} />
-              {filtering && (
-                <button onClick={() => setFilterText('')} title="Clear filter — re-enable scope"
-                  style={{ position: 'absolute', right: 4, background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.85rem', lineHeight: 1, padding: '0 0.3rem' }}>✕</button>
-              )}
-            </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.1rem', flexWrap: 'wrap', minHeight: '28px' }}>
+        
+        {/* Subgroups (left) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap', flex: 1, opacity: filtering ? 0.35 : 1, pointerEvents: filtering ? 'none' : 'auto' }}>
+          {group && subgroups.length > 0 && (
+            isNarrow ? (
+              <select 
+                value={sub || ''} 
+                onChange={e => setSub(e.target.value || null)}
+                style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '0.2rem 0.5rem', fontSize: '0.75rem', outline: 'none' }}
+              >
+                <option value="">All</option>
+                {subgroups.map(sg => (
+                  <option key={sg} value={sg}>{subcategoryLabel(group, sg)}</option>
+                ))}
+              </select>
+            ) : (
+              <>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginRight: '0.25rem' }}>{categoryLabel(group)} subgroups:</span>
+                {filterBtn('All', !sub, () => setSub(null), undefined, filtering)}
+                {subgroups.map(sg => filterBtn(subcategoryLabel(group, sg), sub === sg, () => setSub(sg), scopeSubColor(group, sg), filtering))}
+              </>
+            )
           )}
-          <div style={{ flex: 1 }} />
-          {rightContent}
         </div>
-      )}
+
+        {/* Match Alt 1 2 3 */}
+        {setAltRanks && altRanks && (
+          <div className="text-secondary" style={{ fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: '0.45rem' }}
+            title="With a scope selected, also match samples where this runner-up falls in that UCS category.">
+            <span>Match:</span>
+            {[0, 1, 2].map(r => (
+              <label key={r} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                <input type="checkbox" checked={altRanks.has(r)}
+                  onChange={() => setAltRanks(prev => {
+                    const next = new Set(prev);
+                    next.has(r) ? next.delete(r) : next.add(r);
+                    return next;
+                  })} />
+                Alt {r + 1}
+              </label>
+            ))}
+          </div>
+        )}
+
+        {/* Search Bar (right) */}
+        {setFilterText !== undefined && (
+          <div style={{ position: 'relative', width: isNarrow ? '150px' : '300px', flex: isNarrow ? 1 : '0 0 auto', display: 'flex', alignItems: 'center' }}>
+            <input type="text" placeholder="Filter by name, group, timbre..." value={filterText || ''} onChange={e => setFilterText(e.target.value)}
+              style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: `1px solid ${filtering ? 'var(--accent-primary)' : 'var(--border-color)'}`, color: 'white', padding: '0.3rem 1.6rem 0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', width: '100%', minWidth: 0 }} />
+            {filtering && (
+              <button onClick={() => setFilterText('')} title="Clear filter — re-enable scope"
+                style={{ position: 'absolute', right: 4, background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.85rem', lineHeight: 1, padding: '0 0.3rem' }}>✕</button>
+            )}
+          </div>
+        )}
+        
+        {rightContent}
+      </div>
     </div>
   );
 }
