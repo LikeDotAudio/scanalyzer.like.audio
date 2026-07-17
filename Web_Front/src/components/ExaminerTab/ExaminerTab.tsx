@@ -601,25 +601,14 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       }
       const buf = await (await fetch(src)).arrayBuffer();
       if (!fresh()) return;
-      // decodeAudioData detaches the buffer, so decode a COPY and keep `buf` for the
-      // fallbacks below — WebKitGTK's Web Audio decode fails on plain WAV intermittently
-      // and on compressed formats outright. decodeWav catches WAV; the WASM analyzer
-      // (symphonia) catches MP3/OGG/M4A/AAC/FLAC/AIFF.
-      let decoded: AudioBuffer | null | undefined = null;
+      // No deadline on the decode: a long file legitimately takes hundreds of ms, and
+      // the peak-map preview is already on screen while we wait. A superseded selection
+      // is discarded by the fresh() guard below, never by racing the decoder.
+      let decoded: AudioBuffer | null = null;
       try {
-        const decodePromise = decodeCtxRef.current.decodeAudioData(buf.slice(0));
-        if (decodePromise) {
-          decoded = await Promise.race([
-            decodePromise,
-            new Promise<null>((_, reject) => setTimeout(() => reject(new Error("timeout")), 150))
-          ]);
-        }
+        decoded = await decodeCtxRef.current.decodeAudioData(buf);
       } catch (e) {
-        // decodeAudioData rejected or timed out
-      }
-
-      if (!decoded) {
-        // External decoding helpers removed for simplicity
+        console.warn('[examiner] decodeAudioData failed — spectrum/spectrogram unavailable', e);
       }
       if (!fresh()) return;
       if (!decoded) return; // couldn't decode by either path — leave the preview blank

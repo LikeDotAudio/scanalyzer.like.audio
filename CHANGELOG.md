@@ -10,6 +10,22 @@ existing `.PEAK` sidecars and forces a re-scan. That is by design.
 
 ## [Unreleased]
 
+### 2026-07-16 — examiner: spectrum pane no longer blanks on slow decodes
+
+#### Fixed
+
+- **The examiner's frequency pane (spectrum / waterfall) sometimes stayed black.**
+  `decodeAudioData` was raced against a 150 ms timeout — a leftover from when losing
+  that race fell through to the `decodeWav`/WASM decoders, which a later cleanup
+  removed. Any file whose decode ran longer than 150 ms (long files, cold cache, a
+  busy machine) silently abandoned the decode: the stored peak map still painted the
+  waveform/volume/envelope, but the shim carries no real PCM, so the spectrum and
+  spectrogram stayed empty. The race is gone — the decode is simply awaited, with the
+  existing selection-generation guard discarding stale results — and the redundant
+  full-file buffer copy went with it. A decode that genuinely fails now logs a
+  `[examiner]` warning instead of going quiet. (The "WebGL context was lost" console
+  message was a red herring from the 3D cloud; the examiner plot is 2D canvas.)
+
 ### 2026-07-16 — auto-load on push & live scan batches
 
 #### Added
