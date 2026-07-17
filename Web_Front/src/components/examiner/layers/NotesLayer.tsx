@@ -13,9 +13,8 @@ export const NotesLayer: ExaminerLayer = {
   id: 'notes',
   label: 'notes',
   legendColour: () => NOTE_COLOUR,
-  defaultVisible: false,
-  defaultPlacement: 'overlay',
-  stackLane: 'full',
+  domain: 'frequency',
+  defaultPlacement: 'off',
   rowHeightWeight: 0.7,
 
   draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData) {

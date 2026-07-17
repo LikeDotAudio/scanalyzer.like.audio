@@ -9,9 +9,8 @@ export const EnvelopeLayer: ExaminerLayer = {
   id: 'envelope',
   label: 'envelope',
   legendColour: () => '#e5e7eb',
-  defaultVisible: true,
-  defaultPlacement: 'overlay',
-  stackLane: 'full',
+  domain: 'time',
+  defaultPlacement: 'bottom',
   rowHeightWeight: 0.7,
 
   draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData) {

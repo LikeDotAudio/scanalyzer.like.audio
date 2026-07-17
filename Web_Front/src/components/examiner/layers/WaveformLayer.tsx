@@ -10,9 +10,8 @@ export const WaveformLayer: ExaminerLayer = {
   id: 'waveform',
   label: 'waveform',
   legendColour: (data) => data.colours.group,
-  defaultVisible: true,
-  defaultPlacement: 'overlay',
-  stackLane: 'top',
+  domain: 'time',
+  defaultPlacement: 'bottom',
   rowHeightWeight: 1.5,
 
   draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData) {

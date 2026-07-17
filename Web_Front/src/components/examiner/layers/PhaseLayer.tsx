@@ -12,9 +12,8 @@ export const PhaseLayer: ExaminerLayer = {
   id: 'phase',
   label: 'phase',
   legendColour: () => PHASE_COLOUR,
-  defaultVisible: true,
-  defaultPlacement: 'overlay',
-  stackLane: 'bottom',
+  domain: 'time',
+  defaultPlacement: 'bottom',
   rowHeightWeight: 1,
   needsStereo: true,
 

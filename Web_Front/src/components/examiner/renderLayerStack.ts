@@ -1,19 +1,20 @@
 // The compositor: replaces the old monolithic renderPreview drawing. Two modes —
-//   stacked : all overlay layers composite onto the shared full-height geometry
-//             (today's look: waveform top pane, loudness/phase bottom pane,
-//             spectrum/envelope full height), row-placed layers get lanes below;
+//   stacked : two panes — frequency-domain layers composite into the top pane,
+//             time-domain layers into the bottom pane (each layer's placement
+//             can override), row-placed layers get their own lanes below;
 //   rows    : every visible layer gets its own lane, weight-scaled, sharing the
 //             single time axis and playhead.
-// Geometry is passed to every layer per call and never stored — the SV contract.
+// Lane order and paint order follow the user's order (LayerSettings.order),
+// frequency group first. Geometry is passed to every layer per call and never
+// stored — the SV contract.
 
 import type { PlotGeo } from './audioAnalysis';
 import { ChromeLayer } from './layers/ChromeLayer';
-import { EXAMINER_LAYERS } from './layers/registry';
+import { orderedAllLayers } from './layers/registry';
 import type { ExaminerLayer, LayerData, LayerSettings } from './layers/types';
 
 const BG = '#0A0A0A';
 const PAD_TOP = 26, PAD_BOTTOM = 18;
-const STRIP_H = 16;   // piano-keys strip height in stacked mode
 
 function laneGeo(w: number, h: number, top: number, bottom: number): PlotGeo {
   const plotH = Math.max(1, bottom - top);
@@ -21,9 +22,8 @@ function laneGeo(w: number, h: number, top: number, bottom: number): PlotGeo {
 }
 
 function visibleLayers(data: LayerData, settings: LayerSettings): ExaminerLayer[] {
-  return EXAMINER_LAYERS.filter(l => {
-    const s = settings.layers[l.id];
-    if (!s?.visible) return false;
+  return orderedAllLayers(settings).filter(l => {
+    if (settings.layers[l.id]?.placement === 'off') return false;
     if (l.needsStereo && !data.right) return false;
     return true;
   });
@@ -50,47 +50,47 @@ export function renderLayerStack(canvas: HTMLCanvasElement, data: LayerData, set
   }
 }
 
-// ---------- stacked (overlay) mode ----------
+// ---------- stacked (two-pane) mode ----------
 
 function renderStacked(
   ctx: CanvasRenderingContext2D, master: PlotGeo, data: LayerData,
   settings: LayerSettings, visible: ExaminerLayer[],
 ) {
-  const overlay = visible.filter(l => settings.layers[l.id].placement === 'overlay');
-  const rowed = visible.filter(l => settings.layers[l.id].placement === 'row');
+  const place = (l: ExaminerLayer) => settings.layers[l.id].placement;
+  const topLayers = visible.filter(l => place(l) === 'top');
+  const bottomLayers = visible.filter(l => place(l) === 'bottom');
+  const rowed = visible.filter(l => place(l) === 'row');
 
-  // Row lanes claim the bottom of the plot; the overlay pane keeps the rest.
+  // Row lanes claim the bottom of the plot; the panes keep the rest.
   const rowWeight = rowed.reduce((a, l) => a + l.rowHeightWeight, 0);
   const rowsH = rowed.length ? Math.min(master.plotH * 0.45, 40 + rowWeight * 52) : 0;
   const main = laneGeo(master.w, master.h, master.plotTop, master.plotBottom - rowsH);
 
-  // Fixed panes, mirroring the pre-layer view: top half waveform, bottom half
-  // loudness/phase, full-height everything else, thin strip for the piano keys.
+  // Two panes: frequency on top, time below. A pane with no layers cedes its
+  // half, so a lone group always gets the full height.
+  const both = topLayers.length > 0 && bottomLayers.length > 0;
   const mid = main.plotTop + main.plotH / 2;
-  const panes: Record<string, PlotGeo> = {
-    full: main,
-    top: laneGeo(main.w, main.h, main.plotTop, mid),
-    bottom: laneGeo(main.w, main.h, mid, main.plotBottom),
-    strip: laneGeo(main.w, main.h, main.plotTop, main.plotTop + STRIP_H),
-  };
+  const topPane = both ? laneGeo(main.w, main.h, main.plotTop, mid) : main;
+  const bottomPane = both ? laneGeo(main.w, main.h, mid, main.plotBottom) : main;
 
-  // Background pass first (spectrum fill, heat maps), then foreground traces.
-  for (const l of overlay) l.underDraw?.(ctx, panes[l.stackLane], data);
-  for (const l of overlay) l.draw(ctx, panes[l.stackLane], data);
+  // Background pass first (spectrum fill, heat maps), then foreground traces,
+  // each layer in its own pane. Paint order = the user's row order.
+  for (const l of topLayers) l.underDraw?.(ctx, topPane, data);
+  for (const l of bottomLayers) l.underDraw?.(ctx, bottomPane, data);
+  for (const l of topLayers) l.draw(ctx, topPane, data);
+  for (const l of bottomLayers) l.draw(ctx, bottomPane, data);
 
-  // Divider between the waveform pane and the loudness/phase pane, as before.
-  const hasTop = overlay.some(l => l.stackLane === 'top');
-  const hasBottom = overlay.some(l => l.stackLane === 'bottom');
-  if (hasTop && hasBottom) {
+  // Divider between the frequency pane and the time pane.
+  if (both) {
     ctx.strokeStyle = 'rgba(255,255,255,0.20)';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, mid + 0.5); ctx.lineTo(main.w, mid + 0.5); ctx.stroke();
   }
 
   ChromeLayer.draw(ctx, main, data);
-  drawLegend(ctx, main, data, overlay);
+  drawLegend(ctx, main, data, [...topLayers, ...bottomLayers]);
 
-  // Row lanes below the overlay pane.
+  // Row lanes below the panes.
   let y = main.plotBottom + 2;
   for (const l of rowed) {
     const lh = (rowsH - 2) * (l.rowHeightWeight / rowWeight) - 3;
@@ -110,7 +110,7 @@ function renderRows(ctx: CanvasRenderingContext2D, master: PlotGeo, data: LayerD
     drawRowLane(ctx, data, l, laneGeo(master.w, master.h, y + 2, y + lh - 2), y, lh, master.w);
     y += lh + 3;
   }
-  // Shared time axis + beats/regions/name on the master geometry.
+  // Shared time axis + name on the master geometry.
   ChromeLayer.draw(ctx, master, data);
 }
 
@@ -134,7 +134,7 @@ function drawRowLane(
 
 function drawLegend(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData, layers: ExaminerLayer[]) {
   const entries = layers
-    .filter(l => l.id !== 'piano')     // the keys are self-describing
+    .filter(l => !l.isScale)           // rulers/grids are self-describing
     .map(l => ({ label: l.label, color: l.legendColour(data) }));
   if (!entries.length) return;
   ctx.font = '600 11px system-ui, sans-serif';

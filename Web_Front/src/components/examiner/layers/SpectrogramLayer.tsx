@@ -15,9 +15,8 @@ export const SpectrogramLayer: ExaminerLayer = {
   id: 'spectrogram',
   label: 'waterfall freq',
   legendColour: () => '#E8964A',
-  defaultVisible: false,
-  defaultPlacement: 'overlay',
-  stackLane: 'full',
+  domain: 'frequency',
+  defaultPlacement: 'off',
   rowHeightWeight: 2,
   needsSpectrogram: true,
 

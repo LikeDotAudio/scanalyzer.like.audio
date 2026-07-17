@@ -1,7 +1,8 @@
 // The Examiner layer contract — the Sonic Visualiser Layer::paint() contract in
 // TypeScript (see Documentation/Audit/examiner_layer_overlays_audit.md §2).
 // A layer never owns its canvas or geometry: both arrive on every draw call, so
-// the same layer renders into the stacked view or a private row lane unchanged.
+// the same layer renders into the top pane, the bottom pane, or a private row
+// lane unchanged.
 
 import type { PlotGeo, Spectrum } from '../audioAnalysis';
 import type { SpectrogramFrames } from './stft';
@@ -21,19 +22,26 @@ export interface LayerData {
   sampleRate: number;
 }
 
-// Where a layer sits in the stacked (overlay) view. Mirrors today's fixed panes:
-// waveform in the top half, loudness/phase in the bottom half, spectrum/envelope
-// spanning the full height, the piano keys in a thin strip under the note axis.
-export type StackLane = 'full' | 'top' | 'bottom' | 'strip';
+// Which family a layer belongs to. Frequency-domain layers group at the top of
+// the menu and are normalled to the top pane; time-domain layers group below
+// and are normalled to the bottom pane.
+export type LayerDomain = 'frequency' | 'time';
+
+// Where a layer is placed — the three menu columns, plus hidden.
+//   top    : composited into the top (frequency) pane
+//   bottom : composited into the bottom (time) pane
+//   row    : gets its own lane under the panes
+//   off    : hidden
+export type LayerPlacement = 'top' | 'bottom' | 'row' | 'off';
 
 export interface ExaminerLayer {
   id: string;
   label: string;                       // dropdown + legend text
   legendColour(data: LayerData): string;
-  defaultVisible: boolean;
-  defaultPlacement: 'overlay' | 'row';
-  stackLane: StackLane;
-  rowHeightWeight: number;             // relative lane height in rows mode
+  domain: LayerDomain;
+  isScale?: boolean;                   // rulers/grids (piano keys, beat grid) — kept out of the legend
+  defaultPlacement: LayerPlacement;    // 'off' = hidden by default; panes follow the domain ("normalled")
+  rowHeightWeight: number;             // relative lane height in row placement / rows mode
   needsStereo?: boolean;               // phase: auto-hidden for mono files
   needsSpectrogram?: boolean;          // first show triggers the lazy STFT
   // Optional background pass (spectrum fill, heat maps) — runs for every visible
@@ -42,10 +50,11 @@ export interface ExaminerLayer {
   draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData): void;
 }
 
-// Per-user visibility/placement settings, persisted to localStorage.
+// Per-user placement settings + row order, persisted to localStorage.
 export type StackMode = 'stack' | 'rows';
-export interface LayerSetting { visible: boolean; placement: 'overlay' | 'row' }
+export interface LayerSetting { placement: LayerPlacement }
 export interface LayerSettings {
   mode: StackMode;
   layers: Record<string, LayerSetting>;
+  order: string[];                     // layer ids; each domain group keeps its own order
 }

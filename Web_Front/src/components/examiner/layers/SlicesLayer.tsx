@@ -34,9 +34,8 @@ export const SlicesLayer: ExaminerLayer = {
   id: 'slices',
   label: 'slices',
   legendColour: () => SLICE_COLOUR,
-  defaultVisible: false,
-  defaultPlacement: 'overlay',
-  stackLane: 'full',
+  domain: 'time',
+  defaultPlacement: 'off',
   rowHeightWeight: 1,
 
   draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData) {

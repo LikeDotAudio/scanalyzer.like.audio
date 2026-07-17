@@ -16,9 +16,8 @@ export const Spectrogram3DLayer: ExaminerLayer = {
   id: 'spectrum3d',
   label: '3d spectrum',
   legendColour: () => sunsetCss(0.62),
-  defaultVisible: false,
-  defaultPlacement: 'row',
-  stackLane: 'full',
+  domain: 'frequency',
+  defaultPlacement: 'off',
   rowHeightWeight: 2,
   needsSpectrogram: true,
 

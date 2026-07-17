@@ -13,9 +13,9 @@ export const PianoScaleLayer: ExaminerLayer = {
   id: 'piano',
   label: 'piano scale',
   legendColour: () => '#c9cdd6',
-  defaultVisible: false,
-  defaultPlacement: 'overlay',
-  stackLane: 'strip',
+  domain: 'frequency',
+  isScale: true,
+  defaultPlacement: 'off',
   rowHeightWeight: 0.6,
 
   draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData) {

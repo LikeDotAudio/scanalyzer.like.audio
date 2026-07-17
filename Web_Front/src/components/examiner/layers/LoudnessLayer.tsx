@@ -11,9 +11,8 @@ export const LoudnessLayer: ExaminerLayer = {
   id: 'loudness',
   label: 'volume',
   legendColour: () => LOUDNESS_COLOUR,
-  defaultVisible: true,
-  defaultPlacement: 'overlay',
-  stackLane: 'bottom',
+  domain: 'time',
+  defaultPlacement: 'bottom',
   rowHeightWeight: 1,
 
   draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData) {

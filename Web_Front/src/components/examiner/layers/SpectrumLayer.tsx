@@ -10,9 +10,8 @@ export const SpectrumLayer: ExaminerLayer = {
   id: 'spectrum',
   label: 'spectrum',
   legendColour: (data) => data.colours.complement,
-  defaultVisible: true,
-  defaultPlacement: 'overlay',
-  stackLane: 'full',
+  domain: 'frequency',
+  defaultPlacement: 'top',
   rowHeightWeight: 1,
 
   underDraw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData) {
