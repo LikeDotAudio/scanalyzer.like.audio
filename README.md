@@ -104,7 +104,7 @@ files — there is no server to run.
 
 The front-end is only a shell. All signal processing happens in the Rust core,
 which walks the chosen folder for WAV files and analyzes them in parallel (one
-worker per core), streaming one JSON line per file so the 3D cloud fills in
+worker per core), streaming one JSON line per file (buffered into batches of 1,000 to keep the webview fast) so the 3D cloud fills in
 live. Per file, the order is deliberate:
 
 1. **Decode** the audio.
@@ -753,6 +753,7 @@ uploaded. What differs from the desktop build:
   spectrum, note-frequency axis on top, root-note marker, ADSR overlay).
 - **3D Cloud** — instanced-point cloud with click / arrow-key selection and
   playback, a nested show/hide legend with per-group and per-subgroup counts.
+  Pushing a file from the cloud (or footer) to the Examiner or Extractor instantly selects and opens it there.
 - **Flatten/Rename** — since a browser can't move files, it **generates a rename
   script** (Bash / PowerShell / Python) that recreates the destination tree and
   copies/moves each file, with an optional **ffmpeg resample** (sample rate +

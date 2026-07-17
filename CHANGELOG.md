@@ -10,6 +10,14 @@ existing `.PEAK` sidecars and forces a re-scan. That is by design.
 
 ## [Unreleased]
 
+### 2026-07-16 — auto-load on push & live scan batches
+
+#### Added
+
+- **Live batch loading during scans.** Instead of waiting for a full directory scan to complete before populating the UI, the native Rust scanner now buffers completed records and emits an `analyzer-batch` event every 1,000 files. The UI immediately normalizes and deduplicates these records, dynamically hydrating the 3D cloud and other views in real-time as the scan progresses.
+- **Auto-load on push.** Pushing a file from the 3D cloud (or the global footer push buttons) to the Examiner or Extractor tab now automatically selects and loads the file in the target tab. This resolves the previous "half a push" behavior where the target tab would only filter the list to the pushed file but sit waiting for a manual click.
+
+
 ### 2026-07-16 — examiner layers: two-pane placement & footer menu
 
 #### Added
