@@ -22,7 +22,7 @@ const stem = (file: File) => (relPathOf(file) || file.name).replace(/\.[^./]+$/,
 
 interface ScanalyzeTabProps {
   analysisResult: any[];
-  setAnalysisResult: (results: any[]) => void;
+  setAnalysisResult: (results: any[] | ((prev: any[]) => any[])) => void;
   isAnalyzing: boolean;
   setIsAnalyzing: (val: boolean) => void;
   setProgress: (val: number) => void;

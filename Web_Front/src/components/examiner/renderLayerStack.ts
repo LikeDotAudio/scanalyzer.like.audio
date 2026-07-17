@@ -88,7 +88,7 @@ function renderStacked(
   }
 
   ChromeLayer.draw(ctx, main, data);
-  drawLegend(ctx, main, data, [...topLayers, ...bottomLayers]);
+  if (settings.legend) drawLegend(ctx, main, data, [...topLayers, ...bottomLayers]);
 
   // Row lanes below the panes.
   let y = main.plotBottom + 2;

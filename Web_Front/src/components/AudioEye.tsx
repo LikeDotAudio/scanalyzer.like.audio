@@ -26,6 +26,9 @@ interface AudioEyeProps {
   audioEl?: HTMLAudioElement | null;
   // External mode: what the centre ▶ button does (defaults to play/pause of audioEl).
   onTogglePlay?: () => void;
+  // The record's stored peak map as stand-in samples (peakPreview.previewShimSamples):
+  // the ring draws this the instant a sample is picked, until the decode lands.
+  previewSamples?: Float32Array | null;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -44,6 +47,7 @@ export default function AudioEye({
   onPlayingChange,
   audioEl = null,
   onTogglePlay,
+  previewSamples = null,
   className,
   style,
 }: AudioEyeProps) {
@@ -171,7 +175,7 @@ export default function AudioEye({
       style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem', ...style }}
     >
       <RadialWaveform
-        samples={samples}
+        samples={samples ?? previewSamples}
         samplesRight={samplesRight}
         color={color}
         size={size}

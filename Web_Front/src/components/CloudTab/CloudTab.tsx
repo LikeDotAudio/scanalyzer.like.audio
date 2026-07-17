@@ -3,6 +3,7 @@ import SampleCloud from '../SampleCloud';
 import AudioEye from '../AudioEye';
 import { isTauri, resolveAudioUrl } from '../../audioLinking';
 import { ucsColor } from '../../groupColors';
+import { decodePreview, previewShimSamples } from '../../peakPreview';
 import GraphOptionsMenu from './GraphOptionsMenu';
 import ShapesMenu from './ShapesMenu';
 import { WebGLBoundary, webglAvailable } from './WebGLBoundary';
@@ -116,6 +117,13 @@ export default function CloudTab({
     return idx === -1 ? null : idx;
   }, [selectedItem, data]);
 
+  // The selected record's stored peak map — the EYE ring paints it the instant a point
+  // is picked, before (or without) any audio decode.
+  const eyePreview = useMemo(() => {
+    const pv = selectedItem ? decodePreview(selectedItem) : null;
+    return pv ? previewShimSamples(pv) : null;
+  }, [selectedItem]);
+
   // Resolve the selected sample's URL for the EYE overlay's ring decode. This is a
   // second blob URL over the same bytes the footer plays — ours to revoke on change.
   const [eyeSrc, setEyeSrc] = useState<string | null>(null);
@@ -208,6 +216,7 @@ export default function CloudTab({
               audioEl={eyeAudio}
               onTogglePlay={onEyePlay}
               autoPlay={false}
+              previewSamples={eyePreview}
             />
           </div>
         )}

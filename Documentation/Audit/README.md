@@ -38,6 +38,11 @@ strategies) live one level up in [`../`](../README.md).
 - [codec_audit_report.md](codec_audit_report.md) — audit of the Music Samples library;
   recommends FLAC for lossless archival, with a safe conversion procedure that protects
   the `.PEAK` analysis sidecars and sampler/loop chunks.
+- [binary_peak_preview_audit.md](binary_peak_preview_audit.md) — research audit for
+  instant long-file previews: an 8-bit min/max peak map (base64, ≤ ~43 KB) inside the
+  `.PEAK`, a `preview_only` analysis tier replacing the silent 600-s skip, a Value-merge
+  backfill pass, and a paint-from-preview display path. Interactive visual:
+  [binary_peak_preview_audit.html](binary_peak_preview_audit.html).
 
 ## UCS taxonomy & datasets
 

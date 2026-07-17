@@ -36,10 +36,6 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
     let dec = crate::decode::read_audio(path)?;
     let sr_f = dec.sample_rate as f64;
     let length = dec.mono.len() as f64 / sr_f;
-    if length > max_len {
-        return None; // skip long files
-    }
-    let (bpm, root_note) = read_acid(path);
 
     // Name/folder from the path, relative to the scanned root.
     let name = path.file_name().and_then(|x| x.to_str()).unwrap_or("").to_string();
@@ -57,6 +53,16 @@ pub fn analyze(path: &Path, root: &Path, max_len: f64) -> Option<Peak> {
         }
     }
 
+    // Over the full-analysis cap: a preview-only record instead of the old silent skip.
+    // The file lists, plays, and draws instantly; no DSP is spent on it.
+    if length > max_len {
+        return Some(preview_only_record(
+            &dec.mono, dec.sample_rate, dec.bit_depth, dec.channels,
+            &dec.source_format, dec.lossy, &name, &folder, &path.to_string_lossy(),
+        ));
+    }
+    let (bpm, root_note) = read_acid(path);
+
     analyze_core(
         &dec.mono, &dec.raw, dec.sample_rate, dec.bit_depth, dec.channels,
         &dec.source_format, dec.lossy, &name, &folder, &path.to_string_lossy(),
@@ -68,15 +74,84 @@ pub fn analyze_buffer(buffer: &[u8], name: &str, folder: &str, max_len: f64) -> 
     let (data, raw_data, sr, bit_depth, channels) = crate::wav::read_wav_buffer(buffer)?;
     let sr_f = sr as f64;
     let length = data.len() as f64 / sr_f;
+    let path = format!("{}/{}", folder, name);
     if length > max_len {
-        return None; // skip long files
+        // Same preview-only tier as the path-based entry (see analyze()).
+        return Some(preview_only_record(
+            &data, sr, bit_depth, channels, "WAV", false, name, folder, &path,
+        ));
     }
     let (bpm, root_note) = crate::acid::read_acid_buffer(buffer);
-    let path = format!("{}/{}", folder, name);
     analyze_core(
         &data, &raw_data, sr, bit_depth, channels, "WAV", false, name, folder, &path,
         bpm, root_note, true,
     )
+}
+
+/// The shallow record for a file over the full-analysis cap: real metadata, the binary
+/// waveform preview, and the cheap single-pass amplitude numbers — no STFT, no MFCC,
+/// no pitch, no UCS. `analysis_depth: "preview_only"` marks it for a future deep pass.
+#[allow(clippy::too_many_arguments)]
+fn preview_only_record(
+    data: &[f32], sr: u32, bit_depth: u16, channels: u16,
+    source_format: &str, lossy_source: bool, name: &str, folder: &str, path: &str,
+) -> Peak {
+    let sr_f = sr as f64;
+    let length = data.len() as f64 / sr_f;
+    // Peak + RMS fall out of one O(n) pass — the same scan the preview fold makes.
+    let mut peak_abs = 0.0f64;
+    let mut sum_squares = 0.0f64;
+    for &v in data {
+        let a = (v as f64).abs();
+        if a > peak_abs {
+            peak_abs = a;
+        }
+        sum_squares += (v as f64) * (v as f64);
+    }
+    let rms = if data.is_empty() { 0.0 } else { (sum_squares / data.len() as f64).sqrt() };
+    let crest = if rms > 0.0 { peak_abs / rms } else { 0.0 };
+
+    Peak {
+        metadata: crate::peak::Metadata {
+            analyzer_version: ANALYZER_VERSION.to_string(),
+            name: name.to_string(),
+            folder: folder.to_string(),
+            sub: folder.to_string(),
+            path: path.to_string(),
+            length_seconds: length,
+            sample_rate: sr,
+            bit_depth,
+            channels,
+            source_format: source_format.to_string(),
+            lossy_source,
+            dc_offset: 0.0,
+            trailing_silence_ms: 0.0,
+            analysis_depth: "preview_only".to_string(),
+        },
+        classification: crate::peak::Classification {
+            group: "Unclassified".to_string(),
+            reason: vec![format!(
+                "1) preview-only: {:.0} s exceeds the full-analysis cap — waveform mapped, DSP skipped",
+                length
+            )],
+            length_class: "Long".to_string(),
+            ..Default::default()
+        },
+        envelope: crate::peak::Envelope::default(),
+        spectral_features: crate::peak::SpectralFeatures {
+            root_mean_square_level: rms,
+            crest_factor: crest,
+            ..Default::default()
+        },
+        musicality: crate::peak::Musicality::default(),
+        unsupervised: crate::peak::Unsupervised {
+            cluster: -1,
+            principal_components: Vec::new(),
+        },
+        ucs: crate::peak::Ucs::default(),
+        regions: crate::peak::Regions::default(),
+        preview: crate::preview::build_preview(data),
+    }
 }
 
 /// The whole pipeline over already-decoded mono samples. `detect_subregions` is true for a
@@ -225,6 +300,7 @@ fn analyze_core(
             lossy_source,
             dc_offset,
             trailing_silence_ms,
+            analysis_depth: "full".to_string(),
         },
         classification: crate::peak::Classification {
             group: l.group,
@@ -302,6 +378,9 @@ fn analyze_core(
         },
         ucs: crate::peak::Ucs::default(),
         regions,
+        // The binary waveform preview — every file gets one, computed from the PCM
+        // already in memory, so the UI paints without decoding any audio.
+        preview: crate::preview::build_preview(data),
     });
 
     // Per-region full analysis: re-run the whole pipeline on each region's slice so every

@@ -29,6 +29,8 @@ interface SampleFooterProps {
   // own button is disabled.
   current: FooterTab;
   onPush?: (tab: FooterTab, name: string) => void;
+  // Extra control rendered after Copy Peak Data — the Examiner's 🎚 Layers menu.
+  layersMenu?: React.ReactNode;
 }
 
 // Emoji, then full label. On mobile only the emoji shows so the whole row fits one line.
@@ -39,7 +41,7 @@ const TAB_LABEL: Record<FooterTab, { icon: string; text: string }> = {
 };
 
 export default function SampleFooter({
-  item, playing, digging, autoPlay, autoLoop, favorite, onToggleFavorite, onDownload, onCopyData, onPlay, onDig, onToggleAutoPlay, onToggleAutoLoop, current, onPush,
+  item, playing, digging, autoPlay, autoLoop, favorite, onToggleFavorite, onDownload, onCopyData, onPlay, onDig, onToggleAutoPlay, onToggleAutoLoop, current, onPush, layersMenu,
 }: SampleFooterProps) {
   const narrow = useIsNarrow();
   const name = item?.metadata?.name || '';
@@ -68,6 +70,7 @@ export default function SampleFooter({
       {/* File actions (left) */}
       {onDownload && <button className="btn secondary" style={btn} onClick={onDownload} disabled={!item} title="Download with rename options">{lbl('⬇', 'Download')}</button>}
       {onCopyData && <button className="btn secondary" style={copyBtn} onClick={handleCopy} disabled={!item} title="Copy this sample's full .PEAK record to the clipboard">{copied ? (narrow ? '✓' : '✓ Copied') : lbl('📋', 'Copy Peak Data')}</button>}
+      {layersMenu}
 
       {!narrow && <div style={{ flex: 1 }} />}
 

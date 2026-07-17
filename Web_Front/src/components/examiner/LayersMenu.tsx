@@ -1,17 +1,21 @@
-// The 🎚 Layers dropdown. Two groups — FREQUENCY (normalled to the top pane)
-// and TIME (normalled to the bottom pane) — with three placement columns per
-// layer: top pane / bottom pane / own row. Clicking the active column again
-// hides the layer; the columns ARE the show/hide control. ▲▼ reorders a layer
-// within its group (row order + paint order). Persisted by the caller via
-// saveLayerSettings.
+// The 🎚 Layers dropdown, living in the global footer (opens upward). Two
+// groups — FREQUENCY (normalled to the top pane) and TIME (normalled to the
+// bottom pane) — with three placement columns per layer: top pane / bottom
+// pane / own row. Clicking the active column again hides the layer; the
+// columns ARE the show/hide control. ▲▼ reorders a layer within its group
+// (row order + paint order). A legend checkbox toggles the in-canvas legend.
+// Settings flow through the shared store in registry.ts (the Examiner canvas
+// subscribes to the same store), persisted to localStorage on every change.
 
-import { useEffect, useRef, useState } from 'react';
-import { MENU_SWATCHES, layerById, orderedLayers } from './layers/registry';
-import type { ExaminerLayer, LayerDomain, LayerPlacement, LayerSettings, StackMode } from './layers/types';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { useIsNarrow } from '../../useIsNarrow';
+import {
+  MENU_SWATCHES, getLayerSettings, layerById, orderedLayers,
+  subscribeLayerSettings, updateLayerSettings,
+} from './layers/registry';
+import type { ExaminerLayer, LayerDomain, LayerPlacement, StackMode } from './layers/types';
 
 interface LayersMenuProps {
-  settings: LayerSettings;
-  onChange: (next: LayerSettings) => void;
   stereo: boolean;
 }
 
@@ -23,9 +27,13 @@ const PLACEMENT_COLS: { placement: LayerPlacement; label: string; hint: string }
 ];
 const CELL_W = 24, ARROWS_W = 30;
 
-export default function LayersMenu({ settings, onChange, stereo }: LayersMenuProps) {
+export default function LayersMenu({ stereo }: LayersMenuProps) {
+  const settings = useSyncExternalStore(subscribeLayerSettings, getLayerSettings);
+  const onChange = updateLayerSettings;
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  // Sized like its SampleFooter neighbours: emoji-only and packed on mobile.
+  const narrow = useIsNarrow();
 
   // Close on outside click.
   useEffect(() => {
@@ -128,14 +136,15 @@ export default function LayersMenu({ settings, onChange, stereo }: LayersMenuPro
   };
 
   return (
-    <div ref={rootRef} style={{ position: 'absolute', top: 6, left: 6, zIndex: 20 }}>
-      <button className="btn secondary" style={{ padding: '0.15rem 0.5rem', fontSize: '0.75rem', opacity: 0.9 }}
-        onClick={() => setOpen(!open)} title="Show / hide overlay layers">
-        🎚 Layers
+    <div ref={rootRef} style={{ position: 'relative' }}>
+      <button className="btn secondary"
+        style={narrow ? { padding: '0.25rem 0.45rem', fontSize: '0.9rem' } : { padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
+        onClick={() => setOpen(!open)} title="Show / hide / place viewer layers">
+        {narrow ? '🎚' : '🎚 Layers'}
       </button>
       {open && (
         <div className="glass-panel" style={{
-          position: 'absolute', top: '100%', left: 0, marginTop: '0.4rem', zIndex: 50,
+          position: 'absolute', bottom: '100%', left: 0, marginBottom: '0.4rem', zIndex: 50,
           padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.3rem',
           width: '285px', background: 'rgba(10,12,16,0.92)',
         }}>
@@ -152,6 +161,11 @@ export default function LayersMenu({ settings, onChange, stereo }: LayersMenuPro
           </div>
           {renderGroup('frequency', 'FREQUENCY')}
           {renderGroup('time', 'TIME')}
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', cursor: 'pointer', marginTop: '0.25rem', paddingTop: '0.35rem', borderTop: '1px solid var(--border-color)' }}>
+            <input type="checkbox" checked={settings.legend} style={{ accentColor: ORANGE }}
+              onChange={e => onChange({ ...settings, legend: e.target.checked })} />
+            legend
+          </label>
         </div>
       )}
     </div>

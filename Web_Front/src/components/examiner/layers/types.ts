@@ -57,4 +57,5 @@ export interface LayerSettings {
   mode: StackMode;
   layers: Record<string, LayerSetting>;
   order: string[];                     // layer ids; each domain group keeps its own order
+  legend: boolean;                     // draw the in-canvas legend (stacked mode)
 }

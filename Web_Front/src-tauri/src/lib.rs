@@ -308,8 +308,22 @@ fn start_analysis(
 
         let stdout = child.stdout.take().unwrap();
         let reader = BufReader::new(stdout);
+        let mut batch: Vec<serde_json::Value> = Vec::with_capacity(1000);
+
         for line in reader.lines() {
             if let Ok(l) = line {
+                if let Ok(v) = serde_json::from_str::<serde_json::Value>(&l) {
+                    if v.get("type").and_then(|t| t.as_str()) == Some("result") {
+                        if let Some(record) = v.get("record") {
+                            batch.push(record.clone());
+                            if batch.len() >= 1000 {
+                                let _ = app.emit("analyzer-batch", &batch);
+                                batch.clear();
+                            }
+                        }
+                    }
+                }
+
                 match slim_progress(&l) {
                     Some(slim) => {
                         let _ = app.emit("analyzer-progress", slim);
@@ -320,6 +334,10 @@ fn start_analysis(
                     }
                 }
             }
+        }
+
+        if !batch.is_empty() {
+            let _ = app.emit("analyzer-batch", &batch);
         }
 
         let _ = child.wait();
@@ -422,6 +440,54 @@ fn root_file_path(directory: &str, file_name: &str) -> Result<std::path::PathBuf
     Ok(root.join(file_name))
 }
 
+/// Backfill binary waveform previews into an already-scanned library WITHOUT
+/// re-analyzing: for every sidecar missing a `preview`, decode the audio once (no DSP),
+/// fold the peak map, and merge it into the sidecar. The sidecar is read and written as
+/// `serde_json::Value` — a typed round-trip would silently drop fields written by a
+/// newer analyzer — and written temp-then-rename so a crash can't destroy a record.
+/// Returns (updated, already_current, failed).
+#[tauri::command]
+async fn backfill_previews(directory: String) -> Result<(usize, usize, usize), String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let root = std::path::Path::new(&directory);
+        if !root.is_dir() {
+            return Err(format!("{directory} is not a folder"));
+        }
+        let mut files = Vec::new();
+        walk_audio(root, &mut files);
+        let (mut updated, mut current, mut failed) = (0usize, 0usize, 0usize);
+        for audio in &files {
+            let side = audio.with_extension("PEAK");
+            let Ok(text) = std::fs::read_to_string(&side) else { continue }; // no sidecar — a scan's job
+            let Ok(mut record) = serde_json::from_str::<serde_json::Value>(&text) else { failed += 1; continue };
+            let has_preview = record
+                .get("preview")
+                .and_then(|p| p.get("peak_data_base64"))
+                .and_then(|d| d.as_str())
+                .is_some_and(|d| !d.is_empty());
+            if has_preview {
+                current += 1;
+                continue;
+            }
+            let Some(dec) = oa_sample_analyzer::decode::read_audio(audio) else { failed += 1; continue };
+            let preview = oa_sample_analyzer::preview::build_preview(&dec.mono);
+            let Ok(preview_value) = serde_json::to_value(&preview) else { failed += 1; continue };
+            record["preview"] = preview_value;
+            let Ok(out) = serde_json::to_string_pretty(&record) else { failed += 1; continue };
+            let tmp = side.with_extension("PEAK.tmp");
+            if std::fs::write(&tmp, out).is_ok() && std::fs::rename(&tmp, &side).is_ok() {
+                updated += 1;
+            } else {
+                let _ = std::fs::remove_file(&tmp);
+                failed += 1;
+            }
+        }
+        Ok((updated, current, failed))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
 /// Read a named text file at the library root (e.g. favorites.json). Err when absent.
 #[tauri::command]
 fn read_root_text(directory: String, file_name: String) -> Result<String, String> {
@@ -497,6 +563,7 @@ pub fn run() {
             build_manifest,
             read_root_text,
             write_root_text,
+            backfill_previews,
             read_full_record,
             extractor_detect,
             extractor_slice_wav,

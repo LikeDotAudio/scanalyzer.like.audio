@@ -260,6 +260,40 @@ canvas height — visually identical.
 
 ---
 
+## Implemented — 2026-07-16, same day (previews for every file, preview-first display)
+
+Shipped per §§5–7 with one user-directed widening: the preview is computed for **every**
+scanned waveform (not only long ones), and the display path paints it **first**, with all
+other work lazy behind it.
+
+- **Rust:** `Preview` struct on `Peak` (`skip_serializing_if` empty), `analysis_depth` on
+  `Metadata`, `preview.rs` (fold + policy + dependency-free base64, unit-tested against the
+  RFC vectors), `analyze_core` attaches a preview to every record, and the `> 600 s → None`
+  skip is now the `preview_only` tier in **both** `analyze()` and `analyze_buffer()`;
+  wasm-pack rebuilt. `backfill_previews(directory)` Tauri command implements §7's append pass
+  (Value-merge, temp-then-rename). `projectSlim` untouched — manifest verified preview-free.
+- **Web:** `peakPreview.ts` (base64 → `Int8Array`, plus the min,max-interleaved "shim
+  samples" trick that lets every existing min/max renderer draw the true envelope with zero
+  renderer changes). Examiner paints the peak map at the top of `loadSelected` — before any
+  audio IO — and again after a slim-row upgrade; the no-linked-audio path now draws instead
+  of blanking. Extractor wave views fall back to the shim until real PCM lands (never used
+  for detect/exports/session). The 3D EYE ring does the same.
+- **Verified:** native scan of a generated 11-min + 4-s WAV pair — long file gets
+  `analysis_depth: "preview_only"` (14 212 bins @ 1024 spb, 40 KB sidecar), short file full
+  analysis + preview (345 bins @ 256 spb), bin math and min≤max invariants hold, manifest
+  slim. Headless drive: the aggregate `.PEAK` dropped into the app **with no audio linked**
+  paints both waveforms + the radial ring from the peak map alone (previously blank);
+  demo-pack records without previews take exactly the old decode path, zero errors.
+
+**Deviations / follow-ups:** the `preview_only` tier currently rides the existing whole-file
+decode (transient PCM allocation) rather than §6's constant-memory streaming fold — an
+hour-long file decodes but skips all DSP; the packet-fold optimization remains open. The
+bundled demo pack's `samples.PEAK` predates previews (regenerate to give first-run users the
+instant paint). `backfill_previews` is compile-verified; first run on a real library should
+confirm counts.
+
+---
+
 *Companion visual: `binary_peak_preview_audit.html` (this folder). Audit date 2026-07-16;
 grounded in `analyze.rs`, `decode.rs`, `wasm_analyzer/lib.rs`, `src-tauri/lib.rs`,
 `ExaminerTab.tsx`, `ExtractorTab.tsx`, `manifest.ts`, `peakSchema.ts` as of this date. Prior

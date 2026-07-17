@@ -4,6 +4,7 @@ import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAud
 import { MANIFEST_FILE, manifestIsCurrent } from './manifest'
 import { FAVORITES_FILE, FAVORITES_STORAGE_KEY, favoriteKeyOf, buildFavorites, parseFavorites, type Favorites } from './favorites'
 import SampleFooter, { type FooterTab } from './components/SampleFooter'
+import LayersMenu from './components/examiner/LayersMenu'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
@@ -481,8 +482,14 @@ function App() {
     a.download = footerItem.metadata?.name || 'sample'
     document.body.appendChild(a); a.click(); document.body.removeChild(a)
   }
+  // Pushing a file to another tab (the footer's push buttons, the cloud's Examine /
+  // Extract) filters that tab to the file AND opens it there — landing on a filtered
+  // list that still needs a click is half a push. `pushedName` carries the open-this
+  // intent; the target tab consumes it via onAutoOpened once the row is selected.
+  const [pushedName, setPushedName] = useState('');
   const footerPush = (tab: FooterTab, name: string) => {
     setFilterText(name);
+    setPushedName(name);
     goToTab(tab);
   }
 
@@ -669,15 +676,18 @@ function App() {
           {activeTab === 'groups' && <GroupsTab filteredData={filteredData} />}
           {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} autoLoop={autoLoop}
             favorites={favorites}
+            autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
           {/* The Favorites tab IS an Examiner — same component, mounted under its own hash
               with rows pre-filtered to the favorites set. DIG here digs favorites only. */}
           {activeTab === 'favorites' && <ExaminerTab analysisResult={analysisResult} filteredData={favoriteRows} audioFiles={audioFiles} onSound={setCurrentSound} autoLoop={autoLoop}
             favorites={favorites}
+            autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             emptyMessage="No favorites yet — press F while a sample plays, or tap ★ in the footer."
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
           {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult}
             favorites={favorites}
+            autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} />}
         </Suspense>
@@ -706,6 +716,9 @@ function App() {
             }
           }}
           onPush={footerPush}
+          layersMenu={(activeTab === 'examiner' || activeTab === 'favorites')
+            ? <LayersMenu stereo={Number(footerItem?.metadata?.channels) >= 2} />
+            : undefined}
         />
       )}
       <audio ref={el => { footerAudioRef.current = el; setFooterAudioEl(el); }} style={{ display: 'none' }} loop={autoLoop && !digging}

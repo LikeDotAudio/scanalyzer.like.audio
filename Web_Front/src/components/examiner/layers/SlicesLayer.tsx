@@ -34,7 +34,7 @@ export const SlicesLayer: ExaminerLayer = {
   id: 'slices',
   label: 'slices',
   legendColour: () => SLICE_COLOUR,
-  domain: 'time',
+  domain: 'frequency',
   defaultPlacement: 'off',
   rowHeightWeight: 1,
 

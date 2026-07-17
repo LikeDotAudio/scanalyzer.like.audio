@@ -24,7 +24,9 @@ pub fn analyzer_version() -> String {
 #[wasm_bindgen]
 pub fn analyze_audio_buffer(buffer: &[u8], name: &str, folder: &str) -> String {
     console_error_panic_hook::set_once();
-    // Note: max_len is hardcoded to 600.0 (10 minutes) for the web version to prevent hangs
+    // 600 s (10 min) is the FULL-analysis cap, kept to prevent DSP hangs in the browser.
+    // Files over it are no longer skipped: they get a preview-only record (metadata +
+    // binary waveform preview, analysis_depth: "preview_only") from the same call.
     match analyze_buffer(buffer, name, folder, 600.0) {
         Some(peak) => {
             serde_json::to_string(&peak).unwrap_or_else(|_| "{\"status\":\"error\"}".to_string())

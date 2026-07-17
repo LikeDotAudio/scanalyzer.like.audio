@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useSyncExternalStore } from 'react';
 import { hasAudio, isTauri } from '../../audioLinking';
 import { computeSpectrum, toMono, noteToFreq } from '../examiner/audioAnalysis';
 import { complementColor, ucsColor, ucsSubColor } from '../../groupColors';
@@ -6,16 +6,16 @@ import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { categoryEmoji, categoryLabel, subcategoryLabel } from '../../categoryEmoji';
 import { useIsNarrow } from '../../useIsNarrow';
 import { renderLayerStack } from '../examiner/renderLayerStack';
-import { loadLayerSettings, saveLayerSettings, settingsNeedSpectrogram } from '../examiner/layers/registry';
+import { getLayerSettings, settingsNeedSpectrogram, subscribeLayerSettings } from '../examiner/layers/registry';
 import { computeSpectrogramFrames, type SpectrogramFrames } from '../examiner/layers/stft';
-import type { LayerData, LayerSettings } from '../examiner/layers/types';
-import LayersMenu from '../examiner/LayersMenu';
+import type { LayerData } from '../examiner/layers/types';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 import RadialWaveform from '../examiner/RadialWaveform';
 import EyeMeters from '../examiner/EyeMeters';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
 import { favoriteKeyOf } from '../../favorites';
+import { previewBuffer } from '../../peakPreview';
 
 interface ExaminerTabProps {
   analysisResult: any[];
@@ -36,6 +36,8 @@ interface ExaminerTabProps {
   // Shown centred over the list when there are no rows — the Favorites mount uses it to
   // explain the F key instead of presenting an empty table.
   emptyMessage?: string;
+  autoOpenName?: string;
+  onAutoOpened?: () => void;
 }
 
 
@@ -106,7 +108,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange, autoLoop = false, favorites, emptyMessage }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange, autoLoop = false, favorites, emptyMessage, autoOpenName, onAutoOpened }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   // The full record for the detail panels. `selectedItem` stays the (possibly slim)
   // manifest row so row-identity/index logic is untouched; `detailItem` is that row
@@ -225,19 +227,15 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   // whether it's currently sounding (drives the ring's centre play/stop button).
   const [ringSamples, setRingSamples] = useState<Float32Array | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  // Which overlay layers are visible and how they stack — the 🎚 Layers menu.
-  const [layerSettings, setLayerSettings] = useState<LayerSettings>(() => loadLayerSettings());
-  const [isStereo, setIsStereo] = useState(false);
+  // Which overlay layers are visible and how they stack — the 🎚 Layers menu
+  // (which lives in the global footer; settings sync through the shared store).
+  const layerSettings = useSyncExternalStore(subscribeLayerSettings, getLayerSettings);
   // Lazy STFT frames for the spectrogram layers, cached per decoded buffer so a
   // toggle or resize never recomputes them (SV dormancy: hidden layers cost nothing).
   const stftCacheRef = useRef<{ buffer: AudioBuffer; frames: SpectrogramFrames | null } | null>(null);
-  const handleLayerSettings = (next: LayerSettings) => {
-    setLayerSettings(next);
-    saveLayerSettings(next);
-  };
   // On selection change, drop the previous decoded buffer too, so the meters (which read
   // it at the playhead) don't briefly show the old sample while the new one decodes.
-  useEffect(() => { setRingSamples(null); setIsPlaying(false); setIsStereo(false); lastBufferRef.current = null; }, [selectedItem]);
+  useEffect(() => { setRingSamples(null); setIsPlaying(false); lastBufferRef.current = null; }, [selectedItem]);
   // A lightweight context used only to decode audio for the static preview.
   const decodeCtxRef = useRef<AudioContext | null>(null);
   // Last decoded buffer/item so the preview can be re-drawn on resize.
@@ -389,6 +387,10 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // A peak-map shim (see peakPreview.ts) carries the true min/max envelope but no real
+    // PCM — the waveform/envelope layers draw exactly right from it, while the passes
+    // that need actual samples (spectrum, spectrogram) wait for the decoded buffer.
+    const isShim = (buffer as any).isPeakMapPreview === true;
     const mono = toMono(buffer);
     // Waveform = the sample's group colour; spectrum = its complement.
     const gcol = ucsSubColor(item?.ucs?.category || '', (item?.ucs?.subcategory || '').trim());
@@ -396,7 +398,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
 
     // STFT frames only when a spectrogram layer is actually visible, cached per buffer.
     let frames: SpectrogramFrames | null = null;
-    if (settingsNeedSpectrogram(layerSettings)) {
+    if (!isShim && settingsNeedSpectrogram(layerSettings)) {
       if (stftCacheRef.current?.buffer === buffer) {
         frames = stftCacheRef.current.frames;
       } else {
@@ -410,7 +412,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       mono,
       left: buffer.getChannelData(0),
       right: buffer.numberOfChannels >= 2 ? buffer.getChannelData(1) : null,
-      spectrum: computeSpectrum(mono, buffer.sampleRate),
+      spectrum: isShim ? null : computeSpectrum(mono, buffer.sampleRate),
       spectrogram: frames,
       item,
       colours: { group: gcol, complement: ccol },
@@ -418,6 +420,19 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       sampleRate: buffer.sampleRate,
     };
     renderLayerStack(canvas, data, layerSettings);
+  };
+
+  // Paint the analyzer's stored peak map for a record, if it carries one: the waveform
+  // (and the ring) appear IMMEDIATELY on selection; the real decode then upgrades them.
+  // Returns true when something was painted.
+  const paintFromPeakMap = (record: any): boolean => {
+    const fake = previewBuffer(record);
+    if (!fake) return false;
+    lastBufferRef.current = fake;
+    lastItemRef.current = record;
+    setRingSamples(fake.getChannelData(0));
+    renderPreview(fake, record);
+    return true;
   };
 
   // Re-composite when the layer selection or stacking mode changes.
@@ -500,11 +515,27 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     loadTimerRef.current = window.setTimeout(() => loadSelected(item, gen, forcePlay), DEBOUNCE_MS);
   };
 
+  useEffect(() => {
+    if (autoOpenName && filteredRows.length > 0) {
+      const match = filteredRows.find(it => (it.metadata?.name || '') === autoOpenName);
+      if (match) {
+        handleSelect(match);
+        onAutoOpened?.();
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoOpenName, filteredRows]);
+
   const loadSelected = async (item: any, gen: number, forcePlay: boolean) => {
     // Bail if a newer selection has superseded this one (guards every await below).
     const fresh = () => gen === loadGenRef.current;
     const selIdx = rows.indexOf(item);
     if (selIdx >= 0) prefetch.prefetchWindow(selIdx, scrollDirRef.current);
+
+    // FIRST: the analyzer's stored peak map, before any audio IO. The waveform paints
+    // this frame; the decode below is a lazy upgrade behind it. (Slim manifest rows
+    // carry no preview — those get a second chance after fetchFull.)
+    let paintedFromPeakMap = paintFromPeakMap(item);
 
     const src = await prefetch.ensure(item);
     if (!fresh()) return;
@@ -519,10 +550,19 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
           ? 'desktop: read_audio_bytes failed — check the path exists and is readable'
           : 'browser: no File matched — re-scan the folder to re-link the audio',
       });
-      // No linked audio — clear the preview so it doesn't show a stale sample.
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext('2d');
-      if (canvas && ctx) { ctx.fillStyle = '#0A0A0A'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+      // No linked audio. The stored peak map still draws the waveform (a .PEAK-only
+      // library is fully browsable now); without one, clear the stale canvas. Either
+      // way, try upgrading a slim row to its full record for a late peak map.
+      if (!paintedFromPeakMap) {
+        const fullNoAudio = await fetchFull(item);
+        if (!fresh()) return;
+        if (fullNoAudio !== item) setDetailItem(fullNoAudio);
+        if (!paintFromPeakMap(fullNoAudio)) {
+          const canvas = canvasRef.current;
+          const ctx = canvas?.getContext('2d');
+          if (canvas && ctx) { ctx.fillStyle = '#0A0A0A'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+        }
+      }
       return;
     }
 
@@ -548,6 +588,9 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     const full = await fetchFull(item);
     if (!fresh()) return;
     if (full !== item) setDetailItem(full);
+    // A slim row had no peak map; its full record does — paint it now, still ahead of
+    // the decode below.
+    if (!paintedFromPeakMap && full !== item) paintedFromPeakMap = paintFromPeakMap(full);
 
     // Decode the whole file and draw the static preview. Each await is gated on
     // `fresh()` so a superseded selection never reaches decodeAudioData (the step
@@ -583,7 +626,6 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       lastBufferRef.current = decoded;
       lastItemRef.current = full;
       setRingSamples(toMono(decoded));
-      setIsStereo(decoded.numberOfChannels >= 2);
       renderPreview(decoded, full);
     } catch {
       /* undecodable file — leave the preview blank */
@@ -843,7 +885,6 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
                       <div style={{ flex: 1, minHeight: 0, position: 'relative', padding: '0.75rem' }}>
                         <div style={{ width: '100%', height: '100%', position: 'relative' }}>
                           <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
-                          <LayersMenu settings={layerSettings} onChange={handleLayerSettings} stereo={isStereo} />
                           <div ref={playheadRef} style={{
                             position: 'absolute', top: 0, bottom: 0, left: 0,
                             width: '2px', backgroundColor: 'rgb(244, 144, 44)', zIndex: 10,

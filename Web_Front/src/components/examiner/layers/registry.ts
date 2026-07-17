@@ -24,13 +24,13 @@ export const EXAMINER_LAYERS: ExaminerLayer[] = [
   SpectrogramLayer,
   Spectrogram3DLayer,
   SpectrumLayer,
+  SlicesLayer,
   NotesLayer,
   PianoScaleLayer,
   // time domain
   WaveformLayer,
   LoudnessLayer,
   PhaseLayer,
-  SlicesLayer,
   EnvelopeLayer,
   BeatsLayer,
   RegionsLayer,
@@ -79,7 +79,7 @@ function defaultOrder(): string[] {
 export function defaultLayerSettings(): LayerSettings {
   const layers: LayerSettings['layers'] = {};
   for (const l of EXAMINER_LAYERS) layers[l.id] = { placement: l.defaultPlacement };
-  return { mode: 'stack', layers, order: defaultOrder() };
+  return { mode: 'stack', layers, order: defaultOrder(), legend: true };
 }
 
 /** Saved order, sanitized: drop unknown ids, append newly added layers. */
@@ -104,6 +104,7 @@ export function loadLayerSettings(): LayerSettings {
         mode: parsed?.mode === 'rows' ? 'rows' : 'stack',
         layers,
         order: mergeOrder(parsed?.order),
+        legend: parsed?.legend !== false,
       };
     }
     // Migrate the v1 shape ({visible, placement:'overlay'|'row'}): visible layers
@@ -121,7 +122,7 @@ export function loadLayerSettings(): LayerSettings {
             : l.domain === 'frequency' ? 'top' : 'bottom',
         };
       }
-      return { mode: parsed?.mode === 'rows' ? 'rows' : 'stack', layers, order: defaultOrder() };
+      return { mode: parsed?.mode === 'rows' ? 'rows' : 'stack', layers, order: defaultOrder(), legend: true };
     }
     return defaults;
   } catch {
@@ -131,6 +132,30 @@ export function loadLayerSettings(): LayerSettings {
 
 export function saveLayerSettings(settings: LayerSettings) {
   try { localStorage.setItem(LAYERS_KEY, JSON.stringify(settings)); } catch { /* ignore */ }
+}
+
+// ---- shared settings store ----
+// The 🎚 Layers menu lives in the global footer while the Examiner canvas
+// consumes the settings, so they sync through this tiny external store
+// (useSyncExternalStore on the React side) instead of prop-drilling across tabs.
+
+let currentSettings: LayerSettings | null = null;
+const settingsListeners = new Set<() => void>();
+
+export function getLayerSettings(): LayerSettings {
+  if (!currentSettings) currentSettings = loadLayerSettings();
+  return currentSettings;
+}
+
+export function updateLayerSettings(next: LayerSettings) {
+  currentSettings = next;
+  saveLayerSettings(next);
+  settingsListeners.forEach(l => l());
+}
+
+export function subscribeLayerSettings(cb: () => void): () => void {
+  settingsListeners.add(cb);
+  return () => { settingsListeners.delete(cb); };
 }
 
 /** Whether any visible layer needs the lazy STFT — computed only then (SV dormancy). */

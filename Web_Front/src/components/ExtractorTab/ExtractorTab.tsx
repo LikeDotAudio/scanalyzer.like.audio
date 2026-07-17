@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { resolveAudioUrl, isTauri, getDirHandle, writePeakSidecar, relPathOf } from '../../audioLinking';
+import { decodePreview, previewShimSamples } from '../../peakPreview';
 import { toMono } from '../examiner/audioAnalysis';
 import { decodeWav } from '../examiner/decodeWav';
 import { decodeViaWasm } from '../examiner/wasmDecode';
@@ -27,6 +28,8 @@ interface ExtractorTabProps {
   // Favorite flags (relative path → favorited_unix), owned by App — favorite rows in the
   // file list render their name in orange with a ★.
   favorites?: Map<string, number>;
+  autoOpenName?: string;
+  onAutoOpened?: () => void;
 }
 
 const fmt = (s: number) => `${s.toFixed(3)}s`;
@@ -55,7 +58,7 @@ const toEngineParams = (p: RegionParams): EngineParams => ({
   minimum_region_seconds: p.minimum_region_seconds,
 });
 
-export default function ExtractorTab({ analysisResult, filteredData, audioFiles, onSound, setAnalysisResult, registerTransport, onPlayingChange, favorites }: ExtractorTabProps) {
+export default function ExtractorTab({ analysisResult, filteredData, audioFiles, onSound, setAnalysisResult, registerTransport, onPlayingChange, favorites, autoOpenName, onAutoOpened }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
   useEffect(() => { setFilter(''); }, [analysisResult]);
 
@@ -90,6 +93,10 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
   const playCtxRef = useRef<AudioContext | null>(null);
   const gainRef = useRef<GainNode | null>(null);
   const samplesRef = useRef<Float32Array | null>(null);
+  // The record's stored peak map as stand-in samples (see peakPreview.ts): the wave
+  // views draw this the instant a file is selected, until the real decode fills
+  // samplesRef. Never used for detection, session load, or exports — display only.
+  const previewSamplesRef = useRef<Float32Array | null>(null);
   const lengthRef = useRef(0);
   const sampleRateRef = useRef(44100);
   const loadGenRef = useRef(0);
@@ -334,6 +341,15 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     setSelectedItem(item);
     setSaveMsg('');
     onSound?.(item?.metadata?.name || '');
+    // FIRST: the analyzer's stored peak map, so the waveform + circle paint this frame.
+    // samplesRef stays null until real PCM lands (exports/detect gate on it); the wave
+    // views fall back to this shim meanwhile.
+    const pv = decodePreview(item);
+    previewSamplesRef.current = pv ? previewShimSamples(pv) : null;
+    if (pv) {
+      lengthRef.current = Number(item?.metadata?.length_seconds) || lengthRef.current;
+      setWaveNonce(n => n + 1);
+    }
     const src = await resolveAudioUrl(audioFiles, item);
     // Desktop can decode + detect the real file natively — but ONLY when the record carries
     // a real absolute path. The demo pack (and browser-scanned .PEAKs) record a relative
@@ -347,6 +363,17 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     const full = await fetchFull(item);
     await setupAudioAndDetect(src || '', full.regions?.regions || [], nativePath, Number(item?.metadata?.length_seconds) || 0);
   };
+
+  useEffect(() => {
+    if (autoOpenName && filteredData.length > 0) {
+      const match = filteredData.find((it: any) => (it.metadata?.name || '') === autoOpenName);
+      if (match) {
+        handleSelect(match);
+        onAutoOpened?.();
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoOpenName, filteredData]);
 
   // Flat file list in the exact display order, for arrow-key navigation.
   const flatFiles = useMemo(
@@ -381,6 +408,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     setSelectedItem(item);
     setSaveMsg('');
     onSound?.(file.name);
+    previewSamplesRef.current = null; // a dropped file carries no record, so no peak map
     // A dropped file has no on-disk path we can hand the native decoder — use the worker.
     await setupAudioAndDetect(URL.createObjectURL(file), [], null);
   };
@@ -634,7 +662,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
   // The circular player. Desktop: a fixed right-hand column. Mobile: full-width, tucked
   // into the vertical stack directly under the waveform (the "slices").
   const waveCircle = (
-    <WaveCircle samples={samplesRef.current} color={color} arcs={arcs} playing={playing} hasSelection={!!selectedItem}
+    <WaveCircle samples={samplesRef.current ?? previewSamplesRef.current} color={color} arcs={arcs} playing={playing} hasSelection={!!selectedItem}
       onPlay={playAll} getProgress={progress} onScrub={onScrub} onWheel={stepRegion} isNarrow={isNarrow}
       onHover={(f) => { if (f != null) playFromHover(); }} />
   );
@@ -682,7 +710,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
                 {decoding && <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>decoding…</span>}
               </div>
 
-              <WavePlayer samples={samplesRef.current} length={lengthRef.current} regions={regions} color={color}
+              <WavePlayer samples={samplesRef.current ?? previewSamplesRef.current} length={lengthRef.current} regions={regions} color={color}
                 onUpdateRegion={updateRegion} onHoverTime={() => {}} getProgress={progress} />
 
               {/* Mobile: the play circle sits right under the slices, before the text fields. */}

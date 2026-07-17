@@ -35,6 +35,12 @@ pub struct Metadata {
     pub lossy_source: bool,
     pub dc_offset: f64,
     pub trailing_silence_ms: f64,
+    // How deep the analysis went: "full" (the whole DSP pipeline) or "preview_only"
+    // (a file over the full-analysis cap — metadata + waveform preview, no DSP), so a
+    // future deep-analyze pass can find the shallow records. Old sidecars read as ""
+    // and mean "full".
+    #[serde(default)]
+    pub analysis_depth: String,
 }
 
 // Read leniently. A .PEAK on disk may predate any field added since it was written —
@@ -71,7 +77,7 @@ pub struct Ucs {
     pub reason: String,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Default)]
 pub struct Envelope {
     pub transient_count: usize,
     pub attack_seconds: f64,
@@ -96,7 +102,7 @@ pub struct Envelope {
     pub onset_rate_per_second: Option<f64>,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Default)]
 pub struct SpectralFeatures {
     pub root_mean_square_level: f64,
     pub crest_factor: f64,
@@ -138,7 +144,7 @@ pub struct SpectralFeatures {
     pub lufs: f64,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Default)]
 pub struct Musicality {
     pub pitch_hz: f64,
     #[serde(default)]
@@ -151,7 +157,7 @@ pub struct Musicality {
     pub chromagram: [f64; 12],
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Default)]
 pub struct Unsupervised {
     pub cluster: i32,
     pub principal_components: Vec<f64>,
@@ -191,6 +197,27 @@ pub struct Regions {
     pub regions: Vec<Region>,
 }
 
+/// The binary waveform preview: interleaved signed 8-bit min,max peak pairs per bin,
+/// base64-encoded — computed for every file so the UI paints a waveform without
+/// decoding any audio. Shape and encoding rationale:
+/// Documentation/Audit/binary_peak_preview_audit.md.
+#[derive(Serialize, Deserialize, Clone, Default)]
+#[serde(default)]
+pub struct Preview {
+    pub preview_version: u32,
+    pub samples_per_bin: u32,
+    pub bin_count: u32,
+    pub bits_per_value: u32,
+    pub channel_mode: String,
+    pub peak_data_base64: String,
+}
+
+impl Preview {
+    pub fn is_empty(&self) -> bool {
+        self.peak_data_base64.is_empty()
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Peak {
     pub metadata: Metadata,
@@ -204,4 +231,8 @@ pub struct Peak {
     // in rather than fail the whole record on a missing field.
     #[serde(default)]
     pub regions: Regions,
+    // Added after regions; same lenient-read rule. Skipped on write while empty so a
+    // re-emitted old record stays byte-comparable to its source.
+    #[serde(default, skip_serializing_if = "Preview::is_empty")]
+    pub preview: Preview,
 }

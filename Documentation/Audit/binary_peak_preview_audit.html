@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binary Peak Preview — Research Audit</title>
+</head>
+<body>
+<style>
+:root{
+  --bg:#0e1014; --panel:#171b22; --panel2:#0a0c10; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#f4902c; --cyan:#6fa8d6; --good:#7fb98a; --bad:#e06a5a;
+  --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#f5f4f1; --panel:#ffffff; --panel2:#101318; --line:#ddd9d0;
+    --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+    --accent:#c06a1f; --cyan:#3d76a8; --good:#4d7f58; --bad:#b0432f;
+    --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1014; --panel:#171b22; --panel2:#0a0c10; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#f4902c; --cyan:#6fa8d6; --good:#7fb98a; --bad:#e06a5a;
+  --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+:root[data-theme="light"]{
+  --bg:#f5f4f1; --panel:#ffffff; --panel2:#101318; --line:#ddd9d0;
+  --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+  --accent:#c06a1f; --cyan:#3d76a8; --good:#4d7f58; --bad:#b0432f;
+  --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+}
+html{background:var(--bg)}
+body{background:var(--bg); color:var(--text);
+  font:16px/1.62 "Seravek","Segoe UI",system-ui,-apple-system,sans-serif;
+  margin:0; padding:0 20px 80px;}
+main{max-width:78ch; margin:0 auto}
+h1,h2{line-height:1.2; text-wrap:balance; font-weight:650}
+h1{font-size:2rem; margin:2.2rem 0 .4rem; letter-spacing:-.015em}
+h2{font-size:1.3rem; margin:3rem 0 .8rem; padding-top:1.4rem; border-top:1px solid var(--line)}
+p{margin:.7rem 0}
+.eyebrow{font:600 .72rem/1 ui-monospace,"SF Mono",Menlo,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-top:3rem;}
+.meta{color:var(--muted); font-size:.92rem; margin-bottom:1.4rem}
+.meta b{color:var(--text); font-weight:600}
+code,pre{font:.82rem/1.55 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+code{background:var(--code-bg); border:1px solid var(--line); border-radius:4px; padding:.08em .35em}
+pre{background:var(--code-bg); border:1px solid var(--line); border-radius:8px;
+  padding:.85rem 1rem; overflow-x:auto; margin:.9rem 0;}
+pre code{background:none;border:none;padding:0}
+table{border-collapse:collapse; width:100%; font-size:.88rem; margin:.9rem 0}
+th,td{text-align:left; padding:.45rem .65rem; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.tablewrap{overflow-x:auto}
+td.good{color:var(--good)} td.bad{color:var(--bad)}
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:.75rem; margin:1.4rem 0}
+.tile{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:.8rem 1rem}
+.tile .k{font:600 .66rem/1 ui-monospace,Menlo,monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:.35rem}
+.tile .v{font-size:.95rem; font-weight:650}
+.tile .v.bad{color:var(--bad)} .tile .v.good{color:var(--good)} .tile .v.accent{color:var(--accent)}
+.callout{border-left:3px solid var(--accent); background:var(--panel); border-radius:0 8px 8px 0;
+  padding:.8rem 1rem; margin:1.1rem 0}
+.callout p{margin:.3rem 0}
+.flow{font:.8rem/1.8 ui-monospace,Menlo,monospace; background:var(--code-bg); border:1px solid var(--line);
+  border-radius:8px; padding:.9rem 1.1rem; overflow-x:auto; white-space:pre}
+.flow b{color:var(--accent); font-weight:650}
+.flow i{color:var(--cyan); font-style:normal}
+.flow s{color:var(--faint); text-decoration:none}
+/* demo */
+.demo{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  box-shadow:var(--shadow); padding:1rem 1.1rem 1.2rem; margin:1.2rem 0}
+.demo .hint{font-size:.8rem; color:var(--muted); margin:.2rem 0 .8rem}
+.demo label{font:600 .72rem/1.6 ui-monospace,Menlo,monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.demo input[type=range]{width:100%; accent-color:var(--accent)}
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.5rem; margin:.7rem 0 .9rem}
+.stat{background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:.45rem .6rem}
+.stat .k{font:600 .6rem/1.5 ui-monospace,Menlo,monospace; letter-spacing:.1em; text-transform:uppercase; color:#8b93a2}
+.stat .v{font:650 .95rem/1.3 ui-monospace,Menlo,monospace; color:#e8ebf2; font-variant-numeric:tabular-nums}
+.stat .v em{font-style:normal; color:var(--accent)}
+.wavebox{background:#0a0c10; border:1px solid #262c37; border-radius:6px; padding:.4rem .6rem .6rem; margin-top:.6rem}
+.wavebox .cap{font:600 .62rem/1.8 ui-monospace,Menlo,monospace; letter-spacing:.1em; text-transform:uppercase; color:#8b93a2}
+.wavebox canvas{display:block; width:100%; height:96px}
+</style>
+<main>
+  <div class="eyebrow">SCANALYZER.Like.Audio · Research audit · 2026-07-16</div>
+  <h1>Instant long-file previews: a binary peak map inside the .PEAK</h1>
+  <p class="meta"><b>Problem:</b> long files are painful — the analyzer <b>skips</b> anything over
+  600&nbsp;s outright, and the UI decodes the <b>entire file</b> before drawing a single waveform
+  pixel. <b>Design:</b> an 8-bit min/max peak map, computed in one streaming pass, stored base64
+  inside the <code>.PEAK</code>, painted in the next frame.
+  Companion prose: <code>binary_peak_preview_audit.md</code>.</p>
+
+  <div class="tiles">
+    <div class="tile"><div class="k">Today · 1 h file</div><div class="v bad">skipped by analyzer · seconds to paint · ~690 MB PCM</div></div>
+    <div class="tile"><div class="k">Designed · 1 h file</div><div class="v good">indexed · paints next frame · ≤ 32 KB read</div></div>
+    <div class="tile"><div class="k">Extra file opens</div><div class="v accent">zero — rides the sidecar read that already happens</div></div>
+  </div>
+
+  <h2>Why it stalls now</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Chokepoint</th><th>Where</th><th>Cost on long files</th></tr>
+    <tr><td><code>if length &gt; max_len {{ return None }}</code> — 600 s hardcoded, both engines</td><td><code>analyze.rs:38</code> · <code>src-tauri/lib.rs:268</code> · <code>wasm_analyzer/lib.rs:28</code></td><td class="bad">file invisible to the library</td></tr>
+    <tr><td>Full DSP (STFT · MFCC · pitch) is O(minutes) on hour-long PCM</td><td><code>analyze_core</code></td><td class="bad">the reason the cap exists</td></tr>
+    <tr><td>Select → decode <b>whole file</b> → <code>toMono</code> → draw</td><td><code>ExaminerTab</code> · <code>ExtractorTab</code> · <code>AudioEye</code></td><td class="bad">seconds of freeze to draw 1000 px</td></tr>
+  </table></div>
+  <div class="callout"><p><b>The unlock:</b> playback never needed the decode — the
+  <code>&lt;audio&gt;</code> element streams. The whole-file decode exists only to <i>draw</i>.
+  Precompute the drawing.</p></div>
+
+  <h2>Prior art converges</h2>
+  <div class="tablewrap"><table>
+    <tr><th>System</th><th>Shape</th><th>Lesson</th></tr>
+    <tr><td>BWF <code>levl</code> chunk (EBU Tech 3285 s3)</td><td>binary min/max pairs, fixed block size, stored with the asset</td><td>the broadcast standard is exactly this shape</td></tr>
+    <tr><td>BBC <code>audiowaveform</code> / Peaks.js</td><td>signed <b>8-bit</b> min/max pairs, samples-per-pixel header</td><td>8-bit is the accepted UI fidelity</td></tr>
+    <tr><td>Audacity summaries</td><td>per-256 + per-65536 sample mip levels</td><td>a finer level only matters for deep zoom — we get that from real PCM later</td></tr>
+    <tr><td>wavesurfer.js peaks JSON</td><td>plain number arrays</td><td>works, but 4–6× the bytes and the slowest parse — avoid</td></tr>
+  </table></div>
+
+  <h2>The schema</h2>
+  <pre><code>"preview": {
+  "preview_version": 1,
+  "samples_per_bin": 16384,        // smallest power of two so bin_count ≤ 16384 (floor 256)
+  "bin_count": 10547,
+  "bits_per_value": 8,             // signed, interleaved min,max per bin
+  "channel_mode": "mono_mixdown",
+  "peak_data_base64": "…"          // ≤ ~43 KB worst case, any file length
+}</code></pre>
+  <p>Inside the <code>.PEAK</code> — not a second binary file (+1 open × 40 k files), not a chunk
+  written into the user's audio. The manifest's <code>projectSlim()</code> never copies it, so
+  startup stays slim; the Examiner already fetches the full record on select, so the preview
+  arrives on a read the app already pays for.</p>
+
+  <h2>Feel the encoding — resolution vs size vs fidelity</h2>
+  <div class="demo">
+    <div class="hint">Drag the duration. The policy picks <code>samples_per_bin</code>, the size ledger updates,
+    and the two waveforms compare the ground truth against what the stored 8-bit preview paints.</div>
+    <label for="dur">File duration: <span id="durLabel"></span></label>
+    <input type="range" id="dur" min="1" max="240" step="1" value="60" aria-label="File duration in minutes">
+    <div class="stats">
+      <div class="stat"><div class="k">samples/bin</div><div class="v" id="spb"></div></div>
+      <div class="stat"><div class="k">bins</div><div class="v" id="bins"></div></div>
+      <div class="stat"><div class="k">time/bin</div><div class="v" id="tpb"></div></div>
+      <div class="stat"><div class="k">raw</div><div class="v" id="raw"></div></div>
+      <div class="stat"><div class="k">in .PEAK (base64)</div><div class="v" id="b64"></div></div>
+      <div class="stat"><div class="k">vs full PCM decode</div><div class="v"><em id="ratio"></em></div></div>
+    </div>
+    <div class="wavebox"><div class="cap">Ground truth — min/max from full-resolution samples</div><canvas id="cvFull" height="96"></canvas></div>
+    <div class="wavebox"><div class="cap">Stored preview — 8-bit quantized peak map, base64 round-trip</div><canvas id="cvPrev" height="96"></canvas></div>
+  </div>
+
+  <h2>Three paths</h2>
+  <div class="flow"><b>WRITE</b> (new scans)      decode pass ──▶ fold min/max per bin <s>(O(n), noise vs the STFT)</s> ──▶ preview into the record
+                     ≤ 600 s: full DSP as today   ·   &gt; 600 s: <i>preview_only</i> — metadata + preview + peak/RMS,
+                     streaming fold over symphonia packets, <s>PCM never materialized — constant memory</s>
+
+<b>APPEND</b> (backfill)     walk sidecars ──▶ missing preview? ──▶ stream-decode audio <s>(no DSP, IO-bound)</s>
+                     ──▶ read .PEAK as <i>serde_json::Value</i> <s>(typed structs DROP unknown fields — data loss)</s>
+                     ──▶ merge preview ──▶ write .PEAK.tmp ──▶ <i>atomic rename</i> ──▶ rebuild manifest
+
+<b>READ</b> (select)         record already fetched ──▶ atob → Int8Array <s>(µs)</s> ──▶ <i>paint next frame</i>
+                     audio element streams immediately ──▶ full decode demoted to background
+                     ──▶ swaps in for deep zoom / spectrogram / region detect when ready</div>
+
+  <h2>The ledger</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Cost</th><th>Today</th><th>With preview</th></tr>
+    <tr><td>Extra file opens</td><td>—</td><td class="good">zero</td></tr>
+    <tr><td>Startup (manifest)</td><td>slim</td><td class="good">unchanged — preview excluded from slim rows</td></tr>
+    <tr><td>Paint after select, 1 h file</td><td class="bad">seconds (whole-file decode)</td><td class="good">~1 frame</td></tr>
+    <tr><td>Memory to draw, 1 h file</td><td class="bad">~690 MB transient</td><td class="good">≤ 32 KB</td></tr>
+    <tr><td>Long files in the library</td><td class="bad">skipped entirely</td><td class="good">listed, playable, drawn — tagged <code>analysis_depth: "preview_only"</code></td></tr>
+    <tr><td>Old sidecars / foreign records</td><td>—</td><td class="good">no preview → exactly today's decode path; purely additive</td></tr>
+  </table></div>
+  <p class="meta" style="margin-top:2.5rem">Two principles carry the whole design:
+  <b>piggyback small data on reads you already pay for</b> — the expensive unit is the file open,
+  not the bytes — and <b>store at the fidelity of the consumer</b>: a ≤ 400 px canvas can show
+  8 bits; everything above that is decode time, not information.</p>
+</main>
+<script>
+(() => {
+  const SR = 48000, CAP = 16384, FLOOR = 256;
+  const dur = document.getElementById('dur');
+  const els = Object.fromEntries(['durLabel','spb','bins','tpb','raw','b64','ratio'].map(id => [id, document.getElementById(id)]));
+  const cvF = document.getElementById('cvFull'), cvP = document.getElementById('cvPrev');
+
+  // Deterministic synthetic "recording": bursts + tone beds + a quiet tail, via seeded pseudo-noise.
+  const rand = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return (x - Math.floor(x)) * 2 - 1; };
+  const amp = (t, T) => { // slow programme envelope over the file
+    const p = t / T;
+    let a = 0.25 + 0.55 * Math.abs(Math.sin(p * 9.3)) * (p < 0.85 ? 1 : 0.35);
+    if (Math.abs(p - 0.18) < 0.012 || Math.abs(p - 0.52) < 0.008 || Math.abs(p - 0.7) < 0.015) a = 1.0; // transients
+    return a;
+  };
+
+  function draw(canvas, mins, maxs, color) {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth * dpr, h = 96 * dpr;
+    if (canvas.width !== w) canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = color; ctx.lineWidth = 1;
+    ctx.beginPath();
+    const n = mins.length, mid = h / 2;
+    for (let x = 0; x < w; x++) {
+      const b0 = Math.floor(x / w * n), b1 = Math.max(b0 + 1, Math.floor((x + 1) / w * n));
+      let mn = 1, mx = -1;
+      for (let b = b0; b < b1 && b < n; b++) { if (mins[b] < mn) mn = mins[b]; if (maxs[b] > mx) mx = maxs[b]; }
+      ctx.moveTo(x + 0.5, mid - mx * (mid - 2));
+      ctx.lineTo(x + 0.5, mid - mn * (mid - 2));
+    }
+    ctx.stroke();
+  }
+
+  const fmtBytes = (b) => b < 1024 ? `${b} B` : b < 1048576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1048576).toFixed(1)} MB`;
+
+  function update() {
+    const minutes = +dur.value;
+    const seconds = minutes * 60, samples = seconds * SR;
+    let spb = FLOOR;
+    while (Math.ceil(samples / spb) > CAP) spb *= 2;
+    const bins = Math.ceil(samples / spb);
+    els.durLabel.textContent = minutes >= 60 ? `${(minutes / 60).toFixed(minutes % 60 ? 1 : 0)} h` : `${minutes} min`;
+    els.spb.textContent = spb.toLocaleString();
+    els.bins.textContent = bins.toLocaleString();
+    els.tpb.textContent = `${(spb / SR * 1000).toFixed(spb / SR >= 0.1 ? 0 : 1)} ms`;
+    const raw = bins * 2, b64 = Math.ceil(raw / 3) * 4;
+    els.raw.textContent = fmtBytes(raw);
+    els.b64.textContent = fmtBytes(b64);
+    els.ratio.textContent = `${Math.round(samples * 4 / raw).toLocaleString()}× smaller`;
+
+    // Ground truth: fine-grained min/max of the synthetic programme (4096 columns of truth).
+    const TRUTH = 4096;
+    const tMin = new Float32Array(TRUTH), tMax = new Float32Array(TRUTH);
+    for (let i = 0; i < TRUTH; i++) {
+      const t = i / TRUTH * seconds, a = amp(t, seconds);
+      const n1 = rand(i * 7 + 1), n2 = rand(i * 13 + 5);
+      tMax[i] = a * (0.55 + 0.45 * Math.abs(n1));
+      tMin[i] = -a * (0.55 + 0.45 * Math.abs(n2));
+    }
+    // Stored preview: fold truth down to `bins`, quantize to signed 8-bit, round-trip.
+    const n = Math.min(bins, TRUTH);
+    const pMin = new Float32Array(n), pMax = new Float32Array(n);
+    for (let b = 0; b < n; b++) {
+      const s = Math.floor(b / n * TRUTH), e = Math.max(s + 1, Math.floor((b + 1) / n * TRUTH));
+      let mn = 1, mx = -1;
+      for (let i = s; i < e; i++) { if (tMin[i] < mn) mn = tMin[i]; if (tMax[i] > mx) mx = tMax[i]; }
+      pMin[b] = Math.max(-128, Math.min(127, Math.round(mn * 127))) / 127; // int8 round-trip
+      pMax[b] = Math.max(-128, Math.min(127, Math.round(mx * 127))) / 127;
+    }
+    draw(cvF, tMin, tMax, '#6fa8d6');
+    draw(cvP, pMin, pMax, '#f4902c');
+  }
+  dur.addEventListener('input', update);
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

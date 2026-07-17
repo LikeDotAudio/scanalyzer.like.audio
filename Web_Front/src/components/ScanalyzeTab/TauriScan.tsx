@@ -17,9 +17,22 @@ interface Survey {
   sample: { path: string; has_sidecar: boolean }[];
 }
 
+const mergeResults = (prev: any[], newRecords: any[]) => {
+    const byKey = new Map();
+    for (const item of prev) {
+        const key = item.metadata?.path || item.metadata?.name;
+        if (key) byKey.set(key, item);
+    }
+    for (const item of newRecords) {
+        const key = item.metadata?.path || item.metadata?.name;
+        if (key) byKey.set(key, item);
+    }
+    return Array.from(byKey.values());
+};
+
 interface TauriScanProps {
   analysisResult: any[];
-  setAnalysisResult: (results: any[]) => void;
+  setAnalysisResult: (results: any[] | ((prev: any[]) => any[])) => void;
   isAnalyzing: boolean;
   setIsAnalyzing: (is: boolean) => void;
   setProgress: (p: number) => void;
@@ -62,8 +75,20 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
     let unlistenProg: any;
     let unlistenErr: any;
     let unlistenFin: any;
+    let unlistenBatch: any;
 
     const setup = async () => {
+      unlistenBatch = await listen('analyzer-batch', (event: any) => {
+        try {
+            const records = Array.isArray(event.payload) ? event.payload : [];
+            if (records.length) {
+                const report = normalizePeakRecords(records);
+                setAnalysisResult((prev: any[]) => mergeResults(prev, report.records));
+            }
+        } catch (e) {
+            console.warn("Failed to process analyzer batch", e);
+        }
+      });
       unlistenProg = await listen('analyzer-progress', (event: any) => {
         try {
             const msg = JSON.parse(event.payload);
@@ -126,7 +151,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
                 await invoke('close_peak_file');
                 setLoaded(null);
                 if (all.length) {
-                    setAnalysisResult([...analysisResultRef.current, ...all]);
+                    setAnalysisResult((prev: any[]) => mergeResults(prev, all));
                     onViewCloudRef.current?.();   // the analysis is the point — show it
                 }
             } catch (err) {
@@ -142,6 +167,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       if (typeof unlistenProg === 'function') unlistenProg();
       if (typeof unlistenErr === 'function') unlistenErr();
       if (typeof unlistenFin === 'function') unlistenFin();
+      if (typeof unlistenBatch === 'function') unlistenBatch();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -204,7 +230,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       setLoaded(null);
       if (!fromManifest) void invoke('build_manifest', { directory: dir }).catch(() => {});
       if (all.length) {
-        setAnalysisResult([...analysisResultRef.current, ...all]);
+        setAnalysisResult((prev: any[]) => mergeResults(prev, all));
         onViewCloud?.();
       }
     } catch (err) {

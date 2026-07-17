@@ -10,6 +10,43 @@ existing `.PEAK` sidecars and forces a re-scan. That is by design.
 
 ## [Unreleased]
 
+### 2026-07-16 — examiner layers: two-pane placement & footer menu
+
+#### Added
+
+- **The Layers menu is a two-pane placement grid.** Layers are grouped by domain —
+  **FREQUENCY** (waterfall freq, 3d spectrum, spectrum, slices, notes, piano scale)
+  normalled to the top pane, **TIME** (waveform, volume, phase, envelope, beat markers,
+  extractor markers) normalled to the bottom pane — and each layer has three placement
+  columns: **top / btm / row**. Clicking a column places the layer in the top pane, the
+  bottom pane, or its own lane; clicking the active column again hides it — the columns
+  *are* the show/hide control. A pane with no layers cedes its half, so a lone group
+  gets the full height.
+- **Rows are reorderable.** ▲▼ on every menu row moves a layer within its group; the
+  order drives lane order (rows mode and own-row lanes) and paint order in the panes,
+  and persists with the rest of the settings.
+- **Beat markers and extractor markers are real layers.** The BPM grid and the scan-region
+  colour bar moved out of the always-on chrome into the Layers menu (`BeatsLayer`,
+  `RegionsLayer`), so they can be placed, re-ordered, given their own row, or hidden.
+  In a short row lane the region bar grows to fill the lane. Chrome now draws only the
+  time axis and sample name.
+- **Scale badges.** Ruler/grid layers (piano scale, beat markers) carry a `scale` badge
+  in the menu and stay out of the in-canvas legend.
+- **Legend checkbox.** The in-canvas legend is now optional, toggled at the bottom of
+  the Layers menu and persisted.
+
+#### Changed
+
+- **The 🎚 Layers button moved from the viewer canvas to the global footer**, between
+  Copy Peak Data and ☆ Favorite (Examiner and Favorites tabs only); the menu opens
+  upward. Settings now flow through a small shared store in `layers/registry.ts`
+  (`useSyncExternalStore` on both sides), so the footer menu and the Examiner canvas
+  stay in sync without prop-drilling across tabs.
+- **Layer settings persist under a new `v2` key** (`scanalyzer_examiner_layers_v2`),
+  with placement (`top`/`bottom`/`row`/`off`), per-group order and the legend flag.
+  Saved v1 settings migrate: visible layers land on their domain's normalled pane,
+  explicit rows stay rows.
+
 ### 2026-07-14 — music taxonomy explosion
 
 #### Added
