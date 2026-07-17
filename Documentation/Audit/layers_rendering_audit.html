@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layers Rendering Audit — Plots &amp; Math</title>
+</head>
+<body>
+<style>
+:root{
+  --bg:#0e1014; --panel:#171b22; --panel2:#12151b; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#e8964a; --accent-dim:#9c6a3d; --wave:#6fa8d6; --good:#7fb98a;
+  --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#f5f4f1; --panel:#ffffff; --panel2:#efede8; --line:#ddd9d0;
+    --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+    --accent:#c06a1f; --accent-dim:#d9a878; --wave:#3d76a8; --good:#4d7f58;
+    --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1014; --panel:#171b22; --panel2:#12151b; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#e8964a; --accent-dim:#9c6a3d; --wave:#6fa8d6; --good:#7fb98a;
+  --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+:root[data-theme="light"]{
+  --bg:#f5f4f1; --panel:#ffffff; --panel2:#efede8; --line:#ddd9d0;
+  --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+  --accent:#c06a1f; --accent-dim:#d9a878; --wave:#3d76a8; --good:#4d7f58;
+  --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+}
+html{background:var(--bg)}
+body{
+  background:var(--bg); color:var(--text);
+  font:16px/1.62 "Seravek","Segoe UI",system-ui,-apple-system,sans-serif;
+  margin:0; padding:0 20px 80px;
+}
+main{max-width:74ch; margin:0 auto}
+h1,h2,h3{line-height:1.2; text-wrap:balance; font-weight:650}
+h1{font-size:2.1rem; margin:2.2rem 0 .4rem; letter-spacing:-.015em}
+h2{font-size:1.35rem; margin:3rem 0 .8rem; padding-top:1.4rem; border-top:1px solid var(--line)}
+h3{font-size:1.02rem; margin:1.6rem 0 .5rem}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.eyebrow{
+  font:600 .72rem/1 ui-monospace,"SF Mono",Menlo,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-top:3rem;
+}
+.meta{color:var(--muted); font-size:.92rem; margin-bottom:1.6rem}
+.meta b{color:var(--text); font-weight:600}
+code,pre{font:.83rem/1.55 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+code{background:var(--code-bg); border:1px solid var(--line); border-radius:4px; padding:.08em .35em}
+pre{
+  background:var(--code-bg); border:1px solid var(--line); border-radius:8px;
+  padding:.85rem 1rem; overflow-x:auto; margin:.9rem 0;
+}
+pre code{background:none;border:none;padding:0}
+.formula{border-left:3px solid var(--accent); }
+.card{
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:1.1rem 1.25rem 1.25rem; margin:1.4rem 0; box-shadow:var(--shadow);
+}
+.card h3{margin-top:.2rem}
+.plot{
+  display:block; width:100%; height:150px; border-radius:6px;
+  border:1px solid var(--line); background:var(--panel2); margin:.6rem 0 .3rem;
+}
+.plot.tall{height:190px}
+.plot.short{height:90px}
+.caption{font-size:.8rem; color:var(--muted); margin:.15rem 0 .9rem;
+  font-family:ui-monospace,"SF Mono",Menlo,monospace}
+table{border-collapse:collapse; width:100%; font-size:.9rem; margin:.9rem 0}
+th,td{text-align:left; padding:.45rem .7rem; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600}
+td code{white-space:nowrap}
+.tablewrap{overflow-x:auto}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+.maps{display:grid; grid-template-columns:repeat(2,1fr); gap:.7rem 1.2rem; margin:1rem 0}
+@media (max-width:640px){.maps{grid-template-columns:1fr}}
+.mapstrip{height:26px; width:100%; border-radius:4px; border:1px solid var(--line); display:block}
+.maplabel{font:.74rem/1.5 ui-monospace,"SF Mono",Menlo,monospace; color:var(--muted); margin-top:.25rem}
+.maplabel b{color:var(--text); font-weight:600}
+.obs{counter-reset:obs; padding-left:0; list-style:none; margin:1rem 0}
+.obs li{
+  counter-increment:obs; position:relative; padding:.15rem 0 .8rem 2.4rem; margin:0;
+}
+.obs li::before{
+  content:counter(obs); position:absolute; left:0; top:.22rem;
+  width:1.55rem; height:1.55rem; border-radius:50%;
+  border:1px solid var(--accent); color:var(--accent);
+  font:600 .8rem/1.55rem ui-monospace,monospace; text-align:center;
+}
+.hier{white-space:pre; font-size:.8rem; color:var(--text)}
+.hier .dim{color:var(--faint)}
+.hier .acc{color:var(--accent)}
+.legend{display:flex; flex-wrap:wrap; gap:.4rem .9rem; font-size:.78rem; color:var(--muted);
+  font-family:ui-monospace,monospace; margin:.2rem 0 .6rem}
+.legend span::before{content:"■ "; }
+.legend .lw::before{color:var(--wave)} .legend .la::before{color:var(--accent)}
+.legend .lg::before{color:var(--good)} .legend .lm::before{color:var(--faint)}
+.footer{margin-top:3.5rem; padding-top:1rem; border-top:1px solid var(--line);
+  color:var(--muted); font-size:.85rem}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+
+<main>
+<div class="eyebrow">Sample Analysis · Documentation Audit</div>
+<h1>Layers Rendering Audit — the Overlays, Their Plots, and Their Math</h1>
+<p class="meta"><b>Scope:</b> <code>Documentation/layers/</code> — 75 C++/Qt files (~1.1&nbsp;MB), the layer stack vendored from <b>Sonic Visualiser</b> (svgui/layer, Chris Cannam / QMUL). Every miniature plot on this page is drawn live from the audited formulas. Full report: <code>Documentation/Audit/layers_rendering_audit.md</code>.</p>
+
+<h2>1 · How a layer gets sound onto the screen</h2>
+<p>Every overlay subclasses <code>Layer</code>. A layer never owns its view: each <code>paint()</code> call receives a <code>LayerGeometryProvider</code> supplying the time↔pixel mapping (<code>getXForFrame / getFrameForX</code>), frequency↔y mapping, and the zoom level as a <em>frames-per-pixel</em> quantity. Data arrives through an opaque <code>ModelId</code> resolved in a global registry — the model's <em>type</em> decides which layers can display it.</p>
+
+<div class="card"><h3>Class hierarchy</h3>
+<pre class="hier">Layer <span class="dim">(paint · model binding · measurement · XML · dormancy)</span>
+ ├── SingleColourLayer            <span class="dim">one named colour from ColourDatabase</span>
+ │     ├── WaveformLayer, TimeInstantLayer, TimeValueLayer
+ │     ├── NoteLayer ── FlexiNoteLayer, RegionLayer, BoxLayer, TextLayer
+ │     └── SliceLayer ── SpectrumLayer
+ └── SliceableLayer               <span class="dim">exposes a model a SliceLayer can cut through</span>
+       └── VerticalBinLayer       <span class="acc">Y axis = bin number (getYForBin / getBinForY)</span>
+             ├── SpectrogramLayer
+             └── Colour3DPlotLayer</pre></div>
+
+<div class="tablewrap"><table>
+<tr><th>Model type</th><th>What it holds</th><th>Layers</th></tr>
+<tr><td><code>RangeSummarisableTimeValueModel</code></td><td>audio + min/max/absmean peak caches</td><td>Waveform</td></tr>
+<tr><td><code>DenseTimeValueModel</code></td><td>raw audio samples</td><td>Spectrogram ×3, Spectrum</td></tr>
+<tr><td><code>DenseThreeDimensionalModel</code></td><td>time × bin × value grid</td><td>Colour3DPlot, Slice</td></tr>
+<tr><td><code>SparseTimeValueModel</code></td><td>time + value points</td><td>TimeValues</td></tr>
+<tr><td><code>NoteModel / RegionModel / BoxModel</code></td><td>pitched notes · labelled spans · time×value boxes</td><td>Notes, FlexiNotes, Regions, Boxes</td></tr>
+<tr><td><code>SparseOneDimensionalModel</code></td><td>bare time instants</td><td>TimeInstants</td></tr>
+<tr><td>any model</td><td>sample rate only</td><td>TimeRuler</td></tr>
+</table></div>
+
+<p>Two disjoint colour systems: single-colour layers pick from <code>ColourDatabase</code> (each colour flagged for dark or light backgrounds); heat-map layers push <em>values</em> through <code>ColourScale → ColourMapper</code>. Painting is time-budgeted by <code>RenderTimer</code>: 0.1&nbsp;s soft / 0.2&nbsp;s hard, never bailing before 15% done, pushing to the hard limit once ≥65% complete.</p>
+
+<h2>2 · WaveformLayer — the amplitude envelope</h2>
+<div class="card">
+<div class="legend"><span class="lw">min→max stroke</span><span class="lm">mean band</span><span class="la">clip ≥ 1.0</span></div>
+<canvas class="plot" id="cv-wave"></canvas>
+<div class="caption">per-pixel vertical strokes from summary min→max · lighter absmean band · centre axis · butterfly mode splits ch0 up / ch1 down</div>
+<p>Data is never raw samples at normal zoom: a peak-cache model serves <code>Range{min, max, absmean}</code> blocks, frame-quantised to block boundaries so a pixel shows the same data at any scroll position (<code>WaveformLayer.cpp:522</code>). Past 1:1 zoom it switches to oversampled interpolation with per-sample dots.</p>
+<pre class="formula"><code>Linear:  y = my − value·gain·m          (m = half band height, my = band centre)
+dB:      dB = 20·log10(|v|);  y-offset = (dB + 80)·m / 80,  floor −80 dB
+Meter:   voltage_to_fader(v, m, IEC Preview curve)
+Auto-normalize: gain = 1 / max(|min|,|max|) over visible range   (WaveformLayer.cpp:552)</code></pre>
+</div>
+
+<h2>3 · SpectrogramLayer — time × frequency heat</h2>
+<div class="card">
+<canvas class="plot tall" id="cv-spec"></canvas>
+<div class="caption">synthetic harmonic stack rendered through the audited chain: magnitude → dB log map → Sunset palette · log frequency axis</div>
+<p>The layer derives an <code>FFTModel</code> from raw audio: window (default 1024, Hanning), hop from overlap level (none → 93.75%), and <em>oversampling</em> = zero-padding (<code>fftSize = windowSize × 1..8</code>) which interpolates the frequency axis. Two peak-cache mipmaps serve zoomed-out reads.</p>
+<pre class="formula"><code>frequency = bin · sampleRate / fftSize                    (SpectrogramLayer.cpp:1319)
+y         = getYForFrequency(f, minF, maxF, {Linear|Mel|Log})
+magnitude scaling: raw FFT ÷ (fftSize/2)  →  voltage      (skipped in Phase/Hybrid)
+colour options: Linear · Meter · dB (log) · dB² (log ×2: log x² = 2·log x) · Phase</code></pre>
+<p><b>Peak Frequencies mode</b> keeps only bins that are local peaks over threshold and draws each at its <em>instantaneous frequency</em> — the phase-vocoder reassignment from phase advance between hops (estimator lives in <code>FFTModel</code>, outside this snapshot). <b>Normalization:</b> none · column-max→1 · visible-area min/max · hybrid (column shape × <code>log10(colMax+1)</code> so loud moments stay bright).</p>
+</div>
+
+<h2>4 · Colour3DPlotLayer &amp; the shared renderer</h2>
+<div class="card">
+<p>The generic heat map for any dense grid (chromagram, MFCC, plugin output). Same colour pipeline, different bin axis:</p>
+<pre class="formula"><code>linear:  y = h − (bin − minBin)·h / (maxBin − minBin)     (Colour3DPlotLayer.cpp:851)
+log:     same interpolation in LogRange::map(bin+1) space</code></pre>
+<p>Both heat layers delegate to <code>Colour3DPlotRenderer</code>, whose pipeline order is fixed:</p>
+<pre><code>get column → scale → normalise → record magnitude extents
+           → peak-pick → distribute / interpolate → display gain</code></pre>
+<p><b>Peaks are never averaged away.</b> Many bins per pixel → max-aggregation; fewer bins than pixels → peak-preserving distribute; x-axis upscaling uses a hand-written nearest-neighbour copy because Qt's fast transform can drop single-pixel peaks (<code>Colour3DPlotRenderer.cpp:930</code>).</p>
+<p><b>Scroll cache:</b> <code>ScrollableImageCache</code> keeps one contiguous valid span; scrolling <code>memmove</code>s scanlines sideways and re-renders only the exposed strip, extending the valid region strictly at its edges (drawing right-to-left when extending leftward) — never a hole. A parallel per-column magnitude-range cache drives visible-area normalization and the dB legend.</p>
+</div>
+
+<h2>5 · Value → colour: the 256-step chain</h2>
+<div class="card">
+<pre class="formula"><code>value ×gain → threshold cut (below → pixel 0 = reserved background)
+      → scale map {linear · log · meter-fader · ±1 clamp · |abs| · phase}
+      → ×multiple → clamp to mapped range → proportion ∈ [0,1]
+      → pixel = proportion·255 + 1
+      → (+ rotation, wrapped 1..255) → ColourMapper → RGB      (ColourScale.cpp:104-180)</code></pre>
+<p>Pixel 0 bypasses rotation and the palette entirely — thresholding is structural. Phase mode maps [−π, π] linearly to the palette and ignores gain and threshold. These strips are computed live from the audited <code>ColourMapper</code> formulas (<code>ColourMapper.cpp:266-427</code>):</p>
+<div class="maps" id="maps"></div>
+</div>
+
+<h2>6 · SpectrumLayer / SliceLayer — one moment, all frequencies</h2>
+<div class="card">
+<div class="legend"><span class="lw">magnitude curve</span><span class="la">detected peaks</span></div>
+<canvas class="plot" id="cv-spectrum"></canvas>
+<div class="caption">log frequency axis (0.8-shift compromise) · dB energy scale · peak lines at phase-interpolated frequencies</div>
+<p><code>SliceLayer</code> draws one column of any 3-D model at the view centre — styles: Lines, Steps, Blocks, colour-mapped fills; column sampling nearest / mean / peak. <code>SpectrumLayer</code> specialises it with its own <code>FFTModel</code> (window 4096), a piano keyboard + Hz scale, and crosshairs with harmonic ticks at 2f…99f.</p>
+<pre class="formula"><code>log X axis (avoids log 0 at bin 0, compromise shift 0.8):
+  x = w · (log10(p+0.8) − log10(pmin+0.8)) / (log10(pmax+0.8) − log10(pmin+0.8))
+dB energy:  norm = (dB − threshold)/(−threshold),  dB = 10·log10 (power) | 20·log10 (root-power)
+FFT bias curve: each bin × 1/(windowSize/2)  →  voltage      (SliceLayer.cpp:198, 359)</code></pre>
+</div>
+
+<h2>7 · Annotation overlays — events on top of the sound</h2>
+
+<div class="grid2">
+<div class="card"><h3>TimeValueLayer</h3>
+<canvas class="plot short" id="cv-tv"></canvas>
+<div class="caption">curve style: cubic-spline through midpoints · 7 styles incl. stems, segmentation bands, discrete curves</div>
+<p>Scales: auto-align · linear (+10% margin) · log · ±1; derivative mode plots successive differences. Segmentation bands = <code>ColourMapper.map(value)</code> at alpha 120.</p></div>
+
+<div class="card"><h3>NoteLayer / FlexiNoteLayer</h3>
+<canvas class="plot short" id="cv-notes"></canvas>
+<div class="caption">piano-roll rectangles at frequency height · duration = width</div>
+<pre class="formula"><code>pitch p = round(v), cents = 100·(v−p)
+f = 440·2^((p−69)/12) ± cents</code></pre>
+<p>FlexiNote: 16-px notes; cursor edge (±8 px) picks drag / left / right / split; pitch snaps to the <b>median</b> of the pitch track under the note.</p></div>
+
+<div class="card"><h3>RegionLayer</h3>
+<canvas class="plot short" id="cv-regions"></canvas>
+<div class="caption">segmentation bands + I-beam spans · EqualSpaced scale band-centres each distinct value</div>
+<pre class="formula"><code>y = h − ( h·i/n + h/(2n) )
+snap when |Δy| &lt; gap/3</code></pre></div>
+
+<div class="card"><h3>TimeInstantLayer &amp; TimeRulerLayer</h3>
+<canvas class="plot short" id="cv-ruler"></canvas>
+<div class="caption">instants: full-height lines / alternating bands · ruler: 1→5→10→30→60→300…s "nice" ticks, 10 graded minors</div>
+<p>Tick x positions are rounded to zoom-block boundaries so labels don't shimmer while scrolling (<code>TimeRulerLayer.cpp:214</code>).</p></div>
+</div>
+
+<p><b>BoxLayer</b> draws an unfilled rectangle from <code>(t0, value)</code> to <code>(t1, value+|level|)</code>, both corners through the shared scale. <b>TextLayer</b> anchors labels at a bare proportion <code>y = h − height·h</code>. <b>ImageLayer</b> fits images aspect-preserving; its <code>ImageRegionFinder</code> flood-fills with an adaptive threshold (<code>|colour|/2</code>) and requires ≥2 similar neighbours before expanding — suppressing 1-px antialiasing filaments.</p>
+
+<h2>8 · Shared math kernels</h2>
+<div class="card">
+<p><b>CoordinateScale</b> owns every vertical axis (<code>CoordinateScale.cpp:183-236</code>):</p>
+<pre class="formula"><code>point = map(value)      // identity | LogRange::map | Mel(frequency)
+y     = h − h·(point − min)/(max − min)     — log scales interpolate linearly in log space</code></pre>
+<p><b>AudioLevel</b> funnels all dB math: <code>20·log10</code> for amplitude, <code>10·log10</code> for power, and the IEC "Preview" fader curve for every Meter scale — with the fixed tick ladder −40 −30 −20 −15 −10 −5 −3 −2 −1 −0.5 0 dB shared by the scale painter.</p>
+<p>An <code>ScaleApplication</code> tag (Normal / Deferring / Personal / None) decides whether a layer's scale may auto-align with other layers sharing its unit — this is how a note layer and a pitch-track curve line up on one axis.</p>
+</div>
+
+<h2>9 · Observations</h2>
+<ol class="obs">
+<li><b>Peak preservation is a design invariant.</b> Every resolution reduction — waveform summaries, max-aggregation, the hand-rolled upscaler — chooses peak-keeping over averaging, so transients never vanish at any zoom.</li>
+<li><b>Pixel-stability tricks recur.</b> Block-aligned frame quantisation, ruler ticks rounded to zoom blocks, measurement rects stored as frames + fractional heights: nothing shimmers on scroll or resize.</li>
+<li><b>Colour index 0 is reserved</b> as a below-threshold background that bypasses rotation and mapping — thresholding is structural, not cosmetic.</li>
+<li><b>Two math bodies are external to this snapshot:</b> <code>ColumnOp</code> (normalize / peakPick / distribute) and <code>FFTModel</code> (phase-vocoder frequency estimator) live in svcore; call sites are quoted in the full report.</li>
+<li><b>Transferable to Sample Analysis:</b> the gain→threshold→log→palette chain, widen-only display extents, and the scrollable-strip cache map directly onto the Web_Front client-side spectrogram and the Scananalyzer Extractor tab.</li>
+</ol>
+
+<div class="footer">Audit of 75 files at commit 198a320 · five parallel deep-reads · formulas quoted from source with file:line references · full text in <code>Documentation/Audit/layers_rendering_audit.md</code></div>
+</main>
+
+<script>
+(function(){
+"use strict";
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function seeded(s){return function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;};}
+function setup(id){
+  const c=document.getElementById(id); if(!c)return null;
+  const r=window.devicePixelRatio||1, w=c.clientWidth, h=c.clientHeight;
+  c.width=w*r; c.height=h*r;
+  const g=c.getContext("2d"); g.setTransform(r,0,0,r,0,0);
+  return {g,w,h};
+}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+/* ---- ColourMapper formulas (audited) ---- */
+function hsv(h,s,v){
+  h=((h%1)+1)%1; const i=Math.floor(h*6), f=h*6-i, p=v*(1-s), q=v*(1-f*s), t=v*(1-(1-f)*s);
+  const m=[[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i%6];
+  return m.map(x=>Math.round(x*255));
+}
+const MAPS={
+  "Green":        n=>hsv(0.6666-n*0.6666, 0.5+n/2, n),
+  "Sunset":       n=>{let r=clamp((n-0.24)*2.38,0,1),g=clamp((n-0.64)*2.777,0,1),b=3.6*n;if(n>0.277)b=2.0-b;return [r,g,clamp(b,0,1)].map(x=>Math.round(x*255));},
+  "WhiteOnBlack": n=>[n,n,n].map(x=>Math.round(x*255)),
+  "BlackOnWhite": n=>[1-n,1-n,1-n].map(x=>Math.round(x*255)),
+  "Wasp":         n=>hsv(0.15,1.0,n),
+  "FruitSalad":   n=>hsv(0.6666+0.3333/6-n,1,1),
+  "BlueOnBlack":  n=>{let v=n*2,s=1;if(v>1){v=1;s=clamp(1-(Math.sqrt(n)-0.707)*3.413,0,1);}return hsv(0.6666,s,v);},
+  "HighGain":     n=>{if(n<=1/256)n=0;else n=0.1+(Math.pow((n-0.5)*2,3)+1)/2.081;let r=clamp((n-0.24)*2.38,0,1),g=clamp((n-0.64)*2.777,0,1),b=3.6*n;if(n>0.277)b=2.0-b;return [r,g,clamp(b,0,1)].map(x=>Math.round(x*255));}
+};
+const MAPDESC={
+  "Green":"HSV: h=⅔(1−n), s=½+n/2, v=n","Sunset":"piecewise: r=(n−.24)·2.38 · g=(n−.64)·2.78 · b triangular",
+  "WhiteOnBlack":"grey ramp r=g=b=n","BlackOnWhite":"inverted grey 1−n",
+  "Wasp":"fixed hue .15, v=n","FruitSalad":"hue wheel h=⅔+1/18−n, s=v=1",
+  "BlueOnBlack":"v=2n; sat rolls off past 1","HighGain":"cubic warp then Sunset"
+};
+function buildMaps(){
+  const host=document.getElementById("maps"); host.innerHTML="";
+  for(const name in MAPS){
+    const wrap=document.createElement("div");
+    const cv=document.createElement("canvas"); cv.className="mapstrip";
+    wrap.appendChild(cv);
+    const lab=document.createElement("div"); lab.className="maplabel";
+    lab.innerHTML="<b>"+name+"</b> — "+MAPDESC[name];
+    wrap.appendChild(lab); host.appendChild(wrap);
+    const r=window.devicePixelRatio||1;
+    cv.width=cv.clientWidth*r; cv.height=cv.clientHeight*r;
+    const g=cv.getContext("2d");
+    for(let x=0;x<cv.width;x++){
+      const [cr,cg,cb]=MAPS[name](x/(cv.width-1));
+      g.fillStyle="rgb("+cr+","+cg+","+cb+")"; g.fillRect(x,0,1,cv.height);
+    }
+  }
+}
+/* ---- Waveform miniature ---- */
+function drawWave(){
+  const s=setup("cv-wave"); if(!s)return; const {g,w,h}=s;
+  const rnd=seeded(42), my=h/2, m=h/2-8;
+  g.clearRect(0,0,w,h);
+  const env=[];
+  for(let x=0;x<w;x++){
+    const t=x/w;
+    let e=0.25+0.55*Math.exp(-Math.pow((t-0.22)/0.09,2))+0.8*Math.exp(-Math.pow((t-0.55)/0.05,2))
+         +0.45*Math.exp(-Math.pow((t-0.8)/0.12,2));
+    e*= (0.75+0.25*Math.sin(t*90)) * (0.85+0.3*rnd());
+    env.push(Math.min(e,1.04));
+  }
+  const mean=css("--faint"), wav=css("--wave"), acc=css("--accent");
+  for(let x=0;x<w;x++){
+    const e=env[x], mn=e*(0.35+0.15*Math.sin(x*0.7));
+    g.strokeStyle=mean; g.globalAlpha=0.55;
+    g.beginPath(); g.moveTo(x+.5,my-mn*m); g.lineTo(x+.5,my+mn*m); g.stroke();
+    g.globalAlpha=1;
+    g.strokeStyle=(e>=1.0)?acc:wav;
+    g.beginPath(); g.moveTo(x+.5,my-Math.min(e,1)*m); g.lineTo(x+.5,my+Math.min(e,1)*m); g.stroke();
+  }
+  g.strokeStyle=css("--muted"); g.globalAlpha=.8;
+  g.beginPath(); g.moveTo(0,my+.5); g.lineTo(w,my+.5); g.stroke(); g.globalAlpha=1;
+}
+/* ---- Spectrogram miniature (dB → Sunset) ---- */
+function drawSpec(){
+  const s=setup("cv-spec"); if(!s)return; const {g,w,h}=s;
+  const img=g.createImageData(w,h), d=img.data;
+  const fmin=40, fmax=8000, lmin=Math.log10(fmin), lmax=Math.log10(fmax);
+  function freqAt(y){ return Math.pow(10, lmax-(y/h)*(lmax-lmin)); }
+  for(let y=0;y<h;y++){
+    const f=freqAt(y);
+    for(let x=0;x<w;x++){
+      const t=x/w;
+      const f0=110*(1+0.25*Math.sin(t*6.0))*(1+0.08*Math.sin(t*23));
+      let mag=0.004+0.02*Math.exp(-f/3000);
+      for(let k=1;k<=9;k++){
+        const fk=f0*k, bw=fk*0.035+6;
+        const a=Math.exp(-Math.pow((f-fk)/bw,2))*Math.pow(0.75,k-1);
+        mag+=a*(0.55+0.45*Math.sin(t*40+k*1.7));
+      }
+      if(t>0.62&&t<0.66) mag+=0.5*Math.exp(-Math.pow((f-3000)/2600,2)); // transient
+      const dB=20*Math.log10(Math.max(mag,1e-5));
+      const norm=clamp((dB+60)/60,0,1);
+      const pix=norm<=0?0:Math.floor(norm*255)+1;
+      let c;
+      if(pix===0){c=[0,0,0];} else {c=MAPS["Sunset"]((pix-1)/255);}
+      const i=(y*w+x)*4; d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=255;
+    }
+  }
+  g.putImageData(img,0,0);
+}
+/* ---- Spectrum slice miniature ---- */
+function drawSpectrum(){
+  const s=setup("cv-spectrum"); if(!s)return; const {g,w,h}=s;
+  g.clearRect(0,0,w,h);
+  const f0=110, thresh=-72;
+  function magAt(f){
+    let m=0.002+0.004*Math.exp(-f/4000);
+    for(let k=1;k<=12;k++){
+      const fk=f0*k, bw=fk*0.012+3;
+      m+=Math.exp(-Math.pow((f-fk)/bw,2))*Math.pow(0.72,k-1);
+    }
+    return m;
+  }
+  const pmin=30,pmax=8000;
+  function xFor(f){return w*(Math.log10(f+0.8)-Math.log10(pmin+0.8))/(Math.log10(pmax+0.8)-Math.log10(pmin+0.8));}
+  function yFor(mag){const dB=20*Math.log10(Math.max(mag,1e-6));return h-clamp((dB-thresh)/(-thresh),0,1)*(h-10);}
+  // peak lines
+  g.strokeStyle=css("--accent"); g.globalAlpha=.7;
+  for(let k=1;k<=12;k++){
+    const f=f0*k, x=xFor(f), y=yFor(magAt(f));
+    if(x>w-2)break;
+    g.beginPath(); g.moveTo(x+.5,h); g.lineTo(x+.5,y); g.stroke();
+  }
+  g.globalAlpha=1;
+  // curve
+  g.strokeStyle=css("--wave"); g.lineWidth=1.4; g.beginPath();
+  for(let x=0;x<w;x++){
+    const f=Math.pow(10,Math.log10(pmin+0.8)+ (x/w)*(Math.log10(pmax+0.8)-Math.log10(pmin+0.8)))-0.8;
+    const y=yFor(magAt(f));
+    if(x===0)g.moveTo(x,y); else g.lineTo(x,y);
+  }
+  g.stroke(); g.lineWidth=1;
+}
+/* ---- TimeValue curve ---- */
+function drawTV(){
+  const s=setup("cv-tv"); if(!s)return; const {g,w,h}=s;
+  g.clearRect(0,0,w,h);
+  const rnd=seeded(7), pts=[];
+  for(let i=0;i<10;i++)pts.push({x:8+i*(w-16)/9, y:14+rnd()*(h-28)});
+  g.strokeStyle=css("--wave"); g.lineWidth=1.4; g.beginPath();
+  g.moveTo(pts[0].x,pts[0].y);
+  for(let i=0;i<pts.length-1;i++){
+    const a=pts[i],b=pts[i+1],mx=(a.x+b.x)/2,myy=(a.y+b.y)/2;
+    g.quadraticCurveTo(a.x,a.y,mx,myy);
+  }
+  g.lineTo(pts[pts.length-1].x,pts[pts.length-1].y); g.stroke(); g.lineWidth=1;
+  g.fillStyle=css("--accent");
+  pts.forEach(p=>g.fillRect(p.x-2,p.y-2,4,4));
+}
+/* ---- Notes piano-roll ---- */
+function drawNotes(){
+  const s=setup("cv-notes"); if(!s)return; const {g,w,h}=s;
+  g.clearRect(0,0,w,h);
+  const seq=[[0,60,2],[2,62,1],[3,64,2],[5,67,3],[8,65,1],[9,64,2],[11,60,3]];
+  const pmin=57,pmax=70;
+  const acc=css("--wave");
+  g.strokeStyle=acc; g.fillStyle=acc;
+  seq.forEach(([t,p,d])=>{
+    const x=6+t*(w-12)/14, wid=d*(w-12)/14-3;
+    const y=h-((p-pmin)/(pmax-pmin))*(h-16)-8;
+    g.globalAlpha=.3; g.fillRect(x,y-4,wid,8);
+    g.globalAlpha=1;  g.strokeRect(x+.5,y-4+.5,wid,8);
+  });
+}
+/* ---- Regions ---- */
+function drawRegions(){
+  const s=setup("cv-regions"); if(!s)return; const {g,w,h}=s;
+  g.clearRect(0,0,w,h);
+  const vals=[0.2,0.65,0.4,0.9,0.65,0.15], n=5;
+  let x=0;
+  vals.forEach((v,i)=>{
+    const wid=w/vals.length;
+    const c=MAPS["Sunset"](v);
+    g.fillStyle="rgba("+c[0]+","+c[1]+","+c[2]+",0.42)";
+    g.fillRect(x,0,wid,h);
+    // I-beam at band-centred ordinal y
+    const idx=Math.round(v*(n-1));
+    const y=h-((h*idx)/n+h/(2*n));
+    g.strokeStyle=css("--text");
+    g.beginPath();
+    g.moveTo(x+3,y+.5); g.lineTo(x+wid-3,y+.5);
+    g.moveTo(x+3+.5,y-4); g.lineTo(x+3+.5,y+5);
+    g.moveTo(x+wid-3+.5,y-4); g.lineTo(x+wid-3+.5,y+5);
+    g.stroke();
+    x+=wid;
+  });
+}
+/* ---- Ruler + instants ---- */
+function drawRuler(){
+  const s=setup("cv-ruler"); if(!s)return; const {g,w,h}=s;
+  g.clearRect(0,0,w,h);
+  const muted=css("--muted"), faint=css("--faint"), acc=css("--accent");
+  // alternating instant bands
+  const inst=[0.12,0.3,0.44,0.58,0.83];
+  for(let i=0;i<inst.length-1;i++){
+    if(i%2===0)continue;
+    g.fillStyle=faint; g.globalAlpha=.14;
+    g.fillRect(inst[i]*w,0,(inst[i+1]-inst[i])*w,h);
+  }
+  g.globalAlpha=1;
+  inst.forEach(t=>{
+    g.strokeStyle=acc;
+    g.beginPath(); g.moveTo(Math.round(t*w)+.5,0); g.lineTo(Math.round(t*w)+.5,h); g.stroke();
+  });
+  // ruler ticks along bottom
+  const majors=5;
+  g.strokeStyle=muted; g.fillStyle=muted;
+  g.font="9px ui-monospace,monospace";
+  for(let mIdx=0;mIdx<=majors;mIdx++){
+    const x=Math.round(mIdx*(w-1)/majors)+.5;
+    g.beginPath(); g.moveTo(x,h); g.lineTo(x,h-16); g.stroke();
+    if(mIdx<majors)g.fillText((mIdx*5)+"s", x+3, h-6);
+    for(let i=1;i<10 && mIdx<majors;i++){
+      const xx=Math.round((mIdx+i/10)*(w-1)/majors)+.5;
+      const len=(i===5)?10:(i%2===0?7:3);
+      g.beginPath(); g.moveTo(xx,h); g.lineTo(xx,h-len); g.stroke();
+    }
+  }
+}
+function drawAll(){
+  buildMaps(); drawWave(); drawSpec(); drawSpectrum(); drawTV(); drawNotes(); drawRegions(); drawRuler();
+}
+drawAll();
+let t=null;
+window.addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(drawAll,150);});
+if(window.matchMedia){window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",drawAll);}
+new MutationObserver(drawAll).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+})();
+</script>
+
+</body>
+</html>

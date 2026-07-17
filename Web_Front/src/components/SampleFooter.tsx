@@ -7,7 +7,7 @@ import { useIsNarrow } from '../useIsNarrow';
 // only shows the controls it actually has. Layout is three groups: file actions (left),
 // transport centred between flex spacers, push-to-tab (right). (The name / length / category
 // readout lives in the header.)
-export type FooterTab = 'extractor' | 'examiner' | 'stats' | 'cloud';
+export type FooterTab = 'extractor' | 'examiner' | 'stats' | 'cloud' | 'favorites';
 
 interface SampleFooterProps {
   item: any | null;
@@ -15,6 +15,10 @@ interface SampleFooterProps {
   digging?: boolean;
   autoPlay?: boolean;
   autoLoop?: boolean;
+  // Is the selected sample a favorite? The ★ button reflects and toggles it — the
+  // touch/mouse twin of the global F key.
+  favorite?: boolean;
+  onToggleFavorite?: () => void;
   onDownload?: () => void;
   onCopyData?: () => void | Promise<any>; // copy the selected record's full .PEAK data to the clipboard
   onPlay?: () => void;              // play / stop toggle
@@ -31,10 +35,11 @@ interface SampleFooterProps {
 const TAB_LABEL: Record<FooterTab, { icon: string; text: string }> = {
   extractor: { icon: '✂', text: 'Extract' }, examiner: { icon: '🔍', text: 'Examine' },
   stats: { icon: '📊', text: '2D' }, cloud: { icon: '🌐', text: '3D' },
+  favorites: { icon: '★', text: 'Favorites' },
 };
 
 export default function SampleFooter({
-  item, playing, digging, autoPlay, autoLoop, onDownload, onCopyData, onPlay, onDig, onToggleAutoPlay, onToggleAutoLoop, current, onPush,
+  item, playing, digging, autoPlay, autoLoop, favorite, onToggleFavorite, onDownload, onCopyData, onPlay, onDig, onToggleAutoPlay, onToggleAutoLoop, current, onPush,
 }: SampleFooterProps) {
   const narrow = useIsNarrow();
   const name = item?.metadata?.name || '';
@@ -67,6 +72,12 @@ export default function SampleFooter({
       {!narrow && <div style={{ flex: 1 }} />}
 
       {/* Transport (centred) */}
+      {onToggleFavorite && (
+        <button className="btn secondary" style={{ ...btn, color: favorite ? 'var(--accent-primary)' : undefined, borderColor: favorite ? 'var(--accent-primary)' : undefined, fontWeight: favorite ? 700 : undefined }}
+          onClick={onToggleFavorite} disabled={!item} title={favorite ? 'Un-favorite — F' : 'Favorite — F'}>
+          {narrow ? (favorite ? '★' : '☆') : (favorite ? '★ Favorite' : '☆ Favorite')}
+        </button>
+      )}
       {onPlay && <button className="btn secondary" style={playBtn} onClick={onPlay} disabled={!item} title={playing ? 'Stop' : 'Play'}>{playing ? (narrow ? '■' : '■ Stop') : lbl('▶', 'Play')}</button>}
       {onDig && <button className={`btn ${digging ? 'primary' : 'secondary'}`} style={digging ? { ...btn, background: '#ef4444' } : btn} onClick={onDig} disabled={!item} title="DIG">{digging ? (narrow ? '■' : '■ DIG') : lbl('⛏', 'DIG')}</button>}
       {onToggleAutoPlay && (

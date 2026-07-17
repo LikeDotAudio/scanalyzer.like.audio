@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favorites Tab — Design Audit</title>
+</head>
+<body>
+<style>
+:root{
+  --bg:#0e1014; --panel:#171b22; --panel2:#0a0c10; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#f4902c; --cyan:#6fa8d6; --good:#7fb98a; --bad:#e06a5a;
+  --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#f5f4f1; --panel:#ffffff; --panel2:#101318; --line:#ddd9d0;
+    --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+    --accent:#c06a1f; --cyan:#3d76a8; --good:#4d7f58; --bad:#b0432f;
+    --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1014; --panel:#171b22; --panel2:#0a0c10; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#f4902c; --cyan:#6fa8d6; --good:#7fb98a; --bad:#e06a5a;
+  --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+:root[data-theme="light"]{
+  --bg:#f5f4f1; --panel:#ffffff; --panel2:#101318; --line:#ddd9d0;
+  --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+  --accent:#c06a1f; --cyan:#3d76a8; --good:#4d7f58; --bad:#b0432f;
+  --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+}
+html{background:var(--bg)}
+body{background:var(--bg); color:var(--text);
+  font:16px/1.62 "Seravek","Segoe UI",system-ui,-apple-system,sans-serif;
+  margin:0; padding:0 20px 80px;}
+main{max-width:78ch; margin:0 auto}
+h1,h2,h3{line-height:1.2; text-wrap:balance; font-weight:650}
+h1{font-size:2rem; margin:2.2rem 0 .4rem; letter-spacing:-.015em}
+h2{font-size:1.3rem; margin:3rem 0 .8rem; padding-top:1.4rem; border-top:1px solid var(--line)}
+h3{font-size:1rem; margin:1.5rem 0 .5rem}
+p{margin:.7rem 0}
+.eyebrow{font:600 .72rem/1 ui-monospace,"SF Mono",Menlo,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-top:3rem;}
+.meta{color:var(--muted); font-size:.92rem; margin-bottom:1.4rem}
+.meta b{color:var(--text); font-weight:600}
+code,pre{font:.82rem/1.55 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+code{background:var(--code-bg); border:1px solid var(--line); border-radius:4px; padding:.08em .35em}
+pre{background:var(--code-bg); border:1px solid var(--line); border-radius:8px;
+  padding:.85rem 1rem; overflow-x:auto; margin:.9rem 0;}
+pre code{background:none;border:none;padding:0}
+table{border-collapse:collapse; width:100%; font-size:.88rem; margin:.9rem 0}
+th,td{text-align:left; padding:.45rem .65rem; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.tablewrap{overflow-x:auto}
+td.good{color:var(--good)} td.bad{color:var(--bad)}
+.pill{display:inline-block; font:600 .66rem/1.6 ui-monospace,Menlo,monospace; letter-spacing:.08em;
+  text-transform:uppercase; border:1px solid var(--line); border-radius:99px; padding:.05rem .5rem; color:var(--muted)}
+.pill.rec{color:var(--good); border-color:color-mix(in srgb, var(--good) 45%, var(--line))}
+.pill.no{color:var(--bad); border-color:color-mix(in srgb, var(--bad) 45%, var(--line))}
+.callout{border-left:3px solid var(--accent); background:var(--panel); border-radius:0 8px 8px 0;
+  padding:.8rem 1rem; margin:1.1rem 0}
+.callout p{margin:.3rem 0}
+.tree{font:.82rem/1.7 ui-monospace,Menlo,monospace; background:var(--code-bg);
+  border:1px solid var(--line); border-radius:8px; padding:.9rem 1.1rem; overflow-x:auto}
+.tree .user{color:var(--accent); font-weight:650}
+.tree .cache{color:var(--cyan)}
+.tree .dim{color:var(--faint)}
+
+/* ------- interactive demo ------- */
+.demo{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  box-shadow:var(--shadow); padding:1rem 1.1rem 1.2rem; margin:1.2rem 0}
+.demo .hint{font-size:.8rem; color:var(--muted); margin:.2rem 0 .8rem}
+.demo kbd{font:600 .78rem/1 ui-monospace,Menlo,monospace; background:var(--code-bg);
+  border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:.15em .5em}
+.rows{border:1px solid var(--line); border-radius:6px; overflow:hidden; background:var(--panel2)}
+/* The mock list is a screen-inside-the-page: its panel stays dark in both themes
+   (house convention for --panel2), so its text is fixed light, not var(--text). */
+.row{display:flex; align-items:center; gap:.6rem; padding:.32rem .7rem;
+  font:.8rem/1.4 ui-monospace,Menlo,monospace; color:#c9cfda; border-bottom:1px solid #262c37; cursor:pointer}
+.row:last-child{border-bottom:none}
+.row .star{width:1.1em; text-align:center; color:var(--faint)}
+.row .len{margin-left:auto; color:var(--faint); font-size:.72rem}
+.row.playing{background:rgba(59,130,246,.18)}
+.row.fav .name, .row.fav .star{color:var(--accent); font-weight:650}
+.demo .transport{display:flex; align-items:center; gap:.6rem; margin-top:.8rem; flex-wrap:wrap}
+.demo button{font:600 .8rem/1 inherit; background:var(--code-bg); color:var(--text);
+  border:1px solid var(--line); border-radius:6px; padding:.42rem .8rem; cursor:pointer}
+.demo button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.demo button.star-btn.on{color:var(--accent); border-color:var(--accent)}
+.demo .jsonwrap{margin-top:.9rem}
+.demo .jsonwrap .cap{font:600 .66rem/1.6 ui-monospace,Menlo,monospace; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:.25rem}
+.demo pre{margin:0; max-height:220px; overflow:auto}
+@media (prefers-reduced-motion: no-preference){
+  .row .name, .row .star, .demo button.star-btn{transition:color .15s ease}
+}
+</style>
+<main>
+  <div class="eyebrow">SCANALYZER.Like.Audio · Design audit · 2026-07-16</div>
+  <h1>The Favorites tab</h1>
+  <p class="meta"><b>Ask:</b> press <b>F</b> while listening → the sample is flagged, turns
+  <span style="color:var(--accent); font-weight:650">orange</span>, appears in a Favorites tab
+  ("another Examiner, filtered to favorites"), and a <code>favorites.json</code> manifest is written
+  at the library root, parallel to <code>sample_cloud_manifest.json</code>.
+  Companion prose: <code>favorites_tab_audit.md</code>.</p>
+
+  <h2>Try the loop</h2>
+  <div class="demo" id="demo" tabindex="0" aria-label="Favorites interaction demo">
+    <div class="hint">Click here first, then press <kbd>▶ Space</kbd> to dig through the mock list and
+    <kbd>F</kbd> to flag what's playing (or tap the ★). Watch <code>favorites.json</code> build itself.</div>
+    <div class="rows" id="rows"></div>
+    <div class="transport">
+      <button id="dig" type="button">⛏ DIG</button>
+      <button id="star" class="star-btn" type="button" title="Favorite — F">☆ Favorite</button>
+      <span class="hint" id="now" style="margin:0"></span>
+    </div>
+    <div class="jsonwrap">
+      <div class="cap">&lt;library root&gt;/favorites.json — live</div>
+      <pre id="json"></pre>
+    </div>
+  </div>
+
+  <h2>One set, owned by App</h2>
+  <p>The F key must work on every tab, and the orange must paint four surfaces — Examiner rows,
+  the Extractor file list, the footer ★, and the new tab. That is only sane with a single
+  <code>Set&lt;string&gt;</code> in <code>App.tsx</code>, keyed on <b>relative path</b>
+  (<code>metadata.path || metadata.name</code>) — never the bare name; every drum folder has a
+  <code>Kick.wav</code>. App is also the only writer of <code>favorites.json</code>, debounced
+  ~500&nbsp;ms after the last toggle.</p>
+  <div class="callout">
+    <p><b>What F flags:</b> <code>footerItem</code> — the sample the footer readout is on, playing or
+    just-finished. Gating on "audio currently running" makes a 0.2&nbsp;s hi-hat unfavoritable.
+    During DIG this is the crate-digging loop itself: samples stream by, taps flag them, digging never stops.</p>
+  </div>
+
+  <h2>Sibling of the manifest — never inside it</h2>
+  <p>The manifest is a <b>rebuildable cache</b>: every re-scan regenerates it, on web and desktop.
+  Favorites are <b>user data</b>. Folding them into the manifest deletes them on the next scan.
+  Parallel file, parallel lifecycle:</p>
+  <div class="tree">&lt;library root&gt;/
+├── <span class="cache">sample_cloud_manifest.json</span>   <span class="dim">← rebuildable cache — scans overwrite it</span>
+├── <span class="user">favorites.json</span>               <span class="dim">← user data — scans never touch it</span>
+└── <span class="dim">samples + .PEAK sidecars…</span></div>
+  <pre><code>{
+  "favorites_version": 1,
+  "generated_unix": 1789000000,
+  "favorites": [
+    { "path": "Drums/Kicks/Kick 03.wav", "name": "Kick 03.wav", "favorited_unix": 1789000000 }
+  ]
+}</code></pre>
+  <p>Objects, not bare paths: <code>favorited_unix</code> gives a "recently favorited" sort for
+  free, and future fields (rating, colour tag, note) land without a schema break. Full-English
+  field names, version-stamped — house rules.</p>
+
+  <h2>The tab: reuse the Examiner, don't fork it</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Option</th><th>Shape</th><th>Verdict</th></tr>
+    <tr><td><b>A · Fork</b> — copy ExaminerTab → FavoritesTab</td><td>~950 duplicated lines</td>
+      <td class="bad"><span class="pill no">rejected</span> two Examiners to fix every bug in</td></tr>
+    <tr><td><b>B · Reuse</b> — mount <code>&lt;ExaminerTab&gt;</code> again under <code>#/favorites</code>, rows pre-filtered</td>
+      <td><code>filteredData.filter(it =&gt; favorites.has(keyOf(it)))</code></td>
+      <td class="good"><span class="pill rec">recommended</span> DIG, columns, eye, meters inherited free</td></tr>
+    <tr><td><b>C · Filter chip</b> — "★ only" in the scope bar, no tab</td><td>one checkbox</td>
+      <td>composes with B later; alone it fails the ask</td></tr>
+  </table></div>
+  <p>Because only the active tab mounts (the <code>Suspense</code> block), the transport
+  registration and shared column prefs don't collide — the second mount <i>is</i> an Examiner.
+  DIG inside Favorites digs favorites only, because DIG walks the rows it was given. The scope
+  bar composes: category chips narrow the favorites like every other tab.</p>
+
+  <h2>The two gaps to close</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Gap</th><th>Closure</th></tr>
+    <tr><td>Web folder handles are requested <code>mode:'read'</code> (App.tsx:122, 203); writing needs readwrite</td>
+      <td>the first F press is a user activation → lazily <code>requestPermission({mode:'readwrite'})</code>;
+      denied → in-memory + localStorage mirror + one banner</td></tr>
+    <tr><td>Desktop has no generic root-file write — the Tauri surface is manifest-specific</td>
+      <td>two ~10-line commands mirroring the manifest pattern: <code>read_root_text</code>, <code>write_root_text</code></td></tr>
+  </table></div>
+
+  <h2>Edge rulings</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Case</th><th>Ruling</th></tr>
+    <tr><td>F while typing in a text field / F held down</td><td>ignored (target guard / <code>e.repeat</code> guard)</td></tr>
+    <tr><td>Rename tab renames a favorited file</td><td>re-key the entry in the same pass that rewrites the sidecar</td></tr>
+    <tr><td>Favorite's file missing at load</td><td>keep + render dimmed — never auto-prune user data</td></tr>
+    <tr><td>Re-scan / manifest rebuild</td><td><code>favorites.json</code> untouched by design</td></tr>
+    <tr><td>3D cloud colouring</td><td>unchanged — point hue is UCS taxonomy; favorites there would need a <i>shape</i> treatment, out of scope</td></tr>
+    <tr><td>Demo pack (no folder root)</td><td>in-memory + localStorage; banner says nothing is written</td></tr>
+    <tr><td>Two sessions, one folder</td><td>last write wins — acceptable for a single-user library tool</td></tr>
+  </table></div>
+
+  <p class="meta" style="margin-top:3rem">Implementation estimate ~170 lines across
+  <code>favorites.ts</code> (new), <code>App.tsx</code>, <code>ExaminerTab.tsx</code>,
+  <code>SampleFooter.tsx</code>, <code>FileGroups.tsx</code>, <code>audioLinking.ts</code>,
+  <code>lib.rs</code> — the full map is in the markdown audit.</p>
+</main>
+<script>
+(() => {
+  const SAMPLES = [
+    { path: 'Drums/Kicks/Kick 03.wav',        name: 'Kick 03.wav',        len: '0.41s' },
+    { path: 'Drums/HiHats/HiHat 20.wav',      name: 'HiHat 20.wav',       len: '0.06s' },
+    { path: 'Comms/Radio Squelch 7.wav',      name: 'Radio Squelch 7.wav',len: '1.20s' },
+    { path: 'Doors/Barn Door Slam.wav',       name: 'Barn Door Slam.wav', len: '2.30s' },
+    { path: 'Drums/Kicks/Kick 03.wav ',       name: 'Kick 03.wav',        len: '0.38s', display: 'Perc/Kick 03.wav' },
+    { path: 'Animals/Donkey Snort.mp3',       name: 'Donkey Snort.mp3',   len: '3.10s' },
+  ];
+  const favorites = new Set();
+  let playing = 0;
+  const rowsEl = document.getElementById('rows');
+  const jsonEl = document.getElementById('json');
+  const nowEl  = document.getElementById('now');
+  const starBtn = document.getElementById('star');
+  const demo = document.getElementById('demo');
+
+  function keyOf(s) { return s.path; }
+  function render() {
+    rowsEl.innerHTML = '';
+    SAMPLES.forEach((s, i) => {
+      const div = document.createElement('div');
+      div.className = 'row' + (i === playing ? ' playing' : '') + (favorites.has(keyOf(s)) ? ' fav' : '');
+      div.innerHTML = '<span class="star">' + (favorites.has(keyOf(s)) ? '★' : '') + '</span>'
+        + '<span class="name">' + (s.display || s.path) + '</span>'
+        + '<span class="len">' + s.len + '</span>';
+      div.addEventListener('click', () => { playing = i; render(); });
+      rowsEl.appendChild(div);
+    });
+    const cur = SAMPLES[playing];
+    nowEl.textContent = 'listening: ' + cur.name;
+    const isFav = favorites.has(keyOf(cur));
+    starBtn.textContent = (isFav ? '★' : '☆') + ' Favorite';
+    starBtn.classList.toggle('on', isFav);
+    const now = 1789000000;
+    const doc = {
+      favorites_version: 1,
+      generated_unix: now,
+      favorites: Array.from(favorites).map((p, i) => ({
+        path: p.trim(), name: p.trim().split('/').pop(), favorited_unix: now + i
+      })),
+    };
+    jsonEl.textContent = JSON.stringify(doc, null, 2);
+  }
+  function toggle() { const k = keyOf(SAMPLES[playing]); favorites.has(k) ? favorites.delete(k) : favorites.add(k); render(); }
+  function dig() { playing = (playing + 1) % SAMPLES.length; render(); }
+  starBtn.addEventListener('click', toggle);
+  document.getElementById('dig').addEventListener('click', dig);
+  demo.addEventListener('keydown', (e) => {
+    const tag = e.target && e.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+    if (e.repeat) return;                       // the same guards the real handler needs
+    if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggle(); }
+    if (e.key === ' ') { e.preventDefault(); dig(); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

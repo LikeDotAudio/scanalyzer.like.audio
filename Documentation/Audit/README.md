@@ -28,6 +28,10 @@ strategies) live one level up in [`../`](../README.md).
   filtering "still isn't working": two independent filter systems, and the real root
   cause (the AlphabetScrubber booting with a hidden A–E filter). Fixes applied inline.
   *(was `3d group filter.md`)*
+- [favorites_tab_audit.md](favorites_tab_audit.md) — design audit for the Favorites
+  tab: F-to-flag while listening, orange marking, a second Examiner mount filtered to
+  favorites, and `favorites.json` written beside the manifest (user data, never touched
+  by re-scans). Interactive visual: [favorites_tab_audit.html](favorites_tab_audit.html).
 
 ## Audio library & codecs
 

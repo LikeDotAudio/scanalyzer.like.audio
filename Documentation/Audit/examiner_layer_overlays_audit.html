@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Examiner Layer Overlays — Migration Audit</title>
+</head>
+<body>
+<style>
+:root{
+  --bg:#0e1014; --panel:#171b22; --panel2:#0a0c10; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#e8964a; --wave:#6fa8d6; --loud:#fcd34d; --phase:#fb7185;
+  --spec:#7fd6e2; --good:#7fb98a; --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#f5f4f1; --panel:#ffffff; --panel2:#101318; --line:#ddd9d0;
+    --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+    --accent:#c06a1f; --wave:#3d76a8; --loud:#b28a10; --phase:#c2445c;
+    --spec:#2e8ea0; --good:#4d7f58; --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1014; --panel:#171b22; --panel2:#0a0c10; --line:#262c37;
+  --text:#d7dbe3; --muted:#8b93a2; --faint:#5b6270;
+  --accent:#e8964a; --wave:#6fa8d6; --loud:#fcd34d; --phase:#fb7185;
+  --spec:#7fd6e2; --good:#7fb98a; --code-bg:#12151b; --shadow:0 1px 0 rgba(0,0,0,.4);
+}
+:root[data-theme="light"]{
+  --bg:#f5f4f1; --panel:#ffffff; --panel2:#101318; --line:#ddd9d0;
+  --text:#26292f; --muted:#6b7078; --faint:#9aa0a8;
+  --accent:#c06a1f; --wave:#3d76a8; --loud:#b28a10; --phase:#c2445c;
+  --spec:#2e8ea0; --good:#4d7f58; --code-bg:#f0eee9; --shadow:0 1px 2px rgba(30,30,30,.08);
+}
+html{background:var(--bg)}
+body{background:var(--bg); color:var(--text);
+  font:16px/1.62 "Seravek","Segoe UI",system-ui,-apple-system,sans-serif;
+  margin:0; padding:0 20px 80px;}
+main{max-width:78ch; margin:0 auto}
+h1,h2,h3{line-height:1.2; text-wrap:balance; font-weight:650}
+h1{font-size:2rem; margin:2.2rem 0 .4rem; letter-spacing:-.015em}
+h2{font-size:1.3rem; margin:3rem 0 .8rem; padding-top:1.4rem; border-top:1px solid var(--line)}
+h3{font-size:1rem; margin:1.5rem 0 .5rem}
+p{margin:.7rem 0}
+.eyebrow{font:600 .72rem/1 ui-monospace,"SF Mono",Menlo,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-top:3rem;}
+.meta{color:var(--muted); font-size:.92rem; margin-bottom:1.4rem}
+.meta b{color:var(--text); font-weight:600}
+code,pre{font:.82rem/1.55 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+code{background:var(--code-bg); border:1px solid var(--line); border-radius:4px; padding:.08em .35em}
+pre{background:var(--code-bg); border:1px solid var(--line); border-radius:8px;
+  padding:.85rem 1rem; overflow-x:auto; margin:.9rem 0;}
+pre code{background:none;border:none;padding:0}
+.formula{border-left:3px solid var(--accent)}
+table{border-collapse:collapse; width:100%; font-size:.88rem; margin:.9rem 0}
+th,td{text-align:left; padding:.45rem .65rem; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.tablewrap{overflow-x:auto}
+/* ------- interactive demo ------- */
+.demo{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:1rem 1.1rem 1.1rem; margin:1.3rem 0; box-shadow:var(--shadow)}
+.demo-head{display:flex; flex-wrap:wrap; align-items:center; gap:.8rem; margin-bottom:.7rem}
+.mode{display:flex; gap:0; border:1px solid var(--line); border-radius:6px; overflow:hidden}
+.mode button{background:transparent; color:var(--muted); border:0; padding:.32rem .8rem;
+  font:600 .78rem/1 ui-monospace,monospace; cursor:pointer}
+.mode button.on{background:var(--accent); color:#14100a}
+.demo-body{display:grid; grid-template-columns:215px 1fr; gap:.9rem}
+@media (max-width:680px){.demo-body{grid-template-columns:1fr}}
+.layermenu{border:1px solid var(--line); border-radius:8px; background:var(--code-bg);
+  padding:.55rem .6rem; align-self:start}
+.layermenu .title{font:600 .68rem/1 ui-monospace,monospace; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); margin:.1rem 0 .5rem}
+.lrow{display:flex; align-items:center; gap:.45rem; padding:.22rem .1rem; font-size:.84rem}
+.lrow input{accent-color:var(--accent)}
+.lrow .sw{width:13px; height:4px; border-radius:2px; flex:none}
+.lrow label{flex:1; cursor:pointer; white-space:nowrap}
+.lrow .pl{font:600 .62rem/1 ui-monospace,monospace; letter-spacing:.05em; color:var(--faint);
+  border:1px solid var(--line); border-radius:4px; padding:.14rem .3rem; cursor:pointer; background:transparent}
+.lrow .pl.row-on{color:var(--accent); border-color:var(--accent)}
+.lrow.dis{opacity:.4}
+#democv{display:block; width:100%; height:340px; border-radius:6px;
+  border:1px solid var(--line); background:var(--panel2)}
+.caption{font-size:.79rem; color:var(--muted); margin:.35rem 0 0;
+  font-family:ui-monospace,"SF Mono",Menlo,monospace}
+.phases{counter-reset:ph; list-style:none; padding:0; margin:1rem 0}
+.phases li{counter-increment:ph; position:relative; padding:.1rem 0 1rem 2.5rem}
+.phases li::before{content:"P" counter(ph,decimal); position:absolute; left:0; top:.2rem;
+  min-width:1.7rem; height:1.55rem; border-radius:5px; border:1px solid var(--accent);
+  color:var(--accent); font:600 .72rem/1.55rem ui-monospace,monospace; text-align:center}
+.phases li:first-child::before{content:"P0"}
+.phases b{color:var(--text)}
+.phases .gate{display:block; font-size:.82rem; color:var(--muted); margin-top:.15rem}
+.filetree{white-space:pre; font:.8rem/1.55 ui-monospace,monospace; color:var(--text)}
+.filetree .dim{color:var(--faint)} .filetree .new{color:var(--good)} .filetree .mv{color:var(--wave)}
+.footer{margin-top:3.5rem; padding-top:1rem; border-top:1px solid var(--line);
+  color:var(--muted); font-size:.85rem}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+
+<main>
+<div class="eyebrow">Sample Analysis · Documentation Audit · Companion to the Layers Rendering Audit</div>
+<h1>Examiner Layer Overlays — from Monolithic Canvas to a Toggleable Layer Stack</h1>
+<p class="meta"><b>Target:</b> <code>Web_Front/src/components/ExaminerTab</code> + <code>examiner/</code> &nbsp;·&nbsp; <b>Guide:</b> the Sonic Visualiser layer stack audited in <code>layers_rendering_audit.md</code> &nbsp;·&nbsp; Full report: <code>Documentation/Audit/examiner_layer_overlays_audit.md</code></p>
+
+<h2>1 · Try it — the proposed dropdown, live</h2>
+<p>This is the target UX on a mock sample (a plucked A3 with harmonics). SHOW/HIDE any layer; flip a layer between <b>overlay</b> and <b>row</b> placement; switch the whole view between stacked overlays (today's look) and rows.</p>
+
+<div class="demo">
+  <div class="demo-head">
+    <div class="mode" role="group" aria-label="Compositing mode">
+      <button id="m-stack" class="on">Stacked overlays</button><button id="m-rows">Rows</button>
+    </div>
+    <span class="caption">⚙ Layers menu persists per user, like the existing Columns menu</span>
+  </div>
+  <div class="demo-body">
+    <div class="layermenu" id="menu"><div class="title">Layers</div></div>
+    <div><canvas id="democv"></canvas>
+    <div class="caption">mock signal · playhead at 42% · every mark drawn with the audited math (log-f axis, dB scales, Sunset colour chain)</div></div>
+  </div>
+</div>
+
+<h2>2 · What exists today</h2>
+<p><code>renderPreview</code> (<code>ExaminerTab.tsx:367-513</code>) is a ~150-line monolith inside a 966-line component. It always draws everything: spectrum fill+trace (Welch-averaged FFT → 360 log bands, <code>y = bottom − clamp((dB+90)/90)·h</code>), stereo min/max waveforms, windowed-RMS loudness (<code>clamp((dB+60)/60)</code>, floor −60), stereo correlation phase (<code>corr = ΣLR/√(ΣL²·ΣR²)</code>), the ADSR envelope, beat grid, regions bar, and a <b>hard-coded three-entry legend</b>. The good news: each draw helper is already a pure <code>(ctx, data, geo, colour)</code> function — the SV <code>paint()</code> contract in miniature. The migration is a formalisation, not a rewrite. And the dropdown pattern already exists: the ⚙ Columns menu with its persisted Set (<code>COLS_KEY</code>).</p>
+
+<h2>3 · The mapping — every toggle, its file, its math</h2>
+<div class="tablewrap"><table>
+<tr><th>Toggle</th><th>File (one layer per file)</th><th>Math source</th></tr>
+<tr><td>spectrum</td><td><code>layers/SpectrumLayer.tsx</code> <i>(extract)</i></td><td>existing averaged FFT · SV SpectrumLayer §5</td></tr>
+<tr><td>volume</td><td><code>layers/LoudnessLayer.tsx</code> <i>(extract)</i></td><td>existing RMS dBFS · SV dB/meter scales §2 as upgrade path</td></tr>
+<tr><td>phase</td><td><code>layers/PhaseLayer.tsx</code> <i>(extract)</i></td><td>existing correlation (SV's FFT-bin phase = later variant)</td></tr>
+<tr><td>envelope</td><td><code>layers/EnvelopeLayer.tsx</code> <i>(extract)</i></td><td>existing ADSR · SV TimeValueLayer curve §7</td></tr>
+<tr><td>piano scale</td><td><code>layers/PianoScaleLayer.tsx</code> <b>new</b></td><td>SV PianoScale: MIDI 0–127, f = 440·2^((p−69)/12)</td></tr>
+<tr><td>slices</td><td><code>layers/SlicesLayer.tsx</code> <b>new</b></td><td>SV SliceLayer: log-x 0.8-shift, dB energy, nearest/mean/peak</td></tr>
+<tr><td>waterfall frequency view</td><td><code>layers/SpectrogramLayer.tsx</code> <b>new</b></td><td>SV SpectrogramLayer §3: f = bin·sr/fftSize, dB² option, max-aggregate</td></tr>
+<tr><td>3d spectrum</td><td><code>layers/Spectrogram3DLayer.tsx</code> <b>new</b></td><td>SV Colour3DPlot bin math as a back-to-front ridgeline</td></tr>
+</table></div>
+
+<pre class="filetree">src/components/examiner/layers/
+  types.ts          <span class="new">new</span>   ExaminerLayer contract (SV Layer::paint, in TS)
+  registry.ts       <span class="new">new</span>   the one list — dropdown, legend, z-order all read it (SV LayerFactory)
+  colourScale.ts    <span class="new">new</span>   value ×gain → threshold → log map → proportion → palette; pixel 0 reserved
+  stft.ts           <span class="new">new</span>   lazy STFT frames, cached per decode (SV dormancy)
+  WaveformLayer.tsx <span class="mv">move</span>  from drawWaveform.ts + the stereo-lane split
+  SpectrumLayer.tsx <span class="mv">move</span>  from drawSpectrum.ts
+  EnvelopeLayer.tsx <span class="mv">move</span>  from drawEnvelope.ts
+  LoudnessLayer.tsx <span class="mv">move</span>  from drawOverlays.ts
+  PhaseLayer.tsx    <span class="mv">move</span>  from drawOverlays.ts
+  ChromeLayer.tsx   <span class="mv">move</span>  beats · regions bar · axes · name (always on, not in menu)
+  PianoScaleLayer.tsx / SlicesLayer.tsx / SpectrogramLayer.tsx / Spectrogram3DLayer.tsx  <span class="new">new</span>
+LayerStack.tsx      <span class="new">new</span>   dropdown + overlay/rows compositor; ExaminerTab renders &lt;LayerStack/&gt;</pre>
+
+<pre class="formula"><code>export interface ExaminerLayer {
+  id: string; label: string; colour: string;
+  defaultVisible: boolean;
+  defaultPlacement: 'overlay' | 'row';   // user-overridable in the menu
+  needsStereo?: boolean;                 // phase auto-hides on mono
+  needsSpectrogram?: boolean;            // first show triggers the lazy STFT
+  rowHeightWeight?: number;              // spectrogram lane gets 2×
+  draw(ctx: CanvasRenderingContext2D, geo: PlotGeo, data: LayerData): void;
+}</code></pre>
+
+<h2>4 · Deployment strategy</h2>
+<ol class="phases">
+<li><b>Extraction — no visual change.</b> Move the six existing draws into layer files behind the registry; renderPreview becomes a loop.
+<span class="gate">Gate: screenshot parity with today's view, web + Tauri.</span></li>
+<li><b>Visibility dropdown.</b> LayerStack + Layers menu (SHOW/HIDE), <code>scanalyzer_examiner_layers_v1</code> persistence, legend generated from visible layers.
+<span class="gate">Gate: toggling any layer leaves the rest pixel-stable; prefs survive reload.</span></li>
+<li><b>Cheap new layers.</b> PianoScale (pure drawing) and Slices (one FFT column at the playhead, reusing fftRadix2).
+<span class="gate">Gate: slice peaks match the averaged spectrum on a steady tone; A4 key centres at 440 Hz.</span></li>
+<li><b>Spectrogram engine + heat layers.</b> stft.ts (lazy, cached per decode) + the ported colour chain; waterfall + 3-D ridge, painted chunked across animation frames (SV RenderTimer).
+<span class="gate">Gate: a sine sweep draws a clean diagonal at any canvas width — the max-aggregate, never-average invariant.</span></li>
+<li><b>Rows mode.</b> Per-layer placement + the stack/rows switch; weighted lanes sharing one time axis and playhead.
+<span class="gate">Gate: playhead aligned across every lane; narrow/mobile falls back to overlay.</span></li>
+</ol>
+<p><b>Risks:</b> WebKitGTK canvas throughput on big STFTs (chunked painting, frames capped to canvas width) · localStorage schema drift (versioned key) · scope creep into the 966-line ExaminerTab (touch only the preview in these PRs). Everything stays 100% client-side.</p>
+
+<div class="footer">Companion audits: <code>layers_rendering_audit.md</code> (the Sonic Visualiser prototype math) ↔ <code>examiner_layer_overlays_audit.md</code> (this migration) · Examiner sources read in full at commit 198a320</div>
+</main>
+
+<script>
+(function(){
+"use strict";
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function hsv(h,s,v){h=((h%1)+1)%1;const i=Math.floor(h*6),f=h*6-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
+  const m=[[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i%6];return m.map(x=>Math.round(x*255));}
+function sunset(n){let r=clamp((n-0.24)*2.38,0,1),g=clamp((n-0.64)*2.777,0,1),b=3.6*n;if(n>0.277)b=2.0-b;
+  return [r,g,clamp(b,0,1)].map(x=>Math.round(x*255));}
+
+/* ---------- mock signal model: plucked A3 (220 Hz) with harmonics ---------- */
+const F0=220, DUR=4;
+function harmAmp(k,t){ // harmonic k amplitude at time t
+  const atk=clamp(t/0.04,0,1);
+  return atk*Math.exp(-t*(0.8+k*0.55))*Math.pow(0.78,k-1);
+}
+function envAt(t){ let e=0; for(let k=1;k<=9;k++) e+=harmAmp(k,t); return clamp(e/2.4,0,1.02); }
+function specAt(f,t){ // magnitude at frequency f, time t
+  let m=0.003+0.01*Math.exp(-f/3000);
+  for(let k=1;k<=9;k++){ const fk=F0*k,bw=fk*0.03+5; m+=harmAmp(k,t)*Math.exp(-Math.pow((f-fk)/bw,2)); }
+  return m;
+}
+function specAvg(f){ let m=0; for(let i=0;i<12;i++) m+=specAt(f,(i+0.3)*DUR/12); return m/12; }
+const FMIN=27.5,FMAX=14080;
+function xFreq(f,w){return w*(Math.log(f)-Math.log(FMIN))/(Math.log(FMAX)-Math.log(FMIN));}
+const PLAYHEAD=0.42;
+
+/* ---------- layer registry (mirror of layers/registry.ts) ---------- */
+const LAYERS=[
+ {id:"spectrogram",label:"waterfall freq",colour:"dyn",vis:false,pl:"overlay",weight:2},
+ {id:"spectrum3d", label:"3d spectrum",  colour:"dyn3",vis:false,pl:"row",   weight:2},
+ {id:"waveform",   label:"waveform",     colour:"--wave", vis:true, pl:"overlay",weight:1.4},
+ {id:"spectrum",   label:"spectrum",     colour:"--spec", vis:true, pl:"overlay",weight:1},
+ {id:"loudness",   label:"volume",       colour:"--loud", vis:true, pl:"overlay",weight:1},
+ {id:"phase",      label:"phase",        colour:"--phase",vis:true, pl:"overlay",weight:1},
+ {id:"envelope",   label:"envelope",     colour:"#ffffff",vis:true, pl:"overlay",weight:.7},
+ {id:"piano",      label:"piano scale",  colour:"--faint",vis:false,pl:"overlay",weight:.7},
+ {id:"slices",     label:"slices",       colour:"--good", vis:false,pl:"overlay",weight:1},
+];
+let MODE="stack";
+
+/* ---------- per-layer draw(ctx, lane{y0,h}, w, overlayMode) ---------- */
+function col(l){ if(l.colour==="dyn")return "rgb("+sunset(0.75).join(",")+")";
+  if(l.colour==="dyn3")return "rgb("+sunset(0.55).join(",")+")";
+  return l.colour.startsWith("--")?css(l.colour):l.colour; }
+
+function drawSpectrogram(g,L,w){
+  const {y0,h}=L, img=g.createImageData(w,Math.max(1,Math.round(h)));
+  const d=img.data, hh=img.height;
+  for(let y=0;y<hh;y++){
+    const f=Math.exp(Math.log(FMAX)-(y/hh)*(Math.log(FMAX)-Math.log(FMIN)));
+    for(let x=0;x<w;x++){
+      const t=(x/w)*DUR, mag=specAt(f,t);
+      const dB=20*Math.log10(Math.max(mag,1e-5));
+      const norm=clamp((dB+58)/58,0,1);
+      const pix=norm<=0?0:Math.floor(norm*255)+1;
+      const c=pix===0?[10,12,16]:sunset((pix-1)/255);
+      const i=(y*w+x)*4; d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=255;
+    }
+  }
+  g.putImageData(img,0,Math.round(y0));
+}
+function drawWaveform(g,L,w,overlay){
+  const lanes=overlay?2:2; const laneH=L.h/lanes, colr=css("--wave");
+  for(let ch=0;ch<lanes;ch++){
+    const my=L.y0+laneH*(ch+0.5), amp=laneH/2*0.9;
+    g.strokeStyle=colr; g.globalAlpha=.75; g.beginPath();
+    for(let x=0;x<w;x++){
+      const t=(x/w)*DUR;
+      const e=envAt(t)*(ch?0.92:1)*(0.55+0.45*Math.abs(Math.sin(t*F0*0.13+x*0.35+ch)));
+      g.moveTo(x+.5,my-e*amp); g.lineTo(x+.5,my+e*amp);
+    }
+    g.stroke(); g.globalAlpha=1;
+    g.strokeStyle=css("--line"); g.beginPath(); g.moveTo(0,my+.5); g.lineTo(w,my+.5); g.stroke();
+  }
+}
+function drawSpectrum(g,L,w){
+  const colr=css("--spec");
+  g.beginPath();
+  for(let x=0;x<w;x++){
+    const f=Math.exp(Math.log(FMIN)+(x/w)*(Math.log(FMAX)-Math.log(FMIN)));
+    const dB=20*Math.log10(Math.max(specAvg(f),1e-6)/0.9);
+    const y=L.y0+L.h-clamp((dB+90)/90,0,1)*L.h;
+    if(x===0)g.moveTo(x,y);else g.lineTo(x,y);
+  }
+  g.strokeStyle=colr; g.stroke();
+  g.lineTo(w,L.y0+L.h); g.lineTo(0,L.y0+L.h); g.closePath();
+  g.fillStyle=colr; g.globalAlpha=.13; g.fill(); g.globalAlpha=1;
+  // A-octave axis
+  g.font="9px ui-monospace,monospace"; g.textAlign="center"; g.fillStyle=colr;
+  for(let o=0;o<10;o++){const f=27.5*Math.pow(2,o); const X=xFreq(f,w);
+    if(X<8||X>w-8)continue; g.globalAlpha=.8; g.fillText("A"+o,X,L.y0+9); g.globalAlpha=1;}
+}
+function drawLoudness(g,L,w){
+  g.beginPath();
+  for(let x=0;x<w;x++){
+    const t=(x/w)*DUR, rms=envAt(t)*0.6+0.001;
+    const dB=20*Math.log10(rms);
+    const y=L.y0+L.h-clamp((dB+60)/60,0,1)*L.h*0.96;
+    if(x===0)g.moveTo(x,y);else g.lineTo(x,y);
+  }
+  g.strokeStyle=css("--loud"); g.lineWidth=1.4; g.stroke(); g.lineWidth=1;
+}
+function drawPhase(g,L,w){
+  const mid=L.y0+L.h/2, half=L.h/2*0.92;
+  g.beginPath();
+  for(let x=0;x<w;x++){
+    const t=(x/w)*DUR;
+    const jitter=Math.sin(x*1.7)*Math.sin(x*0.23)*clamp((t-2.4)/1.6,0,1);
+    const corr=clamp(0.96-0.1*Math.sin(t*3)-1.6*jitter*jitter, -1, 1);
+    const y=mid-corr*half;
+    if(x===0)g.moveTo(x,y);else g.lineTo(x,y);
+  }
+  g.strokeStyle=css("--phase"); g.stroke();
+}
+function drawEnvelope(g,L,w){
+  const att=0.06,dec=1.1,sus=0.28,rel=0.9;
+  const pts=[[0,0],[att,1],[att+dec,sus],[DUR-rel,sus],[DUR,0]];
+  g.strokeStyle="rgba(255,255,255,0.85)"; g.setLineDash([4,3]); g.beginPath();
+  pts.forEach(([t,v],i)=>{const x=(t/DUR)*w, y=L.y0+L.h-v*L.h*0.95;
+    if(i===0)g.moveTo(x,y);else g.lineTo(x,y);});
+  g.stroke(); g.setLineDash([]);
+  g.fillStyle="rgba(255,255,255,0.85)";
+  pts.forEach(([t,v])=>{const x=(t/DUR)*w,y=L.y0+L.h-v*L.h*0.95;
+    g.beginPath();g.arc(x,y,2,0,Math.PI*2);g.fill();});
+}
+function drawPiano(g,L,w){
+  const y0=L.y0+2, kh=Math.min(L.h-4,14);
+  for(let p=21;p<=108;p++){
+    const f=440*Math.pow(2,(p-69)/12);
+    const x0=xFreq(440*Math.pow(2,(p-69.5)/12),w), x1=xFreq(440*Math.pow(2,(p-68.5)/12),w);
+    if(x1<0||x0>w)continue;
+    const black=[1,3,6,8,10].includes(p%12);
+    g.fillStyle=black?"#0a0c10":"#c9cdd6";
+    g.fillRect(x0,y0,Math.max(1,x1-x0-0.4),black?kh*0.62:kh);
+    if(p===60){g.fillStyle=css("--accent");g.fillRect(x0,y0,Math.max(1,x1-x0-0.4),kh);}
+  }
+}
+function drawSlices(g,L,w){
+  const t=PLAYHEAD*DUR, colr=css("--good");
+  g.beginPath();
+  for(let x=0;x<w;x++){
+    const f=Math.exp(Math.log(FMIN)+(x/w)*(Math.log(FMAX)-Math.log(FMIN)));
+    const dB=20*Math.log10(Math.max(specAt(f,t),1e-6)/0.9);
+    const y=L.y0+L.h-clamp((dB+80)/80,0,1)*L.h*0.96;
+    if(x===0)g.moveTo(x,y);else g.lineTo(x,y);
+  }
+  g.strokeStyle=colr; g.lineWidth=1.3; g.stroke(); g.lineWidth=1;
+}
+function drawSpectrum3D(g,L,w){
+  const N=14, depthX=w*0.06, depthY=L.h*0.45;
+  for(let s=N-1;s>=0;s--){
+    const t=(s/(N-1))*DUR*0.92+0.05;
+    const ox=(s/(N-1))*depthX, oy=(s/(N-1))*depthY;
+    const base=L.y0+L.h-oy-4, hh=L.h-depthY-6;
+    g.beginPath();
+    for(let x=0;x<w-depthX;x++){
+      const f=Math.exp(Math.log(FMIN)+(x/(w-depthX))*(Math.log(FMAX)-Math.log(FMIN)));
+      const dB=20*Math.log10(Math.max(specAt(f,t),1e-6)/0.9);
+      const y=base-clamp((dB+70)/70,0,1)*hh;
+      if(x===0)g.moveTo(x+ox,y);else g.lineTo(x+ox,y);
+    }
+    g.lineTo(w-depthX+ox,base); g.lineTo(ox,base); g.closePath();
+    g.fillStyle=css("--panel2"); g.fill();          // occlusion
+    const c=sunset(0.25+0.55*(1-s/(N-1)));
+    g.strokeStyle="rgb("+c.join(",")+")"; g.globalAlpha=.9; g.stroke(); g.globalAlpha=1;
+  }
+}
+const DRAW={spectrogram:drawSpectrogram,waveform:drawWaveform,spectrum:drawSpectrum,
+  loudness:drawLoudness,phase:drawPhase,envelope:drawEnvelope,piano:drawPiano,
+  slices:drawSlices,spectrum3d:drawSpectrum3D};
+
+/* ---------- compositor ---------- */
+function render(){
+  const c=document.getElementById("democv");
+  const r=window.devicePixelRatio||1, w=c.clientWidth, h=c.clientHeight;
+  c.width=w*r; c.height=h*r;
+  const g=c.getContext("2d"); g.setTransform(r,0,0,r,0,0);
+  g.fillStyle=css("--panel2"); g.fillRect(0,0,w,h);
+  const vis=LAYERS.filter(l=>l.vis);
+  const pad=18;
+  if(MODE==="stack"){
+    const ov=vis.filter(l=>l.pl==="overlay"), rows=vis.filter(l=>l.pl==="row");
+    const rowsWeight=rows.reduce((a,l)=>a+l.weight,0);
+    const rowsH=rows.length?Math.min(h*0.45, rowsWeight*54):0;
+    const mainH=h-rowsH-pad;
+    // main overlay pane: waveform top half, loudness/phase bottom half, rest full height
+    const full={y0:pad,h:mainH-pad};
+    const top ={y0:pad,h:(mainH-pad)/2};
+    const bot ={y0:pad+(mainH-pad)/2,h:(mainH-pad)/2};
+    const laneFor=id=>({waveform:top,loudness:bot,phase:bot}[id]||
+      (id==="piano"?{y0:pad-16,h:18}:full));
+    // paint order = registry order (heat first, chrome last)
+    ov.forEach(l=>DRAW[l.id](g,laneFor(l.id),w,true));
+    if(ov.some(l=>l.id==="waveform")&&ov.some(l=>["loudness","phase"].some(i=>i===l.id))){
+      g.strokeStyle=css("--line");g.beginPath();g.moveTo(0,bot.y0+.5);g.lineTo(w,bot.y0+.5);g.stroke();
+    }
+    // row lanes below
+    let y=mainH+2;
+    rows.forEach(l=>{
+      const lh=rowsH*(l.weight/rowsWeight)-3;
+      g.strokeStyle=css("--line"); g.strokeRect(0.5,y+.5,w-1,lh-1);
+      DRAW[l.id](g,{y0:y+2,h:lh-4},w,false);
+      labelLane(g,l,y+3);
+      y+=lh+3;
+    });
+  } else {
+    const wsum=vis.reduce((a,l)=>a+l.weight,0)||1;
+    let y=6;
+    vis.forEach(l=>{
+      const lh=(h-12)*(l.weight/wsum)-3;
+      g.strokeStyle=css("--line"); g.strokeRect(0.5,y+.5,w-1,lh-1);
+      DRAW[l.id](g,{y0:y+2,h:lh-4},w,false);
+      labelLane(g,l,y+3);
+      y+=lh+3;
+    });
+  }
+  // shared playhead
+  const px=PLAYHEAD*w;
+  g.strokeStyle=css("--accent"); g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(px,0); g.lineTo(px,h); g.stroke(); g.lineWidth=1;
+  // legend from visible layers (stack mode only, like the real view)
+  if(MODE==="stack"){
+    const items=vis.filter(l=>l.pl==="overlay");
+    g.font="600 10px ui-monospace,monospace"; g.textAlign="left"; g.textBaseline="middle";
+    const bw=110,rh=14,bx=w-bw-8,by=6,bh=8+items.length*rh;
+    g.fillStyle="rgba(0,0,0,0.6)"; g.strokeStyle="rgba(255,255,255,0.15)";
+    g.beginPath(); if(g.roundRect)g.roundRect(bx,by,bw,bh,4); else g.rect(bx,by,bw,bh);
+    g.fill(); g.stroke();
+    items.forEach((l,i)=>{const cy=by+8+i*rh+rh/2-3;
+      g.strokeStyle=col(l); g.lineWidth=2.4;
+      g.beginPath(); g.moveTo(bx+7,cy); g.lineTo(bx+20,cy); g.stroke(); g.lineWidth=1;
+      g.fillStyle="#e7eaf0"; g.fillText(l.label,bx+25,cy);});
+  }
+}
+function labelLane(g,l,y){
+  g.font="600 9px ui-monospace,monospace"; g.textAlign="left"; g.textBaseline="top";
+  g.fillStyle=col(l)==="dyn"?css("--accent"):col(l);
+  g.fillText(l.label.toUpperCase(),5,y+2);
+}
+
+/* ---------- menu ---------- */
+function buildMenu(){
+  const host=document.getElementById("menu");
+  host.querySelectorAll(".lrow").forEach(e=>e.remove());
+  LAYERS.forEach(l=>{
+    const row=document.createElement("div"); row.className="lrow";
+    const cb=document.createElement("input"); cb.type="checkbox"; cb.checked=l.vis; cb.id="cb-"+l.id;
+    cb.addEventListener("change",()=>{l.vis=cb.checked; render();});
+    const sw=document.createElement("span"); sw.className="sw";
+    sw.style.background=l.colour==="dyn"?"linear-gradient(90deg,#31114d,#e05c1a,#ffd97a)"
+      :l.colour==="dyn3"?"linear-gradient(90deg,#7a2b12,#ffb35c)":col(l);
+    const lab=document.createElement("label"); lab.textContent=l.label; lab.htmlFor="cb-"+l.id;
+    const pl=document.createElement("button"); pl.className="pl"+(l.pl==="row"?" row-on":"");
+    pl.textContent=l.pl==="row"?"row":"ovl";
+    pl.title="Toggle overlay / row placement";
+    pl.addEventListener("click",()=>{l.pl=l.pl==="row"?"overlay":"row";
+      pl.textContent=l.pl==="row"?"row":"ovl"; pl.classList.toggle("row-on",l.pl==="row"); render();});
+    row.append(cb,sw,lab,pl); host.appendChild(row);
+  });
+}
+document.getElementById("m-stack").addEventListener("click",()=>{MODE="stack";
+  document.getElementById("m-stack").classList.add("on");
+  document.getElementById("m-rows").classList.remove("on"); render();});
+document.getElementById("m-rows").addEventListener("click",()=>{MODE="rows";
+  document.getElementById("m-rows").classList.add("on");
+  document.getElementById("m-stack").classList.remove("on"); render();});
+
+buildMenu(); render();
+let t=null;
+window.addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(render,150);});
+if(window.matchMedia){window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",render);}
+new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+})();
+</script>
+
+</body>
+</html>

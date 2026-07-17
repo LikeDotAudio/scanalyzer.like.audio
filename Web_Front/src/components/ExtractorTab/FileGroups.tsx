@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ucsColor } from '../../groupColors';
 import { categoryLabel } from '../../categoryEmoji';
+import { favoriteKeyOf } from '../../favorites';
 
 type GroupRow = { kind: 'header'; category: string; count: number } | { kind: 'file'; item: any };
 
@@ -14,6 +15,8 @@ interface FileGroupsProps {
   // On mobile the panel is full-width, its list is height-capped, and it can fold away
   // so the waveform/slices below it aren't pushed off-screen.
   isNarrow?: boolean;
+  // Favorite flags (relative path → favorited_unix) — favorite rows render orange + ★.
+  favorites?: Map<string, number>;
 }
 
 // Narrow mode sizes the list to the Examiner's: exactly five 24px rows (+ its header
@@ -21,7 +24,7 @@ interface FileGroupsProps {
 const NARROW_LIST_HEIGHT = 24 * 5 + 34;
 
 // The left-hand "groups" panel: the file list grouped under UCS category headers.
-export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMultiOnly, selectedItem, onSelect, isNarrow }: FileGroupsProps) {
+export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMultiOnly, selectedItem, onSelect, isNarrow, favorites }: FileGroupsProps) {
   const [folded, setFolded] = useState(false);
   // Keep the selected row visible when it's moved by the keyboard (↑/↓) rather than a click.
   const selRef = useRef<HTMLDivElement | null>(null);
@@ -63,12 +66,14 @@ export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMulti
           const count = it.regions?.count ?? null;
           const showCount = count != null && count > 1;
           const sel = it === selectedItem;
+          const fav = !!favorites?.has(favoriteKeyOf(it));
           return (
             <div key={i} ref={sel ? selRef : undefined} onClick={() => onSelect(it)}
               style={{ padding: '0.3rem 0.5rem 0.3rem 1rem', cursor: 'pointer', fontSize: '0.76rem', display: 'flex', justifyContent: 'space-between', gap: '0.5rem',
                 background: sel ? 'rgba(59,130,246,0.25)' : (i % 2 ? 'rgba(255,255,255,0.02)' : 'transparent'),
-                color: sel ? '#fff' : 'var(--accent-secondary)' }}>
-              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={it.metadata?.name}>{it.metadata?.name}</span>
+                color: fav ? 'var(--accent-primary)' : sel ? '#fff' : 'var(--accent-secondary)',
+                fontWeight: fav ? 650 : undefined }}>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={it.metadata?.name}>{fav ? '★ ' : ''}{it.metadata?.name}</span>
               {showCount && <span style={{ color: '#f59e0b', flexShrink: 0 }}>{count}▮</span>}
             </div>
           );

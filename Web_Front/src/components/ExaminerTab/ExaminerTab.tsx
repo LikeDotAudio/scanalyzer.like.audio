@@ -1,19 +1,21 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { hasAudio, isTauri } from '../../audioLinking';
-import { computeSpectrum, toMono, noteToFreq, estimateBpm, type PlotGeo } from '../examiner/audioAnalysis';
-import { drawWaveform } from '../examiner/drawWaveform';
+import { computeSpectrum, toMono, noteToFreq } from '../examiner/audioAnalysis';
 import { complementColor, ucsColor, ucsSubColor } from '../../groupColors';
 import { altCategory, altSubcategory, altProbability } from '../../ucsIndex';
 import { categoryEmoji, categoryLabel, subcategoryLabel } from '../../categoryEmoji';
 import { useIsNarrow } from '../../useIsNarrow';
-import { drawSpectrumFill, drawSpectrumTrace } from '../examiner/drawSpectrum';
-import { drawEnvelope, drawAxesAndName, drawBeats } from '../examiner/drawEnvelope';
-import { drawLoudness, drawPhase } from '../examiner/drawOverlays';
+import { renderLayerStack } from '../examiner/renderLayerStack';
+import { loadLayerSettings, saveLayerSettings, settingsNeedSpectrogram } from '../examiner/layers/registry';
+import { computeSpectrogramFrames, type SpectrogramFrames } from '../examiner/layers/stft';
+import type { LayerData, LayerSettings } from '../examiner/layers/types';
+import LayersMenu from '../examiner/LayersMenu';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
 import RadialWaveform from '../examiner/RadialWaveform';
 import EyeMeters from '../examiner/EyeMeters';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
+import { favoriteKeyOf } from '../../favorites';
 
 interface ExaminerTabProps {
   analysisResult: any[];
@@ -28,6 +30,12 @@ interface ExaminerTabProps {
   // The footer's auto-loop toggle. Long samples loop gaplessly (native loop attribute);
   // samples under 5 s loop with a 1 s breath of silence between repeats.
   autoLoop?: boolean;
+  // Favorite flags (relative path → favorited_unix), owned by App. Favorite rows render
+  // their name in orange with a ★. See Documentation/Audit/favorites_tab_audit.md.
+  favorites?: Map<string, number>;
+  // Shown centred over the list when there are no rows — the Favorites mount uses it to
+  // explain the F key instead of presenting an empty table.
+  emptyMessage?: string;
 }
 
 
@@ -98,7 +106,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange, autoLoop = false }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange, autoLoop = false, favorites, emptyMessage }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   // The full record for the detail panels. `selectedItem` stays the (possibly slim)
   // manifest row so row-identity/index logic is untouched; `detailItem` is that row
@@ -217,9 +225,19 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   // whether it's currently sounding (drives the ring's centre play/stop button).
   const [ringSamples, setRingSamples] = useState<Float32Array | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  // Which overlay layers are visible and how they stack — the 🎚 Layers menu.
+  const [layerSettings, setLayerSettings] = useState<LayerSettings>(() => loadLayerSettings());
+  const [isStereo, setIsStereo] = useState(false);
+  // Lazy STFT frames for the spectrogram layers, cached per decoded buffer so a
+  // toggle or resize never recomputes them (SV dormancy: hidden layers cost nothing).
+  const stftCacheRef = useRef<{ buffer: AudioBuffer; frames: SpectrogramFrames | null } | null>(null);
+  const handleLayerSettings = (next: LayerSettings) => {
+    setLayerSettings(next);
+    saveLayerSettings(next);
+  };
   // On selection change, drop the previous decoded buffer too, so the meters (which read
   // it at the playhead) don't briefly show the old sample while the new one decodes.
-  useEffect(() => { setRingSamples(null); setIsPlaying(false); lastBufferRef.current = null; }, [selectedItem]);
+  useEffect(() => { setRingSamples(null); setIsPlaying(false); setIsStereo(false); lastBufferRef.current = null; }, [selectedItem]);
   // A lightweight context used only to decode audio for the static preview.
   const decodeCtxRef = useRef<AudioContext | null>(null);
   // Last decoded buffer/item so the preview can be re-drawn on resize.
@@ -361,156 +379,52 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     else if (bottom > el.scrollTop + el.clientHeight) el.scrollTop = bottom - el.clientHeight;
   }, [selectedItem, rows]);
 
-  // Draw the STATIC player preview (no animation): whole-file waveform +
-  // averaged-FFT spectral trace, note-frequency axis on top, time axis on the
-  // bottom, ADSR envelope overlay. Mirrors the Python inspector's preview.
+  // Draw the STATIC player preview (no animation) via the layer stack: every
+  // overlay (waveform, spectrum, volume, phase, envelope, notes, piano scale,
+  // slices, waterfall/3-D spectrograms) is an isolated layer in
+  // examiner/layers/, composited by renderLayerStack according to the 🎚 Layers
+  // menu (stacked overlays or rows). See
+  // Documentation/Audit/examiner_layer_overlays_audit.md.
   const renderPreview = (buffer: AudioBuffer, item: any) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const w = Math.max(1, Math.floor(canvas.clientWidth || 800));
-    const h = Math.max(1, Math.floor(canvas.clientHeight || 320));
-    canvas.width = w;
-    canvas.height = h;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    ctx.fillStyle = '#0A0A0A';
-    ctx.fillRect(0, 0, w, h);
-
-    // Shared plot geometry — room for note labels (top) and time labels (bottom).
-    const padTop = 26, padBottom = 18;
-    const geo: PlotGeo = {
-      w, h, padTop,
-      plotTop: padTop, plotBottom: h - padBottom, plotH: Math.max(1, h - padBottom - padTop),
-      mid: (padTop + h - padBottom) / 2, halfH: Math.max(1, h - padBottom - padTop) / 2,
-    };
 
     const mono = toMono(buffer);
-    const duration = buffer.duration;
-
     // Waveform = the sample's group colour; spectrum = its complement.
     const gcol = ucsSubColor(item?.ucs?.category || '', (item?.ucs?.subcategory || '').trim());
     const ccol = complementColor(gcol);
-    const spec = computeSpectrum(mono, buffer.sampleRate);
 
-    // Two stacked panes sharing one time axis: the WAVEFORM(s) live in the top half, the
-    // LOUDNESS (+ stereo PHASE) in the bottom half. The spectrum, envelope and the root/note
-    // markers all span the FULL height, across both panes.
-    const plotMid = geo.plotTop + geo.plotH / 2;
-    const halfH = geo.plotH / 2;
-    const geoTop: PlotGeo = {
-      w, h, padTop: geo.padTop,
-      plotTop: geo.plotTop, plotBottom: plotMid, plotH: halfH,
-      mid: geo.plotTop + halfH / 2, halfH: halfH / 2,
+    // STFT frames only when a spectrogram layer is actually visible, cached per buffer.
+    let frames: SpectrogramFrames | null = null;
+    if (settingsNeedSpectrogram(layerSettings)) {
+      if (stftCacheRef.current?.buffer === buffer) {
+        frames = stftCacheRef.current.frames;
+      } else {
+        frames = computeSpectrogramFrames(mono, buffer.sampleRate);
+        stftCacheRef.current = { buffer, frames };
+      }
+    }
+
+    const data: LayerData = {
+      buffer,
+      mono,
+      left: buffer.getChannelData(0),
+      right: buffer.numberOfChannels >= 2 ? buffer.getChannelData(1) : null,
+      spectrum: computeSpectrum(mono, buffer.sampleRate),
+      spectrogram: frames,
+      item,
+      colours: { group: gcol, complement: ccol },
+      duration: buffer.duration,
+      sampleRate: buffer.sampleRate,
     };
-    const geoBottom: PlotGeo = {
-      w, h, padTop: geo.padTop,
-      plotTop: plotMid, plotBottom: geo.plotBottom, plotH: halfH,
-      mid: plotMid + halfH / 2, halfH: halfH / 2,
-    };
-
-    // Spectrum fill spans the whole height, behind everything.
-    if (spec) drawSpectrumFill(ctx, spec, geo, ccol);
-
-    // --- Top pane: waveform(s) ---
-    // Stereo → two lanes (L top, R bottom) within the top pane; mono → one trace.
-    if (buffer.numberOfChannels >= 2) {
-      const laneH = geoTop.plotH / 2;
-      const amp = laneH / 2;
-      const topMid = geoTop.plotTop + laneH / 2;
-      const botMid = geoTop.plotTop + laneH * 1.5;
-      drawWaveform(ctx, buffer.getChannelData(0), geoTop, gcol, topMid, amp);
-      drawWaveform(ctx, buffer.getChannelData(1), geoTop, gcol, botMid, amp);
-      // Divider between the L and R lanes.
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(0, geoTop.mid + 0.5); ctx.lineTo(w, geoTop.mid + 0.5); ctx.stroke();
-      ctx.fillStyle = gcol + '99';
-      ctx.font = '10px system-ui, sans-serif';
-      ctx.textBaseline = 'top';
-      ctx.fillText('L', 4, topMid - amp + 2);
-      ctx.fillText('R', 4, botMid - amp + 2);
-    } else {
-      drawWaveform(ctx, mono, geoTop, gcol);
-    }
-    if (spec) drawSpectrumTrace(ctx, spec, geo, ccol, item);
-
-    // --- Bottom pane: loudness (always) + phase (stereo only) ---
-    drawLoudness(ctx, mono, geoBottom, '#FCD34D');
-    if (buffer.numberOfChannels >= 2) {
-      drawPhase(ctx, buffer.getChannelData(0), buffer.getChannelData(1), geoBottom, '#FB7185');
-    }
-
-    // Divider between the waveform pane and the loudness/phase pane.
-    ctx.strokeStyle = 'rgba(255,255,255,0.20)';
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(0, plotMid + 0.5); ctx.lineTo(w, plotMid + 0.5); ctx.stroke();
-
-    // Full-height overlay across both panes.
-    drawEnvelope(ctx, item, duration, geo);
-
-    // Beat grid (red 1 / orange 2 / yellow 3 / green 4 dots + gridlines): prefer the
-    // record's BPM; for loops that carry none, estimate it in-browser. A zero BPM is
-    // never a loop, so drawBeats no-ops and no markers are drawn.
-    let bpm = Number(item?.musicality?.beats_per_minute) || 0;
-    let bpmEst = false;
-    if (!bpm && (item?.classification?.timbre === 'Loop' || item?.classification?.length_class === 'Loop')) {
-      bpm = estimateBpm(mono, buffer.sampleRate);
-      bpmEst = bpm > 0;
-    }
-    drawBeats(ctx, geo, duration, bpm, bpmEst);
-
-    // Regions found during the scan (silence-separated segments) — a colour bar per
-    // region along the bottom edge, matching the Extractor's palette. Only drawn when
-    // the record actually carries regions.
-    const regs = item?.regions?.regions as { start_seconds: number; end_seconds: number }[] | undefined;
-    if (regs && regs.length && duration > 0) {
-      const barH = 5;
-      const y = geo.plotBottom - barH;
-      regs.forEach((r, i) => {
-        const x0 = (r.start_seconds / duration) * w;
-        const x1 = (r.end_seconds / duration) * w;
-        ctx.fillStyle = `hsl(${(i * 47) % 360} 75% 58%)`;
-        ctx.fillRect(x0, y, Math.max(1, x1 - x0), barH);
-      });
-    }
-
-    drawAxesAndName(ctx, item, duration, geo);
-
-    // Legend (top-right): one clear panel with a colour swatch per overlay, on a dark
-    // backing so it reads against the busy spectrum — replaces the faint inline labels.
-    const legend: { label: string; color: string }[] = [
-      { label: 'spectrum', color: ccol },
-      { label: 'loudness', color: '#FCD34D' },
-    ];
-    if (buffer.numberOfChannels >= 2) legend.push({ label: 'phase', color: '#FB7185' });
-    ctx.font = '600 11px system-ui, sans-serif';
-    ctx.textBaseline = 'middle';
-    ctx.textAlign = 'left';
-    const rowH = 15, sw = 14, padX = 7, gap = 6;
-    const boxW = padX * 2 + sw + gap + Math.max(...legend.map(e => ctx.measureText(e.label).width));
-    const boxH = padX + legend.length * rowH;
-    const bx = w - boxW - 6, by = 4;
-    ctx.fillStyle = 'rgba(0,0,0,0.62)';
-    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(bx, by, boxW, boxH, 4); else ctx.rect(bx, by, boxW, boxH);
-    ctx.fill();
-    ctx.stroke();
-    legend.forEach((e, i) => {
-      const cy = by + padX / 2 + rowH / 2 + i * rowH;
-      ctx.strokeStyle = e.color;
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(bx + padX, cy);
-      ctx.lineTo(bx + padX + sw, cy);
-      ctx.stroke();
-      ctx.fillStyle = '#fff';
-      ctx.fillText(e.label, bx + padX + sw + gap, cy);
-    });
-    ctx.textAlign = 'left';
+    renderLayerStack(canvas, data, layerSettings);
   };
+
+  // Re-composite when the layer selection or stacking mode changes.
+  useEffect(() => {
+    if (lastBufferRef.current) renderPreview(lastBufferRef.current, lastItemRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layerSettings]);
 
   // Drive the virtualized window AND the audio prefetch off one scroll event.
   // Direction = sign of the scroll delta; anchor = the row at the viewport centre.
@@ -669,6 +583,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
       lastBufferRef.current = decoded;
       lastItemRef.current = full;
       setRingSamples(toMono(decoded));
+      setIsStereo(decoded.numberOfChannels >= 2);
       renderPreview(decoded, full);
     } catch {
       /* undecodable file — leave the preview blank */
@@ -788,7 +703,12 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
             </div>
           </div>
           )}
-          <div ref={scrollRef} onScroll={handleListScroll} style={{ ...(isNarrow ? { height: ROW_H * 5 + 34 } : { flex: 1 }), overflow: 'auto' }}>
+          <div ref={scrollRef} onScroll={handleListScroll} style={{ ...(isNarrow ? { height: ROW_H * 5 + 34 } : { flex: 1 }), overflow: 'auto', position: 'relative' }}>
+              {rows.length === 0 && emptyMessage && (
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', pointerEvents: 'none' }}>
+                  {emptyMessage}
+                </div>
+              )}
               <table style={{ minWidth: '100%', width: 'max-content', borderCollapse: 'collapse', fontSize: '0.8rem', tableLayout: 'fixed' }}>
                   <colgroup>
                       {activeColumns.map(c => <col key={c.key} style={{ width: `${widthOf(c.key)}px` }} />)}
@@ -832,6 +752,9 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
                               {rows.slice(startIndex, endIndex).map((item: any, i: number) => {
                                   const idx = startIndex + i;
                                   const isSelected = selectedItem === item;
+                                  // Favorite-ness colours the NAME text orange (+★); selection owns the
+                                  // row background, so the two states compose instead of fighting.
+                                  const isFavorite = !!favorites?.has(favoriteKeyOf(item));
                                   return (
                                       <tr key={idx}
                                           onClick={() => handleSelect(item)}
@@ -841,7 +764,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
                                                 ? 'rgba(59, 130, 246, 0.25)'
                                                 : (idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'),
                                           }}>
-                                          {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isSelected ? 'white' : 'var(--accent-secondary)' })} title={item.metadata.name}>{item.metadata.name}</td>}
+                                          {activeColumns.find(c => c.key === 'name') && <td style={cell({ color: isFavorite ? 'var(--accent-primary)' : isSelected ? 'white' : 'var(--accent-secondary)', fontWeight: isFavorite ? 650 : undefined })} title={item.metadata.name}>{isFavorite ? '★ ' : ''}{item.metadata.name}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_category') && <td style={cell({ color: item.ucs.category ? ucsColor(item.ucs.category) : 'var(--text-secondary)' })} title={item.ucs.category}>{item.ucs.category ? (isNarrow ? (categoryEmoji(item.ucs.category) || item.ucs.category) : categoryLabel(item.ucs.category)) : ''}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_subcategory') && <td style={cell()} title={item.ucs.subcategory}>{subCell(subcategoryLabel(item.ucs.category || '', item.ucs.subcategory, isNarrow), item.ucs.confidence, item.ucs.subcategory ? ucsSubColor(item.ucs.category || '', item.ucs.subcategory) : 'var(--text-secondary)')}</td>}
                                           {activeColumns.find(c => c.key === 'ucs_alt_1_group') && <td style={cell({ color: 'var(--text-secondary)' })} title={altCategory(item.ucs?.alternatives?.[0])}>{altCategory(item.ucs?.alternatives?.[0]) ? (isNarrow ? (categoryEmoji(altCategory(item.ucs?.alternatives?.[0])) || altCategory(item.ucs?.alternatives?.[0])) : categoryLabel(altCategory(item.ucs?.alternatives?.[0]))) : ''}</td>}
@@ -920,6 +843,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
                       <div style={{ flex: 1, minHeight: 0, position: 'relative', padding: '0.75rem' }}>
                         <div style={{ width: '100%', height: '100%', position: 'relative' }}>
                           <canvas ref={canvasRef} style={{ width: '100%', height: '100%', background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', display: 'block' }} />
+                          <LayersMenu settings={layerSettings} onChange={handleLayerSettings} stereo={isStereo} />
                           <div ref={playheadRef} style={{
                             position: 'absolute', top: 0, bottom: 0, left: 0,
                             width: '2px', backgroundColor: 'rgb(244, 144, 44)', zIndex: 10,

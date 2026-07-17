@@ -165,6 +165,21 @@ export async function writeRootFile(rootHandle: any, fileName: string, text: str
   }
 }
 
+/** Upgrade a stored directory handle to a readwrite grant. The handles the app re-links
+ *  with are requested read-only; writing favorites.json (or anything else at the root)
+ *  needs more. Must be called during a user activation — a keydown or click qualifies —
+ *  or Chrome rejects the prompt outright. Returns true when writes are allowed. */
+export async function ensureReadwrite(handle: any): Promise<boolean> {
+  try {
+    const options = { mode: 'readwrite' } as any;
+    let state = await handle.queryPermission(options);
+    if (state === 'prompt') state = await handle.requestPermission(options);
+    return state === 'granted';
+  } catch {
+    return false;
+  }
+}
+
 /** Where a file sits in the picked tree. The FSA picker cannot write the read-only
  *  `webkitRelativePath`, so it stashes the path on `relPath`; the <input webkitdirectory>
  *  fallback populates the real one. Read both, or half the callers key on a bare name. */

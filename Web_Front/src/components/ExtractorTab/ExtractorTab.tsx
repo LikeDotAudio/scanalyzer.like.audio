@@ -24,6 +24,9 @@ interface ExtractorTabProps {
   // fades), so it registers its transport and the footer's Play drives THIS player. See App.
   registerTransport?: (t: { play: () => void; dig: () => void } | null) => void;
   onPlayingChange?: (playing: boolean) => void;
+  // Favorite flags (relative path → favorited_unix), owned by App — favorite rows in the
+  // file list render their name in orange with a ★.
+  favorites?: Map<string, number>;
 }
 
 const fmt = (s: number) => `${s.toFixed(3)}s`;
@@ -52,7 +55,7 @@ const toEngineParams = (p: RegionParams): EngineParams => ({
   minimum_region_seconds: p.minimum_region_seconds,
 });
 
-export default function ExtractorTab({ analysisResult, filteredData, audioFiles, onSound, setAnalysisResult, registerTransport, onPlayingChange }: ExtractorTabProps) {
+export default function ExtractorTab({ analysisResult, filteredData, audioFiles, onSound, setAnalysisResult, registerTransport, onPlayingChange, favorites }: ExtractorTabProps) {
   const [filter, setFilter] = useState('');
   useEffect(() => { setFilter(''); }, [analysisResult]);
 
@@ -650,7 +653,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
       {/* Extractor uses the global ScopeBar now */}
 
       <div style={{ display: 'flex', flexDirection: isNarrow ? 'column' : 'row', flex: 1, minHeight: 0, overflowY: isNarrow ? 'auto' : undefined }}>
-        <FileGroups groupedRows={groupedRows} rowsCount={rows.length} multiOnly={multiOnly} setMultiOnly={setMultiOnly} selectedItem={selectedItem} onSelect={handleSelect} isNarrow={isNarrow} />
+        <FileGroups groupedRows={groupedRows} rowsCount={rows.length} multiOnly={multiOnly} setMultiOnly={setMultiOnly} selectedItem={selectedItem} onSelect={handleSelect} isNarrow={isNarrow} favorites={favorites} />
 
         {/* Center: waveform + controls + region table */}
         <div style={{ flex: isNarrow ? 'none' : 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#0A0A0A' }}>

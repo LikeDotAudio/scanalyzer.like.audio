@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import './index.css'
-import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot, filterAudioFiles, isTauri, getLastFolderName, clearLastFolderName, resolveAudioUrl, readRootFile } from './audioLinking'
+import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot, filterAudioFiles, isTauri, getLastFolderName, clearLastFolderName, resolveAudioUrl, readRootFile, writeRootFile, ensureReadwrite } from './audioLinking'
 import { MANIFEST_FILE, manifestIsCurrent } from './manifest'
+import { FAVORITES_FILE, FAVORITES_STORAGE_KEY, favoriteKeyOf, buildFavorites, parseFavorites, type Favorites } from './favorites'
 import SampleFooter, { type FooterTab } from './components/SampleFooter'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
 import Header from './components/Header'
@@ -23,7 +24,7 @@ const ExaminerTab = lazy(async () => ({ default: ExaminerTabRaw }))
 const ExtractorTab = lazy(async () => ({ default: ExtractorTabRaw }))
 const RenameTab = lazy(async () => ({ default: RenameTabRaw }))
 
-const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'extractor', 'rename'] as const;
+const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'favorites', 'extractor', 'rename'] as const;
 
 function tabFromHash(): string {
   const h = window.location.hash.replace(/^#\/?/, '');
@@ -86,6 +87,113 @@ function App() {
     [currentSound, analysisResult],
   )
 
+  // Favorites — one Map (relative path → favorited_unix) owned here, because the F key
+  // works on every tab, the orange paints four surfaces, and favorites.json has exactly
+  // one writer. Persisted as a SIBLING of the manifest (user data — re-scans regenerate
+  // the manifest but never touch favorites.json), with a localStorage mirror for the
+  // demo pack / denied-grant cases. See Documentation/Audit/favorites_tab_audit.md.
+  const [favorites, setFavorites] = useState<Favorites>(new Map())
+  const favoritesRef = useRef(favorites); favoritesRef.current = favorites;
+  const favPersistTimerRef = useRef<number | null>(null)
+  // Whether the web folder handle has a readwrite grant: null = not asked yet.
+  const favCanWriteRef = useRef<boolean | null>(null)
+
+  // Debounced (500 ms after the last toggle): serialize the whole file, last write wins.
+  const persistFavorites = () => {
+    if (favPersistTimerRef.current) clearTimeout(favPersistTimerRef.current);
+    favPersistTimerRef.current = window.setTimeout(async () => {
+      favPersistTimerRef.current = null;
+      const text = buildFavorites(favoritesRef.current);
+      try { localStorage.setItem(FAVORITES_STORAGE_KEY, text); } catch { /* mirror only */ }
+      try {
+        if (isTauri()) {
+          const dir = getAudioRoot();
+          if (dir) {
+            const { invoke } = await import('@tauri-apps/api/core');
+            await invoke('write_root_text', { directory: dir, fileName: FAVORITES_FILE, text });
+          }
+        } else if (fsaSupported() && favCanWriteRef.current) {
+          const handle = await getDirHandle();
+          if (handle) await writeRootFile(handle, FAVORITES_FILE, text);
+        }
+      } catch (err) {
+        console.warn('Could not write favorites.json — favorites live in this session only.', err);
+      }
+    }, 500);
+  };
+
+  const toggleFavorite = (item: any) => {
+    const key = favoriteKeyOf(item);
+    if (!key) return;
+    // First toggle on web: upgrade the folder grant to readwrite while we still hold the
+    // user activation this call rode in on (keydown/click). Asked once per session.
+    if (!isTauri() && fsaSupported() && favCanWriteRef.current == null) {
+      favCanWriteRef.current = false; // don't re-prompt while the first ask is in flight
+      getDirHandle()
+        .then(h => (h ? ensureReadwrite(h) : false))
+        .then(ok => { favCanWriteRef.current = !!ok; if (ok) persistFavorites(); });
+    }
+    setFavorites(prev => {
+      const next = new Map(prev);
+      if (next.has(key)) next.delete(key);
+      else next.set(key, Math.floor(Date.now() / 1000));
+      return next;
+    });
+    persistFavorites();
+  };
+
+  // Load favorites whenever a library opens (scan, reopen, demo, dropped .PEAKs — every
+  // path lands here when analysisResult fills). Disk first, localStorage mirror second.
+  const hasData = analysisResult.length > 0;
+  useEffect(() => {
+    if (!hasData) return;
+    let cancelled = false;
+    (async () => {
+      let text: string | null = null;
+      try {
+        if (isTauri()) {
+          const dir = getAudioRoot();
+          if (dir) {
+            const { invoke } = await import('@tauri-apps/api/core');
+            text = await invoke<string>('read_root_text', { directory: dir, fileName: FAVORITES_FILE }).catch(() => null);
+          }
+        } else if (fsaSupported()) {
+          const handle = await getDirHandle();
+          if (handle) text = await readRootFile(handle, FAVORITES_FILE);
+        }
+      } catch { /* fall through to the mirror */ }
+      if (text == null) { try { text = localStorage.getItem(FAVORITES_STORAGE_KEY); } catch { /* none */ } }
+      if (!cancelled) setFavorites(parseFavorites(text));
+    })();
+    return () => { cancelled = true; };
+  }, [hasData]);
+
+  // F flags whatever the footer readout is on — playing or just-finished. Same guards as
+  // every other global key: never while typing, never on key repeat.
+  const footerItemRef = useRef(footerItem); footerItemRef.current = footerItem;
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'f' && e.key !== 'F') return;
+      if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+      const item = footerItemRef.current;
+      if (!item) return;
+      e.preventDefault();
+      toggleFavorite(item);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // The Favorites tab's rows: the scoped/filtered set ∩ the favorites set, so the scope
+  // bar narrows favorites exactly like every other tab.
+  const favoriteRows = useMemo(
+    () => filteredData.filter(it => favorites.has(favoriteKeyOf(it))),
+    [filteredData, favorites],
+  );
+
   // Some tabs own their OWN <audio> element because it feeds a live visual (the Examiner's
   // eye + VU/phase meters, the Extractor's wave circle and region loops). On those tabs the
   // shared footer audio would be a SECOND element playing the same file — out of sync with
@@ -95,7 +203,7 @@ function App() {
   const tabTransportRef = useRef<{ play: () => void; dig: () => void } | null>(null)
   const [tabPlaying, setTabPlaying] = useState(false)
   const [tabDigging, setTabDigging] = useState(false)
-  const tabOwnsAudio = activeTab === 'examiner' || activeTab === 'extractor'
+  const tabOwnsAudio = activeTab === 'examiner' || activeTab === 'extractor' || activeTab === 'favorites'
 
   // Keep the active tab in sync with the URL hash (linkable / back-forward).
   useEffect(() => {
@@ -451,6 +559,7 @@ function App() {
     { id: 'cloud', label: '3D' },
     { id: 'stats', label: '2D' },
     { id: 'examiner', label: 'Examiner' },
+    { id: 'favorites', label: '★ Favorites' },
     { id: 'extractor', label: 'Extractor' },
     { id: 'rename', label: 'Rename' }
   ];
@@ -559,8 +668,16 @@ function App() {
           {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} />}
           {activeTab === 'groups' && <GroupsTab filteredData={filteredData} />}
           {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} autoLoop={autoLoop}
+            favorites={favorites}
+            registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
+          {/* The Favorites tab IS an Examiner — same component, mounted under its own hash
+              with rows pre-filtered to the favorites set. DIG here digs favorites only. */}
+          {activeTab === 'favorites' && <ExaminerTab analysisResult={analysisResult} filteredData={favoriteRows} audioFiles={audioFiles} onSound={setCurrentSound} autoLoop={autoLoop}
+            favorites={favorites}
+            emptyMessage="No favorites yet — press F while a sample plays, or tap ★ in the footer."
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
           {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult}
+            favorites={favorites}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} />}
         </Suspense>
@@ -571,6 +688,8 @@ function App() {
       {analysisResult.length > 0 && (
         <SampleFooter
           item={footerItem}
+          favorite={footerItem ? favorites.has(favoriteKeyOf(footerItem)) : false}
+          onToggleFavorite={() => { if (footerItem) toggleFavorite(footerItem); }}
           playing={tabOwnsAudio ? tabPlaying : footerPlaying}
           digging={tabOwnsAudio ? tabDigging : digging}
           autoPlay={autoPlay}

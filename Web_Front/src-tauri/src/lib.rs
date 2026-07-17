@@ -402,6 +402,40 @@ fn open_manifest(directory: String, cache: tauri::State<'_, PeakCache>) -> Resul
     Ok(n)
 }
 
+// ---- Root text files (favorites.json etc.) ---------------------------------------------
+// Small named text files at the library root, SIBLINGS of the manifest. Unlike the manifest
+// (a rebuildable cache) these carry user data — favorites.json — so scans never touch them.
+// `file_name` must be a bare name: no separators, no `..` — never a path escape.
+
+fn root_file_path(directory: &str, file_name: &str) -> Result<std::path::PathBuf, String> {
+    if file_name.is_empty()
+        || file_name.contains('/')
+        || file_name.contains('\\')
+        || file_name.contains("..")
+    {
+        return Err(format!("invalid root file name: {file_name}"));
+    }
+    let root = std::path::Path::new(directory);
+    if !root.is_dir() {
+        return Err(format!("{directory} is not a folder"));
+    }
+    Ok(root.join(file_name))
+}
+
+/// Read a named text file at the library root (e.g. favorites.json). Err when absent.
+#[tauri::command]
+fn read_root_text(directory: String, file_name: String) -> Result<String, String> {
+    let path = root_file_path(&directory, &file_name)?;
+    std::fs::read_to_string(&path).map_err(|e| e.to_string())
+}
+
+/// Write a named text file at the library root (e.g. favorites.json).
+#[tauri::command]
+fn write_root_text(directory: String, file_name: String, text: String) -> Result<(), String> {
+    let path = root_file_path(&directory, &file_name)?;
+    std::fs::write(&path, text).map_err(|e| e.to_string())
+}
+
 /// Build (or rebuild) the slim manifest from the `.PEAK` sidecars already on disk, WITHOUT
 /// re-analyzing. Upgrades a library that was scanned before manifests existed, and refreshes
 /// one whose sidecars changed. Returns how many records went into the manifest.
@@ -461,6 +495,8 @@ pub fn run() {
             close_peak_file,
             open_manifest,
             build_manifest,
+            read_root_text,
+            write_root_text,
             read_full_record,
             extractor_detect,
             extractor_slice_wav,
