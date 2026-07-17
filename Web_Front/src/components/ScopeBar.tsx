@@ -1,10 +1,15 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { type Taxonomy, taxonomyKeys, scopeSubgroups, scopeSubColor } from '../groupColors';
 import { altCategory } from '../ucsIndex';
 
 import { categoryLabel, subcategoryLabel } from '../categoryEmoji';
 import AlphabetScrubber from './AlphabetScrubber';
 import { useIsNarrow } from '../useIsNarrow';
+
+// Above this many files, re-filtering the whole library on every keystroke is too heavy,
+// so the filter box becomes an explicit search: typing only edits a draft, and Enter or
+// the Search button commits it.
+const EXPLICIT_SEARCH_FILE_COUNT = 1000;
 
 interface ScopeBarProps {
   analysisResult: any[];
@@ -52,6 +57,14 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
   // fight it — grey them out while filtering, and offer an X to clear the filter and hand
   // scoping back.
   const filtering = !!(filterText && filterText.trim());
+
+  const explicitSearch = analysisResult.length > EXPLICIT_SEARCH_FILE_COUNT;
+  // In explicit-search mode keystrokes land in a draft, committed on Enter / Search.
+  // The draft resyncs whenever the committed filter changes from outside this box
+  // (footer push-to-tab, the ✕ clear).
+  const [draftText, setDraftText] = useState(filterText || '');
+  useEffect(() => { setDraftText(filterText || ''); }, [filterText]);
+  const searchPending = explicitSearch && draftText !== (filterText || '');
 
 
   const filterBtn = (label: string, active: boolean, onClick: () => void, color?: string, disabled = false) => (
@@ -122,12 +135,25 @@ export default function ScopeBar({ analysisResult, group, sub, setGroup, setSub,
 
         {/* Search Bar (right) */}
         {setFilterText !== undefined && (
-          <div style={{ position: 'relative', width: isNarrow ? '150px' : '300px', flex: isNarrow ? 1 : '0 0 auto', display: 'flex', alignItems: 'center' }}>
-            <input type="text" placeholder="Filter by name, group, timbre..." value={filterText || ''} onChange={e => setFilterText(e.target.value)}
-              style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: `1px solid ${filtering ? 'var(--accent-primary)' : 'var(--border-color)'}`, color: 'white', padding: '0.3rem 1.6rem 0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', width: '100%', minWidth: 0 }} />
-            {filtering && (
-              <button onClick={() => setFilterText('')} title="Clear filter — re-enable scope"
-                style={{ position: 'absolute', right: 4, background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.85rem', lineHeight: 1, padding: '0 0.3rem' }}>✕</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', width: isNarrow ? '150px' : '300px', flex: isNarrow ? 1 : '0 0 auto' }}>
+            <div style={{ position: 'relative', flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' }}>
+              <input type="text"
+                placeholder={explicitSearch ? 'Search name, group, timbre... (Enter)' : 'Filter by name, group, timbre...'}
+                value={explicitSearch ? draftText : (filterText || '')}
+                onChange={e => (explicitSearch ? setDraftText(e.target.value) : setFilterText(e.target.value))}
+                onKeyDown={e => { if (explicitSearch && e.key === 'Enter') setFilterText(draftText); }}
+                style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: searchPending ? '1px dashed var(--accent-primary)' : `1px solid ${filtering ? 'var(--accent-primary)' : 'var(--border-color)'}`, color: 'white', padding: '0.3rem 1.6rem 0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', width: '100%', minWidth: 0 }} />
+              {(filtering || (explicitSearch && !!draftText)) && (
+                <button onClick={() => { setFilterText(''); setDraftText(''); }} title="Clear filter — re-enable scope"
+                  style={{ position: 'absolute', right: 4, background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.85rem', lineHeight: 1, padding: '0 0.3rem' }}>✕</button>
+              )}
+            </div>
+            {explicitSearch && (
+              <button className="btn primary" onClick={() => setFilterText(draftText)}
+                title={`Over ${EXPLICIT_SEARCH_FILE_COUNT.toLocaleString()} files — filtering runs on demand, not per keystroke`}
+                style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', flex: '0 0 auto' }}>
+                Search
+              </button>
             )}
           </div>
         )}

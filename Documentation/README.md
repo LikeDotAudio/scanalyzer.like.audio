@@ -30,6 +30,9 @@ Design docs for the Sample Analysis toolchain, filed by type:
 
 - [Plans/open_items.md](Plans/open_items.md) — the two verified-open engineering items
   (the un-raised `MAX_FRAMES` cap, and the missing batch feature-dump mode).
+- [Plans/pad_browser_plan.md](Plans/pad_browser_plan.md) — roadmap: a drum-machine-style
+  pad grid for auditioning the scoped set polyphonically — many files at once, Web Audio
+  voices instead of the monophonic footer `<audio>`.
 
 > The `architecture_migration_plan.md` and `ucs_training_strategy.md` docs were deleted
 > on 2026-07-16 after a code check found them stale/false — the migration was a hybrid
