@@ -1,6 +1,8 @@
 import { Suspense, useState, useEffect, useMemo } from 'react';
 import SampleCloud from '../SampleCloud';
-import { isTauri } from '../../audioLinking';
+import AudioEye from '../AudioEye';
+import { isTauri, resolveAudioUrl } from '../../audioLinking';
+import { ucsColor } from '../../groupColors';
 import GraphOptionsMenu from './GraphOptionsMenu';
 import ShapesMenu from './ShapesMenu';
 import { WebGLBoundary, webglAvailable } from './WebGLBoundary';
@@ -16,6 +18,11 @@ interface CloudTabProps {
   // Open the selected file in the Examiner / Extractor (filtered to its name).
   onExamine?: (name: string) => void;
   onExtract?: (name: string) => void;
+  // The app footer's shared <audio> element — the EYE overlay visualizes and scrubs it
+  // rather than owning a second element (which would double the audio).
+  eyeAudio?: HTMLAudioElement | null;
+  // The footer's play/pause action, reused by the EYE's centre button.
+  onEyePlay?: () => void;
 }
 
 // v2: the saved prefs are from the old taxonomy. A stored colorBy of 'Group' would
@@ -24,6 +31,26 @@ interface CloudTabProps {
 // Bumping the prefix retires both in one go.
 const PREF = 'scanalyzer_cloud_v2_';
 const getPref = (key: string, def: string) => localStorage.getItem(PREF + key) || def;
+
+// Shown when the 3D subtree threw a real rendering error (caught by WebGLBoundary) —
+// distinct from WebGL being unavailable, so a plain bug never masquerades as a GPU
+// problem. Names the actual error and offers a retry.
+function CloudCrashed({ error, onRetry }: { error: Error; onRetry: () => void }) {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', padding: '2rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+      <div style={{ fontSize: '2rem' }}>💥</div>
+      <div style={{ color: 'var(--text-primary)', fontSize: '1rem', fontWeight: 600 }}>The 3D view hit an error</div>
+      <div style={{ fontSize: '0.85rem', maxWidth: 460, lineHeight: 1.5 }}>
+        The cloud crashed while rendering this selection — an app bug, not your GPU. Changing
+        the scope retries automatically, or:
+      </div>
+      <code style={{ fontSize: '0.75rem', maxWidth: 520, padding: '0.3rem 0.6rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '4px', overflowWrap: 'anywhere' }}>
+        {error.message}
+      </code>
+      <button className="btn primary" onClick={onRetry} style={{ padding: '0.25rem 0.9rem', fontSize: '0.8rem' }}>Try again</button>
+    </div>
+  );
+}
 
 // Shown in place of the 3D cloud when WebGL can't start. The rest of the app (the 2D view,
 // Stats, Examiner, Extractor) doesn't need the GPU and keeps working.
@@ -43,7 +70,7 @@ function WebGLUnavailable() {
 }
 
 export default function CloudTab({
-  filteredData, audioFiles, onSound, selectedItem, playing
+  filteredData, audioFiles, onSound, selectedItem, playing, eyeAudio, onEyePlay
 }: CloudTabProps) {
   const [xAxis, setXAxis] = useState(() => getPref('xAxis', 'Pitch'));
   const [yAxis, setYAxis] = useState(() => getPref('yAxis', 'Group'));
@@ -89,6 +116,25 @@ export default function CloudTab({
     return idx === -1 ? null : idx;
   }, [selectedItem, data]);
 
+  // Resolve the selected sample's URL for the EYE overlay's ring decode. This is a
+  // second blob URL over the same bytes the footer plays — ours to revoke on change.
+  const [eyeSrc, setEyeSrc] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const url = selectedItem ? await resolveAudioUrl(audioFiles, selectedItem) : null;
+      if (cancelled) {
+        if (url?.startsWith('blob:')) URL.revokeObjectURL(url);
+        return;
+      }
+      setEyeSrc(prev => {
+        if (prev?.startsWith('blob:') && prev !== url) URL.revokeObjectURL(prev);
+        return url;
+      });
+    })();
+    return () => { cancelled = true; };
+  }, [selectedItem, audioFiles]);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
       <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}>
@@ -96,7 +142,7 @@ export default function CloudTab({
       </div>
       <section className="main-view glass-panel" style={{ margin: 0, padding: 0, overflow: 'hidden', flex: 1, position: 'relative' }}>
         {glOk ? (
-          <WebGLBoundary fallback={<WebGLUnavailable />}>
+          <WebGLBoundary resetKey={data} fallback={(error, retry) => <CloudCrashed error={error} onRetry={retry} />}>
             <Suspense fallback={<div style={{ color: 'white', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>Initializing 3D Engine...</div>}>
               <SampleCloud
                 data={data} xAxis={xAxis} yAxis={yAxis} zAxis={zAxis}
@@ -147,6 +193,23 @@ export default function CloudTab({
         {/* Shapes Overlay */}
         {showShapes && (
           <ShapesMenu shapeBy={shapeBy} setShapeBy={setShapeBy} />
+        )}
+
+        {/* EYE player — the selected sample's scrubbable radial waveform, overlaid
+            bottom-right. Drives the shared footer audio, so ring, playhead and sound
+            are one transport. */}
+        {eyeSrc && selectedItem && (
+          <div style={{ position: 'absolute', bottom: '0.75rem', right: '0.75rem', zIndex: 15 }}>
+            <AudioEye
+              src={eyeSrc}
+              name={selectedItem.metadata?.name || ''}
+              color={ucsColor(selectedItem.ucs?.category || '')}
+              size={150}
+              audioEl={eyeAudio}
+              onTogglePlay={onEyePlay}
+              autoPlay={false}
+            />
+          </div>
         )}
       </section>
     </div>

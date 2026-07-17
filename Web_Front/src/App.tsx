@@ -77,6 +77,9 @@ function App() {
   // (its name), so we can resolve the whole record here and drive one shared footer —
   // download / play-stop and "push to any tab" — from any page.
   const footerAudioRef = useRef<HTMLAudioElement>(null)
+  // The same element as state, so children that visualize it (the 3D EYE overlay)
+  // re-render when it mounts — a ref alone wouldn't trigger that first render.
+  const [footerAudioEl, setFooterAudioEl] = useState<HTMLAudioElement | null>(null)
   const [footerPlaying, setFooterPlaying] = useState(false)
   const footerItem = useMemo(
     () => (currentSound ? analysisResult.find(it => (it.metadata?.name || '') === currentSound) || null : null),
@@ -548,13 +551,14 @@ function App() {
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
           <CloudTab analysisResult={analysisResult} filteredData={scopedData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} playing={footerPlaying}
             onExamine={(name) => footerPush('examiner', name)}
-            onExtract={(name) => footerPush('extractor', name)} />
+            onExtract={(name) => footerPush('extractor', name)}
+            eyeAudio={footerAudioEl} onEyePlay={footerPlay} />
         </div>
 
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
           {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} />}
           {activeTab === 'groups' && <GroupsTab filteredData={filteredData} />}
-          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} autoLoop={autoLoop}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
           {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} />}
@@ -585,7 +589,7 @@ function App() {
           onPush={footerPush}
         />
       )}
-      <audio ref={footerAudioRef} style={{ display: 'none' }} loop={autoLoop && !digging}
+      <audio ref={el => { footerAudioRef.current = el; setFooterAudioEl(el); }} style={{ display: 'none' }} loop={autoLoop && !digging}
         onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={handleFooterEnded} />
     </div>
   )

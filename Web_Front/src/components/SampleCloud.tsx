@@ -202,6 +202,10 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
     }
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+    // Raycasting tests the mesh's bounding sphere first, and three computes it only once
+    // (at the first raycast). Recompute after every matrix rewrite or hover/click picking
+    // goes blind — or falsely hits — once the scope filter moves the instances.
+    mesh.computeBoundingSphere();
   }, [sData, hiddenGroups, allData, dummy, shape, taxonomy]);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
@@ -223,6 +227,14 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
     document.body.style.cursor = 'auto';
   };
 
+  // Clean up cursor if unmounted while hovered. MUST stay above the empty-bucket return:
+  // a hook after a conditional return renders a different hook count when a shape's bucket
+  // empties (e.g. the scope narrows to one category), and React throws — which the
+  // WebGLBoundary then mislabels as "WebGL couldn't start".
+  useEffect(() => {
+    return () => { document.body.style.cursor = 'auto'; };
+  }, []);
+
   if (sData.positions.length === 0) return null;
 
   let geom;
@@ -236,11 +248,6 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
   else if (shape === 'dodecahedron') geom = <dodecahedronGeometry args={[0.55, 0]} />;
   else geom = <sphereGeometry args={[0.5, 10, 10]} />;
 
-  // Clean up cursor if unmounted while hovered
-  useEffect(() => {
-    return () => { document.body.style.cursor = 'auto'; };
-  }, []);
-
   return (
     <instancedMesh 
       ref={meshRef} 
@@ -252,8 +259,11 @@ function ShapeMesh({ shape, sData, hiddenGroups, allData, taxonomy, onPick }: { 
       {geom}
       <meshBasicMaterial toneMapped={false} />
       {hoveredIdx != null && sData.positions[hoveredIdx] && (
-        <Html position={sData.positions[hoveredIdx]} center style={{ pointerEvents: 'none', zIndex: 100 }}>
+        <Html position={sData.positions[hoveredIdx]} style={{ pointerEvents: 'none', zIndex: 100 }}>
+          {/* Offset up-and-right of the anchor so the box never sits over the hovered
+              block or the cursor pointing at it (`center` would park it on both). */}
           <div style={{
+            transform: 'translate(22px, calc(-100% - 18px))',
             background: 'rgba(15, 19, 27, 0.9)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
             padding: '4px 8px',

@@ -18,24 +18,41 @@ export function webglAvailable(): boolean {
 }
 
 interface Props {
-  fallback: ReactNode;
+  /** What to show when a render error is caught. A function form receives the error and a
+   *  retry callback, so the fallback can name the real failure instead of guessing. */
+  fallback: ReactNode | ((error: Error, retry: () => void) => ReactNode);
+  /** When this value changes while failed, the boundary retries the children. A crash
+   *  caused by one dataset (e.g. a scope selection) must not permanently kill the tab —
+   *  the next selection deserves a fresh attempt. */
+  resetKey?: unknown;
   children: ReactNode;
 }
 interface State {
-  failed: boolean;
+  error: Error | null;
 }
 
-/** Backstop for a WebGL/three.js init throw that slips past the pre-check (a context is
- *  granted but then fails on real use): render the fallback instead of taking down the app. */
+/** Backstop for a throw inside the 3D subtree — a WebGL/three.js init failure that slips
+ *  past the pre-check, or a plain rendering bug. Renders the fallback instead of taking
+ *  down the app, and retries when `resetKey` changes or the fallback asks to. */
 export class WebGLBoundary extends Component<Props, State> {
-  state: State = { failed: false };
-  static getDerivedStateFromError(): State {
-    return { failed: true };
+  state: State = { error: null };
+  static getDerivedStateFromError(error: Error): State {
+    return { error };
   }
   componentDidCatch(error: Error, info: any) {
-    console.error("WebGLBoundary caught an error:", error, info);
+    console.error('WebGLBoundary caught an error:', error, info);
+  }
+  componentDidUpdate(prevProps: Props) {
+    if (this.state.error && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ error: null });
+    }
   }
   render() {
-    return this.state.failed ? this.props.fallback : this.props.children;
+    const { error } = this.state;
+    if (!error) return this.props.children;
+    const { fallback } = this.props;
+    return typeof fallback === 'function'
+      ? fallback(error, () => this.setState({ error: null }))
+      : fallback;
   }
 }

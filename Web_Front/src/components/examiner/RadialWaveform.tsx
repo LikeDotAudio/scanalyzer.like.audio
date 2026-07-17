@@ -52,8 +52,13 @@ function heatColor(lufs: number): [number, number, number] {
 }
 
 interface RadialWaveformProps {
-  // Mono PCM samples of the whole file (e.g. from toMono(audioBuffer)).
+  // Mono PCM samples of the whole file (e.g. from toMono(audioBuffer)) — or, when
+  // samplesRight is also given, the LEFT channel.
   samples: Float32Array | null;
+  // Stereo: the RIGHT channel. When present the ring splits down the middle of its
+  // band — the outer half traces the left channel in `color`, the inner half traces
+  // the right channel in the opposite (inverted) colour.
+  samplesRight?: Float32Array | null;
   // Square edge length of the widget in CSS px.
   size?: number;
   // Ring colour ('#RRGGBB'); alpha is applied internally.
@@ -87,6 +92,7 @@ interface RadialWaveformProps {
 // samples: the file starts at 0° (right) and wraps clockwise through 360°.
 export default function RadialWaveform({
   samples,
+  samplesRight = null,
   size = 180,
   color = '#f4902c',
   // No hollow centre: the spokes reach all the way in. The play button below floats
@@ -136,12 +142,30 @@ export default function RadialWaveform({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (!samples || samples.length === 0) return;
 
-    drawRadialWaveform(ctx, samples, {
-      cx, cy, innerRadius, outerRadius, color,
-      lineWidth: Math.max(1, dpr),
-      startMarker,
-      regions,
-    });
+    if (samplesRight && samplesRight.length) {
+      // Stereo: split the band down the middle — left channel rings the outer half in
+      // the base colour, right channel rings the inner half in the opposite colour.
+      const midRadius = (innerRadius + outerRadius) / 2;
+      drawRadialWaveform(ctx, samples, {
+        cx, cy, innerRadius: midRadius, outerRadius, color,
+        lineWidth: Math.max(1, dpr),
+        startMarker,
+        regions,
+      });
+      drawRadialWaveform(ctx, samplesRight, {
+        cx, cy, innerRadius, outerRadius: midRadius, color: invertHex(color),
+        lineWidth: Math.max(1, dpr),
+        startMarker: false, // the outer band's tick already marks 0°
+        regions,
+      });
+    } else {
+      drawRadialWaveform(ctx, samples, {
+        cx, cy, innerRadius, outerRadius, color,
+        lineWidth: Math.max(1, dpr),
+        startMarker,
+        regions,
+      });
+    }
 
     // Region arcs sit just outside the ring — each spans its slice of the file.
     if (regions && regions.length) {
@@ -158,7 +182,7 @@ export default function RadialWaveform({
         ctx.stroke();
       }
     }
-  }, [samples, size, color, holeRatio, startMarker, regions]);
+  }, [samples, samplesRight, size, color, holeRatio, startMarker, regions]);
 
   // Playhead loop: a spoke from inner→outer radius at the current-time angle, redrawn
   // every frame on the overlay canvas only. Runs for the life of the widget.

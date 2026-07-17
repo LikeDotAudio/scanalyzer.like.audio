@@ -200,3 +200,67 @@ taxonomy as the rest of the app.
 - Scope bar (category chips) and the Groups menu (hide set) are still **separate controls** (#2,
   #3): both filter by category globally now, but picking a scope doesn't tick menu boxes and
   vice-versa. Unifying them into one control is a larger UX decision, not done here.
+
+---
+
+## Re-audit #3 — selecting a single group crashed the cloud (2026-07-16)
+
+**Symptom:** with **All** groups the cloud renders; select any single category chip and the 3D
+view dies, showing *"3D view unavailable — WebGL couldn't start"*. Returning to **All** does not
+bring it back.
+
+**That message was a lie.** WebGL was fine. Two separate defects compounded:
+
+### 1. The actual crash — a Rules-of-Hooks violation in `ShapeMesh`
+
+`SampleCloud.tsx` draws one `ShapeMesh` (instanced mesh) per shape — sphere, cylinder, disc,
+pyramid, torus, … Nine of them render on every pass, each with its own bucket of points. The
+component had:
+
+```tsx
+if (sData.positions.length === 0) return null;   // empty bucket → bail early
+...
+useEffect(() => () => { document.body.style.cursor = 'auto'; }, []);  // AFTER the return
+```
+
+A hook after a conditional return means the component renders **6 hooks when its bucket has
+points and 5 when it doesn't**. With All selected, every bucket is non-empty. Narrow the scope
+to one category and several shape buckets go empty (COMMUNICATIONS has no drums-cylinders, no
+cymbal-discs, …) → those `ShapeMesh`es skip the trailing hook → React throws
+**error #300, "Rendered fewer hooks than expected"** → the whole `Canvas` subtree unmounts.
+
+Reproduced on the pre-fix build (headless Chrome + SwiftShader, demo pack): clicking the
+AIRCRAFT chip threw React #300 on the spot; the canvas was destroyed and stayed destroyed.
+
+**Fix:** the cursor-cleanup `useEffect` moved above the early return (`SampleCloud.tsx`). The
+same violation existed in `ScanalyzeTab.tsx` (an `isTauri()` early return above a `useEffect`) —
+latent rather than live, since `isTauri()` never changes at runtime — fixed the same way. The
+linter's `react-hooks(rules-of-hooks)` check now passes clean; it would have caught both.
+
+### 2. The mislabel + no recovery — `WebGLBoundary`
+
+The boundary caught **every** error from the 3D subtree and rendered the one fallback it had:
+the "WebGL couldn't start" panel. A data-dependent rendering bug was therefore reported as a
+GPU problem. And `failed` was never reset, so one crash killed the tab until a full remount.
+
+**Fix:** `WebGLBoundary` now captures the actual `Error` and passes it to a function-form
+fallback; `CloudTab` renders a distinct **"The 3D view hit an error"** panel naming the real
+message, with a *Try again* button. A `resetKey={data}` prop retries automatically when the
+scope changes — a crash on one selection no longer bricks the next. The genuine WebGL-off
+pre-check keeps its original message.
+
+### Also fixed while in there
+
+- `InstancedMesh` raycast picking: three.js computes the mesh bounding sphere once, at the
+  first raycast, and never again — after a scope change rewrites the instance matrices,
+  hover/click picking could go blind or false-hit. `computeBoundingSphere()` now runs after
+  every matrix rewrite.
+
+### Verified (headless Chrome, SwiftShader WebGL, demo pack)
+
+| Step | Pre-fix | Post-fix |
+|---|---|---|
+| All groups | renders | renders |
+| Single group (AIRCRAFT) | React #300, canvas destroyed, "WebGL" panel | renders the category's points |
+| Back to All | still dead | renders |
+| Rapid-cycle 12 chips + subgroup + arrows | — | no errors |

@@ -16,6 +16,10 @@ interface FileGroupsProps {
   isNarrow?: boolean;
 }
 
+// Narrow mode sizes the list to the Examiner's: exactly five 24px rows (+ its header
+// strip), pinned to the top of the tab so the page scrolling underneath never moves it.
+const NARROW_LIST_HEIGHT = 24 * 5 + 34;
+
 // The left-hand "groups" panel: the file list grouped under UCS category headers.
 export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMultiOnly, selectedItem, onSelect, isNarrow }: FileGroupsProps) {
   const [folded, setFolded] = useState(false);
@@ -24,7 +28,7 @@ export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMulti
   useEffect(() => { selRef.current?.scrollIntoView({ block: 'nearest' }); }, [selectedItem]);
   return (
     <div style={{ ...(isNarrow
-        ? { width: '100%', borderBottom: '1px solid var(--border-color)' }
+        ? { width: '100%', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 0, zIndex: 20 }
         : { width: 280, flexShrink: 0, borderRight: '1px solid var(--border-color)' }),
       display: 'flex', flexDirection: 'column', background: '#0B0E14' }}>
       <div style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
@@ -41,7 +45,7 @@ export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMulti
         </label>
         {!isNarrow && <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{rowsCount.toLocaleString()} file(s)</div>}
       </div>
-      <div style={{ flex: 1, overflowY: 'auto', display: isNarrow && folded ? 'none' : undefined, maxHeight: isNarrow ? '32vh' : undefined }}>
+      <div style={{ ...(isNarrow ? { height: NARROW_LIST_HEIGHT, flex: 'none' } : { flex: 1 }), overflowY: 'auto', display: isNarrow && folded ? 'none' : undefined }}>
         {groupedRows.map((row, i) => {
           if (row.kind === 'header') {
             return (
@@ -55,7 +59,9 @@ export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMulti
             );
           }
           const it = row.item;
+          // A count of 1 is "the whole file" — meaningless, so no badge (nor for 0/unknown).
           const count = it.regions?.count ?? null;
+          const showCount = count != null && count > 1;
           const sel = it === selectedItem;
           return (
             <div key={i} ref={sel ? selRef : undefined} onClick={() => onSelect(it)}
@@ -63,7 +69,7 @@ export default function FileGroups({ groupedRows, rowsCount, multiOnly, setMulti
                 background: sel ? 'rgba(59,130,246,0.25)' : (i % 2 ? 'rgba(255,255,255,0.02)' : 'transparent'),
                 color: sel ? '#fff' : 'var(--accent-secondary)' }}>
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={it.metadata?.name}>{it.metadata?.name}</span>
-              {count != null && <span style={{ color: count > 1 ? '#f59e0b' : 'var(--text-secondary)', flexShrink: 0 }}>{count}▮</span>}
+              {showCount && <span style={{ color: '#f59e0b', flexShrink: 0 }}>{count}▮</span>}
             </div>
           );
         })}

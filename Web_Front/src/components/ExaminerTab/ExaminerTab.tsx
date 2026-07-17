@@ -25,6 +25,9 @@ interface ExaminerTabProps {
   registerTransport?: (t: { play: () => void; dig: () => void } | null) => void;
   onPlayingChange?: (playing: boolean) => void;
   onDiggingChange?: (digging: boolean) => void;
+  // The footer's auto-loop toggle. Long samples loop gaplessly (native loop attribute);
+  // samples under 5 s loop with a 1 s breath of silence between repeats.
+  autoLoop?: boolean;
 }
 
 
@@ -95,7 +98,7 @@ function subCell(text: string, prob: number, textColor: string) {
   );
 }
 
-export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange }: ExaminerTabProps) {
+export default function ExaminerTab({ analysisResult, filteredData, audioFiles, onSound, registerTransport, onPlayingChange, onDiggingChange, autoLoop = false }: ExaminerTabProps) {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   // The full record for the detail panels. `selectedItem` stays the (possibly slim)
   // manifest row so row-identity/index logic is untouched; `detailItem` is that row
@@ -103,7 +106,6 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   const [detailItem, setDetailItem] = useState<any>(null);
   const isNarrow = useIsNarrow();
   const [autoPlay] = useState(true);
-  const [autoLoop] = useState(false); // repeat the selected sample while it plays (off by default)
   const [digging, setDigging] = useState(false);
   const playheadRef = useRef<HTMLDivElement>(null);
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 } | null>(null);
@@ -570,6 +572,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   };
 
   const handleSelect = (item: any, forcePlay = false) => {
+    clearLoopTimer(); // don't let a previous sample's gap-restart fire into the new one
     setSelectedItem(item);
     setDetailItem(item); // show the slim row instantly; upgraded in loadSelected
     onSound?.(item?.metadata?.name || '');
@@ -681,9 +684,29 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
     else setDigging(false); // reached the end of the list
   };
 
+  // Auto-loop, short-sample variant: a sample under 5 s loops with a 1 s pause between
+  // repeats (a hi-hat machine-gunning back-to-back is unlistenable); 5 s and over loop
+  // gaplessly via the element's native `loop` attribute, which never fires 'ended'.
+  const SHORT_LOOP_SECONDS = 5;
+  const GAP_MS = 1000;
+  const shortLoop = (Number(selectedItem?.metadata?.length_seconds) || 0) < SHORT_LOOP_SECONDS;
+  const loopTimerRef = useRef<number | null>(null);
+  const clearLoopTimer = () => {
+    if (loopTimerRef.current != null) { clearTimeout(loopTimerRef.current); loopTimerRef.current = null; }
+  };
+  useEffect(() => () => clearLoopTimer(), []);
+  useEffect(() => { if (!autoLoop) clearLoopTimer(); }, [autoLoop]);
+
   const handleEnded = () => {
-    if (!digging) return;
-    advanceDig(rows.indexOf(selectedItem) + 1);
+    if (digging) { advanceDig(rows.indexOf(selectedItem) + 1); return; }
+    if (autoLoop && shortLoop) {
+      clearLoopTimer();
+      loopTimerRef.current = window.setTimeout(() => {
+        loopTimerRef.current = null;
+        const el = audioRef.current;
+        if (el && el.paused) { el.currentTime = 0; el.play().catch(() => {}); }
+      }, GAP_MS);
+    }
   };
 
   // Play/stop the current selection — shared by the footer ▶ button and the circular
@@ -692,6 +715,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
   const togglePlay = () => {
     const el = audioRef.current;
     if (!el) return;
+    clearLoopTimer(); // a manual play/pause always overrides a pending gap-restart
     if (el.paused) {
       if (el.duration && el.currentTime >= el.duration - 0.01) el.currentTime = 0;
       el.play().catch(() => {});
@@ -906,7 +930,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
                         </div>
                       </div>
                       <audio ref={audioRef} style={{ display: 'none' }}
-                        loop={autoLoop && !digging}
+                        loop={autoLoop && !digging && !shortLoop}
                         onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}
                         onEnded={() => { setIsPlaying(false); handleEnded(); }} />
                   </>

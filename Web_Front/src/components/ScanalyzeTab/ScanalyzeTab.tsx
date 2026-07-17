@@ -59,6 +59,19 @@ export default function ScanalyzeTab({
   const startMsRef = useRef<number>(0);
   const threadsRef = useRef<number>(1);
 
+  useEffect(() => {
+    // Desktop scans natively — don't fetch the web analyzer wasm there.
+    if (isTauri()) return;
+    // Instantiate from fetched bytes (see wasmWorker) so a wrong .wasm MIME type doesn't
+    // trigger the instantiateStreaming warning/fallback.
+    (async () => {
+        await initWasm(await (await fetch(wasmUrl)).arrayBuffer());
+        setWasmReady(true);
+        setVersion(analyzer_version());
+    })().catch(console.error);
+  }, []);
+
+  // Below every hook — an early return above a hook breaks the Rules of Hooks.
   if (isTauri()) {
     return (
       <TauriScan
@@ -71,16 +84,6 @@ export default function ScanalyzeTab({
       />
     );
   }
-
-  useEffect(() => {
-    // Instantiate from fetched bytes (see wasmWorker) so a wrong .wasm MIME type doesn't
-    // trigger the instantiateStreaming warning/fallback.
-    (async () => {
-        await initWasm(await (await fetch(wasmUrl)).arrayBuffer());
-        setWasmReady(true);
-        setVersion(analyzer_version());
-    })().catch(console.error);
-  }, []);
 
   // Discover WAV files in the picked folder. everyNth > 1 samples the library
   // (e.g. every 50th file) for a quick representative test scan.

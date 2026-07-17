@@ -136,14 +136,20 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     const out: ({ kind: 'header'; category: string; count: number } | { kind: 'file'; item: any })[] = [];
     for (const cat of Array.from(byCat.keys()).sort()) {
       const items = byCat.get(cat)!;
-      // Most-cut files first: sort by region/cut count, highest to lowest.
-      items.sort((a, b) => (b.regions?.count ?? 0) - (a.regions?.count ?? 0));
+      // Most-cut files first: sort by region/cut count, highest to lowest. A count
+      // of 1 means "no real cuts" — rank it with 0 so it doesn't outrank uncounted files.
+      const cuts = (it: any) => { const c = it.regions?.count ?? 0; return c > 1 ? c : 0; };
+      items.sort((a, b) => cuts(b) - cuts(a));
       out.push({ kind: 'header', category: cat, count: items.length });
       for (const it of items) out.push({ kind: 'file', item: it });
       if (out.length > 3000) break;
     }
     return out;
   }, [rows]);
+
+  // A region count of 1 is a region of none: a lone region just restates "the whole
+  // file", so identifying it wastes list space and load time. Only 2+ regions are real.
+  const meaningfulRegions = (rs: Region[]): Region[] => (rs.length > 1 ? rs : []);
 
   // Carry user-typed names across a re-detect: match a new region to the closest
   // old one whose start is within 30 ms, so nudging a slider doesn't wipe labels.
@@ -166,7 +172,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     const seq = ++detectSeqRef.current;
     const fresh = await extractorEngine.detect(toEngineParams(p));
     if (seq !== detectSeqRef.current) return;
-    setRegions(reseedNames(fresh, prev));
+    setRegions(meaningfulRegions(reseedNames(fresh, prev)));
   }, []);
 
   // Playback looping (the linear + circular playheads read `progress` themselves). A
@@ -208,7 +214,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     samplesRef.current = null;
     // Show the .PEAK's stored regions right away, so a file the scan found N regions in
     // never reads as "0 regions" while (or if) the live re-detect can't run.
-    setRegions(savedRegions);
+    setRegions(meaningfulRegions(savedRegions));
     setSelRegion(null);
     setChunkUcs({});
     setExamining(new Set());
@@ -293,7 +299,7 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
         if (gen !== loadGenRef.current) return;
         // If the live detect comes back empty but the record already knows regions, keep the
         // stored ones rather than wiping to nothing.
-        setRegions(fresh.length ? reseedNames(fresh, savedRegions) : savedRegions);
+        setRegions(meaningfulRegions(fresh.length ? reseedNames(fresh, savedRegions) : savedRegions));
       }
       // else: couldn't decode or detect — leave the stored regions in place (set above).
     } catch {
