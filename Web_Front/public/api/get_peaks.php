@@ -98,6 +98,15 @@ try {
                 "envelope_release_seconds" => (float)$row['release_seconds'],
                 "envelope_temporal_centroid" => (float)$row['temporal_centroid'],
                 "envelope_shape" => $row['shape']
+            ],
+            "unsupervised" => [
+                "cluster" => -1,
+                "tsne_x" => 0,
+                "tsne_y" => 0,
+                "tsne_z" => 0,
+                "umap_x" => 0,
+                "umap_y" => 0,
+                "umap_z" => 0
             ]
         ];
         
