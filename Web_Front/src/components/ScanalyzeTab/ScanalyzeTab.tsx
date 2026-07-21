@@ -262,7 +262,17 @@ export default function ScanalyzeTab({
       const res = await fetch('./api/get_peaks.php');
       const data = await res.json();
       if (Array.isArray(data)) {
-        setAnalysisResult(data);
+        setAnalysisResult(prev => {
+          // Map existing records by file name
+          const map = new Map(prev.map(p => [p.metadata?.name, p]));
+          // DB records overwrite any existing local records with the same file name
+          data.forEach(p => {
+            if (p?.metadata?.name) {
+              map.set(p.metadata.name, p);
+            }
+          });
+          return Array.from(map.values());
+        });
         onViewCloud();
       } else {
         alert("Failed to load from database");
