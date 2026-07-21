@@ -27,13 +27,13 @@ try {
 
     // Instead of loading 36k records into PHP memory (which triggers PHP memory exhaustion limits),
     // we stream the raw JSON directly from MySQL to the browser!
-    $stmt = $pdo->query("SELECT peak_data FROM peaks");
+    $stmt = $pdo->query("SELECT json_data FROM peaks");
     
     echo "[";
     $first = true;
     while ($row = $stmt->fetch()) {
         if (!$first) echo ",";
-        echo $row['peak_data'];
+        echo $row['json_data'];
         $first = false;
     }
     echo "]";

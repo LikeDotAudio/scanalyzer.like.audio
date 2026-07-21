@@ -68,7 +68,7 @@ export default function SampleFooter({
 
   return (
     <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: narrow ? '0.3rem' : '0.5rem', flexWrap: narrow ? 'nowrap' : 'wrap',
-      padding: narrow ? '0.4rem 0.5rem' : '0.4rem 0.75rem', borderTop: '1px solid var(--border-color)', background: '#0B0E14' }}>
+      padding: narrow ? '0.4rem 0.5rem' : '0.4rem 0.75rem', borderTop: '1px solid var(--border-color)', background: '#0B0E14', marginTop: 'auto', zIndex: 100, position: 'relative' }}>
       {/* File actions (left) */}
       {onDownload && <button className="btn secondary" style={btn} onClick={onDownload} disabled={!item} title="Download with rename options">{lbl('⬇', 'Download')}</button>}
       {onCopyData && <button className="btn secondary" style={copyBtn} onClick={handleCopy} disabled={!item} title="Copy this sample's full .PEAK record to the clipboard">{copied ? (narrow ? '✓' : '✓ Copied') : lbl('📋', 'Copy Peak Data')}</button>}
