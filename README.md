@@ -95,8 +95,13 @@ The browser app is deployed to **<https://scanalyzer.like.audio>**.
 `.github/workflows/deploy_web.yml` runs on every push to `main` that touches
 `Web_Front/**` (or on manual dispatch). It builds the WASM core with
 `wasm-pack`, builds the Vite bundle, and syncs `Web_Front/dist/` to the web host
-over FTPS. Because the app is entirely client-side, the deploy is just static
-files — there is no server to run.
+over FTPS.
+
+**Backend Services:**
+While the audio analysis is 100% client-side (processed locally in your browser/CPU), the application features an optional **Cloud Database** capability ("Load from Database") to share pre-computed `.PEAK` analysis records across machines. 
+This is powered by lightweight PHP endpoints (`Web_Front/public/api/*.php`) connecting to a MariaDB/MySQL database.
+
+To securely deploy these endpoints, the GitHub Action automatically intercepts the PHP scripts during deployment and injects your database password from GitHub Secrets (`DB_PASSWORD`). The raw password is never stored in the repository.
 
 ---
 
