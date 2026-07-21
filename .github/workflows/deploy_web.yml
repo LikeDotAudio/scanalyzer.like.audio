@@ -52,7 +52,7 @@ jobs:
           if not db_pass:
               print('ERROR: DB_PASSWORD secret is empty or missing! Make sure it is a Repository Secret.', file=sys.stderr)
               sys.exit(1)
-          for filename in ['Web_Front/public/api/get_peaks.php', 'Web_Front/public/api/upload_peak.php']:
+          for filename in ['Web_Front/public/api/get_peaks.php', 'Web_Front/public/api/upload_peak.php', 'Web_Front/public/api/fix_db.php']:
               with open(filename, 'r') as f:
                   content = f.read()
               content = content.replace('GITHUB_SECRET_DB_PASSWORD', db_pass)
