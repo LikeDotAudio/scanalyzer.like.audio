@@ -30,4 +30,4 @@ serde_json = "1"
 ebur128 = "0.1"
 symphonia = { version = "0.5", features = ["mp3", "flac", "aiff", "isomp4", "aac", "alac", "ogg", "vorbis", "wav", "pcm"] }
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-mysql = "28.0.0"
+ureq = { version = "2.9", features = ["json"] }
