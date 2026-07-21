@@ -40,6 +40,7 @@ try {
         LEFT JOIN spectral_features s ON a.id = s.file_id
         LEFT JOIN musicality mu ON a.id = mu.file_id
         LEFT JOIN envelope e ON a.id = e.file_id
+        LIMIT 10
     ";
 
     $stmt = $pdo->query($sql);
