@@ -108,8 +108,8 @@ try {
     }
     echo "]";
     
-} catch (\PDOException $e) {
+} catch (\Throwable $e) {
     // http_response_code(500); // Commented out to prevent host 503 intercept
-    echo json_encode(['error' => $e->getMessage()]);
+    echo json_encode(['error' => $e->getMessage(), 'line' => $e->getLine()]);
 }
 ?>
