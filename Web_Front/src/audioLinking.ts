@@ -254,7 +254,15 @@ export function resolveAudioSrc(files: File[], item: any): string | null {
 /** Sync, cheap "is there audio for this record at all?" — used to skip records with no
  *  playable file when stepping through a list. Real playback goes through resolveAudioUrl. */
 export function hasAudio(files: File[], item: any): boolean {
-  if (isTauri()) return isAbsolutePath(String(item?.metadata?.path || ''));
+  if (isTauri()) {
+    const p = String(item?.metadata?.path || '');
+    if (!p) return false;
+    if (isAbsolutePath(p)) return true;
+    // For relative paths, we must have an audio root linked to actually play it,
+    // but returning true here lets the UI try to load it and show a proper error
+    // (or succeed if the root is linked).
+    return true;
+  }
   return !!resolveAudioSrc(files, item);
 }
 

@@ -272,6 +272,60 @@ fn extractor_analyze_chunk(
 }
 
 #[tauri::command]
+fn sync_to_db(app: tauri::AppHandle, directory: String) {
+    std::thread::spawn(move || {
+        use tauri::Emitter;
+        let db_url = "mysql://tandapho_scanalyzer:z7hGhX%29x%29%3FUXtuo%5D@scanalyzer.like.audio/tandapho_scanalyzer";
+        let pool = match oa_sample_analyzer::db::get_pool(db_url) {
+            Ok(p) => p,
+            Err(_) => {
+                let _ = app.emit("analyzer-progress", r#"{"type":"db_export","status":"failed"}"#);
+                return;
+            }
+        };
+
+        if oa_sample_analyzer::db::init_db(&pool).is_err() {
+            let _ = app.emit("analyzer-progress", r#"{"type":"db_export","status":"failed"}"#);
+            return;
+        }
+
+        let root = std::path::Path::new(&directory);
+        let peak_file = root.join("sample_cloud_data.PEAK");
+        
+        let records: Vec<oa_sample_analyzer::peak::Peak> = if let Ok(text) = std::fs::read_to_string(&peak_file) {
+            serde_json::from_str(&text).unwrap_or_default()
+        } else {
+            let mut files = Vec::new();
+            walk_audio(root, &mut files);
+            let mut recs = Vec::new();
+            for f in &files {
+                let side = f.with_extension("PEAK");
+                if side.exists() {
+                    if let Ok(text) = std::fs::read_to_string(&side) {
+                        if let Ok(p) = serde_json::from_str(&text) {
+                            recs.push(p);
+                        }
+                    }
+                }
+            }
+            recs
+        };
+
+        if records.is_empty() {
+            let _ = app.emit("analyzer-progress", r#"{"type":"db_export","status":"success","count":0}"#);
+            return;
+        }
+
+        if oa_sample_analyzer::db::write_peaks(&pool, &records).is_err() {
+            let _ = app.emit("analyzer-progress", r#"{"type":"db_export","status":"failed"}"#);
+        } else {
+            let msg = format!(r#"{{"type":"db_export","status":"success","count":{}}}"#, records.len());
+            let _ = app.emit("analyzer-progress", msg);
+        }
+    });
+}
+
+#[tauri::command]
 fn start_analysis(
     app: AppHandle,
     directory: String,
@@ -569,7 +623,8 @@ pub fn run() {
             read_full_record,
             extractor_detect,
             extractor_slice_wav,
-            extractor_analyze_chunk
+            extractor_analyze_chunk,
+            sync_to_db
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

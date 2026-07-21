@@ -84,6 +84,19 @@ Temporal shape descriptors outlining the volume envelope.
 
 ## Action Plan
 
-1. **Frontend Optimization:** Update the `upload_peak.php` HTTP request payload to rigorously exclude arrays. Before stringifying, the frontend will map the `.PEAK` JSON into a flat object containing only the scalar fields listed above. This will reduce upload sizes by 99%.
-2. **Database Migration:** Create the normalized tables detailed above in the MariaDB database. Migrate any valid legacy JSON blobs into the new schema before safely dropping the `json_data` column.
-3. **Backend Refactoring:** Refactor `upload_peak.php` to insert incoming scalar fields into the relational tables using SQL Prepared Statements. Refactor `get_peaks.php` to construct the returned JSON array by dynamically `JOIN`ing the tables.
+### Phase 1: Destruction & Schema Creation
+- **Gate 1**: The user approves the destruction of the existing `peaks` table. *(Approved)*
+- **Step 1**: Write and deploy `init_db.php` to drop the old `peaks` table and construct the 6 new relational tables.
+- **Test 1**: Verify the script executes successfully and the tables exist in MariaDB.
+
+### Phase 2: Frontend Payload Optimization
+- **Step 2**: Implement a recursive array-stripping function in `Web_Front/src/components/ScanalyzeTab/ScanalyzeTab.tsx`.
+- **Test 2**: Log the payload size before and after stripping to ensure it has decreased by >99% (from ~1.3MB to ~1.5KB).
+
+### Phase 3: Backend Ingestion Rewrite
+- **Step 3**: Rewrite `Web_Front/public/api/upload_peak.php`. Use prepared statements to insert the flat, array-less objects into `audio_files`, `metadata`, `classification`, `envelope`, `spectral_features`, and `musicality`.
+- **Test 3**: Upload a batch of `.PEAK` sidecars via the web UI and verify they are successfully inserted into all 6 tables.
+
+### Phase 4: API Fetch & Reconstruction
+- **Step 4**: Rewrite `Web_Front/public/api/get_peaks.php` to `SELECT` and `JOIN` the 6 tables, restructuring them into the nested JSON format the frontend expects.
+- **Test 4**: Click "Load from Database" in the frontend and ensure the cloud UI correctly visualizes the data without any "invalid JSON" or memory exhaustion errors.

@@ -4,7 +4,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { open } from '@tauri-apps/plugin-dialog';
 import initWasm, { analyzer_version } from 'wasm_analyzer';
-import { setAudioRoot } from '../../audioLinking';
+import { setAudioRoot, getAudioRoot } from '../../audioLinking';
 import { normalizePeakRecords } from '../../peakSchema';
 
 /** What survey_directory reports — see src-tauri/src/lib.rs. */
@@ -53,6 +53,48 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
   const [loaded, setLoaded] = useState<{ done: number; total: number } | null>(null);
   const [dbStatus, setDbStatus] = useState<{ success: boolean; count?: number } | null>(null);
   const [recentDir, setRecentDir] = useState<string | null>(localStorage.getItem('scanalyzer_recent_dir'));
+  const [dbLoading, setDbLoading] = useState(false);
+
+  const loadFromDatabase = async () => {
+    setDbLoading(true);
+    try {
+      const baseUrl = 'https://scanalyzer.like.audio';
+      const res = await fetch(`${baseUrl}/api/get_peaks.php?t=${Date.now()}`);
+      
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        console.error("DB Load Error: PHP endpoint did not return valid JSON. Response was:", text.substring(0, 500) + (text.length > 500 ? "..." : ""));
+        alert("Error: Database endpoint returned invalid data. Check browser console.");
+        setDbLoading(false);
+        return;
+      }
+
+      if (Array.isArray(data)) {
+        setAnalysisResult(prev => {
+          const map = new Map(prev.map(p => [p.metadata?.path || p.metadata?.name, p]));
+          data.forEach(p => {
+            const key = p?.metadata?.path || p?.metadata?.name;
+            if (key) {
+              map.set(key, p);
+            }
+          });
+          return Array.from(map.values());
+        });
+        onViewCloud();
+      } else {
+        console.error("DB Load Error: Expected JSON array, but got:", data);
+        alert("Failed to load from database: " + (data.error || "Invalid format (check console)"));
+      }
+    } catch (e) {
+      console.error("DB Load Exception: Network or server connection failed:", e);
+      alert("Error connecting to database (check console for details).");
+    } finally {
+      setDbLoading(false);
+    }
+  };
 
   const threadsTextRef = useRef<Record<number, HTMLSpanElement>>({});
   const threadsProgressRef = useRef<Record<number, HTMLDivElement>>({});
@@ -110,6 +152,8 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
                 const progEl = threadsProgressRef.current[msg.thread_id];
                 if (textEl) textEl.textContent = msg.file;
                 if (progEl) {
+                    progEl.style.background = 'var(--accent-primary)';
+                    progEl.style.opacity = '0.2';
                     progEl.style.animation = 'none';
                     void progEl.offsetWidth; // trigger reflow
                     progEl.style.animation = 'thread-progress 1s infinite linear';
@@ -118,7 +162,24 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
                 const textEl = threadsTextRef.current[msg.thread_id];
                 const progEl = threadsProgressRef.current[msg.thread_id];
                 if (textEl) textEl.textContent = '...';
-                if (progEl) progEl.style.animation = 'none';
+                if (progEl) {
+                    progEl.style.animation = 'none';
+                    if (msg.type === 'result') {
+                        // Flash green to indicate transmission
+                        progEl.style.background = '#4ade80';
+                        progEl.style.opacity = '0.8';
+                        setTimeout(() => {
+                            // Reset back to primary accent if it hasn't started another file yet
+                            if (progEl.style.animation === 'none') {
+                                progEl.style.background = 'var(--accent-primary)';
+                                progEl.style.opacity = '0.2';
+                            }
+                        }, 150);
+                    } else {
+                        progEl.style.background = 'var(--accent-primary)';
+                        progEl.style.opacity = '0.2';
+                    }
+                }
 
                 setDone(msg.done || 0);
                 if (msg.total) {
@@ -244,6 +305,9 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       await invoke('close_peak_file');
       setLoaded(null);
       if (!fromManifest) void invoke('build_manifest', { directory: dir }).catch(() => {});
+      // Also sync to the SQL database using our new Tauri command
+      void invoke('sync_to_db', { directory: dir }).catch((e) => console.error('DB sync error:', e));
+
       if (all.length) {
         setAnalysisResult((prev: any[]) => mergeResults(prev, all));
         onViewCloud?.();
@@ -428,6 +492,22 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
 
       <button className="btn" style={{ cursor: 'pointer', padding: '0.5rem 1.5rem', fontSize: '0.9rem', opacity: 0.8 }} onClick={() => handlePickAndSurvey(50)}>
         SAMPLE scan (1 of 50 files)
+      </button>
+
+      <button className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem', marginTop: '1rem', background: 'rgba(255,255,255,0.05)', color: 'var(--accent-primary)' }} disabled={dbLoading} onClick={loadFromDatabase}>
+        {dbLoading ? 'Loading Database...' : '☁️ Load All Cloud Records from Database'}
+      </button>
+      
+      <button className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem', marginTop: '0.25rem', background: 'rgba(255,255,255,0.05)' }} onClick={async () => {
+        const { open } = await import('@tauri-apps/plugin-dialog');
+        const dir = await open({ directory: true, multiple: false });
+        if (dir && typeof dir === 'string') {
+          setAudioRoot(dir);
+          // Force a small state update to re-render the button label
+          setRecentDir(localStorage.getItem('scanalyzer_recent_dir'));
+        }
+      }}>
+        {getAudioRoot() ? `🔗 Linked Audio: ${getAudioRoot().split(/[/\\]/).pop()}` : '🔗 Link Local Audio Folder for DB'}
       </button>
       
       {analysisResult.length > 0 && (

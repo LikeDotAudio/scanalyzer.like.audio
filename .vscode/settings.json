@@ -1,18 +1,20 @@
 {
     "sqltools.connections": [
         {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "scanalyzer.like.audio",
+            "port": 3306,
             "name": "Scanalyzer DB",
             "group": "Scanalyzer",
             "driver": "MySQL",
-            "server": "scanalyzer.like.audio",
-            "port": 3306,
             "database": "tandapho_scanalyzer",
             "username": "tandapho_scanalyzer",
-            "password": "z7hGhX)x)?UXtuo]",
-            "previewLimit": 50,
-            "mysqlOptions": {
-                "authProtocol": "default"
-            }
+            "password": "W#V4F0Gp4V-^{vrd"
         }
     ]
 }
