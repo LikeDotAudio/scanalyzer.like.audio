@@ -21,17 +21,23 @@ try {
     // Check if table exists
     $stmt = $pdo->query("SHOW TABLES LIKE 'peaks'");
     if ($stmt->rowCount() == 0) {
-        echo json_encode([]);
+        echo "[]";
         exit;
     }
 
+    // Instead of loading 36k records into PHP memory (which triggers PHP memory exhaustion limits),
+    // we stream the raw JSON directly from MySQL to the browser!
     $stmt = $pdo->query("SELECT peak_data FROM peaks");
-    $records = [];
-    while ($row = $stmt->fetch()) {
-        $records[] = json_decode($row['peak_data'], true);
-    }
     
-    echo json_encode($records);
+    echo "[";
+    $first = true;
+    while ($row = $stmt->fetch()) {
+        if (!$first) echo ",";
+        echo $row['peak_data'];
+        $first = false;
+    }
+    echo "]";
+    
 } catch (\PDOException $e) {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
