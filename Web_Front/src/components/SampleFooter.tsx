@@ -31,6 +31,8 @@ interface SampleFooterProps {
   onPush?: (tab: FooterTab, name: string) => void;
   // Extra control rendered after Copy Peak Data — the Examiner's 🎚 Layers menu.
   layersMenu?: React.ReactNode;
+  // DB status for the live web deployment
+  dbStatus?: { online: boolean; records: number; checked: boolean } | null;
 }
 
 // Emoji, then full label. On mobile only the emoji shows so the whole row fits one line.
@@ -41,7 +43,7 @@ const TAB_LABEL: Record<FooterTab, { icon: string; text: string }> = {
 };
 
 export default function SampleFooter({
-  item, playing, digging, autoPlay, autoLoop, favorite, onToggleFavorite, onDownload, onCopyData, onPlay, onDig, onToggleAutoPlay, onToggleAutoLoop, current, onPush, layersMenu,
+  item, playing, digging, autoPlay, autoLoop, favorite, onToggleFavorite, onDownload, onCopyData, onPlay, onDig, onToggleAutoPlay, onToggleAutoLoop, current, onPush, layersMenu, dbStatus,
 }: SampleFooterProps) {
   const narrow = useIsNarrow();
   const name = item?.metadata?.name || '';
@@ -103,6 +105,13 @@ export default function SampleFooter({
           {narrow ? TAB_LABEL[t].icon : `${TAB_LABEL[t].icon} ${TAB_LABEL[t].text}`}
         </button>
       ))}
+
+      {/* DB Status (Web only) */}
+      {dbStatus?.checked && !narrow && (
+        <div style={{ fontSize: '0.75rem', color: dbStatus.online ? 'var(--accent-primary)' : 'var(--accent-secondary)', paddingLeft: '0.5rem', marginLeft: '0.5rem', borderLeft: '1px solid var(--border-color)' }}>
+          {dbStatus.online ? `🟢 ${dbStatus.records.toLocaleString()}` : '🔴 Offline'}
+        </div>
+      )}
     </div>
   );
 }

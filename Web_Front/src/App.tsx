@@ -733,17 +733,11 @@ function App() {
           layersMenu={(activeTab === 'examiner' || activeTab === 'favorites')
             ? <LayersMenu stereo={Number(footerItem?.metadata?.channels) >= 2} />
             : undefined}
+          dbStatus={!isTauri() ? dbStatus : null}
         />
       )}
       <audio ref={el => { footerAudioRef.current = el; setFooterAudioEl(el); }} style={{ display: 'none' }} loop={autoLoop && !digging}
         onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={handleFooterEnded} />
-
-      {/* Global DB Connection Status (Web Only) */}
-      {!isTauri() && dbStatus.checked && (
-        <div style={{ position: 'fixed', bottom: '12px', right: '16px', fontSize: '0.75rem', color: dbStatus.online ? 'var(--accent-primary)' : 'var(--accent-secondary)', zIndex: 9999, background: 'rgba(0,0,0,0.6)', padding: '6px 10px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
-          {dbStatus.online ? `🟢 DB Live: ${dbStatus.records.toLocaleString()} peaks` : '🔴 DB Offline'}
-        </div>
-      )}
     </div>
   )
 }
