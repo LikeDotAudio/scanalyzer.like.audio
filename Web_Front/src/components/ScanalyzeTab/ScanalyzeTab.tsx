@@ -282,6 +282,21 @@ export default function ScanalyzeTab({
     const newResults: any[] = [];
     let completed = 0;
 
+    let dbBatch: any[] = [];
+    const flushDbBatch = async (records: any[]) => {
+      // Only upload if running in browser (Tauri app handles its own DB sync in Rust)
+      if (isTauri()) return;
+      try {
+        await fetch('./api/upload_peak.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(records)
+        });
+      } catch (e) {
+        console.warn("DB upload failed for batch", e);
+      }
+    };
+
     startMsRef.current = performance.now();
     const numWorkers = navigator.hardwareConcurrency || 4;
     threadsRef.current = numWorkers;
@@ -336,6 +351,14 @@ export default function ScanalyzeTab({
                                     const relPath = relPathOf(file) || file.name;
                                     await writePeakSidecar(dirHandle, relPath, parsed);
                                 }
+                                
+                                // Queue for DB upload
+                                dbBatch.push(parsed);
+                                if (dbBatch.length >= 500) {
+                                    const batchToUpload = [...dbBatch];
+                                    dbBatch = [];
+                                    flushDbBatch(batchToUpload); // Fire and forget background upload
+                                }
                             }
                         } catch (err) {
                             console.error(`Failed to parse result for ${file.name}`, err);
@@ -359,6 +382,10 @@ export default function ScanalyzeTab({
 
         workers.forEach(assignWork);
     });
+
+    if (dbBatch.length > 0) {
+        await flushDbBatch(dbBatch);
+    }
 
     workers.forEach(w => w.terminate());
 
