@@ -21,7 +21,7 @@ try {
     
     // Check if table exists
     $stmt = $pdo->query("SHOW TABLES LIKE 'peaks'");
-    if ($stmt->rowCount() == 0) {
+    if (count($stmt->fetchAll()) == 0) {
         echo "[]";
         exit;
     }
