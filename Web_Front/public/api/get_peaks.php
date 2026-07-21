@@ -25,6 +25,7 @@ try {
         echo "[]";
         exit;
     }
+    $stmt->closeCursor();
 
     $sql = "
         SELECT 
