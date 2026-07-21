@@ -348,7 +348,8 @@ export default function ScanalyzeTab({
       const lightweightRecords = records.map(stripArrays);
 
       try {
-        await fetch('./api/upload_peak.php', {
+        const baseUrl = isTauri() ? 'https://scanalyzer.like.audio' : '.';
+        await fetch(`${baseUrl}/api/upload_peak.php`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(lightweightRecords)
