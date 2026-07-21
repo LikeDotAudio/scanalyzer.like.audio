@@ -38,15 +38,13 @@ function App() {
   // DB Live Status for Web deployment
   const [dbStatus, setDbStatus] = useState<{ online: boolean; records: number; checked: boolean }>({ online: false, records: 0, checked: false });
   useEffect(() => {
-    // We only expect this to work when deployed to a web server running PHP
-    if (!isTauri()) {
-      fetch('./api/db_status.php')
-        .then(res => res.json())
-        .then(data => {
-          setDbStatus({ online: data.status === 'online', records: data.records || 0, checked: true });
-        })
-        .catch(() => setDbStatus({ online: false, records: 0, checked: true }));
-    }
+    const baseUrl = isTauri() ? 'https://scanalyzer.like.audio' : '.';
+    fetch(`${baseUrl}/api/db_status.php`)
+      .then(res => res.json())
+      .then(data => {
+        setDbStatus({ online: data.status === 'online', records: data.records || 0, checked: true });
+      })
+      .catch(() => setDbStatus({ online: false, records: 0, checked: true }));
   }, []);
 
   const [activeTab, setActiveTab] = useState(tabFromHash())
@@ -732,7 +730,7 @@ function App() {
         layersMenu={(activeTab === 'examiner' || activeTab === 'favorites')
           ? <LayersMenu stereo={Number(footerItem?.metadata?.channels) >= 2} />
           : undefined}
-        dbStatus={!isTauri() ? dbStatus : null}
+        dbStatus={dbStatus}
       />
       <audio ref={el => { footerAudioRef.current = el; setFooterAudioEl(el); }} style={{ display: 'none' }} loop={autoLoop && !digging}
         onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={handleFooterEnded} />

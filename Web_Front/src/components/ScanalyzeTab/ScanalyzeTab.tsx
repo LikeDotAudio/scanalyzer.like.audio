@@ -259,7 +259,8 @@ export default function ScanalyzeTab({
   const loadFromDatabase = async () => {
     setDbLoading(true);
     try {
-      const res = await fetch('./api/get_peaks.php?t=' + Date.now());
+      const baseUrl = isTauri() ? 'https://scanalyzer.like.audio' : '.';
+      const res = await fetch(`${baseUrl}/api/get_peaks.php?t=${Date.now()}`);
       
       // Attempt to parse the response text first so we can safely log it on failure
       const text = await res.text();
@@ -711,11 +712,9 @@ export default function ScanalyzeTab({
           />
         </label>
 
-        {!isTauri() && (
-          <button className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem', marginTop: '1rem', background: 'rgba(255,255,255,0.05)', color: 'var(--accent-primary)' }} disabled={dbLoading} onClick={loadFromDatabase}>
-            {dbLoading ? 'Loading Database...' : '☁️ Load All Cloud Records from Database'}
-          </button>
-        )}
+        <button className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem', marginTop: '1rem', background: 'rgba(255,255,255,0.05)', color: 'var(--accent-primary)' }} disabled={dbLoading} onClick={loadFromDatabase}>
+          {dbLoading ? 'Loading Database...' : '☁️ Load All Cloud Records from Database'}
+        </button>
       </div>
 
       {analysisResult.length > 0 && (
