@@ -260,7 +260,19 @@ export default function ScanalyzeTab({
     setDbLoading(true);
     try {
       const res = await fetch('./api/get_peaks.php');
-      const data = await res.json();
+      
+      // Attempt to parse the response text first so we can safely log it on failure
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        console.error("DB Load Error: PHP endpoint did not return valid JSON. Response was:", text.substring(0, 500) + (text.length > 500 ? "..." : ""));
+        alert("Error: Database endpoint returned invalid data. Check browser console.");
+        setDbLoading(false);
+        return;
+      }
+
       if (Array.isArray(data)) {
         setAnalysisResult(prev => {
           // Map existing records by file name
@@ -275,10 +287,12 @@ export default function ScanalyzeTab({
         });
         onViewCloud();
       } else {
-        alert("Failed to load from database");
+        console.error("DB Load Error: Expected JSON array, but got:", data);
+        alert("Failed to load from database: " + (data.error || "Invalid format (check console)"));
       }
     } catch (e) {
-      alert("Error connecting to database");
+      console.error("DB Load Exception: Network or server connection failed:", e);
+      alert("Error connecting to database (check console for details).");
     } finally {
       setDbLoading(false);
     }
