@@ -539,6 +539,30 @@ function App() {
            setSchemaNotice(noticeFor(migrated, skipped));
            setAudioFiles([]);
            setCurrentSound('');
+           
+           if (allResults.length > 0 && window.confirm(`Would you like to contribute these ${allResults.length} analyzed peak(s) to the shared cloud database?`)) {
+             (async () => {
+               const baseUrl = isTauri() ? 'https://scanalyzer.like.audio' : '.';
+               const CHUNK_SIZE = 500;
+               let uploaded = 0;
+               for (let i = 0; i < allResults.length; i += CHUNK_SIZE) {
+                 const chunk = allResults.slice(i, i + CHUNK_SIZE);
+                 try {
+                   const res = await fetch(`${baseUrl}/api/upload_peak.php`, {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify(chunk)
+                   });
+                   if (res.ok) uploaded += chunk.length;
+                 } catch (err) {
+                   console.error('Failed to upload chunk', err);
+                 }
+               }
+               if (uploaded > 0) {
+                 alert(`Successfully contributed ${uploaded} peak(s) to the cloud!`);
+               }
+             })();
+           }
         }
       };
       reader.readAsText(file);
