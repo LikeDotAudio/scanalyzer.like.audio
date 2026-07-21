@@ -32,7 +32,7 @@ try {
 
     $stmtAudio = $pdo->prepare("INSERT INTO audio_files (filename, folder_path, analyzer_version) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE analyzer_version = VALUES(analyzer_version)");
     $stmtMeta = $pdo->prepare("REPLACE INTO metadata (file_id, length_seconds, sample_rate, bit_depth, channels, source_format, lossy_source, dc_offset) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmtClass = $pdo->prepare("REPLACE INTO classification (file_id, ucs_category, ucs_subcategory, group_name, subgroup, timbre, acoustic_types, instrument_family) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmtClass = $pdo->prepare("REPLACE INTO classification (file_id, ucs_category, ucs_subcategory, group_name, subgroup, timbre, acoustic_types, instrument_family, reason, alt_1_group, alt_1_sub, alt_2_group, alt_2_sub, alt_3_group, alt_3_sub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtSpec = $pdo->prepare("REPLACE INTO spectral_features (file_id, root_mean_square_level, crest_factor, complexity, spectral_centroid_hz, spectral_rolloff_hz, spectral_flatness, harmonicity, total_harmonic_distortion, clipping_density) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtMusic = $pdo->prepare("REPLACE INTO musicality (file_id, pitch_hz, root_note_name, root_midi_note, root_cents_offset, beats_per_minute) VALUES (?, ?, ?, ?, ?, ?)");
     $stmtEnv = $pdo->prepare("REPLACE INTO envelope (file_id, transient_count, attack_seconds, decay_seconds, sustain_level, release_seconds, temporal_centroid, shape) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -75,7 +75,14 @@ try {
             $cls['subgroup'] ?? null,
             $cls['timbre'] ?? null,
             $cls['acoustic_types'] ?? null,
-            $cls['instrument_family'] ?? null
+            $cls['instrument_family'] ?? null,
+            isset($cls['reason']) && is_array($cls['reason']) ? ($cls['reason'][0] ?? null) : null,
+            $ucs['alternatives'][0]['category'] ?? null,
+            $ucs['alternatives'][0]['subcategory'] ?? null,
+            $ucs['alternatives'][1]['category'] ?? null,
+            $ucs['alternatives'][1]['subcategory'] ?? null,
+            $ucs['alternatives'][2]['category'] ?? null,
+            $ucs['alternatives'][2]['subcategory'] ?? null
         ]);
 
         $spec = $record['spectral_features'] ?? [];

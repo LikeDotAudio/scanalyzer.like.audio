@@ -65,6 +65,13 @@ try {
             timbre VARCHAR(100),
             acoustic_types VARCHAR(255),
             instrument_family VARCHAR(255),
+            reason TEXT,
+            alt_1_group VARCHAR(100),
+            alt_1_sub VARCHAR(100),
+            alt_2_group VARCHAR(100),
+            alt_2_sub VARCHAR(100),
+            alt_3_group VARCHAR(100),
+            alt_3_sub VARCHAR(100),
             FOREIGN KEY (file_id) REFERENCES audio_files(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");

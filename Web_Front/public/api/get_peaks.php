@@ -31,6 +31,7 @@ try {
             a.filename, a.folder_path, a.analyzer_version,
             m.length_seconds, m.sample_rate, m.bit_depth, m.channels, m.source_format, m.lossy_source, m.dc_offset,
             c.ucs_category, c.ucs_subcategory, c.group_name, c.subgroup, c.timbre, c.acoustic_types, c.instrument_family,
+            c.reason, c.alt_1_group, c.alt_1_sub, c.alt_2_group, c.alt_2_sub, c.alt_3_group, c.alt_3_sub,
             s.root_mean_square_level, s.crest_factor, s.complexity, s.spectral_centroid_hz, s.spectral_rolloff_hz, s.spectral_flatness, s.harmonicity, s.total_harmonic_distortion, s.clipping_density,
             mu.pitch_hz, mu.root_note_name, mu.root_midi_note, mu.root_cents_offset, mu.beats_per_minute,
             e.transient_count, e.attack_seconds, e.decay_seconds, e.sustain_level, e.release_seconds, e.temporal_centroid, e.shape
@@ -66,11 +67,17 @@ try {
                 "subgroup" => $row['subgroup'],
                 "timbre" => $row['timbre'],
                 "acoustic_types" => $row['acoustic_types'],
-                "instrument_family" => $row['instrument_family']
+                "instrument_family" => $row['instrument_family'],
+                "reason" => $row['reason'] ? [$row['reason']] : []
             ],
             "ucs" => [
                 "category" => $row['ucs_category'],
-                "subcategory" => $row['ucs_subcategory']
+                "subcategory" => $row['ucs_subcategory'],
+                "alternatives" => [
+                    ["category" => $row['alt_1_group'], "subcategory" => $row['alt_1_sub']],
+                    ["category" => $row['alt_2_group'], "subcategory" => $row['alt_2_sub']],
+                    ["category" => $row['alt_3_group'], "subcategory" => $row['alt_3_sub']]
+                ]
             ],
             "spectral_features" => [
                 "root_mean_square_level" => (float)$row['root_mean_square_level'],
