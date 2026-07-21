@@ -1,0 +1,550 @@
+{
+  "version": "8.2.APK",
+  "category": "BRASS",
+  "emoji": "🎺",
+  "subcategories": [
+    {
+      "subcategory": "TRUMPET",
+      "category_id": "BRASTpt",
+      "category_short": "BRAS",
+      "emoji": "🎺",
+      "explanation": [
+        "Trumpet and its close kin \u2014 the bright, high lip-reed aerophones with a bold attack and a strongly harmonic tone.",
+        "Includes cornet and flugelhorn; brassy leads, fanfares, and blaring high-register lines."
+      ],
+      "synonyms": [
+        "Trumpet",
+        "Cornet",
+        "Flugelhorn",
+        "Bugle",
+        "Piccolo Trumpet",
+        "Trompette",
+        "High Brass",
+        "Lead Trumpet",
+        "Blare"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.45
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1600.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.9,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.9,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 520.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 520.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.45,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.45,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.08,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.04,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.04,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "TROMBONE",
+      "category_id": "BRASTbn",
+      "category_short": "BRAS",
+      "emoji": "🎺",
+      "explanation": [
+        "Trombone \u2014 the mid-low lip-reed aerophone voiced by a sliding telescopic tube, capable of smooth glissandi.",
+        "Warm, harmonic, and punchy; the sliding voice of the brass section."
+      ],
+      "synonyms": [
+        "Trombone",
+        "Bone",
+        "Slide",
+        "Slide Trombone",
+        "Sackbut",
+        "Bass Trombone",
+        "Tenor Trombone",
+        "Trombones"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.45
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 700.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.9,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.9,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 200.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 200.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.5,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.08,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.08,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.05,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.05,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "FRENCH HORN",
+      "category_id": "BRASFhn",
+      "category_short": "BRAS",
+      "emoji": "🎺",
+      "explanation": [
+        "French horn \u2014 the round, mellow mid-register lip-reed aerophone with a warm, veiled tone and a soft attack.",
+        "The lyrical, blending voice of the orchestral brass; smooth harmonic swells and calls."
+      ],
+      "synonyms": [
+        "French Horn",
+        "Horn",
+        "Corno",
+        "Corno Francese",
+        "Waldhorn",
+        "Hunting Horn",
+        "Horn Section",
+        "Mellow Horn"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.45
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 900.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.9,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.9,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 300.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 300.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.55,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.06,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.06,
+              "reasoned_deviation_before_calibration": 0.07
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.08,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.08,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "TUBA",
+      "category_id": "BRASTuba",
+      "category_short": "BRAS",
+      "emoji": "🎺",
+      "explanation": [
+        "Tuba \u2014 the lowest lip-reed aerophone, a deep sub-heavy voice anchoring the bottom of the brass.",
+        "Includes sousaphone and euphonium; rich in low-band energy with a slow, rounded attack."
+      ],
+      "synonyms": [
+        "Tuba",
+        "Sousaphone",
+        "Euphonium",
+        "Bass Tuba",
+        "Contrabass Tuba",
+        "Baritone Horn",
+        "Ophicleide",
+        "Low Brass",
+        "Oom-pah"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.45
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "max": 1200
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 350.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 350.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.88,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.88,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 90.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 90.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.06,
+            "deviation": 0.07,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.06,
+              "reasoned_deviation_before_calibration": 0.07
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.09,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.09,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "SECTION",
+      "category_id": "BRASSect",
+      "category_short": "BRAS",
+      "emoji": "🎺",
+      "explanation": [
+        "Brass section or ensemble \u2014 multiple lip-reed aerophones playing together as stabs, swells, hits, and fanfares.",
+        "The blended, chordal brass voice; punchy horn stabs and sustained ensemble swells alike."
+      ],
+      "synonyms": [
+        "Brass Section",
+        "Brass Ensemble",
+        "Horns",
+        "Horn Section",
+        "Stab",
+        "Brass Stab",
+        "Fanfare",
+        "Brass Hit",
+        "Swell",
+        "Big Band Brass",
+        "Brass Chord"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.82,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.82,
+              "reasoned_deviation_before_calibration": 0.12
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1100.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1100.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.5,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.1,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.1,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.05,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.05,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "BRASMisc",
+      "category_short": "BRAS",
+      "emoji": "🎺",
+      "explanation": [
+        "A brass / lip-reed aerophone that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Brass",
+        "Aerophone",
+        "Horn",
+        "Brass Instrument",
+        "Lip Reed",
+        "trumpet",
+        "trombone",
+        "tuba",
+        "HRN"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

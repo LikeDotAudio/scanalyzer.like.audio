@@ -1,0 +1,1259 @@
+{
+ "version": "8.2.1",
+ "category": "CLOTH",
+ "emoji": "🧵",
+ "subcategories": [
+  {
+   "subcategory": "FLAP",
+   "category_id": "CLOTHFlp",
+   "category_short": "CLOTH",
+   "emoji": "🧵",
+   "explanation": [
+    "Cloth flapping",
+    "as in a flag flapping",
+    "or superman's cape. Also ship sails and parachutes."
+   ],
+   "synonyms": [
+    "Apparel",
+    "Apron",
+    "Banner",
+    "Bib",
+    "Blanket",
+    "Burlap",
+    "Canvas",
+    "Cape",
+    "Clothe",
+    "Cotton",
+    "Dress",
+    "Fabric",
+    "Fabrics",
+    "Flag",
+    "Flannel",
+    "Flap",
+    "Flapping",
+    "Flicker",
+    "Flutter",
+    "Fluttering",
+    "Garment",
+    "Gown",
+    "Jacket",
+    "Jeans",
+    "Khaki",
+    "Lace",
+    "Laundry",
+    "Linen",
+    "Material",
+    "Microfiber",
+    "Muslin",
+    "Nylon",
+    "Oilcloth",
+    "Oilskin",
+    "Pants",
+    "Parachute",
+    "Pillowcase",
+    "Polyester",
+    "Rag",
+    "Rayon",
+    "Robe",
+    "Rustle",
+    "Rustling",
+    "Sail",
+    "Sailcloth",
+    "Sheet",
+    "Shirt",
+    "Silk",
+    "Skirt",
+    "Tablecloth",
+    "Terry",
+    "Textile",
+    "Towel",
+    "Whipping",
+    "Wool",
+    "Woven"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 8.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.22,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.28,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.03,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.25,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.045,
+      "deviation": 0.045,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A flag, cape, sail or parachute: a quasi-periodic train of soft whip-cracks. The diagnostic pair is a moderate onset_rate (roughly 1-8 whips per second) with a HIGH onset_periodicity — that periodicity is exactly what UCS is naming when it splits FLAP out of CLOTH-MOVEMENT.",
+     "Each whip is a dull, damped, mid-band transient with no ring — the cloth signature, unlike PAPER-FLUTTER's bright stochastic crackle.",
+     "Not a rhythmic METAL sound: no partials, no sustain, and a decay under ~50 ms."
+    ],
+    "confusable_with": [
+     "CLOTHMvmt",
+     "PAPRFltr",
+     "CLOTHImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDLE",
+   "category_id": "CLOTHHndl",
+   "category_short": "CLOTH",
+   "emoji": "🧵",
+   "explanation": [
+    "Cloth handling",
+    "grabbing a jacket",
+    "clothy arm grabs",
+    "etc. Some overlap with CLOTH-MOVEMENT. See also possibly OBJECTS-FASHION."
+   ],
+   "synonyms": [
+    "Apparel",
+    "Apron",
+    "Banner",
+    "Bib",
+    "Blanket",
+    "Burlap",
+    "Canvas",
+    "Catch",
+    "Clasp",
+    "Clench",
+    "Clothe",
+    "Clutch",
+    "Cotton",
+    "Down",
+    "Dress",
+    "Embrace",
+    "Fabric",
+    "Fabrics",
+    "Flag",
+    "Flannel",
+    "Garment",
+    "Gown",
+    "Grab",
+    "Grasp",
+    "Grip",
+    "Handle",
+    "Hold",
+    "Jacket",
+    "Jeans",
+    "Khaki",
+    "Lace",
+    "Laundry",
+    "Linen",
+    "Material",
+    "Microfiber",
+    "Muslin",
+    "Nylon",
+    "Oilcloth",
+    "Oilskin",
+    "Pants",
+    "Pickup",
+    "Pillowcase",
+    "Polyester",
+    "Rag",
+    "Rayon",
+    "Robe",
+    "Seize",
+    "Set",
+    "Sheet",
+    "Shirt",
+    "Silk",
+    "Skirt",
+    "Tablecloth",
+    "Terry",
+    "Textile",
+    "Toss",
+    "Towel",
+    "Wool",
+    "Woven"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.5,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.4,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 720.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.18,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1100.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.6000000000000005,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.027999999999999997,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Cloth handling: a short multi-event scene — a grab or set-down transient wrapped in cloth rustle. Morphology is a mixture, so the tier is honest about it.",
+     "Separated from MOVEMENT only by having one or two dominant transients rather than a continuous bed; the material priors are identical.",
+     "Grabbing a jacket, a clothy arm grab: a soft grab transient buried in rustle. Level and brightness are the lowest of any HANDLE in the material set.",
+     "UCS notes overlap with CLOTH-MOVEMENT and OBJECTS-FASHION; DSP will not settle it — text must."
+    ],
+    "confusable_with": [
+     "CLOTHMvmt",
+     "OBJFash",
+     "LETHRHndl",
+     "CLOTHImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "CLOTHImpt",
+   "category_short": "CLOTH",
+   "emoji": "💥",
+   "explanation": [
+    "Cloth impacts",
+    "throwing a jacket forcefully to the floor",
+    "a wet towel snap. Some overlap with CLOTH-MOVEMENT possible."
+   ],
+   "synonyms": [
+    "Apparel",
+    "Apron",
+    "Banner",
+    "Bib",
+    "Blanket",
+    "Bump",
+    "Burlap",
+    "Canvas",
+    "Clothe",
+    "Cotton",
+    "Dress",
+    "Drop",
+    "Fabric",
+    "Fabrics",
+    "Flag",
+    "Flannel",
+    "Garment",
+    "Gown",
+    "Hit",
+    "Hitting",
+    "Impact",
+    "Impacting",
+    "Jacket",
+    "Jeans",
+    "Khaki",
+    "Lace",
+    "Laundry",
+    "Linen",
+    "Material",
+    "Microfiber",
+    "Muslin",
+    "Nylon",
+    "Oilcloth",
+    "Oilskin",
+    "Pants",
+    "Pillowcase",
+    "Polyester",
+    "Rag",
+    "Rayon",
+    "Robe",
+    "Sheet",
+    "Shirt",
+    "Silk",
+    "Skirt",
+    "Smack",
+    "Smacking",
+    "Strike",
+    "Tablecloth",
+    "Terry",
+    "Textile",
+    "Thump",
+    "Towel",
+    "Wool",
+    "Woven"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 8.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.005,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.22,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.08,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.025,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.1,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 800.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.18,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.5,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Cloth impact: soft-to-moderate attack, low crest relative to hard materials, and a decay of about 25 ms.",
+     "The deadest material on the impedance axis: no ring at all, soft attack, mid-low centroid — the anti-METAL, and softer than any WOOD-IMPACT.",
+     "A jacket thrown to the floor or a wet-towel snap: a soft, dull thump with the fastest decay and the lowest level of any material here. Cloth is the deadest thing in the taxonomy — no ring, low crest, mid-low centroid.",
+     "This is the explicit anti-METAL: where METAL-IMPACT has a long inharmonic ring, cloth has none at all, and even a WOOD-IMPACT thud is sharper and louder."
+    ],
+    "confusable_with": [
+     "CLOTHHndl",
+     "CLOTHMvmt",
+     "LETHRImpt",
+     "PAPRImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "CLOTHMisc",
+   "category_short": "CLOTH",
+   "emoji": "🧵",
+   "explanation": [
+    "Cloth sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Apparel",
+    "Apron",
+    "Banner",
+    "Bib",
+    "Blanket",
+    "Burlap",
+    "Canvas",
+    "Chambray",
+    "Cloth",
+    "Clothe",
+    "Corduroy",
+    "Cotton",
+    "Denim",
+    "Dress",
+    "Fabric",
+    "Fabrics",
+    "Flag",
+    "Flannel",
+    "Garment",
+    "Gown",
+    "Jacket",
+    "Jeans",
+    "Khaki",
+    "Lace",
+    "Laundry",
+    "Linen",
+    "Material",
+    "Microfiber",
+    "Miscellaneous",
+    "Muslin",
+    "Nylon",
+    "Oilcloth",
+    "Oilskin",
+    "Pants",
+    "Pillowcase",
+    "Polyester",
+    "Rag",
+    "Rayon",
+    "Robe",
+    "Sheet",
+    "Shirt",
+    "Silk",
+    "Skirt",
+    "Tablecloth",
+    "Terry",
+    "Textile",
+    "Towel",
+    "Twill",
+    "Velvet",
+    "Wool",
+    "Woven"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 720.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.027999999999999997,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.1,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Catch-all for cloth sounds with no clear morphology. Nothing in the signal identifies it; the gates only assert that it is a cloth-scale handling event, not a ringing or explosive one.",
+     "Emitted by abstention when the sibling morphologies are all weak or tied."
+    ],
+    "confusable_with": [
+     "CLOTHMvmt",
+     "CLOTHHndl",
+     "CLOTHFlp"
+    ]
+   }
+  },
+  {
+   "subcategory": "MOVEMENT",
+   "category_id": "CLOTHMvmt",
+   "category_short": "CLOTH",
+   "emoji": "🧵",
+   "explanation": [
+    "Varied cloth movement except flapping which has its own category. Variety of cloth movement. Cloth zuzz. See also CLOTH-FLAP."
+   ],
+   "synonyms": [
+    "Adjusting",
+    "Apparel",
+    "Apron",
+    "Arranging",
+    "Banner",
+    "Bib",
+    "Billow",
+    "Billowing",
+    "Blanket",
+    "Bunching",
+    "Burlap",
+    "Canvas",
+    "Clothe",
+    "Cotton",
+    "Crumpling",
+    "Drape",
+    "Draping",
+    "Dress",
+    "Fabric",
+    "Fabrics",
+    "Flag",
+    "Flannel",
+    "Flapping",
+    "Flow",
+    "Flutter",
+    "Fluttering",
+    "Folding",
+    "Garment",
+    "Gathering",
+    "Gown",
+    "Hang",
+    "Jacket",
+    "Jeans",
+    "Khaki",
+    "Lace",
+    "Laundry",
+    "Linen",
+    "Material",
+    "Microfiber",
+    "Movement",
+    "Muslin",
+    "Nylon",
+    "Oilcloth",
+    "Oilskin",
+    "Pants",
+    "Pillowcase",
+    "Pleating",
+    "Polyester",
+    "Positioning",
+    "Rag",
+    "Rayon",
+    "Repositioning",
+    "Ripple",
+    "Robe",
+    "Ruffle",
+    "Ruffling",
+    "Rustle",
+    "Rustling",
+    "Scrunch",
+    "Scrunching",
+    "Settling",
+    "Sheet",
+    "Shifting",
+    "Shirt",
+    "Silk",
+    "Skirt",
+    "Smoothing",
+    "Spreading",
+    "Stretching",
+    "Sway",
+    "Swaying",
+    "Swing",
+    "Swish",
+    "Tablecloth",
+    "Terry",
+    "Textile",
+    "Towel",
+    "Tucking",
+    "Tugging",
+    "Undulate",
+    "Unfolding",
+    "Waving",
+    "Wool",
+    "Woven",
+    "Zuzz"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.3,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 720.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.18,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1100.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.022000000000000002,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Cloth movement: a sustained-but-eventful drag/rustle bed — many low-level micro-onsets, no single dominant transient, sustain_ratio well above IMPACT.",
+     "Longer and far less front-loaded than the same material's IMPACT; less continuous and less high-centroid than its FRICTION.",
+     "Cloth rustle or 'zuzz': broadband soft noise, heavily damped, mid-to-low centroid, very low level. The classic dead-material texture.",
+     "Against PAPER-HANDLE: paper crumple is 4-6x brighter with a far higher onset_rate; cloth rustle smears into a soft noise bed with no distinct micro-cracks.",
+     "Against LEATHER-MOVEMENT: leather is stiffer, so it produces occasional creak partials; cloth stays purely stochastic with harmonicity near zero.",
+     "UCS routes flapping to CLOTH-FLAP: if the onset train is quasi-periodic, prefer that sibling."
+    ],
+    "confusable_with": [
+     "CLOTHHndl",
+     "CLOTHFlp",
+     "LETHRMvmt",
+     "PAPRHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "RIP",
+   "category_id": "CLOTHRip",
+   "category_short": "CLOTH",
+   "emoji": "🧵",
+   "explanation": [
+    "Various cloth rips and tears",
+    "short to long. Velcro would best fit here too."
+   ],
+   "synonyms": [
+    "Apart",
+    "Apparel",
+    "Apron",
+    "Banner",
+    "Bib",
+    "Blanket",
+    "Breach",
+    "Burlap",
+    "Canvas",
+    "Clothe",
+    "Cotton",
+    "Cut",
+    "Dissect",
+    "Dress",
+    "Fabric",
+    "Fabrics",
+    "Flag",
+    "Flannel",
+    "Garment",
+    "Gash",
+    "Gown",
+    "Incise",
+    "Jacket",
+    "Jeans",
+    "Khaki",
+    "Lace",
+    "Lacerate",
+    "Laundry",
+    "Linen",
+    "Material",
+    "Microfiber",
+    "Muslin",
+    "Nylon",
+    "Oilcloth",
+    "Oilskin",
+    "Pants",
+    "Perforate",
+    "Pillowcase",
+    "Polyester",
+    "Puncture",
+    "Rag",
+    "Rayon",
+    "Rend",
+    "Rip",
+    "Ripped",
+    "Ripper",
+    "Ripping",
+    "Rive",
+    "Robe",
+    "Sever",
+    "Sheet",
+    "Shirt",
+    "Shred",
+    "Shredded",
+    "Silk",
+    "Skirt",
+    "Slash",
+    "Sunder",
+    "Tablecloth",
+    "Tattered",
+    "Tatters",
+    "Tear",
+    "Tearing",
+    "Terry",
+    "Textile",
+    "Towel",
+    "Velcro",
+    "Wool",
+    "Woven"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.52,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.48,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.52,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.07,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 30.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.02,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A sustained tear: fibre fracture as a low-crest friction event, not an impulse. UCS puts Velcro here, which is the same physics — a dense rasping fastener rip.",
+     "The whole boundary against PAPER-RIP is brightness: cloth tears centre around 1-2 kHz with real mid-band and some low-band energy; paper tears centre near 5 kHz with almost nothing below 200 Hz.",
+     "Against CLOTH-IMPACT: a rip is sustained (sustain_ratio ~0.5) and not front-loaded; an impact is one dull thump.",
+     "Nothing like METAL-BREAK or WOOD-BREAK — no ring, no crack."
+    ],
+    "confusable_with": [
+     "PAPRRip",
+     "CLOTHMvmt",
+     "OBJTape"
+    ]
+   }
+  }
+ ]
+}

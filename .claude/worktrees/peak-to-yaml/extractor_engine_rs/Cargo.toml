@@ -1,0 +1,15 @@
+[package]
+name = "extractor_engine"
+version = "0.1.0"
+edition = "2021"
+description = "Shared cutting DSP for the Extractor — region detection, slicing, fades, 16-bit WAV encoding. The single source of truth for native (Tauri) and WASM (web) builds."
+
+[lib]
+crate-type = ["rlib"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+
+[profile.release]
+opt-level = 3
+lto = true

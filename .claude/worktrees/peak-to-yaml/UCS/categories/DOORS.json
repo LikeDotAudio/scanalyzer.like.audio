@@ -1,0 +1,3370 @@
+{
+ "version": "8.2.1",
+ "category": "DOORS",
+ "emoji": "🚪",
+ "subcategories": [
+  {
+   "subcategory": "ANTIQUE",
+   "category_id": "DOORAntq",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Very old sounding doors",
+    "as in an old castle or abbey. But massive doors of this type probably to DOOR-DUNGEON."
+   ],
+   "synonyms": [
+    "Abbey",
+    "Aged",
+    "Ancient",
+    "Antiquated",
+    "Antique",
+    "Barn",
+    "Cabin",
+    "Castle",
+    "Church",
+    "Classic",
+    "Cottage",
+    "Distressed",
+    "Door",
+    "Farmhouse",
+    "Historic",
+    "Historical",
+    "Old",
+    "Old-Fashioned",
+    "Period",
+    "Restored",
+    "Retro",
+    "Traditional",
+    "Victorian",
+    "Vintage",
+    "Weathered"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.18,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Age is a semantic property: no DSP separates an antique door from a modern wooden one. Expect a wood-like short ring (decay_time_seconds_60db ~0.2 s) plus loose-hinge friction, but that describes DOORWood equally.",
+     "Massive castle/abbey doors with deep low_band_energy and long reverberant tails belong to DOORDungn per the explanation."
+    ],
+    "confusable_with": [
+     "DOORDungn",
+     "DOORWood",
+     "DOORCreak",
+     "DOORSton"
+    ]
+   }
+  },
+  {
+   "subcategory": "APPLIANCE",
+   "category_id": "DOORAppl",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Appliance doors such as oven",
+    "dishwasher",
+    "refrigerator or microwave."
+   ],
+   "synonyms": [
+    "Dishwasher",
+    "Dryer",
+    "Freezer",
+    "Fridge",
+    "Laundry",
+    "Machine",
+    "Microwave",
+    "Oven",
+    "Refrigerator",
+    "Washing"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.15,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "An oven or fridge door is a damped hollow-cavity thunk with a metal latch click; it is short and heavily damped, unlike DOORMetl which rings.",
+     "Nothing in the signal says 'oven' rather than 'cabinet'. Text drives this; the signature only rules out sustained tonal or minutes-long material."
+    ],
+    "confusable_with": [
+     "DOORCab",
+     "DOORMetl",
+     "DRWRMetl"
+    ]
+   }
+  },
+  {
+   "subcategory": "CABINET",
+   "category_id": "DOORCab",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Cabinet doors",
+    "such as kitchen cabinet",
+    "tool cabinets."
+   ],
+   "synonyms": [
+    "Armoire",
+    "Bar",
+    "Bathroom",
+    "Buffet",
+    "Cabinet",
+    "Center",
+    "China",
+    "Cupboard",
+    "Display",
+    "Door",
+    "Entertainment",
+    "Hutch",
+    "Kitchen",
+    "Linen",
+    "Locker",
+    "Medicine",
+    "Pantry",
+    "Storage",
+    "Tool",
+    "Vanity",
+    "Wardrobe",
+    "Wine"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.88073,
+      "deviation": 2.62601,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 33,
+       "fsd50k_classes": [
+        "Cupboard_open_or_close"
+       ],
+       "measured_deviation": 2.62601,
+       "reasoned_mean": 0.1,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3393.9,
+      "deviation": 2.242,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3217.49564
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 1.8,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 62,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2.0
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.6903,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 33,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 6.97816
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Small, light, quiet wooden panel with a magnetic-catch or latch click; shorter decay and lower level than a full DOORWood house door.",
+     "A cabinet door swings on a hinge; a drawer slides. If the dominant event is a sustained low-crest friction glide with a terminal stop, prefer DRWRWood."
+    ],
+    "confusable_with": [
+     "DOORWood",
+     "DRWRWood",
+     "DOORAppl"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 62,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Cupboard_open_or_close": 62
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 60,
+       "percentile_05": 1698.4,
+       "median": 3298.1,
+       "percentile_95": 4866.5
+      },
+      "crest_factor": {
+       "clips": 33,
+       "percentile_05": 4.6119,
+       "median": 6.6903,
+       "percentile_95": 20.014,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 30,
+       "percentile_05": 0.0049887,
+       "median": 0.019955,
+       "percentile_95": 0.12472,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 33,
+       "percentile_05": 0.019955,
+       "median": 0.13469,
+       "percentile_95": 0.37914,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 33,
+       "percentile_05": -1.1626,
+       "median": 6.2838,
+       "percentile_95": 33.262,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 33,
+       "percentile_05": 0.024943,
+       "median": 0.14467,
+       "percentile_95": 0.73832,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 33,
+       "percentile_05": -0.61561,
+       "median": 2.3742,
+       "percentile_95": 4.6391,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 33,
+       "percentile_05": 0.006399,
+       "median": 0.11877,
+       "percentile_95": 0.66377,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 33,
+       "percentile_05": 0.072337,
+       "median": 0.18425,
+       "percentile_95": 0.36421,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 62,
+       "percentile_05": 0.12338,
+       "median": 0.42289,
+       "percentile_95": 0.96036
+      },
+      "high_band_energy": {
+       "clips": 62,
+       "percentile_05": 0.047622,
+       "median": 0.5146,
+       "percentile_95": 0.78783
+      },
+      "inharmonicity": {
+       "clips": 62,
+       "percentile_05": 0.086301,
+       "median": 0.41145,
+       "percentile_95": 0.60394
+      },
+      "low_band_energy": {
+       "clips": 62,
+       "percentile_05": 0.0049106,
+       "median": 0.087474,
+       "percentile_95": 0.56898
+      },
+      "mid_band_energy": {
+       "clips": 62,
+       "percentile_05": 0.090021,
+       "median": 0.32563,
+       "percentile_95": 0.537
+      },
+      "onset_periodicity": {
+       "clips": 62,
+       "percentile_05": 0.028446,
+       "median": 0.23287,
+       "percentile_95": 0.42579
+      },
+      "onset_rate_per_second": {
+       "clips": 62,
+       "percentile_05": 0.25445,
+       "median": 1.2693,
+       "percentile_95": 2.8737
+      },
+      "partial_count": {
+       "clips": 60,
+       "percentile_05": 2.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 29,
+       "percentile_05": 135.28,
+       "median": 938.3,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 62,
+       "percentile_05": 219.07,
+       "median": 826.7,
+       "percentile_95": 1638.3
+      },
+      "spectral_centroid_hz": {
+       "clips": 60,
+       "percentile_05": 534.57,
+       "median": 3317.3,
+       "percentile_95": 6162.4
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 62,
+       "percentile_05": 590.72,
+       "median": 2963.2,
+       "percentile_95": 5905.9
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 62,
+       "percentile_05": -4318.6,
+       "median": 68.375,
+       "percentile_95": 2379.9
+      },
+      "spectral_entropy": {
+       "clips": 62,
+       "percentile_05": 0.19358,
+       "median": 0.40995,
+       "percentile_95": 0.6547
+      },
+      "spectral_flatness": {
+       "clips": 62,
+       "percentile_05": 0.033663,
+       "median": 0.12013,
+       "percentile_95": 0.41215
+      },
+      "spectral_flux": {
+       "clips": 62,
+       "percentile_05": 0.182,
+       "median": 0.21627,
+       "percentile_95": 0.27741
+      },
+      "spectral_rolloff_hz": {
+       "clips": 60,
+       "percentile_05": 383.39,
+       "median": 6863.2,
+       "percentile_95": 11921.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 62,
+       "percentile_05": -10.617,
+       "median": -5.1133,
+       "percentile_95": 0.19018
+      },
+      "stationarity": {
+       "clips": 62,
+       "percentile_05": 0.0,
+       "median": 0.099707,
+       "percentile_95": 0.65945,
+       "censored_at_floor_fraction": 0.452
+      },
+      "sustain_ratio": {
+       "clips": 33,
+       "percentile_05": 0.016949,
+       "median": 0.10526,
+       "percentile_95": 0.7037,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 45,
+       "percentile_05": 0.040602,
+       "median": 0.15542,
+       "percentile_95": 0.3796
+      },
+      "transient_count": {
+       "clips": 62,
+       "percentile_05": 1.0,
+       "median": 1.0,
+       "percentile_95": 10.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 62,
+       "percentile_05": 155.58,
+       "median": 1680.0,
+       "percentile_95": 8428.3
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "COMPOSITE",
+   "category_id": "DOORComp",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Fiberglass",
+    "wood steel combination",
+    "doors that don't sound like a specific material. A modern front door. Some confusion or overlap with DOORS-WOOD likely."
+   ],
+   "synonyms": [
+    "Fiberglass"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.14,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1300.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The explanation says it outright: fiberglass/wood/steel composite doors 'don't sound like a specific material', so the material axis gives no leverage. Overlap with DOORWood is expected and acknowledged.",
+     "Rules out only the extremes: no long metallic ring (that is DOORMetl) and no glassy high-frequency shimmer (DOORGlas)."
+    ],
+    "confusable_with": [
+     "DOORWood",
+     "DOORMetl",
+     "DOORGlas"
+    ]
+   }
+  },
+  {
+   "subcategory": "CREAK",
+   "category_id": "DOORCreak",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Door creaks",
+    "wood or metal",
+    "overlap with WOOD-FRICTION and METAL-FRICTION",
+    "but specifically door creaks."
+   ],
+   "synonyms": [
+    "Castle",
+    "Cellar",
+    "Creak",
+    "Creaky",
+    "Dungeon",
+    "Groan",
+    "Haunted",
+    "Metal",
+    "Old",
+    "Rusty",
+    "Scary",
+    "Screech",
+    "Squeak",
+    "Squeaky",
+    "Wood"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 14.0
+     },
+     {
+      "feature": "sustain_ratio",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1500.0,
+      "deviation": 800.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The archetypal friction morphology: sustained, high-centroid, low crest factor, with wildly unstable partials (large spectral_centroid_deviation_hz). A creak is not an impact and must never be confused with DOORKnck, whose crest factor is far higher and whose energy is front-loaded.",
+     "Distinguished from WOODFric / METALFric only by context: the sound is a door hinge. Morphologically identical; the explanation admits the overlap.",
+     "Rope creaks (ROPECreak) sit lower and groanier: centroid nearer 1 kHz with a strong quasi-periodic groan, versus the door hinge's 2-4 kHz squeal."
+    ],
+    "confusable_with": [
+     "WOODFric",
+     "METALFric",
+     "ROPECreak",
+     "DOORHdwr"
+    ]
+   }
+  },
+  {
+   "subcategory": "DUNGEON",
+   "category_id": "DOORDungn",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "That big old classic wood and/or metal heavy dungeon",
+    "castle type door."
+   ],
+   "synonyms": [
+    "Castle",
+    "Cellar",
+    "Chamber",
+    "Crypt",
+    "Fortress",
+    "Large",
+    "Medieval",
+    "Oubliette",
+    "Passage",
+    "Secret",
+    "Stronghold",
+    "Torture",
+    "Tower"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 700.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.2,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 1.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1100.0,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Mass is measurable: a dungeon door is dominated by low_band_energy with a long reverberant release, plus heavy iron-hinge creak. That prunes it away from the light DOORCab / DOORPlas, but not from DOORSton or a big DOORMetl.",
+     "Massive antique doors go here rather than DOORAntq (the explanation says so). If it is light and merely old-sounding, prefer DOORAntq."
+    ],
+    "confusable_with": [
+     "DOORAntq",
+     "DOORSton",
+     "DOORMetl",
+     "DOORPrisn"
+    ]
+   }
+  },
+  {
+   "subcategory": "ELECTRIC",
+   "category_id": "DOORElec",
+   "category_short": "DOOR",
+   "emoji": "⚡",
+   "explanation": [
+    "Electric doors of all kinds",
+    "garage doors",
+    "big soundstage doors",
+    "sliding store doors. See also DOORS-REVOLVING."
+   ],
+   "synonyms": [
+    "Automatic",
+    "Door",
+    "Electric",
+    "Garage",
+    "Hangar",
+    "Motorized",
+    "Power",
+    "Soundstage",
+    "Warehouse"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.8,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 16.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 110.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The motor is the tell: a sustained, stationary, harmonic drive whine bracketed by a start clunk and an end limit-switch thud. Any manual door (DOORWood, DOORSlid, DOORGate) lacks this sustained_tonal bed entirely.",
+     "Against DOORHydr: hydraulic/pneumatic closers hiss (high spectral_flatness, low harmonicity) rather than whine (high harmonicity, low flatness). That is the separation."
+    ],
+    "confusable_with": [
+     "DOORHydr",
+     "DOORRevl",
+     "DOORSlid",
+     "DOORTech"
+    ]
+   }
+  },
+  {
+   "subcategory": "GATE",
+   "category_id": "DOORGate",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Non-motorized gates",
+    "metal or wood. So a garden gate",
+    "a park gate. A farm gate."
+   ],
+   "synonyms": [
+    "Barricade",
+    "Barrier",
+    "Cattle",
+    "Crossing",
+    "Farm",
+    "Fence",
+    "Garden",
+    "Gate",
+    "Park",
+    "Rail"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1300.0,
+      "deviation": 800.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Non-motorized by definition, so it must NOT carry a sustained motor whine — that would be DOORElec. Beyond that, a metal garden gate is acoustically a metal door: squeal, clank, latch.",
+     "Usually recorded outdoors, so a wide stereo_width and an exterior ambience bed are weak supporting evidence, not proof."
+    ],
+    "confusable_with": [
+     "DOORMetl",
+     "DOORCreak",
+     "DOORWood",
+     "DOORElec"
+    ]
+   }
+  },
+  {
+   "subcategory": "GLASS",
+   "category_id": "DOORGlas",
+   "category_short": "DOOR",
+   "emoji": "🥂",
+   "explanation": [
+    "Glass doors",
+    "manual shopping store doors",
+    "glass home front doors. Most store doors would probably fit here."
+   ],
+   "synonyms": [
+    "Bay",
+    "Door",
+    "French",
+    "Front",
+    "Glass",
+    "Patio",
+    "Store"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 9000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.35,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Glass is bright: a pane rattles and shimmers with high_band_energy and a centroid well above the ~1.5 kHz of DOORWood. It is a colour cue, not a certainty — the frame and closer still dominate the low end.",
+     "This is an intact glass door being operated. A glass door being destroyed is GLASS-BREAK, not DOORGlas: that has burst morphology and a dense high-frequency debris texture tail.",
+     "Store-front glass doors on a slide rail overlap DOORSlid; a swinging glass front door overlaps DOORComp."
+    ],
+    "confusable_with": [
+     "DOORSlid",
+     "DOORComp",
+     "WNDWMetl",
+     "DOORMetl"
+    ]
+   }
+  },
+  {
+   "subcategory": "HARDWARE",
+   "category_id": "DOORHdwr",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Door knobs",
+    "door locks",
+    "deadbolts",
+    "chain locks",
+    "push bars. Lock Picking",
+    "Doorknob Jiggles."
+   ],
+   "synonyms": [
+    "Bar",
+    "Chain",
+    "Deadbolt",
+    "Door",
+    "Doorknob",
+    "Fixture",
+    "Handle",
+    "Hardware",
+    "Hinge",
+    "Jiggle",
+    "Knob",
+    "Latch",
+    "Lock",
+    "Peephole",
+    "Picking",
+    "Push",
+    "Stop"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.06,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 3.0,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Small metal parts: bright, spiky, tiny clicks and jiggles with almost no low_band_energy. The absence of a big low-frequency slab impact is what separates DOORHdwr from DOORKnck and from any full-leaf door close.",
+     "A doorknob jiggle or lock pick is a burst of 4-20 micro-transients; a deadbolt is 1-2. Both stay bright and quiet.",
+     "Physically identical to WNDWHdwr — only the fixture differs, so text must break the tie."
+    ],
+    "confusable_with": [
+     "WNDWHdwr",
+     "DOORKnck",
+     "DOORCreak"
+    ]
+   }
+  },
+  {
+   "subcategory": "HITECH",
+   "category_id": "DOORTech",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "James bond type doors",
+    "something not quite sci-fi but more advanced",
+    "Modern lab",
+    "or air sealed chamber",
+    "vaults. See also SCIFI-DOOR."
+   ],
+   "synonyms": [
+    "7",
+    "Bond",
+    "Door",
+    "Fort",
+    "Futuristic",
+    "High-Tech",
+    "James",
+    "Knox",
+    "Lab",
+    "Modern",
+    "Safe",
+    "Security",
+    "Vault"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": -400.0,
+      "deviation": 900.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A designed layer stack: pneumatic seal hiss (sustained_noise) plus a servo whine (sustained_tonal) plus a heavy vault thunk. The presence of BOTH a noise bed and a tonal bed inside one file is the cue, and it separates DOORTech from plain DOORMetl.",
+     "Overlaps DOORHydr (the un-designed real-world version of the same hiss) and SCIFI-DOOR (fully synthetic, typically brighter and more processed)."
+    ],
+    "confusable_with": [
+     "DOORHydr",
+     "DOORElec",
+     "DOORMetl"
+    ]
+   }
+  },
+  {
+   "subcategory": "HYDRAULIC & PNEUMATIC",
+   "category_id": "DOORHydr",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Self closing doors",
+    "lots of office and store doors are of this type. Also automatic doors if hydraulic or pneumatic."
+   ],
+   "synonyms": [
+    "Closer",
+    "Dock",
+    "Door",
+    "Hatch",
+    "Hydraulic",
+    "Loading",
+    "Pneumatic",
+    "Powered"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 18.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Air is noise: a self-closer or pneumatic ram is a broadband hiss (high spectral_flatness, near-zero harmonicity) that ends in a latch thunk. The hiss bed is the whole diagnosis.",
+     "Against DOORElec: an electric motor is HARMONIC and pitched (harmonicity high, flatness low). Same duration, opposite spectrum. This is the cleanest split in the DOORS category after CREAK vs KNOCK."
+    ],
+    "confusable_with": [
+     "DOORElec",
+     "DOORTech",
+     "DOORRevl"
+    ]
+   }
+  },
+  {
+   "subcategory": "KNOCK",
+   "category_id": "DOORKnck",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Knocking on various door surfaces."
+   ],
+   "synonyms": [
+    "Bang",
+    "Knock",
+    "Knocker",
+    "Rap",
+    "Thud",
+    "Thump"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 15.0
+     },
+     {
+      "feature": "transient_count",
+      "min": 2
+     },
+     {
+      "feature": "crest_factor",
+      "min": 4.0
+     },
+     {
+      "feature": "sustain_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 4.4478,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 210,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 4.4478,
+       "reasoned_mean": 3.5,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.62241,
+      "deviation": 1.8,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 210,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 1.4001,
+       "reasoned_mean": 2.5,
+       "reasoned_deviation": 1.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 18.30074,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 43,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 1.23879,
+       "reasoned_mean": 13.0,
+       "reasoned_deviation": 1.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.01497,
+      "deviation": 3.51206,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 43,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 3.51206,
+       "reasoned_mean": 0.003,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.4,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.59464,
+      "deviation": 0.19195,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 210,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 0.19195,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1358.25213,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 210,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 1.86516,
+       "reasoned_mean": 1300.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.67756,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 37,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 1.4692,
+       "reasoned_mean": 0.09,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 37.55499,
+      "deviation": 9.95083,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 43,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 9.95083,
+       "reasoned_mean": 8.0,
+       "reasoned_deviation": 5.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.02273,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 43,
+       "fsd50k_classes": [
+        "Knock"
+       ],
+       "measured_deviation": 0.00978,
+       "reasoned_mean": 0.08,
+       "reasoned_deviation": 0.07,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "A knock is a TRAIN: 2-4 (sometimes more) mid-band impulses at roughly 2-4 per second with high onset_periodicity. transient_count > 1 is a hard gate — a single isolated slab impact is not a knock.",
+     "Against a slam or a heavy door close: a slam is ONE loud low-frequency-heavy impact with a room tail (low_band_energy high, transient_count = 1). A knock is repeated, mid-band, and far quieter in absolute terms. transient_count and onset_rate_per_second separate them cleanly.",
+     "Against DOORCreak: opposite morphology. Knock is front-loaded and spiky (crest_factor ~13, sustain_ratio < 0.1); a creak is sustained and low-crest.",
+     "Against WNDWKnck: same gesture, brighter surface. Knuckles on glass push the centroid above ~2.5 kHz with a ringing pane; knuckles on a wooden door sit near 1.2 kHz and die in ~0.1 s."
+    ],
+    "confusable_with": [
+     "WNDWKnck",
+     "WOODImpt",
+     "DOORHdwr",
+     "DOORWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "METAL",
+   "category_id": "DOORMetl",
+   "category_short": "DOOR",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal doors",
+    "like a vault door or heavy door. PRISON doors have their own category",
+    "as they are quite specific sounding."
+   ],
+   "synonyms": [
+    "Door",
+    "Electrical",
+    "Fire",
+    "Fire-Door",
+    "Garage",
+    "Hatch",
+    "Panel",
+    "Rollup",
+    "Screen"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.9,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.7,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 14.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 0.8,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Metal RINGS. decay_time_seconds_60db near 1 s with high inharmonicity and a rich partial_count is the material-impedance signature, and it is the single boundary against DOORWood, whose ring dies in roughly 0.1 s.",
+     "The explanation carves out prison doors as their own sound: if the clang is huge, low, sliding and reverberant, prefer DOORPrisn."
+    ],
+    "confusable_with": [
+     "DOORPrisn",
+     "DOORWood",
+     "DOORGate",
+     "DOORComp"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "DOORMisc",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Door sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The abstention target for DOORS. By definition it has no distinguishing morphology: it is whatever door sound the other 21 subcategories reject.",
+     "Deliberately un-gated so it can always receive an abstained file."
+    ],
+    "confusable_with": [],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 346,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Door": 346,
+      "Slam": 244
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 346,
+       "percentile_05": 2279.7,
+       "median": 3967.5,
+       "percentile_95": 5228.4
+      },
+      "crest_factor": {
+       "clips": 141,
+       "percentile_05": 5.223,
+       "median": 13.691,
+       "percentile_95": 38.573,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 89,
+       "percentile_05": 0.31609,
+       "median": 0.76125,
+       "percentile_95": 2.6844,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 141,
+       "percentile_05": 0.0099773,
+       "median": 0.064853,
+       "percentile_95": 2.8485,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 141,
+       "percentile_05": 0.12971,
+       "median": 0.37415,
+       "percentile_95": 1.8358,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 141,
+       "percentile_05": 0.9343,
+       "median": 17.238,
+       "percentile_95": 118.81,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 141,
+       "percentile_05": 0.079819,
+       "median": 0.2195,
+       "percentile_95": 1.9805,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 141,
+       "percentile_05": 1.4313,
+       "median": 3.9209,
+       "percentile_95": 10.071,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 141,
+       "percentile_05": 0.0012629,
+       "median": 0.02061,
+       "percentile_95": 0.20047,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 141,
+       "percentile_05": 0.04992,
+       "median": 0.29245,
+       "percentile_95": 0.69095,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 346,
+       "percentile_05": 0.14696,
+       "median": 0.57123,
+       "percentile_95": 0.96864
+      },
+      "high_band_energy": {
+       "clips": 346,
+       "percentile_05": 0.25088,
+       "median": 0.50827,
+       "percentile_95": 0.79244
+      },
+      "inharmonicity": {
+       "clips": 346,
+       "percentile_05": 0.092883,
+       "median": 0.43577,
+       "percentile_95": 0.6144
+      },
+      "low_band_energy": {
+       "clips": 346,
+       "percentile_05": 0.0094818,
+       "median": 0.12707,
+       "percentile_95": 0.36197
+      },
+      "mid_band_energy": {
+       "clips": 346,
+       "percentile_05": 0.16227,
+       "median": 0.32971,
+       "percentile_95": 0.55678
+      },
+      "onset_periodicity": {
+       "clips": 346,
+       "percentile_05": 0.03431,
+       "median": 0.26352,
+       "percentile_95": 0.48096
+      },
+      "onset_rate_per_second": {
+       "clips": 346,
+       "percentile_05": 0.16999,
+       "median": 0.68906,
+       "percentile_95": 2.4766
+      },
+      "partial_count": {
+       "clips": 340,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 177,
+       "percentile_05": 114.84,
+       "median": 1025.6,
+       "percentile_95": 1917.4
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 346,
+       "percentile_05": 510.9,
+       "median": 1199.8,
+       "percentile_95": 2582.7
+      },
+      "spectral_centroid_hz": {
+       "clips": 346,
+       "percentile_05": 1741.2,
+       "median": 3636.2,
+       "percentile_95": 5970.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 346,
+       "percentile_05": 1488.9,
+       "median": 2956.1,
+       "percentile_95": 5838.3
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 346,
+       "percentile_05": -3165.1,
+       "median": -40.353,
+       "percentile_95": 2081.3
+      },
+      "spectral_entropy": {
+       "clips": 346,
+       "percentile_05": 0.20309,
+       "median": 0.40328,
+       "percentile_95": 0.61283
+      },
+      "spectral_flatness": {
+       "clips": 346,
+       "percentile_05": 0.05992,
+       "median": 0.25079,
+       "percentile_95": 0.48885
+      },
+      "spectral_flux": {
+       "clips": 346,
+       "percentile_05": 0.18982,
+       "median": 0.22137,
+       "percentile_95": 0.23794
+      },
+      "spectral_rolloff_hz": {
+       "clips": 346,
+       "percentile_05": 3258.1,
+       "median": 7682.2,
+       "percentile_95": 11769.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 346,
+       "percentile_05": -7.1587,
+       "median": -4.744,
+       "percentile_95": -0.85887
+      },
+      "stationarity": {
+       "clips": 346,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.41051,
+       "censored_at_floor_fraction": 0.806
+      },
+      "sustain_ratio": {
+       "clips": 141,
+       "percentile_05": 0.005814,
+       "median": 0.04,
+       "percentile_95": 0.15789,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 328,
+       "percentile_05": 0.028685,
+       "median": 0.19322,
+       "percentile_95": 0.36359
+      },
+      "transient_count": {
+       "clips": 346,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 7.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 346,
+       "percentile_05": 410.98,
+       "median": 1716.5,
+       "percentile_95": 6253.6
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "PLASTIC",
+   "category_id": "DOORPlas",
+   "category_short": "DOOR",
+   "emoji": "🧴",
+   "explanation": [
+    "Doors made out of plastic. Not very common but maybe a door to a child's play house."
+   ],
+   "synonyms": [
+    "John",
+    "Porta"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.05,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Plastic is DEAD and light: the shortest ring of any door material (decay_time_seconds_60db well under 0.1 s), a hollow mid-high rattle, and very little low_band_energy. That is a real contrast against DOORWood (thud with body) and DOORMetl (long ring).",
+     "Still semantic_only in practice: a thin plastic door and a thin hollow-core wooden door converge, and the category is rare enough that text must carry it."
+    ],
+    "confusable_with": [
+     "DOORWood",
+     "DOORCab",
+     "DRWRPlas"
+    ]
+   }
+  },
+  {
+   "subcategory": "PRISON",
+   "category_id": "DOORPrisn",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Big metal jail and prison doors. Sliding prison doors",
+    "or swinging jail doors."
+   ],
+   "synonyms": [
+    "Cell",
+    "Confinement",
+    "Correctional",
+    "Detention",
+    "Gaol",
+    "Incarceration",
+    "Jail",
+    "Lockup",
+    "Penitentiary",
+    "Solitary"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.6,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.72,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 1.8,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Mass plus a hard reverberant room: the longest metal ring in the category, an enormous clang, and a slide/rumble before the bolt. Both the decay and the room tail run longer than a generic DOORMetl.",
+     "Prison doors are called out in the DOORS-METAL explanation as 'quite specific sounding', which is exactly the cue to trust here — but only material and size are measurable, not incarceration, so a heavy industrial fire door will land here too."
+    ],
+    "confusable_with": [
+     "DOORMetl",
+     "DOORDungn",
+     "DOORSlid"
+    ]
+   }
+  },
+  {
+   "subcategory": "REVOLVING",
+   "category_id": "DOORRevl",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Classic revolving doors used as entries to hotels",
+    "banks",
+    "malls."
+   ],
+   "synonyms": [
+    "Airport",
+    "Bank",
+    "Hotel",
+    "Mall",
+    "Revolve",
+    "Revolving",
+    "Rotate",
+    "Rotating",
+    "Turning"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 14.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A revolving door never stops and never slams: a long, low-crest, near-stationary rubber-seal swish and glass-panel rumble with almost no transients. The absence of impacts is the diagnosis.",
+     "Against DOORSlid: sliding is a one-way glide that ENDS in a stop thud; revolving is continuous and cyclic, and usually carries a lobby ambience bed."
+    ],
+    "confusable_with": [
+     "DOORSlid",
+     "DOORElec",
+     "DOORHydr"
+    ]
+   }
+  },
+  {
+   "subcategory": "SLIDING",
+   "category_id": "DOORSlid",
+   "category_short": "DOOR",
+   "emoji": "🔔",
+   "explanation": [
+    "Manual sliding doors",
+    "such as a patio door",
+    "sliding shower doors. Electric sliding doors to DOORS-ELECTRIC."
+   ],
+   "synonyms": [
+    "Door",
+    "Glass",
+    "Patio",
+    "Shower",
+    "Sliding"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 18.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22113,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 68,
+       "fsd50k_classes": [
+        "Sliding_door"
+       ],
+       "measured_deviation": 0.0062,
+       "reasoned_mean": 0.25,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2885.04095,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 68,
+       "fsd50k_classes": [
+        "Sliding_door"
+       ],
+       "measured_deviation": 1.48783,
+       "reasoned_mean": 1900.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 974.17672,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 68,
+       "fsd50k_classes": [
+        "Sliding_door"
+       ],
+       "measured_deviation": 547.71578,
+       "reasoned_mean": 900.0,
+       "reasoned_deviation": 600.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.07957,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 68,
+       "fsd50k_classes": [
+        "Sliding_door"
+       ],
+       "measured_deviation": 0.11798,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 2.9652,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 68,
+       "fsd50k_classes": [
+        "Sliding_door"
+       ],
+       "measured_deviation": 2.9652,
+       "reasoned_mean": 2.0,
+       "reasoned_deviation": 1.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "A roller glide: sustained low-crest friction across the whole file with a terminal impact when the leaf hits the jamb. Energy sits mid-file (envelope_temporal_centroid ~0.5), unlike any hinged door, which is front-loaded.",
+     "The explanation is explicit: manual only. If a sustained motor whine is present it is DOORElec, and if a hiss bed is present it is DOORHydr.",
+     "Against DRWRWood/DRWRMetl: a drawer is the same friction+stop morphology at a fraction of the duration and level. Sliding doors run seconds; drawers run well under one."
+    ],
+    "confusable_with": [
+     "DOORElec",
+     "DOORGlas",
+     "DOORRevl",
+     "DOORHydr"
+    ]
+   }
+  },
+  {
+   "subcategory": "STONE",
+   "category_id": "DOORSton",
+   "category_short": "DOOR",
+   "emoji": "🪨",
+   "explanation": [
+    "Mostly a fantasy type door",
+    "but think Gates of Moria",
+    "big tombstone vault doors."
+   ],
+   "synonyms": [
+    "Castle",
+    "Crypt",
+    "Entrance",
+    "Mausoleum",
+    "Secret",
+    "Temple",
+    "Tomb"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.6,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 550.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.25,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -9.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Stone does not ring: it is a sustained, dark, gritty low-frequency grind with a steep negative spectral tilt and near-zero harmonicity. The very low spectral_centroid_hz plus long sustain is what separates it from every other door in the category.",
+     "Mostly a designed/fantasy sound (Gates of Moria), so it is usually layered with rumble and debris. That reinforces the low-band prior rather than weakening it."
+    ],
+    "confusable_with": [
+     "DOORDungn",
+     "DOORMetl",
+     "DOORElec"
+    ]
+   }
+  },
+  {
+   "subcategory": "SWINGING",
+   "category_id": "DOORSwng",
+   "category_short": "DOOR",
+   "emoji": "🚪",
+   "explanation": [
+    "Swinging doors",
+    "like old-west saloon or church pulpit doors. Doors on swinging springs."
+   ],
+   "synonyms": [
+    "Pulpit",
+    "Restaurant",
+    "Saloon"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 60.0
+     },
+     {
+      "feature": "transient_count",
+      "min": 2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.5,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 800.0,
+      "deviation": 500.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A saloon door flaps: a decaying train of wood-on-wood slaps with a spring squeak between them. Multiple onsets whose amplitude decays over seconds is the signature, and it is genuinely measurable.",
+     "Against DOORKnck: a knock is a short deliberate burst of even-strength raps on a stationary door; a swing is a longer, decaying, less periodic flutter with hinge friction interleaved.",
+     "Against DOORWood: a single close is one transient; a swing is five or more."
+    ],
+    "confusable_with": [
+     "DOORKnck",
+     "DOORWood",
+     "DOORCreak"
+    ]
+   }
+  },
+  {
+   "subcategory": "WOOD",
+   "category_id": "DOORWood",
+   "category_short": "DOOR",
+   "emoji": "🪵",
+   "explanation": [
+    "Wood doors",
+    "home",
+    "school",
+    "most general door category probably."
+   ],
+   "synonyms": [
+    "Apartment",
+    "Armoires",
+    "Barn",
+    "Cabin",
+    "Church",
+    "Closet",
+    "Condo",
+    "Entrance",
+    "Front",
+    "Home",
+    "House"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.48,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 0.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Wood is DAMPED. A wooden door closing is a mid-band thud whose ring collapses in roughly 0.1-0.2 s (decay_time_seconds_60db), with a broad low-mid body and modest inharmonicity. State the boundary from this side: METAL doors ring for ~1 s or more with high inharmonicity and a dense partial_count; wood does not ring at all by comparison.",
+     "The catch-all door material per the explanation, so this is deliberately a generous prior rather than a tight one.",
+     "Against DOORCab: same material, smaller and quieter, with a magnetic catch."
+    ],
+    "confusable_with": [
+     "DOORMetl",
+     "DOORComp",
+     "DOORCab",
+     "DOORAntq"
+    ]
+   }
+  }
+ ]
+}

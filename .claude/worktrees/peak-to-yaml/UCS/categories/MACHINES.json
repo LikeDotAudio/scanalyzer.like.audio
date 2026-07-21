@@ -1,0 +1,3473 @@
+{
+ "version": "8.2.1",
+ "category": "MACHINES",
+ "emoji": "🏭",
+ "subcategories": [
+  {
+   "subcategory": "AMUSEMENT",
+   "category_id": "MACHAmus",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Theme park rides such as rollercoasters and carnival rides. Carnival game machines. General ambiences to go in AMBIENCE-AMUSEMENT."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Bumper",
+    "Carousel",
+    "Carrousel",
+    "Cars",
+    "Coaster",
+    "Contraption",
+    "Device",
+    "Drop",
+    "Ferris",
+    "Flume",
+    "Freefall",
+    "Funhouse",
+    "Haunted",
+    "House",
+    "Kiddy",
+    "Line",
+    "Log",
+    "Machinery",
+    "Merry-Go-Round",
+    "Nickelodeon",
+    "Park",
+    "Pinball",
+    "Ride",
+    "Roller",
+    "Rollercoaster",
+    "Scrambler",
+    "Skeeball",
+    "Theme",
+    "Thrill",
+    "Tilt-A-Whirl",
+    "Tower",
+    "Waterslide",
+    "Wheel",
+    "Zip"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "Rides are LONG, LOUD, LOW and EVENTFUL, which is why the morphology is 'complex' rather than any single token. A rollercoaster is a whole ARC: a chain-lift clatter (a strongly periodic impulse train at the chain-dog rate — one of the more recognisable periodic signatures anywhere in MACHINES), then a rising wheel roar with a doppler by, then brakes. Several morphologies inside one file.",
+     "Carousels and carnival machines add a slow mechanical cycle plus a band organ; pinball and skeeball cabinets are impulsive with bells and solenoids.",
+     "UCS routes the crowd away: 'General ambiences to go in AMBIENCE-AMUSEMENT.' If the file is dominated by crowd, screams and midway noise rather than the machinery, it is AMBAmus.",
+     "Nothing acoustic marks a ride AS a ride — it is a big machine outdoors. Text ('coaster', 'carousel', 'ferris', 'park', 'ride') decides."
+    ],
+    "confusable_with": [
+     "AMBAmus",
+     "MACHInd",
+     "MACHMisc",
+     "MACHEscl"
+    ]
+   }
+  },
+  {
+   "subcategory": "ANTIQUE",
+   "category_id": "MACHAntq",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Old mechanical sewing machines",
+    "ancient looms",
+    "olive presses",
+    "a bit ambiguous but a very old mechanical machine."
+   ],
+   "synonyms": [
+    "Abacus",
+    "Adding",
+    "Antique",
+    "Apparatus",
+    "Arcade",
+    "Automaton",
+    "Babbage",
+    "Butter",
+    "Cash",
+    "Churn",
+    "Classic",
+    "Contraption",
+    "Device",
+    "Edison",
+    "Enigma",
+    "Guttenberg",
+    "Hand-Cranked",
+    "Heritage",
+    "Historic",
+    "Linotype",
+    "Loom",
+    "Machine",
+    "Machinery",
+    "Mimeograph",
+    "Nostalgic",
+    "Old-Fashioned",
+    "Olive",
+    "Press",
+    "Printing",
+    "Register",
+    "Retro",
+    "Sewing",
+    "Vintage"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "The one thing an antique machine genuinely IS, acoustically: PURELY MECHANICAL, and therefore RHYTHMIC WITHOUT A MOTOR BED. A hand crank, a treadle or a flywheel drives a linkage, so the sound is an almost BARE periodic impulse train — a loom's beater, a sewing machine's needle bar, a press — with very high onset_periodicity and LITTLE OR NO continuous tonal hum underneath.",
+     "That ABSENCE of a motor comb is the closest thing to a real discriminator in this subcategory: a modern machine has a hum bed AND a cycle; an antique has only the cycle. LOW harmonicity together with HIGH onset_periodicity leans antique. It is a soft cue, but it is a genuine one.",
+     "Everything is metal and wood linkage, so the transients are hard and slightly ringing (high inharmonicity, high crest).",
+     "But 'a bit ambiguous' is UCS's own verdict on this subcategory, and AGE IS NOT MEASURABLE. Text ('antique', 'vintage', 'loom', 'treadle', 'linotype', 'mimeograph') decides.",
+     "Against COMType: UCS gives typewriters — including antique ones — their own home in COMMUNICATIONS."
+    ],
+    "confusable_with": [
+     "MACHOffc",
+     "MACHMech",
+     "MACHInd",
+     "COMType",
+     "CLOCKMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "APPLIANCE",
+   "category_id": "MACHAppl",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "General appliances",
+    "refrigerator",
+    "stove",
+    "oven",
+    "vacuum cleaner... AC and fans have their own category."
+   ],
+   "synonyms": [
+    "Air",
+    "Apparatus",
+    "Blender",
+    "Bread",
+    "Can",
+    "Cleaner",
+    "Coffee",
+    "Conditioner",
+    "Contraption",
+    "Cooker",
+    "Dehumidifier",
+    "Device",
+    "Dishwasher",
+    "Disposal",
+    "Dryer",
+    "Electric",
+    "Fan",
+    "Food",
+    "Fridge",
+    "Garbage",
+    "Griddle",
+    "Hair",
+    "Heater",
+    "Hot",
+    "Humidifier",
+    "Ice",
+    "Iron",
+    "Kettle",
+    "Machine",
+    "Machinery",
+    "Maker",
+    "Microwave",
+    "Mixer",
+    "Opener",
+    "Oven",
+    "Plate",
+    "Processor",
+    "Refrigerator",
+    "Rice",
+    "Sewing",
+    "Slow",
+    "Stand",
+    "Toaster",
+    "Vacuum",
+    "Waffle",
+    "Washing"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.62636,
+      "deviation": 0.4752,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.65626
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.2831,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.0
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 464.21,
+      "deviation": 7.774,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 120.0
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 12.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 127,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 12.0
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.20388,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.20384
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.045455,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 57,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.04732
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.098821,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.10066
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.21286,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.19893
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25811,
+      "deviation": 0.2519,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.35
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "The DOMESTIC MOTOR BED: a fridge compressor, a blender, a vacuum, a washing machine. The shared measurable core is a SUSTAINED HARMONIC COMB from an induction motor — a 4-pole 60 Hz motor runs at ~1750 rpm (~29 Hz shaft), with strong radiated energy at 60 and 120 Hz — plus many partials, high stationarity and near-zero spectral_flux.",
+     "Many appliances add a slow mechanical CYCLE on top: a washer's agitate/spin phases, a fridge compressor kicking in and out, a toaster's timer and pop. Those are PHASE CHANGES over tens of seconds, not fast onsets, so they raise onset_periodicity only slightly.",
+     "This is a grab-bag, and the tier is honestly semantic_only for a reason INTERNAL to the subcategory: a vacuum (loud, noisy, bright) and a fridge (quiet, low, tonal) share almost NOTHING in feature space. No single prior can describe both. The priors below describe their centroid, loosely, and should never over-assert.",
+     "UCS carves out the neighbours explicitly: 'AC and fans have their own category' — fans to MACHFan, air conditioning to MACHHvac.",
+     "Confusable with MOTRElec by construction: an appliance IS an electric motor in a box."
+    ],
+    "confusable_with": [
+     "MACHFan",
+     "MACHHvac",
+     "MOTRElec",
+     "MACHMisc",
+     "MACHOffc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 131,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Microwave_oven": 131
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 131,
+       "percentile_05": 1965.9,
+       "median": 3892.7,
+       "percentile_95": 5231.8
+      },
+      "crest_factor": {
+       "clips": 57,
+       "percentile_05": 3.6025,
+       "median": 12.965,
+       "percentile_95": 33.983,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 35,
+       "percentile_05": 0.2098,
+       "median": 0.47705,
+       "percentile_95": 1.3544,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 55,
+       "percentile_05": 0.0099773,
+       "median": 0.069841,
+       "percentile_95": 4.2454,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 57,
+       "percentile_05": 0.064853,
+       "median": 0.27438,
+       "percentile_95": 0.80816,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 57,
+       "percentile_05": -1.4318,
+       "median": 12.204,
+       "percentile_95": 180.56,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 56,
+       "percentile_05": 0.029932,
+       "median": 0.15465,
+       "percentile_95": 1.4168,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 57,
+       "percentile_05": 0.29448,
+       "median": 3.4511,
+       "percentile_95": 12.339,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 57,
+       "percentile_05": 0.0011682,
+       "median": 0.030985,
+       "percentile_95": 0.58771,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 57,
+       "percentile_05": 0.084684,
+       "median": 0.3056,
+       "percentile_95": 0.71848,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 131,
+       "percentile_05": 0.15123,
+       "median": 0.62636,
+       "percentile_95": 0.99076
+      },
+      "high_band_energy": {
+       "clips": 131,
+       "percentile_05": 0.18901,
+       "median": 0.47489,
+       "percentile_95": 0.79558
+      },
+      "inharmonicity": {
+       "clips": 131,
+       "percentile_05": 0.0012144,
+       "median": 0.2989,
+       "percentile_95": 0.5854
+      },
+      "low_band_energy": {
+       "clips": 131,
+       "percentile_05": 0.014467,
+       "median": 0.098821,
+       "percentile_95": 0.31868
+      },
+      "mid_band_energy": {
+       "clips": 131,
+       "percentile_05": 0.15752,
+       "median": 0.40014,
+       "percentile_95": 0.59393
+      },
+      "onset_periodicity": {
+       "clips": 131,
+       "percentile_05": 0.0013444,
+       "median": 0.25811,
+       "percentile_95": 0.54536
+      },
+      "onset_rate_per_second": {
+       "clips": 131,
+       "percentile_05": 0.085822,
+       "median": 0.58002,
+       "percentile_95": 2.6985
+      },
+      "partial_count": {
+       "clips": 127,
+       "percentile_05": 1.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 59,
+       "percentile_05": 50.057,
+       "median": 464.21,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 131,
+       "percentile_05": 237.87,
+       "median": 1014.1,
+       "percentile_95": 2018.2
+      },
+      "spectral_centroid_hz": {
+       "clips": 131,
+       "percentile_05": 1529.1,
+       "median": 3154.8,
+       "percentile_95": 6157.7
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 131,
+       "percentile_05": 1336.7,
+       "median": 2457.4,
+       "percentile_95": 5137.6
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 131,
+       "percentile_05": -4124.9,
+       "median": 25.364,
+       "percentile_95": 1829.3
+      },
+      "spectral_entropy": {
+       "clips": 131,
+       "percentile_05": 0.23446,
+       "median": 0.38667,
+       "percentile_95": 0.5388
+      },
+      "spectral_flatness": {
+       "clips": 131,
+       "percentile_05": 0.049336,
+       "median": 0.21286,
+       "percentile_95": 0.50224
+      },
+      "spectral_flux": {
+       "clips": 131,
+       "percentile_05": 0.14479,
+       "median": 0.20388,
+       "percentile_95": 0.22683
+      },
+      "spectral_rolloff_hz": {
+       "clips": 131,
+       "percentile_05": 2442.2,
+       "median": 6695.5,
+       "percentile_95": 12602.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 131,
+       "percentile_05": -8.4475,
+       "median": -4.8142,
+       "percentile_95": -1.5817
+      },
+      "stationarity": {
+       "clips": 131,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.66114,
+       "censored_at_floor_fraction": 0.58
+      },
+      "sustain_ratio": {
+       "clips": 57,
+       "percentile_05": 0.0021459,
+       "median": 0.045455,
+       "percentile_95": 0.53968,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 117,
+       "percentile_05": 0.048192,
+       "median": 0.21805,
+       "percentile_95": 0.37704
+      },
+      "transient_count": {
+       "clips": 131,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 9.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 131,
+       "percentile_05": 664.66,
+       "median": 1879.8,
+       "percentile_95": 6833.8
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "CONSTRUCTION",
+   "category_id": "MACHCnst",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "A machine for construction that isn't a vehicle or a tool. For example a cement mixer",
+    "a woodchipper."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Cement",
+    "Chipper",
+    "Compactor",
+    "Concrete",
+    "Contraption",
+    "Crane",
+    "Device",
+    "Dozer",
+    "Driver",
+    "Generator",
+    "Jackhammer",
+    "Lift",
+    "Machinery",
+    "Mixer",
+    "Paver",
+    "Pile",
+    "Scissor",
+    "Steamroller",
+    "Trencher",
+    "Wood"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.25,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 15.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "BIG, LOUD, LOW. Cement mixers, woodchippers, jackhammers, pile drivers, compactors. High absolute level, dominant low_band_energy, long duration.",
+     "TWO sub-morphologies live here and both are worth naming, because a single prior cannot cover them: (1) STEADY heavy machines — a mixer drum, a generator — sustained noise over a diesel comb, high stationarity, few onsets; (2) CYCLIC PERCUSSIVE machines — a jackhammer hammering at 15-25 Hz, a pile driver at ~1 Hz — with EXTREMELY high onset_periodicity and an enormous crest factor per blow. A jackhammer is among the most brutally periodic impulse trains in the entire ontology.",
+     "UCS's rule is a NEGATIVE and it is purely semantic: 'a machine for construction that ISN'T a vehicle or a tool.' The same engine in a chassis is VEHICLES; in your hands it is TOOLS. No DSP will ever see that distinction.",
+     "Against TOOLPneu: a jackhammer is a construction MACHINE here but a pneumatic TOOL there. Follow the text and the implied scale.",
+     "Against AMBCnst: a whole job site is ambience; one machine is here."
+    ],
+    "confusable_with": [
+     "TOOLPneu",
+     "TOOLPowr",
+     "MACHInd",
+     "AMBCnst",
+     "MOTRComb"
+    ]
+   }
+  },
+  {
+   "subcategory": "ELEVATOR",
+   "category_id": "MACHElev",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Elevator movement and doors would go here."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Contraption",
+    "Device",
+    "Dumbwaiter",
+    "Dumbwaiters",
+    "Freight",
+    "Hoist",
+    "Lift",
+    "Lifts",
+    "Machinery",
+    "Passenger",
+    "Paternoster",
+    "Platform",
+    "Service",
+    "Stair",
+    "Turbolift"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 700.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "An elevator is a SCENE, not an event — hence 'complex': [doors open] - [chime] - [doors close with a thunk] - [hoist motor ramps UP] - [steady travel hum with cable and guide-rail rumble] - [motor ramps DOWN] - [levelling] - [doors open]. Several distinct morphologies inside one file, which is exactly why no tight prior fits.",
+     "The TRAVEL section is the measurable part, and it has one real signature: a LOW, quiet, tonal hum whose PITCH RISES AND THEN FALLS as the hoist motor accelerates and decelerates. A genuine pitch trajectory with a ramp at each end. Heavy low_band_energy, very low spectral centroid.",
+     "Elevator DOORS are routed HERE by UCS rather than to DOORS ('elevator movement AND DOORS would go here'), which makes the subcategory acoustically heterogeneous on purpose.",
+     "Against MACHEscl — the sharpest available cue in this pair: an escalator NEVER STOPS and clatters periodically; an elevator STARTS AND STOPS and is otherwise smooth. Look for the ACCELERATION RAMP. Its presence argues elevator; steady periodic clatter argues escalator.",
+     "Nothing marks a hoist motor as an ELEVATOR motor. Text decides."
+    ],
+    "confusable_with": [
+     "MACHEscl",
+     "MACHInd",
+     "DOORElec",
+     "MOTRElec",
+     "MACHMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "ESCALATOR",
+   "category_id": "MACHEscl",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Escalators and moving walkways would go here."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Contraption",
+    "Device",
+    "Machinery",
+    "Moving",
+    "Stairs",
+    "Travelator",
+    "Walkway",
+    "Walkways"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.85,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "Acoustically the most CHARACTERISTIC machine in this file, even though it remains semantic_only. An escalator is a CONTINUOUS PERIODIC CLATTER: the step chain engages the drive sprocket at a fixed rate (roughly 1-3 steps/second at a typical 0.5 m/s), producing a metronomic low-frequency clank riding on a steady gearbox hum.",
+     "The diagnostic conjunction is unusual and rare: HIGHLY PERIODIC (onset_periodicity ~0.65) AND HIGHLY STATIONARY (~0.8) AT THE SAME TIME. Most periodic things are eventful and most stationary things are onset-free. An escalator is both, because it repeats the same event forever with no start, no stop and no load change.",
+     "Against MACHElev: an elevator ACCELERATES and STOPS; an escalator does NEITHER. Look for the ramp.",
+     "Against MACHInd (a conveyor): physically the SAME MACHINE — a chain on sprockets, running forever. Genuinely inseparable by DSP; only text ('escalator', 'walkway', 'travelator' versus 'conveyor', 'factory', 'line') separates them.",
+     "Moving walkways belong here per UCS."
+    ],
+    "confusable_with": [
+     "MACHElev",
+     "MACHInd",
+     "MACHAmus",
+     "MOTRElec"
+    ]
+   }
+  },
+  {
+   "subcategory": "FAN",
+   "category_id": "MACHFan",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Fans of all types",
+    "box fans",
+    "ceiling fans. For air conditioning use MACHINES-HVAC."
+   ],
+   "synonyms": [
+    "Air",
+    "Apparatus",
+    "Bladeless",
+    "Blower",
+    "Box",
+    "Ceiling",
+    "Circulator",
+    "Contraption",
+    "Device",
+    "Exhaust",
+    "Industrial",
+    "Machinery",
+    "Ventilation"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "spectral_flatness",
+      "min": 0.009705,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "action": "widened",
+       "clips": 60,
+       "was": {
+        "min": 0.1
+       },
+       "reason": "the reasoned gate rejected 20% of this subcategory's own true clips",
+       "date": "2026-07"
+      }
+     }
+    ],
+    "priors": [
+     {
+      "feature": "stationarity",
+      "mean": 0.70674,
+      "deviation": 0.2319,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.7079
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.21067,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.21202
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.9,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.14989,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.14741
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.86459,
+      "deviation": 0.2469,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.78845
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.8,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.9,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2285.4,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2250.24122
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.4302,
+      "deviation": 7.399,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.48054
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.23336,
+      "deviation": 0.2437,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.20299
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 8.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 9.0
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -6.7391,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": -6.5978
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "A fan is AERODYNAMIC noise, not mechanical noise — which is precisely why it earns signal_narrowable while most of MACHINES does not. Its morphology is tightly constrained and genuinely measurable: a STATIONARY BROADBAND BED (stationarity > 0.85, spectral_flux near zero, sustain_ratio near 1) with a gently falling spectral slope and NO ONSETS WHATSOEVER. A 'fan' file with transients in it is not a fan.",
+     "Riding on that noise is a weak BLADE-PASSING TONE at (rpm / 60) x blade_count — a 5-blade box fan at 1200 rpm gives 100 Hz — plus harmonics. That yields MODEST harmonicity (~0.25) and a small partial_count: enough tonal structure to distinguish a fan from pure static, far too little to call it tonal. The 'a little bit tonal, mostly noise' region is where fans live.",
+     "Against COMStatic and AIRHiss: a fan HAS that blade tone and sits at a much lower centroid; static is flatter, brighter and completely toneless.",
+     "Against MACHHvac: the SAME PHYSICS at a larger scale — a fan in a duct. UCS splits them by FUNCTION only ('for air conditioning use MACHINES-HVAC'), which is semantic. They will compete on every file; the spectral tilt (see MACHHvac) is the only real lean, and text commits.",
+     "UCS explicitly carves fans out of APPLIANCE: 'AC and fans have their own category.'"
+    ],
+    "confusable_with": [
+     "MACHHvac",
+     "MACHAppl",
+     "COMStatic",
+     "AIRHiss",
+     "CMPTMisc",
+     "AMBAir"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 60,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Mechanical_fan": 60
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 60,
+       "percentile_05": 2113.2,
+       "median": 3124.0,
+       "percentile_95": 4924.6
+      },
+      "harmonicity": {
+       "clips": 60,
+       "percentile_05": 0.21812,
+       "median": 0.86108,
+       "percentile_95": 0.98314
+      },
+      "high_band_energy": {
+       "clips": 60,
+       "percentile_05": 0.067797,
+       "median": 0.32864,
+       "percentile_95": 0.67904
+      },
+      "inharmonicity": {
+       "clips": 60,
+       "percentile_05": 0.00043001,
+       "median": 0.32846,
+       "percentile_95": 0.74579
+      },
+      "low_band_energy": {
+       "clips": 60,
+       "percentile_05": 0.052199,
+       "median": 0.2325,
+       "percentile_95": 0.7288
+      },
+      "mid_band_energy": {
+       "clips": 60,
+       "percentile_05": 0.15406,
+       "median": 0.35514,
+       "percentile_95": 0.58107
+      },
+      "onset_periodicity": {
+       "clips": 60,
+       "percentile_05": 0.08643,
+       "median": 0.22067,
+       "percentile_95": 0.66541
+      },
+      "onset_rate_per_second": {
+       "clips": 60,
+       "percentile_05": 0.03831,
+       "median": 0.40731,
+       "percentile_95": 3.0337
+      },
+      "partial_count": {
+       "clips": 59,
+       "percentile_05": 1.0,
+       "median": 8.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 20,
+       "percentile_05": 58.488,
+       "median": 120.49,
+       "percentile_95": 1917.4
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 60,
+       "percentile_05": 88.196,
+       "median": 290.73,
+       "percentile_95": 1129.5
+      },
+      "spectral_centroid_hz": {
+       "clips": 60,
+       "percentile_05": 679.81,
+       "median": 2280.9,
+       "percentile_95": 4648.3
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 60,
+       "percentile_05": 455.51,
+       "median": 1925.2,
+       "percentile_95": 3560.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 60,
+       "percentile_05": -97.623,
+       "median": -0.57124,
+       "percentile_95": 36.003
+      },
+      "spectral_entropy": {
+       "clips": 60,
+       "percentile_05": 0.16831,
+       "median": 0.33145,
+       "percentile_95": 0.59222
+      },
+      "spectral_flatness": {
+       "clips": 60,
+       "percentile_05": 0.04506,
+       "median": 0.14981,
+       "percentile_95": 0.35636
+      },
+      "spectral_flux": {
+       "clips": 60,
+       "percentile_05": 0.13054,
+       "median": 0.20969,
+       "percentile_95": 0.22577
+      },
+      "spectral_rolloff_hz": {
+       "clips": 60,
+       "percentile_05": 529.08,
+       "median": 4472.5,
+       "percentile_95": 8241.3
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 60,
+       "percentile_05": -10.391,
+       "median": -6.7786,
+       "percentile_95": -3.7733
+      },
+      "stationarity": {
+       "clips": 60,
+       "percentile_05": 0.12561,
+       "median": 0.69477,
+       "percentile_95": 0.90048
+      },
+      "syllabic_modulation_energy": {
+       "clips": 60,
+       "percentile_05": 0.029165,
+       "median": 0.16348,
+       "percentile_95": 0.27183
+      },
+      "transient_count": {
+       "clips": 60,
+       "percentile_05": 1.0,
+       "median": 7.0,
+       "percentile_95": 41.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 60,
+       "percentile_05": 152.68,
+       "median": 909.14,
+       "percentile_95": 2897.3
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "GARDEN",
+   "category_id": "MACHGrdn",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Powered landscaping machines",
+    "lawnmowers",
+    "weed-whackers",
+    "edgers",
+    "hedge trimmers. See also TOOLS-GARDEN and OBJECTS-GARDEN."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Blower",
+    "Chainsaw",
+    "Contraption",
+    "Cultivator",
+    "Device",
+    "Eater",
+    "Edger",
+    "Hedge",
+    "Irrigation",
+    "Landscaping",
+    "Lawn",
+    "Lawnmower",
+    "Leaf",
+    "Machinery",
+    "Mower",
+    "Mulcher",
+    "Pole",
+    "Pressure",
+    "Saw",
+    "Tiller",
+    "Tillers",
+    "Trimmer",
+    "Washer",
+    "Weed",
+    "Whacker"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 16.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.28,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 110.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 15.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.2,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.75,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "A SMALL SCREAMING ENGINE. Lawnmowers, chainsaws, weed-whackers and leaf blowers are nearly all 2-stroke or small 4-stroke motors running at 3000-10000 rpm. That produces a LOUD, RASPY, RICH HARMONIC COMB — f0 at the firing rate (a 2-stroke at 6000 rpm fires at 100 Hz), a very large partial_count, and heavy distortion. The morphology is genuinely constrained by the physics, so: signal_narrowable.",
+     "The characteristic BEHAVIOUR is LOAD MODULATION, and it is measurable: the pitch DROPS when the blade bites (a chainsaw entering wood, a mower hitting thick grass) and RISES when free-revving. An f0 that wanders in anti-correlation with level is an ENGINE UNDER LOAD, and that distinguishes garden machinery from any fixed-speed motor.",
+     "Against MOTRComb: physically the SAME OBJECT — a chainsaw IS a combustion motor. A genuine, irreducible collision. Text ('mower', 'chainsaw', 'trimmer', 'hedge', 'lawn', 'blower') decides.",
+     "Against TOOLGrdn: UCS splits POWERED landscaping machines (here) from HAND garden tools (rakes, shears, spades). Powered versus manual is measurable IN SPIRIT — a motor comb versus bare impacts — but the routing rule is semantic.",
+     "ELECTRIC mowers and blowers BREAK the comb: no firing rate, just a smoother motor whine plus airflow noise. Those look far more like MACHFan and will score there. Expect it."
+    ],
+    "confusable_with": [
+     "MOTRComb",
+     "TOOLGrdn",
+     "TOOLPowr",
+     "MACHMisc",
+     "OBJGrdn"
+    ]
+   }
+  },
+  {
+   "subcategory": "GYM",
+   "category_id": "MACHGym",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Exercise bikes",
+    "weight machines",
+    "treadmill",
+    "all things fitness. See also OBJECTS-GYM"
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Bike",
+    "Bowflex",
+    "Cardio",
+    "Climber",
+    "Contraption",
+    "Device",
+    "Elliptical",
+    "Exercise",
+    "Fitness",
+    "Machine",
+    "Machinery",
+    "Nautilus",
+    "Nordictrack",
+    "Resistance",
+    "Rower",
+    "Rowing",
+    "Stair",
+    "Stationary",
+    "Stepper",
+    "Trampoline",
+    "Treadmill",
+    "Weight",
+    "Workout"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 15.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "The gym is the purest illustration of WHY most of MACHINES is semantic_only: a rowing machine IS a fan, a treadmill IS a belt motor, a weight stack IS a set of metal impacts. Each one already has a perfectly good home elsewhere in the feature space. The ROOM is the only thing that makes them 'gym', and DSP cannot see rooms.",
+     "The shared honest morphology is nonetheless real and worth encoding: HUMAN-PACED PERIODIC MECHANICS. Gym equipment is driven by a BODY, so its cycle sits in the 0.3-2 Hz band (a rowing stroke ~0.5 Hz, a running cadence ~2.7 Hz, a rep ~0.3 Hz) — far SLOWER and far more VARIABLE than industrial machinery. High-ish onset_periodicity at a LOW onset_rate is the family trait.",
+     "Weight stacks contribute the loudest events: a plate slamming home is a high-crest metallic impact with a long ring (high inharmonicity).",
+     "Against MACHInd — a real and useful cue: a factory machine cycles FASTER and FAR MORE REGULARLY than any human can. Machine-tight periodicity = industrial; loose, drifting periodicity at a body rate = gym. Text commits.",
+     "UCS cross-references OBJECTS-GYM for the non-machine gear (dumbbells, mats, ropes)."
+    ],
+    "confusable_with": [
+     "OBJGym",
+     "MACHInd",
+     "SPRTGym",
+     "MACHMisc",
+     "MACHAppl"
+    ]
+   }
+  },
+  {
+   "subcategory": "HITECH",
+   "category_id": "MACHTech",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Think cool James Bond machines",
+    "big elaborate death traps",
+    "maybe Rube Goldberg type machines. See also SCIFI-MACHINE."
+   ],
+   "synonyms": [
+    "3D",
+    "7",
+    "Apparatus",
+    "Arm",
+    "Bond",
+    "CNC",
+    "Contraption",
+    "Cutter",
+    "Device",
+    "Digital",
+    "Gadget",
+    "Handheld",
+    "Holographic",
+    "James",
+    "Laser",
+    "Machinery",
+    "Plasma",
+    "Printer",
+    "Quantum",
+    "Resin",
+    "Robotic",
+    "Spy"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "HITECH is a FICTIONAL category, and that is the honest finding: 'cool James Bond machines, big elaborate death traps, Rube Goldberg machines' describes a NARRATIVE FUNCTION, not a physical mechanism. These files are almost always DESIGNED — layered servo whines, hydraulic hisses, latch clicks and synthetic tonal elements assembled by a sound designer — never captured from a real object, because no such object exists.",
+     "Consequence for this spec: NO gate and NO tight prior is defensible, because there is no referent whose physics could constrain the feature vector. Everything below is broad and low-weight BY INTENT. This is semantic_only in the strongest sense — not 'DSP is too weak to see it' but 'there is nothing there to measure.'",
+     "The one weak family trait: designed hi-tech machinery is DENSE and BUSY — many layered elements, high spectral_flux, more high-frequency content than any real motor, and many transients. Real machines are simpler than fictional ones.",
+     "UCS points straight at the neighbour: 'See also SCIFI-MACHINE.' In practice SCIMach and MACHTech are the same sound with a different film genre attached to it.",
+     "Against MACHMech: HITECH is BIG and elaborate; MECHANISM is SMALL and intricate. Scale is the stated rule, and scale is only weakly audible (via low_band_energy — see MACHMech)."
+    ],
+    "confusable_with": [
+     "SCIMach",
+     "MACHMech",
+     "MOTRSrvo",
+     "DOORTech",
+     "EQUIPTech"
+    ]
+   }
+  },
+  {
+   "subcategory": "HVAC",
+   "category_id": "MACHHvac",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Furnaces",
+    "Air Conditioners. Fans go in MACHINES-FAN. A close up gas furnace flame would go to FIRE-GAS."
+   ],
+   "synonyms": [
+    "Air",
+    "Aircon",
+    "Apparatus",
+    "Baseboard",
+    "Boiler",
+    "Chiller",
+    "Climate",
+    "Conditioner",
+    "Conditioning",
+    "Contraption",
+    "Control",
+    "Cooler",
+    "Dehumidifier",
+    "Device",
+    "Ductless",
+    "Evaporative",
+    "Filtration",
+    "Furnace",
+    "Handlers",
+    "Heat",
+    "Heater",
+    "Heating",
+    "Humidifier",
+    "Humidifiers",
+    "Machinery",
+    "Mini-Split",
+    "Pump",
+    "Pumps",
+    "Purifier",
+    "Radiator",
+    "Systems",
+    "Thermostat",
+    "Thermostats",
+    "Ventilation"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "spectral_flatness",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "stationarity",
+      "mean": 0.9,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.07,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.9,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.58,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -6.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.6,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.1,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 90.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "HVAC IS A FAN IN A DUCT — and the DUCT is what you can actually hear. Compared with MACHFan, the spectrum is much DARKER and far more LOW-HEAVY (spectral_centroid ~500 Hz versus ~900, a steep negative spectral_slope, low_band_energy > 0.5), because the duct and the building act as a low-pass acoustic filter and the plant is nearly always heard through a wall, a ceiling or a vent. THAT SPECTRAL TILT IS THE ONE REAL, MEASURABLE DIFFERENCE from a fan, and it is why this subcategory earns signal_narrowable rather than semantic_only.",
+     "Otherwise it is the ultimate STATIONARY BED: furnaces and air conditioners run at constant load for minutes on end — stationarity ~0.9, spectral_flux ~0.07, effectively no onsets. Compressor units add a low harmonic comb (the motor) and a slow start/stop CYCLE over tens of seconds.",
+     "Against MACHFan: same physics, different scale and different filtering. A fan is BRIGHTER and CLOSER; HVAC is DARKER, more rumbling and further away. UCS's own rule is functional ('fans go in MACHINES-FAN'), so text commits.",
+     "Against AMBRoom: a room tone often IS the HVAC. If the file is an unattended recording of an empty space, prefer AMBRoom; if the plant itself is the subject, prefer here. This is a framing distinction, not an acoustic one.",
+     "UCS routes the flame away: 'a close-up gas furnace flame would go to FIRE-GAS.'"
+    ],
+    "confusable_with": [
+     "MACHFan",
+     "AMBRoom",
+     "MACHAppl",
+     "FIREGas",
+     "MOTRElec",
+     "AMBAir"
+    ]
+   }
+  },
+  {
+   "subcategory": "INDUSTRIAL",
+   "category_id": "MACHInd",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Big industrial presses",
+    "factory machines",
+    "industrial robots",
+    "any heavy manufacturing machines."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Assembly",
+    "Auto",
+    "Automation",
+    "Contraption",
+    "Conveyor",
+    "Cutting",
+    "Device",
+    "Die",
+    "Distillery",
+    "Duty",
+    "Factory",
+    "Form",
+    "Heavy",
+    "Hydraulic",
+    "Industrial",
+    "Injection",
+    "Line",
+    "Machine",
+    "Machinery",
+    "Manufacturing",
+    "Milling",
+    "Molding",
+    "Plant",
+    "Press",
+    "Printing",
+    "Production",
+    "Punch",
+    "Reactor",
+    "Robotics",
+    "Robots",
+    "Sawmill",
+    "Shearing",
+    "Smelter",
+    "Smeltery",
+    "Stamper",
+    "System"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.75,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.25,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "MACHINE-PACED PERIODICITY. This is the family trait, it is genuinely measurable, and it is the highest onset_periodicity prior in the whole MACHINES file. A factory machine is driven by a camshaft or a PLC, not by a person, so its cycle is RELENTLESSLY REGULAR: a press stamping every 1.2 seconds does it forever, to the millisecond. The inter-onset interval does not drift.",
+     "Against MACHGym: the SAME morphology at a HUMAN tempo — and human tempo WANDERS. The axis is REGULARITY AND ITS VARIANCE: machine-tight = industrial, loose and drifting = gym. This is one of the few MACHINES boundaries with any DSP purchase at all.",
+     "Layers: a heavy motor and hydraulic bed (low, tonal, sustained) plus a hard periodic mechanical EVENT (a press blow, a punch, a shear) carrying a big metallic ring — high crest, high inharmonicity.",
+     "Against MACHCnst: identical physics — heavy machinery under load. The only difference is the BUILDING (a factory versus a job site), which is semantic. Conveyors here are likewise indistinguishable from MACHEscl.",
+     "Against AMBInd: if the file is a wide, multi-machine factory BED rather than one machine in focus, it belongs in AMBIENCE-INDUSTRIAL."
+    ],
+    "confusable_with": [
+     "MACHCnst",
+     "AMBInd",
+     "MACHEscl",
+     "MACHGym",
+     "MACHMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MECHANISM",
+   "category_id": "MACHMech",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Complex mechanical smaller machines and gadgets",
+    "puzzle boxes that open portals to hell. Usually smaller devices."
+   ],
+   "synonyms": [
+    "7",
+    "Apparatus",
+    "Bond",
+    "Box",
+    "Contraption",
+    "Device",
+    "Gadget",
+    "Gizmo",
+    "Goldberg",
+    "James",
+    "Machinery",
+    "Puzzle",
+    "Rube",
+    "Spy"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.07,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 10.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.05,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "SMALL is the whole definition — UCS: 'usually smaller devices' — and SMALL IS PARTLY MEASURABLE. Physics obliges: a small mechanism has small, stiff, light parts, so it radiates almost NO LOW FREQUENCY (low_band_energy < 0.2), sits at a HIGH spectral centroid, is QUIET (low RMS, always close-mic'd), and its transients decay FAST. Compare a big industrial press, which is nearly all low end.",
+     "So the MACHMech versus MACHInd / MACHTech boundary reduces to a SPECTRAL-TILT-AND-LEVEL test: SMALL = bright, quiet, no bass; BIG = dark, loud, bass-heavy. That is a real axis and a useful one — though far too soft to gate on, since mic distance can fake it.",
+     "Morphology is a dense sequence of small clicks, ratchets, gear meshes and latches: many transients, moderately periodic wherever a gear train is involved.",
+     "Against MECHANICAL (MECHGear, MECHRtch, MECHLtch, MECHClik): those subcategories are the COMPONENT EVENTS; MACHMech is the WHOLE GADGET doing its whole thing. If the file is a single latch or a single ratchet, prefer MECHANICAL.",
+     "'Puzzle boxes that open portals to hell' — like MACHTech, a good deal of this is DESIGNED rather than captured, which caps how tight any prior can honestly be."
+    ],
+    "confusable_with": [
+     "MACHTech",
+     "MECHGear",
+     "MECHRtch",
+     "MECHClik",
+     "SCIMech",
+     "MACHInd"
+    ]
+   }
+  },
+  {
+   "subcategory": "MEDICAL",
+   "category_id": "MACHMed",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Machines typically found in a hospital",
+    "medical lab or Doctor's office."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Blood",
+    "Cat",
+    "Centrifuge",
+    "Concentrator",
+    "Contraption",
+    "CT",
+    "Defibrillator",
+    "Dental",
+    "Device",
+    "Dialysis",
+    "Drill",
+    "ECG",
+    "EKG",
+    "Glucometers",
+    "Heart",
+    "Infusion",
+    "Insulin",
+    "Lab",
+    "Life",
+    "Machine",
+    "Machinery",
+    "Machines",
+    "Monitor",
+    "MRI",
+    "Nebulizer",
+    "Oxygen",
+    "Pacemaker",
+    "Pet",
+    "Pressure",
+    "Pump",
+    "Pumps",
+    "Scan",
+    "Support",
+    "Test",
+    "Ultrasound",
+    "Ventilator",
+    "X-Ray"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "'Machines typically found in a hospital' — UCS's definition is LITERALLY A ROOM. This is the canonical semantic_only case and no amount of DSP will ever fix it: a dialysis pump is a pump, a centrifuge is a motor, an infusion pump is a tiny stepper. Nothing about the waveform says 'hospital'.",
+     "The one real family trait, and it is a good one: medical machines are QUIET, SLOW and PERIODIC AT A BODY RATE. Ventilators cycle at 0.2-0.3 Hz (12-18 breaths/minute), infusion pumps tick every few seconds, monitors beep at the heart rate (~1 Hz). A very-low-rate, VERY-REGULAR onset train at LOW level is a genuine hint — that 1 Hz metronome is the sound of a hospital in every film ever made.",
+     "MRI is the violent exception and is genuinely separable from everything: gradient coils produce EXTREMELY loud, harsh, square-wave-like buzzing at fixed pulse-sequence rates (hundreds of Hz up to a few kHz) with brutal periodicity and near-clipping levels. A deafening periodic buzz is a real MRI candidate and looks like nothing else in MACHINES.",
+     "UCS routes the beeps away: monitor tones belong in BEEPS-MEDICAL. Keep the MACHINE here.",
+     "Confusable with MACHPump (infusion and dialysis pumps ARE pumps) and MACHOffc (a centrifuge sounds exactly like a printer motor)."
+    ],
+    "confusable_with": [
+     "BEEPMed",
+     "MACHPump",
+     "MACHOffc",
+     "AMBHosp",
+     "MACHMisc",
+     "OBJMed"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "MACHMisc",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Machine sounds not fitting another category in this list. See also MOTOR category."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Contraption",
+    "Device",
+    "Machinery",
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "The MACHINES catch-all. Deliberately un-gated: with sixteen siblings, gate collisions are frequent, and MISC must stay reachable as the abstention target.",
+     "UCS points at the neighbour: 'See also MOTOR category.' The MACHINES/MOTORS boundary is one of the few in this file that IS measurable, and it is worth stating: a MOTOR is a bare harmonic comb with NO mechanical cycle on top (onset_periodicity ~0, no onsets); a MACHINE is a motor that is DOING something (onset_periodicity > 0, a periodic mechanical event riding the comb). If the file is just the comb, send it to MOTORS."
+    ],
+    "confusable_with": [
+     "MOTRMisc",
+     "MOTRElec",
+     "MACHInd",
+     "MACHAppl",
+     "MECHMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "OFFICE",
+   "category_id": "MACHOffc",
+   "category_short": "MACH",
+   "emoji": "🧊",
+   "explanation": [
+    "Machines typically found in an office",
+    "such as printers and copy machines."
+   ],
+   "synonyms": [
+    "Apparatus",
+    "Binding",
+    "Business",
+    "Clock",
+    "Contraption",
+    "Copier",
+    "Copy",
+    "Cutter",
+    "Device",
+    "Dictaphone",
+    "Envelope",
+    "Facsimile",
+    "Fax",
+    "Inkjet",
+    "Interactive",
+    "Label",
+    "Laminator",
+    "Laser",
+    "Letter",
+    "Machine",
+    "Machinery",
+    "Maker",
+    "Mimeograph",
+    "Office",
+    "Opener",
+    "Paper",
+    "Photocopier",
+    "Plotter",
+    "Postal",
+    "Printer",
+    "Scale",
+    "Scanner",
+    "Shredder",
+    "Stenotype",
+    "Telefax",
+    "Time",
+    "Typewriter",
+    "Whiteboard",
+    "Xerox"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.24508,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 99,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.65
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4044.7,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 99,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3963.64153
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.050459,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 99,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.05704
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.40663,
+      "deviation": 0.2983,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 99,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.38816
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2076,
+      "deviation": 4.628,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 99,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.12455
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.28066,
+      "deviation": 0.4993,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 99,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.27673
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.21754,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 99,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.21763
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "Printers, copiers, scanners, shredders, fax machines. The shared morphology is a PAPER TRANSPORT: a stepper or servo motor driving rollers, so the sound is a HIGH-PITCHED, QUIET, PERIODIC WHIR with a strongly periodic mechanical cycle and almost NO low end (low_band_energy < 0.25). STEPPER motors are especially characteristic — their step rate produces an audible buzzy tone that SLIDES in pitch as the carriage accelerates and decelerates. A pitch-sliding buzz is a stepper, and steppers live in office machines.",
+     "A print job is a SCENE: [warm-up whir] - [paper feed grab] - [carriage pass, once per line, metronomically] - [eject] - [fan spin-down]. The per-line carriage pass is a beautifully regular onset train, which is why onset_periodicity leads the priors.",
+     "But 'typically found in an office' is a ROOM definition — semantic_only, exactly like MACHMed. A copier's motor and a centrifuge's motor are the SAME MOTOR.",
+     "UCS sends printers HERE from COMPUTERS explicitly: 'Printers would go to MACHINES-OFFICE.'",
+     "Against COMType and CMPTKey: a typewriter and a keyboard are impulse trains from FINGER strikes; office machines are MOTOR-DRIVEN transports. The presence of a continuous motor bed UNDER the impulses is the tell.",
+     "Against AMBOffc: a whole office bed (phones, chatter, HVAC) is ambience, not a machine."
+    ],
+    "confusable_with": [
+     "MACHMed",
+     "AMBOffc",
+     "COMType",
+     "CMPTDriv",
+     "MACHAppl",
+     "OBJOffc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 99,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Printer": 99
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 99,
+       "percentile_05": 1907.0,
+       "median": 4202.2,
+       "percentile_95": 5652.2
+      },
+      "crest_factor": {
+       "clips": 27,
+       "percentile_05": 4.1127,
+       "median": 6.7859,
+       "percentile_95": 17.151,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 25,
+       "percentile_05": 0.014966,
+       "median": 0.039909,
+       "percentile_95": 0.44898,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 27,
+       "percentile_05": 0.0049887,
+       "median": 0.089796,
+       "percentile_95": 0.32426,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 27,
+       "percentile_05": -1.0568,
+       "median": 9.599,
+       "percentile_95": 49.73,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 27,
+       "percentile_05": -0.61704,
+       "median": 2.6935,
+       "percentile_95": 6.2732,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 27,
+       "percentile_05": 0.0,
+       "median": 0.19756,
+       "percentile_95": 0.72151,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 27,
+       "percentile_05": 0.13588,
+       "median": 0.39343,
+       "percentile_95": 0.50149,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 99,
+       "percentile_05": 0.15613,
+       "median": 0.40663,
+       "percentile_95": 0.89763
+      },
+      "high_band_energy": {
+       "clips": 99,
+       "percentile_05": 0.26535,
+       "median": 0.58938,
+       "percentile_95": 0.81617
+      },
+      "inharmonicity": {
+       "clips": 99,
+       "percentile_05": 0.059349,
+       "median": 0.37879,
+       "percentile_95": 0.61358
+      },
+      "low_band_energy": {
+       "clips": 99,
+       "percentile_05": 0.0083634,
+       "median": 0.050459,
+       "percentile_95": 0.25726
+      },
+      "mid_band_energy": {
+       "clips": 99,
+       "percentile_05": 0.14738,
+       "median": 0.33572,
+       "percentile_95": 0.5465
+      },
+      "onset_periodicity": {
+       "clips": 99,
+       "percentile_05": 0.054446,
+       "median": 0.24508,
+       "percentile_95": 0.45326
+      },
+      "onset_rate_per_second": {
+       "clips": 99,
+       "percentile_05": 0.20064,
+       "median": 1.2076,
+       "percentile_95": 4.4684
+      },
+      "partial_count": {
+       "clips": 99,
+       "percentile_05": 4.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 72,
+       "percentile_05": 65.625,
+       "median": 264.07,
+       "percentile_95": 1696.2
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 99,
+       "percentile_05": 282.23,
+       "median": 908.54,
+       "percentile_95": 2460.3
+      },
+      "spectral_centroid_hz": {
+       "clips": 99,
+       "percentile_05": 1767.8,
+       "median": 4044.7,
+       "percentile_95": 8274.5
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 99,
+       "percentile_05": 1764.0,
+       "median": 3535.5,
+       "percentile_95": 7244.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 99,
+       "percentile_05": -7757.7,
+       "median": 6.0387,
+       "percentile_95": 1709.9
+      },
+      "spectral_entropy": {
+       "clips": 99,
+       "percentile_05": 0.27929,
+       "median": 0.4974,
+       "percentile_95": 0.72307
+      },
+      "spectral_flatness": {
+       "clips": 99,
+       "percentile_05": 0.040088,
+       "median": 0.28025,
+       "percentile_95": 0.52349
+      },
+      "spectral_flux": {
+       "clips": 99,
+       "percentile_05": 0.14301,
+       "median": 0.21754,
+       "percentile_95": 0.24046
+      },
+      "spectral_rolloff_hz": {
+       "clips": 99,
+       "percentile_05": 3144.4,
+       "median": 8421.3,
+       "percentile_95": 14554.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 99,
+       "percentile_05": -7.0587,
+       "median": -3.5613,
+       "percentile_95": -0.5764
+      },
+      "stationarity": {
+       "clips": 99,
+       "percentile_05": 0.0,
+       "median": 0.28066,
+       "percentile_95": 0.79465,
+       "censored_at_floor_fraction": 0.323
+      },
+      "sustain_ratio": {
+       "clips": 27,
+       "percentile_05": 0.027523,
+       "median": 0.16667,
+       "percentile_95": 0.9759,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 82,
+       "percentile_05": 0.099619,
+       "median": 0.26051,
+       "percentile_95": 0.46898
+      },
+      "transient_count": {
+       "clips": 99,
+       "percentile_05": 1.0,
+       "median": 3.0,
+       "percentile_95": 33.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 99,
+       "percentile_05": 1170.3,
+       "median": 3702.5,
+       "percentile_95": 10163.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "PUMP",
+   "category_id": "MACHPump",
+   "category_short": "MACH",
+   "emoji": "🏭",
+   "explanation": [
+    "Air or water pumps",
+    "fish tank aquarium pumps",
+    "sump pumps. Air compressors would fall into this category."
+   ],
+   "synonyms": [
+    "Aerator",
+    "Air",
+    "Apparatus",
+    "Backflow",
+    "Blower",
+    "Boilers",
+    "Centrifugal",
+    "Compressor",
+    "Contraption",
+    "Device",
+    "Fuel",
+    "Gas",
+    "Heat",
+    "Impellers",
+    "Inflators",
+    "Injector",
+    "Injects",
+    "Jet",
+    "Machinery",
+    "Piston",
+    "Plunger",
+    "Pump",
+    "Pumper",
+    "Pumping",
+    "Septic",
+    "Siphon",
+    "Sprinkler",
+    "Submersible",
+    "Sump",
+    "Syringe",
+    "Upflow",
+    "Vacuum",
+    "Valves",
+    "Water",
+    "Well",
+    "Wells"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 150.0,
+      "deviation": 90.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 100.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINES is an ontology of PLACES, not of sounds. The physics under most of these subcategories is identical — an electric motor (a harmonic comb at the shaft rate, plus its pole and blade multiples) driving a periodic mechanical cycle over a broadband bed. DSP can measure that shared morphology precisely, and it usefully prunes every non-machine candidate; it cannot tell you which building the machine was standing in.",
+     "A PUMP IS A CLOCK. This is the most PERIODIC subcategory in MACHINES and the reason it earns signal_narrowable: a reciprocating pump or compressor is a PISTON, so it emits an unmissable RECIPROCATION at a fixed rate. onset_periodicity ~0.8 is the highest prior in this file, and it is honest. An aquarium pump ticks at 1-3 Hz; a compressor's motor cycles at 20-60 Hz.",
+     "The full picture is TWO PERIODICITIES AT ONCE, and that is quite characteristic: a fast MOTOR comb (harmonic, tens to hundreds of Hz) AMPLITUDE-MODULATED by a slow MECHANICAL stroke (a few Hz). A PULSING HUM. Any record showing strong low-frequency AM imposed on a harmonic carrier is a strong pump candidate.",
+     "CENTRIFUGAL and submersible pumps BREAK the rule: they are smooth and continuous, with no reciprocation at all, and they then look far more like MACHFan or MACHHvac. Expect those to compete and do not over-trust the periodicity prior on them.",
+     "Against MACHHvac: an HVAC unit is a STEADY bed; a pump PULSES. onset_periodicity is the axis, and it works.",
+     "Air compressors belong here per UCS ('air compressors would fall into this category'), which places them right next to TOOLPneu — the compressor is the machine; the tool it feeds is not."
+    ],
+    "confusable_with": [
+     "MACHHvac",
+     "MACHFan",
+     "MACHAppl",
+     "MACHMed",
+     "MOTRElec",
+     "TOOLPneu"
+    ]
+   }
+  }
+ ]
+}

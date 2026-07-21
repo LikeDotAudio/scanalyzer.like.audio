@@ -1,0 +1,1506 @@
+{
+ "version": "8.2.1",
+ "category": "METAL",
+ "emoji": "🔗",
+ "subcategories": [
+  {
+   "subcategory": "BREAK",
+   "category_id": "METLBrk",
+   "category_short": "METL",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal breaking",
+    "snaps",
+    "cracks",
+    "rips",
+    "shatters."
+   ],
+   "synonyms": [
+    "Aluminum",
+    "Apart",
+    "Beryllium",
+    "Brass",
+    "Break",
+    "Bronze",
+    "Burst",
+    "Bust",
+    "Cadmium",
+    "Chip",
+    "Chromium",
+    "Cleave",
+    "Cobalt",
+    "Copper",
+    "Crack",
+    "Crumble",
+    "Crunch",
+    "Crush",
+    "Demolish",
+    "Destroy",
+    "Disintegrate",
+    "Fracture",
+    "Fragment",
+    "Gallium",
+    "Gold",
+    "Indium",
+    "Iron",
+    "Lead",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Mercury",
+    "Molybdenum",
+    "Nickel",
+    "Niobium",
+    "Palladium",
+    "Platinum",
+    "Rend",
+    "Rhenium",
+    "Rip",
+    "Rupture",
+    "Separate",
+    "Shatter",
+    "Silver",
+    "Smash",
+    "Snap",
+    "Splinter",
+    "Split",
+    "Steel",
+    "Tin",
+    "Titanium",
+    "Tungsten",
+    "Vanadium.",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3800.0,
+      "deviation": 1900.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.7,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 1.3,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Structural failure: a very fast, brighter-than-IMPACT snap/rip (high crest_factor, high high_band_energy, high spectral_flux) followed by the metallic ring of the freed pieces.",
+     "METAL-IMPACT leaves the object intact - lower spectral_flux, cleaner single ring, less HF fracture noise.",
+     "METAL-CRASH & DEBRIS is a group/fall event spread over seconds with many onsets; BREAK is front-loaded on one failure (low envelope_temporal_centroid)."
+    ],
+    "confusable_with": [
+     "METLImpt",
+     "METLCrsh",
+     "METLFric",
+     "CHAINBrk"
+    ]
+   }
+  },
+  {
+   "subcategory": "CRASH & DEBRIS",
+   "category_id": "METLCrsh",
+   "category_short": "METL",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal crashing and debris. Complex metal crashes",
+    "group metal crashes",
+    "metal debris falls."
+   ],
+   "synonyms": [
+    "Aluminum",
+    "Beryllium",
+    "Brass",
+    "Bronze",
+    "Cadmium",
+    "Chromium",
+    "Clang",
+    "Clatter",
+    "Cobalt",
+    "Collision",
+    "Copper",
+    "Crash",
+    "Debris",
+    "Fall",
+    "Fragments",
+    "Gallium",
+    "Gold",
+    "Indium",
+    "Iron",
+    "Lead",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Mercury",
+    "Molybdenum",
+    "Nickel",
+    "Niobium",
+    "Palladium",
+    "Platinum",
+    "Remains",
+    "Rhenium",
+    "Rubble",
+    "Ruins",
+    "Shards",
+    "Shrapnel",
+    "Silver",
+    "Smash",
+    "Steel",
+    "Tin",
+    "Titanium",
+    "Tungsten",
+    "Vanadium.",
+    "Wreckage",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 60.0
+     },
+     {
+      "feature": "transient_count",
+      "min": 3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 14.0,
+      "deviation": 9.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.9,
+      "deviation": 2.432,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 1600.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.38,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A CLUSTER, not an event: many metallic onsets scattered irregularly over seconds (transient_count >= 3, typically 8-30; low onset_periodicity). METAL-IMPACT is one onset; that is the axis.",
+     "Ring is metallic and long as in METAL-IMPACT, so timbre cannot separate them - only onset count, onset_rate_per_second and length can.",
+     "Against METAL-BREAK: BREAK is a single failure event front-loaded on a fracture crack; CRASH & DEBRIS is a fall/collapse whose onsets are spread across the file with a decaying settle (higher envelope_temporal_centroid).",
+     "Against CHAINS-MOVEMENT: chain jingle has far more, far smaller, far more evenly-dense onsets and almost no low_band_energy."
+    ],
+    "confusable_with": [
+     "METLImpt",
+     "METLBrk",
+     "METLMvmt",
+     "CHAINMvmt",
+     "GLASCrsh"
+    ]
+   }
+  },
+  {
+   "subcategory": "FRICTION",
+   "category_id": "METLFric",
+   "category_short": "METL",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal friction",
+    "stress",
+    "so scrapes",
+    "creaks",
+    "squeaks",
+    "squeals",
+    "screeches. Metal sounds caused by friction."
+   ],
+   "synonyms": [
+    "Abrade",
+    "Abrasion",
+    "Aluminum",
+    "Beryllium",
+    "Brass",
+    "Bronze",
+    "Cadmium",
+    "Chafe",
+    "Chromium",
+    "Cobalt",
+    "Copper",
+    "Creak",
+    "Gallium",
+    "Gnash",
+    "Gold",
+    "Grind",
+    "Grinding",
+    "Indium",
+    "Iron",
+    "Lead",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Mercury",
+    "Molybdenum",
+    "Nickel",
+    "Niobium",
+    "Palladium",
+    "Platinum",
+    "Rasp",
+    "Rasping",
+    "Rhenium",
+    "Rub",
+    "Rubbing",
+    "Scour",
+    "Scrape",
+    "Scraping",
+    "Scratching",
+    "Screech",
+    "Scuffing",
+    "Silver",
+    "Sliding",
+    "Squeak",
+    "Steel",
+    "Stress",
+    "Tin",
+    "Titanium",
+    "Tungsten",
+    "Vanadium.",
+    "Wear",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4200.0,
+      "deviation": 2000.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1400.0,
+      "deviation": 800.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000.0,
+      "deviation": 3500.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.06,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Sustained high-centroid contact - scrapes, creaks, squeaks, squeals, screeches. Defined by a HELD, restless spectrum: high spectral_centroid_hz with high spectral_centroid_deviation_hz (partials wander and jump as stick-slip re-locks).",
+     "Not impulsive: low crest_factor and high sustain_ratio are the hard boundary against METAL-IMPACT and METAL-BREAK.",
+     "Against METAL-TONAL: FRICTION is unstable and noisy (low harmonicity, wandering centroid); TONAL is a stable, high-harmonicity ring.",
+     "Brighter and more partial-driven than ROCKS-FRICTION (a dull granular grind) and than DIRT & SAND scraping (near-flat broadband granular hiss)."
+    ],
+    "confusable_with": [
+     "METLTonl",
+     "METLMvmt",
+     "GLASFric",
+     "CERMFric",
+     "ROCKFric"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDLE",
+   "category_id": "METLHndl",
+   "category_short": "METL",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal handling",
+    "handling metal objects. Some overlap with METAL-MOVEMENT possible."
+   ],
+   "synonyms": [
+    "Aluminum",
+    "Beryllium",
+    "Brass",
+    "Bronze",
+    "Cadmium",
+    "Catch",
+    "Chromium",
+    "Clasp",
+    "Clench",
+    "Clutch",
+    "Cobalt",
+    "Copper",
+    "Down",
+    "Embrace",
+    "Gallium",
+    "Gold",
+    "Grab",
+    "Grasp",
+    "Grip",
+    "Handle",
+    "Handlebar",
+    "Hold",
+    "Indium",
+    "Iron",
+    "Knob",
+    "Latch",
+    "Lead",
+    "Lever",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Mercury",
+    "Molybdenum",
+    "Nickel",
+    "Niobium",
+    "Operate",
+    "Palladium",
+    "Palm",
+    "Pickup",
+    "Platinum",
+    "Pull",
+    "Rhenium",
+    "Seize",
+    "Set",
+    "Silver",
+    "Steel",
+    "Take",
+    "Throw",
+    "Tin",
+    "Titanium",
+    "Toss",
+    "Tungsten",
+    "Use",
+    "Vanadium.",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 2.399,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.5,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 1600.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Handling is an INTENT, not a morphology: a hand picking up, gripping and setting down a metal object. UCS concedes the overlap with METAL-MOVEMENT and DSP cannot separate them; the signature only asserts 'metallic, quiet, multi-contact, not a crash'.",
+     "Ruled out by signal: loud destructive events (METAL-BREAK, METAL-CRASH & DEBRIS) and long stable rings (METAL-TONAL)."
+    ],
+    "confusable_with": [
+     "METLMvmt",
+     "METLImpt",
+     "METLMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "METLImpt",
+   "category_short": "METL",
+   "emoji": "💥",
+   "explanation": [
+    "Metal single item impacts",
+    "so anvil hits",
+    "dropping something that doesn't break. Clangs",
+    "clunks",
+    "bangs."
+   ],
+   "synonyms": [
+    "Aluminum",
+    "Bang",
+    "Banging",
+    "Bash",
+    "Beryllium",
+    "Brass",
+    "Bronze",
+    "Bump",
+    "Cadmium",
+    "Chromium",
+    "Clang",
+    "Clap",
+    "Clunk",
+    "Cobalt",
+    "Collide",
+    "Colliding",
+    "Copper",
+    "Crash",
+    "Crashing",
+    "Drop",
+    "Dropped",
+    "Gallium",
+    "Gold",
+    "Hit",
+    "Hitting",
+    "Impact",
+    "Impacting",
+    "Indium",
+    "Iron",
+    "Jolt",
+    "Knock",
+    "Lead",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Mercury",
+    "Molybdenum",
+    "Nickel",
+    "Niobium",
+    "Palladium",
+    "Platinum",
+    "Pound",
+    "Ram",
+    "Rhenium",
+    "Ring",
+    "Silver",
+    "Slam",
+    "Slamming",
+    "Smack",
+    "Smacking",
+    "Smash",
+    "Steel",
+    "Strike",
+    "Striking",
+    "Thrust",
+    "Thump",
+    "Tin",
+    "Titanium",
+    "Tungsten",
+    "Vanadium.",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.2,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.22,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 22.0,
+      "deviation": 10.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 1600.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.5,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.06,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 1.4,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Reference point of the material-impedance axis: a single sharp transient followed by the LONGEST, most inharmonic ring in the taxonomy (decay_time_seconds_60db ~0.5-3 s). WOOD, ROCKS, DIRT and CLOTH impacts die inside ~0.1 s; METAL keeps singing.",
+     "Single-onset. METAL-CRASH & DEBRIS is the same timbre with a multi-onset cluster (transient_count >= 3, high onset_rate_per_second); that onset count is the whole boundary.",
+     "The object survives: no dense HF fracture burst or debris tail as in METAL-BREAK.",
+     "Brighter and far longer-ringing than ROCKS-IMPACT; less bright but longer and far more inharmonic than GLASS-IMPACT."
+    ],
+    "confusable_with": [
+     "METLCrsh",
+     "METLBrk",
+     "METLMvmt",
+     "GLASImpt",
+     "CERMImpt",
+     "CHAINImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "METLMisc",
+   "category_short": "METL",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Aluminum",
+    "Beryllium",
+    "Brass",
+    "Bronze",
+    "Cadmium",
+    "Chromium",
+    "Cobalt",
+    "Copper",
+    "Gallium",
+    "Gold",
+    "Indium",
+    "Iron",
+    "Lead",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Mercury",
+    "Miscellaneous",
+    "Molybdenum",
+    "Nickel",
+    "Niobium",
+    "Palladium",
+    "Platinum",
+    "Rhenium",
+    "Silver",
+    "Steel",
+    "Tin",
+    "Titanium",
+    "Tungsten",
+    "Vanadium.",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.62,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.6,
+      "deviation": 3.794,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 1900.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 18.0,
+      "deviation": 12.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Residual class: metal-timbred (long inharmonic ring, bright, high partial_count) but matching no other METAL morphology. Abstention target for the category - reached when the morphologies tie."
+    ],
+    "confusable_with": [
+     "METLImpt",
+     "METLMvmt",
+     "METLHndl",
+     "METLTonl"
+    ]
+   }
+  },
+  {
+   "subcategory": "MOVEMENT",
+   "category_id": "METLMvmt",
+   "category_short": "METL",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal movement",
+    "so drag",
+    "roll",
+    "rattle",
+    "shake. Single or metal items moving. Or movement on a metal surface. See also METAL-HANDLE."
+   ],
+   "synonyms": [
+    "Aluminum",
+    "Beryllium",
+    "Brass",
+    "Bronze",
+    "Cadmium",
+    "Chattering",
+    "Chromium",
+    "Clatter",
+    "Cobalt",
+    "Copper",
+    "Drag",
+    "Gallium",
+    "Glide",
+    "Gold",
+    "Indium",
+    "Iron",
+    "Jangle",
+    "Lead",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Mercury",
+    "Molybdenum",
+    "Nickel",
+    "Niobium",
+    "Palladium",
+    "Platinum",
+    "Rattle",
+    "Rattling",
+    "Rhenium",
+    "Roll",
+    "Rolling",
+    "Scuffle",
+    "Shake",
+    "Shaking",
+    "Shift",
+    "Shuffle",
+    "Silver",
+    "Slide",
+    "Slip",
+    "Steel",
+    "Sway",
+    "Swing",
+    "Tin",
+    "Titanium",
+    "Tungsten",
+    "Vanadium.",
+    "Vibrating",
+    "Wobble",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 9.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.5,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 1700.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.045,
+      "deviation": 2.432,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Drag, roll, rattle, shake: a sustained metallic texture of many small contacts - quieter and less peaked than METAL-IMPACT (lower crest_factor, lower root_mean_square_level, many onsets).",
+     "Against METAL-CRASH & DEBRIS: same multi-onset shape, but CRASH is loud, front-weighted and destructive; MOVEMENT is a steadier, quieter bed (higher stationarity).",
+     "Against METAL-HANDLE: NOT separable by signal. Both are quiet metallic contact clusters and UCS itself admits the overlap - text must decide.",
+     "Against CHAINS-MOVEMENT: chains are denser, brighter and more even (much higher onset_rate_per_second, near-zero low_band_energy)."
+    ],
+    "confusable_with": [
+     "METLHndl",
+     "METLCrsh",
+     "METLImpt",
+     "CHAINMvmt",
+     "METLFric"
+    ]
+   }
+  },
+  {
+   "subcategory": "TONAL",
+   "category_id": "METLTonl",
+   "category_short": "METL",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal tonal",
+    "resonating",
+    "ringing",
+    "wronks and warps. Bending sheet metal",
+    "a singing bowl ringing",
+    "metal shinging."
+   ],
+   "synonyms": [
+    "Aluminum",
+    "Beryllium",
+    "Bowed",
+    "Brass",
+    "Bronze",
+    "Cadmium",
+    "Chromium",
+    "Cobalt",
+    "Copper",
+    "Frequency",
+    "Gallium",
+    "Gold",
+    "Harmonic",
+    "Indium",
+    "Iron",
+    "Lead",
+    "Lithium",
+    "Magnesium",
+    "Manganese",
+    "Melodic",
+    "Melodious",
+    "Mercury",
+    "Molybdenum",
+    "Musical",
+    "Nickel",
+    "Niobium",
+    "Palladium",
+    "Ping",
+    "Pitch",
+    "Platinum",
+    "Resonance",
+    "Resonant",
+    "Rhenium",
+    "Ring",
+    "Shing",
+    "Silver",
+    "Sonorous",
+    "Sound",
+    "Steel",
+    "Timbre",
+    "Tin",
+    "Titanium",
+    "Tonal",
+    "Tone",
+    "Tungsten",
+    "Vanadium.",
+    "Zinc"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25,
+      "max": 120.0
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.75,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 14.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 420.0,
+      "deviation": 300.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1900.0,
+      "deviation": 1200.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS states the rule: 'resonating, ringing... a singing bowl ringing'. This is the one metal class where the modes LOCK - harmonicity is HIGH and spectral_flatness very low, unlike the rest of METAL.",
+     "Longest decay in the taxonomy (decay_time_seconds_60db often several seconds). May be struck (impulsive_with_tail) or bowed/driven into steady state (sustained_tonal); either way sustain_ratio and length_seconds sit far above METAL-IMPACT.",
+     "Against METAL-IMPACT: an impact rings, but inharmonically and briefly; TONAL holds a pitch you could name.",
+     "Against METAL-FRICTION: TONAL's centroid is stable; FRICTION's wanders (high spectral_centroid_deviation_hz) with low harmonicity."
+    ],
+    "confusable_with": [
+     "METLImpt",
+     "METLFric",
+     "GLASTonl",
+     "CERMTonl"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,897 @@
+{
+ "version": "8.2.1",
+ "category": "EQUIPMENT",
+ "emoji": "🧰",
+ "subcategories": [
+  {
+   "subcategory": "BRIDLE & TACK",
+   "category_id": "EQUIPBridle",
+   "category_short": "EQUIP",
+   "emoji": "🧰",
+   "explanation": [
+    "Equipment for animals use. Horse bridle",
+    "reigns",
+    "leashes",
+    "harnesses",
+    "dog leashes",
+    "saddle straps."
+   ],
+   "synonyms": [
+    "Bit",
+    "Bits",
+    "Bridle",
+    "Bridles",
+    "Chains",
+    "Curb",
+    "Dog",
+    "Guards",
+    "Halter",
+    "Halters",
+    "Harness",
+    "Leash",
+    "Reins",
+    "Saddle",
+    "Stirrup",
+    "Strap",
+    "Tack"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "harmonicity",
+      "max": 0.9
+     },
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.15,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "EQUIPMENT is defined by USE, not by material or by morphology. Every subcategory here is the same physical event — a person handling worn or carried gear — producing a stochastic HANDLING TEXTURE: fabric rustle (broadband, high-centroid, noise-like) + leather creak (friction) + buckle and clasp jingle (sparse, bright, ringing impulses) + strap impacts. DSP can identify that texture precisely; it cannot tell whether the person wearing it is a soldier, an athlete, a hiker, or a horse. All six are honestly semantic_only.",
+     "The most MATERIALLY distinctive of the six, and the only one with a real acoustic lean. Bridles and tack are LEATHER AND METAL and nothing else. A bit, a curb chain, a stirrup and a buckle are small, hard, RINGING metal — sparse bright transients with a long metallic ring (high inharmonicity, long decay_time_seconds_60db, high spectral centroid) — over a LEATHER CREAK, which is a friction morphology: sustained, unstable, high-centroid contact. NO nylon, NO synthetic fabric.",
+     "So the profile is: metal jingle + leather creak, with essentially no low-frequency content. That genuinely distinguishes it from EQUIPRec (nylon: noise-like, no ring) and EQUIPSprt (padding: dull thuds, no ring).",
+     "It becomes RHYTHMIC when the animal moves: a walking horse imposes a gait period of ~0.5-1 Hz on the jingle, lifting onset_periodicity. Paired with hoof falls it is unmistakable in CONTEXT — but the context is what tells you, not the signal.",
+     "Against CHAINS, LETHRCreak, OBJJewl and METLMvmt: physically the SAME SOUNDS. UCS routes by USE (equipment for animals), not by material, so text must carry the call entirely."
+    ],
+    "confusable_with": [
+     "LETHRCreak",
+     "LETHRHndl",
+     "METLMvmt",
+     "OBJJewl",
+     "EQUIPTact",
+     "EQUIPMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "HITECH",
+   "category_id": "EQUIPTech",
+   "category_short": "EQUIP",
+   "emoji": "🧰",
+   "explanation": [
+    "Hi-Tech gear",
+    "things like spacesuits",
+    "complex suits with lots of gizmos or complex parts."
+   ],
+   "synonyms": [
+    "Belt",
+    "Cloaking",
+    "Device",
+    "Field",
+    "Force",
+    "Space",
+    "Spyware",
+    "Suit",
+    "Utility"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "EQUIPMENT is defined by USE, not by material or by morphology. Every subcategory here is the same physical event — a person handling worn or carried gear — producing a stochastic HANDLING TEXTURE: fabric rustle (broadband, high-centroid, noise-like) + leather creak (friction) + buckle and clasp jingle (sparse, bright, ringing impulses) + strap impacts. DSP can identify that texture precisely; it cannot tell whether the person wearing it is a soldier, an athlete, a hiker, or a horse. All six are honestly semantic_only.",
+     "Like MACHTech, this subcategory has NO REAL-WORLD REFERENT: spacesuits and 'complex suits with lots of gizmos' are DESIGNED, not recorded. Their feature vectors are whatever a sound designer chose — typically a layered assembly of servo whines (MOTRSrvo), pneumatic hisses, latch clicks and synthetic tonal beds, laid over an ordinary cloth-handling texture.",
+     "Consequently no gate and no tight prior is defensible; the priors below are broad and low-weight by intent, and exist only to say 'this is a busy, bright, layered, transient-rich object'.",
+     "The ONE thing that reliably separates EQUIPTech from its EQUIPMENT siblings is real: the presence of ELECTROMECHANICAL or SYNTHETIC layers — a servo whine, a tonal element, a beep — sitting on top of the handling texture. Real gear (tactical, sport, recreational, tack) has NO MOTOR IN IT and no tonal component at all. Harmonicity above ~0.5 in an EQUIPMENT file effectively means EQUIPTech.",
+     "Against SCIFI and MACHTech: the same design language, and untestable from signal. If it is WORN, it is here; if it is a MACHINE standing in the room, it is MACHTech or SCIMach."
+    ],
+    "confusable_with": [
+     "MACHTech",
+     "SCIMach",
+     "MOTRSrvo",
+     "EQUIPTact",
+     "EQUIPMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "EQUIPMisc",
+   "category_short": "EQUIP",
+   "emoji": "🧰",
+   "explanation": [
+    "Equipment sounds not fitting another category in this list. See also TOOLS and OBJECT categories."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "EQUIPMENT is defined by USE, not by material or by morphology. Every subcategory here is the same physical event — a person handling worn or carried gear — producing a stochastic HANDLING TEXTURE: fabric rustle (broadband, high-centroid, noise-like) + leather creak (friction) + buckle and clasp jingle (sparse, bright, ringing impulses) + strap impacts. DSP can identify that texture precisely; it cannot tell whether the person wearing it is a soldier, an athlete, a hiker, or a horse. All six are honestly semantic_only.",
+     "The EQUIPMENT catch-all. Un-gated so it stays reachable as the category's abstention target — and abstention is ESPECIALLY likely here, because the five siblings are acoustically near-identical and text is the only thing separating them. When the filename gives no use-context, MISC is the CORRECT answer, not a cop-out.",
+     "UCS points outward: 'See also TOOLS and OBJECT categories.' If the item is USED rather than WORN or CARRIED, it probably belongs there instead."
+    ],
+    "confusable_with": [
+     "EQUIPRec",
+     "EQUIPSprt",
+     "EQUIPTact",
+     "OBJMisc",
+     "TOOLMisc",
+     "CLOTHHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "RECREATIONAL",
+   "category_id": "EQUIPRec",
+   "category_short": "EQUIP",
+   "emoji": "🍽️",
+   "explanation": [
+    "Recreational gear",
+    "like backpacks",
+    "hiking gear",
+    "rock climbing harnesses",
+    "camping tents. Specifically outdoor recreation. See also OBJECTS-GYM."
+   ],
+   "synonyms": [
+    "Backpack",
+    "Bag",
+    "Bags",
+    "Balls",
+    "Beach",
+    "Camp",
+    "Camping",
+    "Canoes",
+    "Chairs",
+    "Climb",
+    "Climbing",
+    "Club",
+    "Clubs",
+    "Equipment",
+    "Exercise",
+    "Fishing",
+    "Frisbees",
+    "Gear",
+    "Golf",
+    "Hike",
+    "Hiking",
+    "Hunting",
+    "Jacket",
+    "Kites",
+    "Life",
+    "Mountaineering",
+    "Oar",
+    "Outfitting",
+    "Paddle",
+    "Racket",
+    "Rackets",
+    "Rock",
+    "Rods",
+    "Ski",
+    "Sleeping",
+    "Sports",
+    "Stove",
+    "Tennis",
+    "Tent",
+    "Tents",
+    "Vest"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "harmonicity",
+      "max": 0.9
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.58,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "EQUIPMENT is defined by USE, not by material or by morphology. Every subcategory here is the same physical event — a person handling worn or carried gear — producing a stochastic HANDLING TEXTURE: fabric rustle (broadband, high-centroid, noise-like) + leather creak (friction) + buckle and clasp jingle (sparse, bright, ringing impulses) + strap impacts. DSP can identify that texture precisely; it cannot tell whether the person wearing it is a soldier, an athlete, a hiker, or a horse. All six are honestly semantic_only.",
+     "The NYLON subcategory. Backpacks, tents, sleeping bags, climbing harnesses and rain jackets are all SYNTHETIC FABRIC, so the dominant sound is a BRIGHT, NOISE-LIKE RUSTLE: high spectral_flatness, very high spectral_centroid (4 kHz+), high zero_crossings, essentially NO low-frequency energy, and NO RING AT ALL. It is closer to a texture of hiss than to a sequence of events — which is a genuine, measurable contrast with EQUIPBridle.",
+     "Accents: buckle clacks and ZIPPER runs. A zipper is worth naming — it is a fast, remarkably REGULAR impulse train (onset rates of 50-200/s) and one of the most identifiable objects in the whole ontology. UCS gives it its own home at OBJZipr.",
+     "Against EQUIPBridle: nylon DOES NOT RING. inharmonicity and decay_time_seconds_60db are LOW here and HIGH there. This is the one intra-EQUIPMENT boundary with real acoustic content.",
+     "Against EQUIPSprt and EQUIPTact: acoustically the SAME nylon and webbing. UCS's split — 'specifically outdoor recreation' versus sport versus military — is pure use-context and invisible to DSP.",
+     "Against CLOTHHndl and CLOTHMvmt: identical physics. The GEAR versus GARMENT boundary is semantic. UCS cross-references OBJECTS-GYM."
+    ],
+    "confusable_with": [
+     "EQUIPSprt",
+     "EQUIPTact",
+     "CLOTHHndl",
+     "CLOTHMvmt",
+     "OBJBag",
+     "OBJZipr"
+    ]
+   }
+  },
+  {
+   "subcategory": "SPORT",
+   "category_id": "EQUIPSprt",
+   "category_short": "EQUIP",
+   "emoji": "🧰",
+   "explanation": [
+    "Gear worn while playing sports",
+    "American football shoulder pads",
+    "hockey gear",
+    "etc."
+   ],
+   "synonyms": [
+    "Badminton",
+    "Balls",
+    "Bars",
+    "Baseball",
+    "Basketball",
+    "Bats",
+    "Boxing",
+    "Clubs",
+    "Cricket",
+    "Cycling",
+    "Equipment",
+    "Football",
+    "Gear",
+    "Gloves",
+    "Golf",
+    "Gymnastics",
+    "Helmet",
+    "Hockey",
+    "Hoops",
+    "Hurdle",
+    "Jock",
+    "Knee",
+    "Mats",
+    "Mitt",
+    "Mouthpiece",
+    "Pad",
+    "Puck",
+    "Rackets",
+    "Racquet",
+    "Shin",
+    "Shoulder",
+    "Skates",
+    "Ski",
+    "Snowboards",
+    "Soccerball",
+    "Squash",
+    "Sticks",
+    "Strap",
+    "Tennis",
+    "Volleyballs",
+    "Weightlifting",
+    "Yoga"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "harmonicity",
+      "max": 0.9
+     }
+    ],
+    "priors": [
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.05,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "EQUIPMENT is defined by USE, not by material or by morphology. Every subcategory here is the same physical event — a person handling worn or carried gear — producing a stochastic HANDLING TEXTURE: fabric rustle (broadband, high-centroid, noise-like) + leather creak (friction) + buckle and clasp jingle (sparse, bright, ringing impulses) + strap impacts. DSP can identify that texture precisely; it cannot tell whether the person wearing it is a soldier, an athlete, a hiker, or a horse. All six are honestly semantic_only.",
+     "The PADDING subcategory. Shoulder pads, helmets, gloves, shin guards: the characteristic event is a DULL, DAMPED IMPACT. Foam and hard plastic ABSORB energy, so a pad slap is a high-crest transient with a SHORT decay and NO RING (decay_time_seconds_60db under ~80 ms, low inharmonicity), carrying more low-mid energy and a darker spectrum than any nylon rustle.",
+     "So the honest EQUIPSprt lean is: impacts that THUD, rather than RING (EQUIPBridle) or HISS (EQUIPRec). That is a genuine material difference — but it is nowhere near enough to gate on, and it is USELESS against EQUIPTact, which is the same pads on a soldier.",
+     "Strap and VELCRO handling adds a rustle bed. Velcro is itself very distinctive: a dense granular RIP with an extremely high onset rate and a broadband spectrum.",
+     "UCS's rule is about WHO IS WEARING IT: 'gear WORN while playing sports.' Balls, bats and rackets are not worn — those go to SPORTS or OBJECTS.",
+     "Against SPRTGym and OBJGym: the GAME versus the GEAR. If a player is USING it in play, prefer SPORTS."
+    ],
+    "confusable_with": [
+     "EQUIPTact",
+     "EQUIPRec",
+     "SPRTGym",
+     "OBJGym",
+     "LETHRImpt",
+     "EQUIPMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TACTICAL",
+   "category_id": "EQUIPTact",
+   "category_short": "EQUIP",
+   "emoji": "🧰",
+   "explanation": [
+    "Military and police belts",
+    "bandoliers",
+    "ammo belts. Military gear",
+    "troop gear."
+   ],
+   "synonyms": [
+    "Ammo",
+    "Armor",
+    "Bandoleer",
+    "Belt",
+    "Binoculars",
+    "Body",
+    "Boots",
+    "Camouflage",
+    "Climbing",
+    "Combat",
+    "Compass",
+    "Duty",
+    "Flashlights",
+    "Gas",
+    "Gear",
+    "Gloves",
+    "Goggles",
+    "Handcuffs",
+    "Helmet",
+    "Holsters",
+    "Mask",
+    "Masks",
+    "Military",
+    "Multi-Tools",
+    "Night",
+    "Nightstick",
+    "Police",
+    "Rucksacks",
+    "Vests",
+    "Vision"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "harmonicity",
+      "max": 0.9
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "EQUIPMENT is defined by USE, not by material or by morphology. Every subcategory here is the same physical event — a person handling worn or carried gear — producing a stochastic HANDLING TEXTURE: fabric rustle (broadband, high-centroid, noise-like) + leather creak (friction) + buckle and clasp jingle (sparse, bright, ringing impulses) + strap impacts. DSP can identify that texture precisely; it cannot tell whether the person wearing it is a soldier, an athlete, a hiker, or a horse. All six are honestly semantic_only.",
+     "WEBBING, BUCKLES AND METAL. Tactical gear is nylon webbing CARRYING HARD OBJECTS — magazines, clips, handcuffs, a holster, buckles — which makes it the RATTLIEST of the six: many bright metallic transients per second over a nylon rustle bed, each clink carrying a metallic ring (high inharmonicity).",
+     "One contextual regularity is worth encoding: tactical gear is nearly always heard while someone WALKS or RUNS, so the rattle is GAIT-MODULATED — a burst of jingle on every footfall, at ~1-2.5 Hz. That lifts onset_periodicity above the other EQUIPMENT subcategories, whose handling is usually static and stochastic. A periodic rattle at walking pace is a real cue.",
+     "Against EQUIPRec: recreational gear is nylon too, but carries far LESS metal — fewer ringing transients, more pure rustle. A real but soft lean.",
+     "Against EQUIPSprt: sport pads THUD; tactical gear CLINKS. Also real, also soft.",
+     "Against EQUIPBridle: acoustically the CLOSEST sibling of all — both are straps plus ringing metal, and they are genuinely inseparable by DSP. UCS splits them by WHO WEARS IT: a soldier or a horse. Pure text.",
+     "Ammo belts and bandoliers additionally overlap WEAPONS and GUNS handling."
+    ],
+    "confusable_with": [
+     "EQUIPRec",
+     "EQUIPSprt",
+     "EQUIPBridle",
+     "CLOTHMvmt",
+     "METLMvmt",
+     "EQUIPMisc"
+    ]
+   }
+  }
+ ]
+}

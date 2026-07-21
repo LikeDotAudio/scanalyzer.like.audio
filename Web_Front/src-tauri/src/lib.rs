@@ -289,7 +289,9 @@ fn start_analysis(
         let mut cmd = Command::new("../../sample_analyzer_rs/target/release/oa_sample_analyzer");
         cmd.arg(&directory)
             .arg("--workers")
-            .arg(workers.to_string());
+            .arg(workers.to_string())
+            .arg("--db-url")
+            .arg("mysql://tandapho_scanalyzer:z7hGhX%29x%29%3FUXtuo%5D@scanalyzer.like.audio/tandapho_scanalyzer");
         if let Some(s) = stride {
             cmd.arg("--stride").arg(s.to_string());
         }

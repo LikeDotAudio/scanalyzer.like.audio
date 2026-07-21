@@ -1,0 +1,1200 @@
+{
+ "version": "8.2.1",
+ "category": "ICE",
+ "emoji": "🧊",
+ "subcategories": [
+  {
+   "subcategory": "BREAK",
+   "category_id": "ICEBrk",
+   "category_short": "ICE",
+   "emoji": "🧊",
+   "explanation": [
+    "Ice cracks",
+    "breaks",
+    "shatters. Any ice breaking that is fairly singular or isolated",
+    "large or small."
+   ],
+   "synonyms": [
+    "Apart",
+    "Break",
+    "Burst",
+    "Chip",
+    "Crack",
+    "Crumble",
+    "Crunch",
+    "Crush",
+    "Cube",
+    "Demolish",
+    "Destroy",
+    "Disintegrate",
+    "Fracture",
+    "Fragment",
+    "Ice",
+    "Iceberg",
+    "Icicle",
+    "Rips",
+    "Shatter",
+    "Smash",
+    "Snap",
+    "Splinter",
+    "Split"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 4.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "crest_factor",
+      "mean": 15.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4500.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.75,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 3.2,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.3,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Ice is brittle and stiff: a fracture is a very fast, very high-crest, HIGH-centroid crack, often followed by a short scatter of shards (the tail). Brightness and crest are what mark 'brittle'.",
+     "Against ICE-IMPACT: UCS is explicit — IMPACT is ice hitting something WITHOUT breaking. A break adds fracture debris (a burst of secondary onsets after the transient) and a brighter, more inharmonic spectrum. The post-transient onset_rate_per_second is the test.",
+     "Against ICE-CRASH & DEBRIS: UCS routes SINGULAR or isolated breaks here and LARGE crashes with sustained debris there. Duration and debris density separate them, not timbre.",
+     "Against SNOW-CRASH & DEBRIS: snow is the opposite material — absorptive, dark, dead. Ice is bright and ringing. spectral_centroid_hz separates them by an octave or more.",
+     "Against GLASS-BREAK: acoustically near-identical brittle fracture. Semantic; the filename decides."
+    ],
+    "confusable_with": [
+     "ICEImpt",
+     "ICECrsh",
+     "GLASBrk",
+     "ICEMvmt",
+     "SNOWCrsh"
+    ]
+   }
+  },
+  {
+   "subcategory": "CRASH & DEBRIS",
+   "category_id": "ICECrsh",
+   "category_short": "ICE",
+   "emoji": "🧊",
+   "explanation": [
+    "Ice large crashes and isolated debris go here. Iceberg calving."
+   ],
+   "synonyms": [
+    "Apart",
+    "Break",
+    "Collision",
+    "Crash",
+    "Crevasse",
+    "Crush",
+    "Cube",
+    "Debris",
+    "Destroy",
+    "Fall",
+    "Fragments",
+    "Ice",
+    "Iceberg",
+    "Icicle",
+    "Pulverize",
+    "Remains",
+    "Rubble",
+    "Shards",
+    "Shatter",
+    "Smash",
+    "Wreck"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4
+     },
+     {
+      "feature": "length_seconds",
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 40.0,
+      "deviation": 30.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 15.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.24,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.28,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.2,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.0,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A big broadband hit followed by a long, dense DEBRIS tail — the burst morphology. Much longer than ICE-BREAK, with far more transients (shards scattering) and a real low-frequency component (iceberg calving is a mass event).",
+     "Against ICE-BREAK: UCS routes 'fairly singular or isolated' breaks to BREAK and 'large crashes and isolated debris' here. length_seconds and transient_count are the axis; the timbre is the same brittle ice.",
+     "Against SNOW-CRASH & DEBRIS: the material axis. Ice debris is bright, clattering, high-centroid; snow debris is a dark, damped, nearly transient-free whump.",
+     "Against ICE-MOVEMENT: movement is a quieter, non-destructive rattle with no initiating high-crest transient."
+    ],
+    "confusable_with": [
+     "ICEBrk",
+     "SNOWCrsh",
+     "ICEMvmt",
+     "GLASCrsh",
+     "ROCKCrsh"
+    ]
+   }
+  },
+  {
+   "subcategory": "FRICTION",
+   "category_id": "ICEFric",
+   "category_short": "ICE",
+   "emoji": "🧊",
+   "explanation": [
+    "Dry ice may go here",
+    "but often it's a metallic sound too",
+    "but ice scrapes",
+    "squeaks",
+    "creaks."
+   ],
+   "synonyms": [
+    "Abrade",
+    "Abrasion",
+    "Buff",
+    "Creak",
+    "Cube",
+    "Grind",
+    "Grinding",
+    "Hone",
+    "Ice",
+    "Icicle",
+    "Polish",
+    "Rasp",
+    "Rasping",
+    "Rub",
+    "Rubbing",
+    "Sand",
+    "Scour",
+    "Scrape",
+    "Scraping",
+    "Scratching",
+    "Screech",
+    "Scuffing",
+    "Sliding",
+    "Squeak",
+    "Stress",
+    "Wear"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     },
+     {
+      "feature": "crest_factor",
+      "max": 12.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.26,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.75,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3800.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.08,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1200.0,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Sustained contact, not an event: a scrape, squeak or creak holds energy for hundreds of ms with a soft attack and a LOW crest_factor. That is what separates all of ICE-FRICTION from ICE-IMPACT and ICE-BREAK, which are transient-dominated with crest_factor three times higher.",
+     "Unstable by nature — stick-slip makes the centroid wander, so spectral_centroid_deviation_hz and spectral_flux run high while stationarity stays middling.",
+     "Bright: ice scrapes are high-centroid, and UCS notes they often read as metallic. Squeaks can go strongly tonal, hence the elevated inharmonicity.",
+     "Against SNOW-FRICTION: same morphology, opposite material. Snow is a soft granular crunch — darker, denser, and with no ring or squeal. This is the material axis, and it is real but subtle.",
+     "Against ICE-MOVEMENT: MOVEMENT is a rattle or slide of discrete pieces (resolvable onsets); FRICTION is continuous surface contact."
+    ],
+    "confusable_with": [
+     "SNOWFric",
+     "ICEMvmt",
+     "METLFric",
+     "ICEHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDLE",
+   "category_id": "ICEHndl",
+   "category_short": "ICE",
+   "emoji": "🧊",
+   "explanation": [
+    "Ice handling",
+    "picking up ice. Some overlap with ICE-MOVEMENT possible."
+   ],
+   "synonyms": [
+    "Catch",
+    "Clasp",
+    "Clench",
+    "Clutch",
+    "Cube",
+    "Down",
+    "Embrace",
+    "Grab",
+    "Grasp",
+    "Grip",
+    "Handle",
+    "Hold",
+    "Ice",
+    "Icicle",
+    "Pickup",
+    "Pluck",
+    "Seize",
+    "Set",
+    "Take",
+    "Throw",
+    "Toss"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Handling is an INTENT, not a waveform: picking up ice produces the same clinks, rattles and scrapes as ICE-MOVEMENT and ICE-IMPACT. UCS itself admits the overlap. No DSP will resolve it.",
+     "The priors only assert 'brittle, bright, sparse, short' — enough to rule out sustained beds and low, dull materials. The filename must carry 'handle', 'grab', 'pickup'.",
+     "Against ICE-MOVEMENT and ICE-IMPACT: pure semantics. Never assert HANDLE from signal alone."
+    ],
+    "confusable_with": [
+     "ICEMvmt",
+     "ICEImpt",
+     "ICEFric",
+     "ICEMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "ICEImpt",
+   "category_short": "ICE",
+   "emoji": "💥",
+   "explanation": [
+    "Pieces of ice dropping (without breaking). Ice hits",
+    "solid ice impacts that don't break."
+   ],
+   "synonyms": [
+    "Bang",
+    "Banging",
+    "Bash",
+    "Bump",
+    "Chop",
+    "Clang",
+    "Clap",
+    "Clink",
+    "Clunk",
+    "Collide",
+    "Colliding",
+    "Crash",
+    "Crashing",
+    "Cube",
+    "Drop",
+    "Hit",
+    "Hitting",
+    "Ice",
+    "Icicle",
+    "Impact",
+    "Impacting",
+    "Jolt",
+    "Knock",
+    "Pound",
+    "Ram",
+    "Slam",
+    "Slamming",
+    "Smack",
+    "Smacking",
+    "Smash",
+    "Strike",
+    "Striking",
+    "Thrust"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 8.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 4.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.08
+     }
+    ],
+    "priors": [
+     {
+      "feature": "crest_factor",
+      "mean": 13.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3600.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.42,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.5,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 3.5,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS: 'Pieces of ice dropping WITHOUT breaking.' A clean single transient — a clink or clunk — with a fast attack, a high crest_factor and a SHORT decay (~120 ms), and crucially NO fracture debris: onset_rate_per_second stays near 1, and no burst of secondary onsets follows the hit.",
+     "Against ICE-BREAK: the debris tail is the entire test. A break scatters shards (many post-transient onsets, longer decay, brighter and more inharmonic); an impact does not.",
+     "Against SNOW-IMPACT: the material axis. Snow is absorptive — a dull, dark whump (centroid under 1 kHz, near-zero ring). Ice is a bright, brittle clink at ~3.6 kHz. Cleanly separable.",
+     "Against ICE-HANDLE: identical physics, different intent. Semantic."
+    ],
+    "confusable_with": [
+     "ICEBrk",
+     "ICEHndl",
+     "SNOWImpt",
+     "GLASImpt",
+     "ICEMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "ICEMisc",
+   "category_short": "ICE",
+   "emoji": "🧊",
+   "explanation": [
+    "Ice sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Block",
+    "Cap",
+    "Chill",
+    "Crystal",
+    "Cube",
+    "Floe",
+    "Formation",
+    "Freeze",
+    "Frigid",
+    "Frost",
+    "Frostbite",
+    "Frosty",
+    "Frozen",
+    "Glacier",
+    "Ice",
+    "Icicle",
+    "Icy",
+    "Miscellaneous",
+    "Shard",
+    "Sheet",
+    "Solid",
+    "Wintry"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "Catch-all. No gates, no priors: scores a neutral likelihood and serves as the ICE abstention target (spec section 6).",
+     "Never assert from signal."
+    ],
+    "confusable_with": []
+   }
+  },
+  {
+   "subcategory": "MOVEMENT",
+   "category_id": "ICEMvmt",
+   "category_short": "ICE",
+   "emoji": "🧊",
+   "explanation": [
+    "Ice sliding or rattling",
+    "maybe an object sliding across ice. See also ICE-HANDLE."
+   ],
+   "synonyms": [
+    "Calve",
+    "Calving",
+    "Cube",
+    "Drag",
+    "Drift",
+    "Float",
+    "Floating",
+    "Floe",
+    "Flow",
+    "Glide",
+    "Ice",
+    "Icicle",
+    "Move",
+    "Pile",
+    "Rattle",
+    "Roll",
+    "Shake",
+    "Shear",
+    "Shearing",
+    "Skid",
+    "Slide",
+    "Slip",
+    "Slither"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 10.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.75,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3800.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.1,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.1,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A rattle or slide of ice pieces: a run of many bright, brittle micro-impacts (high onset_rate_per_second, high spectral_centroid_hz) with no single dominant transient and no destructive energy.",
+     "Against ICE-IMPACT: one onset versus many. onset_rate_per_second is the axis.",
+     "Against ICE-BREAK / ICE-CRASH: those begin with a high-crest fracture transient and are far louder; MOVEMENT has no initiating event and a low root_mean_square_level.",
+     "Against ICE-FRICTION: friction is continuous surface contact (low crest, sustained); movement is a train of discrete clatters.",
+     "Against SNOW-MOVEMENT: the material axis again — snow movement is a dark, dense crunch; ice movement is a bright clatter."
+    ],
+    "confusable_with": [
+     "ICEFric",
+     "ICEImpt",
+     "ICEHndl",
+     "SNOWMvmt",
+     "ICECrsh"
+    ]
+   }
+  },
+  {
+   "subcategory": "TONAL",
+   "category_id": "ICETonl",
+   "category_short": "ICE",
+   "emoji": "🧊",
+   "explanation": [
+    "Tonal ice sounds",
+    "probably fairly rare",
+    "but that ice ping on a frozen lake would be one example."
+   ],
+   "synonyms": [
+    "Bowed",
+    "Cube",
+    "Frequency",
+    "Harmonic",
+    "Ice",
+    "Icicle",
+    "Melodic",
+    "Melodious",
+    "Musical",
+    "Ping",
+    "Pitch",
+    "Resonance",
+    "Resonant",
+    "Ring",
+    "Shing",
+    "Sonorous",
+    "Sound",
+    "Timbre",
+    "Tonal",
+    "Tone"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "harmonicity",
+      "min": 0.25
+     },
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.18,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.2,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": -30.0,
+      "deviation": 40.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 700.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The one pitched member of the ICE family: high harmonicity, very low spectral_flatness. Tonality alone separates it cleanly from every other ICE subcategory, which are all noise or transients.",
+     "The 'ice ping on a frozen lake' is a DISPERSIVE wave in a floating plate: high frequencies travel faster, so the ping arrives as a descending chirp. Hence the negative pitch_slope_semitones_per_second prior — a genuinely diagnostic and unusual cue, though the wide deviation admits plain rings.",
+     "Inharmonicity stays moderate: an ice plate's modes are stretched, not a clean harmonic series. This distinguishes it from a musical tone.",
+     "Against ICE-IMPACT: an impact is a broadband click; TONAL rings with a definite pitch and a long decay_time_seconds_60db.",
+     "UCS notes this is rare. Prefer ICE-IMPACT or ICE-BREAK unless harmonicity is genuinely high."
+    ],
+    "confusable_with": [
+     "ICEImpt",
+     "ICEBrk",
+     "ICEFric",
+     "GLASTonl"
+    ]
+   }
+  }
+ ]
+}

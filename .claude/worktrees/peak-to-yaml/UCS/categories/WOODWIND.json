@@ -1,0 +1,520 @@
+{
+  "version": "8.2.APK",
+  "category": "WOODWIND",
+  "emoji": "🎷",
+  "subcategories": [
+    {
+      "subcategory": "FLUTE",
+      "category_id": "WWNDFlt",
+      "category_short": "WWND",
+      "emoji": "🪈",
+      "explanation": [
+        "Flute family \u2014 edge-blown aerophones with a breathy, pure, high tone and airy attack.",
+        "Concert flute, piccolo, pan flute, recorder, and fife; harmonic but carrying audible breath noise."
+      ],
+      "synonyms": [
+        "Flute",
+        "Piccolo",
+        "Pan Flute",
+        "Recorder",
+        "Fife",
+        "Panpipe",
+        "Whistle"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1600.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.82,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.82,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 900.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 900.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.16,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.16,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.05,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.05,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "CLARINET",
+      "category_id": "WWNDClar",
+      "category_short": "WWND",
+      "emoji": "🎶",
+      "explanation": [
+        "Clarinet \u2014 a single-reed aerophone with a woody, hollow mid-register tone.",
+        "Cylindrical bore favours odd harmonics, giving its characteristic covered timbre."
+      ],
+      "synonyms": [
+        "Clarinet",
+        "Bass Clarinet",
+        "Licorice Stick"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 700.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 700.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.85,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.85,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 350.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 350.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.1,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.65,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.65,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "SAXOPHONE",
+      "category_id": "WWNDSax",
+      "category_short": "WWND",
+      "emoji": "🎷",
+      "explanation": [
+        "Saxophone \u2014 a single-reed conical-bore aerophone with a reedy, expressive, vocal tone.",
+        "Soprano, alto, tenor, and baritone; rich in harmonics with a warm mid body."
+      ],
+      "synonyms": [
+        "Saxophone",
+        "Sax",
+        "Alto Sax",
+        "Tenor Sax",
+        "Soprano Sax",
+        "Bari Sax",
+        "Baritone Sax"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 900.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.83,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.83,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 300.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 300.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.55,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.12,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.12,
+              "reasoned_deviation_before_calibration": 0.09
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.62,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.62,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "OBOE",
+      "category_id": "WWNDOboe",
+      "category_short": "WWND",
+      "emoji": "🎶",
+      "explanation": [
+        "Oboe \u2014 a double-reed aerophone with a bright, nasal, penetrating tone.",
+        "Includes the cor anglais (English horn), the oboe's larger, mellower relative."
+      ],
+      "synonyms": [
+        "Oboe",
+        "Cor Anglais",
+        "English Horn",
+        "Double Reed"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1500.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1500.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.86,
+            "deviation": 0.09,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.86,
+              "reasoned_deviation_before_calibration": 0.09
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 550.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 550.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.4,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.11,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.11,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "BASSOON",
+      "category_id": "WWNDBsn",
+      "category_short": "WWND",
+      "emoji": "🎶",
+      "explanation": [
+        "Bassoon \u2014 a low double-reed aerophone with a dark, woody, reedy bass-register tone.",
+        "Includes the contrabassoon, sounding an octave lower."
+      ],
+      "synonyms": [
+        "Bassoon",
+        "Contrabassoon",
+        "Double Bassoon"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "harmonicity",
+            "min": 0.4
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 450.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 450.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.84,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.84,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 150.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 150.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.55,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.1,
+            "deviation": 0.08,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.1,
+              "reasoned_deviation_before_calibration": 0.08
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "WWNDMisc",
+      "category_short": "WWND",
+      "emoji": "🎷",
+      "explanation": [
+        "A woodwind / aerophone that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Woodwind",
+        "Wind Instrument",
+        "Reed",
+        "Aerophone"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

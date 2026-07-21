@@ -1,0 +1,1890 @@
+{
+ "version": "8.2.1",
+ "category": "GUNS",
+ "emoji": "🔫",
+ "subcategories": [
+  {
+   "subcategory": "ANTIQUE",
+   "category_id": "GUNAntq",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Old black powder weapons",
+    "muskets."
+   ],
+   "synonyms": [
+    "Arquebus",
+    "Arquebuses",
+    "Black",
+    "Blunderbuss",
+    "Breechloader",
+    "Breechloaders",
+    "Breechloading",
+    "Caplock",
+    "Carabine",
+    "Civil",
+    "Derringer",
+    "Derringers",
+    "Firearms",
+    "Firelock",
+    "Flintlock",
+    "Gatling",
+    "Gun",
+    "Gunflint",
+    "Harquebus",
+    "Historical",
+    "Lockplate",
+    "Lockwork",
+    "Long",
+    "Matchlock",
+    "Matchlocks",
+    "Musket",
+    "Musketeer",
+    "Musketry",
+    "Muskets",
+    "Muzzleloader",
+    "Muzzleloaders",
+    "Muzzleloading",
+    "Old",
+    "Old-Fashioned",
+    "Pepperbox",
+    "Powder",
+    "Powderhorn",
+    "Revolutionary",
+    "Rifle",
+    "Sixgun",
+    "Sixguns",
+    "Traditional",
+    "Victorian",
+    "Vintage",
+    "War",
+    "West",
+    "Wheellock",
+    "WWI",
+    "WWII"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.08
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.4,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.22,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 700.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.9,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Black-powder discharge: a subsonic ball means NO supersonic ballistic crack, so the high band is weaker and the spectral centroid lower than a modern RIFLE, and the report is duller and slightly slower-rising.",
+     "Not separable from GUNS-PISTOL / GUNS-RIFLE / GUNS-SHOTGUN by morphology — all four are a loud impulsive transient with an LF thump, an HF crack and a reverb tail. The HF deficit and the long smoky tail are the only leans and both are weak. Commit only with text agreement.",
+     "Longer and lower-centroid than GUNS-SUPPRESSED, which has a truncated tail."
+    ],
+    "confusable_with": [
+     "GUNPis",
+     "GUNRif",
+     "GUNShotg",
+     "GUNCano",
+     "GUNArtl"
+    ]
+   }
+  },
+  {
+   "subcategory": "ARTILLERY",
+   "category_id": "GUNArtl",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Modern big guns",
+    "guns that launch shells. Not CANNONS which have their own group."
+   ],
+   "synonyms": [
+    "Anti-Aircraft",
+    "Anti-Tank",
+    "Antiaircraft",
+    "Antiarmor",
+    "Antitank",
+    "Armaments",
+    "Artillerie",
+    "Artillery",
+    "Ballistics",
+    "Bazooka",
+    "Cannon",
+    "Field",
+    "Firepower",
+    "Heavy",
+    "Howitzer",
+    "Howitzers",
+    "Incoming",
+    "Launcher",
+    "Light",
+    "Missile",
+    "Mortar",
+    "Mortars",
+    "Munitions",
+    "Naval",
+    "Ordnance",
+    "Rocket",
+    "Shellfire",
+    "Shelling",
+    "Tank",
+    "Volley",
+    "Weapons"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25,
+      "max": 60.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.15
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 350.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 2500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -14.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The one genuinely measurable gun-SIZE cue: far more sub-200 Hz energy and a much longer duration and decay tail than any small arm. A howitzer is a multi-second low-frequency event; a rifle is a few hundred milliseconds. Weak but real — narrowable, not separable.",
+     "Against GUNS-CANNON: modern smokeless artillery is sharper and slightly brighter than a black-powder CANNON, whose tail is longer and more smeared. Do not commit on that boundary from signal alone; it is a period distinction, not an acoustic one.",
+     "Against EXPLOSIONS-REAL: acoustically the same event. A gun report IS a detonation. Text must decide."
+    ],
+    "confusable_with": [
+     "GUNCano",
+     "EXPLReal",
+     "EXPLDsgn",
+     "FRWKComr",
+     "GUNShotg"
+    ]
+   }
+  },
+  {
+   "subcategory": "AUTOMATIC",
+   "category_id": "GUNAuto",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Fully automatic capable weapons",
+    "even when firing singly. Machine guns."
+   ],
+   "synonyms": [
+    "Ak-47",
+    "AK47",
+    "Automatic",
+    "Firearms",
+    "Full-Auto",
+    "Gatlin",
+    "Gatling",
+    "Gun",
+    "Kalashnikov",
+    "M16",
+    "M1919",
+    "M249",
+    "Machine",
+    "Maxim",
+    "Minigun",
+    "Sten",
+    "Submachine",
+    "Submachinegun",
+    "Tommy",
+    "Uzi"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 10.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.75,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 12.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 8.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "RATE OF FIRE is the discriminator and it is unambiguous. Automatic fire is a PERIODIC IMPULSE TRAIN: roughly 8-15 onsets per second (480-900 rpm) with HIGH onset_periodicity. Nothing else in GUNS is rhythmic. Energy is spread across the file (envelope_temporal_centroid near the middle) rather than front-loaded as in a one-shot.",
+     "Against FIREWORKS-RECREATIONAL, the other dense onset train in this taxonomy: firecrackers are STOCHASTIC (onset_periodicity ~0.2, a ragged burning fuse); a machine gun is PERIODIC (~0.75, a machine). That single feature carries the boundary.",
+     "Against GUNS-RIFLE / GUNS-PISTOL: transient_count and onset_rate_per_second. A one-shot has neither a train nor a period.",
+     "Stated honestly: the subcategory also admits auto-CAPABLE weapons fired singly, and such a file is morphologically identical to GUNS-RIFLE. The rate priors then contribute nothing and text must decide. The rhythmic case is separable; the single-shot case is not."
+    ],
+    "confusable_with": [
+     "GUNRif",
+     "GUNPis",
+     "FRWKRec",
+     "GUNArtl"
+    ]
+   }
+  },
+  {
+   "subcategory": "CANNON",
+   "category_id": "GUNCano",
+   "category_short": "GUN",
+   "emoji": "💥",
+   "explanation": [
+    "Pirate and Civil War cannons",
+    "for modern artillery see GUNS-ARTILLERY."
+   ],
+   "synonyms": [
+    "Ball",
+    "Barrel",
+    "Black",
+    "Blast",
+    "Cannonade",
+    "Cannonades",
+    "Cannonball",
+    "Cannonballs",
+    "Cannoneer",
+    "Cannoneers",
+    "Cannonry",
+    "Fuse",
+    "Gunpowder",
+    "Pirate",
+    "Powder",
+    "Primer",
+    "Projectile",
+    "Shot",
+    "Siege"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25,
+      "max": 60.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.15
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.58,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 280.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 2.4,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A massive LF-dominated boom with a long smeared tail: like GUNS-ARTILLERY but darker and slower, because black powder deflagrates rather than detonating — less HF crack, more low-frequency push.",
+     "Vastly more low_band_energy and far longer than any small arm (PISTOL / RIFLE / SHOTGUN / ANTIQUE). That size axis is the only thing DSP can assert here, and it is a real one.",
+     "GUNS-CANNON vs GUNS-ARTILLERY is a period distinction (pirate and Civil War vs modern), not an acoustic one. Text must decide."
+    ],
+    "confusable_with": [
+     "GUNArtl",
+     "EXPLReal",
+     "FRWKComr",
+     "GUNAntq"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDLE",
+   "category_id": "GUNHndl",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Alongside GUN-MECHANISM",
+    "but specifically gun handling",
+    "grabs",
+    "holstering",
+    "dropping",
+    "catching."
+   ],
+   "synonyms": [
+    "Catch",
+    "Chambering",
+    "Clearing",
+    "Clip",
+    "Cock",
+    "Cocking",
+    "Discharge",
+    "Draw",
+    "Drawing",
+    "Drop",
+    "Dry-Fire",
+    "Dry-Firing",
+    "Ejecting",
+    "Grab",
+    "Grasp",
+    "Grip",
+    "Gun",
+    "Gunstock",
+    "Handgrip",
+    "Handle",
+    "Hold",
+    "Holster",
+    "Holstering",
+    "Load",
+    "Loading",
+    "Throw",
+    "Toss",
+    "Unloading"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "lufs",
+      "max": -12.0
+     },
+     {
+      "feature": "root_mean_square_level",
+      "max": 0.3
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     },
+     {
+      "feature": "length_seconds",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -28.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.38,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.1,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.3,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "FOLEY-class, not gunshot-class. Route by LOUDNESS and morphology BEFORE attempting source identification: a handling gesture is quiet (low root_mean_square_level, LUFS well below -12), carries no LF blast and excites no room tail. The loudness gates alone rule out every firing subcategory, and that is a big, cheap win.",
+     "Against GUNS-MECHANISM: HANDLE is the hand and the holster — grabs, holstering, dropping, catching — so it carries leather/cloth friction and a longer, softer, multi-part envelope. MECHANISM is a bare metallic click with a faster attack and a higher crest factor. The two overlap heavily; narrowable at best.",
+     "Drops and catches are genuine impacts, so transient_count > 1 is normal and must not be gated against."
+    ],
+    "confusable_with": [
+     "GUNMech",
+     "FOLYProp",
+     "FOLYHand",
+     "LETHRHndl",
+     "METLHndl",
+     "CLOTHHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "HITECH",
+   "category_id": "GUNTech",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Not quite a sci-fi Laser Gun",
+    "but something more advanced than a normal gun",
+    "a rail gun for example."
+   ],
+   "synonyms": [
+    "7",
+    "Biometric",
+    "Bond",
+    "Firearms",
+    "Gun",
+    "James",
+    "Night",
+    "Rail",
+    "Scope",
+    "Smart",
+    "Spy",
+    "Vision"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "high_band_energy",
+      "mean": 0.42,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A designed hybrid: a real firearm layered with synthetic elements (a rail gun, a smart-gun scope, a biometric grip). There is no stable acoustic definition — the tonal or whooshy synth layer only TENDS to raise harmonicity and HF content above a conventional gunshot.",
+     "Sits on a continuum between GUNS-RIFLE and SCIFI-WEAPON / LASERS-GUN. Where a given file falls on that continuum is an authorial choice, not a measurement. Text decides."
+    ],
+    "confusable_with": [
+     "SCIWeap",
+     "LASRGun",
+     "SCIEnrg",
+     "GUNRif",
+     "GUNMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MECHANISM",
+   "category_id": "GUNMech",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Gun various mechanical sounds",
+    "clips",
+    "cocking",
+    "bolt slides."
+   ],
+   "synonyms": [
+    "Assembly",
+    "Barrel",
+    "Bolt",
+    "Brake",
+    "Bullet",
+    "Buttplate",
+    "Chamber",
+    "Clip",
+    "Cock",
+    "Cocking",
+    "Cylinder",
+    "Firearms",
+    "Firing",
+    "Flash",
+    "Grip",
+    "Guard",
+    "Gun",
+    "Hammer",
+    "Loading",
+    "Magazine",
+    "Mechanics",
+    "Mechanism",
+    "Muzzle",
+    "Pin",
+    "Pistol",
+    "Rattle",
+    "Release",
+    "Safety",
+    "Sear",
+    "Slide",
+    "Stock",
+    "Stop",
+    "Suppressor",
+    "Trigger"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "lufs",
+      "max": -12.0
+     },
+     {
+      "feature": "root_mean_square_level",
+      "max": 0.3
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     },
+     {
+      "feature": "length_seconds",
+      "max": 20.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -30.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0008,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.48,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.06,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.6,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "FOLEY-class metallic clicks: clips, cocking, bolt slides, safeties, dry-fire. QUIET, bright, inharmonic, near-zero attack and an almost instant decay — there is no blast, so there is no room tail. The loudness gates route this away from every firing subcategory before any source ID is attempted; this is the single cleanest separation in the GUNS category and it costs nothing.",
+     "Against GUNS-HANDLE: MECHANISM is the mechanism itself (metal on metal — higher centroid, higher crest, shorter decay); HANDLE is the hand and holster around it (leather and cloth friction, softer, longer). Genuinely confusable, and many files contain both.",
+     "Against METAL-HANDLE / METAL-IMPACT: identical physics. Nothing in the signal says 'gun'. Only text names it."
+    ],
+    "confusable_with": [
+     "GUNHndl",
+     "METLHndl",
+     "METLImpt",
+     "FOLYProp",
+     "BLLTShel"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "GUNMisc",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Gun sounds not fitting another category in this list. BULLETS has its own category."
+   ],
+   "synonyms": [
+    "Air",
+    "Firearms",
+    "Flare",
+    "Paintball"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.15,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.36185,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.1,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 175,
+       "fsd50k_classes": [
+        "Gunshot_and_gunfire"
+       ],
+       "measured_deviation": 4.03951,
+       "reasoned_mean": 10.0,
+       "reasoned_deviation": 8.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Catch-all: air guns, flare guns, paintball. No coherent acoustic definition. Deliberately near-featureless so it can serve as the ABSTAIN target for GUNS — which, given that PISTOL / RIFLE / SHOTGUN / ANTIQUE are not separable from one another, will be the correct answer more often than in most categories.",
+     "BULLETS has its own category: projectile bys, impacts, ricochets and shell drops do not belong here."
+    ],
+    "confusable_with": [
+     "GUNPis",
+     "GUNRif",
+     "GUNTech",
+     "BLLTMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "PISTOL",
+   "category_id": "GUNPis",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Handguns and pistols."
+   ],
+   "synonyms": [
+    "&",
+    "9mm",
+    "Beretta",
+    "Browning",
+    "Colt",
+    "Double-Action",
+    "Firearms",
+    "Glock",
+    "Handgun",
+    "Handguns",
+    "Luger",
+    "Pistol",
+    "Pistole",
+    "Pistolet",
+    "PPK",
+    "Revolver",
+    "Revolvers",
+    "Ruger",
+    "Sauer",
+    "Semi-Automatic",
+    "Sidearm",
+    "Sig",
+    "Single-Action",
+    "Six-Shooter",
+    "Smith",
+    "Starter",
+    "Walther",
+    "Wesson"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.08
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0015,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.18,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.38,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.27,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.6,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Stated plainly: PISTOL vs RIFLE is near-hopeless from DSP alone. Both are a loud impulsive transient — LF thump, HF crack, reverb tail — separated in reality by a few dB of muzzle energy and a slightly different crack, and both of those cues are erased by mic distance, level normalisation and the room. No honest numeric boundary exists between them, and none is fabricated here.",
+     "The only weak leans: a handgun is a shorter, slightly darker report with less supersonic crack energy than a high-velocity rifle, and its tail is shorter. Rank a shortlist; never commit without text agreement.",
+     "It IS separable from the big guns: far less low_band_energy and a far shorter tail than GUNS-CANNON or GUNS-ARTILLERY. And from GUNS-SUPPRESSED, which is much quieter with a truncated decay."
+    ],
+    "confusable_with": [
+     "GUNRif",
+     "GUNShotg",
+     "GUNAntq",
+     "GUNAuto",
+     "GUNSupr"
+    ]
+   }
+  },
+  {
+   "subcategory": "RIFLE",
+   "category_id": "GUNRif",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Rifles",
+    "single shot and semi-automatic."
+   ],
+   "synonyms": [
+    "AK-47",
+    "AR-15",
+    "Arisaka",
+    "Assault",
+    "Bolt-Action",
+    "Breechloader",
+    "Carabine",
+    "Carbine",
+    "Carbines",
+    "Casull",
+    "Firearms",
+    "Garand",
+    "Gun",
+    "Hunting",
+    "Lever-Action",
+    "Long",
+    "Luger",
+    "M1",
+    "M16",
+    "Mauser",
+    "Powell",
+    "Remington",
+    "Riffle",
+    "Rifle",
+    "Rifleman",
+    "Riflemen",
+    "Riflery",
+    "Rimfire",
+    "Ruger",
+    "Semi-Automatic",
+    "Sniper",
+    "Sporting",
+    "Winchester"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.08
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0012,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.18,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.32,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 14.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.9,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Same warning as GUNS-PISTOL: RIFLE vs PISTOL is not decidable from DSP. Identical morphology (impulsive transient, LF thump, HF crack, tail). The supersonic ballistic crack of a high-velocity round does push high_band_energy, crest_factor and tail length up, but the effect is small and confounded by distance and room. It is a lean, not a boundary.",
+     "Against GUNS-AUTOMATIC: a rifle file is a ONE-SHOT — transient_count ~1, front-loaded, no onset periodicity. If the file is a periodic 8-15/s onset train it is AUTOMATIC, not RIFLE. That direction of the test is reliable; the reverse is not, since automatic weapons are also recorded firing singly.",
+     "Against GUNS-SHOTGUN: a shotgun is broader and duller — more low-mid push, less HF crack."
+    ],
+    "confusable_with": [
+     "GUNPis",
+     "GUNAuto",
+     "GUNShotg",
+     "GUNAntq",
+     "GUNSupr"
+    ]
+   }
+  },
+  {
+   "subcategory": "SHOTGUN",
+   "category_id": "GUNShotg",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Shotguns",
+    "single",
+    "dual",
+    "pump."
+   ],
+   "synonyms": [
+    "Barrel",
+    "Break-Action",
+    "Coach",
+    "Double",
+    "Double-Barreled",
+    "Gun",
+    "Mossberg",
+    "Over-Under",
+    "Pump-Action",
+    "Sawed-Off",
+    "Scattergun",
+    "Shotgun",
+    "Slug",
+    "Winchester"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.08
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.3,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.46,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.2,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 800.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.9,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.58,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The broadest, dullest small-arm report: a large slow-burning charge and no supersonic projectile crack, so more low-band push and a lower spectral centroid than a RIFLE. This is the strongest of the several weak small-arm leans — and it is still only a lean. Mic distance erases it. signal_narrowable, not separable.",
+     "Pump-action files often carry the rack-and-eject foley before or after the shot as extra quiet transients; isolated, those clicks are GUNS-MECHANISM.",
+     "Still far shorter and far less LF-heavy than GUNS-CANNON or GUNS-ARTILLERY. That size boundary holds."
+    ],
+    "confusable_with": [
+     "GUNRif",
+     "GUNPis",
+     "GUNAntq",
+     "GUNArtl",
+     "GUNMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "SUPPRESSED",
+   "category_id": "GUNSupr",
+   "category_short": "GUN",
+   "emoji": "🔫",
+   "explanation": [
+    "Silenced Weapons",
+    "silencers."
+   ],
+   "synonyms": [
+    "7",
+    "Assassin",
+    "Bond",
+    "James",
+    "Rifle",
+    "Silenced",
+    "Silencer",
+    "Sniper",
+    "Spy"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 8.0
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "max": 1.5
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.15,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -26.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.09,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.45,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.18,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 4000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Genuinely measurable, and the only small-arm subcategory that is. A suppressor bleeds the muzzle blast off, so the report is MUCH quieter, LF-shifted (a dull thump, not a crack), and — most diagnostically — its tail is TRUNCATED: there is not enough acoustic energy left to excite the room, so decay_time_seconds_60db collapses to a fraction of an unsuppressed shot's. The short-tail gate is the workhorse.",
+     "Against GUNS-PISTOL / GUNS-RIFLE: the same event with an order of magnitude less energy above 2 kHz and a decay measured in tenths of a second rather than a second or more.",
+     "Honest caveat: absolute level is destroyed by normalisation, so decay_time_seconds_60db and the HF deficit — not LUFS — must carry the call. Where the bolt cycling is louder than the report, the file may read as GUNS-MECHANISM; that is the main false route."
+    ],
+    "confusable_with": [
+     "GUNPis",
+     "GUNRif",
+     "GUNMech",
+     "GUNTech"
+    ]
+   }
+  }
+ ]
+}

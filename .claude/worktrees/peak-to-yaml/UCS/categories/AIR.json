@@ -1,0 +1,1335 @@
+{
+ "version": "8.2.1",
+ "category": "AIR",
+ "emoji": "💨",
+ "subcategories": [
+  {
+   "subcategory": "BLOW",
+   "category_id": "AIRBlow",
+   "category_short": "AIR",
+   "emoji": "💨",
+   "explanation": [
+    "Steady air blows",
+    "like from a compressed can of air."
+   ],
+   "synonyms": [
+    "Aerate",
+    "Aerosol",
+    "Air",
+    "Airhose",
+    "Balloon",
+    "Beat",
+    "Bellows",
+    "Blast",
+    "Blow",
+    "Blower",
+    "Blowgun",
+    "Blown",
+    "Blowpipe",
+    "Blows",
+    "Blowtube",
+    "Bluff",
+    "Carbon",
+    "CO2",
+    "Compressed",
+    "Depressurize",
+    "Dioxide",
+    "Duster",
+    "Exhaust",
+    "Flutter",
+    "Gust",
+    "Helium",
+    "Huff",
+    "Inflate",
+    "Nitrogen",
+    "Oxygen",
+    "Puff",
+    "Puffed",
+    "Purge",
+    "Release",
+    "Sputter",
+    "Vent",
+    "Waft",
+    "Whiff"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 120.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "min": 0.12
+     },
+     {
+      "feature": "crest_factor",
+      "max": 14.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.06,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.16,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -20.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2500.0,
+      "deviation": 1800.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 1300.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.48,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 0.3,
+      "deviation": 0.6,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.7,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A held, driven flow: level and LOUD where AIR-HISS is a quiet leak. Against AIR-HISS the separation is three-fold and independent — LEVEL (root_mean_square_level ~0.16 vs ~0.03), BRIGHTNESS (spectral_centroid_hz ~2.2 kHz vs ~5.5 kHz; zero_crossings_per_second ~2500 vs ~7000), and DURATION (seconds, not tens of seconds).",
+     "Sustained where AIR-BURST is impulsive: envelope_temporal_centroid ~0.48 with a plateau, crest_factor ~4 not ~9, and envelope_attack_seconds in tens of milliseconds, not single milliseconds.",
+     "Symmetric/front-loaded where AIR-SUCTION is back-loaded: envelope_skewness is mildly POSITIVE here and negative for SUCTION, and SUCTION's envelope_temporal_centroid gate (>= 0.40, expected ~0.63) is the real boundary."
+    ],
+    "confusable_with": [
+     "AIRBrst",
+     "AIRHiss",
+     "AIRSuck",
+     "AIRMisc",
+     "WIND"
+    ]
+   }
+  },
+  {
+   "subcategory": "BURST",
+   "category_id": "AIRBrst",
+   "category_short": "AIR",
+   "emoji": "💨",
+   "explanation": [
+    "Sharp air releases",
+    "pressure releases",
+    "a tennis call can popping open",
+    "a fire extinguisher"
+   ],
+   "synonyms": [
+    "Air",
+    "Airbed",
+    "Airblast",
+    "Airgun",
+    "Airhose",
+    "Blast",
+    "Blowhole",
+    "Blowout",
+    "Burst",
+    "Carbon",
+    "Chuff",
+    "CO2",
+    "Dioxide",
+    "Discharge",
+    "Explosion",
+    "Flash",
+    "Gas",
+    "Helium",
+    "Jet",
+    "Kerboom",
+    "Nitrogen",
+    "Outburst",
+    "Oxygen",
+    "Poof",
+    "Pop",
+    "Rush",
+    "Seal",
+    "Spurt",
+    "Surge",
+    "Torrent"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 4.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.5
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.45,
+      "deviation": 2.177,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.0,
+      "deviation": 1.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 8.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.15,
+      "deviation": 2.543,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.48,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.2,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The impulsive member of AIR. A pressure release is a single sharp broadband transient with a fast decay: envelope_attack_seconds of a few milliseconds and crest_factor ~9 or more, against ~4 for the steady AIR-BLOW and ~3.5 for AIR-HISS.",
+     "Duration is the blunt instrument, and it is decisive: gated below 4 s and expected under half a second. AIR-HISS is gated to at least 0.5 s and typically runs tens of seconds — a 0.2 s event cannot be a slow leak.",
+     "Front-loaded envelope (envelope_temporal_centroid ~0.25, envelope_skewness ~+2.0) is the exact inverse of AIR-SUCTION's inward swell."
+    ],
+    "confusable_with": [
+     "AIRBlow",
+     "AIRSuck",
+     "AIRMisc",
+     "AIRHiss"
+    ]
+   }
+  },
+  {
+   "subcategory": "HISS",
+   "category_id": "AIRHiss",
+   "category_short": "AIR",
+   "emoji": "💨",
+   "explanation": [
+    "Slow air releases",
+    "a flat tire",
+    "leak in an air pipe."
+   ],
+   "synonyms": [
+    "Carbon",
+    "CO2",
+    "Dioxide",
+    "Discharge",
+    "Exhaust",
+    "Expel",
+    "Helium",
+    "Hissing",
+    "Leak",
+    "Nitrogen",
+    "Oxygen",
+    "Purr",
+    "Release",
+    "Shush",
+    "Sibilate",
+    "Whistling"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 300.0
+     },
+     {
+      "feature": "high_band_energy",
+      "min": 0.2
+     },
+     {
+      "feature": "crest_factor",
+      "max": 18.2,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "action": "widened",
+       "clips": 40,
+       "was": {
+        "max": 12.0
+       },
+       "reason": "the reasoned gate rejected 22% of this subcategory's own true clips",
+       "date": "2026-07"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.8891,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "action": "widened",
+       "clips": 112,
+       "was": {
+        "max": 0.55
+       },
+       "reason": "the reasoned gate rejected 11% of this subcategory's own true clips",
+       "date": "2026-07"
+      }
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 7.0,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 0.022,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -34.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.86887,
+      "deviation": 0.1548,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.8776
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.10982,
+      "deviation": 0.1406,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.09588
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.0096473,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.00706
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 9728.6,
+      "deviation": 4000.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 10697.98729
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6925.0,
+      "deviation": 2600.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 7103.36124
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 12156.0,
+      "deviation": 4000.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 12474.95842
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.46775,
+      "deviation": 0.3042,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.47718
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22492,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.22494
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.13903,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.14862
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.13965,
+      "deviation": 0.1439,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.13227
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.6336,
+      "deviation": 1.826,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 40,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 9.57791
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.19259,
+      "deviation": 0.2505,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 40,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.2125
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.33757,
+      "deviation": 0.2814,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 40,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.36643
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": 0.25151,
+      "deviation": 3.083,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 112,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.61326
+      }
+     }
+    ],
+    "discriminators": [
+     "A slow leak. Same stationary-noise morphology as AIR-BLOW, separated on three orthogonal axes at once. LEVEL: root_mean_square_level ~0.03 and lufs ~-34, roughly a factor of five below BLOW — a flat tire is not loud. HF TILT: high_band_energy ~0.72 (gated >= 0.20), zero_crossings_per_second ~7000, spectral_centroid_hz ~5.5 kHz — about double BLOW on every brightness feature, because a small orifice leaking slowly radiates almost nothing below 1 kHz. DURATION: tens of seconds, because the reservoir empties slowly.",
+     "Not AIR-BURST: gated to at least 0.5 s with crest_factor below 12. A hiss contains no transient at all.",
+     "Not AIR-SUCTION: envelope_temporal_centroid sits flat at ~0.50 and stationarity is ~0.86; SUCTION swells and is gated at envelope_temporal_centroid >= 0.40 with an expected ~0.63.",
+     "The harmonicity ceiling (0.55) keeps a whistling leak from stealing WIND-TONAL's territory."
+    ],
+    "confusable_with": [
+     "AIRBlow",
+     "AIRSuck",
+     "AIRMisc",
+     "AIRBrst"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 112,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Hiss": 112
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 112,
+       "percentile_05": 2692.9,
+       "median": 4490.8,
+       "percentile_95": 5681.5
+      },
+      "crest_factor": {
+       "clips": 40,
+       "percentile_05": 4.1819,
+       "median": 9.5779,
+       "percentile_95": 14.329,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 39,
+       "percentile_05": 0.0099773,
+       "median": 0.12472,
+       "percentile_95": 6.4703,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 40,
+       "percentile_05": 0.0099773,
+       "median": 0.47891,
+       "percentile_95": 6.7995,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 40,
+       "percentile_05": -1.4375,
+       "median": 1.3365,
+       "percentile_95": 19.158,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 34,
+       "percentile_05": 0.059864,
+       "median": 0.32426,
+       "percentile_95": 5.0136,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 40,
+       "percentile_05": -2.2884,
+       "median": 1.0127,
+       "percentile_95": 3.2152,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 40,
+       "percentile_05": 0.0022305,
+       "median": 0.099621,
+       "percentile_95": 0.84989,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 40,
+       "percentile_05": 0.049614,
+       "median": 0.32576,
+       "percentile_95": 0.54757,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 112,
+       "percentile_05": 0.039618,
+       "median": 0.13227,
+       "percentile_95": 0.67885
+      },
+      "high_band_energy": {
+       "clips": 112,
+       "percentile_05": 0.51994,
+       "median": 0.86794,
+       "percentile_95": 0.98495
+      },
+      "inharmonicity": {
+       "clips": 112,
+       "percentile_05": 0.2349,
+       "median": 0.45386,
+       "percentile_95": 0.59305
+      },
+      "low_band_energy": {
+       "clips": 112,
+       "percentile_05": 0.00018253,
+       "median": 0.0093812,
+       "percentile_95": 0.089127
+      },
+      "mid_band_energy": {
+       "clips": 112,
+       "percentile_05": 0.012472,
+       "median": 0.10789,
+       "percentile_95": 0.33869
+      },
+      "onset_periodicity": {
+       "clips": 112,
+       "percentile_05": 0.11767,
+       "median": 0.28937,
+       "percentile_95": 0.46435
+      },
+      "onset_rate_per_second": {
+       "clips": 112,
+       "percentile_05": 0.080259,
+       "median": 0.4705,
+       "percentile_95": 2.1
+      },
+      "partial_count": {
+       "clips": 110,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 101,
+       "percentile_05": 186.86,
+       "median": 1025.6,
+       "percentile_95": 1917.4
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 112,
+       "percentile_05": 181.18,
+       "median": 1005.4,
+       "percentile_95": 2539.6
+      },
+      "spectral_centroid_hz": {
+       "clips": 112,
+       "percentile_05": 3342.3,
+       "median": 6910.5,
+       "percentile_95": 11948.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 112,
+       "percentile_05": 2860.1,
+       "median": 6633.1,
+       "percentile_95": 11892.0
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 112,
+       "percentile_05": -1445.0,
+       "median": -30.689,
+       "percentile_95": 1230.8
+      },
+      "spectral_entropy": {
+       "clips": 112,
+       "percentile_05": 0.30411,
+       "median": 0.72152,
+       "percentile_95": 0.84972
+      },
+      "spectral_flatness": {
+       "clips": 112,
+       "percentile_05": 0.080054,
+       "median": 0.46705,
+       "percentile_95": 0.72849
+      },
+      "spectral_flux": {
+       "clips": 112,
+       "percentile_05": 0.21133,
+       "median": 0.2249,
+       "percentile_95": 0.2339
+      },
+      "spectral_rolloff_hz": {
+       "clips": 112,
+       "percentile_05": 5515.9,
+       "median": 12155.0,
+       "percentile_95": 17001.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 112,
+       "percentile_05": -4.044,
+       "median": 0.22955,
+       "percentile_95": 6.0811
+      },
+      "stationarity": {
+       "clips": 112,
+       "percentile_05": 0.0,
+       "median": 0.13738,
+       "percentile_95": 0.82364,
+       "censored_at_floor_fraction": 0.438
+      },
+      "sustain_ratio": {
+       "clips": 40,
+       "percentile_05": 0.002511,
+       "median": 0.18519,
+       "percentile_95": 0.91033,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 110,
+       "percentile_05": 0.011673,
+       "median": 0.1322,
+       "percentile_95": 0.33422
+      },
+      "transient_count": {
+       "clips": 112,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 27.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 112,
+       "percentile_05": 1952.3,
+       "median": 9712.7,
+       "percentile_95": 22908.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "AIRMisc",
+   "category_short": "AIR",
+   "emoji": "💨",
+   "explanation": [
+    "Air sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Airtight",
+    "Airway",
+    "Carbon",
+    "CO2",
+    "Dioxide",
+    "Gas",
+    "Helium",
+    "Inflatable",
+    "Intake",
+    "Miscellaneous",
+    "Nitrogen",
+    "Oxygen",
+    "Sky",
+    "Ventilation"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.18,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The abstention target for AIR. Claim it when the file is air-like (noisy, low harmonicity) but no sibling's morphology fits: not clearly impulsive (AIR-BURST), not quiet+HF+long (AIR-HISS), not back-loaded (AIR-SUCTION), not a level steady flow (AIR-BLOW). Deliberately flat priors and wide gates."
+    ],
+    "confusable_with": [
+     "AIRBlow",
+     "AIRBrst",
+     "AIRHiss",
+     "AIRSuck"
+    ]
+   }
+  },
+  {
+   "subcategory": "SUCTION",
+   "category_id": "AIRSuck",
+   "category_short": "AIR",
+   "emoji": "💨",
+   "explanation": [
+    "Air being sucked in",
+    "a vacuum sucking in air",
+    "the rush of air in a shopvac."
+   ],
+   "synonyms": [
+    "Air",
+    "Aspirate",
+    "Aspiration",
+    "Carbon",
+    "CO2",
+    "Consume",
+    "Dental",
+    "Dioxide",
+    "Draw",
+    "Helium",
+    "Hoover",
+    "Ingest",
+    "Inspiration",
+    "Inspire",
+    "Intake",
+    "Nitrogen",
+    "Oxygen",
+    "Pull",
+    "Pump",
+    "Pumps",
+    "Siphon",
+    "Suck",
+    "Suction",
+    "Syphon",
+    "Syringe",
+    "Vac",
+    "Vacuity",
+    "Vacuum"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 120.0
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "min": 0.4
+     },
+     {
+      "feature": "crest_factor",
+      "max": 12.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.63,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": -0.6,
+      "deviation": 0.8,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.35,
+      "deviation": 2.356,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 0.08,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.1,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 350.0,
+      "deviation": 450.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 1.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.1,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.18,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.13,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 1400.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The one AIR subcategory defined by envelope DIRECTION rather than by spectrum. Air drawn INWARD swells: the energy arrives late, so envelope_temporal_centroid runs ~0.63 (gated at 0.40 minimum) against ~0.48 for AIR-BLOW and ~0.25 for AIR-BURST, and envelope_skewness goes NEGATIVE (~-0.6) where every outward air event is positive. The attack is slow (envelope_attack_seconds ~0.35 s) and the release is abrupt — a decay run backwards.",
+     "Spectrally it is nearly a twin of AIR-BLOW: same flatness, same centroid, same level, same noise morphology. Do NOT try to separate them on timbre — that comparison carries no information. The entire discrimination lives in four envelope features (envelope_temporal_centroid, envelope_skewness, envelope_attack_seconds, envelope_release_seconds) plus a POSITIVE spectral_centroid_slope_hz_per_second as the intake accelerates and the flow gets brighter.",
+     "Not AIR-HISS: far shorter, roughly four times louder, and non-stationary.",
+     "Not AIR-BURST: the crest_factor ceiling of 12 and the envelope_temporal_centroid floor of 0.40 both exclude a front-loaded transient."
+    ],
+    "confusable_with": [
+     "AIRBlow",
+     "AIRHiss",
+     "AIRMisc",
+     "AIRBrst"
+    ]
+   }
+  }
+ ]
+}

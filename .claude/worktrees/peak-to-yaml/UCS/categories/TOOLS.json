@@ -1,0 +1,1225 @@
+{
+ "version": "8.2.1",
+ "category": "TOOLS",
+ "emoji": "🔧",
+ "subcategories": [
+  {
+   "subcategory": "GARDEN",
+   "category_id": "TOOLGrdn",
+   "category_short": "TOOL",
+   "emoji": "🔧",
+   "explanation": [
+    "Hand tools used in a garden",
+    "rakes",
+    "hoes",
+    "etc. Also see MACHINES-GARDEN for powered machines. See also OBJECTS-GARDEN for non-tools."
+   ],
+   "synonyms": [
+    "Broom",
+    "Cultivator",
+    "Edger",
+    "Fork",
+    "Garden",
+    "Hand",
+    "Hedge",
+    "Hoe",
+    "Hose",
+    "Lawn",
+    "Loppers",
+    "Mower",
+    "Pruner",
+    "Pruning",
+    "Rake",
+    "Shear",
+    "Shovel",
+    "Spade",
+    "Spades",
+    "Sprayer",
+    "Sprinkler",
+    "Tiller",
+    "Trimmer",
+    "Trowel",
+    "Weed",
+    "Weeder"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Hand-powered by definition: a rake, hoe or shovel is gritty friction against soil and gravel plus sparse metal clanks. It must NOT contain a sustained motor bed — that would be TOOLPowr or a MACHINES-GARDEN machine.",
+     "No DSP separates a rake from a broom, or a garden hand tool from a workshop hand tool. This is a use-context label; TOOLHand is the same physics indoors. Text decides.",
+     "Powered garden machines go to MACHINES-GARDEN per the explanation, and non-tool garden objects to OBJECTS-GARDEN."
+    ],
+    "confusable_with": [
+     "TOOLHand",
+     "TOOLMisc",
+     "TOOLPowr"
+    ]
+   }
+  },
+  {
+   "subcategory": "HAND",
+   "category_id": "TOOLHand",
+   "category_short": "TOOL",
+   "emoji": "🔧",
+   "explanation": [
+    "Hand tools",
+    "not requiring power. Hammers",
+    "wrenches",
+    "pliers. See also TOOLS-GARDEN."
+   ],
+   "synonyms": [
+    "Allen",
+    "Bar",
+    "Chisel",
+    "Clamp",
+    "Cutter",
+    "Drill",
+    "File",
+    "Files",
+    "Grip",
+    "Gun",
+    "Hacksaw",
+    "Hammer",
+    "Hand",
+    "Knife",
+    "Level",
+    "Mallet",
+    "Measure",
+    "Pliers",
+    "Pry",
+    "Ratchet",
+    "Saw",
+    "Scissors",
+    "Scraper",
+    "Screwdriver",
+    "Shears",
+    "Snips",
+    "Socket",
+    "Staple",
+    "Tape",
+    "Toolbox",
+    "Utility",
+    "Vise",
+    "Wrench"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "crest_factor",
+      "mean": 17.963,
+      "deviation": 2.606,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 71,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 15.19173
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 6.0,
+      "deviation": 8.896,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 352,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 7.0
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5167.8,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 352,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5332.95664
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.37029,
+      "deviation": 3.546,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 43,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.45179
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.44128,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 352,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.43554
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.27065,
+      "deviation": 0.2195,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 352,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.25617
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.043478,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 71,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.0482
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.029932,
+      "deviation": 7.061,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.01728
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.73893,
+      "deviation": 0.2822,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 352,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.75547
+      }
+     }
+    ],
+    "discriminators": [
+     "'Not requiring power' is a measurable claim: there is NO sustained tonal motor bed. Low harmonicity and low sustain_ratio are the near-gate priors that keep TOOLPowr and TOOLPneu out.",
+     "Morphology is impulsive metal handling: hammer strikes, ratchet clicks, plier snaps, a wrench set on a bench. Bright, spiky, moderately ringing (it is metal, so decay runs longer than wood).",
+     "A hand saw is the exception — sustained rhythmic friction — and will look like a friction file; text should still land it here.",
+     "Against TOOLGrdn: identical physics, different room. Semantic."
+    ],
+    "confusable_with": [
+     "TOOLPowr",
+     "TOOLPneu",
+     "TOOLGrdn"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 352,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Hammer": 143,
+      "Sawing": 104,
+      "Scissors": 106
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 352,
+       "percentile_05": 2287.9,
+       "median": 4143.9,
+       "percentile_95": 5559.9
+      },
+      "crest_factor": {
+       "clips": 71,
+       "percentile_05": 5.0322,
+       "median": 17.963,
+       "percentile_95": 57.239,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 43,
+       "percentile_05": 0.060755,
+       "median": 0.37029,
+       "percentile_95": 2.5683,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 61,
+       "percentile_05": 0.0099773,
+       "median": 0.029932,
+       "percentile_95": 3.527,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 71,
+       "percentile_05": 0.014966,
+       "median": 0.18957,
+       "percentile_95": 1.0776,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 71,
+       "percentile_05": -0.87959,
+       "median": 21.747,
+       "percentile_95": 224.41,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 70,
+       "percentile_05": 0.014966,
+       "median": 0.094785,
+       "percentile_95": 1.781,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 71,
+       "percentile_05": -0.22081,
+       "median": 4.3417,
+       "percentile_95": 13.503,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 71,
+       "percentile_05": 0.00012914,
+       "median": 0.018994,
+       "percentile_95": 0.74386,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 71,
+       "percentile_05": 0.0037588,
+       "median": 0.21177,
+       "percentile_95": 0.75365,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 352,
+       "percentile_05": 0.092044,
+       "median": 0.26848,
+       "percentile_95": 0.82003
+      },
+      "high_band_energy": {
+       "clips": 352,
+       "percentile_05": 0.21648,
+       "median": 0.73889,
+       "percentile_95": 0.96698
+      },
+      "inharmonicity": {
+       "clips": 352,
+       "percentile_05": 0.090933,
+       "median": 0.44056,
+       "percentile_95": 0.60438
+      },
+      "low_band_energy": {
+       "clips": 352,
+       "percentile_05": 0.00217,
+       "median": 0.022786,
+       "percentile_95": 0.19
+      },
+      "mid_band_energy": {
+       "clips": 352,
+       "percentile_05": 0.023716,
+       "median": 0.21589,
+       "percentile_95": 0.65309
+      },
+      "onset_periodicity": {
+       "clips": 352,
+       "percentile_05": 0.0,
+       "median": 0.24783,
+       "percentile_95": 0.4808
+      },
+      "onset_rate_per_second": {
+       "clips": 352,
+       "percentile_05": 0.1673,
+       "median": 1.0365,
+       "percentile_95": 3.1041
+      },
+      "partial_count": {
+       "clips": 345,
+       "percentile_05": 4.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 268,
+       "percentile_05": 121.15,
+       "median": 958.7,
+       "percentile_95": 1917.4
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 43,
+       "percentile_05": -7.3622,
+       "median": -0.014648,
+       "percentile_95": 5.7495
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 352,
+       "percentile_05": 402.91,
+       "median": 1224.7,
+       "percentile_95": 3184.5
+      },
+      "spectral_centroid_hz": {
+       "clips": 352,
+       "percentile_05": 1672.3,
+       "median": 5165.6,
+       "percentile_95": 10156.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 352,
+       "percentile_05": 1531.2,
+       "median": 4959.8,
+       "percentile_95": 8423.2
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 352,
+       "percentile_05": -3522.8,
+       "median": -14.284,
+       "percentile_95": 2291.6
+      },
+      "spectral_entropy": {
+       "clips": 352,
+       "percentile_05": 0.24137,
+       "median": 0.55163,
+       "percentile_95": 0.77617
+      },
+      "spectral_flatness": {
+       "clips": 352,
+       "percentile_05": 0.073764,
+       "median": 0.33602,
+       "percentile_95": 0.64898
+      },
+      "spectral_flux": {
+       "clips": 352,
+       "percentile_05": 0.17456,
+       "median": 0.22367,
+       "percentile_95": 0.24322
+      },
+      "spectral_rolloff_hz": {
+       "clips": 352,
+       "percentile_05": 2893.2,
+       "median": 9886.2,
+       "percentile_95": 15928.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 352,
+       "percentile_05": -6.4763,
+       "median": -1.9409,
+       "percentile_95": 1.8083
+      },
+      "stationarity": {
+       "clips": 352,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.63263,
+       "censored_at_floor_fraction": 0.682
+      },
+      "sustain_ratio": {
+       "clips": 71,
+       "percentile_05": 0.0049261,
+       "median": 0.043478,
+       "percentile_95": 0.63582,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 328,
+       "percentile_05": 0.040731,
+       "median": 0.26312,
+       "percentile_95": 0.55847
+      },
+      "transient_count": {
+       "clips": 352,
+       "percentile_05": 1.0,
+       "median": 6.0,
+       "percentile_95": 31.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 352,
+       "percentile_05": 598.65,
+       "median": 5175.8,
+       "percentile_95": 13229.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "TOOLMisc",
+   "category_short": "TOOL",
+   "emoji": "🔧",
+   "explanation": [
+    "Tool sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The abstention target for TOOLS. No gates, no morphology commitment.",
+     "Prefer TOOLHand / TOOLPowr / TOOLPneu / TOOLGrdn whenever one of them survives its gates."
+    ],
+    "confusable_with": []
+   }
+  },
+  {
+   "subcategory": "PNEUMATIC",
+   "category_id": "TOOLPneu",
+   "category_short": "TOOL",
+   "emoji": "🔧",
+   "explanation": [
+    "Air tools",
+    "such as jackhammers",
+    "air ratchets",
+    "nail guns. The air-wrench sound in a tire shop."
+   ],
+   "synonyms": [
+    "Air",
+    "Chisel",
+    "Compressor",
+    "Drill",
+    "Grinder",
+    "Gun",
+    "Guns",
+    "Hammer",
+    "Hose",
+    "Impact",
+    "Jackhammer",
+    "Nail",
+    "Nailer",
+    "Pneumatic",
+    "Ratchet",
+    "Rivet",
+    "Sander",
+    "Spray",
+    "Stapler",
+    "Tool",
+    "Wrench"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 20.0,
+      "deviation": 12.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Air plus hammering. Two co-present cues: a broadband exhaust hiss (high spectral_flatness, LOW harmonicity) and a fast periodic impact chatter (high onset_periodicity at tens of hits per second). A jackhammer and an air ratchet are both this.",
+     "Against TOOLPowr: this is THE split in TOOLS. An electric motor is HARMONIC — a pitched whine, high harmonicity, low spectral_flatness. A pneumatic tool is NOISY and PERCUSSIVE — high flatness, low harmonicity, high onset_periodicity. Same duration, opposite spectra.",
+     "Against TOOLHand: a hand tool has no sustained bed at all; sustain_ratio near 0.6 rules it out."
+    ],
+    "confusable_with": [
+     "TOOLPowr",
+     "TOOLHand",
+     "TOOLMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "POWER",
+   "category_id": "TOOLPowr",
+   "category_short": "TOOL",
+   "emoji": "🔧",
+   "explanation": [
+    "Tools that require power. A sander",
+    "electric drill",
+    "dremel tool",
+    "circular saw."
+   ],
+   "synonyms": [
+    "Air",
+    "Angle",
+    "Belt",
+    "Circular",
+    "Compressor",
+    "Drill",
+    "Driver",
+    "Grinder",
+    "Gun",
+    "Heat",
+    "Impact",
+    "Jigsaw",
+    "Miter",
+    "Nail",
+    "Planer",
+    "Power",
+    "Press",
+    "Reciprocating",
+    "Router",
+    "Sander",
+    "Saw",
+    "Screwdriver",
+    "Staple",
+    "Table",
+    "Tool"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 16.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.28583,
+      "deviation": 0.2663,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 149,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.26402
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 630.0,
+      "deviation": 4.259,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 639.13043
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35588,
+      "deviation": 0.2584,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 149,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.36692
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35354,
+      "deviation": 0.4455,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 149,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.32758
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5633.1,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 149,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5703.24587
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A motor is a stable pitched drone: high harmonicity, low spectral_flatness, low crest factor, sustained for seconds. Drills and sanders spin up and down, so the pitch slope swings hard at the ends while the middle stays stationary.",
+     "Against TOOLPneu: harmonic versus noisy. An electric drill whines; an air ratchet rattles and hisses. harmonicity and spectral_flatness invert between them — the cleanest separation in this category.",
+     "Against TOOLHand: the sustained tonal bed is exactly what a hand tool cannot have.",
+     "A circular saw biting into wood adds a bright screaming friction layer on top of the motor whine; the motor bed underneath still holds."
+    ],
+    "confusable_with": [
+     "TOOLPneu",
+     "TOOLHand",
+     "TOOLMisc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 149,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Drill": 147,
+      "Power_tool": 149
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 149,
+       "percentile_05": 2426.1,
+       "median": 4084.3,
+       "percentile_95": 5358.0
+      },
+      "crest_factor": {
+       "clips": 27,
+       "percentile_05": 3.5866,
+       "median": 6.1423,
+       "percentile_95": 14.516,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 24,
+       "percentile_05": 0.014966,
+       "median": 0.12472,
+       "percentile_95": 1.6812,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 27,
+       "percentile_05": 0.0099773,
+       "median": 0.1746,
+       "percentile_95": 0.90295,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 27,
+       "percentile_05": -1.5847,
+       "median": 1.7495,
+       "percentile_95": 9.2471,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 27,
+       "percentile_05": -1.9503,
+       "median": 0.56772,
+       "percentile_95": 1.8044,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 27,
+       "percentile_05": 0.0016525,
+       "median": 0.19833,
+       "percentile_95": 0.84609,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 27,
+       "percentile_05": 0.14146,
+       "median": 0.44251,
+       "percentile_95": 0.50654,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 149,
+       "percentile_05": 0.089062,
+       "median": 0.28583,
+       "percentile_95": 0.76647
+      },
+      "high_band_energy": {
+       "clips": 149,
+       "percentile_05": 0.28813,
+       "median": 0.75794,
+       "percentile_95": 0.89772
+      },
+      "inharmonicity": {
+       "clips": 149,
+       "percentile_05": 0.012438,
+       "median": 0.38018,
+       "percentile_95": 0.55351
+      },
+      "low_band_energy": {
+       "clips": 149,
+       "percentile_05": 0.0017239,
+       "median": 0.012657,
+       "percentile_95": 0.14529
+      },
+      "mid_band_energy": {
+       "clips": 149,
+       "percentile_05": 0.091436,
+       "median": 0.2241,
+       "percentile_95": 0.50659
+      },
+      "onset_periodicity": {
+       "clips": 149,
+       "percentile_05": 0.10912,
+       "median": 0.2824,
+       "percentile_95": 0.61081
+      },
+      "onset_rate_per_second": {
+       "clips": 149,
+       "percentile_05": 0.11111,
+       "median": 0.62286,
+       "percentile_95": 4.0
+      },
+      "partial_count": {
+       "clips": 147,
+       "percentile_05": 7.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 131,
+       "percentile_05": 70.111,
+       "median": 630.0,
+       "percentile_95": 1917.4
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 27,
+       "percentile_05": -2.7434,
+       "median": 0.032352,
+       "percentile_95": 6.2763
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 149,
+       "percentile_05": 155.95,
+       "median": 907.31,
+       "percentile_95": 2435.6
+      },
+      "spectral_centroid_hz": {
+       "clips": 149,
+       "percentile_05": 2262.0,
+       "median": 5633.1,
+       "percentile_95": 7855.3
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 149,
+       "percentile_05": 1950.2,
+       "median": 5197.1,
+       "percentile_95": 7492.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 149,
+       "percentile_05": -2498.0,
+       "median": -14.908,
+       "percentile_95": 630.5
+      },
+      "spectral_entropy": {
+       "clips": 149,
+       "percentile_05": 0.41042,
+       "median": 0.61881,
+       "percentile_95": 0.78519
+      },
+      "spectral_flatness": {
+       "clips": 149,
+       "percentile_05": 0.066718,
+       "median": 0.35588,
+       "percentile_95": 0.57831
+      },
+      "spectral_flux": {
+       "clips": 149,
+       "percentile_05": 0.19136,
+       "median": 0.2208,
+       "percentile_95": 0.23011
+      },
+      "spectral_rolloff_hz": {
+       "clips": 149,
+       "percentile_05": 4074.1,
+       "median": 10186.0,
+       "percentile_95": 13658.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 149,
+       "percentile_05": -5.4988,
+       "median": -0.4585,
+       "percentile_95": 2.8386
+      },
+      "stationarity": {
+       "clips": 149,
+       "percentile_05": 0.0,
+       "median": 0.35354,
+       "percentile_95": 0.84225,
+       "censored_at_floor_fraction": 0.242
+      },
+      "sustain_ratio": {
+       "clips": 27,
+       "percentile_05": 0.033333,
+       "median": 0.48333,
+       "percentile_95": 1.0,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 149,
+       "percentile_05": 0.022262,
+       "median": 0.12364,
+       "percentile_95": 0.34547
+      },
+      "transient_count": {
+       "clips": 149,
+       "percentile_05": 1.0,
+       "median": 3.0,
+       "percentile_95": 17.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 149,
+       "percentile_05": 1672.2,
+       "median": 6496.6,
+       "percentile_95": 13155.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  }
+ ]
+}

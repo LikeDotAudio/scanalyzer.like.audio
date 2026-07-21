@@ -1,0 +1,442 @@
+{
+ "version": "8.2.1",
+ "category": "CHEMICALS",
+ "emoji": "🧪",
+ "subcategories": [
+  {
+   "subcategory": "ACID",
+   "category_id": "CHEMAcid",
+   "category_short": "CHEM",
+   "emoji": "🧪",
+   "explanation": [
+    "Chemical acid burning and sizzling",
+    "bubbling. A vat of acid."
+   ],
+   "synonyms": [
+    "Acetic",
+    "Acidic",
+    "Acrid",
+    "Biting",
+    "Caustic",
+    "Citric",
+    "Corrosive",
+    "Erosive",
+    "Fizz",
+    "Hydrochloric",
+    "Melt",
+    "Sizzle",
+    "Sour",
+    "Sulfuric",
+    "Toxic"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 180.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.7
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.72,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 11000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.08,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 40.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.06,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A real morphology, not just a name: acid burning and sizzling is a dense FIZZ - a very high onset rate of tiny unresolvable bubble-collapse events that fuse into a bright, near-stationary, low-crest HISS with almost no low-frequency energy. Sustained, noisy, HF-dominated. That is measurable, and it separates ACID from the discrete plops of CHEMICALS-REACTION: signal_narrowable.",
+     "Against CHEMICALS-REACTION: onset_rate and centroid are the axis. ACID = dense, fine, bright, fused (fizz/sizzle). REACTION = sparse, coarse, low, resolvable (bubble plops, glugs). This is the same sparse-vs-dense split that separates DRIP from FIZZ generally.",
+     "It does NOT separate acid from a frying pan (FOOD_DRINK), a fire hiss (FIRE), a steam leak (AIR-HISS) or carbonation - they are the same physics, and 'acid' is a story about the liquid, not a property of the sound. Text decides that.",
+     "A melting/eating-through element adds a low bubbling layer that pulls low_band_energy up and blurs the boundary with REACTION."
+    ],
+    "confusable_with": [
+     "CHEMReac",
+     "FIREMisc",
+     "AIRHiss",
+     "FOODMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "CHEMMisc",
+   "category_short": "CHEM",
+   "emoji": "🧪",
+   "explanation": [
+    "Chemical sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Agents",
+    "Atoms",
+    "Chemical",
+    "Chemicals",
+    "Compound",
+    "Compounds",
+    "Formulas",
+    "Matter",
+    "Miscellaneous",
+    "Mixtures",
+    "Molecules",
+    "Reagent",
+    "Solutions",
+    "Substance",
+    "Substances",
+    "Toxic"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The catch-all. 'Chemical' is not an acoustic property at all - it is a story about what is in the beaker - so this subcategory asserts only 'a wet or gaseous noisy texture, not a tone and not an impact' and leaves everything else to text. semantic_only, and the abstention target for this category.",
+     "Glassware handling, stirring and pouring in a chemistry scene are acoustically GLASS and LIQUID; expect them to score there and to arrive here only by filename."
+    ],
+    "confusable_with": [
+     "CHEMReac",
+     "CHEMAcid",
+     "LIQMisc",
+     "GLASMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "REACTION",
+   "category_id": "CHEMReac",
+   "category_short": "CHEM",
+   "emoji": "🧪",
+   "explanation": [
+    "Chemical reactions",
+    "chemistry set",
+    "bubbling",
+    "foaming",
+    "bunsen burner reactions. Overlap perhaps with LIQUID & MUD category."
+   ],
+   "synonyms": [
+    "Activate",
+    "Bubbling",
+    "Catalysis",
+    "Catalyst",
+    "Catalyze",
+    "Chemically",
+    "Chemistry",
+    "Electrolysis",
+    "Endothermic",
+    "Enzyme",
+    "Exothermic",
+    "Fermentation",
+    "Foaming",
+    "Hydrolysis",
+    "Inactive",
+    "Inert",
+    "React",
+    "Reaction",
+    "Reactive",
+    "Reagent",
+    "Transformation"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 300.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Bubbling and foaming: a texture of RESOLVABLE discrete events. Each bubble collapse is a short, damped, pitched plop whose frequency falls as the bubble radius rises, so the material has a moderate onset_rate, a much lower centroid than a fizz, real mid/low-band content and a higher crest_factor (individual plops still stand above the bed). That sparse-and-coarse morphology is measurable, hence signal_narrowable.",
+     "Against CHEMICALS-ACID: dense/bright/fused (ACID) vs sparse/low/resolvable (REACTION). If individual bubbles are countable, it is REACTION.",
+     "The explanation itself concedes overlap with LIQUID & MUD, and that overlap is total on signal: a beaker bubbling and a mud pot bubbling are the same sound. A bunsen burner adds a stationary gas-flame hiss, which pulls the file toward FIRE/AIR. Text decides all of it.",
+     "Confusable with boiling water and any underwater/aeration bed."
+    ],
+    "confusable_with": [
+     "CHEMAcid",
+     "LIQBubl",
+     "WATRMisc",
+     "CHEMMisc"
+    ]
+   }
+  }
+ ]
+}

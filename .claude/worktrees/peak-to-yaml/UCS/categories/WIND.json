@@ -1,0 +1,1474 @@
+{
+ "version": "8.2.1",
+ "category": "WIND",
+ "emoji": "🌬️",
+ "subcategories": [
+  {
+   "subcategory": "DESIGNED",
+   "category_id": "WINDDsgn",
+   "category_short": "WIND",
+   "emoji": "🌬️",
+   "explanation": [
+    "Designed or manufactured or artificial winds",
+    "wind machines",
+    "synth winds."
+   ],
+   "synonyms": [
+    "Artificial",
+    "Designed",
+    "Machine",
+    "Simulated",
+    "Synthetic",
+    "Tonal",
+    "Wind"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 900.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.72,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 12.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.09,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Provenance, not physics: a synth wind and a real wind are the same filtered noise band. No feature reports 'this was manufactured'.",
+     "Weak tells only — synthesised winds tend to be cleaner and more perfectly stationary, with an artificially narrow or artificially wide stereo_width, and occasionally an exact tonal component. Never assert on these.",
+     "The gates still prune: it is a wind bed, so it is not a 0.2 s impulse."
+    ],
+    "confusable_with": [
+     "WIND",
+     "WINDGust",
+     "WINDTurb",
+     "WINDVege",
+     "WINDTonl",
+     "WINDInt"
+    ]
+   }
+  },
+  {
+   "subcategory": "GENERAL",
+   "category_id": "WIND",
+   "category_short": "WIND",
+   "emoji": "🌬️",
+   "explanation": [
+    "Base and general wind category."
+   ],
+   "synonyms": [
+    "Air",
+    "Atmospheric",
+    "Breeze",
+    "Current",
+    "Draft",
+    "Flow",
+    "Miscellaneous",
+    "Wind",
+    "Windy"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 40.0,
+      "deviation": 40.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.098738,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.06048
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.38591,
+      "deviation": 0.3885,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.43238
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22103,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.2199
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 486.24,
+      "deviation": 449.7,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 348.29746
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.29967,
+      "deviation": 0.3803,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.32099
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.20727,
+      "deviation": 0.2384,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.11778
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1582.7,
+      "deviation": 600.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1139.53583
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -7.2302,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": -7.7673
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.86227,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.85797
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.8,
+      "deviation": 1.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.72,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.22839,
+      "deviation": 0.1041,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 238,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.12
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.12,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The steady wind bed and the baseline of the category: long, stationary, LF-weighted broadband noise in a wide stereo image. It is defined by what it is NOT — the low-flux, low-centroid-deviation floor its siblings depart from.",
+     "Steadier than WIND-GUST, which is one rise-fall swell: GUST triples spectral_flux and spectral_centroid_deviation_hz and halves stationarity and sustain_ratio.",
+     "Quieter and calmer than WIND-TURBULENT (roughly half the root_mean_square_level, less LF weight).",
+     "Noise, not tone: harmonicity is gated below 0.60, which is exactly where WIND-TONAL begins.",
+     "Broadband, not micro-eventful: WIND-VEGETATION inverts the spectral tilt (high_band_energy dominant) because you are hearing leaves, not air."
+    ],
+    "confusable_with": [
+     "WINDGust",
+     "WINDTurb",
+     "WINDVege",
+     "WINDInt",
+     "WINDTonl",
+     "WINDDsgn",
+     "AIRBlow"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 238,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Wind": 238
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 238,
+       "percentile_05": 1144.8,
+       "median": 2786.2,
+       "percentile_95": 5466.3
+      },
+      "harmonicity": {
+       "clips": 238,
+       "percentile_05": 0.080642,
+       "median": 0.86162,
+       "percentile_95": 0.99129
+      },
+      "high_band_energy": {
+       "clips": 238,
+       "percentile_05": 0.021496,
+       "median": 0.20657,
+       "percentile_95": 0.75927
+      },
+      "inharmonicity": {
+       "clips": 238,
+       "percentile_05": 0.1288,
+       "median": 0.47003,
+       "percentile_95": 0.69693
+      },
+      "low_band_energy": {
+       "clips": 238,
+       "percentile_05": 0.020958,
+       "median": 0.2975,
+       "percentile_95": 0.81366
+      },
+      "mid_band_energy": {
+       "clips": 238,
+       "percentile_05": 0.087893,
+       "median": 0.37233,
+       "percentile_95": 0.85199
+      },
+      "onset_periodicity": {
+       "clips": 238,
+       "percentile_05": 0.099339,
+       "median": 0.22795,
+       "percentile_95": 0.38541
+      },
+      "onset_rate_per_second": {
+       "clips": 238,
+       "percentile_05": 0.15746,
+       "median": 1.1685,
+       "percentile_95": 3.9371
+      },
+      "partial_count": {
+       "clips": 236,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 78,
+       "percentile_05": 106.27,
+       "median": 689.06,
+       "percentile_95": 1696.2
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 23,
+       "percentile_05": -0.63038,
+       "median": 0.013059,
+       "percentile_95": 0.58104
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 238,
+       "percentile_05": 120.7,
+       "median": 486.08,
+       "percentile_95": 1379.1
+      },
+      "spectral_centroid_hz": {
+       "clips": 238,
+       "percentile_05": 391.69,
+       "median": 1582.6,
+       "percentile_95": 6149.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 238,
+       "percentile_05": 392.56,
+       "median": 1655.4,
+       "percentile_95": 6379.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 238,
+       "percentile_05": -410.69,
+       "median": 8.9325,
+       "percentile_95": 256.79
+      },
+      "spectral_entropy": {
+       "clips": 238,
+       "percentile_05": 0.17299,
+       "median": 0.35073,
+       "percentile_95": 0.67641
+      },
+      "spectral_flatness": {
+       "clips": 238,
+       "percentile_05": 0.016904,
+       "median": 0.098725,
+       "percentile_95": 0.50944
+      },
+      "spectral_flux": {
+       "clips": 238,
+       "percentile_05": 0.18834,
+       "median": 0.22092,
+       "percentile_95": 0.23053
+      },
+      "spectral_rolloff_hz": {
+       "clips": 238,
+       "percentile_05": 249.65,
+       "median": 2908.0,
+       "percentile_95": 12603.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 238,
+       "percentile_05": -11.476,
+       "median": -7.2413,
+       "percentile_95": -1.6234
+      },
+      "stationarity": {
+       "clips": 238,
+       "percentile_05": 0.0,
+       "median": 0.38399,
+       "percentile_95": 0.79505
+      },
+      "syllabic_modulation_energy": {
+       "clips": 238,
+       "percentile_05": 0.096739,
+       "median": 0.19757,
+       "percentile_95": 0.3821
+      },
+      "transient_count": {
+       "clips": 238,
+       "percentile_05": 2.0,
+       "median": 7.0,
+       "percentile_95": 28.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 238,
+       "percentile_05": 145.78,
+       "median": 1017.5,
+       "percentile_95": 8204.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "GUST",
+   "category_id": "WINDGust",
+   "category_short": "WIND",
+   "emoji": "🌬️",
+   "explanation": [
+    "For more singular gusts or buffets",
+    "accents to cut into other winds. Usually shorter. A constant buffeting wind better off in the GENERAL or TURBULENT category."
+   ],
+   "synonyms": [
+    "Blast",
+    "Blow",
+    "Blustery",
+    "Breeze",
+    "Breezy",
+    "Buffet",
+    "Buffeting",
+    "Crosswind",
+    "Downwind",
+    "Flurry",
+    "Gale",
+    "Gales",
+    "Gust",
+    "Gustation",
+    "Gusting",
+    "Gusts",
+    "Gusty",
+    "Headwind",
+    "Rush",
+    "Strong",
+    "Waft",
+    "Whirlwinds",
+    "Wind",
+    "Wisps",
+    "Zephyr"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 120.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 4.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.47,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.8,
+      "deviation": 2.399,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 1.2,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.17,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 750.0,
+      "deviation": 450.0,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 120.0,
+      "deviation": 350.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.3,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.52,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.17,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Mined straight from the UCS text: 'more singular gusts or buffets, accents to cut into other winds. Usually shorter. A constant buffeting wind better off in the GENERAL or TURBULENT category.' The test is therefore the ENVELOPE, not the timbre — a gust is a single slow rise-fall swell (hence morphology 'sweep': a noise band whose energy and centroid trace one arc), not a bed.",
+     "Against WIND-GENERAL: stationarity collapses (~0.45 vs ~0.80), spectral_flux roughly triples (~0.17 vs ~0.06), spectral_centroid_deviation_hz roughly triples (the wind gets brighter as it accelerates), sustain_ratio halves, and the file is seconds rather than a minute-plus.",
+     "Against WIND-TURBULENT: both are non-stationary, but turbulence buffets CONTINUOUSLY and loudly for a long stretch; a gust is a discrete accent that starts and stops. Duration and sustain_ratio are the split.",
+     "Against AIR-BLOW: a blow is a driven nozzle flow with a fast onset and a flat plateau; a gust builds and dies over seconds and is LF-weighted."
+    ],
+    "confusable_with": [
+     "WIND",
+     "WINDTurb",
+     "WINDVege",
+     "AIRBlow",
+     "WINDInt"
+    ]
+   }
+  },
+  {
+   "subcategory": "INTERIOR",
+   "category_id": "WINDInt",
+   "category_short": "WIND",
+   "emoji": "🌬️",
+   "explanation": [
+    "Interior wind",
+    "through window",
+    "or crack in door. Wind through chimney or vent pipe",
+    "but see also WIND-TONAL for overtly tonal winds and whistles."
+   ],
+   "synonyms": [
+    "Abandoned",
+    "Breeze",
+    "Current",
+    "Door",
+    "Draft",
+    "Gust",
+    "House",
+    "Interior",
+    "Moan",
+    "Whistle",
+    "Window"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 4500.0,
+      "deviation": 2500.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.17,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 450.0,
+      "deviation": 300.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 2200.0,
+      "deviation": 1400.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -32.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.28,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.75,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 40.0,
+      "deviation": 40.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.42,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Wind heard THROUGH a building. The structure is a low-pass filter and an attenuator, so the signature is LP + QUIET + NARROW: band_limit_high_hz falls to a few kHz, low_band_energy rises to ~0.50, root_mean_square_level drops to ~0.05, and the image collapses (stereo_width ~0.30). That triple is the real handle.",
+     "Against WIND-GENERAL (exterior): exterior wind keeps its HF and its wide image. Interior wind cannot.",
+     "The UCS text defers the tonal cases explicitly — 'see also WIND-TONAL for overtly tonal winds and whistles' — so if harmonicity climbs past ~0.5 (a moan through a chimney or a whistle at a window crack), prefer WIND-TONAL even though the bed is LP-filtered."
+    ],
+    "confusable_with": [
+     "WIND",
+     "WINDTonl",
+     "WINDGust",
+     "WINDDsgn"
+    ]
+   }
+  },
+  {
+   "subcategory": "TONAL",
+   "category_id": "WINDTonl",
+   "category_short": "WIND",
+   "emoji": "🌬️",
+   "explanation": [
+    "Wind howls",
+    "wind in wires",
+    "wind whistles",
+    "overtly tonal winds."
+   ],
+   "synonyms": [
+    "Harmonic",
+    "Howl",
+    "Howling",
+    "Moan",
+    "Moaning",
+    "Roar",
+    "Singing",
+    "Tonal",
+    "Wail",
+    "Whistle"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.22,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 420.0,
+      "deviation": 320.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 5.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 400.0,
+      "deviation": 300.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.68,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 15.0,
+      "deviation": 15.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.09,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The one WIND subcategory DSP owns outright, and it is a clean physical story: a howl, or wind singing in wires, is an AEOLIAN TONE — vortex shedding locks onto a resonance and the noise band grows a pitch. So harmonicity lifts off the floor (gated >= 0.30, expected ~0.62) and spectral_flatness collapses to ~0.22, while every other wind sits at 0.5 or above and is gated OUT at harmonicity 0.60. The two gates are complementary; the pair is genuinely non-overlapping.",
+     "The tone WANDERS (spectral_centroid_deviation_hz stays high) and is often inharmonic — an edge tone, not a played note — which is what separates it from a horn, a drone or a motor whine.",
+     "WIND-INTERIOR often carries a mild moan; the boundary is harmonicity, and UCS's own text routes the overtly tonal cases here."
+    ],
+    "confusable_with": [
+     "WIND",
+     "WINDInt",
+     "WINDGust",
+     "WINDDsgn"
+    ]
+   }
+  },
+  {
+   "subcategory": "TURBULENT",
+   "category_id": "WINDTurb",
+   "category_short": "WIND",
+   "emoji": "🌬️",
+   "explanation": [
+    "Extremely violent wind",
+    "big buffeting",
+    "huge storm winds. Possible overlap with NATURAL DISASTER-TORNADO or WEATHER-STORM."
+   ],
+   "synonyms": [
+    "Buffet",
+    "Choppy",
+    "Devil",
+    "Dust",
+    "Gale",
+    "Hurricane",
+    "Microburst",
+    "Slipstream",
+    "Squall",
+    "Stormy",
+    "Strong",
+    "Tempest",
+    "Tornado",
+    "Turbulence",
+    "Turbulent",
+    "Twister",
+    "Typhoon",
+    "Unsteady",
+    "Violent",
+    "Vortex",
+    "Whirlwind"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 1800.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.28,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -14.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 600.0,
+      "deviation": 400.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -9.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.16,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 600.0,
+      "deviation": 380.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 60.0,
+      "deviation": 60.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.17,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.2,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "clipping_density",
+      "mean": 0.005,
+      "deviation": 0.01,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Violent wind is the LOUD, LOW, RESTLESS corner of the wind space: root_mean_square_level roughly double WIND-GENERAL, low_band_energy ~0.55 (a storm's energy is in the big eddies), and a permanently churning spectrum (spectral_flux ~0.16, stationarity ~0.55) — but SUSTAINED, not a single accent.",
+     "Against WIND-GUST: same non-stationarity, opposite time scale. A gust is one rise-fall of a few seconds with a low sustain_ratio; turbulence buffets continuously for a minute or more.",
+     "Against WIND-GENERAL: a matter of degree on level and LF weight, not of kind. Honestly narrowable, not separable.",
+     "UCS notes the overlap with NATURAL DISASTER-TORNADO and WEATHER-STORM; signal cannot resolve those."
+    ],
+    "confusable_with": [
+     "WIND",
+     "WINDGust",
+     "WINDVege",
+     "WINDDsgn"
+    ]
+   }
+  },
+  {
+   "subcategory": "VEGETATION",
+   "category_id": "WINDVege",
+   "category_short": "WIND",
+   "emoji": "🌬️",
+   "explanation": [
+    "Wind through foliage",
+    "vegetation",
+    "grass",
+    "trees",
+    "leaves",
+    "plants."
+   ],
+   "synonyms": [
+    "Bending",
+    "Blowing",
+    "Branches",
+    "Foliage",
+    "Grass",
+    "Leaf",
+    "Leaves",
+    "Plant",
+    "Rustle",
+    "Rustling",
+    "Soughing",
+    "Swaying",
+    "Tree",
+    "Trees",
+    "Vegetation",
+    "Whispering",
+    "Wind"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 1800.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.55
+     }
+    ],
+    "priors": [
+     {
+      "feature": "high_band_energy",
+      "mean": 0.52,
+      "deviation": 0.17,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.14,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3400.0,
+      "deviation": 1800.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000.0,
+      "deviation": 3500.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -3.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 22.0,
+      "deviation": 15.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 40.0,
+      "deviation": 40.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "You are not hearing the wind — you are hearing the LEAVES. Rustle is a dense stochastic micro-transient texture, so the spectral tilt INVERTS relative to every other wind: high_band_energy ~0.52 and spectral_centroid_hz ~3.4 kHz, against low_band_energy ~0.42 and ~900 Hz for WIND-GENERAL. onset_rate_per_second is high (~22/s) while onset_periodicity stays near zero: dense, but not rhythmic.",
+     "That LF/HF inversion is the whole discriminator against the air-only winds, and it is real.",
+     "Against RAIN-type textures: identical morphology and a similar tilt. Only semantics finish it."
+    ],
+    "confusable_with": [
+     "WIND",
+     "WINDGust",
+     "WINDTurb",
+     "WINDDsgn"
+    ]
+   }
+  }
+ ]
+}

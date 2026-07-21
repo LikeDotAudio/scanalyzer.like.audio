@@ -1,0 +1,610 @@
+{
+  "version": "8.2.APK",
+  "category": "KEYBOARD",
+  "emoji": "🪗",
+  "subcategories": [
+    {
+      "subcategory": "ELECTRIC PIANO",
+      "category_id": "KEYBEp",
+      "category_short": "KEYB",
+      "emoji": "🎹",
+      "explanation": [
+        "Electromechanical piano \u2014 Rhodes-style tine or Wurlitzer-style reed struck by hammers and amplified through a pickup.",
+        "Bell-like attack that blooms into a warm, sustaining body with a gentle decay while the key is held."
+      ],
+      "synonyms": [
+        "Electric Piano",
+        "Rhodes",
+        "Wurlitzer",
+        "Wurli",
+        "EP",
+        "Tine",
+        "Suitcase",
+        "Fender Rhodes",
+        "Reed Piano",
+        "Stage Piano",
+        "e-piano",
+        "epiano"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.82,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.82,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 260.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 260.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 800.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 800.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.012,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.012,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1.5,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.45,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "ORGAN",
+      "category_id": "KEYBOrg",
+      "category_short": "KEYB",
+      "emoji": "🎹",
+      "explanation": [
+        "Organ \u2014 tonewheel (Hammond), pipe, or combo organ producing a continuous, sustained tone with no decay while the key is held.",
+        "Rich drawbar-summed harmonics, often colored by a Leslie rotary speaker."
+      ],
+      "synonyms": [
+        "Organ",
+        "Hammond",
+        "B3",
+        "Pipe Organ",
+        "Combo Organ",
+        "Drawbar",
+        "Leslie",
+        "Tonewheel",
+        "Church Organ",
+        "Farfisa",
+        "Vox",
+        "ORG"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.9,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.9,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.88,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.88,
+              "reasoned_deviation_before_calibration": 0.12
+            }
+          },
+          {
+            "feature": "envelope_decay_seconds",
+            "mean": 3.0,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 3.0,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 260.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 260.0,
+              "reasoned_deviation_before_calibration": 2.4
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 900.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 900.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.02,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.02,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "HARPSICHORD",
+      "category_id": "KEYBHpsi",
+      "category_short": "KEYB",
+      "emoji": "🎵",
+      "explanation": [
+        "Harpsichord \u2014 a keyboard whose strings are plucked by plectra, giving a bright, twangy attack and a short, quick decay.",
+        "Includes related plucked/struck-string keyboards: virginal, spinet, clavichord, and regal."
+      ],
+      "synonyms": [
+        "Harpsichord",
+        "Clavichord",
+        "Virginal",
+        "Spinet",
+        "Regal",
+        "Cembalo",
+        "Harpsi"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 12.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1800.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.72,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.72,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.005,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.005,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 330.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 330.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "CLAVINET",
+      "category_id": "KEYBClav",
+      "category_short": "KEYB",
+      "emoji": "🪗",
+      "explanation": [
+        "Clavinet \u2014 an electric keyboard whose strings are struck by rubber tips and amplified, producing a bright, funky, tightly plucked tone.",
+        "Percussive attack with a fast decay; the signature of clav-driven funk."
+      ],
+      "synonyms": [
+        "Clavinet",
+        "Clav",
+        "Clavi",
+        "Hohner Clavinet",
+        "D6",
+        "Funk Clav"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 10.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1600.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.004,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.35,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.35,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.75,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.75,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 220.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 220.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "ACCORDION",
+      "category_id": "KEYBAcrd",
+      "category_short": "KEYB",
+      "emoji": "🪗",
+      "explanation": [
+        "Free-reed bellows keyboard \u2014 accordion, harmonium, melodica, and concertina \u2014 sustained by air driven across metal reeds.",
+        "A continuous, reedy tone that holds without decay for as long as the bellows or breath supply air."
+      ],
+      "synonyms": [
+        "Accordion",
+        "Harmonium",
+        "Melodica",
+        "Organetto",
+        "Concertina",
+        "Bandoneon",
+        "Squeezebox",
+        "Free Reed"
+      ],
+      "acoustic_signature": {
+        "morphology": "sustained_tonal",
+        "separability": "signal_narrowable",
+        "gates": [],
+        "priors": [
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.85,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.85,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.82,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.82,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1200.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1200.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 300.0,
+            "deviation": 2.4,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 300.0,
+              "reasoned_deviation_before_calibration": 2.4
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.03,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.4,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.03,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "CELESTA",
+      "category_id": "KEYBCele",
+      "category_short": "KEYB",
+      "emoji": "🪗",
+      "explanation": [
+        "Celesta \u2014 a keyboard that drives hammers onto tuned metal bars over resonators, producing a glassy, bell-like tone.",
+        "Bright, pure attack with a ringing metallic decay; includes the related dulcitone."
+      ],
+      "synonyms": [
+        "Celesta",
+        "Celeste",
+        "Dulcitone",
+        "Bell Piano",
+        "Keyed Glockenspiel"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 12.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 2600.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.35,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.004,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.2,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1.2,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 1046.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1046.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "KEYBMisc",
+      "category_short": "KEYB",
+      "emoji": "🪗",
+      "explanation": [
+        "A keyboard instrument (other than the acoustic piano) that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Keyboard",
+        "Keys",
+        "Keyed Instrument",
+        "Keyboards",
+        "KB",
+        "keyb"
+      ],
+      "acoustic_signature": {
+        "morphology": "complex",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

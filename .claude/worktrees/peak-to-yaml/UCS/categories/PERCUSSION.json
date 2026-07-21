@@ -1,0 +1,689 @@
+{
+  "version": "8.2.APK",
+  "category": "PERCUSSION",
+  "emoji": "🪘",
+  "subcategories": [
+    {
+      "subcategory": "SHAKER",
+      "category_id": "PERCShak",
+      "category_short": "PERC",
+      "emoji": "🪇",
+      "explanation": [
+        "Shaken idiophone \u2014 maraca, shaker, cabasa, shekere, or a fistful of sand.",
+        "A granular burst of high-frequency noise with no clear pitch; the sound of many small particles."
+      ],
+      "synonyms": [
+        "Shaker",
+        "Maraca",
+        "Maracas",
+        "Cabasa",
+        "Shekere",
+        "Sand",
+        "Sandblock",
+        "Chekere",
+        "Egg Shaker",
+        "caxixi",
+        "shkr",
+        "SHK",
+        "shak"
+      ],
+      "acoustic_signature": {
+        "morphology": "granular",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 4.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 6000.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 6000.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.65,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.65,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.1,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.25,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.4,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.25,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "TAMBOURINE",
+      "category_id": "PERCTamb",
+      "category_short": "PERC",
+      "emoji": "🪇",
+      "explanation": [
+        "Tambourine \u2014 a frame hung with metal jingles that shimmer when struck or shaken.",
+        "A bright metallic shimmer layered over the thud or slap of the frame."
+      ],
+      "synonyms": [
+        "Tambourine",
+        "Jingle",
+        "Jingles",
+        "Zills",
+        "Tambo",
+        "Timbrel",
+        "Riq",
+        "tamb",
+        "TMB"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 4.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 5500.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 5500.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.6,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.6,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.4,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.35,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.35,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "WOODBLOCK",
+      "category_id": "PERCWood",
+      "category_short": "PERC",
+      "emoji": "🔒",
+      "explanation": [
+        "Woodblock / temple block \u2014 a hollow wooden idiophone giving a sharp, dry clop.",
+        "Short and impulsive with a mid-range, quickly-damped body."
+      ],
+      "synonyms": [
+        "Woodblock",
+        "Wood Block",
+        "Temple Block",
+        "Wood",
+        "Clop",
+        "Block",
+        "claves",
+        "clave",
+        "castanet",
+        "WB",
+        "CLV",
+        "clav"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 3.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1400.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.004,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.004,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.12,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.12,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.35,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.35,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 8.0,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.4,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 8.0,
+              "reasoned_deviation_before_calibration": 1.6
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "CLAVE",
+      "category_id": "PERCClav",
+      "category_short": "PERC",
+      "emoji": "🪘",
+      "explanation": [
+        "Claves \u2014 two hardwood sticks struck together for a bright, short tonal click.",
+        "Highly impulsive with a clear woody pitch and almost no tail."
+      ],
+      "synonyms": [
+        "Clave",
+        "Claves",
+        "Stick",
+        "Sticks",
+        "Click",
+        "Rimclick"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 2.5
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2500.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 2500.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.55,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "length_seconds",
+            "mean": 0.08,
+            "deviation": 2.5,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.08,
+              "reasoned_deviation_before_calibration": 2.5
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.003,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.003,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "crest_factor",
+            "mean": 9.0,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 9.0,
+              "reasoned_deviation_before_calibration": 1.6
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "GUIRO",
+      "category_id": "PERCGuir",
+      "category_short": "PERC",
+      "emoji": "🪘",
+      "explanation": [
+        "Guiro \u2014 a scraped, notched gourd (or washboard/ratchet) producing a rasping friction sound.",
+        "Sustained, noisy rasp with a granular, ratcheting texture from the scrape."
+      ],
+      "synonyms": [
+        "Guiro",
+        "Scrape",
+        "Scraper",
+        "Washboard",
+        "Ratchet",
+        "Rasp",
+        "Reco-Reco",
+        "cuica",
+        "GUI"
+      ],
+      "acoustic_signature": {
+        "morphology": "friction",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 6.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.55,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.55,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 3500.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 3500.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.5,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.1,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.1,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "onset_rate_per_second",
+            "mean": 12.0,
+            "deviation": 2.0,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 12.0,
+              "reasoned_deviation_before_calibration": 2.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "COWBELL",
+      "category_id": "PERCCowb",
+      "category_short": "PERC",
+      "emoji": "🔔",
+      "explanation": [
+        "Cowbell / agogo \u2014 a struck metal bell with a ringing, clangy mid-high tone.",
+        "Inharmonic with a short metallic tail; the classic salsa and dance-track accent."
+      ],
+      "synonyms": [
+        "Cowbell",
+        "Agogo",
+        "Block Bell",
+        "Bell",
+        "Clang",
+        "Bongo Bell",
+        "cow bell",
+        "CB",
+        "COW",
+        "cbell"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 4.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2800.0,
+            "deviation": 1.7,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 2800.0,
+              "reasoned_deviation_before_calibration": 1.7
+            }
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.7,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.3,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.3,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "mid_band_energy",
+            "mean": 0.55,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.55,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.2,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.2,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "TRIANGLE",
+      "category_id": "PERCTri",
+      "category_short": "PERC",
+      "emoji": "📐",
+      "explanation": [
+        "Triangle \u2014 a struck metal rod giving a very high, bright ting with a long shimmering ring.",
+        "Extremely high spectral centroid, inharmonic partials, and a long metallic decay."
+      ],
+      "synonyms": [
+        "Triangle",
+        "Ting",
+        "Ding"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 8.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 8000.0,
+            "deviation": 1.6,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 8000.0,
+              "reasoned_deviation_before_calibration": 1.6
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1.5,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "inharmonicity",
+            "mean": 0.75,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.75,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.7,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.7,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.15,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.15,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "PERCMisc",
+      "category_short": "PERC",
+      "emoji": "🪘",
+      "explanation": [
+        "An unpitched idiophone / hand percussion instrument that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Percussion",
+        "Perc",
+        "Idiophone",
+        "Hand Percussion",
+        "Aux Perc",
+        "wind chime",
+        "chime",
+        "sleigh bell",
+        "hand bell",
+        "bell",
+        "auxiliary",
+        "PRC",
+        "slap",
+        "drum",
+        "DRM"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

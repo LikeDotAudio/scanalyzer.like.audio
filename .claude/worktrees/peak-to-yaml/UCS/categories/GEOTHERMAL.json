@@ -1,0 +1,699 @@
+{
+ "version": "8.2.1",
+ "category": "GEOTHERMAL",
+ "emoji": "♨️",
+ "subcategories": [
+  {
+   "subcategory": "FUMAROLE",
+   "category_id": "GEOFuma",
+   "category_short": "GEO",
+   "emoji": "♨️",
+   "explanation": [
+    "Geothermal steam vent. A hole",
+    "crack or fizzure releasing gases."
+   ],
+   "synonyms": [
+    "Fissure",
+    "Fumarole",
+    "Fumarolic",
+    "Gaseous",
+    "Geothermal",
+    "Hydrothermal",
+    "Solfatara",
+    "Steam",
+    "Steam Vent",
+    "Stufa",
+    "Sulfur",
+    "Sulphur",
+    "Thermal",
+    "Vent",
+    "Venthole",
+    "Vents",
+    "Volcanic",
+    "Yellowstone"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "stationarity",
+      "mean": 0.8,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.72,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.3,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'A hole, crack or fissure releasing gases.' The purest sustained_noise in this file: stationary, flat, smooth and long, with a low-frequency ground rumble under a broadband steam hiss.",
+     "Signal-identical to AIR-HISS, WATER-STEAM and FIRE-GAS. No DSP separates a fumarole from a compressed-air leak. The weak cues are the low-frequency bed (low_band_energy well above a pneumatic hiss) and an open-air reverberant tail. Do not assert without name evidence (Fumarole, Vent, Sulphur, Geothermal, Yellowstone).",
+     "Against GEYSER: a vent has no envelope. A geyser erupts — an onset ramp, a peak and a decay, so stationarity drops and spectral_flux rises."
+    ],
+    "confusable_with": [
+     "WATRStm",
+     "AIRHiss",
+     "FIREGas",
+     "GEOGeyser",
+     "AMBAir"
+    ]
+   }
+  },
+  {
+   "subcategory": "GEYSER",
+   "category_id": "GEOGeyser",
+   "category_short": "GEO",
+   "emoji": "♨️",
+   "explanation": [
+    "Geysers and eruptions",
+    "as you'd find in Yellowstone."
+   ],
+   "synonyms": [
+    "Basin",
+    "Blowhole",
+    "Boil",
+    "Boiling",
+    "Bubble",
+    "Bubbler",
+    "Erupt",
+    "Erupting",
+    "Eruption",
+    "Faithful",
+    "Geiser",
+    "Geothermal",
+    "Geothermic",
+    "Geyser",
+    "Geysir",
+    "Old",
+    "Scalding",
+    "Spout",
+    "Spouter",
+    "Spray",
+    "Strokkur",
+    "Thermal",
+    "Yellowstone"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.65,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 60.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "An eruption has an ENVELOPE; a vent does not. That is the whole separation from FUMAROLE: a geyser ramps in, roars — a steam jet plus dense water-splash micro-events over a low-frequency bed — and decays. Moderate spectral_flux, mid-range stationarity, where a fumarole is flat forever.",
+     "Against MUD POTS: no discrete low-frequency glops. A geyser is a continuous jet; mud pots are sparse impulses.",
+     "Against WATER-TURBULENT and WATER-STEAM: the same water-and-steam physics at the same scale. Text decides (Geyser, Strokkur, Old Faithful, Yellowstone)."
+    ],
+    "confusable_with": [
+     "GEOFuma",
+     "GEOMudpot",
+     "WATRTurb",
+     "WATRStm",
+     "NATDVolc"
+    ]
+   }
+  },
+  {
+   "subcategory": "LAVA",
+   "category_id": "GEOLava",
+   "category_short": "GEO",
+   "emoji": "🌋",
+   "explanation": [
+    "Lava flows",
+    "crackles",
+    "could be some overlap with FIRE",
+    "but overtly lava sounding things go here."
+   ],
+   "synonyms": [
+    "Basaltic",
+    "Basalts",
+    "Calderas",
+    "Cindery",
+    "Crackle",
+    "Craters",
+    "Fireballs",
+    "Flare",
+    "Flow",
+    "Igneous",
+    "Kilauea",
+    "Lava",
+    "Lave",
+    "Magma",
+    "Magmas",
+    "Magmatic",
+    "Molten",
+    "Pumices",
+    "Pyroclastic",
+    "Pyroclasts",
+    "Viscous",
+    "Volcan",
+    "Volcanically",
+    "Volcaniclastic",
+    "Volcanics",
+    "Volcano",
+    "Volcanoes",
+    "Volcanos",
+    "Vulcanian",
+    "Vulcanic",
+    "Vulcanism",
+    "Yellowstone"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A viscous low-frequency flow bed carrying sparse, irregular crackles and pops (low onset_periodicity, exactly like FIRE-CRACKLE) as the cooling crust fractures.",
+     "The explanation concedes the problem itself: 'could be some overlap with FIRE, but overtly lava sounding things go here.' That is a TEXT rule, not a DSP one. Acoustically this IS FIRE-CRACKLE sitting on a rumble; the only signal cue is the extra low_band_energy and a lower spectral_centroid_hz, and it is weak.",
+     "Against NATURAL DISASTER-VOLCANO: this is the close-mic'd real recording, that is the loud composite. Signal cannot tell a composite from its source — level and scale are all there is."
+    ],
+    "confusable_with": [
+     "FIRECrkl",
+     "FIREBurn",
+     "GEOMudpot",
+     "NATDVolc",
+     "LIQMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "GEOMisc",
+   "category_short": "GEO",
+   "emoji": "♨️",
+   "explanation": [
+    "Geothermal sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Bubbling",
+    "Geotherm",
+    "Geothermic",
+    "Hot",
+    "Hydroelectric",
+    "Hydroelectricity",
+    "Hydrogeologic",
+    "Hydrogeological",
+    "Hydrogeology",
+    "Hydronic",
+    "Hydropower",
+    "Hydrovolcanic",
+    "Hypothermal",
+    "Pool",
+    "Spring",
+    "Thermal",
+    "Thermic",
+    "Thermodynamic",
+    "Thermoelectric",
+    "Thermogenetic",
+    "Thermogenic",
+    "Thermogenous",
+    "Thermogeological",
+    "Thermological",
+    "Thermosyphon",
+    "Thermosyphons",
+    "Thermotic",
+    "Volcanogenic",
+    "Volcanological",
+    "Yellowstone"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "Catch-all / abstention target. It has no morphology of its own: it is the answer when no sibling in this category wins decisively (spec section 6). No gates and no priors — asserting MISC from positive signal evidence would be incoherent.",
+     "'Geothermal sounds not fitting another category in this list.' Note that the synonym list is dominated by non-acoustic geology jargon (Thermodynamic, Hydrogeological, Volcanogenic, Thermosyphon) — this is a naming bucket, not a sound."
+    ],
+    "confusable_with": [
+     "GEOFuma",
+     "GEOGeyser",
+     "GEOLava",
+     "GEOMudpot"
+    ]
+   }
+  },
+  {
+   "subcategory": "MUD POTS",
+   "category_id": "GEOMudpot",
+   "category_short": "GEO",
+   "emoji": "🟤",
+   "explanation": [
+    "Mudpots and paint pots",
+    "popping liquidy mud sounds."
+   ],
+   "synonyms": [
+    "Bubble",
+    "Bubbling",
+    "Glop",
+    "Gurgling",
+    "Mud",
+    "Paint",
+    "Pit",
+    "Pot",
+    "Tar",
+    "Yellowstone"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 500.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 200.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Popping liquidy mud sounds.' The DARK counterpart of FIRE-CRACKLE: sparse, high-crest impulses, but with spectral_centroid_hz an order of magnitude LOWER and high_band_energy near zero. A dry wood snap is bright; a mud glop is a damped low-frequency cavity resonance. That band ratio is the real separator.",
+     "Bursting bubbles carry a weak pitched resonance — harmonicity above pure noise and a measurable pitch_hz in the low hundreds (the Minnaert frequency of the cavity). FIRE-CRACKLE has none.",
+     "Signal-identical to WATER-BUBBLES and LIQUID-BUBBLES: the same physics, different mud. Text decides (Mud, Pot, Paint, Glop, Tar)."
+    ],
+    "confusable_with": [
+     "WATRBubl",
+     "LIQBubl",
+     "LIQMvmt",
+     "GEOGeyser",
+     "FIRECrkl"
+    ]
+   }
+  }
+ ]
+}

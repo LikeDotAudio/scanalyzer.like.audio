@@ -1,0 +1,692 @@
+{
+ "version": "8.2.1",
+ "category": "DRAWERS",
+ "emoji": "🗃️",
+ "subcategories": [
+  {
+   "subcategory": "METAL",
+   "category_id": "DRWRMetl",
+   "category_short": "DRWR",
+   "emoji": "🔗",
+   "explanation": [
+    "Metal drawers like on a toolbox."
+   ],
+   "synonyms": [
+    "Cabinet",
+    "Cash",
+    "Chest",
+    "Filing",
+    "Rack",
+    "Register",
+    "Security",
+    "Toolbox",
+    "Workbench"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 22.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.55,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.68,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A drawer is a two-part gesture: a low-crest friction glide (the slide) terminated by an impact (the stop or the close). Energy mid-file, then a transient — that is what separates any DRWR from a plain IMPACT subcategory, and the short travel separates it from DOORSlid, which runs for seconds.",
+     "Metal is the material axis: a toolbox or filing drawer rings and rattles after it stops (decay_time_seconds_60db ~0.5 s, high inharmonicity), where DRWRWood thuds dead in ~0.1 s. Ball-bearing slides also add a bright, gritty, high-centroid rumble that wood runners lack."
+    ],
+    "confusable_with": [
+     "DRWRWood",
+     "DRWRPlas",
+     "DOORMetl"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "DRWRMisc",
+   "category_short": "DRWR",
+   "emoji": "🗃️",
+   "explanation": [
+    "Drawer sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The abstention target for DRAWERS: a drawer sound the material subcategories reject. No gates, by design.",
+     "If a material is identifiable, one of DRWRWood / DRWRMetl / DRWRPlas should win instead."
+    ],
+    "confusable_with": [],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 133,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Drawer_open_or_close": 133
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 130,
+       "percentile_05": 2191.0,
+       "median": 3898.4,
+       "percentile_95": 5846.4
+      },
+      "crest_factor": {
+       "clips": 34,
+       "percentile_05": 9.0479,
+       "median": 22.198,
+       "percentile_95": 52.018,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 27,
+       "percentile_05": 0.16488,
+       "median": 0.43434,
+       "percentile_95": 0.80433,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 34,
+       "percentile_05": 0.0099773,
+       "median": 0.15465,
+       "percentile_95": 4.1705,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 34,
+       "percentile_05": 0.11474,
+       "median": 0.22449,
+       "percentile_95": 0.55873,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 34,
+       "percentile_05": 4.1141,
+       "median": 41.701,
+       "percentile_95": 259.96,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 34,
+       "percentile_05": 0.049887,
+       "median": 0.12971,
+       "percentile_95": 0.98277,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 34,
+       "percentile_05": 2.2518,
+       "median": 5.7264,
+       "percentile_95": 14.795,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 34,
+       "percentile_05": 0.0,
+       "median": 0.011559,
+       "percentile_95": 0.12988,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 34,
+       "percentile_05": 0.11868,
+       "median": 0.57494,
+       "percentile_95": 0.81011,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 133,
+       "percentile_05": 0.098942,
+       "median": 0.44564,
+       "percentile_95": 0.90782
+      },
+      "high_band_energy": {
+       "clips": 133,
+       "percentile_05": 0.15518,
+       "median": 0.4342,
+       "percentile_95": 0.75045
+      },
+      "inharmonicity": {
+       "clips": 133,
+       "percentile_05": 0.014937,
+       "median": 0.44019,
+       "percentile_95": 0.67002
+      },
+      "low_band_energy": {
+       "clips": 133,
+       "percentile_05": 0.013212,
+       "median": 0.11356,
+       "percentile_95": 0.36501
+      },
+      "mid_band_energy": {
+       "clips": 133,
+       "percentile_05": 0.1762,
+       "median": 0.40261,
+       "percentile_95": 0.55272
+      },
+      "onset_periodicity": {
+       "clips": 133,
+       "percentile_05": 0.0045135,
+       "median": 0.21326,
+       "percentile_95": 0.39174
+      },
+      "onset_rate_per_second": {
+       "clips": 133,
+       "percentile_05": 0.11423,
+       "median": 0.68572,
+       "percentile_95": 2.6596
+      },
+      "partial_count": {
+       "clips": 127,
+       "percentile_05": 1.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 42,
+       "percentile_05": 65.625,
+       "median": 630.0,
+       "percentile_95": 1696.2
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 133,
+       "percentile_05": 552.13,
+       "median": 1302.9,
+       "percentile_95": 2890.8
+      },
+      "spectral_centroid_hz": {
+       "clips": 130,
+       "percentile_05": 1710.9,
+       "median": 3011.7,
+       "percentile_95": 6743.6
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 133,
+       "percentile_05": 1504.9,
+       "median": 3169.4,
+       "percentile_95": 6695.1
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 133,
+       "percentile_05": -1124.5,
+       "median": 13.659,
+       "percentile_95": 3313.9
+      },
+      "spectral_entropy": {
+       "clips": 133,
+       "percentile_05": 0.21736,
+       "median": 0.43771,
+       "percentile_95": 0.63315
+      },
+      "spectral_flatness": {
+       "clips": 133,
+       "percentile_05": 0.057686,
+       "median": 0.21465,
+       "percentile_95": 0.59519
+      },
+      "spectral_flux": {
+       "clips": 133,
+       "percentile_05": 0.19261,
+       "median": 0.22457,
+       "percentile_95": 0.23344
+      },
+      "spectral_rolloff_hz": {
+       "clips": 130,
+       "percentile_05": 3041.7,
+       "median": 6700.9,
+       "percentile_95": 14722.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 133,
+       "percentile_05": -7.5031,
+       "median": -5.1162,
+       "percentile_95": -1.3523
+      },
+      "stationarity": {
+       "clips": 133,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.31109,
+       "censored_at_floor_fraction": 0.88
+      },
+      "sustain_ratio": {
+       "clips": 34,
+       "percentile_05": 0.0024793,
+       "median": 0.022346,
+       "percentile_95": 0.095238,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 131,
+       "percentile_05": 0.11339,
+       "median": 0.26853,
+       "percentile_95": 0.38734
+      },
+      "transient_count": {
+       "clips": 133,
+       "percentile_05": 1.0,
+       "median": 3.0,
+       "percentile_95": 10.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 133,
+       "percentile_05": 299.42,
+       "median": 2144.4,
+       "percentile_95": 7733.4
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "PLASTIC",
+   "category_id": "DRWRPlas",
+   "category_short": "DRWR",
+   "emoji": "🧴",
+   "explanation": [
+    "Plastic drawers",
+    "maybe on a parts bin."
+   ],
+   "synonyms": [
+    "Art",
+    "Bin",
+    "Classroom",
+    "Craft",
+    "Desk",
+    "Garage",
+    "Makeup",
+    "Organizer",
+    "Parts",
+    "Plastic",
+    "Rolling",
+    "Stackable",
+    "Storage",
+    "Supply"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 22.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.05,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A drawer is a two-part gesture: a low-crest friction glide (the slide) terminated by an impact (the stop or the close). Energy mid-file, then a transient — that is what separates any DRWR from a plain IMPACT subcategory, and the short travel separates it from DOORSlid, which runs for seconds.",
+     "Plastic is the deadest material here: essentially no ring (decay_time_seconds_60db under 0.1 s), thin low_band_energy, and a scratchy plastic-on-plastic runner. Quieter and lighter than both DRWRWood and DRWRMetl."
+    ],
+    "confusable_with": [
+     "DRWRWood",
+     "DRWRMetl",
+     "DOORPlas"
+    ]
+   }
+  },
+  {
+   "subcategory": "WOOD",
+   "category_id": "DRWRWood",
+   "category_short": "DRWR",
+   "emoji": "🪵",
+   "explanation": [
+    "Kitchen drawers",
+    "bathroom drawers. Most drawers would probably fall into this category."
+   ],
+   "synonyms": [
+    "Bathroom",
+    "Bedroom",
+    "Buffet",
+    "Desk",
+    "Drawer",
+    "Dresser",
+    "Kitchen",
+    "Nightstand"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 22.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.48,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.32,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A drawer is a two-part gesture: a low-crest friction glide (the slide) terminated by an impact (the stop or the close). Energy mid-file, then a transient — that is what separates any DRWR from a plain IMPACT subcategory, and the short travel separates it from DOORSlid, which runs for seconds.",
+     "Wood damps: the closing thunk dies in ~0.1-0.2 s with a mid-band, low-centroid body, versus the ~0.5 s bright ring of DRWRMetl. The runner friction is a dull rumble, not a gritty bearing whirr.",
+     "The default drawer per the explanation, so priors are deliberately broad."
+    ],
+    "confusable_with": [
+     "DRWRMetl",
+     "DRWRPlas",
+     "DOORCab",
+     "WOODFric"
+    ]
+   }
+  }
+ ]
+}

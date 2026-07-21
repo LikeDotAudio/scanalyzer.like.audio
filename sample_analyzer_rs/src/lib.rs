@@ -51,6 +51,8 @@ pub mod decode;
 pub mod discover;
 #[path = "Scananalyzers/Spectral/distortion.rs"]
 pub mod distortion;
+#[path = "Encoders/db.rs"]
+pub mod db;
 #[path = "Encoders/emit.rs"]
 pub mod emit;
 #[path = "Encoders/manifest.rs"]

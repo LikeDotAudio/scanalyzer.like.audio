@@ -1,0 +1,4478 @@
+{
+ "version": "8.2.1",
+ "category": "VOICES",
+ "emoji": "🗣️",
+ "subcategories": [
+  {
+   "subcategory": "ALIEN",
+   "category_id": "VOXAlien",
+   "category_short": "VOX",
+   "emoji": "👽",
+   "explanation": [
+    "Weird alien vocals here."
+   ],
+   "synonyms": [
+    "Alien",
+    "Chewbacca",
+    "Cosmic",
+    "ET",
+    "Extraterrestrial",
+    "Language",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.4,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A designed/processed vocal: pitch-shifted, formant-warped or layered, so it can land anywhere in feature space. No DSP prior can own it.",
+     "Tends to be more inharmonic and higher-flux than a natural human vocal, but that is a tendency only — the label is authorial intent, not acoustics."
+    ],
+    "confusable_with": [
+     "VOXMisc",
+     "VOXScrm",
+     "VOXFutz",
+     "CRTNVoc"
+    ]
+   }
+  },
+  {
+   "subcategory": "BABY",
+   "category_id": "VOXBaby",
+   "category_short": "VOX",
+   "emoji": "👶",
+   "explanation": [
+    "Very young babies through toddler",
+    "non-word vocals",
+    "cut vocals."
+   ],
+   "synonyms": [
+    "Baba",
+    "Babble",
+    "Bambino",
+    "Coo",
+    "Cooing",
+    "Dada",
+    "Fuss",
+    "Gaga",
+    "Infant",
+    "Infantile",
+    "Little",
+    "Mama",
+    "Newborn",
+    "Nursing",
+    "Nursling",
+    "One",
+    "Snuffle",
+    "Toddler",
+    "Tot",
+    "Tyke",
+    "Vocal",
+    "Vocalization",
+    "Wean"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 150.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 450.0,
+      "deviation": 1.35,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Highest fundamental in the human taxonomy: infant cry f0 typically 400–600 Hz, babble and coos somewhat lower. Pitch above ~350 Hz with strong voicing is the core cue.",
+     "Non-lexical: babble lacks the regular ~4 Hz syllabic train of adult speech, so syllabic_modulation_energy sits below VOICES-MALE/FEMALE.",
+     "f0 distributions genuinely overlap VOICES-CHILD at the boundary — this narrows, it does not decide. Prefer text agreement."
+    ],
+    "confusable_with": [
+     "VOXChld",
+     "VOXCry",
+     "VOXScrm",
+     "CRWDChld"
+    ]
+   }
+  },
+  {
+   "subcategory": "CHEER",
+   "category_id": "VOXCheer",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "A single person cheering. For a group use CROWDS-CHEERING."
+   ],
+   "synonyms": [
+    "Acclaim",
+    "Acclamation",
+    "Bravo",
+    "Celebrating",
+    "Cheer",
+    "Cheering",
+    "Commendation",
+    "Encouraging",
+    "Holler",
+    "Hollering",
+    "Horray",
+    "Hurrah",
+    "Huzzah",
+    "Kudos",
+    "Ovation",
+    "Rooting",
+    "Shout",
+    "Supporting",
+    "Vocal",
+    "Vocalization",
+    "Woohoo",
+    "Yay",
+    "Yelling"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 120.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 260.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.16,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.56,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS rule: a SINGLE person cheering; the group is CROWDS-CHEERING. The signal cue for 'single' is a clean single-f0 track with a narrow stereo image, not the smeared multi-talker bed of a crowd.",
+     "Loud and voiced but shorter and less strained than VOICES-SCREAM, which shows rough phonation (high inharmonicity) and a higher f0.",
+     "Contains no dense unvoiced impulse train, which is what distinguishes it from CROWDS-APPLAUSE."
+    ],
+    "confusable_with": [
+     "CRWDCheer",
+     "VOXScrm",
+     "VOXReac",
+     "VOXEfrt"
+    ]
+   }
+  },
+  {
+   "subcategory": "CHILD",
+   "category_id": "VOXChld",
+   "category_short": "VOX",
+   "emoji": "🧒",
+   "explanation": [
+    "Various vocals for a child or a teenager. For non-discernible vocals for a very young child use VOICES-BABY."
+   ],
+   "synonyms": [
+    "Adolescent",
+    "Child",
+    "Children",
+    "Juvenile",
+    "Kid",
+    "Minor",
+    "One",
+    "Preteen",
+    "Pubescent",
+    "Teen",
+    "Toddler",
+    "Tween",
+    "Vocal",
+    "Vocalization",
+    "Young",
+    "Youngling",
+    "Youngster",
+    "Youth"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 600.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 324.26471,
+      "deviation": 1.3,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 126,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 1.29018,
+       "reasoned_mean": 300.0,
+       "reasoned_deviation": 1.3,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.21043,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 122,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.15715,
+       "reasoned_mean": 0.52,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.61733,
+      "deviation": 0.24644,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.24644,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2653.49459,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 1.37098,
+       "reasoned_mean": 1400.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.59153,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.14018,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.01057,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 129,
+       "fsd50k_classes": [
+        "Child_speech_and_kid_speaking"
+       ],
+       "measured_deviation": 0.00891,
+       "reasoned_mean": 0.1,
+       "reasoned_deviation": 0.1,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Pre-pubescent and teen f0 ≈ 250–400 Hz — above adult female, below infant cry — carried on the ~4 Hz syllabic modulation of real speech.",
+     "UCS rule: non-discernible vocals from a very young child go to VOICES-BABY. The presence of a lexical syllabic train is the cue that favours CHILD.",
+     "f0 overlaps VOICES-FEMALE at the top of the female range and VOICES-BABY at the bottom of the infant range; treat as a shortlist, not a verdict."
+    ],
+    "confusable_with": [
+     "VOXBaby",
+     "VOXFem",
+     "CRWDChld",
+     "VOXMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CRYING",
+   "category_id": "VOXCry",
+   "category_short": "VOX",
+   "emoji": "😭",
+   "explanation": [
+    "A single person crying."
+   ],
+   "synonyms": [
+    "Bawl",
+    "Bawling",
+    "Bemoan",
+    "Blubber",
+    "Blubbering",
+    "Cry",
+    "Fuss",
+    "Howling",
+    "Lamenting",
+    "Pout",
+    "Sniffling",
+    "Sniveling",
+    "Sob",
+    "Sobbing",
+    "Vocal",
+    "Vocalization",
+    "Wail",
+    "Wailing",
+    "Weep",
+    "Weeping",
+    "Whimper",
+    "Whimpering",
+    "Whining",
+    "Wounded"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 537.8,
+      "deviation": 1.91,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 89,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 471.6645
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.46997,
+      "deviation": 0.2627,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 96,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.50016
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1169.3,
+      "deviation": 616.8,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 96,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1131.45678
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.31288,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 96,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.28084
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.135,
+      "deviation": 1.3,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 96,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.36443
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2665,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 96,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.35
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.14164,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 95,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.19486
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.46736,
+      "deviation": 0.3048,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 96,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.56195
+      }
+     }
+    ],
+    "discriminators": [
+     "Voiced wailing: a strongly modulated pitch contour (large slow f0 excursions) with sobbing breath-catches, giving high brightness and pitch deviation over a long-ish take.",
+     "Less brief and less consistently loud than VOICES-SCREAM, and not the rhythmic pulse train of VOICES-LAUGH, which pulses at ~4–6 /s.",
+     "Whimpering and sniffling drag voicing_ratio down toward HUMAN-SNIFF; the wailing pitch contour is the tiebreak."
+    ],
+    "confusable_with": [
+     "VOXScrm",
+     "VOXBaby",
+     "VOXLaff",
+     "HMNSniff"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 96,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Crying_and_sobbing": 96
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 96,
+       "percentile_05": 1650.9,
+       "median": 3004.4,
+       "percentile_95": 4367.5
+      },
+      "harmonicity": {
+       "clips": 96,
+       "percentile_05": 0.20637,
+       "median": 0.46752,
+       "percentile_95": 0.84002
+      },
+      "high_band_energy": {
+       "clips": 96,
+       "percentile_05": 0.24198,
+       "median": 0.52941,
+       "percentile_95": 0.84043
+      },
+      "inharmonicity": {
+       "clips": 96,
+       "percentile_05": 0.018935,
+       "median": 0.31082,
+       "percentile_95": 0.55905
+      },
+      "low_band_energy": {
+       "clips": 96,
+       "percentile_05": 5.9262e-05,
+       "median": 0.0046434,
+       "percentile_95": 0.098481
+      },
+      "mid_band_energy": {
+       "clips": 96,
+       "percentile_05": 0.15302,
+       "median": 0.46601,
+       "percentile_95": 0.71182
+      },
+      "onset_periodicity": {
+       "clips": 96,
+       "percentile_05": 0.16244,
+       "median": 0.266,
+       "percentile_95": 0.40315
+      },
+      "onset_rate_per_second": {
+       "clips": 96,
+       "percentile_05": 0.36746,
+       "median": 1.1326,
+       "percentile_95": 2.5279
+      },
+      "partial_count": {
+       "clips": 95,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 89,
+       "percentile_05": 256.4,
+       "median": 537.8,
+       "percentile_95": 1696.2
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 96,
+       "percentile_05": 439.79,
+       "median": 1167.7,
+       "percentile_95": 2602.1
+      },
+      "spectral_centroid_hz": {
+       "clips": 96,
+       "percentile_05": 1793.9,
+       "median": 3184.6,
+       "percentile_95": 5637.9
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 96,
+       "percentile_05": 1879.1,
+       "median": 3737.7,
+       "percentile_95": 6068.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 96,
+       "percentile_05": -577.32,
+       "median": 15.381,
+       "percentile_95": 583.18
+      },
+      "spectral_entropy": {
+       "clips": 96,
+       "percentile_05": 0.27054,
+       "median": 0.42473,
+       "percentile_95": 0.61893
+      },
+      "spectral_flatness": {
+       "clips": 96,
+       "percentile_05": 0.021451,
+       "median": 0.14271,
+       "percentile_95": 0.32386
+      },
+      "spectral_flux": {
+       "clips": 96,
+       "percentile_05": 0.18769,
+       "median": 0.22848,
+       "percentile_95": 0.25914
+      },
+      "spectral_rolloff_hz": {
+       "clips": 96,
+       "percentile_05": 2960.1,
+       "median": 5401.0,
+       "percentile_95": 10203.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 96,
+       "percentile_05": -4.5419,
+       "median": -0.58935,
+       "percentile_95": 7.2252
+      },
+      "stationarity": {
+       "clips": 96,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.48188,
+       "censored_at_floor_fraction": 0.615
+      },
+      "syllabic_modulation_energy": {
+       "clips": 95,
+       "percentile_05": 0.043642,
+       "median": 0.14164,
+       "percentile_95": 0.43304
+      },
+      "transient_count": {
+       "clips": 96,
+       "percentile_05": 2.0,
+       "median": 8.0,
+       "percentile_95": 28.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 96,
+       "percentile_05": 1232.0,
+       "median": 3555.3,
+       "percentile_95": 7869.1
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "EFFORTS",
+   "category_id": "VOXEfrt",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "A single fight and vocal efforts",
+    "single grunts",
+    "and things like that. Boxing match vocals",
+    "tennis grunts."
+   ],
+   "synonyms": [
+    "Effort",
+    "Exert",
+    "Exertion",
+    "Exhale",
+    "Gasping",
+    "Grunt",
+    "Grunting",
+    "Heaving",
+    "Inhale",
+    "Panting",
+    "Pushing",
+    "Strain",
+    "Struggle",
+    "Struggling",
+    "Vocal",
+    "Vocalization",
+    "Wheezing"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 438.81,
+      "deviation": 1.985,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 120,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 464.21053
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.29082,
+      "deviation": 0.2822,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 122,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.26534
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45705,
+      "deviation": 0.2768,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 122,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.48036
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.03,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.17177,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 118,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.15883
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2617.6,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 122,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2799.49349
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.55663,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 122,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.556
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2237,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 122,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.41858
+      }
+     }
+    ],
+    "discriminators": [
+     "Short single grunts, exertions and strained exhales: voiced but non-lexical, so voicing is present while the ~4 Hz syllabic train is weak or absent — the opposite of VOICES-MALE dialog.",
+     "Rougher (higher inharmonicity) and much shorter than VOICES-SINGING; lower and less sustained than VOICES-SCREAM.",
+     "Heavy breathing components blur into HUMAN-BREATH; the presence of voicing is the tiebreak."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "VOXScrm",
+     "VOXMale",
+     "VOXReac"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 122,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Shout": 122,
+      "Yell": 82
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 122,
+       "percentile_05": 1700.5,
+       "median": 2931.5,
+       "percentile_95": 4662.2
+      },
+      "harmonicity": {
+       "clips": 122,
+       "percentile_05": 0.19941,
+       "median": 0.45222,
+       "percentile_95": 0.82821
+      },
+      "high_band_energy": {
+       "clips": 122,
+       "percentile_05": 0.18811,
+       "median": 0.42828,
+       "percentile_95": 0.65218
+      },
+      "inharmonicity": {
+       "clips": 122,
+       "percentile_05": 0.025616,
+       "median": 0.2907,
+       "percentile_95": 0.58883
+      },
+      "low_band_energy": {
+       "clips": 122,
+       "percentile_05": 0.0013254,
+       "median": 0.0078974,
+       "percentile_95": 0.066063
+      },
+      "mid_band_energy": {
+       "clips": 122,
+       "percentile_05": 0.32159,
+       "median": 0.5535,
+       "percentile_95": 0.78539
+      },
+      "onset_periodicity": {
+       "clips": 122,
+       "percentile_05": 0.15625,
+       "median": 0.28203,
+       "percentile_95": 0.43895
+      },
+      "onset_rate_per_second": {
+       "clips": 122,
+       "percentile_05": 0.55283,
+       "median": 1.2237,
+       "percentile_95": 3.3851
+      },
+      "partial_count": {
+       "clips": 122,
+       "percentile_05": 4.0,
+       "median": 9.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 120,
+       "percentile_05": 204.17,
+       "median": 436.63,
+       "percentile_95": 1130.8
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 122,
+       "percentile_05": 255.49,
+       "median": 1471.9,
+       "percentile_95": 3570.8
+      },
+      "spectral_centroid_hz": {
+       "clips": 122,
+       "percentile_05": 1425.9,
+       "median": 2605.5,
+       "percentile_95": 4687.7
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 122,
+       "percentile_05": 1624.0,
+       "median": 3463.9,
+       "percentile_95": 6177.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 122,
+       "percentile_05": -1601.3,
+       "median": 0.85553,
+       "percentile_95": 2017.9
+      },
+      "spectral_entropy": {
+       "clips": 122,
+       "percentile_05": 0.30381,
+       "median": 0.44904,
+       "percentile_95": 0.56335
+      },
+      "spectral_flatness": {
+       "clips": 122,
+       "percentile_05": 0.0411,
+       "median": 0.13704,
+       "percentile_95": 0.33733
+      },
+      "spectral_flux": {
+       "clips": 122,
+       "percentile_05": 0.18209,
+       "median": 0.22962,
+       "percentile_95": 0.26267
+      },
+      "spectral_rolloff_hz": {
+       "clips": 122,
+       "percentile_05": 2432.2,
+       "median": 4425.8,
+       "percentile_95": 10014.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 122,
+       "percentile_05": -5.2083,
+       "median": -1.2619,
+       "percentile_95": 1.447
+      },
+      "stationarity": {
+       "clips": 122,
+       "percentile_05": 0.0,
+       "median": 0.025699,
+       "percentile_95": 0.60297,
+       "censored_at_floor_fraction": 0.475
+      },
+      "syllabic_modulation_energy": {
+       "clips": 118,
+       "percentile_05": 0.038402,
+       "median": 0.17112,
+       "percentile_95": 0.41937
+      },
+      "transient_count": {
+       "clips": 122,
+       "percentile_05": 1.0,
+       "median": 4.0,
+       "percentile_95": 20.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 122,
+       "percentile_05": 1370.7,
+       "median": 3437.0,
+       "percentile_95": 8114.7
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "FEMALE",
+   "category_id": "VOXFem",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "Any generic female vocal or dialog or misc vocal that doesn't fit somewhere else."
+   ],
+   "synonyms": [
+    "Chick",
+    "Dame",
+    "Female",
+    "Feminine",
+    "Gal",
+    "Girl",
+    "Lady",
+    "Lass",
+    "Madam",
+    "Miss",
+    "Person",
+    "Vocal",
+    "Vocalization",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 900.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 90.0,
+      "max": 500.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 195.56589,
+      "deviation": 1.28,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 304,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 1.21743,
+       "reasoned_mean": 205.0,
+       "reasoned_deviation": 1.28,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.27485,
+      "deviation": 0.18642,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 312,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.18642,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.61342,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.18938,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4141.39472,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 1.86604,
+       "reasoned_mean": 1100.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.39408,
+      "deviation": 0.24636,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.24636,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.05954,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.04149,
+       "reasoned_mean": 0.14,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 16000.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.27831,
+      "deviation": 0.21049,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 329,
+       "fsd50k_classes": [
+        "Female_speech_and_woman_speaking"
+       ],
+       "measured_deviation": 0.21049,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Adult female f0 ≈ 165–255 Hz with the canonical ~4 Hz syllabic modulation of connected speech — the strongest 'this is speech' cue available anywhere in audio.",
+     "The male and female f0 distributions genuinely overlap (a low alto against a high tenor), so this narrows the field and must not be asserted alone; require text agreement.",
+     "Above VOICES-MALE and below VOICES-CHILD on pitch; full-bandwidth and undistorted, unlike VOICES-FUTZED."
+    ],
+    "confusable_with": [
+     "VOXMale",
+     "VOXChld",
+     "VOXMisc",
+     "VOXSing"
+    ]
+   }
+  },
+  {
+   "subcategory": "FUTZED",
+   "category_id": "VOXFutz",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "P.A. Speakers",
+    "Airport announcements",
+    "Hospital announcements."
+   ],
+   "synonyms": [
+    "Address",
+    "Altered",
+    "Announcement",
+    "Distorted",
+    "Manipulated",
+    "Megaphone",
+    "Modified",
+    "PA",
+    "Phone",
+    "Processed",
+    "Public",
+    "Radio",
+    "Speaker",
+    "Telephone",
+    "TV",
+    "Vocal",
+    "Vocalization",
+    "Walkie-Talkie"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 900.0
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "max": 8000.0
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 3400.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 3000.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.86,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "clipping_density",
+      "mean": 0.02,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A PROCESSING label, not a source: speech that has been band-limited and distorted. The telephone/PA band (roughly 300 Hz–3.4 kHz) is directly visible as a hard band_limit_high_hz with a hollowed low end and near-zero energy above 4 kHz. Catch it confidently.",
+     "It is still speech — voicing and ~4 Hz syllabic modulation stay high — so the band limit plus THD, not the voice itself, is what selects it over VOICES-MALE/FEMALE.",
+     "Distinguish from VOICES-HISTORICAL: archival recordings are also band-limited, but they roll off gradually with a high noise floor rather than showing a clean modern LP-and-distortion chain."
+    ],
+    "confusable_with": [
+     "VOXHist",
+     "VOXMale",
+     "VOXFem",
+     "VOXAlien"
+    ]
+   }
+  },
+  {
+   "subcategory": "HISTORICAL",
+   "category_id": "VOXHist",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "For storing famous speeches",
+    "famous news broadcasts",
+    "presidential speeches."
+   ],
+   "synonyms": [
+    "Annoucement",
+    "Broadcast",
+    "Decree",
+    "Edict",
+    "Historical",
+    "Lecture",
+    "Manifesto",
+    "News",
+    "Period",
+    "Proclamation",
+    "Pronouncement",
+    "Speech",
+    "Statement",
+    "Vintage",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "provenance_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 3600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 5000.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 4000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.58,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Defined by provenance — 'famous speeches, famous news broadcasts, presidential speeches' — not by sound. Nothing in the signal says a speech is famous. Excluded from signal scoring; text must drive.",
+     "The only honest signal correlate is the era of the medium: reduced bandwidth (often a 4–6 kHz ceiling), a raised noise floor and mild distortion. A weak hint, never a decision.",
+     "If the band limit is a hard, modern ~3.4 kHz telephone/PA notch with clean distortion, prefer VOICES-FUTZED."
+    ],
+    "confusable_with": [
+     "VOXFutz",
+     "VOXMale",
+     "VOXFem"
+    ]
+   }
+  },
+  {
+   "subcategory": "LAUGH",
+   "category_id": "VOXLaff",
+   "category_short": "VOX",
+   "emoji": "😂",
+   "explanation": [
+    "A single person laughing."
+   ],
+   "synonyms": [
+    "Belly",
+    "Cackle",
+    "Cackling",
+    "Chortle",
+    "Chortling",
+    "Chuckle",
+    "Chuckling",
+    "Funny",
+    "Giggle",
+    "Giggling",
+    "Guffaw",
+    "Guffawing",
+    "Haha",
+    "Holler",
+    "Hoot",
+    "Humor",
+    "Humour",
+    "Hysterical",
+    "Joke",
+    "Laugh",
+    "Laughing",
+    "Maniacal",
+    "Snicker",
+    "Snickering",
+    "Snigger",
+    "Sniggering",
+    "Titter",
+    "Tittering",
+    "Twitter",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.2653,
+      "deviation": 2.035,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 862,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2.33925
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.30177,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 862,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.62
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 464.21,
+      "deviation": 2.137,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 783,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 464.21053
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.45527,
+      "deviation": 0.2589,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 835,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.49277
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.44282,
+      "deviation": 0.2638,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 862,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.44733
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2405.2,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 862,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2351.81995
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The one genuinely measurable vocal rhythm: a periodic train of voiced 'ha' pulses at roughly 4–6 /s. High onset_rate AND high voicing_ratio together is the signature — nothing else in the taxonomy has both.",
+     "CROWDS-APPLAUSE has the onset train but no voicing; VOICES-MALE/FEMALE have the voicing but no impulsive pulse train.",
+     "Single voice: a narrow stereo image and one coherent f0 track, unlike the smeared multi-talker CROWDS-LAUGHTER, whose per-laugher periodicity averages away."
+    ],
+    "confusable_with": [
+     "CRWDLaff",
+     "VOXCry",
+     "VOXReac",
+     "VOXCheer"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 862,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Chuckle_and_chortle": 50,
+      "Giggle": 104,
+      "Laughter": 862
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 862,
+       "percentile_05": 1519.0,
+       "median": 2782.6,
+       "percentile_95": 4152.4
+      },
+      "crest_factor": {
+       "clips": 20,
+       "percentile_05": 1.3863,
+       "median": 5.5606,
+       "percentile_95": 15.225,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 20,
+       "percentile_05": 0.014966,
+       "median": 0.11973,
+       "percentile_95": 0.71837,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 20,
+       "percentile_05": 0.0099773,
+       "median": 0.12472,
+       "percentile_95": 0.39909,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 20,
+       "percentile_05": -1.5204,
+       "median": 1.6291,
+       "percentile_95": 23.31,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 20,
+       "percentile_05": -2.8143,
+       "median": 1.4753,
+       "percentile_95": 4.165,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 20,
+       "percentile_05": 0.0061141,
+       "median": 0.059506,
+       "percentile_95": 0.58035,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 20,
+       "percentile_05": 0.20943,
+       "median": 0.38384,
+       "percentile_95": 0.53737,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 862,
+       "percentile_05": 0.1923,
+       "median": 0.44254,
+       "percentile_95": 0.84183
+      },
+      "high_band_energy": {
+       "clips": 862,
+       "percentile_05": 0.13116,
+       "median": 0.35983,
+       "percentile_95": 0.6475
+      },
+      "inharmonicity": {
+       "clips": 862,
+       "percentile_05": 0.06762,
+       "median": 0.36689,
+       "percentile_95": 0.5794
+      },
+      "low_band_energy": {
+       "clips": 862,
+       "percentile_05": 0.0022047,
+       "median": 0.019642,
+       "percentile_95": 0.17103
+      },
+      "mid_band_energy": {
+       "clips": 862,
+       "percentile_05": 0.32098,
+       "median": 0.59739,
+       "percentile_95": 0.79316
+      },
+      "onset_periodicity": {
+       "clips": 862,
+       "percentile_05": 0.15695,
+       "median": 0.30166,
+       "percentile_95": 0.50419
+      },
+      "onset_rate_per_second": {
+       "clips": 862,
+       "percentile_05": 0.71524,
+       "median": 2.2639,
+       "percentile_95": 5.2817
+      },
+      "partial_count": {
+       "clips": 858,
+       "percentile_05": 3.0,
+       "median": 11.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 783,
+       "percentile_05": 177.82,
+       "median": 464.21,
+       "percentile_95": 1422.6
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 26,
+       "percentile_05": -13.382,
+       "median": -1.0815,
+       "percentile_95": 8.7886
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 862,
+       "percentile_05": 291.72,
+       "median": 1080.0,
+       "percentile_95": 3218.5
+      },
+      "spectral_centroid_hz": {
+       "clips": 862,
+       "percentile_05": 1142.6,
+       "median": 2404.8,
+       "percentile_95": 4103.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 862,
+       "percentile_05": 1442.3,
+       "median": 2994.9,
+       "percentile_95": 5053.0
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 862,
+       "percentile_05": -1778.7,
+       "median": 3.119,
+       "percentile_95": 1370.9
+      },
+      "spectral_entropy": {
+       "clips": 862,
+       "percentile_05": 0.29692,
+       "median": 0.45707,
+       "percentile_95": 0.57796
+      },
+      "spectral_flatness": {
+       "clips": 862,
+       "percentile_05": 0.020492,
+       "median": 0.11434,
+       "percentile_95": 0.30005
+      },
+      "spectral_flux": {
+       "clips": 862,
+       "percentile_05": 0.20744,
+       "median": 0.23455,
+       "percentile_95": 0.27066
+      },
+      "spectral_rolloff_hz": {
+       "clips": 862,
+       "percentile_05": 1743.0,
+       "median": 4152.7,
+       "percentile_95": 8119.6
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 862,
+       "percentile_05": -7.4838,
+       "median": -2.7189,
+       "percentile_95": 0.77282
+      },
+      "stationarity": {
+       "clips": 862,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.43739,
+       "censored_at_floor_fraction": 0.652
+      },
+      "sustain_ratio": {
+       "clips": 20,
+       "percentile_05": 0.0082305,
+       "median": 0.14286,
+       "percentile_95": 0.87342,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 835,
+       "percentile_05": 0.15901,
+       "median": 0.45527,
+       "percentile_95": 0.76602
+      },
+      "transient_count": {
+       "clips": 862,
+       "percentile_05": 2.0,
+       "median": 6.0,
+       "percentile_95": 23.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 862,
+       "percentile_05": 918.07,
+       "median": 2833.3,
+       "percentile_95": 6043.8
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MALE",
+   "category_id": "VOXMale",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "Any generic male vocal or dialog or misc vocal that doesn't fit somewhere else."
+   ],
+   "synonyms": [
+    "Bloke",
+    "Boy",
+    "Brother",
+    "Chap",
+    "Dude",
+    "Fellow",
+    "Gentleman",
+    "Guy",
+    "Male",
+    "Man",
+    "Masculine",
+    "Person",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 900.0
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 55.0,
+      "max": 350.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 187.65957,
+      "deviation": 2.46617,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 185,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 2.46617,
+       "reasoned_mean": 118.0,
+       "reasoned_deviation": 1.28,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.64,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.25074,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 223,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.17239,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.49833,
+      "deviation": 0.22328,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.22328,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2312.98361,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 1.76437,
+       "reasoned_mean": 750.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.55306,
+      "deviation": 0.18189,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.18189,
+       "reasoned_mean": 0.58,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.0982,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.06805,
+       "reasoned_mean": 0.24,
+       "reasoned_deviation": 0.14,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 16000.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.11092,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 269,
+       "fsd50k_classes": [
+        "Male_speech_and_man_speaking"
+       ],
+       "measured_deviation": 0.08291,
+       "reasoned_mean": 0.28,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Adult male f0 ≈ 85–155 Hz, with the ~4 Hz syllabic modulation that marks connected speech; a lower spectral centroid and a bigger sub-200 Hz share than VOICES-FEMALE.",
+     "The male and female f0 distributions overlap in reality — this is a shortlist, not a verdict. Require text agreement before committing.",
+     "Full-bandwidth: a hard ~3.4 kHz ceiling means VOICES-FUTZED instead, whatever the talker."
+    ],
+    "confusable_with": [
+     "VOXFem",
+     "VOXMisc",
+     "VOXEfrt",
+     "VOXSing"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "VOXMisc",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "The Voice category is for single voices. Groups of people go into the CROWDS categories."
+   ],
+   "synonyms": [
+    "Miscellaneous",
+    "Vocal",
+    "Vocalization"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 900.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.23542,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 370,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.23495
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.14,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 285.44,
+      "deviation": 2.771,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 362,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 183.7516
+      }
+     }
+    ],
+    "discriminators": [
+     "The category's abstain target. UCS rule: VOICES is for SINGLE voices — groups belong to CROWDS. A narrow stereo image and a single coherent f0 track are the 'single voice' evidence; a smeared multi-talker bed should route to CROWDS instead.",
+     "Assert only when the file is clearly one human voice but no sibling morphology (laugh, scream, whisper, cry, song) wins."
+    ],
+    "confusable_with": [
+     "VOXMale",
+     "VOXFem",
+     "VOXReac",
+     "CRWDMisc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 418,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Speech": 418
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 418,
+       "percentile_05": 1501.3,
+       "median": 3069.9,
+       "percentile_95": 5359.6
+      },
+      "crest_factor": {
+       "clips": 46,
+       "percentile_05": 1.5963,
+       "median": 6.1683,
+       "percentile_95": 11.473,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 20,
+       "percentile_05": 0.041376,
+       "median": 0.50913,
+       "percentile_95": 1.0738,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 40,
+       "percentile_05": 0.019955,
+       "median": 0.07483,
+       "percentile_95": 0.2644,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 46,
+       "percentile_05": 0.0099773,
+       "median": 0.18458,
+       "percentile_95": 0.43401,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 46,
+       "percentile_05": -1.4367,
+       "median": -0.10872,
+       "percentile_95": 7.0079,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 43,
+       "percentile_05": 0.019955,
+       "median": 0.13469,
+       "percentile_95": 0.38912,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 46,
+       "percentile_05": -0.3637,
+       "median": 0.88337,
+       "percentile_95": 2.7878,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 46,
+       "percentile_05": 0.0027038,
+       "median": 0.17639,
+       "percentile_95": 0.9253,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 46,
+       "percentile_05": 0.11277,
+       "median": 0.31979,
+       "percentile_95": 0.5116,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 418,
+       "percentile_05": 0.22438,
+       "median": 0.5326,
+       "percentile_95": 0.8801
+      },
+      "high_band_energy": {
+       "clips": 418,
+       "percentile_05": 0.13394,
+       "median": 0.40874,
+       "percentile_95": 0.70372
+      },
+      "inharmonicity": {
+       "clips": 418,
+       "percentile_05": 0.031717,
+       "median": 0.29237,
+       "percentile_95": 0.56518
+      },
+      "low_band_energy": {
+       "clips": 418,
+       "percentile_05": 0.0031433,
+       "median": 0.027183,
+       "percentile_95": 0.18868
+      },
+      "mid_band_energy": {
+       "clips": 418,
+       "percentile_05": 0.25541,
+       "median": 0.5527,
+       "percentile_95": 0.80793
+      },
+      "onset_periodicity": {
+       "clips": 418,
+       "percentile_05": 0.11292,
+       "median": 0.27003,
+       "percentile_95": 0.49545
+      },
+      "onset_rate_per_second": {
+       "clips": 418,
+       "percentile_05": 0.7866,
+       "median": 2.2309,
+       "percentile_95": 4.7888
+      },
+      "partial_count": {
+       "clips": 416,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 362,
+       "percentile_05": 85.465,
+       "median": 284.52,
+       "percentile_95": 1130.8
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 418,
+       "percentile_05": 277.86,
+       "median": 1156.0,
+       "percentile_95": 3090.5
+      },
+      "spectral_centroid_hz": {
+       "clips": 418,
+       "percentile_05": 1236.4,
+       "median": 2531.1,
+       "percentile_95": 6327.8
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 418,
+       "percentile_05": 1285.7,
+       "median": 2967.1,
+       "percentile_95": 6064.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 418,
+       "percentile_05": -1951.4,
+       "median": 34.114,
+       "percentile_95": 3122.0
+      },
+      "spectral_entropy": {
+       "clips": 418,
+       "percentile_05": 0.28436,
+       "median": 0.43937,
+       "percentile_95": 0.59566
+      },
+      "spectral_flatness": {
+       "clips": 418,
+       "percentile_05": 0.017613,
+       "median": 0.13234,
+       "percentile_95": 0.41509
+      },
+      "spectral_flux": {
+       "clips": 418,
+       "percentile_05": 0.16423,
+       "median": 0.21892,
+       "percentile_95": 0.24732
+      },
+      "spectral_rolloff_hz": {
+       "clips": 418,
+       "percentile_05": 1767.6,
+       "median": 4601.6,
+       "percentile_95": 12017.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 418,
+       "percentile_05": -8.1188,
+       "median": -3.357,
+       "percentile_95": -0.43419
+      },
+      "stationarity": {
+       "clips": 418,
+       "percentile_05": 0.0,
+       "median": 0.14034,
+       "percentile_95": 0.63559,
+       "censored_at_floor_fraction": 0.38
+      },
+      "sustain_ratio": {
+       "clips": 46,
+       "percentile_05": 0.080851,
+       "median": 0.29412,
+       "percentile_95": 0.875,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 370,
+       "percentile_05": 0.056717,
+       "median": 0.23495,
+       "percentile_95": 0.61118
+      },
+      "transient_count": {
+       "clips": 418,
+       "percentile_05": 1.0,
+       "median": 4.0,
+       "percentile_95": 15.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 415,
+       "percentile_05": 986.74,
+       "median": 3005.5,
+       "percentile_95": 6936.3
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "REACTION",
+   "category_id": "VOXReac",
+   "category_short": "VOX",
+   "emoji": "🗣️",
+   "explanation": [
+    "A single Ooo or Aah and things of that nature."
+   ],
+   "synonyms": [
+    "Aahs",
+    "Acknowledgement",
+    "Ah",
+    "Ahh",
+    "Ahhh",
+    "Answer",
+    "Applause",
+    "Booing",
+    "Boos",
+    "Chanting",
+    "Cheers",
+    "Comeback",
+    "Counter",
+    "Em",
+    "Er",
+    "Excited",
+    "Feedback",
+    "Gasps",
+    "Hm",
+    "Hmm",
+    "Hollers",
+    "Hoots",
+    "Laughter",
+    "Murmurs",
+    "Oh",
+    "Ooh",
+    "Oohs",
+    "Ooo",
+    "Reaction",
+    "Rejoinder",
+    "Reply",
+    "Response",
+    "Retort",
+    "Sighs",
+    "Vocal",
+    "Vocalization",
+    "Whistling"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.58,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.8,
+      "deviation": 0.8,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A single sustained interjection — 'ooo', 'aah', 'hmm'. Held and voiced: high sustain_ratio with LOW 3–8 Hz syllabic modulation, because there is only one syllable. That voiced-but-unsyllabic pairing is the discriminator against VOICES-MALE/FEMALE dialog.",
+     "Quieter and less strained than VOICES-CHEER; not the rhythmic pulse train of VOICES-LAUGH.",
+     "Single voice: the group version is CROWDS-REACTION, which is wide, dense and multi-f0."
+    ],
+    "confusable_with": [
+     "CRWDReac",
+     "VOXCheer",
+     "VOXEfrt",
+     "VOXMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "SCREAM",
+   "category_id": "VOXScrm",
+   "category_short": "VOX",
+   "emoji": "😱",
+   "explanation": [
+    "A single scream or yell",
+    "battle cry",
+    "agonizing death."
+   ],
+   "synonyms": [
+    "Bellow",
+    "Clamour",
+    "Death",
+    "Fall",
+    "Hollar",
+    "Holler",
+    "Howl",
+    "Outcry",
+    "Scream",
+    "Screech",
+    "Shout",
+    "Shriek",
+    "Squeal",
+    "Vocal",
+    "Vocalization",
+    "Wail",
+    "Wilhelm",
+    "Yell",
+    "Yelp",
+    "Yowl"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.1
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 130.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 928.47,
+      "deviation": 2.045,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 200,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 918.75
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.28,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -12.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.23865,
+      "deviation": 0.2778,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 211,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.20143
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.64697,
+      "deviation": 0.259,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 211,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.67271
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2740.4,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 211,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2700.68155
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.43755,
+      "deviation": 0.2121,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 211,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.43136
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.61126,
+      "deviation": 0.2769,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.55351
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.8,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.12255,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 205,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.11136
+      }
+     }
+    ],
+    "discriminators": [
+     "Three cues fire together and nothing else in the taxonomy has all three: a very high f0 (typically 400–1000 Hz, well above the talker's speaking range), a very high absolute level, and ROUGH phonation — inharmonicity and noise inside the harmonic structure from vocal-fold chaos.",
+     "Rougher and louder than VOICES-SINGING at the same pitch, and far louder and higher than VOICES-EFFORTS.",
+     "Single voice; the group is CROWDS-PANIC or CROWDS-BATTLE, which are wide and multi-f0."
+    ],
+    "confusable_with": [
+     "VOXCheer",
+     "VOXCry",
+     "VOXEfrt",
+     "CRWDPanic"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 211,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Screaming": 211
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 211,
+       "percentile_05": 1601.9,
+       "median": 2677.4,
+       "percentile_95": 4484.9
+      },
+      "crest_factor": {
+       "clips": 60,
+       "percentile_05": 1.3281,
+       "median": 3.6511,
+       "percentile_95": 7.9482,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 31,
+       "percentile_05": 0.11959,
+       "median": 0.29028,
+       "percentile_95": 1.0414,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 60,
+       "percentile_05": 0.014966,
+       "median": 0.11474,
+       "percentile_95": 1.2921,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 60,
+       "percentile_05": 0.0099773,
+       "median": 0.099773,
+       "percentile_95": 0.91293,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 60,
+       "percentile_05": -1.7607,
+       "median": -0.75101,
+       "percentile_95": 13.13,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 58,
+       "percentile_05": 0.029932,
+       "median": 0.079819,
+       "percentile_95": 0.28934,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 60,
+       "percentile_05": -2.1059,
+       "median": -0.34543,
+       "percentile_95": 1.6236,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 60,
+       "percentile_05": 0.0034678,
+       "median": 0.59224,
+       "percentile_95": 0.9174,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 60,
+       "percentile_05": 0.17777,
+       "median": 0.38897,
+       "percentile_95": 0.5343,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 211,
+       "percentile_05": 0.30803,
+       "median": 0.64697,
+       "percentile_95": 0.95321
+      },
+      "high_band_energy": {
+       "clips": 211,
+       "percentile_05": 0.20267,
+       "median": 0.43755,
+       "percentile_95": 0.79487
+      },
+      "inharmonicity": {
+       "clips": 211,
+       "percentile_05": 0.010116,
+       "median": 0.23865,
+       "percentile_95": 0.58202
+      },
+      "low_band_energy": {
+       "clips": 211,
+       "percentile_05": 0.00066075,
+       "median": 0.0033397,
+       "percentile_95": 0.045456
+      },
+      "mid_band_energy": {
+       "clips": 211,
+       "percentile_05": 0.18736,
+       "median": 0.55371,
+       "percentile_95": 0.79329
+      },
+      "onset_periodicity": {
+       "clips": 211,
+       "percentile_05": 0.11156,
+       "median": 0.26523,
+       "percentile_95": 0.46762
+      },
+      "onset_rate_per_second": {
+       "clips": 211,
+       "percentile_05": 0.29809,
+       "median": 1.0701,
+       "percentile_95": 2.9873
+      },
+      "partial_count": {
+       "clips": 208,
+       "percentile_05": 2.0,
+       "median": 7.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 200,
+       "percentile_05": 273.91,
+       "median": 918.75,
+       "percentile_95": 1764.0
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 27,
+       "percentile_05": -10.012,
+       "median": -0.40371,
+       "percentile_95": 2.8563
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 211,
+       "percentile_05": 200.3,
+       "median": 810.5,
+       "percentile_95": 2663.3
+      },
+      "spectral_centroid_hz": {
+       "clips": 211,
+       "percentile_05": 1693.1,
+       "median": 2740.4,
+       "percentile_95": 4910.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 211,
+       "percentile_05": 1754.6,
+       "median": 3124.7,
+       "percentile_95": 4821.2
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 211,
+       "percentile_05": -1676.7,
+       "median": 2.2803,
+       "percentile_95": 1408.2
+      },
+      "spectral_entropy": {
+       "clips": 211,
+       "percentile_05": 0.28525,
+       "median": 0.41449,
+       "percentile_95": 0.56529
+      },
+      "spectral_flatness": {
+       "clips": 211,
+       "percentile_05": 0.034241,
+       "median": 0.11001,
+       "percentile_95": 0.33461
+      },
+      "spectral_flux": {
+       "clips": 211,
+       "percentile_05": 0.16206,
+       "median": 0.21951,
+       "percentile_95": 0.25634
+      },
+      "spectral_rolloff_hz": {
+       "clips": 211,
+       "percentile_05": 2526.1,
+       "median": 4466.8,
+       "percentile_95": 9711.4
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 211,
+       "percentile_05": -4.2655,
+       "median": 0.56827,
+       "percentile_95": 3.2845
+      },
+      "stationarity": {
+       "clips": 211,
+       "percentile_05": 0.0,
+       "median": 0.34578,
+       "percentile_95": 0.74369,
+       "censored_at_floor_fraction": 0.251
+      },
+      "sustain_ratio": {
+       "clips": 60,
+       "percentile_05": 0.022727,
+       "median": 0.60488,
+       "percentile_95": 0.86667,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 205,
+       "percentile_05": 0.025734,
+       "median": 0.12255,
+       "percentile_95": 0.34151
+      },
+      "transient_count": {
+       "clips": 211,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 9.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 211,
+       "percentile_05": 1658.0,
+       "median": 3166.9,
+       "percentile_95": 5948.6
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "SINGING",
+   "category_id": "VOXSing",
+   "category_short": "VOX",
+   "emoji": "🎤",
+   "explanation": [
+    "A single voice singing",
+    "a child singing. For a crowd",
+    "use CROWDS-SINGING"
+   ],
+   "synonyms": [
+    "A",
+    "Cappella",
+    "Caroling",
+    "Chanting",
+    "Chorusing",
+    "Crooning",
+    "Ditty",
+    "Hum",
+    "Hymning",
+    "Melodizing",
+    "Performing",
+    "Serenading",
+    "Sing",
+    "Vocal",
+    "Vocalization",
+    "Vocalizing"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 900.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.82,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.68275,
+      "deviation": 0.3414,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 498,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.68464
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.10709,
+      "deviation": 0.1704,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 498,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.07017
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.76471,
+      "deviation": 0.37,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 39,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.66102
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 7.0,
+      "deviation": 2.609,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 495,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 6.0
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 262.5,
+      "deviation": 3.179,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 460,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 292.05298
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.2044,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 496,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.19742
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.11909,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 498,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.11516
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 100.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Sung voice holds pitch: far higher voicing_ratio, harmonicity and sustain_ratio than spoken VOICES-MALE/FEMALE, and a much LOWER 3–8 Hz syllabic modulation because notes are held rather than delivered at syllable rate.",
+     "Clean harmonic phonation — the opposite of VOICES-SCREAM's rough, inharmonic strain, even at the same f0.",
+     "Single voice: for a group use CROWDS-SINGING, which is wide and multi-f0 with chorus-smeared partials."
+    ],
+    "confusable_with": [
+     "CRWDSing",
+     "VOXMale",
+     "VOXFem",
+     "VOXCheer"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 498,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Singing": 498,
+      "Female_singing": 137,
+      "Male_singing": 74
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 498,
+       "percentile_05": 1505.1,
+       "median": 3052.0,
+       "percentile_95": 4721.4
+      },
+      "crest_factor": {
+       "clips": 39,
+       "percentile_05": 1.7898,
+       "median": 3.2589,
+       "percentile_95": 11.066,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 35,
+       "percentile_05": 0.014966,
+       "median": 0.13968,
+       "percentile_95": 6.3057,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 39,
+       "percentile_05": 0.0049887,
+       "median": 0.14467,
+       "percentile_95": 1.5664,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 39,
+       "percentile_05": -1.3749,
+       "median": 0.46555,
+       "percentile_95": 6.7573,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 35,
+       "percentile_05": 0.014966,
+       "median": 0.10476,
+       "percentile_95": 2.4943,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 39,
+       "percentile_05": -1.7667,
+       "median": -0.383,
+       "percentile_95": 2.0823,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 39,
+       "percentile_05": 0.062112,
+       "median": 0.72659,
+       "percentile_95": 0.9825,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 39,
+       "percentile_05": 0.08944,
+       "median": 0.4544,
+       "percentile_95": 0.54757,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 498,
+       "percentile_05": 0.27514,
+       "median": 0.6825,
+       "percentile_95": 0.98761
+      },
+      "high_band_energy": {
+       "clips": 498,
+       "percentile_05": 0.11099,
+       "median": 0.30825,
+       "percentile_95": 0.64456
+      },
+      "inharmonicity": {
+       "clips": 498,
+       "percentile_05": 0.0022096,
+       "median": 0.1066,
+       "percentile_95": 0.52398
+      },
+      "low_band_energy": {
+       "clips": 498,
+       "percentile_05": 0.00083802,
+       "median": 0.020083,
+       "percentile_95": 0.21692
+      },
+      "mid_band_energy": {
+       "clips": 498,
+       "percentile_05": 0.32785,
+       "median": 0.63746,
+       "percentile_95": 0.83274
+      },
+      "onset_periodicity": {
+       "clips": 498,
+       "percentile_05": 0.1281,
+       "median": 0.26443,
+       "percentile_95": 0.57162
+      },
+      "onset_rate_per_second": {
+       "clips": 498,
+       "percentile_05": 0.22184,
+       "median": 1.3039,
+       "percentile_95": 3.0583
+      },
+      "partial_count": {
+       "clips": 495,
+       "percentile_05": 2.0,
+       "median": 7.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 460,
+       "percentile_05": 64.099,
+       "median": 262.5,
+       "percentile_95": 747.46
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 27,
+       "percentile_05": -3.2458,
+       "median": -0.008036,
+       "percentile_95": 0.49515
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 498,
+       "percentile_05": 198.64,
+       "median": 801.79,
+       "percentile_95": 2384.8
+      },
+      "spectral_centroid_hz": {
+       "clips": 498,
+       "percentile_05": 1106.0,
+       "median": 2304.1,
+       "percentile_95": 4637.3
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 498,
+       "percentile_05": 1051.4,
+       "median": 2325.1,
+       "percentile_95": 4251.0
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 498,
+       "percentile_05": -481.43,
+       "median": 11.152,
+       "percentile_95": 1252.1
+      },
+      "spectral_entropy": {
+       "clips": 498,
+       "percentile_05": 0.21673,
+       "median": 0.35579,
+       "percentile_95": 0.512
+      },
+      "spectral_flatness": {
+       "clips": 498,
+       "percentile_05": 0.024688,
+       "median": 0.11873,
+       "percentile_95": 0.29612
+      },
+      "spectral_flux": {
+       "clips": 498,
+       "percentile_05": 0.097421,
+       "median": 0.16633,
+       "percentile_95": 0.23306
+      },
+      "spectral_rolloff_hz": {
+       "clips": 498,
+       "percentile_05": 1421.3,
+       "median": 3923.1,
+       "percentile_95": 10359.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 498,
+       "percentile_05": -8.3543,
+       "median": -3.1692,
+       "percentile_95": 2.0306
+      },
+      "stationarity": {
+       "clips": 498,
+       "percentile_05": 0.0,
+       "median": 0.40835,
+       "percentile_95": 0.72913
+      },
+      "sustain_ratio": {
+       "clips": 39,
+       "percentile_05": 0.08,
+       "median": 0.76471,
+       "percentile_95": 1.0,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 496,
+       "percentile_05": 0.037337,
+       "median": 0.20413,
+       "percentile_95": 0.4868
+      },
+      "transient_count": {
+       "clips": 498,
+       "percentile_05": 1.0,
+       "median": 9.0,
+       "percentile_95": 37.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 498,
+       "percentile_05": 710.34,
+       "median": 1847.4,
+       "percentile_95": 4338.9
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "WHISPER",
+   "category_id": "VOXWhsp",
+   "category_short": "VOX",
+   "emoji": "🤫",
+   "explanation": [
+    "A single whispering voice. The crowd equivalent would be CROWDS-QUIET."
+   ],
+   "synonyms": [
+    "Faint",
+    "Gossip",
+    "Grumble",
+    "Grumbling",
+    "Hush",
+    "Hushed",
+    "Mumble",
+    "Murmur",
+    "Mutter",
+    "Muttering",
+    "Quietly",
+    "Secret",
+    "Softly",
+    "Speak",
+    "Subdued",
+    "Susurration",
+    "Undertones",
+    "Vocal",
+    "Vocalization",
+    "Whisper"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 600.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.25
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.48941,
+      "deviation": 0.4205,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 159,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.52837
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.28982,
+      "deviation": 0.1848,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 159,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.28991
+      }
+     },
+     {
+      "feature": "spectral_entropy",
+      "mean": 0.46229,
+      "deviation": 0.1918,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 159,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.45618
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.02,
+      "deviation": 0.02,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -36.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.2999,
+      "deviation": 0.225,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 110,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.3174
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4197.3,
+      "deviation": 1.99,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 159,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 4096.67531
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.61785,
+      "deviation": 0.3065,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 159,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.61376
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3686.4,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 159,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3607.72343
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.4552,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 44,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 6.5178
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "One of the cleanest cases in the whole taxonomy: whispering is UNVOICED speech. The vocal folds never engage, so voicing_ratio collapses to ~0 and harmonicity with it, spectral_flatness goes high and the level goes very low — yet the 3–8 Hz syllabic modulation of speech SURVIVES.",
+     "That combination — speech-rate modulation with zero voicing — belongs to nothing else. It separates WHISPER from every other VOICES subcategory (all voiced) and from HUMAN-BREATH (also unvoiced, but with no syllabic structure).",
+     "Single voice; the crowd equivalent is CROWDS-QUIET per the UCS explanation — but a murmuring crowd is still voiced, so that is a different test."
+    ],
+    "confusable_with": [
+     "CRWDQuiet",
+     "HMNBrth",
+     "VOXMale",
+     "VOXFem"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 159,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Whispering": 159
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 159,
+       "percentile_05": 1837.6,
+       "median": 3971.3,
+       "percentile_95": 5025.8
+      },
+      "crest_factor": {
+       "clips": 44,
+       "percentile_05": 3.8213,
+       "median": 6.3932,
+       "percentile_95": 12.493,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 44,
+       "percentile_05": 0.0099773,
+       "median": 0.059864,
+       "percentile_95": 0.1746,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 44,
+       "percentile_05": 0.024943,
+       "median": 0.13968,
+       "percentile_95": 0.49388,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 44,
+       "percentile_05": -1.1435,
+       "median": 0.29342,
+       "percentile_95": 15.814,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 44,
+       "percentile_05": 0.0099773,
+       "median": 0.10476,
+       "percentile_95": 0.44898,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 44,
+       "percentile_05": 0.089541,
+       "median": 1.0596,
+       "percentile_95": 3.7364,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 44,
+       "percentile_05": 0.044823,
+       "median": 0.20505,
+       "percentile_95": 0.50833,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 44,
+       "percentile_05": 0.1024,
+       "median": 0.27511,
+       "percentile_95": 0.41887,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 159,
+       "percentile_05": 0.04892,
+       "median": 0.48941,
+       "percentile_95": 0.91581
+      },
+      "high_band_energy": {
+       "clips": 159,
+       "percentile_05": 0.30635,
+       "median": 0.61785,
+       "percentile_95": 0.90789
+      },
+      "inharmonicity": {
+       "clips": 159,
+       "percentile_05": 0.22272,
+       "median": 0.46803,
+       "percentile_95": 0.62854
+      },
+      "low_band_energy": {
+       "clips": 159,
+       "percentile_05": 0.0074989,
+       "median": 0.065878,
+       "percentile_95": 0.2904
+      },
+      "mid_band_energy": {
+       "clips": 159,
+       "percentile_05": 0.064983,
+       "median": 0.23793,
+       "percentile_95": 0.52926
+      },
+      "onset_periodicity": {
+       "clips": 159,
+       "percentile_05": 0.074328,
+       "median": 0.27627,
+       "percentile_95": 0.4454
+      },
+      "onset_rate_per_second": {
+       "clips": 159,
+       "percentile_05": 0.2807,
+       "median": 1.8484,
+       "percentile_95": 4.4694
+      },
+      "partial_count": {
+       "clips": 157,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 134,
+       "percentile_05": 441.0,
+       "median": 980.0,
+       "percentile_95": 1837.5
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 26,
+       "percentile_05": -27.748,
+       "median": 0.027125,
+       "percentile_95": 5.2725
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 159,
+       "percentile_05": 518.67,
+       "median": 1456.9,
+       "percentile_95": 2880.4
+      },
+      "spectral_centroid_hz": {
+       "clips": 159,
+       "percentile_05": 2102.6,
+       "median": 4197.3,
+       "percentile_95": 7205.6
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 159,
+       "percentile_05": 2072.0,
+       "median": 3575.6,
+       "percentile_95": 6847.6
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 159,
+       "percentile_05": -12527.0,
+       "median": -25.584,
+       "percentile_95": 3680.8
+      },
+      "spectral_entropy": {
+       "clips": 159,
+       "percentile_05": 0.27116,
+       "median": 0.46229,
+       "percentile_95": 0.68606
+      },
+      "spectral_flatness": {
+       "clips": 159,
+       "percentile_05": 0.013947,
+       "median": 0.28982,
+       "percentile_95": 0.49401
+      },
+      "spectral_flux": {
+       "clips": 159,
+       "percentile_05": 0.21467,
+       "median": 0.23269,
+       "percentile_95": 0.25178
+      },
+      "spectral_rolloff_hz": {
+       "clips": 159,
+       "percentile_05": 3594.5,
+       "median": 8836.3,
+       "percentile_95": 12108.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 159,
+       "percentile_05": -5.9022,
+       "median": -2.5727,
+       "percentile_95": 0.1367
+      },
+      "stationarity": {
+       "clips": 159,
+       "percentile_05": 0.0,
+       "median": 0.11145,
+       "percentile_95": 0.64031,
+       "censored_at_floor_fraction": 0.377
+      },
+      "sustain_ratio": {
+       "clips": 44,
+       "percentile_05": 0.029851,
+       "median": 0.25,
+       "percentile_95": 0.6087,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 110,
+       "percentile_05": 0.091175,
+       "median": 0.29903,
+       "percentile_95": 0.61998
+      },
+      "transient_count": {
+       "clips": 159,
+       "percentile_05": 1.0,
+       "median": 4.0,
+       "percentile_95": 21.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 159,
+       "percentile_05": 1033.4,
+       "median": 3686.4,
+       "percentile_95": 9663.1
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  }
+ ]
+}

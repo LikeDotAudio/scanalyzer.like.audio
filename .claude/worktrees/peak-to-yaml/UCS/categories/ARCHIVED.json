@@ -1,0 +1,956 @@
+{
+ "version": "8.2.1",
+ "category": "ARCHIVED",
+ "emoji": "🗄️",
+ "subcategories": [
+  {
+   "subcategory": "ADR",
+   "category_id": "ADR",
+   "category_short": "ADR",
+   "emoji": "🗄️",
+   "explanation": [
+    "Re-recorded lines via the ADR process."
+   ],
+   "synonyms": [
+    "Additional",
+    "Automated",
+    "Dialog",
+    "Dubbing",
+    "Loop",
+    "Recording",
+    "Replacement",
+    "Voiceover"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "The content is speech, and the morphology field records only that. It does not — cannot — indicate the ADR provenance: an ADR line and a production line are the same human voice saying the same words. The label means 're-recorded on a stage, to picture'. That is a fact about the session, not about the waveform.",
+     "The nearest thing to a cue is a stage's dead, low-noise-floor room — and ARCHIVED-PRODUCTION, ARCHIVED-LOOP GROUP and every FOLEY subcategory share it. It cannot route between them, so it is not encoded here."
+    ],
+    "confusable_with": [
+     "PROD",
+     "LPGRP",
+     "VOXMale",
+     "VOXFem",
+     "CRWDLoop"
+    ]
+   }
+  },
+  {
+   "subcategory": "ASSET",
+   "category_id": "ASSET",
+   "category_short": "ASSET",
+   "emoji": "🗄️",
+   "explanation": [
+    "A delivered or stored asset",
+    "most likely for video game use",
+    "but something used in the development of a project."
+   ],
+   "synonyms": [
+    "Asset",
+    "Game",
+    "Resource",
+    "Tag"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'A delivered or stored asset, most likely for video game use, but something used in the development of a project.' An asset is any sound at all, at any stage, that happens to have been shipped somewhere. There is no acoustic class here — the label describes a file's position in a pipeline."
+    ],
+    "confusable_with": [
+     "MIX",
+     "BNCE",
+     "WIP",
+     "SCNE"
+    ]
+   }
+  },
+  {
+   "subcategory": "BOUNCE",
+   "category_id": "BNCE",
+   "category_short": "BNCE",
+   "emoji": "🗄️",
+   "explanation": [
+    "Bounces made for picture department",
+    "layered bounces."
+   ],
+   "synonyms": [
+    "Avid",
+    "Bounce",
+    "Crash",
+    "Crashdown",
+    "Down",
+    "Mix",
+    "Recordings",
+    "Temp"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Bounces made for picture department, layered bounces.' A bounce is a rendering step. Its content is whatever was on the timeline — a mix, a scene, a single effect, silence. Nothing in the signal marks a file as having been bounced."
+    ],
+    "confusable_with": [
+     "MIX",
+     "SCNE",
+     "ASSET",
+     "REF"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPULSE RESPONSE",
+   "category_id": "IR",
+   "category_short": "IR",
+   "emoji": "🗄️",
+   "explanation": [
+    "Impulse Responses",
+    "reverb and otherwise."
+   ],
+   "synonyms": [
+    "Altiverb",
+    "Convolution",
+    "Early",
+    "Echo",
+    "Impulse",
+    "IR",
+    "Late",
+    "Reflection",
+    "Reflections",
+    "Response",
+    "Reverb",
+    "Sample",
+    "Tail"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.05
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "max": 0.4
+     },
+     {
+      "feature": "sustain_ratio",
+      "max": 0.25
+     },
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.02,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.03,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 25.0,
+      "deviation": 15.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0005,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 20.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "ONE OF THE TWO ARCHIVED SUBCATEGORIES DSP CAN GENUINELY ASSERT. An impulse response is a deterministic EXPONENTIAL DECAY WITH NO SOURCE: all the energy sits at t=0 (envelope_temporal_centroid ~0.08), the attack is effectively a single sample (envelope_attack_seconds ~0), there is NO sustain (sustain_ratio ~0, envelope_sustain_level ~0), the crest_factor is extreme, and the post-peak envelope is a clean straight line in dB — a well-conditioned decay_time_seconds_60db fit with a very low residual. Broadband, because the exciting impulse was.",
+     "Against a real reverberant impact (METAL-IMPACT, a gunshot in a hall, EXPLOSIONS): those carry a radiated body timbre, a finite attack, a source resonance, and a noise floor BEFORE the onset. An IR is the room alone — the thing that excited it has been deconvolved away. The absence of any pre-onset signal, plus a near-zero attack, is the tell.",
+     "Against ARCHIVED-TEST TONE, the other detectable one: an IR is all decay and no sustain; a test tone is all sustain and no decay. They are exact opposites on envelope_temporal_centroid and sustain_ratio.",
+     "The tier here is signal_separable, not provenance_only, and that is not an inconsistency: an IR is a synthetic artefact with a mathematical definition, unlike its thirteen workflow-label siblings in this file."
+    ],
+    "confusable_with": [
+     "METLImpt",
+     "DSGNImpt",
+     "EXPLReal",
+     "TEST",
+     "WOODImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "LOOP GROUP",
+   "category_id": "LPGRP",
+   "category_short": "LPGRP",
+   "emoji": "🗄️",
+   "explanation": [
+    "Loop group crowds or lines. Specifically recorded in a loop group envirment and needing to tracked as such."
+   ],
+   "synonyms": [
+    "Actors",
+    "ADR",
+    "Group",
+    "Loop",
+    "Walla"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Loop group crowds or lines. Specifically recorded in a loop group envirment and needing to tracked as such.' The explanation says the quiet part out loud: the label exists so the SESSION can be tracked, not because the sound is distinct. A loop-group walla and a location walla are the same crowd.",
+     "The nearest cue — a dead, low-noise-floor stage — is shared with ADR, PRODUCTION and all of FOLEY, and cannot route between them."
+    ],
+    "confusable_with": [
+     "CRWDLoop",
+     "CRWDWalla",
+     "ADR",
+     "PROD",
+     "CRWDConv"
+    ]
+   }
+  },
+  {
+   "subcategory": "MIX",
+   "category_id": "MIX",
+   "category_short": "MIX",
+   "emoji": "🗄️",
+   "explanation": [
+    "Premixes",
+    "final mixes",
+    "mixdowns",
+    "stems."
+   ],
+   "synonyms": [
+    "5.1",
+    "7.1",
+    "Atmos",
+    "Audio",
+    "Binaural",
+    "Blu-Ray",
+    "Dolby",
+    "DVD",
+    "Final",
+    "IMAX",
+    "M&E",
+    "Master",
+    "Mastering",
+    "Mix",
+    "Mixdown",
+    "Nearfield",
+    "Premix",
+    "Printmaster",
+    "Recordings",
+    "Remix",
+    "Stem",
+    "Stereo",
+    "Streaming",
+    "Surround",
+    "Theatrical"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Premixes, final mixes, mixdowns, stems.' A mix's content is the whole film. It can be a battle, a room tone, a piece of music, or silence. The label is a position in a workflow.",
+     "The tempting cues — a loudness-normalised level, a multichannel layout, a mastered spectrum — are properties of a DELIVERY FORMAT, not of a sound. They belong in file metadata (channel count, LUFS target), not in an acoustic signature. This system does not fabricate a morphology for a mixdown."
+    ],
+    "confusable_with": [
+     "BNCE",
+     "SCNE",
+     "ASSET",
+     "REF"
+    ]
+   }
+  },
+  {
+   "subcategory": "PFX",
+   "category_id": "PFX",
+   "category_short": "PFX",
+   "emoji": "🗄️",
+   "explanation": [
+    "FX Stolen from production takes only. Beware of possible rights issues."
+   ],
+   "synonyms": [
+    "Effect",
+    "Production",
+    "Recording",
+    "Set"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'FX Stolen from production takes only. Beware of possible rights issues.' Acoustically identical to any other effect; the label records that it was lifted from a production recording and therefore carries rights risk. That is a legal and archival fact, not an acoustic one."
+    ],
+    "confusable_with": [
+     "PROD",
+     "RAW",
+     "REF",
+     "TMARK"
+    ]
+   }
+  },
+  {
+   "subcategory": "PRODUCTION",
+   "category_id": "PROD",
+   "category_short": "PROD",
+   "emoji": "🗄️",
+   "explanation": [
+    "Production takes",
+    "dialog lines and other spoken line production takes."
+   ],
+   "synonyms": [
+    "Dialog",
+    "Dx",
+    "Line",
+    "Original",
+    "Recording",
+    "Set",
+    "Take"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Production takes, dialog lines and other spoken line production takes.' The content is speech. Where it was captured — a set rather than a stage — is not recoverable from the waveform with any reliability, and certainly not to the standard required to assert a label."
+    ],
+    "confusable_with": [
+     "ADR",
+     "LPGRP",
+     "PFX",
+     "VOXMale",
+     "VOXFem"
+    ]
+   }
+  },
+  {
+   "subcategory": "RAW",
+   "category_id": "RAW",
+   "category_short": "RAW",
+   "emoji": "🗄️",
+   "explanation": [
+    "Raw recording files",
+    "for example a load of a full DAT tape."
+   ],
+   "synonyms": [
+    "DAT",
+    "Files",
+    "Original",
+    "Raw",
+    "Source",
+    "Tape",
+    "Unaltered",
+    "Unedited",
+    "Unmodified",
+    "Unprocessed",
+    "Untreated"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Raw recording files, for example a load of a full DAT tape.' A raw file's content is EVERYTHING — an unedited reel that may contain any sound in the taxonomy, several of them at once, and long stretches of nothing. It is the clearest demonstration that ARCHIVED is a provenance axis: a signature for RAW would have to be a signature for all audio.",
+     "Length is not a cue either. A long file is a long file; AMBIENCE is long, a mix is long. Nothing is asserted here."
+    ],
+    "confusable_with": [
+     "WIP",
+     "PFX",
+     "ASSET",
+     "SCNE"
+    ]
+   }
+  },
+  {
+   "subcategory": "REFERENCE",
+   "category_id": "REF",
+   "category_short": "REF",
+   "emoji": "🗄️",
+   "explanation": [
+    "Reference material",
+    "often restricted",
+    "used for reference only. Beware of possible rights issues."
+   ],
+   "synonyms": [
+    "Contextual",
+    "Demo",
+    "Example",
+    "Explanatory",
+    "Guide",
+    "Identification",
+    "Informational",
+    "Inspiration",
+    "Instructional",
+    "Materials",
+    "Mock-Up",
+    "Placeholder",
+    "Refer",
+    "Referenced",
+    "References",
+    "Referencing",
+    "Researched",
+    "Researching",
+    "Resources",
+    "Sample",
+    "Temporary",
+    "Track"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Reference material, often restricted, used for reference only.' A reference file is defined by the USE it is put to and the rights that attach to it. Any sound whatsoever can be a reference."
+    ],
+    "confusable_with": [
+     "TMARK",
+     "MIX",
+     "BNCE",
+     "ASSET"
+    ]
+   }
+  },
+  {
+   "subcategory": "SCENE",
+   "category_id": "SCNE",
+   "category_short": "SCNE",
+   "emoji": "🗄️",
+   "explanation": [
+    "Pre-built scenes and soundscapes",
+    "designed scenes. For example a fully build old-west scene."
+   ],
+   "synonyms": [
+    "Documentary",
+    "Episode",
+    "Footage",
+    "Montage",
+    "Movie",
+    "Prebuilt",
+    "Readymade",
+    "Scenario",
+    "Scene",
+    "Segment",
+    "Sequence",
+    "Series",
+    "TV"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Pre-built scenes and soundscapes, designed scenes. For example a fully build old-west scene.' The content is an ambience or a montage — but so is AMBIENCE, and the distinction (pre-built by a designer versus recorded in the field) is a fact about authorship, not about sound. A well-made designed scene is meant to be indistinguishable from a recording; that is the entire craft."
+    ],
+    "confusable_with": [
+     "AMBHist",
+     "AMBDsgn",
+     "AMBMisc",
+     "MIX",
+     "BNCE"
+    ]
+   }
+  },
+  {
+   "subcategory": "TEST TONE",
+   "category_id": "TEST",
+   "category_short": "TEST",
+   "emoji": "🗄️",
+   "explanation": [
+    "Test tones used for calibration",
+    "ADR beeps",
+    "Pink Noise",
+    "Sine wave Sweeps."
+   ],
+   "synonyms": [
+    "2-Pops",
+    "ADR",
+    "Audio",
+    "Beeps",
+    "Bleeping",
+    "Calibration",
+    "Dolby",
+    "Frequency",
+    "Generator",
+    "IR",
+    "Monitoring",
+    "Noise",
+    "Pink",
+    "Reference",
+    "Signal",
+    "Sine",
+    "SMPTE",
+    "Square",
+    "Sweep",
+    "Sweeps",
+    "Test",
+    "Tones",
+    "Wave",
+    "White"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.98,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.02,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.005,
+      "deviation": 0.02,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.01,
+      "deviation": 0.02,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.98,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 1.0,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.95,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.01,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.98,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 0.0,
+      "deviation": 20.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "clipping_density",
+      "mean": 0.0,
+      "deviation": 0.01,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "dc_offset",
+      "mean": 0.0,
+      "deviation": 0.001,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 1.414,
+      "deviation": 1.15,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1000.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "THE OTHER ARCHIVED SUBCATEGORY DSP CAN ASSERT — and the one place in this taxonomy where tight deviations are honest, because these are SYNTHETIC signals with exact mathematical definitions. There is nothing to estimate: a generator emitted them.",
+     "PURE SINE (a 1 kHz line-up tone, an ADR 2-pop): harmonicity ~1.0, spectral_flatness ~0.0, partial_count = 1, total_harmonic_distortion ~0, inharmonicity ~0, spectral_flux ~0, stationarity ~1.0, spectral_centroid_deviation_hz ~0, and crest_factor = sqrt(2) = 1.414 EXACTLY — the crest factor of a sine is not an estimate, it is arithmetic.",
+     "PINK NOISE: spectral_slope_db_per_octave = -3.0 dB/oct exactly (white noise = 0.0 exactly), spectral_flatness ~1.0, harmonicity ~0, stationarity ~1.0, spectral_flux ~0, crest_factor ~4. No natural source holds an LTAS tilt that precisely for that long. The exact slope paired with near-perfect stationarity is a generator fingerprint.",
+     "SINE SWEEP: harmonicity ~1.0 and partial_count = 1 as with the sine, but a MONOTONIC spectral_centroid_slope_hz_per_second across the whole file — a low stationarity that is entirely explained by one smooth centroid trajectory rather than by events (transient_count ~0). Perfectly tonal, perfectly eventless, perfectly monotonic: nothing but a sweep generator does that.",
+     "The priors below are centred on the PURE SINE, the modal test tone. The scorer takes one Gaussian per feature, so the noise and sweep families cannot be expressed in the same prior set; they are carried above as exact rules and caught by synonyms (Pink, Noise, White, Sweep, Sine, SMPTE, Calibration, 2-Pops). A mixture prior would state all three properly, and should. The single gate is deliberately near-empty for the same reason: sine, pink noise and a sweep share almost no bounds, so any tighter gate would kill two of the three families.",
+     "Against MUSICAL and DESIGNED-TONAL: a musical note has an attack transient, vibrato, harmonics (partial_count > 1) and a decay. A test tone has none of these — envelope_sustain_level ~1.0 for its entire length and zero centroid modulation. Against ARCHIVED-IMPULSE RESPONSE: exact opposites, all sustain and no decay."
+    ],
+    "confusable_with": [
+     "DSGNTonl",
+     "DSGNSynth",
+     "DSGNDron",
+     "AIRHiss",
+     "IR"
+    ]
+   }
+  },
+  {
+   "subcategory": "TRADEMARKED",
+   "category_id": "TMARK",
+   "category_short": "TMARK",
+   "emoji": "🗄️",
+   "explanation": [
+    "For trademarked or copyright sounds that you need to store in your library. Jingles",
+    "logos."
+   ],
+   "synonyms": [
+    "Brand",
+    "Branded",
+    "Branding",
+    "Brandname",
+    "Brandnames",
+    "Copyright",
+    "Copyrightable",
+    "Copyrighted",
+    "Corporate",
+    "Iconic",
+    "Infringed",
+    "Legal",
+    "Licensable",
+    "Licensed",
+    "Logo",
+    "Logos",
+    "Patent",
+    "Patented",
+    "Product",
+    "Proprietary",
+    "Protected",
+    "Registered",
+    "Restricted",
+    "Slogan",
+    "Sound",
+    "Trademark",
+    "Trademarks",
+    "Tradename",
+    "Tradenames"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'For trademarked or copyright sounds that you need to store in your library. Jingles, logos.' A trademark is a LEGAL STATUS. It attaches to a sound by registration, not by any property of the waveform. Two files can be sample-identical and only one of them trademarked.",
+     "This is the clearest case in the taxonomy for the system's refusal: inventing priors for TRADEMARKED would be a lie dressed as mathematics. There is no acoustic feature of ownership. The signature is empty on purpose, and that emptiness is the correct output."
+    ],
+    "confusable_with": [
+     "MIX",
+     "REF",
+     "PFX",
+     "BNCE"
+    ]
+   }
+  },
+  {
+   "subcategory": "WORK IN PROGRESS",
+   "category_id": "WIP",
+   "category_short": "WIP",
+   "emoji": "🗄️",
+   "explanation": [
+    "Files that aren't fully metadata'd",
+    "or mastered",
+    "tag to remind you there is work to do. Recordings awaiting mastering."
+   ],
+   "synonyms": [
+    "Backlog",
+    "In",
+    "Ongoing",
+    "Progress",
+    "Project",
+    "Task.",
+    "Temp",
+    "Unfinished",
+    "Upcoming",
+    "WIP",
+    "Work",
+    "Workflow",
+    "Worklist",
+    "Worklog"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Files that aren't fully metadata'd, or mastered... Recordings awaiting mastering.' A to-do flag. The content is arbitrary.",
+     "One tempting cue must be refused explicitly: an unmastered file may sit at a lower or less consistent level. Level is a property of the FILE, shared with every quietly-recorded sound ever made, and it does not distinguish 'not yet mastered' from 'recorded quietly on purpose'. No priors."
+    ],
+    "confusable_with": [
+     "RAW",
+     "ASSET",
+     "BNCE",
+     "MIX"
+    ]
+   }
+  },
+  {
+   "subcategory": "WTF",
+   "category_id": "WTF",
+   "category_short": "WTF",
+   "emoji": "🗄️",
+   "explanation": [
+    "Literally what it says 'What the F_ck' is THIS sound... Strange otherwise uncategorizable sounds."
+   ],
+   "synonyms": [
+    "Baffling",
+    "Jokes",
+    "Perplexing",
+    "Puzzling",
+    "Uncategorizable",
+    "Unknown"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "PROVENANCE / WORKFLOW LABEL — not an acoustic class. Nothing in the signal indicates it. No gates and no priors are declared here, and none can be: any number would be fabricated. Signal analysis must never assert this subcategory; it is set from workflow context, filename and embedded metadata (synonyms) alone.",
+     "'Literally what it says: What the F_ck is THIS sound... Strange otherwise uncategorizable sounds.' This is the residual of the entire 753-way taxonomy — defined by the FAILURE of every other label, not by any property of its own. It is the librarian's shrug, and it is the one label a classifier must never reach for: an unusual sound is not evidence of WTF, it is evidence that the classifier should abstain to the relevant category's MISC.",
+     "Anything a signature said about WTF would be a claim about what 'strange' sounds like. It has no answer, and the honest output is silence."
+    ],
+    "confusable_with": [
+     "DSGNMisc",
+     "SCIFIMisc",
+     "CARTMisc"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,1136 @@
+{
+ "version": "8.2.1",
+ "category": "RUBBER",
+ "emoji": "🧤",
+ "subcategories": [
+  {
+   "subcategory": "CRASH & DEBRIS",
+   "category_id": "RUBRCrsh",
+   "category_short": "RUBR",
+   "emoji": "🧤",
+   "explanation": [
+    "Rubber items crashing",
+    "or rubber debris landing."
+   ],
+   "synonyms": [
+    "Collision",
+    "Debris",
+    "Elastic",
+    "Fragments",
+    "Latex",
+    "Neoprene",
+    "Pieces",
+    "Plop",
+    "Remains",
+    "Rubble",
+    "Ruins",
+    "Scatter",
+    "Shards",
+    "Silicone",
+    "Smash",
+    "Wreckage"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 40.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 14.0,
+      "deviation": 12.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.35,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.32,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.22,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.06,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rubber pieces landing and scattering: many dull, low-centroid plops, some of which bounce. Multi-event, so transient_count and onset_rate run high, but every event is damped and ringless.",
+     "Against PLASTIC-CRASH & DEBRIS: plastic debris is far brighter and each shard has a short ring; rubber debris is dark and dead.",
+     "Against a METAL crash: no ringing bed survives the last piece."
+    ],
+    "confusable_with": [
+     "RUBRImpt",
+     "PLASCrsh",
+     "RUBRMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "FRICTION",
+   "category_id": "RUBRFric",
+   "category_short": "RUBR",
+   "emoji": "🧤",
+   "explanation": [
+    "Rubber squeaks",
+    "balloon squeaks",
+    "a rubber shoe squeak."
+   ],
+   "synonyms": [
+    "Abrasion",
+    "Creak",
+    "Drag",
+    "Elastic",
+    "Grinding",
+    "Groan",
+    "Latex",
+    "Neoprene",
+    "Rasping",
+    "Rub",
+    "Rubbing",
+    "Scrape",
+    "Scraping",
+    "Scratching",
+    "Screech",
+    "Scuffing",
+    "Silicone",
+    "Sliding",
+    "Squeak",
+    "Squeaking",
+    "Stretch",
+    "Stretching",
+    "Wear"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 22.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.48,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.5,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1980.0000000000002,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.27999999999999997,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1800.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.38,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.0475,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rubber friction: sustained contact noise — high sustain_ratio, low crest, continuous flux, no single onset.",
+     "Never front-loaded like IMPACT; more continuous and higher-centroid than MOVEMENT.",
+     "The rubber squeak: a shoe on a court, a rubbed balloon, a stretched latex squeal. Stick-slip on a high-friction elastic surface, so the centroid runs HIGH (well above rubber's own impact centroid) and harmonicity climbs into near-tonal territory while remaining unstable.",
+     "Steadier in pitch and brighter than LEATHER-CREAK's wobbling groan; less gritty and lower-flatness than PLASTIC-FRICTION's scrape.",
+     "Not METAL-FRICTION: a metal screech carries long inharmonic ringing partials; a rubber squeak stops dead the instant the contact stops."
+    ],
+    "confusable_with": [
+     "RUBRMvmt",
+     "PLASFric",
+     "LETHRCreak",
+     "RUBRTonl"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDLE",
+   "category_id": "RUBRHndl",
+   "category_short": "RUBR",
+   "emoji": "🧤",
+   "explanation": [
+    "Rubber handling",
+    "rubber objects being manipulated or handled. Some overlap with RUBBER-MOVEMENT"
+   ],
+   "synonyms": [
+    "Catch",
+    "Clasp",
+    "Clench",
+    "Clutch",
+    "Condom",
+    "Down",
+    "Elastic",
+    "Embrace",
+    "Galoshes",
+    "Grab",
+    "Grasp",
+    "Grip",
+    "Handle",
+    "Hold",
+    "Innertube",
+    "Latex",
+    "Neoprene",
+    "Operate",
+    "Pickup",
+    "Seize",
+    "Set",
+    "Silicone",
+    "Squeeze",
+    "Take",
+    "Throw",
+    "Toss",
+    "Use"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.5,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.4,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.2,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 810.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.2,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1200.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06649999999999999,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rubber handling: a short multi-event scene — a grab or set-down transient wrapped in rubber rustle. Morphology is a mixture, so the tier is honest about it.",
+     "Separated from MOVEMENT only by having one or two dominant transients rather than a continuous bed; the material priors are identical.",
+     "Squeezing and manipulating rubber objects: soft grabs plus stretch-squeaks. If a sustained squeal dominates, prefer RUBBER-FRICTION; if it is a continuous drag or flap, prefer RUBBER-MOVEMENT."
+    ],
+    "confusable_with": [
+     "RUBRMvmt",
+     "RUBRFric",
+     "RUBRImpt",
+     "OBJMed"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "RUBRImpt",
+   "category_short": "RUBR",
+   "emoji": "💥",
+   "explanation": [
+    "Rubber impacts",
+    "drops",
+    "bounces. Hitting a balloon or rubber ball."
+   ],
+   "synonyms": [
+    "Bang",
+    "Banging",
+    "Bash",
+    "Bounce",
+    "Bump",
+    "Clap",
+    "Collide",
+    "Colliding",
+    "Crash",
+    "Crashing",
+    "Drop",
+    "Dropped",
+    "Elastic",
+    "Hit",
+    "Hitting",
+    "Impact",
+    "Impacting",
+    "Jolt",
+    "Knock",
+    "Latex",
+    "Neoprene",
+    "Pound",
+    "Punch",
+    "Ram",
+    "Silicone",
+    "Slam",
+    "Slamming",
+    "Smack",
+    "Smacking",
+    "Strike",
+    "Striking",
+    "Thrust",
+    "Thump"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 15.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.28,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.34,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.2,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.06,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.095,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rubber is the one damped material that BOUNCES. A dropped ball is not a single transient: it is a train of decaying impulses with MONOTONICALLY DECREASING inter-onset spacing (the bouncing-ball accelerando). The current feature set can only see transient_count > 1 plus a moderate onset_rate and mid-range onset_periodicity — a true bounce detector needs the onset-spacing trend, and until that feature exists this subcategory is under-served by DSP.",
+     "Each individual hit is dull and low-centroid with a fast decay: rubber has almost no ring, unlike METAL-IMPACT, and thuds lower and softer than a WOOD-IMPACT knock.",
+     "Against CLOTH-IMPACT: rubber is louder, lower-centroid and elastic — it rebounds; cloth lands once and is dead.",
+     "Against PLASTIC-IMPACT: plastic is much brighter (centroid ~2.6 kHz vs ~0.9 kHz) and hollow-ringing."
+    ],
+    "confusable_with": [
+     "RUBRMvmt",
+     "RUBRCrsh",
+     "CLOTHImpt",
+     "PLASImpt",
+     "LETHRImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "RUBRMisc",
+   "category_short": "RUBR",
+   "emoji": "🧤",
+   "explanation": [
+    "Rubber sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Elastic",
+    "Latex",
+    "Miscellaneous",
+    "Neoprene",
+    "Polymer",
+    "Silicone",
+    "Synthetic"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 810.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06649999999999999,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.22,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Catch-all for rubber sounds with no clear morphology. Nothing in the signal identifies it; the gates only assert that it is a rubber-scale handling event, not a ringing or explosive one.",
+     "Emitted by abstention when the sibling morphologies are all weak or tied."
+    ],
+    "confusable_with": [
+     "RUBRMvmt",
+     "RUBRHndl",
+     "RUBRImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MOVEMENT",
+   "category_id": "RUBRMvmt",
+   "category_short": "RUBR",
+   "emoji": "🧤",
+   "explanation": [
+    "Rubber movement",
+    "dragging rubber or drag on rubber. Rubber flapping. See also RUBBER-HANDLE."
+   ],
+   "synonyms": [
+    "Bounce",
+    "Drag",
+    "Elastic",
+    "Elasticity",
+    "Flap",
+    "Flex",
+    "Flop",
+    "Latex",
+    "Move",
+    "Movement",
+    "Neoprene",
+    "Pull",
+    "Silicone",
+    "Slide",
+    "Slip",
+    "Strain",
+    "Stretch",
+    "Tension",
+    "Twist",
+    "Yank"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.3,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 810.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.2,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1200.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.052250000000000005,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rubber movement: a sustained-but-eventful drag/rustle bed — many low-level micro-onsets, no single dominant transient, sustain_ratio well above IMPACT.",
+     "Longer and far less front-loaded than the same material's IMPACT; less continuous and less high-centroid than its FRICTION.",
+     "Dragging, flexing, stretching and flapping rubber: a dark, damped movement bed. Lower-centroid than CLOTH-MOVEMENT (rubber is heavier and its damping is even more low-passed) and with none of paper's bright micro-crackle.",
+     "If the stretch turns into a squeal, that is RUBBER-FRICTION; if it turns into a bouncing train, that is RUBBER-IMPACT."
+    ],
+    "confusable_with": [
+     "RUBRHndl",
+     "RUBRFric",
+     "CLOTHMvmt",
+     "RUBRImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "TONAL",
+   "category_id": "RUBRTonl",
+   "category_short": "RUBR",
+   "emoji": "🧤",
+   "explanation": [
+    "Rubber movement with a tonal quality",
+    "a musical quality."
+   ],
+   "synonyms": [
+    "Bowed",
+    "Elastic",
+    "Frequency",
+    "Harmonic",
+    "Latex",
+    "Melodic",
+    "Melodious",
+    "Musical",
+    "Neoprene",
+    "Ping",
+    "Pitch",
+    "Resonance",
+    "Resonant",
+    "Ring",
+    "Shing",
+    "Silicone",
+    "Sonorous",
+    "Sound",
+    "Timbre",
+    "Tonal",
+    "Tone"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.25
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 50.0,
+      "max": 2000.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.65,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 350.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 720.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rare: rubber excited into a pitched, sustained note. Requires a stable f0 and real harmonic energy — the one place a rubber recording looks tonal.",
+     "Any file with harmonicity this high is by definition not the material's IMPACT, MOVEMENT or FRICTION sibling. Still far less inharmonic-ringing than METAL-TONAL.",
+     "A plucked rubber band or a bowed sheet: a stretched elastic membrane genuinely can hold a pitch, so this is the most plausible TONAL of the soft materials. Expect a low, quickly-damped f0 with few partials — nothing like a METAL-TONAL bell's long inharmonic ring.",
+     "The boundary against RUBBER-FRICTION is stability: a squeak has a wandering, unstable pitch; TONAL requires a steady f0."
+    ],
+    "confusable_with": [
+     "RUBRFric",
+     "RUBRMisc",
+     "PLASTonl"
+    ]
+   }
+  }
+ ]
+}

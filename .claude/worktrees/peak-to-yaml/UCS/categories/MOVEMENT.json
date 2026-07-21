@@ -1,0 +1,1105 @@
+{
+ "version": "8.2.1",
+ "category": "MOVEMENT",
+ "emoji": "🏃",
+ "subcategories": [
+  {
+   "subcategory": "ACTIVITY",
+   "category_id": "MOVEActv",
+   "category_short": "MOVE",
+   "emoji": "🏃",
+   "explanation": [
+    "Crowds moving but also performing activities",
+    "cleaning",
+    "moving boxes. Clean recordings with no vocals. See MOVEMENT-HUMAN for Single activity."
+   ],
+   "synonyms": [
+    "Activity",
+    "Cleaning",
+    "Moving",
+    "Shopping",
+    "Unpacking"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 10.0,
+      "deviation": 1.15,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -19.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.1,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 1100.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 60.0,
+      "deviation": 40.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 22.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MOVEMENT-PRESENCE < MOVEMENT-CROWD < MOVEMENT-ACTIVITY is an explicit UCS DENSITY/LEVEL CONTINUUM, not three different sources. The ordered axes are onset_rate_per_second, root_mean_square_level and lufs: PRESENCE ~0.8 onsets/s at ~-34 LUFS; CROWD ~4 onsets/s at ~-26 LUFS; ACTIVITY ~10 onsets/s at ~-19 LUFS. The three sets of priors are deliberately non-overlapping at one deviation - this is one of the cleanest signal cases in UCS.",
+     "The TOP: crowds moving AND handling objects - cleaning, moving boxes, shopping. The densest and loudest of the three, and the only one with a MIXED onset population (footfalls plus object impacts), which shows up as higher spectral_flux, higher spectral_centroid_hz and even lower onset_periodicity than CROWD.",
+     "Against MOVEMENT-CROWD: about 2.5x the onset_rate_per_second and ~7 LUFS louder. If it is only feet, it is CROWD.",
+     "Still no vocals (UCS: 'clean recordings with no vocals') - voicing_ratio near zero."
+    ],
+    "confusable_with": [
+     "MOVECrwd",
+     "MOVEPres",
+     "MOVEHmn"
+    ]
+   }
+  },
+  {
+   "subcategory": "ANIMAL",
+   "category_id": "MOVEAnml",
+   "category_short": "MOVE",
+   "emoji": "🏃",
+   "explanation": [
+    "Group animal movement",
+    "individual feet go to FOOTSTEPS-ANIMAL or FOOTSTEPS-HORSE. But think herds of grazing animals",
+    "stampedes."
+   ],
+   "synonyms": [
+    "Charge",
+    "Flock",
+    "Herd",
+    "Migrate",
+    "Migration",
+    "Pack",
+    "Scramble",
+    "Stampede",
+    "Swarm",
+    "Trample"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 12.0,
+      "deviation": 8.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 16.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Herds, stampedes, flocks: a dense multi-onset movement texture with unusually HIGH low_band_energy and a LOW spectral_centroid_hz - hooves on ground move a lot of air. That low-band weight is the only real signal cue against MOVEMENT-CROWD (human feet: brighter, lighter).",
+     "Which animal made it is semantic; DSP can only say 'dense, heavy, dark, group movement'."
+    ],
+    "confusable_with": [
+     "MOVECrwd",
+     "MOVEInsc",
+     "MOVEActv"
+    ]
+   }
+  },
+  {
+   "subcategory": "CREATURE",
+   "category_id": "MOVECrea",
+   "category_short": "MOVE",
+   "emoji": "🍽️",
+   "explanation": [
+    "Slithering Dragons",
+    "Gooey Zombie Movement."
+   ],
+   "synonyms": [
+    "Burrowing",
+    "Coil",
+    "Contort",
+    "Crawl",
+    "Crawling",
+    "Digging",
+    "Lunge",
+    "Slide",
+    "Slither",
+    "Squirm",
+    "Wriggle",
+    "Writhe"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 20.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 1400.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.11,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Slithering, gooey, burrowing creature movement - almost always a DESIGNED and layered sound (wet friction plus cloth plus texture), so the morphology is broadly friction but the class is defined by intent, not physics. No DSP boundary exists against a wet cloth drag or a mud squelch.",
+     "Signal use is limited to ruling out: not an impulse, not a stable tone."
+    ],
+    "confusable_with": [
+     "MOVEHmn",
+     "MOVEInsc",
+     "MOVEMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CROWD",
+   "category_id": "MOVECrwd",
+   "category_short": "MOVE",
+   "emoji": "🐦",
+   "explanation": [
+    "Groups of people milling or walking. Usually mostly just recordings of group footsteps in real locations. No vocals. Compare to MOVEMENT-ACTIVITY."
+   ],
+   "synonyms": [
+    "Amble",
+    "Jump",
+    "Lie",
+    "March",
+    "Mill",
+    "Mobilize",
+    "Mobilizing",
+    "Moves",
+    "Pilgrimage",
+    "Rout",
+    "Run",
+    "Scuffle",
+    "Shuffle",
+    "Sit",
+    "Skip",
+    "Slip",
+    "Stand",
+    "Swarm",
+    "Trek",
+    "Troop",
+    "Walk"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 1.15,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -26.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 800.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 30.0,
+      "deviation": 22.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MOVEMENT-PRESENCE < MOVEMENT-CROWD < MOVEMENT-ACTIVITY is an explicit UCS DENSITY/LEVEL CONTINUUM, not three different sources. The ordered axes are onset_rate_per_second, root_mean_square_level and lufs: PRESENCE ~0.8 onsets/s at ~-34 LUFS; CROWD ~4 onsets/s at ~-26 LUFS; ACTIVITY ~10 onsets/s at ~-19 LUFS. The three sets of priors are deliberately non-overlapping at one deviation - this is one of the cleanest signal cases in UCS.",
+     "The MIDDLE: 'groups of people milling or walking' - essentially group footsteps. The onsets are footfalls, so they are dense but only weakly periodic: many uncorrelated walkers smear the rhythm (onset_periodicity ~0.1-0.35), unlike a single marching cadence.",
+     "Against MOVEMENT-PRESENCE: roughly five times the onset_rate_per_second and about 8 LUFS louder.",
+     "Against MOVEMENT-ACTIVITY: CROWD is feet only - no object handling, so fewer bright non-footstep transients and lower spectral_flux; ACTIVITY is denser and louder still.",
+     "No vocals by definition: voicing_ratio near zero separates it from CROWDS-WALLA."
+    ],
+    "confusable_with": [
+     "MOVEPres",
+     "MOVEActv",
+     "MOVEAnml",
+     "MOVEHmn"
+    ]
+   }
+  },
+  {
+   "subcategory": "HUMAN",
+   "category_id": "MOVEHmn",
+   "category_short": "MOVE",
+   "emoji": "🎤",
+   "explanation": [
+    "Movement of single human",
+    "aside from footsteps",
+    "standing",
+    "sitting",
+    "shuffe. Some overlap or confusion with FOOTSTEP-HUMAN or MOVEMENT-ACTIVITY."
+   ],
+   "synonyms": [
+    "Activity",
+    "Climb",
+    "Crawl",
+    "Dance",
+    "Exercise",
+    "Lie",
+    "Mill",
+    "Perform",
+    "Physical",
+    "Scuffle",
+    "Shuffle",
+    "Sit",
+    "Slip",
+    "Stand"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2,
+      "deviation": 1.792,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -30.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 1100.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "ONE human moving - standing, sitting, shuffling, climbing. It sits BELOW MOVEMENT-CROWD on the density continuum (a single body cannot reach crowd onset density), but it is ultimately a source-identity call: a lone mover is not distinguishable by DSP from any other quiet cloth-and-footfall event, so text decides.",
+     "UCS itself flags the overlap with FOOTSTEPS-HUMAN and MOVEMENT-ACTIVITY."
+    ],
+    "confusable_with": [
+     "MOVEPres",
+     "MOVECrwd",
+     "MOVEActv",
+     "MOVEMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "INSECT",
+   "category_id": "MOVEInsc",
+   "category_short": "MOVE",
+   "emoji": "🐛",
+   "explanation": [
+    "Group insects",
+    "footsteps",
+    "movement",
+    "swarms",
+    "spiders",
+    "locusts. Swarms of flying insects here too",
+    "bees",
+    "flies. Overlap with ANIMALS-INSECT or AMBIENCE-INSECT."
+   ],
+   "synonyms": [
+    "Ants",
+    "Beehive",
+    "Centipede",
+    "Crawl",
+    "Crawling",
+    "Earwig",
+    "Hive",
+    "Maggot",
+    "Maggots",
+    "Midge",
+    "Millipede",
+    "Mite",
+    "Pupa",
+    "Roach",
+    "Skittering",
+    "Slither",
+    "Spider",
+    "Squirm",
+    "Swarm",
+    "Tsetse",
+    "Writhe"
+   ],
+   "acoustic_signature": {
+    "morphology": "granular",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 18.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 60.0,
+      "deviation": 35.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5000.0,
+      "deviation": 2200.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.06,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.02,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.68,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 15.0,
+      "deviation": 12.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Swarms, skitters, a hive: the densest and BRIGHTEST movement texture - micro-onsets so fast they fuse into a granular hiss (very high onset_rate_per_second), with essentially NO low_band_energy. Tiny masses radiate nothing below 200 Hz.",
+     "That HF-only, low-band-empty spectrum is the clean boundary against MOVEMENT-CROWD and MOVEMENT-ANIMAL, both of which are dark and low-band heavy.",
+     "Flying swarms may additionally carry a tonal wingbeat drone; skittering swarms will not."
+    ],
+    "confusable_with": [
+     "MOVEAnml",
+     "MOVECrea",
+     "MOVECrwd"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "MOVEMisc",
+   "category_short": "MOVE",
+   "emoji": "🏃",
+   "explanation": [
+    "Movement sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous",
+    "Moves"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Residual class: movement-shaped (multi-onset, non-vocal, no single morphology) but matching no other MOVEMENT subcategory. Abstention target for the category - reached when the PRESENCE/CROWD/ACTIVITY continuum cannot be resolved."
+    ],
+    "confusable_with": [
+     "MOVEPres",
+     "MOVECrwd",
+     "MOVEActv",
+     "MOVEHmn"
+    ]
+   }
+  },
+  {
+   "subcategory": "PRESENCE",
+   "category_id": "MOVEPres",
+   "category_short": "MOVE",
+   "emoji": "🏃",
+   "explanation": [
+    "Very light movement",
+    "people in church adjusting",
+    "people on church pews. Again",
+    "recordings without vocals. Compare to MOVEMENT-ACTIVITY and MOVEMENT-CROWD."
+   ],
+   "synonyms": [
+    "Adjust",
+    "Fidget",
+    "Light",
+    "Milling",
+    "Movement",
+    "Restless",
+    "Scuffle",
+    "Settle",
+    "Shiffling",
+    "Shift",
+    "Shuffle"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.8,
+      "deviation": 1.755,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "lufs",
+      "mean": -34.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.015,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 900.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 20.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.12,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MOVEMENT-PRESENCE < MOVEMENT-CROWD < MOVEMENT-ACTIVITY is an explicit UCS DENSITY/LEVEL CONTINUUM, not three different sources. The ordered axes are onset_rate_per_second, root_mean_square_level and lufs: PRESENCE ~0.8 onsets/s at ~-34 LUFS; CROWD ~4 onsets/s at ~-26 LUFS; ACTIVITY ~10 onsets/s at ~-19 LUFS. The three sets of priors are deliberately non-overlapping at one deviation - this is one of the cleanest signal cases in UCS.",
+     "The BOTTOM of the continuum: 'very light movement' - people settling on church pews, a fidget, a shuffle. Sparse isolated onsets (onset_rate_per_second well under ~1.3/s) over a quiet, near-stationary room bed: the lowest lufs and root_mean_square_level of the three.",
+     "UCS requires 'recordings without vocals': voicing_ratio must stay near zero, which is the boundary against CROWDS and VOICES."
+    ],
+    "confusable_with": [
+     "MOVECrwd",
+     "MOVEActv",
+     "MOVEHmn"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,1586 @@
+{
+ "version": "8.2.1",
+ "category": "WOOD",
+ "emoji": "🪵",
+ "subcategories": [
+  {
+   "subcategory": "BREAK",
+   "category_id": "WOODBrk",
+   "category_short": "WOOD",
+   "emoji": "🪵",
+   "explanation": [
+    "Wood breaks",
+    "shatters",
+    "cracks",
+    "crunches. Any destruction of wood that breaks the piece."
+   ],
+   "synonyms": [
+    "2x4",
+    "Apart",
+    "Beam",
+    "Board",
+    "Break",
+    "Breaks",
+    "Burst",
+    "Chip",
+    "Crack",
+    "Cracking",
+    "Cracks",
+    "Crumble",
+    "Crunches",
+    "Crush",
+    "Demolish",
+    "Destroy",
+    "Disintegrate",
+    "Dowel",
+    "Fracture",
+    "Fractures",
+    "Fragment",
+    "Hardwood",
+    "Joist",
+    "Log",
+    "Lumber",
+    "Plank",
+    "Plywood",
+    "Rafter",
+    "Rips",
+    "Shatter",
+    "Shattering",
+    "Shatters",
+    "Smash",
+    "Snap",
+    "Snapping",
+    "Softwood",
+    "Splinter",
+    "Splintering",
+    "Split",
+    "Stud",
+    "Timber"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 4.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 14.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 3.5,
+      "deviation": 1.8,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.15,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 6.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Destruction, not contact: a violent broadband crack followed by a splintering micro-transient tail. High spectral_flux and near-zero harmonicity distinguish it from WOODImpt, a clean single impulse that leaves the piece intact.",
+     "Against WOODCrsh: a BREAK is the moment of fracture — one destructive event with a splinter tail. A CRASH is the aftermath — a longer, multi-event scene of pieces landing and settling. Duration and transient_count carry the split.",
+     "A snapping dowel is short and sharp; a shattering plank is broader and noisier. Both stay under a couple of seconds."
+    ],
+    "confusable_with": [
+     "WOODCrsh",
+     "WOODImpt",
+     "WOODMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "CRASH & DEBRIS",
+   "category_id": "WOODCrsh",
+   "category_short": "WOOD",
+   "emoji": "🪵",
+   "explanation": [
+    "Group wood crashes and debris",
+    "and pieces falling",
+    "as in after an explosion."
+   ],
+   "synonyms": [
+    "2x4",
+    "Beam",
+    "Board",
+    "Boards",
+    "Broken",
+    "Collision",
+    "Crash",
+    "Debris",
+    "Dowel",
+    "Fall",
+    "Fell",
+    "Fragments",
+    "Hardwood",
+    "Joist",
+    "Log",
+    "Lumber",
+    "Plank",
+    "Planks",
+    "Plywood",
+    "Rafter",
+    "Remains",
+    "Rubble",
+    "Ruins",
+    "Shards",
+    "Smash",
+    "Softwood",
+    "Splintered",
+    "Splinters",
+    "Stud",
+    "Timber",
+    "Wreckage"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 60.0
+     },
+     {
+      "feature": "transient_count",
+      "min": 3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 3.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 18.0,
+      "deviation": 12.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A scene, not an event: an initial crash followed by many stochastic, non-periodic wood impacts as debris lands and settles. transient_count is high and onset_periodicity near zero — aperiodic by nature, which separates it from every rhythmic subcategory.",
+     "Against WOODBrk: a break is the fracture itself, short and front-loaded. A crash is the aftermath, seconds long, with energy spread across the file.",
+     "Against WOODMvmt: a crash is loud, high-crest and destructive; movement is quiet, sustained and non-destructive. Level and crest factor split them, not morphology."
+    ],
+    "confusable_with": [
+     "WOODBrk",
+     "WOODMvmt",
+     "WOODImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "FRICTION",
+   "category_id": "WOODFric",
+   "category_short": "WOOD",
+   "emoji": "🪵",
+   "explanation": [
+    "Wood stress",
+    "especially creaks. But also scrapes",
+    "squeaks."
+   ],
+   "synonyms": [
+    "2x4",
+    "Abrasion",
+    "Beam",
+    "Board",
+    "Creaking",
+    "Creaks",
+    "Dowel",
+    "Grating",
+    "Grinding",
+    "Hardwood",
+    "Joist",
+    "Log",
+    "Lumber",
+    "Plank",
+    "Plywood",
+    "Rafter",
+    "Rasping",
+    "Rubbing",
+    "Scrapes",
+    "Scraping",
+    "Scratching",
+    "Screech",
+    "Screeching",
+    "Scuffing",
+    "Sliding",
+    "Softwood",
+    "Squeaks",
+    "Stress",
+    "Stud",
+    "Timber",
+    "Wear"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 14.0
+     },
+     {
+      "feature": "sustain_ratio",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1400.0,
+      "deviation": 800.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.8,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Contact without release: sustained, high-centroid, low-crest, with partials that wander (large spectral_centroid_deviation_hz). Creaks, scrapes, squeaks. This is the friction archetype and it is the exact opposite of WOODImpt on every axis — crest factor, sustain_ratio and temporal centroid all invert.",
+     "Against METALFric: same morphology, different colour. Wood friction is a stick-slip creak whose energy still concentrates in the low-mid band and which leaves no ringing tail behind the scrape; metal friction is brighter, more inharmonic, and rings on after contact ends.",
+     "Against DOORCreak: physically the same event; DOORCreak simply asserts the creaking object is a door hinge. The explanation acknowledges the overlap in both directions."
+    ],
+    "confusable_with": [
+     "DOORCreak",
+     "METALFric",
+     "WOODMvmt",
+     "ROPECreak"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDLE",
+   "category_id": "WOODHndl",
+   "category_short": "WOOD",
+   "emoji": "🪵",
+   "explanation": [
+    "Handling a wooden object",
+    "picking up",
+    "setting down",
+    "etc. Some overlap or confusion with WOOD-MOVEMENT."
+   ],
+   "synonyms": [
+    "2x4",
+    "Beam",
+    "Board",
+    "Catch",
+    "Clasp",
+    "Clench",
+    "Clutch",
+    "Dowel",
+    "Down",
+    "Embrace",
+    "Grab",
+    "Grasp",
+    "Grip",
+    "Handle",
+    "Hardwood",
+    "Hold",
+    "Joist",
+    "Log",
+    "Lumber",
+    "Operate",
+    "Pickup",
+    "Plank",
+    "Plywood",
+    "Rafter",
+    "Seize",
+    "Set",
+    "Softwood",
+    "Stud",
+    "Take",
+    "Throw",
+    "Timber",
+    "Toss",
+    "Use"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.1,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1700.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.42,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Handling is a quiet, mixed gesture: a soft pickup, some hand friction, a gentle set-down. It shares wood's short ring (decay_time_seconds_60db ~0.1 s) with WOODImpt but at far lower level and crest factor — a set-down is not a hit.",
+     "Level (root_mean_square_level, lufs) is the primary axis against WOODImpt: same material, same morphology class, an order of magnitude less energy.",
+     "The explanation admits confusion with WOODMvmt; the split is that handling is human-paced and event-sparse, while movement is sustained rattling or dragging."
+    ],
+    "confusable_with": [
+     "WOODImpt",
+     "WOODMvmt",
+     "ROPEHndl"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "WOODImpt",
+   "category_short": "WOOD",
+   "emoji": "💥",
+   "explanation": [
+    "Singular wood hits",
+    "drops",
+    "impacts",
+    "board hits. Group wood destruction goes into CRASH. Resonant wood bonks or hits. Hitting your head on a doorframe."
+   ],
+   "synonyms": [
+    "2x4",
+    "Bang",
+    "Banging",
+    "Bash",
+    "Beam",
+    "Blow",
+    "Board",
+    "Bonk",
+    "Chop",
+    "Clang",
+    "Clap",
+    "Clink",
+    "Clunk",
+    "Collide",
+    "Colliding",
+    "Collision",
+    "Conk",
+    "Crash",
+    "Crashing",
+    "Dowel",
+    "Drop",
+    "Dropped",
+    "Hardwood",
+    "Hit",
+    "Hitting",
+    "Impact",
+    "Impacting",
+    "Joist",
+    "Jolt",
+    "Knock",
+    "Log",
+    "Lumber",
+    "Plank",
+    "Plywood",
+    "Pound",
+    "Rafter",
+    "Ram",
+    "Slam",
+    "Slamming",
+    "Smack",
+    "Smacking",
+    "Softwood",
+    "Strike",
+    "Striking",
+    "Stud",
+    "Thrust",
+    "Timber"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 4.0
+     },
+     {
+      "feature": "sustain_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 14.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.48,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.38,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 4.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.5,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.7,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The wood material reference. A singular hit: instant attack, front-loaded envelope, and a ring that COLLAPSES — decay_time_seconds_60db around 0.05-0.2 s. Say the boundary plainly: METAL-IMPACT rings roughly an order of magnitude longer (~0.5-2 s) with high inharmonicity and a dense partial_count. Ring time is the material-impedance axis and the single most diagnostic feature in this file.",
+     "Against WOODBrk: an impact leaves the board intact — one clean impulse, low spectral_flux, no splinter tail. A break is broadband, noisy and destructive.",
+     "Against WOODCrsh: singular versus group. The explanation says group wood destruction goes to CRASH.",
+     "Against WOODHndl: same event class, far higher level and crest factor. A bonk is not a set-down."
+    ],
+    "confusable_with": [
+     "WOODBrk",
+     "WOODCrsh",
+     "WOODHndl",
+     "DOORKnck"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "WOODMisc",
+   "category_short": "WOOD",
+   "emoji": "🪵",
+   "explanation": [
+    "Wood sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "2x4",
+    "Beam",
+    "Board",
+    "Dowel",
+    "Hardwood",
+    "Joist",
+    "Log",
+    "Lumber",
+    "Miscellaneous",
+    "Plank",
+    "Plywood",
+    "Rafter",
+    "Softwood",
+    "Stud",
+    "Timber",
+    "Tree",
+    "Wooden"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The abstention target for WOOD. It carries no morphology of its own and no gates, so it can always absorb a file the seven morphology siblings reject.",
+     "If any of IMPACT / FRICTION / BREAK / CRASH / MOVEMENT / HANDLE / TONAL survives its gates with a decent score, prefer it."
+    ],
+    "confusable_with": [],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 121,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Wood": 121
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 121,
+       "percentile_05": 1793.8,
+       "median": 4229.4,
+       "percentile_95": 5653.1
+      },
+      "crest_factor": {
+       "clips": 36,
+       "percentile_05": 4.2057,
+       "median": 18.698,
+       "percentile_95": 52.492,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 26,
+       "percentile_05": 0.10456,
+       "median": 0.24593,
+       "percentile_95": 0.95303,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 29,
+       "percentile_05": 0.0099773,
+       "median": 0.049887,
+       "percentile_95": 1.2322,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 36,
+       "percentile_05": 0.11474,
+       "median": 0.27438,
+       "percentile_95": 0.51882,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 36,
+       "percentile_05": -1.0819,
+       "median": 46.829,
+       "percentile_95": 137.07,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 36,
+       "percentile_05": 0.0099773,
+       "median": 0.18957,
+       "percentile_95": 2.215,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 36,
+       "percentile_05": 0.59154,
+       "median": 6.5118,
+       "percentile_95": 11.012,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 36,
+       "percentile_05": 0.00046428,
+       "median": 0.0092881,
+       "percentile_95": 0.050656,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 36,
+       "percentile_05": 0.0056755,
+       "median": 0.24236,
+       "percentile_95": 0.51454,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 121,
+       "percentile_05": 0.099471,
+       "median": 0.26781,
+       "percentile_95": 0.89349
+      },
+      "high_band_energy": {
+       "clips": 121,
+       "percentile_05": 0.28261,
+       "median": 0.6784,
+       "percentile_95": 0.90421
+      },
+      "inharmonicity": {
+       "clips": 121,
+       "percentile_05": 0.10724,
+       "median": 0.43422,
+       "percentile_95": 0.60528
+      },
+      "low_band_energy": {
+       "clips": 121,
+       "percentile_05": 0.005727,
+       "median": 0.036201,
+       "percentile_95": 0.2213
+      },
+      "mid_band_energy": {
+       "clips": 121,
+       "percentile_05": 0.055424,
+       "median": 0.26295,
+       "percentile_95": 0.59646
+      },
+      "onset_periodicity": {
+       "clips": 121,
+       "percentile_05": 0.0037493,
+       "median": 0.2599,
+       "percentile_95": 0.47094
+      },
+      "onset_rate_per_second": {
+       "clips": 121,
+       "percentile_05": 0.2381,
+       "median": 1.1166,
+       "percentile_95": 3.5504
+      },
+      "partial_count": {
+       "clips": 121,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 95,
+       "percentile_05": 166.42,
+       "median": 938.3,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 121,
+       "percentile_05": 381.19,
+       "median": 1313.7,
+       "percentile_95": 2706.4
+      },
+      "spectral_centroid_hz": {
+       "clips": 121,
+       "percentile_05": 2034.5,
+       "median": 5007.1,
+       "percentile_95": 8786.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 121,
+       "percentile_05": 1985.0,
+       "median": 4476.1,
+       "percentile_95": 8358.9
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 121,
+       "percentile_05": -2963.5,
+       "median": -24.746,
+       "percentile_95": 2953.2
+      },
+      "spectral_entropy": {
+       "clips": 121,
+       "percentile_05": 0.25501,
+       "median": 0.49539,
+       "percentile_95": 0.76013
+      },
+      "spectral_flatness": {
+       "clips": 121,
+       "percentile_05": 0.043974,
+       "median": 0.32165,
+       "percentile_95": 0.66598
+      },
+      "spectral_flux": {
+       "clips": 121,
+       "percentile_05": 0.18831,
+       "median": 0.22508,
+       "percentile_95": 0.2398
+      },
+      "spectral_rolloff_hz": {
+       "clips": 121,
+       "percentile_05": 3542.8,
+       "median": 9355.7,
+       "percentile_95": 14728.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 121,
+       "percentile_05": -7.0218,
+       "median": -2.6738,
+       "percentile_95": 0.56241
+      },
+      "stationarity": {
+       "clips": 121,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.44633,
+       "censored_at_floor_fraction": 0.81
+      },
+      "sustain_ratio": {
+       "clips": 36,
+       "percentile_05": 0.0055556,
+       "median": 0.023256,
+       "percentile_95": 0.22222,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 108,
+       "percentile_05": 0.039078,
+       "median": 0.25974,
+       "percentile_95": 0.37989
+      },
+      "transient_count": {
+       "clips": 121,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 18.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 121,
+       "percentile_05": 857.36,
+       "median": 3612.1,
+       "percentile_95": 10697.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MOVEMENT",
+   "category_id": "WOODMvmt",
+   "category_short": "WOOD",
+   "emoji": "🪵",
+   "explanation": [
+    "Wood movement including rattles",
+    "drag",
+    "slides",
+    "rolls. Group pieces of wood moving together."
+   ],
+   "synonyms": [
+    "2x4",
+    "Beam",
+    "Bending",
+    "Board",
+    "Bowing",
+    "Checking",
+    "Collapse",
+    "Contraction",
+    "Cracking",
+    "Crowning",
+    "Cupping",
+    "Deformation",
+    "Dowel",
+    "Drag",
+    "Expansion",
+    "Hardwood",
+    "Joist",
+    "Log",
+    "Lumber",
+    "Piling",
+    "Plank",
+    "Plywood",
+    "Rafter",
+    "Rattle",
+    "Rattling",
+    "Roll",
+    "Shake",
+    "Shaking",
+    "Shifting",
+    "Shrinkage",
+    "Softwood",
+    "Splitting",
+    "Stacking",
+    "Stud",
+    "Swelling",
+    "Timber",
+    "Tossing",
+    "Twisting",
+    "Warping"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 20.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 8.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.06,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1700.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.48,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.11,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Non-destructive bulk motion: rattles, drags, slides, rolls, a stack of boards shifting. A dense low-crest micro-event texture spread across the file, not one event.",
+     "Against WOODCrsh: movement is quiet and the wood survives. Crash is loud, destructive and front-loaded (envelope_temporal_centroid ~0.35 versus ~0.5 here).",
+     "Against WOODFric: friction is continuous contact with a high, unstable centroid; movement is discrete rattling and knocking with a mid-band wood colour and far more onsets.",
+     "Wood stress and warping creaks belong to WOODFric despite the synonym overlap here."
+    ],
+    "confusable_with": [
+     "WOODCrsh",
+     "WOODFric",
+     "WOODHndl",
+     "WOODImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "TONAL",
+   "category_id": "WOODTonl",
+   "category_short": "WOOD",
+   "emoji": "🪵",
+   "explanation": [
+    "Tonal bowed wood sounds",
+    "ringing wood."
+   ],
+   "synonyms": [
+    "2x4",
+    "Beam",
+    "Board",
+    "Bowed",
+    "Dowel",
+    "Frequency",
+    "Hardwood",
+    "Harmonic",
+    "Joist",
+    "Log",
+    "Lumber",
+    "Melodic",
+    "Melodious",
+    "Musical",
+    "Ping",
+    "Pitch",
+    "Plank",
+    "Plywood",
+    "Rafter",
+    "Resonance",
+    "Resonant",
+    "Ring",
+    "Shing",
+    "Softwood",
+    "Sonorous",
+    "Sound",
+    "Stud",
+    "Timber",
+    "Timbre",
+    "Tonal",
+    "Tone"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 60.0
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.3
+     },
+     {
+      "feature": "pitch_hz",
+      "min": 50.0,
+      "max": 2000.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.75,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 300.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 10.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A pitch is present and it holds. Bowed or resonating wood is the one WOOD subcategory with high harmonicity, low inharmonicity, low spectral_flatness and a stable f0 — everything else in WOOD is noise-like or transient.",
+     "Against WOODImpt: a resonant bonk still decays in ~0.1 s and never sustains. TONAL is excited continuously (bowed) or rings musically for a second or more.",
+     "Against a METAL tonal: metal is far more inharmonic and rings much longer. Wood's tone is warm, low-centroid and short-lived by comparison."
+    ],
+    "confusable_with": [
+     "WOODImpt",
+     "WOODFric",
+     "WOODMisc"
+    ]
+   }
+  }
+ ]
+}

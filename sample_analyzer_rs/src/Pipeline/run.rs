@@ -9,6 +9,7 @@ use rayon::prelude::*;
 use crate::analyze::analyze;
 use crate::args::Config;
 use crate::cluster::cluster_samples;
+use crate::db;
 use crate::discover::discover_audio;
 use crate::emit::emit;
 use crate::pca::pca_assign;
@@ -18,6 +19,17 @@ use crate::stream::{emit_result, emit_skip};
 use crate::version::ANALYZER_VERSION;
 
 pub fn run(cfg: &Config) {
+    let db_pool = cfg.db_url.as_ref().and_then(|url| {
+        db::get_pool(url).map_err(|e| eprintln!("DB Connect Error: {}", e)).ok().and_then(|pool| {
+            if db::init_db(&pool).is_ok() {
+                Some(pool)
+            } else {
+                eprintln!("Warning: Failed to initialize MySQL DB. DB export will be skipped.");
+                None
+            }
+        })
+    });
+
     let found = discover_audio(&cfg.root);
     let files: Vec<_> = if cfg.stride > 1 {
         found.files.into_iter().step_by(cfg.stride).collect()
@@ -131,6 +143,15 @@ pub fn run(cfg: &Config) {
     if let Ok(json) = serde_json::to_string(&results) {
         if let Ok(mut fh) = std::fs::File::create(&cfg.out) {
             let _ = fh.write_all(json.as_bytes());
+        }
+    }
+
+    if let Some(pool) = &db_pool {
+        if let Err(e) = db::write_peaks(pool, &results) {
+            eprintln!("Warning: DB write failed: {}", e);
+            emit(&serde_json::json!({ "type": "db_export", "status": "failed" }));
+        } else {
+            emit(&serde_json::json!({ "type": "db_export", "status": "success", "count": results.len() }));
         }
     }
 

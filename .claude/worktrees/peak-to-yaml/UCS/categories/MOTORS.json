@@ -1,0 +1,1150 @@
+{
+ "version": "8.2.1",
+ "category": "MOTORS",
+ "emoji": "⚙️",
+ "subcategories": [
+  {
+   "subcategory": "ANTIQUE",
+   "category_id": "MOTRAntq",
+   "category_short": "MOTR",
+   "emoji": "⚙️",
+   "explanation": [
+    "Old motors",
+    "usually combustion",
+    "so old oil pump engines",
+    "old compressors. An antique gas pump for example."
+   ],
+   "synonyms": [
+    "Aged",
+    "Ancient",
+    "Antiquated",
+    "Bygone",
+    "Classic",
+    "Engine",
+    "Historic",
+    "Kerosene",
+    "Old-Fashioned",
+    "Paraffin",
+    "Retro",
+    "Steam",
+    "Traditional",
+    "Vintage",
+    "Windmill"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 650.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Old oil-pump engines, one-lung hit-and-miss motors, antique compressors, an antique gas pump. A slow single-cylinder engine genuinely does fire only a few times a second rather than tens of times, which nudges onset_rate down - but a modern engine at cranking speed does the same.",
+     "'Antique' is a fact about the object's date, not about its waveform. Semantic only; text decides it against MOTORS-COMBUSTION."
+    ],
+    "confusable_with": [
+     "MOTRComb",
+     "MACHAntq",
+     "VEHAntq",
+     "VEHJalop",
+     "MOTRMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "COMBUSTION",
+   "category_id": "MOTRComb",
+   "category_short": "MOTR",
+   "emoji": "🚌",
+   "explanation": [
+    "Non-vehicle combustion engines. Combustion motors",
+    "generators. Isolated engine recordings."
+   ],
+   "synonyms": [
+    "Backfire",
+    "Carburation",
+    "Carburetor",
+    "Combustion",
+    "Combustor",
+    "Compression",
+    "Diesel",
+    "Engine",
+    "Ethanol",
+    "Four-Stroke",
+    "Gas",
+    "Gasoline",
+    "Generator",
+    "Internal",
+    "Manifold",
+    "Mechanic",
+    "Misfire",
+    "Motor",
+    "Outboard",
+    "Petrol",
+    "Rotary",
+    "Turboshaft",
+    "Two-Stroke"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.30743,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 493,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.68
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.58681,
+      "deviation": 3.812,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 494,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.52572
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12579,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 494,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.14586
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.57279,
+      "deviation": 0.414,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 494,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.56921
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.21502,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 494,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.15735
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3083.9,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 494,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2851.55387
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.52624,
+      "deviation": 0.4098,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 494,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.52234
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.54786,
+      "deviation": 0.5803,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 78,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.72
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.9152,
+      "deviation": 1.91,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 78,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 4.2
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 668.18,
+      "deviation": 3.836,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 90.0
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A four-stroke firing order is a periodic impulse train: at idle roughly 12-30 firings per second, which puts a strong peak in the onset autocorrelation AND a harmonic comb whose fundamental is the firing frequency. On a steady idle even beats_per_minute can fire.",
+     "Against MOTORS-ELECTRIC: combustion is much noisier and much more low-band, and it has that periodic impulse train. An electric motor is a clean tone with NO impulse train - onset_periodicity is the discriminator.",
+     "Against MOTORS-TURBINE: a turbine is a smooth high-frequency whine with no discrete firing events.",
+     "Non-vehicle engines only - generators, compressors, isolated engine recordings. If it is mounted in something that drives, it belongs in VEHICLES, and only text knows."
+    ],
+    "confusable_with": [
+     "MOTRAntq",
+     "MOTRElec",
+     "MOTRTurb",
+     "VEHCar",
+     "MACHInd",
+     "BOATMotr"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 494,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Accelerating_and_revving_and_vroom": 68,
+      "Engine": 494,
+      "Engine_starting": 76,
+      "Idling": 50
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 494,
+       "percentile_05": 1879.0,
+       "median": 3809.4,
+       "percentile_95": 5382.3
+      },
+      "crest_factor": {
+       "clips": 78,
+       "percentile_05": 2.1516,
+       "median": 4.8407,
+       "percentile_95": 16.3,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 71,
+       "percentile_05": 0.019955,
+       "median": 0.7034,
+       "percentile_95": 8.7451,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 78,
+       "percentile_05": 0.0049887,
+       "median": 0.024943,
+       "percentile_95": 2.4744,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 78,
+       "percentile_05": -1.4929,
+       "median": -0.048548,
+       "percentile_95": 23.215,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 57,
+       "percentile_05": 0.0049887,
+       "median": 0.29433,
+       "percentile_95": 3.3075,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 78,
+       "percentile_05": -0.40693,
+       "median": 0.45871,
+       "percentile_95": 4.4233,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 78,
+       "percentile_05": 0.031228,
+       "median": 0.48859,
+       "percentile_95": 0.85817,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 78,
+       "percentile_05": 0.17509,
+       "median": 0.49853,
+       "percentile_95": 0.69223,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 494,
+       "percentile_05": 0.13548,
+       "median": 0.57271,
+       "percentile_95": 0.96421
+      },
+      "high_band_energy": {
+       "clips": 494,
+       "percentile_05": 0.11158,
+       "median": 0.42933,
+       "percentile_95": 0.79952
+      },
+      "inharmonicity": {
+       "clips": 494,
+       "percentile_05": 0.028111,
+       "median": 0.36045,
+       "percentile_95": 0.62006
+      },
+      "low_band_energy": {
+       "clips": 494,
+       "percentile_05": 0.014013,
+       "median": 0.12558,
+       "percentile_95": 0.49115
+      },
+      "mid_band_energy": {
+       "clips": 494,
+       "percentile_05": 0.12289,
+       "median": 0.3979,
+       "percentile_95": 0.61604
+      },
+      "onset_periodicity": {
+       "clips": 493,
+       "percentile_05": 0.11508,
+       "median": 0.30743,
+       "percentile_95": 0.72104
+      },
+      "onset_rate_per_second": {
+       "clips": 494,
+       "percentile_05": 0.10431,
+       "median": 0.58519,
+       "percentile_95": 3.5008
+      },
+      "partial_count": {
+       "clips": 492,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 227,
+       "percentile_05": 60.0,
+       "median": 668.18,
+       "percentile_95": 1837.5
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 82,
+       "percentile_05": -0.97372,
+       "median": 0.002334,
+       "percentile_95": 0.97199
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 494,
+       "percentile_05": 106.9,
+       "median": 560.37,
+       "percentile_95": 1728.9
+      },
+      "spectral_centroid_hz": {
+       "clips": 494,
+       "percentile_05": 1020.1,
+       "median": 3076.6,
+       "percentile_95": 6754.9
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 494,
+       "percentile_05": 872.6,
+       "median": 2715.6,
+       "percentile_95": 6143.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 494,
+       "percentile_05": -373.23,
+       "median": -2.2233,
+       "percentile_95": 299.28
+      },
+      "spectral_entropy": {
+       "clips": 494,
+       "percentile_05": 0.23709,
+       "median": 0.45557,
+       "percentile_95": 0.69478
+      },
+      "spectral_flatness": {
+       "clips": 494,
+       "percentile_05": 0.029766,
+       "median": 0.21486,
+       "percentile_95": 0.52304
+      },
+      "spectral_flux": {
+       "clips": 494,
+       "percentile_05": 0.16687,
+       "median": 0.21425,
+       "percentile_95": 0.23375
+      },
+      "spectral_rolloff_hz": {
+       "clips": 494,
+       "percentile_05": 1366.5,
+       "median": 6664.2,
+       "percentile_95": 12878.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 494,
+       "percentile_05": -9.1337,
+       "median": -5.2215,
+       "percentile_95": -0.41133
+      },
+      "stationarity": {
+       "clips": 494,
+       "percentile_05": 0.0,
+       "median": 0.526,
+       "percentile_95": 0.87243
+      },
+      "sustain_ratio": {
+       "clips": 78,
+       "percentile_05": 0.022222,
+       "median": 0.54491,
+       "percentile_95": 1.0,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 493,
+       "percentile_05": 0.01048,
+       "median": 0.13833,
+       "percentile_95": 0.35093
+      },
+      "transient_count": {
+       "clips": 494,
+       "percentile_05": 1.0,
+       "median": 5.0,
+       "percentile_95": 37.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 494,
+       "percentile_05": 344.71,
+       "median": 2015.7,
+       "percentile_95": 8092.5
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "ELECTRIC",
+   "category_id": "MOTRElec",
+   "category_short": "MOTR",
+   "emoji": "⚡",
+   "explanation": [
+    "Non-vehicle electric motors. Any motor that runs on electricity. An isolated electric motor. See also TOOLS-POWER."
+   ],
+   "synonyms": [
+    "AC",
+    "DC",
+    "Dentist",
+    "Disposal",
+    "Drill",
+    "Dynamotor",
+    "Engine",
+    "Garbage",
+    "Magneto",
+    "Motor",
+    "Razor",
+    "Stepper",
+    "Toothbrush",
+    "Volt",
+    "Watt",
+    "Wheelchair"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 1800.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.4,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.78,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 250.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 8.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.4,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.28,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Any electric motor: a steady, strongly harmonic whine or hum, usually with a commutator or slot-passing overtone series. Stationary, high sustain, and with NO periodic impulse train - the absence of a firing order is what separates it from MOTORS-COMBUSTION.",
+     "Against MOTORS-SERVO: a servo is short, discrete and start-stop, and it sweeps in pitch as it seeks position. This is a steady continuous run.",
+     "Against MOTORS-TURBINE: a turbine sits far higher in frequency and sweeps on spool-up. See also TOOLS-POWER, which is the same motor plus a cutting load."
+    ],
+    "confusable_with": [
+     "MOTRSrvo",
+     "MOTRTurb",
+     "MOTRComb",
+     "TOOLPowr",
+     "MACHFan",
+     "ELECBuzz"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "MOTRMisc",
+   "category_short": "MOTR",
+   "emoji": "⚙️",
+   "explanation": [
+    "Motor sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Engine",
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "The abstention target for MOTORS. No gates and no priors by construction - it must never exclude anything.",
+     "Emit when the sound is plainly a motor but combustion / electric / turbine / servo cannot be told apart, or none of them fits."
+    ],
+    "confusable_with": [
+     "MOTRComb",
+     "MOTRElec",
+     "MOTRTurb",
+     "MOTRSrvo",
+     "MOTRAntq"
+    ]
+   }
+  },
+  {
+   "subcategory": "SERVO",
+   "category_id": "MOTRSrvo",
+   "category_short": "MOTR",
+   "emoji": "⚙️",
+   "explanation": [
+    "Specifically servo motors",
+    "from robot",
+    "to radio controlled servos. Clean isolated servos."
+   ],
+   "synonyms": [
+    "3D",
+    "Actuator",
+    "Antenna",
+    "Camera",
+    "Car",
+    "Drive",
+    "Focus",
+    "Motor",
+    "Printer",
+    "RC",
+    "Robot"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.6,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 600.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 20.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 600.0,
+      "deviation": 500.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.02,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.28,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Clean isolated servos: SHORT bursts of high-pitched geared-motor whine with hard start and stop edges, usually sweeping in pitch as the servo accelerates and brakes into position. Length is the strongest cue - a servo move lasts a fraction of a second to a couple of seconds, not a continuous run.",
+     "Almost no low-band energy: a servo is a small motor with no mass behind it.",
+     "Against MOTORS-ELECTRIC: that is a steady continuous run. Against ROBOTS-MOVEMENT: identical sound, different intent - text decides."
+    ],
+    "confusable_with": [
+     "MOTRElec",
+     "ROBTMvmt",
+     "MACHMech",
+     "CMPTDriv",
+     "VEHWndw"
+    ]
+   }
+  },
+  {
+   "subcategory": "TURBINE",
+   "category_id": "MOTRTurb",
+   "category_short": "MOTR",
+   "emoji": "⚙️",
+   "explanation": [
+    "Turbines",
+    "water or air. That classic 'whine' power up and down are usually turbines. A jet engine is a turbine."
+   ],
+   "synonyms": [
+    "Aircraft",
+    "Airplane",
+    "Engine",
+    "Generator",
+    "Hydro",
+    "Steam",
+    "Turbomachinery",
+    "Wind",
+    "Windmill"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 900.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 60.0,
+      "deviation": 300.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 1.5,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.4,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The classic power-up / power-down WHINE. A turbine is a smooth high-frequency tone riding a broadband jet of noise, with a monotonic pitch and centroid trajectory through spool-up and spool-down (positive spectral_centroid_slope on start, negative on shutdown) and NO discrete firing events at all.",
+     "Much brighter than any piston engine - high_band_energy dominates - and onset_periodicity collapses to near zero, which is the clean split from MOTORS-COMBUSTION.",
+     "A jet engine is a turbine, but a recording of an aircraft belongs to AIRCRAFT-JET. Only text knows the mount."
+    ],
+    "confusable_with": [
+     "AEROJet",
+     "MOTRElec",
+     "MOTRComb",
+     "MACHInd",
+     "AIRHiss"
+    ]
+   }
+  }
+ ]
+}

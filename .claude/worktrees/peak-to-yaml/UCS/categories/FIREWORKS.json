@@ -1,0 +1,446 @@
+{
+ "version": "8.2.1",
+ "category": "FIREWORKS",
+ "emoji": "🎆",
+ "subcategories": [
+  {
+   "subcategory": "COMMERCIAL",
+   "category_id": "FRWKComr",
+   "category_short": "FRWK",
+   "emoji": "🎆",
+   "explanation": [
+    "Large commercial fireworks",
+    "mortars",
+    "as on the 4th of July. Full displays or single large mortars."
+   ],
+   "synonyms": [
+    "Aerial",
+    "Boom",
+    "Display",
+    "Firework",
+    "Independence",
+    "Kaboom",
+    "Mortar",
+    "Pyrotechnic",
+    "Pyrotechnical",
+    "Pyrotechnics",
+    "Rockets",
+    "Salute",
+    "Shell",
+    "Shells"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 300.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 2.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.32,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A large aerial shell: a LAUNCH thump, a delay, then the airburst — and very often a crackle and report train from the stars afterwards. So it is a burst that is NOT a clean single event: expect several onsets and a long, echoing, genuinely WIDE outdoor tail, because these are recorded at distance in the open.",
+     "Against EXPLOSIONS-REAL: acoustically an aerial shell IS an explosion. The leans are the multi-onset structure (launch, burst, crackle) and the long reverberant open-air tail. Weak; text carries it.",
+     "Against FIREWORKS-RECREATIONAL: SCALE, and this one is reliable. A commercial mortar has serious sub-200 Hz energy and a multi-second tail; a firecracker has almost none and dies instantly. low_band_energy and length_seconds are the split."
+    ],
+    "confusable_with": [
+     "EXPLReal",
+     "FRWKRec",
+     "GUNArtl",
+     "EXPLDsgn",
+     "FRWKMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "FRWKMisc",
+   "category_short": "FRWK",
+   "emoji": "🎆",
+   "explanation": [
+    "Firework sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.15,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.1,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Catch-all. The ABSTAIN target for FIREWORKS: sparkler fizz, smoke-bomb hiss, whistling effects — anything that is neither a mortar nor a firecracker."
+    ],
+    "confusable_with": [
+     "FRWKComr",
+     "FRWKRec"
+    ]
+   }
+  },
+  {
+   "subcategory": "RECREATIONAL",
+   "category_id": "FRWKRec",
+   "category_short": "FRWK",
+   "emoji": "🍽️",
+   "explanation": [
+    "Small store-bought",
+    "recreational fireworks",
+    "firecrackers and roman candles and bottle rockets."
+   ],
+   "synonyms": [
+    "Bang",
+    "Blast",
+    "Bomb",
+    "Boom",
+    "Bottle",
+    "Candle",
+    "Cherry",
+    "Crackle",
+    "Firecracker",
+    "Fizz",
+    "Fountain",
+    "Jack",
+    "Jumping",
+    "M80",
+    "Pop",
+    "Popper",
+    "Rocket",
+    "Roman",
+    "Smoke",
+    "Snaps",
+    "Sparkler",
+    "Whizz"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.22,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.59417,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 310,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 2.32249,
+       "reasoned_mean": 6.0,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.11971,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 310,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 0.1166,
+       "reasoned_mean": 0.18,
+       "reasoned_deviation": 0.14,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 310,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 2.79452,
+       "reasoned_mean": 25.0,
+       "reasoned_deviation": 4.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.31969,
+      "deviation": 0.20315,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 310,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 0.20315,
+       "reasoned_mean": 0.42,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2403.42501,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 310,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 2.0366,
+       "reasoned_mean": 2200.0,
+       "reasoned_deviation": 2.8,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.02855,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 93,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 2.79325,
+       "reasoned_mean": 0.2,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 29.77035,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 141,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 2.13284,
+       "reasoned_mean": 12.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.20144,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 310,
+       "fsd50k_classes": [
+        "Fireworks"
+       ],
+       "measured_deviation": 0.17399,
+       "reasoned_mean": 0.65,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A string of firecrackers is a dense STOCHASTIC crackle train: many sharp, bright, tiny reports with irregular spacing. Roman candles and bottle rockets add a whistle and a small pop.",
+     "Against GUNS-AUTOMATIC — the other dense onset train in this taxonomy, and the test that matters: firecrackers are STOCHASTIC (onset_periodicity around 0.2, because a fuse burns at a ragged rate) while a machine gun is PERIODIC (around 0.75, because it is a machine). The charges are also tiny, so low_band_energy sits far below any firearm's. Those two features together make the boundary real.",
+     "Against FIREWORKS-COMMERCIAL: scale. Almost no sub-200 Hz energy and no multi-second tail. Against FIRE-CRACKLE: a fire crackle is far quieter with a much lower crest factor per event."
+    ],
+    "confusable_with": [
+     "GUNAuto",
+     "FRWKComr",
+     "FIRECrkl",
+     "GUNMisc",
+     "EXPLReal"
+    ]
+   }
+  }
+ ]
+}

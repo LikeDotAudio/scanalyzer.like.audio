@@ -1,0 +1,770 @@
+{
+  "version": "8.2.APK",
+  "category": "GUITAR",
+  "emoji": "🎸",
+  "subcategories": [
+    {
+      "subcategory": "ACOUSTIC",
+      "category_id": "GUITAcou",
+      "category_short": "GUIT",
+      "emoji": "🎸",
+      "explanation": [
+        "Acoustic guitar \u2014 a plucked/strummed chordophone with a hollow wooden body giving a woody, harmonic decay.",
+        "Steel-string and nylon/classical guitars alike, from single plucks to full strums."
+      ],
+      "synonyms": [
+        "Acoustic Guitar",
+        "Acoustic",
+        "Nylon",
+        "Steel String",
+        "Classical Guitar",
+        "Strum",
+        "Fingerpick",
+        "Folk Guitar"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.82,
+            "deviation": 0.12,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.82,
+              "reasoned_deviation_before_calibration": 0.12
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1400.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1400.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.012,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.012,
+              "reasoned_deviation_before_calibration": 2.8
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.35,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.2,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1.2,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.05,
+            "deviation": 0.06,
+            "transform": "linear",
+            "weight": 0.4,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.05,
+              "reasoned_deviation_before_calibration": 0.06
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "ELECTRIC",
+      "category_id": "GUITElec",
+      "category_short": "GUIT",
+      "emoji": "⚡",
+      "explanation": [
+        "Electric guitar \u2014 a solid/semi-hollow chordophone whose strings are amplified, sustained and often overdriven by an amp.",
+        "Clean single-coil tones through to distorted power chords and lead riffs."
+      ],
+      "synonyms": [
+        "Electric Guitar",
+        "Electric",
+        "Strat",
+        "Les Paul",
+        "Telecaster",
+        "Riff",
+        "Power Chord",
+        "Distorted Guitar",
+        "Overdrive",
+        "Lead Guitar",
+        "Crunch"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 30.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.78,
+            "deviation": 0.15,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.78,
+              "reasoned_deviation_before_calibration": 0.15
+            }
+          },
+          {
+            "feature": "total_harmonic_distortion",
+            "mean": 0.25,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.25,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1600.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1600.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.55,
+            "deviation": 0.25,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.55,
+              "reasoned_deviation_before_calibration": 0.25
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.015,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.015,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "BASS GUITAR",
+      "category_id": "GUITBass",
+      "category_short": "GUIT",
+      "emoji": "🎸",
+      "explanation": [
+        "Bass guitar \u2014 a low-register plucked chordophone (electric or acoustic bass) providing deep, fundamental-heavy notes.",
+        "Fingered, picked and slapped bass; P-Bass, Jazz Bass and upright-adjacent electric basses."
+      ],
+      "synonyms": [
+        "Bass Guitar",
+        "Bass",
+        "Electric Bass",
+        "Fingered Bass",
+        "Slap Bass",
+        "P-Bass",
+        "Jazz Bass",
+        "Picked Bass",
+        "Bass Line"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "spectral_centroid_hz",
+            "max": 1200
+          },
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 300.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 300.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "low_band_energy",
+            "mean": 0.75,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.75,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.8,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.8,
+              "reasoned_deviation_before_calibration": 0.14
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 80.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 80.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.012,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.012,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "HARP",
+      "category_id": "GUITHarp",
+      "category_short": "GUIT",
+      "emoji": "🎵",
+      "explanation": [
+        "Concert harp \u2014 a large plucked chordophone with bright, shimmering tone and long harmonic decay.",
+        "Sweeping glissandi and single plucked notes with a clean, ringing sustain."
+      ],
+      "synonyms": [
+        "Harp",
+        "Concert Harp",
+        "Glissando",
+        "Gliss",
+        "Pedal Harp"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_separable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 25.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "harmonicity",
+            "mean": 0.88,
+            "deviation": 0.1,
+            "transform": "linear",
+            "weight": 1.0,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.88,
+              "reasoned_deviation_before_calibration": 0.1
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1900.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1900.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 2.0,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 2.0,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.01,
+            "deviation": 2.8,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.01,
+              "reasoned_deviation_before_calibration": 2.8
+            }
+          },
+          {
+            "feature": "sustain_ratio",
+            "mean": 0.45,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.45,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "BANJO",
+      "category_id": "GUITBanj",
+      "category_short": "GUIT",
+      "emoji": "🪕",
+      "explanation": [
+        "Banjo \u2014 a bright, twangy plucked chordophone with a taut membrane head giving a metallic-edged attack and fast decay.",
+        "Bluegrass and folk banjo rolls and single notes."
+      ],
+      "synonyms": [
+        "Banjo",
+        "Bluegrass",
+        "Twang",
+        "Clawhammer"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 12.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2600.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 2600.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.72,
+            "deviation": 0.16,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.72,
+              "reasoned_deviation_before_calibration": 0.16
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.006,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.006,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.4,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.4,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MANDOLIN",
+      "category_id": "GUITMand",
+      "category_short": "GUIT",
+      "emoji": "🎸",
+      "explanation": [
+        "Mandolin \u2014 a high, bright double-course plucked chordophone, often played with a shimmering tremolo.",
+        "Paired-string courses give a chorused, ringing tone."
+      ],
+      "synonyms": [
+        "Mandolin",
+        "Mando",
+        "Tremolo",
+        "Double Course"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 12.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2400.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 2400.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.8,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.8,
+              "reasoned_deviation_before_calibration": 0.14
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 600.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 600.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.007,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.007,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "high_band_energy",
+            "mean": 0.38,
+            "deviation": 0.22,
+            "transform": "linear",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.38,
+              "reasoned_deviation_before_calibration": 0.22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "UKULELE",
+      "category_id": "GUITUke",
+      "category_short": "GUIT",
+      "emoji": "🎸",
+      "explanation": [
+        "Ukulele \u2014 a small, bright nylon-strung plucked chordophone with a soft, warm-yet-bright attack and quick decay.",
+        "Soprano through baritone ukulele plucks and strums."
+      ],
+      "synonyms": [
+        "Ukulele",
+        "Uke",
+        "Soprano Uke",
+        "Baritone Uke"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 10.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 2000.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 2000.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.8,
+            "deviation": 0.14,
+            "transform": "linear",
+            "weight": 0.8,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.8,
+              "reasoned_deviation_before_calibration": 0.14
+            }
+          },
+          {
+            "feature": "pitch_hz",
+            "mean": 440.0,
+            "deviation": 1.8,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 440.0,
+              "reasoned_deviation_before_calibration": 1.8
+            }
+          },
+          {
+            "feature": "envelope_attack_seconds",
+            "mean": 0.009,
+            "deviation": 3.0,
+            "transform": "log",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.009,
+              "reasoned_deviation_before_calibration": 3.0
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 0.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.5,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "SITAR",
+      "category_id": "GUITSitr",
+      "category_short": "GUIT",
+      "emoji": "🎸",
+      "explanation": [
+        "Sitar \u2014 a buzzy, resonant plucked chordophone whose curved bridge and sympathetic strings create an inharmonic, shimmering drone.",
+        "Indian classical melodic lines with characteristic pitch-bending and jawari buzz."
+      ],
+      "synonyms": [
+        "Sitar",
+        "Sympathetic Strings",
+        "Raga",
+        "Drone"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "signal_narrowable",
+        "gates": [
+          {
+            "feature": "length_seconds",
+            "max": 20.0
+          }
+        ],
+        "priors": [
+          {
+            "feature": "inharmonicity",
+            "mean": 0.35,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.9,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.35,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "spectral_centroid_hz",
+            "mean": 1800.0,
+            "deviation": 1.9,
+            "transform": "log",
+            "weight": 0.7,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1800.0,
+              "reasoned_deviation_before_calibration": 1.9
+            }
+          },
+          {
+            "feature": "spectral_flatness",
+            "mean": 0.25,
+            "deviation": 0.18,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.25,
+              "reasoned_deviation_before_calibration": 0.18
+            }
+          },
+          {
+            "feature": "harmonicity",
+            "mean": 0.6,
+            "deviation": 0.2,
+            "transform": "linear",
+            "weight": 0.6,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 0.6,
+              "reasoned_deviation_before_calibration": 0.2
+            }
+          },
+          {
+            "feature": "decay_time_seconds_60db",
+            "mean": 1.5,
+            "deviation": 2.2,
+            "transform": "log",
+            "weight": 0.5,
+            "provenance": {
+              "source": "reasoned",
+              "reasoned_mean_before_calibration": 1.5,
+              "reasoned_deviation_before_calibration": 2.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "subcategory": "MISC",
+      "category_id": "GUITMisc",
+      "category_short": "GUIT",
+      "emoji": "🎸",
+      "explanation": [
+        "A plucked chordophone that does not fit a specific subcategory, or the abstention target when the scorer is unsure."
+      ],
+      "synonyms": [
+        "Guitar",
+        "Plucked",
+        "Chordophone",
+        "Strings",
+        "Stringed Instrument",
+        "GTR",
+        "acoustic gt",
+        "electric gt",
+        "GT"
+      ],
+      "acoustic_signature": {
+        "morphology": "impulsive_with_tail",
+        "separability": "semantic_only",
+        "gates": [],
+        "priors": []
+      }
+    }
+  ]
+}

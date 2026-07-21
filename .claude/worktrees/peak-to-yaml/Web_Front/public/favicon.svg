@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Scanalyzer logo">
+  <defs>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f4902c"/>
+      <stop offset="1" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <clipPath id="lens"><circle cx="25" cy="25" r="14.5"/></clipPath>
+  </defs>
+  <!-- handle -->
+  <line x1="35.54" y1="35.54" x2="56" y2="56" stroke="#f4902c" stroke-width="7" stroke-linecap="round"/>
+  <!-- lens fill -->
+  <circle cx="25" cy="25" r="17" fill="#0b0e14"/>
+  <!-- waveform inside the lens -->
+  <g clip-path="url(#lens)">
+    <line x1="8" y1="25" x2="42" y2="25" stroke="#0ea5e9" stroke-opacity="0.25" stroke-width="1"/>
+    <path d="M12.00,25.00 L12.55,24.55 L13.11,23.76 L13.66,23.59 L14.21,24.22 L14.77,24.82 L15.32,24.61 L15.87,24.07 L16.43,24.69 L16.98,27.30 L17.53,30.63 L18.09,31.97 L18.64,29.55 L19.19,24.49 L19.74,20.07 L20.30,18.97 L20.85,20.86 L21.40,22.93 L21.96,22.76 L22.51,20.95 L23.06,20.58 L23.62,24.05 L24.17,30.31 L24.72,35.27 L25.28,35.27 L25.83,30.31 L26.38,24.05 L26.94,20.58 L27.49,20.95 L28.04,22.76 L28.60,22.93 L29.15,20.86 L29.70,18.97 L30.26,20.07 L30.81,24.49 L31.36,29.55 L31.91,31.97 L32.47,30.63 L33.02,27.30 L33.57,24.69 L34.13,24.07 L34.68,24.61 L35.23,24.82 L35.79,24.22 L36.34,23.59 L36.89,23.76 L37.45,24.55 L38.00,25.00" fill="none" stroke="url(#wave)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+  <!-- lens rim -->
+  <circle cx="25" cy="25" r="17" fill="none" stroke="#f4902c" stroke-width="5"/>
+</svg>

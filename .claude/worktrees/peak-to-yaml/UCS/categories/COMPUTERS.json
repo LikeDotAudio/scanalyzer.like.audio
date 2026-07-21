@@ -1,0 +1,771 @@
+{
+ "version": "8.2.1",
+ "category": "COMPUTERS",
+ "emoji": "💻",
+ "subcategories": [
+  {
+   "subcategory": "HARD DRIVE",
+   "category_id": "CMPTDriv",
+   "category_short": "CMPT",
+   "emoji": "💻",
+   "explanation": [
+    "Laptop or other hard drive seeking sounds",
+    "data reading."
+   ],
+   "synonyms": [
+    "Boot",
+    "Data",
+    "Disc",
+    "Disk",
+    "Firewire",
+    "Floppy",
+    "Gigabytes",
+    "Grind",
+    "Hard",
+    "HDD",
+    "IDE",
+    "Magnetic",
+    "Megabytes",
+    "NAS",
+    "RAID",
+    "SATA",
+    "SCSI",
+    "Search",
+    "SSD",
+    "Storage",
+    "Terabytes",
+    "Thunderbolt"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 15.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "TWO LAYERS AT ONCE, and the DUALITY is the signature: (1) a steady, quiet SPINDLE WHINE — a weak harmonic component from the platter motor (5400 rpm = 90 Hz, 7200 rpm = 120 Hz, plus pole harmonics) — underneath (2) an IRREGULAR CHATTER of head-seek clicks. A record showing BOTH a faint tonal floor AND sparse, aperiodic bright transients is a mechanical drive.",
+     "Seek chatter is APERIODIC — data access is not a rhythm, it follows the file system. onset_periodicity stays LOW, which separates a drive from CMPTKey (typing has a loose but real cadence) and from any motor-driven machine (which has a hard cycle).",
+     "Everything about it is QUIET: root_mean_square_level is low and it is always close-mic'd. A loud grinding version means a FAILING drive — still CMPTDriv, and the grind pushes flatness and flux up.",
+     "An SSD is SILENT. If the text says SSD and the file has content, the content is something else (fan, coil whine). Coil whine in particular is an ELECBuzz-shaped harmonic comb, not a drive sound.",
+     "Against MACHOffc: printers and copiers are far louder, longer, and driven by a strongly PERIODIC transport cycle."
+    ],
+    "confusable_with": [
+     "CMPTKey",
+     "CMPTMisc",
+     "MACHOffc",
+     "MOTRElec",
+     "MECHClik"
+    ]
+   }
+  },
+  {
+   "subcategory": "KEYBOARD & MOUSE",
+   "category_id": "CMPTKey",
+   "category_short": "CMPT",
+   "emoji": "🐭",
+   "explanation": [
+    "Typing on computer keyboard",
+    "and mouse movement."
+   ],
+   "synonyms": [
+    "Bluetooth",
+    "Clicking",
+    "Cursor",
+    "Device",
+    "Ergonomic",
+    "Input",
+    "Keyboard",
+    "Keypad",
+    "Keys",
+    "Keystroke",
+    "Magic",
+    "Mechanical",
+    "Mice",
+    "Mouse",
+    "Numeric",
+    "Optical",
+    "QWERTY",
+    "Touchpad",
+    "Trackball",
+    "Trackpad",
+    "Typing",
+    "Wired",
+    "Wireless"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.6667,
+      "deviation": 2.46,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 229,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.68242
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 13.0,
+      "deviation": 3.671,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 229,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 13.0
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.42074,
+      "deviation": 0.3931,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 229,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.42306
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.19169,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 229,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.35
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4988.6,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 229,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5127.01784
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.36246,
+      "deviation": 0.2175,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 229,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.3756
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.04,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 8.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "AN IMPULSE TRAIN OF PLASTIC CLICKS. Typing is a sequence of very sharp, unpitched, short-decay transients at 3-8 keystrokes/second. Each keystroke is a COMPOUND event — a key-down thock plus a key-up release click — so transient_count typically runs at roughly TWICE the number of characters typed. That 2:1 structure is itself a small piece of evidence.",
+     "SEMI-periodic, not periodic: human typing has cadence but not a clock's regularity. onset_periodicity ~0.2-0.5 is the sweet spot — higher than a stochastic texture like SPARKS, far lower than a machine cycle like MACHInd.",
+     "Mouse CLICKS are the same object with transient_count 1-2. Mouse and trackpad MOVEMENT is near-silent friction and will often gate out of everything — expect (and accept) a low-confidence call there.",
+     "Against COMType (typewriter) — the sharpest boundary available in this neighbourhood, and it is a MATERIAL-IMPEDANCE test, exactly the axis decay_time_seconds_60db exists to measure. A typewriter is METAL striking a platen: it RINGS (decay ~100-200 ms, high inharmonicity), it is loud, and it has a margin BELL. A computer keyboard is PLASTIC on plastic: it does NOT ring (decay under ~50 ms) and has no bell. DSP genuinely decides this one.",
+     "Against UIClick: a synthetic UI click is band-limited and single; a keyboard is broadband, multi-transient, and has a mechanical body with a real decay."
+    ],
+    "confusable_with": [
+     "COMType",
+     "UIClick",
+     "CMPTDriv",
+     "MECHClik",
+     "CMPTMisc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 229,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Typing": 229,
+      "Computer_keyboard": 129
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 229,
+       "percentile_05": 2313.6,
+       "median": 4476.6,
+       "percentile_95": 5690.2
+      },
+      "crest_factor": {
+       "clips": 25,
+       "percentile_05": 7.4091,
+       "median": 22.387,
+       "percentile_95": 35.389,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 22,
+       "percentile_05": 0.0099773,
+       "median": 0.0099773,
+       "percentile_95": 0.13469,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 25,
+       "percentile_05": 0.054875,
+       "median": 0.13968,
+       "percentile_95": 0.22948,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 25,
+       "percentile_05": 4.0724,
+       "median": 25.358,
+       "percentile_95": 80.928,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 25,
+       "percentile_05": 0.024943,
+       "median": 0.12472,
+       "percentile_95": 0.29433,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 25,
+       "percentile_05": 2.0105,
+       "median": 4.9179,
+       "percentile_95": 8.5592,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 25,
+       "percentile_05": 0.0,
+       "median": 0.054586,
+       "percentile_95": 0.11721,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 25,
+       "percentile_05": 0.019792,
+       "median": 0.19409,
+       "percentile_95": 0.46564,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 229,
+       "percentile_05": 0.10444,
+       "median": 0.42074,
+       "percentile_95": 0.9471
+      },
+      "high_band_energy": {
+       "clips": 229,
+       "percentile_05": 0.37764,
+       "median": 0.6974,
+       "percentile_95": 0.86206
+      },
+      "inharmonicity": {
+       "clips": 229,
+       "percentile_05": 0.23599,
+       "median": 0.45143,
+       "percentile_95": 0.63807
+      },
+      "low_band_energy": {
+       "clips": 229,
+       "percentile_05": 0.0078878,
+       "median": 0.064496,
+       "percentile_95": 0.3
+      },
+      "mid_band_energy": {
+       "clips": 229,
+       "percentile_05": 0.091231,
+       "median": 0.21025,
+       "percentile_95": 0.44718
+      },
+      "onset_periodicity": {
+       "clips": 229,
+       "percentile_05": 0.046604,
+       "median": 0.19169,
+       "percentile_95": 0.35932
+      },
+      "onset_rate_per_second": {
+       "clips": 229,
+       "percentile_05": 0.25869,
+       "median": 1.6667,
+       "percentile_95": 4.1007
+      },
+      "partial_count": {
+       "clips": 227,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 151,
+       "percentile_05": 450.0,
+       "median": 1260.0,
+       "percentile_95": 1917.4
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 29,
+       "percentile_05": -2.1308,
+       "median": 0.00099023,
+       "percentile_95": 4.0757
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 229,
+       "percentile_05": 524.29,
+       "median": 1147.0,
+       "percentile_95": 2364.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 229,
+       "percentile_05": 2698.2,
+       "median": 4988.6,
+       "percentile_95": 7820.8
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 229,
+       "percentile_05": 1639.7,
+       "median": 3905.9,
+       "percentile_95": 6944.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 229,
+       "percentile_05": -1377.2,
+       "median": 2.5262,
+       "percentile_95": 235.68
+      },
+      "spectral_entropy": {
+       "clips": 229,
+       "percentile_05": 0.19889,
+       "median": 0.45323,
+       "percentile_95": 0.69854
+      },
+      "spectral_flatness": {
+       "clips": 229,
+       "percentile_05": 0.047369,
+       "median": 0.36246,
+       "percentile_95": 0.60987
+      },
+      "spectral_flux": {
+       "clips": 229,
+       "percentile_05": 0.2081,
+       "median": 0.23353,
+       "percentile_95": 0.24941
+      },
+      "spectral_rolloff_hz": {
+       "clips": 229,
+       "percentile_05": 4999.4,
+       "median": 10092.0,
+       "percentile_95": 14002.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 229,
+       "percentile_05": -6.2838,
+       "median": -3.4325,
+       "percentile_95": -0.63319
+      },
+      "stationarity": {
+       "clips": 229,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.41494,
+       "censored_at_floor_fraction": 0.576
+      },
+      "sustain_ratio": {
+       "clips": 25,
+       "percentile_05": 0.010753,
+       "median": 0.055556,
+       "percentile_95": 0.16667,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 212,
+       "percentile_05": 0.10911,
+       "median": 0.24902,
+       "percentile_95": 0.40234
+      },
+      "transient_count": {
+       "clips": 229,
+       "percentile_05": 1.0,
+       "median": 13.0,
+       "percentile_95": 48.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 229,
+       "percentile_05": 493.62,
+       "median": 2487.1,
+       "percentile_95": 9116.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "CMPTMisc",
+   "category_short": "CMPT",
+   "emoji": "💻",
+   "explanation": [
+    "Computer sounds not fitting another category in this list. Printers would go to MACHINES-OFFICE."
+   ],
+   "synonyms": [
+    "Calculation",
+    "Computing",
+    "CPU",
+    "Cybercrime",
+    "Cyberspace",
+    "Desktop",
+    "Desktops",
+    "Gadget",
+    "Laptop",
+    "Mainframe",
+    "Palm",
+    "Pc",
+    "Peripheral",
+    "Pilot",
+    "Pocket",
+    "Software",
+    "Supercomputer",
+    "Tablet",
+    "Tech"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "stationarity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 10.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The COMPUTERS catch-all — and in practice it is dominated by ONE real sound: the machine's IDLE BED. Case, CPU and PSU fans produce a quiet, STATIONARY, broadband hiss with a faint blade-passing tone from the rotor. Hence the sustained_noise morphology and the stationarity prior, held at deliberately LOW weight so it never over-asserts over a genuine sibling.",
+     "The subcategory is nonetheless semantic_only, and honestly so: a computer's fan bed is acoustically INDISTINGUISHABLE from MACHFan or an AMBOffc room tone. It is the same fan. Only text ('PC', 'laptop', 'CPU', 'desktop', 'mainframe') can commit it.",
+     "Coil whine is the other real inhabitant: a high, thin, unstable harmonic tone from switching supplies — which looks like ELECBuzz, not like a fan.",
+     "UCS routes printers away explicitly: 'Printers would go to MACHINES-OFFICE.'",
+     "Un-gated so it stays reachable as this small category's abstention target."
+    ],
+    "confusable_with": [
+     "MACHFan",
+     "MACHOffc",
+     "AMBOffc",
+     "CMPTDriv",
+     "MOTRElec",
+     "ELECBuzz"
+    ]
+   }
+  }
+ ]
+}

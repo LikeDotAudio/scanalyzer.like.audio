@@ -1,0 +1,721 @@
+{
+ "version": "8.2.1",
+ "category": "LIQUID & MUD",
+ "emoji": "🫗",
+ "subcategories": [
+  {
+   "subcategory": "BUBBLES",
+   "category_id": "LIQBubl",
+   "category_short": "LIQ",
+   "emoji": "🫧",
+   "explanation": [
+    "Mud and thicker than water",
+    "thick bubbles",
+    "viscous liquid. Things like Oil",
+    "gloopy thick liquids."
+   ],
+   "synonyms": [
+    "Boiling",
+    "Bubble",
+    "Bubbles",
+    "Burbling",
+    "Carbonation",
+    "Cavitation",
+    "Effervesce",
+    "Effervescence",
+    "Effervescent",
+    "Fizz",
+    "Foam",
+    "Froth",
+    "Frothy",
+    "Lather",
+    "Mud",
+    "Pop",
+    "Sparkle",
+    "Suds"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.55
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 220.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 750.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.75,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 20.0,
+      "deviation": 25.0,
+      "transform": "linear",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.14,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -11.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.12,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Same bubble physics as WATER-BUBBLES, but VISCOUS. A thick liquid supports larger, slower bubbles: by Minnaert's relation a bigger cavity resonates LOWER, so pitch_hz sits around 200 Hz against water's ~900 Hz, the centroid drops by an octave and a half, and low_band_energy dominates.",
+     "The rising chirp survives but is slower and more damped: pitch_slope_semitones_per_second is still positive (~+20 st/s) but roughly half water's, and viscosity blunts the transient (softer envelope, longer decay).",
+     "Slower too: onset_rate_per_second ~3/s of fat gloops versus water's ~8/s.",
+     "Against WATER-FIZZ: the opposite extreme of the same axis — fizz is thousands of tiny high-frequency bubbles, this is a few large low-frequency ones.",
+     "Against LIQUID & MUD-MOVEMENT: BUBBLES has resolvable pitched pops; MOVEMENT is a continuous gloopy bed."
+    ],
+    "confusable_with": [
+     "WATRBubl",
+     "LIQMvmt",
+     "LIQSuct",
+     "WATRDran",
+     "GEOMudpot"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "LIQImpt",
+   "category_short": "LIQ",
+   "emoji": "💥",
+   "explanation": [
+    "Mud and thicker than water",
+    "Splats and hit. Things like Oil",
+    "gloopy thick liquids."
+   ],
+   "synonyms": [
+    "Hit",
+    "Impact",
+    "Kerplunk",
+    "Mud",
+    "Plop",
+    "Plunk",
+    "Slap",
+    "Slosh",
+    "Smack",
+    "Spatter",
+    "Splat",
+    "Splatter",
+    "Squelch",
+    "Squish"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 8.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 950.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.15,
+      "deviation": 0.11,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.42,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -11.5,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.05,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.1,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.24,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.7,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A SPLAT, not a splash. Viscosity means the liquid does not atomise: there is no bright spray tail, so high_band_energy collapses and the spectral_centroid_hz lands around 1 kHz — roughly a third of WATER-SPLASH's ~2.6 kHz. Dull, dark, damped, over fast.",
+     "Against WATER-SPLASH and WATER-IMPACT: identical morphology (a single sharp transient), completely different timbre. The high_band_energy / spectral_centroid_hz pair is the whole discrimination, and it is a real one.",
+     "Against LIQUID & MUD-SUCTION: a splat is a hard onset with an immediate decay; a suck is a sustained, pitch-gliding pull.",
+     "Squelch and squish sit on the boundary with MOVEMENT: if the contact is sustained rather than percussive, prefer MOVEMENT."
+    ],
+    "confusable_with": [
+     "WATRSplsh",
+     "WATRImpt",
+     "LIQMvmt",
+     "LIQSuct",
+     "GORESplt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "LIQMisc",
+   "category_short": "LIQ",
+   "emoji": "🫗",
+   "explanation": [
+    "Mud and thicker than water sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Caramel",
+    "Flow",
+    "Gel",
+    "Glue",
+    "Gravy",
+    "Honey",
+    "Miscellaneous",
+    "Movement",
+    "Oil",
+    "Paint",
+    "Resin",
+    "Slime",
+    "Sludge",
+    "Syrup",
+    "Tar",
+    "Viscosity"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "Catch-all. No gates, no priors: neutral likelihood, the LIQUID & MUD abstention target (spec section 6).",
+     "Never assert from signal."
+    ],
+    "confusable_with": []
+   }
+  },
+  {
+   "subcategory": "MOVEMENT",
+   "category_id": "LIQMvmt",
+   "category_short": "LIQ",
+   "emoji": "🫗",
+   "explanation": [
+    "Mud and thicker than water",
+    "oozing",
+    "slime",
+    "glooping. Things like Oil",
+    "gloopy thick liquids."
+   ],
+   "synonyms": [
+    "Flooding",
+    "Goo",
+    "Gushing",
+    "Leak",
+    "Mud",
+    "Ooze",
+    "Rushing",
+    "Seep",
+    "Slime",
+    "Sloshing",
+    "Splashing",
+    "Surging",
+    "Swirling"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.55
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.16,
+      "deviation": 0.11,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.4,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.75,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -10.5,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.24,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.28,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.42,
+      "deviation": 0.17,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Oozing and glooping: a continuous, LOW, damped bed. Viscosity suppresses the high-frequency turbulence that gives water its brightness, so the centroid sits near 1 kHz against WATER-MOVEMENT's ~2 kHz, and high_band_energy is a third of it.",
+     "Against WATER-MOVEMENT and WATER-FLOW: same morphology, dark timbre. The spectral_slope_db_per_octave (~-10.5) is far steeper than any water flow.",
+     "Against LIQUID & MUD-BUBBLES: MOVEMENT is a bed with occasional pitched gloops; BUBBLES is dominated by them (higher harmonicity, resolvable rising chirps).",
+     "Against LIQUID & MUD-IMPACT: continuous, not a discrete splat."
+    ],
+    "confusable_with": [
+     "LIQBubl",
+     "LIQImpt",
+     "WATRMvmt",
+     "LIQSuct",
+     "GOREOoze"
+    ]
+   }
+  },
+  {
+   "subcategory": "SUCTION",
+   "category_id": "LIQSuct",
+   "category_short": "LIQ",
+   "emoji": "🫗",
+   "explanation": [
+    "Thicker than water",
+    "disgusting liquidy suction",
+    "plunger sucks. Things like Oil",
+    "gloopy thick liquids."
+   ],
+   "synonyms": [
+    "Draw",
+    "Glomp",
+    "Mud",
+    "Plunger",
+    "Pull",
+    "Slurp",
+    "Suck",
+    "Suction",
+    "Vacuum"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     },
+     {
+      "feature": "length_seconds",
+      "max": 15.0
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 30.0,
+      "deviation": 30.0,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 900.0,
+      "deviation": 900.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.42,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.04,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.55,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A suck is a GLIDE, and that is what makes it detectable. As a plunger or a slurp closes the cavity, the trapped-air resonance sweeps upward: positive pitch_slope_semitones_per_second and positive spectral_centroid_slope_hz_per_second, over a few hundred ms. No other LIQUID & MUD subcategory has a monotonic trajectory.",
+     "Also unusually pitched for this category (harmonicity ~0.42) — a resonating air cavity, not broadband liquid noise.",
+     "Against LIQUID & MUD-IMPACT: a splat is front-loaded (low envelope_temporal_centroid, immediate decay); a suck is BACK-loaded (envelope_temporal_centroid ~0.55) and builds. Envelope shape alone separates them.",
+     "Against LIQUID & MUD-MOVEMENT: MOVEMENT is a stationary bed with no directed trajectory.",
+     "Against WATER-DRAIN: a drain gurgles and sucks too, but continuously and without the single clean upward sweep; a drain is also thin and bright where this is thick and low."
+    ],
+    "confusable_with": [
+     "LIQImpt",
+     "LIQMvmt",
+     "WATRDran",
+     "LIQBubl",
+     "AIRSuck"
+    ]
+   }
+  }
+ ]
+}

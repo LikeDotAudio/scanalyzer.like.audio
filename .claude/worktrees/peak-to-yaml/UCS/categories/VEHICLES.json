@@ -1,0 +1,6229 @@
+{
+ "version": "8.2.1",
+ "category": "VEHICLES",
+ "emoji": "🚗",
+ "subcategories": [
+  {
+   "subcategory": "ALARM",
+   "category_id": "VEHAlrm",
+   "category_short": "VEH",
+   "emoji": "🚨",
+   "explanation": [
+    "Not sirens",
+    "but just Car alarms",
+    "car alarm arm and disarm chirps."
+   ],
+   "synonyms": [
+    "Alarm",
+    "Anti-Theft",
+    "Arm",
+    "Auto",
+    "Automobile",
+    "Car",
+    "Chirp",
+    "Disarm",
+    "Fob",
+    "Security",
+    "System"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 300.0
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1600.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.005,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Car alarm arm / disarm chirps and the repeating anti-theft whoop: a train of short, bright, electronically generated beeps with hard attacks. Explicitly NOT sirens.",
+     "Against VEHICLES-SIREN: an alarm is a chirp PATTERN - discrete onsets, high onset_rate, near-silence between - rather than a continuously modulated tone.",
+     "Against VEHICLES-HORN: much brighter, much shorter per event, and repeated; a horn is a single sustained low harmonic blast.",
+     "Against BEEPS-VEHICLE: the same electronic beep physics. Text decides - BEEPS-VEHICLE is reverse / seatbelt / turn-signal beeps, this is anti-theft."
+    ],
+    "confusable_with": [
+     "BEEPVeh",
+     "ALRMElec",
+     "VEHSirn",
+     "VEHHorn",
+     "ALRMBuzr"
+    ]
+   }
+  },
+  {
+   "subcategory": "ANTIQUE",
+   "category_id": "VEHAntq",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Very old vehicles",
+    "such a Model A",
+    "Model T. Mainly cars",
+    "but possible other very old vehicles",
+    "trucks",
+    "tractors."
+   ],
+   "synonyms": [
+    "A",
+    "Antique",
+    "Austin",
+    "Auto",
+    "Automobile",
+    "Car",
+    "Classic",
+    "Collectible",
+    "Duesenberg",
+    "Historic",
+    "Hudson",
+    "Model",
+    "Nash",
+    "Old-Fashioned",
+    "Packard",
+    "Pierce-Arrow",
+    "Rare",
+    "Roadster",
+    "Studebaker",
+    "T",
+    "Used",
+    "Vintage"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.05
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 750.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.4,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Model A, Model T. Low-compression, low-RPM engines sometimes give a slower and more irregular firing train, which nudges onset_periodicity down - but a badly tuned modern engine does the same and belongs to VEHICLES-JALOPY.",
+     "'Overtly antique' is a judgement about the vehicle's date, not about the waveform. Semantic only."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil",
+     "VEHJalop",
+     "VEHWagn"
+    ]
+   }
+  },
+  {
+   "subcategory": "ATV",
+   "category_id": "VEHAtv",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "All-Terrain Vehicle",
+    "three and four-wheelers",
+    "dune buggies",
+    "side by side."
+   ],
+   "synonyms": [
+    "All-Terrain",
+    "ATV",
+    "Buggy",
+    "Dune",
+    "Four-Wheeler",
+    "Off-Road",
+    "Quad",
+    "Quadricycle",
+    "Side-By-Side",
+    "Three-Wheeler",
+    "Utility",
+    "UTV"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Quads, three-wheelers, dune buggies, side-by-sides. Small high-revving engines, often two-stroke - the same engine that is in VEHICLES-MOTORCYCLE.",
+     "Two wheels and powered goes to VEHICLES-MOTORCYCLE; that is a wheel count, not an acoustic property."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil"
+    ]
+   }
+  },
+  {
+   "subcategory": "BICYCLE",
+   "category_id": "VEHBike",
+   "category_short": "VEH",
+   "emoji": "🚲",
+   "explanation": [
+    "Bicycles",
+    "recumbent bikes",
+    "unicycles too. Any manner of pedal powered bicycle."
+   ],
+   "synonyms": [
+    "10-Speed",
+    "Backpedal",
+    "Bicycle",
+    "Bike",
+    "BMX",
+    "Cycle",
+    "Derailleur",
+    "Downshift",
+    "Freewheel",
+    "Kickstand",
+    "Mountain",
+    "Pedal",
+    "Pedaler",
+    "Racer",
+    "Recumbent",
+    "Rider",
+    "Road",
+    "Spoke",
+    "Tandem",
+    "Ten-Speed",
+    "Training",
+    "Tricycle",
+    "Unicycle",
+    "Velocipede",
+    "Wheelie",
+    "Wheels"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 600.0
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.65
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.027048,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 126,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.02149
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.26145,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 126,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.6
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.67583,
+      "deviation": 3.94,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 126,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.76825
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5919.6,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 126,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 6181.83094
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.7644,
+      "deviation": 0.246,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 126,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.77942
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.24516,
+      "deviation": 0.2075,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 126,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.19574
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.38295,
+      "deviation": 0.2319,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 126,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.37785
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Pedal powered, so there is NO engine: no combustion comb and no exhaust low-band bed. What remains is the freewheel ratchet (a bright periodic click train), derailleur clatter, chain rattle, kickstand and tire roll. The missing low band is the strongest single cue and the only real gate.",
+     "Against MECHANICAL-RATCHET: a freewheel IS a ratchet - text decides. Against VEHICLES-ELECTRIC: an e-bike with the motor running belongs there, because the whine is present.",
+     "Against every combustion vehicle: a bicycle simply cannot produce an exhaust bed."
+    ],
+    "confusable_with": [
+     "MECHRtch",
+     "VEHElec",
+     "VEHTire",
+     "SPRTSkate",
+     "MECHGear"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 126,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Bicycle": 126
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 126,
+       "percentile_05": 2867.3,
+       "median": 4620.4,
+       "percentile_95": 5829.0
+      },
+      "harmonicity": {
+       "clips": 126,
+       "percentile_05": 0.067078,
+       "median": 0.2409,
+       "percentile_95": 0.90388
+      },
+      "high_band_energy": {
+       "clips": 126,
+       "percentile_05": 0.16864,
+       "median": 0.76406,
+       "percentile_95": 0.96479
+      },
+      "inharmonicity": {
+       "clips": 126,
+       "percentile_05": 0.12285,
+       "median": 0.43845,
+       "percentile_95": 0.62757
+      },
+      "low_band_energy": {
+       "clips": 126,
+       "percentile_05": 0.002224,
+       "median": 0.026751,
+       "percentile_95": 0.29215
+      },
+      "mid_band_energy": {
+       "clips": 126,
+       "percentile_05": 0.026774,
+       "median": 0.1846,
+       "percentile_95": 0.51702
+      },
+      "onset_periodicity": {
+       "clips": 126,
+       "percentile_05": 0.086726,
+       "median": 0.26083,
+       "percentile_95": 0.51197
+      },
+      "onset_rate_per_second": {
+       "clips": 126,
+       "percentile_05": 0.072217,
+       "median": 0.67262,
+       "percentile_95": 5.2444
+      },
+      "partial_count": {
+       "clips": 121,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 100,
+       "percentile_05": 196.0,
+       "median": 1102.5,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 126,
+       "percentile_05": 432.35,
+       "median": 1224.4,
+       "percentile_95": 2631.7
+      },
+      "spectral_centroid_hz": {
+       "clips": 126,
+       "percentile_05": 1836.0,
+       "median": 5881.2,
+       "percentile_95": 10790.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 126,
+       "percentile_05": 1936.0,
+       "median": 5379.2,
+       "percentile_95": 9550.7
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 126,
+       "percentile_05": -803.25,
+       "median": 4.5988,
+       "percentile_95": 276.96
+      },
+      "spectral_entropy": {
+       "clips": 126,
+       "percentile_05": 0.28211,
+       "median": 0.60787,
+       "percentile_95": 0.83358
+      },
+      "spectral_flatness": {
+       "clips": 126,
+       "percentile_05": 0.10694,
+       "median": 0.38086,
+       "percentile_95": 0.64403
+      },
+      "spectral_flux": {
+       "clips": 126,
+       "percentile_05": 0.20441,
+       "median": 0.22739,
+       "percentile_95": 0.24239
+      },
+      "spectral_rolloff_hz": {
+       "clips": 126,
+       "percentile_05": 2925.3,
+       "median": 11531.0,
+       "percentile_95": 16729.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 126,
+       "percentile_05": -6.9344,
+       "median": -2.2189,
+       "percentile_95": 1.8164
+      },
+      "stationarity": {
+       "clips": 126,
+       "percentile_05": 0.0,
+       "median": 0.091894,
+       "percentile_95": 0.64947,
+       "censored_at_floor_fraction": 0.476
+      },
+      "syllabic_modulation_energy": {
+       "clips": 125,
+       "percentile_05": 0.034051,
+       "median": 0.18958,
+       "percentile_95": 0.36654
+      },
+      "transient_count": {
+       "clips": 126,
+       "percentile_05": 1.0,
+       "median": 5.0,
+       "percentile_95": 65.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 126,
+       "percentile_05": 910.71,
+       "median": 4858.0,
+       "percentile_95": 16367.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "BRAKE",
+   "category_id": "VEHBrake",
+   "category_short": "VEH",
+   "emoji": "🛑",
+   "explanation": [
+    "Brake squeals and screeches of all kinds. TRAINS-BRAKE has its own category."
+   ],
+   "synonyms": [
+    "ABS",
+    "Anti-Lock",
+    "Auto",
+    "Automobile",
+    "Brake",
+    "Brakes",
+    "Car",
+    "Decelerate",
+    "Disc",
+    "Drum",
+    "Grind",
+    "Halt",
+    "Hydraulic",
+    "Rotor",
+    "Screech",
+    "Squeal",
+    "Stop"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "min": 500.0
+     },
+     {
+      "feature": "high_band_energy",
+      "min": 0.06
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.58,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1500.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 7000.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "High-frequency friction squeal from pad on rotor: a narrow, ringing, nearly pitched screech in the 1-6 kHz region riding on a grinding broadband bed. Brake grinds sit lower and noisier than brake squeals, which is why the gates are loose.",
+     "TRAINS-BRAKE has its own category and is typically longer, lower and much louder.",
+     "Against VEHICLES-SKID: a skid is rubber on road (broader, noisier, more centroid modulation); a brake is metal on metal (narrower, more harmonic). Signal narrows the pair but rarely settles it - require text agreement."
+    ],
+    "confusable_with": [
+     "VEHSkid",
+     "TRNBrake",
+     "METLFric",
+     "VEHTire",
+     "MECHHydr"
+    ]
+   }
+  },
+  {
+   "subcategory": "BUS",
+   "category_id": "VEHBus",
+   "category_short": "VEH",
+   "emoji": "🚌",
+   "explanation": [
+    "City buses",
+    "school buses",
+    "Greyhound buses."
+   ],
+   "synonyms": [
+    "Bus",
+    "Buses",
+    "City",
+    "Coach",
+    "Coaches",
+    "Double-Decker",
+    "Fleet",
+    "Greyhound",
+    "School",
+    "Shuttle",
+    "Sightseeing",
+    "Tour",
+    "Transit"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15183,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 187,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.16106
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1956.1,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 187,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1912.35275
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.10833,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 187,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.1077
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55061,
+      "deviation": 0.3702,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 187,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.5059
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.18006,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 187,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.4
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.64727,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 187,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.68025
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1488.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 187,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1445.07674
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A diesel bus is acoustically a diesel truck. City / school / coach is a semantic label, not a measurement.",
+     "Air-brake hiss and door pneumatics often accompany a bus, but in isolation those are MECHANICAL-HYDRAULIC & PNEUMATIC."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil",
+     "VEHAtv"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 187,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Bus": 187
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 187,
+       "percentile_05": 2137.7,
+       "median": 2766.7,
+       "percentile_95": 4742.7
+      },
+      "harmonicity": {
+       "clips": 187,
+       "percentile_05": 0.21221,
+       "median": 0.55061,
+       "percentile_95": 0.9671
+      },
+      "high_band_energy": {
+       "clips": 187,
+       "percentile_05": 0.16358,
+       "median": 0.28517,
+       "percentile_95": 0.5668
+      },
+      "inharmonicity": {
+       "clips": 187,
+       "percentile_05": 0.1014,
+       "median": 0.39633,
+       "percentile_95": 0.60065
+      },
+      "low_band_energy": {
+       "clips": 187,
+       "percentile_05": 0.046024,
+       "median": 0.15183,
+       "percentile_95": 0.47902
+      },
+      "mid_band_energy": {
+       "clips": 187,
+       "percentile_05": 0.247,
+       "median": 0.50988,
+       "percentile_95": 0.65994
+      },
+      "onset_periodicity": {
+       "clips": 187,
+       "percentile_05": 0.093506,
+       "median": 0.18006,
+       "percentile_95": 0.61177
+      },
+      "onset_rate_per_second": {
+       "clips": 187,
+       "percentile_05": 0.1,
+       "median": 1.1132,
+       "percentile_95": 3.0412
+      },
+      "partial_count": {
+       "clips": 186,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 37,
+       "percentile_05": 83.365,
+       "median": 558.23,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 187,
+       "percentile_05": 153.91,
+       "median": 427.16,
+       "percentile_95": 1519.8
+      },
+      "spectral_centroid_hz": {
+       "clips": 187,
+       "percentile_05": 1122.2,
+       "median": 1956.1,
+       "percentile_95": 4242.9
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 187,
+       "percentile_05": 870.12,
+       "median": 1704.6,
+       "percentile_95": 3471.1
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 187,
+       "percentile_05": -107.6,
+       "median": 9.1721,
+       "percentile_95": 100.7
+      },
+      "spectral_entropy": {
+       "clips": 187,
+       "percentile_05": 0.21299,
+       "median": 0.43234,
+       "percentile_95": 0.55844
+      },
+      "spectral_flatness": {
+       "clips": 187,
+       "percentile_05": 0.058876,
+       "median": 0.10833,
+       "percentile_95": 0.30536
+      },
+      "spectral_flux": {
+       "clips": 187,
+       "percentile_05": 0.18736,
+       "median": 0.21409,
+       "percentile_95": 0.22747
+      },
+      "spectral_rolloff_hz": {
+       "clips": 187,
+       "percentile_05": 2285.0,
+       "median": 3961.3,
+       "percentile_95": 9910.2
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 187,
+       "percentile_05": -8.2129,
+       "median": -6.5836,
+       "percentile_95": -3.5162
+      },
+      "stationarity": {
+       "clips": 187,
+       "percentile_05": 0.0,
+       "median": 0.64727,
+       "percentile_95": 0.87567
+      },
+      "syllabic_modulation_energy": {
+       "clips": 185,
+       "percentile_05": 0.086015,
+       "median": 0.21269,
+       "percentile_95": 0.35822
+      },
+      "transient_count": {
+       "clips": 187,
+       "percentile_05": 1.0,
+       "median": 9.0,
+       "percentile_95": 28.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 187,
+       "percentile_05": 316.68,
+       "median": 1488.0,
+       "percentile_95": 4411.2
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "CAR",
+   "category_id": "VEHCar",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "All cars except overtly antique... add ERA to metadata to make searches easier. 1950s",
+    "1960s..."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "Automobiles",
+    "Autos",
+    "Car",
+    "Compact",
+    "Convertible",
+    "Coupe",
+    "Crossover",
+    "Hatchback",
+    "Luxury",
+    "Rental",
+    "Sedan",
+    "Sports",
+    "Station",
+    "Subcompact",
+    "Taxi",
+    "Wagon"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 78.16,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "action": "widened",
+       "clips": 52,
+       "was": {
+        "max": 30.0
+       },
+       "reason": "the reasoned gate rejected 15% of this subcategory's own true clips",
+       "date": "2026-07"
+      }
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.096305,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.1068
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3057.7,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3164.9708
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.20585,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.22463
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.59766,
+      "deviation": 0.4839,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.52753
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.31263,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.45
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.254,
+      "deviation": 3.065,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 52,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 11.41782
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.044041,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 52,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.04598
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.3023,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.0
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1935.4,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1752.21519
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "There is no DSP boundary between a car and a truck, a bus, a semi, a tractor or a tank: all are broadband exhaust noise plus a harmonic comb at the firing order. Filename and metadata decide this, not signal.",
+     "The signature only rules out non-vehicles: too long and too low-band-heavy to be an isolated impulse, too noisy and inharmonic to be a HORN."
+    ],
+    "confusable_with": [
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil",
+     "VEHAtv"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 198,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Car": 198
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 198,
+       "percentile_05": 1950.0,
+       "median": 3717.2,
+       "percentile_95": 5441.8
+      },
+      "crest_factor": {
+       "clips": 52,
+       "percentile_05": 4.0281,
+       "median": 11.093,
+       "percentile_95": 44.041,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 27,
+       "percentile_05": 0.13465,
+       "median": 0.41691,
+       "percentile_95": 1.5672,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 49,
+       "percentile_05": 0.0099773,
+       "median": 0.044898,
+       "percentile_95": 3.5868,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 52,
+       "percentile_05": 0.0049887,
+       "median": 0.23447,
+       "percentile_95": 1.781,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 52,
+       "percentile_05": -0.89463,
+       "median": 14.914,
+       "percentile_95": 245.79,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 45,
+       "percentile_05": 0.039909,
+       "median": 0.19955,
+       "percentile_95": 2.5492,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 52,
+       "percentile_05": 0.10107,
+       "median": 3.6021,
+       "percentile_95": 14.571,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 52,
+       "percentile_05": 0.0,
+       "median": 0.032516,
+       "percentile_95": 0.85662,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 52,
+       "percentile_05": 0.071028,
+       "median": 0.34282,
+       "percentile_95": 0.68788,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 198,
+       "percentile_05": 0.13649,
+       "median": 0.59744,
+       "percentile_95": 0.98333
+      },
+      "high_band_energy": {
+       "clips": 198,
+       "percentile_05": 0.13095,
+       "median": 0.40933,
+       "percentile_95": 0.82952
+      },
+      "inharmonicity": {
+       "clips": 198,
+       "percentile_05": 0.0094761,
+       "median": 0.4114,
+       "percentile_95": 0.63359
+      },
+      "low_band_energy": {
+       "clips": 198,
+       "percentile_05": 0.0072253,
+       "median": 0.096237,
+       "percentile_95": 0.46812
+      },
+      "mid_band_energy": {
+       "clips": 198,
+       "percentile_05": 0.1189,
+       "median": 0.36625,
+       "percentile_95": 0.66441
+      },
+      "onset_periodicity": {
+       "clips": 198,
+       "percentile_05": 0.025588,
+       "median": 0.31244,
+       "percentile_95": 0.71335
+      },
+      "onset_rate_per_second": {
+       "clips": 198,
+       "percentile_05": 0.11765,
+       "median": 0.87172,
+       "percentile_95": 3.2609
+      },
+      "partial_count": {
+       "clips": 196,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 106,
+       "percentile_05": 77.641,
+       "median": 700.0,
+       "percentile_95": 1764.0
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 20,
+       "percentile_05": -37.463,
+       "median": 0.0030309,
+       "percentile_95": 1.4938
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 198,
+       "percentile_05": 158.63,
+       "median": 868.45,
+       "percentile_95": 2363.6
+      },
+      "spectral_centroid_hz": {
+       "clips": 198,
+       "percentile_05": 1167.4,
+       "median": 3049.1,
+       "percentile_95": 6796.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 198,
+       "percentile_05": 1039.1,
+       "median": 2647.5,
+       "percentile_95": 6537.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 198,
+       "percentile_05": -4046.2,
+       "median": -3.2755,
+       "percentile_95": 1279.0
+      },
+      "spectral_entropy": {
+       "clips": 198,
+       "percentile_05": 0.20529,
+       "median": 0.42424,
+       "percentile_95": 0.66534
+      },
+      "spectral_flatness": {
+       "clips": 198,
+       "percentile_05": 0.051104,
+       "median": 0.20509,
+       "percentile_95": 0.52129
+      },
+      "spectral_flux": {
+       "clips": 198,
+       "percentile_05": 0.16287,
+       "median": 0.22126,
+       "percentile_95": 0.24457
+      },
+      "spectral_rolloff_hz": {
+       "clips": 198,
+       "percentile_05": 1753.1,
+       "median": 6450.0,
+       "percentile_95": 12673.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 198,
+       "percentile_05": -8.4659,
+       "median": -4.9931,
+       "percentile_95": -0.65202
+      },
+      "stationarity": {
+       "clips": 198,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.75938,
+       "censored_at_floor_fraction": 0.566
+      },
+      "sustain_ratio": {
+       "clips": 52,
+       "percentile_05": 0.0036298,
+       "median": 0.042105,
+       "percentile_95": 1.0,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 189,
+       "percentile_05": 0.034835,
+       "median": 0.19585,
+       "percentile_95": 0.3988
+      },
+      "transient_count": {
+       "clips": 198,
+       "percentile_05": 1.0,
+       "median": 3.0,
+       "percentile_95": 23.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 198,
+       "percentile_05": 280.87,
+       "median": 1907.0,
+       "percentile_95": 7274.3
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "CONSTRUCTION",
+   "category_id": "VEHCnst",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Cranes",
+    "bulldozers",
+    "paving vehicles",
+    "any construction related vehicle goes here."
+   ],
+   "synonyms": [
+    "Backhoe",
+    "Bulldozer",
+    "Concrete",
+    "Constructor",
+    "Crane",
+    "Digger",
+    "Dump",
+    "Excavator",
+    "Forklift",
+    "Grader",
+    "Loader",
+    "Mixer",
+    "Paver",
+    "Road",
+    "Roller",
+    "Skid",
+    "Truck",
+    "Wrecker"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.05
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 600.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Cranes, bulldozers, excavators, pavers. Explicit overlap with VEHICLES-FARM.",
+     "Reverse beeps and hydraulic whines are frequently present, but on their own they belong to BEEPS-VEHICLE and MECHANICAL-HYDRAULIC & PNEUMATIC."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHMil",
+     "VEHUtil",
+     "VEHAtv",
+     "MACHCnst",
+     "AMBCnst"
+    ]
+   }
+  },
+  {
+   "subcategory": "DOOR",
+   "category_id": "VEHDoor",
+   "category_short": "VEH",
+   "emoji": "🚪",
+   "explanation": [
+    "Car",
+    "van",
+    "truck. Their doors all go here."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "Car",
+    "Close",
+    "Compact",
+    "Convertible",
+    "Coupe",
+    "Crossover",
+    "Door",
+    "Drivers",
+    "Hatchback",
+    "Hood",
+    "Liftgate",
+    "Luxury",
+    "Open",
+    "Passenger",
+    "Rental",
+    "Sedan",
+    "Sports",
+    "Station",
+    "Subcompact",
+    "Taxi",
+    "Tailgate",
+    "Slam",
+    "SUV",
+    "Truck",
+    "Trunk",
+    "Van"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.35,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.25,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 750.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A car door slam: a hard transient with a short boomy low-frequency tail from the door skin and the cabin volume, plus a latch click. Front-loaded envelope, high crest factor, strongly low-band.",
+     "Hoods, trunks, liftgates and tailgates live here too and are the same morphology.",
+     "Against DOORS-METAL and the rest of DOORS: identical impact physics; the vehicle context is semantic. Against VEHICLES-MECHANISM: a mechanism is a small dry click WITHOUT the big low-frequency body boom."
+    ],
+    "confusable_with": [
+     "DOORMetl",
+     "DOORComp",
+     "VEHMech",
+     "TRNDoor",
+     "BOATDoor",
+     "METLImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "ELECTRIC",
+   "category_id": "VEHElec",
+   "category_short": "VEH",
+   "emoji": "⚡",
+   "explanation": [
+    "Electric golf carts",
+    "electric scooters",
+    "electric cars. A Tesla. Any variety of electric vehicle",
+    "even electric motorcycles."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "Car",
+    "Cart",
+    "E-Bike",
+    "Electric",
+    "Electrified",
+    "EV",
+    "Go-Kart",
+    "Gold",
+    "Golf",
+    "Hybrid",
+    "Motorcycle",
+    "Plug-In",
+    "Rivian",
+    "Scooter",
+    "Segway",
+    "Tesla"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 600.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.3,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.72,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 150.0,
+      "deviation": 400.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 3.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 700.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.22,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.5,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Teslas, EV scooters, electric golf carts, e-bikes. Genuinely detectable, and the only member of the vehicle family that is: a near-pure, smoothly RISING whine with NO combustion irregularity. No firing-order impulse train means onset_periodicity and onset_rate both collapse toward zero, and the low band is thin because there is no exhaust.",
+     "The whine tracks road speed, so pitch and centroid climb monotonically through an acceleration - a positive spectral_centroid_slope with no periodic onsets is the fingerprint.",
+     "Against every combustion vehicle: those carry a firing comb over a broadband exhaust bed. Against MOTORS-ELECTRIC and TRAINS-ELECTRIC: same physics, different mount - text decides."
+    ],
+    "confusable_with": [
+     "MOTRElec",
+     "TRNElec",
+     "MOTRTurb",
+     "VEHUtil",
+     "MACHTech"
+    ]
+   }
+  },
+  {
+   "subcategory": "EMERGENCY",
+   "category_id": "VEHEmrg",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Specifically emegency vehicles like Firetrucks",
+    "Ambulances",
+    "Police cars. Isolated sirens would go still to VEHICLES-SIREN."
+   ],
+   "synonyms": [
+    "Ambulance",
+    "Auto",
+    "Automobile",
+    "Car",
+    "Engine",
+    "Fire",
+    "Firetruck",
+    "First",
+    "Hazmat",
+    "K9",
+    "Paramedic",
+    "Patrol",
+    "Police",
+    "Rescue",
+    "Responder",
+    "Search",
+    "SWAT",
+    "Truck",
+    "Unit",
+    "Van",
+    "Vehicle"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 600.0,
+      "deviation": 500.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A scene, not a morphology: firetruck / ambulance / police car with engine, siren, air horn and often radio chatter layered together. A siren component makes the centroid deviate strongly, but a police car with the siren off is just VEHICLES-CAR.",
+     "By the UCS explanation an ISOLATED siren is VEHICLES-SIREN; this category exists specifically for when engine sounds are present too, which is a compositional judgement, not a DSP one."
+    ],
+    "confusable_with": [
+     "VEHSirn",
+     "VEHCar",
+     "VEHTruck",
+     "AMBEmrg",
+     "VEHFrght"
+    ]
+   }
+  },
+  {
+   "subcategory": "FARM",
+   "category_id": "VEHFarm",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "I'd put farm tractors here",
+    "Some overlap possibly with CONSTRUCTION vehicles. A riding lawn mower would best to MACHINES-GARDEN maybe."
+   ],
+   "synonyms": [
+    "Agricultural",
+    "Bale",
+    "Carrier",
+    "Cart",
+    "Combine",
+    "Crop",
+    "Cultivator",
+    "Drill",
+    "Duster",
+    "Equipment",
+    "Farm",
+    "Fertilizer",
+    "Forage",
+    "Grain",
+    "Harvester",
+    "Hay",
+    "Husker",
+    "Irrigation",
+    "Irrigator",
+    "Livestock",
+    "Manure",
+    "Plow",
+    "Processor",
+    "Rake",
+    "Seed",
+    "Seeder",
+    "Sprayer",
+    "Spreader",
+    "Sprinkler",
+    "Tiller",
+    "Tractor",
+    "Tractors",
+    "Truck",
+    "Wagon"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.05
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 560.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Tractors, combines, harvesters. Overlaps VEHICLES-CONSTRUCTION by the UCS explanation's own admission.",
+     "A slow large-displacement diesel gives a strong low-frequency firing periodicity, but so does a bus. Not separable. A riding lawn mower goes to MACHINES-GARDEN."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil",
+     "VEHAtv",
+     "MACHGrdn"
+    ]
+   }
+  },
+  {
+   "subcategory": "FREIGHT",
+   "category_id": "VEHFrght",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Big Rigs",
+    "Lorry",
+    "Semi-truck",
+    "U-Haul trucks",
+    "not for TRAINS",
+    "which have their own category."
+   ],
+   "synonyms": [
+    "Big",
+    "Box",
+    "Cargo",
+    "Delivery",
+    "Flatbed",
+    "Freight",
+    "Hauler",
+    "Hauling",
+    "Livestock",
+    "Logging",
+    "Lorry",
+    "Moving",
+    "Penske",
+    "Rigs",
+    "Semi",
+    "Semi-Truck",
+    "Shipping",
+    "Tanker",
+    "Transport",
+    "Truck",
+    "Trucked",
+    "Trucking",
+    "Trucks",
+    "U-Haul"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.05
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 580.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.38,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Big rigs, lorries, semis. Not TRAINS, which have their own category and add wheel-on-rail clack.",
+     "Same combustion signature as VEHICLES-BUS and VEHICLES-TRUCK VAN & SUV. Text decides."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil",
+     "VEHAtv",
+     "TRNDiesl"
+    ]
+   }
+  },
+  {
+   "subcategory": "GENERIC BY",
+   "category_id": "VEHBy",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Generic or general vehicle pass bys",
+    "not 'traffic'. Bys for a specific car go with that car. For group passbys use AMBIENCE-TRAFFIC."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "By",
+    "Car",
+    "Pass",
+    "Passing"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.8,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 2.51142,
+      "deviation": 220.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 54,
+       "fsd50k_classes": [
+        "Car_passing_by"
+       ],
+       "measured_deviation": 49.02221,
+       "reasoned_mean": -180.0,
+       "reasoned_deviation": 220.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 0.2,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 1.2,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 54,
+       "fsd50k_classes": [
+        "Car_passing_by"
+       ],
+       "measured_deviation": 0.15886,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1003,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 54,
+       "fsd50k_classes": [
+        "Car_passing_by"
+       ],
+       "measured_deviation": 0.05076,
+       "reasoned_mean": 0.42,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.16347,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 54,
+       "fsd50k_classes": [
+        "Car_passing_by"
+       ],
+       "measured_deviation": 0.07214,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.11793,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 54,
+       "fsd50k_classes": [
+        "Car_passing_by"
+       ],
+       "measured_deviation": 3.03928,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 3.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "A single vehicle pass-by. What is measurable is the geometry, not the vehicle: a slow rise-peak-fall envelope (envelope_temporal_centroid near 0.5, long attack AND long release, low sustain_ratio) plus a Doppler shift that drags the spectral centroid downward through closest approach - spectral_centroid_slope crosses zero and ends negative.",
+     "That geometry says 'a by' but says nothing about WHAT went by. A by for a specific vehicle is filed with that vehicle; only unidentified bys land here.",
+     "Against AMBIENCE-TRAFFIC: traffic is many overlapping bys with no single envelope peak and high stationarity. Against a static idle: an idle has no envelope arc and no centroid slope."
+    ],
+    "confusable_with": [
+     "AMBTraf",
+     "VEHCar",
+     "VEHTruck",
+     "VEHMoto",
+     "VEHElec"
+    ]
+   }
+  },
+  {
+   "subcategory": "HORN",
+   "category_id": "VEHHorn",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Specifically car and vehicles horns. BOATS-HORNS and TRAINS-HORN have their own category. Fog horn would go into HORNS-AIR."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "Beep",
+    "Bus",
+    "Car",
+    "Honk",
+    "Honker",
+    "Hooter",
+    "Horn",
+    "Hour",
+    "Motorcycle",
+    "Rush",
+    "Semi",
+    "SUV",
+    "Toot",
+    "Truck"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 120.0
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.2
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.84411,
+      "deviation": 0.20175,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 0.20175,
+       "reasoned_mean": 0.8,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 336.64122,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 71,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 1.77378,
+       "reasoned_mean": 400.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 9.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 4.4478,
+       "reasoned_mean": 9.0,
+       "reasoned_deviation": 5.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.13821,
+      "deviation": 0.11124,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 0.11124,
+       "reasoned_mean": 0.12,
+       "reasoned_deviation": 0.1,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.13102,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 30,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 0.13556,
+       "reasoned_mean": 0.72,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.06553,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 30,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 0.07739,
+       "reasoned_mean": 0.75,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.03991,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 30,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 2.00737,
+       "reasoned_mean": 0.03,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3150.9286,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 1.44336,
+       "reasoned_mean": 1300.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": -9.02169,
+      "deviation": 387.05592,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 387.05592,
+       "reasoned_mean": 0.0,
+       "reasoned_deviation": 250.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.21199,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 76,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 0.21199,
+       "reasoned_mean": 0.8,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.6239,
+      "deviation": 1.83273,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 30,
+       "fsd50k_classes": [
+        "Vehicle_horn_and_car_horn_and_honking"
+       ],
+       "measured_deviation": 1.83273,
+       "reasoned_mean": 3.2,
+       "reasoned_deviation": 1.6,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "A stable harmonic tone at a FIXED pitch, held from a fraction of a second to a few seconds. The fixed pitch is the whole test: a horn does not sweep.",
+     "Against VEHICLES-SIREN: a siren's pitch and centroid move continuously (wail) or step (yelp / hi-lo). A horn's do not - spectral_centroid_slope stays near zero and spectral_centroid_deviation stays small.",
+     "Against VEHICLES-ALARM: an alarm chirp is a short, bright, thin electronic beep, and it repeats.",
+     "BOATS-HORN and TRAINS-HORN have their own categories, and a fog horn is HORNS-AIR POWERED. Those are semantic splits of the same physics - text decides."
+    ],
+    "confusable_with": [
+     "BOATHorn",
+     "TRNHorn",
+     "HORNAir",
+     "VEHSirn",
+     "VEHAlrm",
+     "HORNCele"
+    ]
+   }
+  },
+  {
+   "subcategory": "INTERIOR",
+   "category_id": "VEHInt",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Interior recordings (ambiences) for car",
+    "truck",
+    "van interiors",
+    "from passenger cars",
+    "to back of a moving truck",
+    "riding inside a bus."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "Bus",
+    "Car",
+    "Driver",
+    "Driving",
+    "Inside",
+    "Interior",
+    "Limousine",
+    "Onboard",
+    "Passenger",
+    "Seat",
+    "Semi",
+    "Truck",
+    "Van",
+    "Vehicle"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.5
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.15
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.55
+     },
+     {
+      "feature": "crest_factor",
+      "max": 20.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 5000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 380.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -9.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.6,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 40.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 700.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The cabin is a low-pass filter and a bass trap: an onboard recording is a rumbling, stationary bed with the top end rolled off. band_limit_high_hz plus heavy low_band_energy is the test, together with high stationarity over a long file.",
+     "The body kills the transients, so unlike an exterior pass-by there is no bright exhaust rasp and no sharp tire slap.",
+     "Against AMBIENCE-TRAFFIC: traffic is exterior, brighter, and full of individual pass-by events. Against TRAINS-INTERIOR, AIRCRAFT-INTERIOR and BOATS-INTERIOR: identical LP-filtered rumble - text decides which vehicle."
+    ],
+    "confusable_with": [
+     "TRNInt",
+     "AEROInt",
+     "BOATInt",
+     "AMBTraf",
+     "AMBRoom"
+    ]
+   }
+  },
+  {
+   "subcategory": "JALOPY",
+   "category_id": "VEHJalop",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Backfiring",
+    "poorly running vehicle. False starts",
+    "sputtering... In foreign language translate to MALFUNCTIONING. See also CARTOON-VEHICLE."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "Backfire",
+    "Banger",
+    "Beater",
+    "Bucket",
+    "Car",
+    "Clunker",
+    "FALSE",
+    "Heap",
+    "Hooptie",
+    "Hoopty",
+    "Jalopy",
+    "Junk",
+    "Junker",
+    "Lemon",
+    "Malfunctioning",
+    "Misfire",
+    "Misfiring",
+    "Old",
+    "Ramshackle",
+    "Rattletrap",
+    "Relic",
+    "Rust",
+    "Rustbucket",
+    "Scrap",
+    "Start",
+    "Wreck"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 40.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 9.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 6.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.22,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Backfiring, misfiring, sputtering, false starts: an IRREGULAR impulse train. This is the one combustion subcategory that is partly measurable, because the diagnostic is the ABSENCE of a clean firing periodicity - low onset_periodicity at a high onset_rate, with a spiky high-kurtosis envelope. A healthy engine is the exact opposite.",
+     "Backfires are individually loud transients, so crest_factor runs well above a steady idle.",
+     "Against every other VEHICLES engine subcategory: those are periodic. Against MOTORS-COMBUSTION: same misfire physics, but MOTORS is for non-vehicle engines. See also CARTOON-VEHICLE."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHAntq",
+     "MOTRComb",
+     "MOTRAntq",
+     "VEHMoto"
+    ]
+   }
+  },
+  {
+   "subcategory": "MECHANISM",
+   "category_id": "VEHMech",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Various mechanisms on a vehicle",
+    "like seatbelts",
+    "window cranks",
+    "door locks."
+   ],
+   "synonyms": [
+    "Adjust",
+    "Auto",
+    "Automobile",
+    "Belt",
+    "Box",
+    "Brake",
+    "Car",
+    "Choke",
+    "Climate",
+    "Clutch",
+    "Compartment",
+    "Control",
+    "Crank",
+    "Gas Cap",
+    "Gear",
+    "Gearshift",
+    "Glove",
+    "Glovebox",
+    "Handbrake",
+    "Headlights",
+    "Ignition",
+    "Key",
+    "Lever",
+    "Mirror",
+    "Oil Cap",
+    "Parking",
+    "Rearview",
+    "Seat",
+    "Seatbelt",
+    "Shift",
+    "Side",
+    "Signal",
+    "Steering",
+    "Throttle",
+    "Trunk",
+    "Turn",
+    "Vent",
+    "Wheel",
+    "Window",
+    "Windshield",
+    "Wiper"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.08,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.22,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Seatbelts, window cranks, gloveboxes, gearshifts, turn-signal stalks, ignition keys, handbrakes: small dry mechanical clicks, clunks and ratchets inside the vehicle. Sharp, brief, low-sustain, and crucially WITHOUT the deep body boom of a VEHICLES-DOOR slam.",
+     "Powered windows go to VEHICLES-WINDOW (a sustained motor whine); crank windows stay here (a click train).",
+     "Against MECHANICAL-LATCH, MECHANICAL-LEVER and MECHANICAL-RATCHET: exactly the same morphologies. Only the vehicle context separates them, and only text can supply it."
+    ],
+    "confusable_with": [
+     "MECHLtch",
+     "MECHLvr",
+     "MECHRtch",
+     "MECHClik",
+     "VEHDoor",
+     "VEHWndw"
+    ]
+   }
+  },
+  {
+   "subcategory": "MILITARY",
+   "category_id": "VEHMil",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Overtly military ground vehicles. Tanks and military trucks for example. Armored Personnel Carriers",
+    "military Jeeps. See also AIRCRAFT-MILITARY and BOATS-MILITARY."
+   ],
+   "synonyms": [
+    "Amphibious",
+    "APC",
+    "Armored",
+    "Army",
+    "Carrier",
+    "Convoy",
+    "Hummer",
+    "Humvee",
+    "Jeep",
+    "Jeeps",
+    "Military",
+    "Panzer",
+    "Personnel",
+    "Tactical",
+    "Tank",
+    "Tanks",
+    "Transport",
+    "Troops"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.05
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 600.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.42,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A Humvee is a truck; a tank is a diesel plus track clatter. Track clatter adds a dense metallic impulse texture, but a tracked excavator does exactly the same and lives in VEHICLES-CONSTRUCTION.",
+     "Semantic only. See also AIRCRAFT-MILITARY and BOATS-MILITARY."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHUtil",
+     "VEHAtv"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "VEHMisc",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Vehicles sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automobile",
+    "Car",
+    "Limousine",
+    "Snowmobile"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "The abstention target for VEHICLES: anything vehicular that fits no other subcategory (limousines, snowmobiles). No gates and no priors by construction - it must never exclude anything.",
+     "Emit this when the top two VEHICLES candidates sit within a hair of each other. Abstention is a correct answer."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHElec",
+     "VEHMech",
+     "VEHBy"
+    ]
+   }
+  },
+  {
+   "subcategory": "MOTORCYCLE",
+   "category_id": "VEHMoto",
+   "category_short": "VEH",
+   "emoji": "🏍️",
+   "explanation": [
+    "Scooters",
+    "Motorcycles",
+    "Vespas",
+    "Motocross… All things 2 wheeled and powered. ATV goes to VEHICLES-ATV."
+   ],
+   "synonyms": [
+    "Bike",
+    "Bikers",
+    "BMW",
+    "Chopper",
+    "Cruiser",
+    "Dirt",
+    "Dirtbike",
+    "Ducati",
+    "Handlebar",
+    "Harley",
+    "Hog",
+    "Honda",
+    "Indian",
+    "Kawasaki",
+    "KTM",
+    "Minibike",
+    "Moped",
+    "Mopeds",
+    "Moto",
+    "Motocross",
+    "Motorbike",
+    "Motorbikes",
+    "Motorcycle",
+    "Motorcyclists",
+    "Scooter",
+    "Scooters",
+    "Scrambler",
+    "Sidecar",
+    "Sport",
+    "Superbike",
+    "Supermotard",
+    "Suzuki",
+    "Touring",
+    "Triumph",
+    "Two-Wheeler",
+    "Vespa",
+    "Yamaha"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4,
+      "max": 1800.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15089,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 114,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.15077
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2670.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 114,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2580.62424
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.1708,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 114,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.13376
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.61065,
+      "deviation": 0.3057,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 114,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.60746
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.38958,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 114,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.5
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.17908,
+      "deviation": 0.3186,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 114,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.1379
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1512.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 114,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1352.37666
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Motorcycles, scooters, mopeds, motocross. High RPM and few cylinders put the firing comb higher and often make onset_periodicity strong - but a revving car does the same.",
+     "ATVs go to VEHICLES-ATV by wheel count, not by sound."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 114,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Motorcycle": 114
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 114,
+       "percentile_05": 1918.1,
+       "median": 3412.0,
+       "percentile_95": 4578.8
+      },
+      "harmonicity": {
+       "clips": 114,
+       "percentile_05": 0.19988,
+       "median": 0.60746,
+       "percentile_95": 0.8934
+      },
+      "high_band_energy": {
+       "clips": 114,
+       "percentile_05": 0.11499,
+       "median": 0.38488,
+       "percentile_95": 0.60902
+      },
+      "inharmonicity": {
+       "clips": 114,
+       "percentile_05": 0.038714,
+       "median": 0.33193,
+       "percentile_95": 0.6192
+      },
+      "low_band_energy": {
+       "clips": 114,
+       "percentile_05": 0.024075,
+       "median": 0.15077,
+       "percentile_95": 0.44821
+      },
+      "mid_band_energy": {
+       "clips": 114,
+       "percentile_05": 0.27838,
+       "median": 0.44957,
+       "percentile_95": 0.65652
+      },
+      "onset_periodicity": {
+       "clips": 114,
+       "percentile_05": 0.20517,
+       "median": 0.38867,
+       "percentile_95": 0.79138
+      },
+      "onset_rate_per_second": {
+       "clips": 114,
+       "percentile_05": 0.064248,
+       "median": 0.40926,
+       "percentile_95": 2.0987
+      },
+      "partial_count": {
+       "clips": 114,
+       "percentile_05": 4.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 34,
+       "percentile_05": 57.647,
+       "median": 199.55,
+       "percentile_95": 1378.1
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 114,
+       "percentile_05": 314.8,
+       "median": 634.95,
+       "percentile_95": 1370.8
+      },
+      "spectral_centroid_hz": {
+       "clips": 114,
+       "percentile_05": 1042.9,
+       "median": 2661.3,
+       "percentile_95": 4307.6
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 114,
+       "percentile_05": 886.06,
+       "median": 2156.7,
+       "percentile_95": 3712.5
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 114,
+       "percentile_05": -237.04,
+       "median": -5.2501,
+       "percentile_95": 248.12
+      },
+      "spectral_entropy": {
+       "clips": 114,
+       "percentile_05": 0.27141,
+       "median": 0.4087,
+       "percentile_95": 0.57936
+      },
+      "spectral_flatness": {
+       "clips": 114,
+       "percentile_05": 0.039508,
+       "median": 0.17035,
+       "percentile_95": 0.34635
+      },
+      "spectral_flux": {
+       "clips": 114,
+       "percentile_05": 0.1671,
+       "median": 0.2053,
+       "percentile_95": 0.22301
+      },
+      "spectral_rolloff_hz": {
+       "clips": 114,
+       "percentile_05": 1482.6,
+       "median": 5710.5,
+       "percentile_95": 9648.7
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 114,
+       "percentile_05": -9.1752,
+       "median": -5.7386,
+       "percentile_95": -2.1255
+      },
+      "stationarity": {
+       "clips": 114,
+       "percentile_05": 0.0,
+       "median": 0.17868,
+       "percentile_95": 0.62875,
+       "censored_at_floor_fraction": 0.263
+      },
+      "syllabic_modulation_energy": {
+       "clips": 114,
+       "percentile_05": 0.0079584,
+       "median": 0.10954,
+       "percentile_95": 0.30588
+      },
+      "transient_count": {
+       "clips": 114,
+       "percentile_05": 1.0,
+       "median": 5.0,
+       "percentile_95": 19.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 114,
+       "percentile_05": 480.57,
+       "median": 1507.6,
+       "percentile_95": 3774.7
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "RACING",
+   "category_id": "VEHRace",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Racing cars or drag racing cars. Indy and Formula 1 cars",
+    "monster trucks",
+    "BOATS-RACING has its own category."
+   ],
+   "synonyms": [
+    "1",
+    "Auto",
+    "Automobile",
+    "Car",
+    "Drag",
+    "Dragster",
+    "F1",
+    "Formula",
+    "Grand",
+    "Indy",
+    "Monster",
+    "NASCAR",
+    "Prix",
+    "Race",
+    "Racecar",
+    "Rally",
+    "Sports",
+    "Stock",
+    "Supercar",
+    "Track",
+    "Truck"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4,
+      "max": 1800.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1300.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Indy, F1, drag, NASCAR, monster trucks. Very high RPM pushes the firing comb and the centroid up, and these are usually hot, near-clipped recordings, but a hard-revving motorcycle is indistinguishable.",
+     "BOATS-RACING has its own category."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil",
+     "BOATRace"
+    ]
+   }
+  },
+  {
+   "subcategory": "SIREN",
+   "category_id": "VEHSirn",
+   "category_short": "VEH",
+   "emoji": "🚨",
+   "explanation": [
+    "Police",
+    "Firetruck",
+    "Ambulance sirens. Any vehicle siren. See also VEHICLES-EMERGENCY if engine sounds are present also."
+   ],
+   "synonyms": [
+    "Air",
+    "Alarm",
+    "Ambulance",
+    "Auto",
+    "Automobile",
+    "Blare",
+    "Brazen",
+    "Call",
+    "Car",
+    "Cops",
+    "Emergency",
+    "Fighter",
+    "Fire",
+    "Firetruck",
+    "Hi-Lo",
+    "Hooter",
+    "Horn",
+    "Howler",
+    "Piercer",
+    "Police",
+    "Power",
+    "Siren",
+    "Truck",
+    "Wail",
+    "Warning",
+    "Whoop",
+    "Yelp"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.6,
+      "max": 600.0
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.65
+     },
+     {
+      "feature": "high_band_energy",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 800.0,
+      "deviation": 500.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.35,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 800.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 14.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.14,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Periodic frequency modulation of a loud harmonic tone. The wail cycle (roughly 0.15-0.5 Hz) makes spectral_centroid_deviation large while the NET spectral_centroid_slope averages to about zero across a whole file - that combination is the siren fingerprint and nothing else in VEHICLES has it. Yelp and hi-lo raise onset_periodicity instead.",
+     "Isolated sirens live here even when no vehicle is audible; if engine and traffic sit under the siren it becomes VEHICLES-EMERGENCY.",
+     "Against VEHICLES-HORN: a horn holds one pitch. Against ALARMS-SIREN: identical physics (an air-raid siren is just a bigger one) - text decides."
+    ],
+    "confusable_with": [
+     "ALRMSirn",
+     "VEHHorn",
+     "VEHEmrg",
+     "VEHAlrm",
+     "WHSTMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "SKID",
+   "category_id": "VEHSkid",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Tire skids",
+    "peel-outs. Other tire sounds go in VEHICLES-TIRES."
+   ],
+   "synonyms": [
+    "ABS",
+    "Auto",
+    "Automobile",
+    "Burnout",
+    "Car",
+    "Careening",
+    "Chuff",
+    "Drift",
+    "Fishtail",
+    "Marks",
+    "Out",
+    "Peel",
+    "Screech",
+    "Skid",
+    "Skidmark",
+    "Slide",
+    "Spin",
+    "Squeal",
+    "Swerve",
+    "Tire"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 60.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "min": 600.0
+     },
+     {
+      "feature": "high_band_energy",
+      "min": 0.08
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.7
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.52,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.08,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Sustained tonal-noisy tire squeal: a high centroid held for a second or more, a wobbling partially-pitched screech over a broadband rubber-on-asphalt bed. Far brighter and far more sustained than any engine recording.",
+     "Peel-outs and burnouts carry a revving engine underneath, but the squeal still dominates the centroid.",
+     "Other tire sounds - rolls, whines, a flat flopping - go to VEHICLES-TIRE, which has a much lower centroid and no squeal.",
+     "Against VEHICLES-BRAKE: brake squeal is typically shorter, higher-pitched and more strongly harmonic (a single ringing friction mode). The two overlap and text should break the tie."
+    ],
+    "confusable_with": [
+     "VEHBrake",
+     "VEHTire",
+     "METLFric",
+     "TRNBrake",
+     "VEHRace"
+    ]
+   }
+  },
+  {
+   "subcategory": "SUSPENSION",
+   "category_id": "VEHSusp",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Suspension squeaks and rattles",
+    "for any car",
+    "truck",
+    "semi. Suspensions springs. A car or truck on a very rough road."
+   ],
+   "synonyms": [
+    "Absorber",
+    "Absorbers",
+    "Air",
+    "Anti-Roll",
+    "Arm",
+    "Arms",
+    "Auto",
+    "Automobile",
+    "Bar",
+    "Bump",
+    "Car",
+    "Chassis",
+    "Coilovers",
+    "Control",
+    "Dampers",
+    "Independent",
+    "Leaf",
+    "Macpherson",
+    "Multi-Link",
+    "Pothole",
+    "Rattle",
+    "Shock",
+    "Speed",
+    "Springs",
+    "Squeak",
+    "Stabilizer",
+    "Strut",
+    "Struts",
+    "Suspension",
+    "Sway",
+    "Torsion",
+    "Wishbone"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 700.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Squeaks and rattles: unstable, wandering-pitch spring-and-bushing friction interleaved with loose-part rattles and pothole thumps. High spectral_centroid_deviation with low stationarity - the pitch never settles, which is exactly what separates a squeak from a whine.",
+     "Against VEHICLES-BRAKE: brake squeal is far brighter and a much more stable friction mode, and it is tied to a deceleration. A suspension squeak is slow, low, and modulated by the road.",
+     "Against VEHICLES-MECHANISM: a mechanism is one deliberate actuation; suspension is continuous road-driven excitation."
+    ],
+    "confusable_with": [
+     "VEHBrake",
+     "MECHPuly",
+     "METLFric",
+     "DOORCreak",
+     "VEHMech"
+    ]
+   }
+  },
+  {
+   "subcategory": "TIRE",
+   "category_id": "VEHTire",
+   "category_short": "VEH",
+   "emoji": "🛞",
+   "explanation": [
+    "Tire rolls on various surfaces",
+    "tire whines",
+    "no engine sounds",
+    "isolated tire sounds. A flat tire flop."
+   ],
+   "synonyms": [
+    "All-Season",
+    "Bicycle",
+    "Blackwall",
+    "Bridgestone",
+    "Car",
+    "Dunlops",
+    "Firestone",
+    "Firestones",
+    "Flat",
+    "Goodyears",
+    "Hubcap",
+    "Innertube",
+    "Michelin",
+    "Motorcycle",
+    "Noise",
+    "Off-Road",
+    "Performance",
+    "Pirelli",
+    "Puncture",
+    "Racing",
+    "Radial",
+    "Rim",
+    "Rims",
+    "Road",
+    "Roll",
+    "Rubber",
+    "Run-Flat",
+    "Sidewall",
+    "Snow",
+    "Spare",
+    "Summer",
+    "Tire",
+    "Tires",
+    "Tread",
+    "Truck",
+    "Tubeless",
+    "Tyres",
+    "Wheel",
+    "Wheels",
+    "Whitewall",
+    "Winter"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.72,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.18,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.6,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3500.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Isolated tire sounds with NO engine: rolls on various surfaces, tread whine, a flat tire flopping. A broadband, stationary, mid-bright noise bed - noisier and flatter than any engine, and far less bright than a squeal.",
+     "Skids and peel-outs go to VEHICLES-SKID: a skid has a much higher centroid, strong high_band_energy and a partially pitched squeal. That centroid step is the boundary.",
+     "A flat-tire flop is the exception - a periodic thump train - and will read as rhythmic; let text carry it."
+    ],
+    "confusable_with": [
+     "VEHSkid",
+     "VEHBrake",
+     "AMBTraf",
+     "VEHBike",
+     "MECHRolr"
+    ]
+   }
+  },
+  {
+   "subcategory": "TRUCK VAN & SUV",
+   "category_id": "VEHTruck",
+   "category_short": "VEH",
+   "emoji": "🚚",
+   "explanation": [
+    "Passenger Trucks",
+    "pickup trucks",
+    "Vans and SUVs. Commercial trucks go in VEHICLES-FREIGHT."
+   ],
+   "synonyms": [
+    "Box",
+    "Camper",
+    "Cargo",
+    "Conversion",
+    "Cream",
+    "Delivery",
+    "Flatbed",
+    "Food",
+    "Ice",
+    "Microbus",
+    "Mini",
+    "Minibus",
+    "Minivan",
+    "Paddy",
+    "Panel",
+    "Passenger",
+    "Pickup",
+    "RV",
+    "Step",
+    "SUV",
+    "Tow",
+    "Truck",
+    "Van",
+    "Vans",
+    "Work"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.7,
+      "max": 1800.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.13935,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 83,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.13724
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2401.8,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 83,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2494.93888
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.1515,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 83,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.15866
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.59087,
+      "deviation": 0.4619,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 83,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.55476
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.33701,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 83,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.45
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.28862,
+      "deviation": 0.4302,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 83,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.2448
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1584.4,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 83,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1605.22219
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Passenger trucks, vans and SUVs. Commercial trucks are VEHICLES-FREIGHT - a purely semantic split with no acoustic correlate.",
+     "Marginally more low-band energy than VEHICLES-CAR, but the distributions overlap almost completely. Never assert from signal."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHUtil",
+     "VEHAtv"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 83,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Truck": 83
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 83,
+       "percentile_05": 2089.4,
+       "median": 3201.5,
+       "percentile_95": 4646.3
+      },
+      "harmonicity": {
+       "clips": 83,
+       "percentile_05": 0.14385,
+       "median": 0.59087,
+       "percentile_95": 0.96413
+      },
+      "high_band_energy": {
+       "clips": 83,
+       "percentile_05": 0.12923,
+       "median": 0.34621,
+       "percentile_95": 0.61545
+      },
+      "inharmonicity": {
+       "clips": 83,
+       "percentile_05": 0.076398,
+       "median": 0.3626,
+       "percentile_95": 0.57383
+      },
+      "low_band_energy": {
+       "clips": 83,
+       "percentile_05": 0.0082625,
+       "median": 0.13935,
+       "percentile_95": 0.44344
+      },
+      "mid_band_energy": {
+       "clips": 83,
+       "percentile_05": 0.25388,
+       "median": 0.42937,
+       "percentile_95": 0.68388
+      },
+      "onset_periodicity": {
+       "clips": 83,
+       "percentile_05": 0.12611,
+       "median": 0.33701,
+       "percentile_95": 0.61323
+      },
+      "onset_rate_per_second": {
+       "clips": 83,
+       "percentile_05": 0.069211,
+       "median": 0.43548,
+       "percentile_95": 1.8922
+      },
+      "partial_count": {
+       "clips": 83,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 36,
+       "percentile_05": 111.65,
+       "median": 512.79,
+       "percentile_95": 1696.2
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 83,
+       "percentile_05": 179.84,
+       "median": 591.56,
+       "percentile_95": 1526.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 83,
+       "percentile_05": 1097.1,
+       "median": 2401.8,
+       "percentile_95": 4302.7
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 83,
+       "percentile_05": 1060.1,
+       "median": 2027.1,
+       "percentile_95": 3752.6
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 83,
+       "percentile_05": -251.08,
+       "median": 8.8975,
+       "percentile_95": 114.79
+      },
+      "spectral_entropy": {
+       "clips": 83,
+       "percentile_05": 0.23362,
+       "median": 0.43544,
+       "percentile_95": 0.62349
+      },
+      "spectral_flatness": {
+       "clips": 83,
+       "percentile_05": 0.052058,
+       "median": 0.1515,
+       "percentile_95": 0.33003
+      },
+      "spectral_flux": {
+       "clips": 83,
+       "percentile_05": 0.15702,
+       "median": 0.21531,
+       "percentile_95": 0.2281
+      },
+      "spectral_rolloff_hz": {
+       "clips": 83,
+       "percentile_05": 1652.8,
+       "median": 4673.7,
+       "percentile_95": 9557.4
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 83,
+       "percentile_05": -8.7236,
+       "median": -5.5701,
+       "percentile_95": -0.86596
+      },
+      "stationarity": {
+       "clips": 83,
+       "percentile_05": 0.0,
+       "median": 0.28862,
+       "percentile_95": 0.76411,
+       "censored_at_floor_fraction": 0.229
+      },
+      "syllabic_modulation_energy": {
+       "clips": 82,
+       "percentile_05": 0.052127,
+       "median": 0.16377,
+       "percentile_95": 0.34063
+      },
+      "transient_count": {
+       "clips": 83,
+       "percentile_05": 1.0,
+       "median": 5.0,
+       "percentile_95": 22.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 83,
+       "percentile_05": 461.04,
+       "median": 1584.4,
+       "percentile_95": 5403.2
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "UTILITY",
+   "category_id": "VEHUtil",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Golf carts",
+    "cushmans",
+    "traffic",
+    "gator",
+    "small motorized utility vehicles."
+   ],
+   "synonyms": [
+    "By",
+    "Cushman",
+    "Gator",
+    "Ranger",
+    "RZR",
+    "Side",
+    "SXS",
+    "Ute",
+    "UTV"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 1800.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 950.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.28,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.315,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.245,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.175,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.21,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.105,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Golf carts, Cushmans, Gators, small motorized utility vehicles. Small-displacement, so somewhat brighter and less low-band than a truck - but that describes a motorcycle too.",
+     "Electric golf carts belong to VEHICLES-ELECTRIC, which IS signal-distinguishable (no combustion irregularity, pure whine). Gasoline utility vehicles are not."
+    ],
+    "confusable_with": [
+     "VEHCar",
+     "VEHTruck",
+     "VEHBus",
+     "VEHFrght",
+     "VEHFarm",
+     "VEHCnst",
+     "VEHMil",
+     "VEHAtv",
+     "VEHElec"
+    ]
+   }
+  },
+  {
+   "subcategory": "WAGON",
+   "category_id": "VEHWagn",
+   "category_short": "VEH",
+   "emoji": "🚗",
+   "explanation": [
+    "Old wood wagon",
+    "horse drawn carts",
+    "carriages",
+    "buggies. A Stagecoach."
+   ],
+   "synonyms": [
+    "Amish",
+    "Buckboard",
+    "Buggy",
+    "Carriage",
+    "Carriages",
+    "Cart",
+    "Chariot",
+    "Drawbar",
+    "Hayride",
+    "Ox",
+    "Stagecoach",
+    "Waggon",
+    "Wagon",
+    "Wagons",
+    "Wain",
+    "Wood"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.09,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1400.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Horse-drawn: wood creak, leather, iron-rimmed wheel rumble, tack jingle and hoofbeats. No engine at all - so, like VEHICLES-BICYCLE, it separates from the combustion family by the absence of a firing comb and an exhaust bed.",
+     "Wood dominated, so its impacts decay fast (short decay_time_seconds_60db) rather than ringing like metal.",
+     "Against VEHICLES-ANTIQUE: an antique CAR has an engine; a stagecoach does not. Against EQUIPMENT-BRIDLE & TACK and animal movement: those are the wagon's components in isolation."
+    ],
+    "confusable_with": [
+     "VEHAntq",
+     "EQUIPBridle",
+     "MOVEAnml",
+     "AMBHist",
+     "VEHSusp"
+    ]
+   }
+  },
+  {
+   "subcategory": "WINDOW",
+   "category_id": "VEHWndw",
+   "category_short": "VEH",
+   "emoji": "🌬️",
+   "explanation": [
+    "Powered windows for any vehicles",
+    "crank windows should go in VEHICLES-MECHANISM."
+   ],
+   "synonyms": [
+    "Auto",
+    "Automatic",
+    "Automobile",
+    "Car",
+    "Drivers",
+    "Down",
+    "Passenger",
+    "Power",
+    "Roll",
+    "Up",
+    "Window"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.2,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 300.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.8,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Powered windows: a small DC motor whine of one to four seconds held at a steady pitch, book-ended by a start clunk and an end-stop thump. Sustained and partially harmonic, unlike the bare impulses of VEHICLES-MECHANISM.",
+     "Crank windows are explicitly VEHICLES-MECHANISM - a ratcheting click train, not a motor whine. That boundary IS measurable: motor tone versus click train.",
+     "Against MOTORS-ELECTRIC and MOTORS-SERVO: the same small motor; the vehicle context is semantic."
+    ],
+    "confusable_with": [
+     "VEHMech",
+     "MOTRElec",
+     "MOTRSrvo",
+     "MACHMech",
+     "DOORElec"
+    ]
+   }
+  }
+ ]
+}

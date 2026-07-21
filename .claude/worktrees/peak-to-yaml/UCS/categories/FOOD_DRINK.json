@@ -1,0 +1,2546 @@
+{
+ "version": "8.2.1",
+ "category": "FOOD & DRINK",
+ "emoji": "🍽️",
+ "subcategories": [
+  {
+   "subcategory": "COOKING",
+   "category_id": "FOODCook",
+   "category_short": "FOOD",
+   "emoji": "🍽️",
+   "explanation": [
+    "Things overtly related to cooking",
+    "baking",
+    "preparation",
+    "chopping."
+   ],
+   "synonyms": [
+    "Baked",
+    "Baking",
+    "Barbecuing",
+    "Blending",
+    "Boil",
+    "Boiled",
+    "Boiling",
+    "Broiling",
+    "Burning",
+    "Buttering",
+    "Canning",
+    "Caramelization",
+    "Catering",
+    "Chopping",
+    "Cookery",
+    "Cooking",
+    "Cookpot",
+    "Cuisine",
+    "Culinary",
+    "Decorating",
+    "Defrosting",
+    "Dicing",
+    "Fry",
+    "Gourmet",
+    "Grill",
+    "Grilling",
+    "Mixing",
+    "Pantry",
+    "Parboiling",
+    "Precooking",
+    "Preparation",
+    "Prepare",
+    "Preparing",
+    "Prepping",
+    "Recipe",
+    "Recipes",
+    "Reheating",
+    "Roasting",
+    "Salting",
+    "Sauteing",
+    "Saut√©ing",
+    "Saut‚àö¬©",
+    "Seasoning",
+    "Sizzle",
+    "Slicing",
+    "Steam",
+    "Steaming",
+    "Stew",
+    "Stir",
+    "Stovetop",
+    "Whisking"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.56785,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.58254
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.87848,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.886
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.54824,
+      "deviation": 35.0,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.50268
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.094028,
+      "deviation": 0.1019,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.08687
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.64567,
+      "deviation": 0.3006,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.62167
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 11867.0,
+      "deviation": 5000,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 12558.87997
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.011367,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.01035
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The SIZZLE of frying is the dominant real morphology: a dense, near-stationary high-frequency crackle texture — a very high onset_rate_per_second of micro-events, high high_band_energy, essentially no pitch, low crest. It is the same physical event as FIRE-SIZZLE (steam bursting out of oil) and signal analysis cannot separate the two; only the kitchen context in the name can.",
+     "Chopping is the other half of the subcategory: hard, roughly periodic impulses with a board resonance under them — a completely different morphology, which caps this at narrowable. Boiling is bubbling and will score toward WATER-BUBBLES.",
+     "A recording of the pan or pot itself being moved or set down is FOOD & DRINK-KITCHENWARE, not COOKING."
+    ],
+    "confusable_with": [
+     "FIRESizz",
+     "FIRECrkl",
+     "FOODKware",
+     "WATRBubl",
+     "FOODIngr",
+     "FOODMisc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 61,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Frying_(food)": 61
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 61,
+       "percentile_05": 2960.2,
+       "median": 4734.4,
+       "percentile_95": 5623.9
+      },
+      "harmonicity": {
+       "clips": 61,
+       "percentile_05": 0.030302,
+       "median": 0.094028,
+       "percentile_95": 0.67244
+      },
+      "high_band_energy": {
+       "clips": 61,
+       "percentile_05": 0.61014,
+       "median": 0.87848,
+       "percentile_95": 0.95565
+      },
+      "inharmonicity": {
+       "clips": 61,
+       "percentile_05": 0.23388,
+       "median": 0.42262,
+       "percentile_95": 0.61612
+      },
+      "low_band_energy": {
+       "clips": 61,
+       "percentile_05": 0.0017102,
+       "median": 0.011367,
+       "percentile_95": 0.08592
+      },
+      "mid_band_energy": {
+       "clips": 61,
+       "percentile_05": 0.036797,
+       "median": 0.10164,
+       "percentile_95": 0.31778
+      },
+      "onset_periodicity": {
+       "clips": 61,
+       "percentile_05": 0.084014,
+       "median": 0.15182,
+       "percentile_95": 0.31797
+      },
+      "onset_rate_per_second": {
+       "clips": 61,
+       "percentile_05": 0.11789,
+       "median": 0.54824,
+       "percentile_95": 1.5909
+      },
+      "partial_count": {
+       "clips": 61,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 49,
+       "percentile_05": 336.64,
+       "median": 1336.4,
+       "percentile_95": 1917.4
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 61,
+       "percentile_05": 327.19,
+       "median": 591.36,
+       "percentile_95": 1524.1
+      },
+      "spectral_centroid_hz": {
+       "clips": 61,
+       "percentile_05": 3850.0,
+       "median": 7269.4,
+       "percentile_95": 9829.2
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 61,
+       "percentile_05": 3995.2,
+       "median": 6994.4,
+       "percentile_95": 9786.7
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 61,
+       "percentile_05": -254.59,
+       "median": -4.6421,
+       "percentile_95": 131.38
+      },
+      "spectral_entropy": {
+       "clips": 61,
+       "percentile_05": 0.50144,
+       "median": 0.76857,
+       "percentile_95": 0.88082
+      },
+      "spectral_flatness": {
+       "clips": 61,
+       "percentile_05": 0.095325,
+       "median": 0.56785,
+       "percentile_95": 0.7062
+      },
+      "spectral_flux": {
+       "clips": 61,
+       "percentile_05": 0.21383,
+       "median": 0.22678,
+       "percentile_95": 0.23428
+      },
+      "spectral_rolloff_hz": {
+       "clips": 61,
+       "percentile_05": 7322.8,
+       "median": 12700.0,
+       "percentile_95": 16061.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 61,
+       "percentile_05": -3.8019,
+       "median": -0.21658,
+       "percentile_95": 3.087
+      },
+      "stationarity": {
+       "clips": 61,
+       "percentile_05": 0.0,
+       "median": 0.64567,
+       "percentile_95": 0.8505,
+       "censored_at_floor_fraction": 0.197
+      },
+      "syllabic_modulation_energy": {
+       "clips": 61,
+       "percentile_05": 0.11672,
+       "median": 0.20148,
+       "percentile_95": 0.3215
+      },
+      "transient_count": {
+       "clips": 61,
+       "percentile_05": 1.0,
+       "median": 6.0,
+       "percentile_95": 23.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 61,
+       "percentile_05": 4547.1,
+       "median": 11867.0,
+       "percentile_95": 18003.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "DRINKING",
+   "category_id": "FOODDrnk",
+   "category_short": "FOOD",
+   "emoji": "🥤",
+   "explanation": [
+    "Specifically drinking",
+    "would also cover animals drinking",
+    "dogs lapping water",
+    "a horse drinking."
+   ],
+   "synonyms": [
+    "Alcohol",
+    "Ale",
+    "Beer",
+    "Beverage",
+    "Beverages",
+    "Booze",
+    "Boozing",
+    "Brew",
+    "Chai",
+    "Champagne",
+    "Chug",
+    "Chugging",
+    "Cider",
+    "Cocktail",
+    "Coffee",
+    "Coke",
+    "Cola",
+    "Consumed",
+    "Consuming",
+    "Consummation",
+    "Consumption",
+    "Drink",
+    "Drinkable",
+    "Drinker",
+    "Drinkers",
+    "Gatorade",
+    "Gin",
+    "Glug",
+    "Gulp",
+    "Gulping",
+    "Guzzling",
+    "Imbibe",
+    "Imbibing",
+    "Intoxication",
+    "Juice",
+    "Kombucha",
+    "Lemonade",
+    "Liquor",
+    "Liquoring",
+    "Margarita",
+    "Martini",
+    "Milk",
+    "Rum",
+    "Sip",
+    "Sipping",
+    "Slurp",
+    "Slurping",
+    "Soda",
+    "Swallow",
+    "Swallowing",
+    "Swig",
+    "Swilling",
+    "Tea",
+    "Tequila",
+    "Thirst",
+    "Thirsty",
+    "Tippling",
+    "Vodka",
+    "Whiskey",
+    "Wine"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 800,
+      "deviation": 600,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.2,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Ingestion, not liquid in free air. The liquid is inside a body, so everything is DARK, wet and damped: a gulp is a short low thump plus a throat click, and chugging is a periodic train of them at roughly one to three per second. Low spectral centroid with real low_band_energy is the cue.",
+     "FOOD & DRINK-POUR is the exact opposite — a bright, sustained, continuous liquid flow. The test is simple: if the liquid is falling into a vessel it is POUR, if it is going into a person or an animal it is DRINKING.",
+     "A slurp is noisy suction and will look like sustained noise; a swallow overlaps VOICES-EFFORTS. Animals lapping also live here, which pulls scoring toward the ANIMALS categories by name."
+    ],
+    "confusable_with": [
+     "FOODPour",
+     "FOODEat",
+     "WATRMvmt",
+     "VOXEfrt",
+     "ANMLDog",
+     "FOODMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "EATING",
+   "category_id": "FOODEat",
+   "category_short": "FOOD",
+   "emoji": "🍽️",
+   "explanation": [
+    "Specifically eating",
+    "would also cover animals eating",
+    "a dog eating or a horse eating. Swallowing",
+    "chewing."
+   ],
+   "synonyms": [
+    "Appetizer",
+    "Bite",
+    "Biting",
+    "Chew",
+    "Chewing",
+    "Chomp",
+    "Chow",
+    "Chowing",
+    "Consume",
+    "Consuming",
+    "Consumption",
+    "Crunch",
+    "Devouring",
+    "Digesting",
+    "Dine",
+    "Eat",
+    "Eaten",
+    "Edible",
+    "Feast",
+    "Feasting",
+    "Feed",
+    "Feeding",
+    "Feeds",
+    "Foods",
+    "Foodstuffs",
+    "Gobbling",
+    "Gorging",
+    "Gourmet",
+    "Grocery",
+    "Grub",
+    "Gullet",
+    "Hungry",
+    "Ingest",
+    "Ingesting",
+    "Ingestion",
+    "Lunch",
+    "Meal",
+    "Meals",
+    "Munch",
+    "Munching",
+    "Nibbling",
+    "Noshing",
+    "Nourishment",
+    "Nutrition",
+    "Nutritional",
+    "Partaking",
+    "Snack",
+    "Snacking",
+    "Supper",
+    "Swallow",
+    "Swallowing"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.05,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25775,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 172,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.55
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.78014,
+      "deviation": 3.068,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 172,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.79915
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.44322,
+      "deviation": 0.2432,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 172,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.4578
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3047,
+      "deviation": 0.3224,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 172,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.29016
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6034.5,
+      "deviation": 1600,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 172,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5991.48711
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.75433,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 172,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.75251
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Mastication. Short, broadband, granular, COMPLETELY damped impacts — a crunch is a burst of micro-fractures, so spectral_flatness is high and harmonicity is near zero — repeating at the roughly 2-4 Hz chewing rhythm, which gives it real onset_periodicity.",
+     "The absence of ring is the discriminator. Food and flesh have no decay time at all, unlike the ceramic and metal clinks of FOOD & DRINK-TABLEWARE, which ring audibly. A damped impulse train with zero decay is eating.",
+     "Wetter, darker and slower than the dry granular rattle of FOOD & DRINK-INGREDIENTS. Swallowing genuinely overlaps FOOD & DRINK-DRINKING and the two cannot be split on signal."
+    ],
+    "confusable_with": [
+     "FOODDrnk",
+     "FOODIngr",
+     "FOODMisc",
+     "FOODTware",
+     "ANMLDog"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 172,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Chewing_and_mastication": 172
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 172,
+       "percentile_05": 3195.7,
+       "median": 4729.0,
+       "percentile_95": 5975.9
+      },
+      "harmonicity": {
+       "clips": 172,
+       "percentile_05": 0.062518,
+       "median": 0.29445,
+       "percentile_95": 0.91459
+      },
+      "high_band_energy": {
+       "clips": 172,
+       "percentile_05": 0.42185,
+       "median": 0.75366,
+       "percentile_95": 0.91828
+      },
+      "inharmonicity": {
+       "clips": 172,
+       "percentile_05": 0.27346,
+       "median": 0.46416,
+       "percentile_95": 0.61516
+      },
+      "low_band_energy": {
+       "clips": 172,
+       "percentile_05": 0.0032252,
+       "median": 0.045759,
+       "percentile_95": 0.21221
+      },
+      "mid_band_energy": {
+       "clips": 172,
+       "percentile_05": 0.063117,
+       "median": 0.19153,
+       "percentile_95": 0.45684
+      },
+      "onset_periodicity": {
+       "clips": 172,
+       "percentile_05": 0.10309,
+       "median": 0.25719,
+       "percentile_95": 0.45208
+      },
+      "onset_rate_per_second": {
+       "clips": 172,
+       "percentile_05": 0.1946,
+       "median": 0.77523,
+       "percentile_95": 2.6272
+      },
+      "partial_count": {
+       "clips": 170,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 136,
+       "percentile_05": 260.95,
+       "median": 1225.0,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 172,
+       "percentile_05": 735.66,
+       "median": 1429.9,
+       "percentile_95": 2501.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 172,
+       "percentile_05": 3067.5,
+       "median": 5998.4,
+       "percentile_95": 9173.8
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 172,
+       "percentile_05": 3005.3,
+       "median": 5073.6,
+       "percentile_95": 7996.3
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 172,
+       "percentile_05": -1799.2,
+       "median": -46.891,
+       "percentile_95": 189.78
+      },
+      "spectral_entropy": {
+       "clips": 172,
+       "percentile_05": 0.26786,
+       "median": 0.51999,
+       "percentile_95": 0.77938
+      },
+      "spectral_flatness": {
+       "clips": 172,
+       "percentile_05": 0.13768,
+       "median": 0.44005,
+       "percentile_95": 0.71139
+      },
+      "spectral_flux": {
+       "clips": 172,
+       "percentile_05": 0.20843,
+       "median": 0.23266,
+       "percentile_95": 0.24771
+      },
+      "spectral_rolloff_hz": {
+       "clips": 172,
+       "percentile_05": 5553.7,
+       "median": 11555.0,
+       "percentile_95": 15649.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 172,
+       "percentile_05": -5.0353,
+       "median": -2.5799,
+       "percentile_95": 1.4539
+      },
+      "stationarity": {
+       "clips": 172,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.28265,
+       "censored_at_floor_fraction": 0.767
+      },
+      "syllabic_modulation_energy": {
+       "clips": 171,
+       "percentile_05": 0.1205,
+       "median": 0.26034,
+       "percentile_95": 0.42071
+      },
+      "transient_count": {
+       "clips": 172,
+       "percentile_05": 1.0,
+       "median": 6.0,
+       "percentile_95": 22.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 172,
+       "percentile_05": 1086.3,
+       "median": 4242.1,
+       "percentile_95": 12279.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "GLASSWARE",
+   "category_id": "FOODGware",
+   "category_short": "FOOD",
+   "emoji": "🥂",
+   "explanation": [
+    "Glass and bottle movement",
+    "specifically at a restaurant or bar. Isolated glassware recordings."
+   ],
+   "synonyms": [
+    "Beaker",
+    "Beakers",
+    "Beer",
+    "Beverages",
+    "Bottle",
+    "Bottles",
+    "Carafe",
+    "Carafes",
+    "Champagne",
+    "Clink",
+    "Cup",
+    "Decanters",
+    "Flasks",
+    "Flute",
+    "Glass",
+    "Glasswares",
+    "Glasswork",
+    "Goblet",
+    "Goblets",
+    "Highball",
+    "Jug",
+    "Martini",
+    "Mug",
+    "Mugs",
+    "Pyrex",
+    "Shot",
+    "Stemware",
+    "Teacups",
+    "Tumbler",
+    "Vase",
+    "Vases",
+    "Wine",
+    "Wineglass",
+    "Wineglasses"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.85
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4000,
+      "deviation": 2200,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.5,
+      "deviation": 2.46,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.06,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 8,
+      "deviation": 5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 4,
+      "deviation": 5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The glass clink: an extremely fast attack, a very bright spectrum (most energy above 2 kHz, almost none below 200 Hz), a high crest_factor, and a clear ringing tail. Stemware rings noticeably longer than a thick tumbler, and a bottle rings lower than a wine glass.",
+     "This is signal-IDENTICAL to GLASS-IMPACT, GLASS-HANDLE and GLASS-MOVEMENT. The only thing placing it in FOOD & DRINK is the bar or restaurant context in the name.",
+     "Duller, darker clinks with a much shorter ring are ceramic or metal — FOOD & DRINK-TABLEWARE. Glass is the brightest and longest-ringing of the three tableware materials."
+    ],
+    "confusable_with": [
+     "GLASImpt",
+     "GLASHndl",
+     "GLASMvmt",
+     "FOODTware",
+     "FOODKware",
+     "CERMImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "INGREDIENTS",
+   "category_id": "FOODIngr",
+   "category_short": "FOOD",
+   "emoji": "🍽️",
+   "explanation": [
+    "Nuts",
+    "seeds",
+    "grains",
+    "things like that. Raw food recordings often used for other design purposes",
+    "vegetable recordings. See also GORE-SOURCE."
+   ],
+   "synonyms": [
+    "Batter",
+    "Beans",
+    "Bread",
+    "Canned",
+    "Cereal",
+    "Cheese",
+    "Condiments",
+    "Contents",
+    "Cornstarch",
+    "Egg",
+    "Eggs",
+    "Flour",
+    "Food",
+    "Fruit",
+    "Ghee",
+    "Grain",
+    "Groceries",
+    "Herb",
+    "Herbs",
+    "Juice",
+    "Lard",
+    "Lentils",
+    "Maize",
+    "Meat",
+    "Milk",
+    "Nuts",
+    "Oats",
+    "Oleo",
+    "Pasta",
+    "Pepper",
+    "Preserves",
+    "Roux",
+    "Salt",
+    "Seeds",
+    "Spices",
+    "Suet",
+    "Sugar",
+    "Treacle",
+    "Vanilla",
+    "Vegetables",
+    "Yeast"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 25.0,
+      "deviation": 22.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.04,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000,
+      "deviation": 2000,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Raw food material recorded as sound-design source. The only physics the whole subcategory shares is that food does not ring: everything here is broadband, damped and unpitched, with essentially zero decay time.",
+     "Beyond that it splits in two. Dry ingredients (rice, nuts, seeds, grain, cereal) read as a granular texture with a very high micro-onset rate; wet ingredients (meat, batter, eggs, preserves) read as damped squelches. No single prior covers both, so this must never be asserted from signal.",
+     "The same wet material is deliberately shared with GORE-SOURCE, and dry-pour rattle overlaps FOOD & DRINK-COOKING."
+    ],
+    "confusable_with": [
+     "FOODEat",
+     "FOODCook",
+     "FOODMisc",
+     "FOODKware",
+     "PLASMvmt"
+    ]
+   }
+  },
+  {
+   "subcategory": "KITCHENWARE",
+   "category_id": "FOODKware",
+   "category_short": "FOOD",
+   "emoji": "🍽️",
+   "explanation": [
+    "Pots and pans movement",
+    "big metal bowls",
+    "prep bowls."
+   ],
+   "synonyms": [
+    "Bakeware",
+    "Baking",
+    "Board",
+    "Bowl",
+    "Bread",
+    "Can",
+    "Chef's",
+    "Chopping",
+    "Colander",
+    "Cookie",
+    "Cookware",
+    "Corkscrew",
+    "Cup",
+    "Cutting",
+    "Dish",
+    "Fork",
+    "Frying",
+    "Grater",
+    "Kitchen",
+    "Knife",
+    "Knives",
+    "Ladle",
+    "Measuring",
+    "Mixing",
+    "Opener",
+    "Pan",
+    "Pans",
+    "Paring",
+    "Peeler",
+    "Pin",
+    "Pot",
+    "Pots",
+    "Rolling",
+    "Saucepan",
+    "Saucepans",
+    "Scissors",
+    "Serving",
+    "Shears",
+    "Sheet",
+    "Slotted",
+    "Spatula",
+    "Spoon",
+    "Spoons",
+    "Steamer",
+    "Stewpan",
+    "Stockpot",
+    "Strainer",
+    "Teakettle",
+    "Tongs",
+    "Utensil",
+    "Utility",
+    "Vegetable",
+    "Whisk",
+    "Wooden"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.9
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.47719,
+      "deviation": 2.338,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 73,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.54621
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.37194,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 216,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.37007
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.014966,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 84,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.01497
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 14.394,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 120,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 13.80164
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4201.1,
+      "deviation": 1600,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 216,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 4218.80443
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.61945,
+      "deviation": 0.3314,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 216,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.59385
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.61576,
+      "deviation": 0.4919,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 216,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.63866
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 11.0,
+      "deviation": 9,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 214,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 10.0
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 216,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.0
+      }
+     }
+    ],
+    "discriminators": [
+     "Metal cookware: a hard, fast attack followed by a LONG, strongly inharmonic ring. Pots, pans and big metal bowls are thin resonant shells, so decay_time_seconds_60db is the longest in FOOD & DRINK apart from stemware, and the partials are metallically detuned.",
+     "Ring time is the material axis across this whole category: pans ring long, glass rings bright and medium, ceramic plates tick and die, and food itself does not ring at all.",
+     "Signal-identical to METAL-IMPACT, METAL-HANDLE and METAL-MOVEMENT; only the kitchen context in the name places it here. Cutting-board and knife work will also drag toward WOOD-IMPACT and FOOD & DRINK-COOKING."
+    ],
+    "confusable_with": [
+     "METLImpt",
+     "METLHndl",
+     "METLMvmt",
+     "FOODTware",
+     "FOODGware",
+     "FOODCook"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 216,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Dishes_and_pots_and_pans": 216
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 216,
+       "percentile_05": 1935.2,
+       "median": 3955.0,
+       "percentile_95": 5078.8
+      },
+      "crest_factor": {
+       "clips": 120,
+       "percentile_05": 5.3697,
+       "median": 14.171,
+       "percentile_95": 37.744,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 73,
+       "percentile_05": 0.14445,
+       "median": 0.47719,
+       "percentile_95": 2.8028,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 84,
+       "percentile_05": 0.0099773,
+       "median": 0.014966,
+       "percentile_95": 0.5288,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 120,
+       "percentile_05": 0.11973,
+       "median": 0.31927,
+       "percentile_95": 1.9156,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 120,
+       "percentile_05": 1.3398,
+       "median": 14.306,
+       "percentile_95": 108.32,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 120,
+       "percentile_05": 0.024943,
+       "median": 0.13968,
+       "percentile_95": 1.9007,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 120,
+       "percentile_05": 1.5161,
+       "median": 3.6406,
+       "percentile_95": 9.5406,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 120,
+       "percentile_05": 0.00070635,
+       "median": 0.015106,
+       "percentile_95": 0.082502,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 120,
+       "percentile_05": 0.011922,
+       "median": 0.075226,
+       "percentile_95": 0.3753,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 216,
+       "percentile_05": 0.16229,
+       "median": 0.61461,
+       "percentile_95": 0.97746
+      },
+      "high_band_energy": {
+       "clips": 216,
+       "percentile_05": 0.11908,
+       "median": 0.61798,
+       "percentile_95": 0.94026
+      },
+      "inharmonicity": {
+       "clips": 216,
+       "percentile_05": 0.059299,
+       "median": 0.37155,
+       "percentile_95": 0.60587
+      },
+      "low_band_energy": {
+       "clips": 216,
+       "percentile_05": 0.001517,
+       "median": 0.029859,
+       "percentile_95": 0.20042
+      },
+      "mid_band_energy": {
+       "clips": 216,
+       "percentile_05": 0.048541,
+       "median": 0.34445,
+       "percentile_95": 0.77529
+      },
+      "onset_periodicity": {
+       "clips": 216,
+       "percentile_05": 0.0,
+       "median": 0.1879,
+       "percentile_95": 0.42629
+      },
+      "onset_rate_per_second": {
+       "clips": 216,
+       "percentile_05": 0.23777,
+       "median": 1.1048,
+       "percentile_95": 3.108
+      },
+      "partial_count": {
+       "clips": 214,
+       "percentile_05": 1.0,
+       "median": 11.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 191,
+       "percentile_05": 84.0,
+       "median": 474.19,
+       "percentile_95": 1520.7
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 26,
+       "percentile_05": -3.714,
+       "median": 0.093446,
+       "percentile_95": 2.3986
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 216,
+       "percentile_05": 478.14,
+       "median": 1278.2,
+       "percentile_95": 2722.7
+      },
+      "spectral_centroid_hz": {
+       "clips": 216,
+       "percentile_05": 1162.4,
+       "median": 4188.9,
+       "percentile_95": 7738.8
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 216,
+       "percentile_05": 1642.9,
+       "median": 3420.9,
+       "percentile_95": 6350.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 216,
+       "percentile_05": -7159.5,
+       "median": 38.4,
+       "percentile_95": 6848.2
+      },
+      "spectral_entropy": {
+       "clips": 216,
+       "percentile_05": 0.20205,
+       "median": 0.38286,
+       "percentile_95": 0.6071
+      },
+      "spectral_flatness": {
+       "clips": 216,
+       "percentile_05": 0.047108,
+       "median": 0.26565,
+       "percentile_95": 0.54217
+      },
+      "spectral_flux": {
+       "clips": 216,
+       "percentile_05": 0.11439,
+       "median": 0.20749,
+       "percentile_95": 0.23704
+      },
+      "spectral_rolloff_hz": {
+       "clips": 216,
+       "percentile_05": 1683.6,
+       "median": 8297.3,
+       "percentile_95": 12451.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 216,
+       "percentile_05": -6.5615,
+       "median": -2.6903,
+       "percentile_95": 1.6131
+      },
+      "stationarity": {
+       "clips": 216,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.20489,
+       "censored_at_floor_fraction": 0.875
+      },
+      "sustain_ratio": {
+       "clips": 120,
+       "percentile_05": 0.0083333,
+       "median": 0.05,
+       "percentile_95": 0.16838,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 186,
+       "percentile_05": 0.0030756,
+       "median": 0.21141,
+       "percentile_95": 0.41703
+      },
+      "transient_count": {
+       "clips": 216,
+       "percentile_05": 1.0,
+       "median": 1.0,
+       "percentile_95": 10.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 216,
+       "percentile_05": 594.55,
+       "median": 2569.7,
+       "percentile_95": 7817.5
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "FOODMisc",
+   "category_short": "FOOD",
+   "emoji": "🍽️",
+   "explanation": [
+    "Food and Drink sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Banquet",
+    "Diet",
+    "Dieting",
+    "Epicurean",
+    "Fare",
+    "Garnish",
+    "Meal",
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.15,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.2,
+      "deviation": 3.49,
+      "transform": "log",
+      "weight": 0.15,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Fallback for food and drink sounds the siblings do not name. Assert only when no sibling matches by name.",
+     "Almost uninformative by construction: the category spans everything from a banquet ambience to a garnish being placed, so the priors are near-flat and text must carry the decision."
+    ],
+    "confusable_with": [
+     "FOODCook",
+     "FOODEat",
+     "FOODDrnk",
+     "FOODIngr",
+     "FOODTware"
+    ]
+   }
+  },
+  {
+   "subcategory": "POUR",
+   "category_id": "FOODPour",
+   "category_short": "FOOD",
+   "emoji": "🍽️",
+   "explanation": [
+    "Pouring liquid",
+    "water",
+    "beer",
+    "wine",
+    "champagne",
+    "etc. Some overlap with WATER-POUR",
+    "but specifically consumption liquids."
+   ],
+   "synonyms": [
+    "Alcohol",
+    "Ale",
+    "Bartender",
+    "Beer",
+    "Chai",
+    "Champagne",
+    "Cider",
+    "Cocktail",
+    "Coffee",
+    "Coke",
+    "Cola",
+    "Flow",
+    "Flowing",
+    "Gatorade",
+    "Gin",
+    "Juice",
+    "Kombucha",
+    "Lemonade",
+    "Margarita",
+    "Martini",
+    "Milk",
+    "Pour",
+    "Pouring",
+    "Rum",
+    "Serve",
+    "Slosh",
+    "Soda",
+    "Spill",
+    "Tea",
+    "Tequila",
+    "Vodka",
+    "Whiskey",
+    "Wine"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.75
+     },
+     {
+      "feature": "spectral_flatness",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.65,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 30.0,
+      "deviation": 25.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4500,
+      "deviation": 3200,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400,
+      "deviation": 1500,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 80.0,
+      "deviation": 120.0,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Sustained liquid flow: a stationary, unpitched, bright noise bed threaded with bubbles and glugs. High sustain_ratio, low crest_factor, high spectral_flatness, near-zero harmonicity — this is a noise process, not an event.",
+     "Filling a vessel has a real and pretty signature: as the liquid rises the air column above it SHORTENS, so its resonance climbs and spectral_centroid_slope_hz_per_second comes out positive over the pour. A free pour onto a surface does not do this, and no other FOOD & DRINK subcategory does it at all.",
+     "Acoustically the same as WATER-POUR. UCS splits them purely on whether the liquid is a consumption drink, which only the filename can say — hence narrowable, not separable.",
+     "FOOD & DRINK-DRINKING is the dark, damped, bodily counterpart; carbonation fizz after the pour will pull toward WATER-FIZZ."
+    ],
+    "confusable_with": [
+     "WATRPour",
+     "WATRFlow",
+     "WATRBubl",
+     "WATRFizz",
+     "FOODDrnk",
+     "FOODMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TABLEWARE",
+   "category_id": "FOODTware",
+   "category_short": "FOOD",
+   "emoji": "🍽️",
+   "explanation": [
+    "Silverware and/or plate movement",
+    "in a restaurant or dinner at home. GLASSWARE it's own subcategory."
+   ],
+   "synonyms": [
+    "Bowl",
+    "Bowls",
+    "Coasters",
+    "Cups",
+    "Cutlery",
+    "Dessert",
+    "Dinner",
+    "Dinnerware",
+    "Dishes",
+    "Flatware",
+    "Fork",
+    "Glasses",
+    "Knife",
+    "Mats",
+    "Napkin",
+    "Pepper",
+    "Place",
+    "Plates",
+    "Platter",
+    "Platters",
+    "Rings",
+    "Salad",
+    "Salt",
+    "Saucer",
+    "Saucers",
+    "Serving",
+    "Shaker",
+    "Silverware",
+    "Soup",
+    "Spoon",
+    "Sugar",
+    "Tablespoon",
+    "Teapots",
+    "Teaspoon",
+    "Tongs",
+    "Tray",
+    "Trays",
+    "Tureens",
+    "Utensils"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.9
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.04233,
+      "deviation": 13.08,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 80,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.04989
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 8034.4,
+      "deviation": 2400,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 8210.42501
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.27553,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 65,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.32091
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 16.291,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 96,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 14.66589
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.90272,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.91157
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.0077065,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.00701
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.38976,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.39148
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 8,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2.0
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.29312,
+      "deviation": 0.229,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.27711
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.5853,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 227,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.58161
+      }
+     }
+    ],
+    "discriminators": [
+     "Cutlery and crockery: very sharp, very bright, very high-crest ticks and clinks, usually several in a row as a place setting is handled or a drawer of silverware is moved.",
+     "Ring time is the material axis. Ceramic plates are internally damped and die fast; small metal cutlery rings only briefly because it is small. Both fall well short of the long ring of a big pan (FOOD & DRINK-KITCHENWARE) or the bright sustained ring of stemware (FOOD & DRINK-GLASSWARE). Short decay plus very high centroid is the tableware fingerprint.",
+     "Signal-identical to CERAMICS-IMPACT and METAL-IMPACT; the dining context in the name is what places it here."
+    ],
+    "confusable_with": [
+     "CERMImpt",
+     "METLImpt",
+     "FOODGware",
+     "FOODKware",
+     "CERMHndl",
+     "CERMMvmt"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 227,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Cutlery_and_silverware": 227
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 227,
+       "percentile_05": 3512.6,
+       "median": 4661.1,
+       "percentile_95": 5477.9
+      },
+      "crest_factor": {
+       "clips": 96,
+       "percentile_05": 6.2084,
+       "median": 16.233,
+       "percentile_95": 37.563,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 65,
+       "percentile_05": 0.073689,
+       "median": 0.27553,
+       "percentile_95": 0.73962,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 80,
+       "percentile_05": 0.0099773,
+       "median": 0.039909,
+       "percentile_95": 0.71338,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 96,
+       "percentile_05": 0.054875,
+       "median": 0.2195,
+       "percentile_95": 0.60363,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 96,
+       "percentile_05": 0.024386,
+       "median": 18.822,
+       "percentile_95": 99.162,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 96,
+       "percentile_05": 0.014966,
+       "median": 0.079819,
+       "percentile_95": 0.50385,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 96,
+       "percentile_05": 0.76235,
+       "median": 4.0688,
+       "percentile_95": 8.8379,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 96,
+       "percentile_05": 0.00040599,
+       "median": 0.0096232,
+       "percentile_95": 0.18933,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 96,
+       "percentile_05": 0.016534,
+       "median": 0.20419,
+       "percentile_95": 0.58621,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 227,
+       "percentile_05": 0.10937,
+       "median": 0.29312,
+       "percentile_95": 0.86109
+      },
+      "high_band_energy": {
+       "clips": 227,
+       "percentile_05": 0.62676,
+       "median": 0.90272,
+       "percentile_95": 0.98634
+      },
+      "inharmonicity": {
+       "clips": 227,
+       "percentile_05": 0.18108,
+       "median": 0.38976,
+       "percentile_95": 0.59759
+      },
+      "low_band_energy": {
+       "clips": 227,
+       "percentile_05": 0.00043238,
+       "median": 0.0077065,
+       "percentile_95": 0.049435
+      },
+      "mid_band_energy": {
+       "clips": 227,
+       "percentile_05": 0.01276,
+       "median": 0.084388,
+       "percentile_95": 0.31739
+      },
+      "onset_periodicity": {
+       "clips": 227,
+       "percentile_05": 0.0,
+       "median": 0.25127,
+       "percentile_95": 0.45596
+      },
+      "onset_rate_per_second": {
+       "clips": 227,
+       "percentile_05": 0.49274,
+       "median": 1.5853,
+       "percentile_95": 3.4142
+      },
+      "partial_count": {
+       "clips": 223,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 210,
+       "percentile_05": 239.67,
+       "median": 958.7,
+       "percentile_95": 1837.5
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 29,
+       "percentile_05": -26.89,
+       "median": 1.0569,
+       "percentile_95": 11.956
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 227,
+       "percentile_05": 730.32,
+       "median": 1476.8,
+       "percentile_95": 2731.1
+      },
+      "spectral_centroid_hz": {
+       "clips": 227,
+       "percentile_05": 4671.5,
+       "median": 8034.4,
+       "percentile_95": 11328.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 227,
+       "percentile_05": 3679.0,
+       "median": 6641.7,
+       "percentile_95": 9732.9
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 227,
+       "percentile_05": -9863.9,
+       "median": -87.473,
+       "percentile_95": 2772.2
+      },
+      "spectral_entropy": {
+       "clips": 227,
+       "percentile_05": 0.31792,
+       "median": 0.58139,
+       "percentile_95": 0.76747
+      },
+      "spectral_flatness": {
+       "clips": 227,
+       "percentile_05": 0.23163,
+       "median": 0.49357,
+       "percentile_95": 0.64426
+      },
+      "spectral_flux": {
+       "clips": 227,
+       "percentile_05": 0.18425,
+       "median": 0.22732,
+       "percentile_95": 0.24111
+      },
+      "spectral_rolloff_hz": {
+       "clips": 227,
+       "percentile_05": 8818.8,
+       "median": 13248.0,
+       "percentile_95": 16548.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 227,
+       "percentile_05": -3.3585,
+       "median": 0.70622,
+       "percentile_95": 4.9706
+      },
+      "stationarity": {
+       "clips": 227,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.29557,
+       "censored_at_floor_fraction": 0.855
+      },
+      "sustain_ratio": {
+       "clips": 96,
+       "percentile_05": 0.014706,
+       "median": 0.044444,
+       "percentile_95": 0.23077,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 184,
+       "percentile_05": 0.011168,
+       "median": 0.2557,
+       "percentile_95": 0.44644
+      },
+      "transient_count": {
+       "clips": 227,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 13.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 227,
+       "percentile_05": 2202.8,
+       "median": 8853.8,
+       "percentile_95": 16895.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  }
+ ]
+}

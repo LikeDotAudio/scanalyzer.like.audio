@@ -1,0 +1,622 @@
+{
+ "version": "8.2.1",
+ "category": "GAMES",
+ "emoji": "🎮",
+ "subcategories": [
+  {
+   "subcategory": "ARCADE",
+   "category_id": "GAMEArcd",
+   "category_short": "GAME",
+   "emoji": "🎮",
+   "explanation": [
+    "Not for arcade ambience",
+    "which would go under AMBIENCE-AMUSMENT",
+    "but for specific Pinball machines",
+    "upright video games",
+    "games of skill like Skeeball."
+   ],
+   "synonyms": [
+    "Air",
+    "Claw",
+    "Coin-Op",
+    "Crane",
+    "Dance",
+    "Foosball",
+    "Gallery",
+    "Game",
+    "Games",
+    "Hockey",
+    "Machine",
+    "Pacman",
+    "Pinball",
+    "Retro",
+    "Revolution",
+    "Shooting",
+    "Skee-Ball",
+    "Skeeball",
+    "Video",
+    "Whack-A-Mole"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500,
+      "deviation": 1400,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 8,
+      "deviation": 7,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A cabinet in a room: solenoid thwacks, mechanical bells and square-wave chiptune beeps arriving together with real room reflections - a multi-event scene, so transient_count is high.",
+     "A single dry beep with no room is GAMES-VIDEO (a rendered console signal, not a machine).",
+     "The UCS text is explicit that the ROOM itself - a wide, stationary crowd-and-machine bed - is AMBIENCE-AMUSEMENT, not ARCADE. Text (pinball, skeeball, coin-op) commits it."
+    ],
+    "confusable_with": [
+     "GAMEVideo",
+     "GAMEMisc",
+     "GAMECas"
+    ]
+   }
+  },
+  {
+   "subcategory": "BOARD",
+   "category_id": "GAMEBoard",
+   "category_short": "GAME",
+   "emoji": "🎮",
+   "explanation": [
+    "Board games with pieces",
+    "think Monopoly",
+    "Risk",
+    "chess",
+    "checkers."
+   ],
+   "synonyms": [
+    "Backgammon",
+    "Bingo",
+    "Boardgame",
+    "Checkerboard",
+    "Checkers",
+    "Chess",
+    "Chessboard",
+    "Clue",
+    "Cribbage",
+    "Dominoes",
+    "Game",
+    "Gameboard",
+    "Go",
+    "Mahjong",
+    "Mancala",
+    "Monopoly",
+    "Pieces",
+    "Risk",
+    "Roleplaying",
+    "Scrabble",
+    "Uno"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 60
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11,
+      "deviation": 5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500,
+      "deviation": 1400,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.46,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Small dry object handling: dice, tiles and pieces on a board - short, unpitched, high-crest clicks and rattles with a near-zero decay_time_seconds_60db (light bodies do not ring).",
+     "The physics is generic small-object Foley; only text (chess, dominoes, monopoly, dice) assigns it here rather than to WOOD, PLASTIC or GAMES-MISC.",
+     "No electronics: any tonal beep points to GAMES-ARCADE, GAMES-CASINO or GAMES-VIDEO."
+    ],
+    "confusable_with": [
+     "GAMEMisc",
+     "GAMECas",
+     "TOYMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CASINO",
+   "category_id": "GAMECas",
+   "category_short": "GAME",
+   "emoji": "🎮",
+   "explanation": [
+    "Casino slot machines",
+    "Keno machines",
+    "roulette",
+    "craps."
+   ],
+   "synonyms": [
+    "Baccarat",
+    "Betting",
+    "Blackjack",
+    "Cards",
+    "Craps",
+    "Dice",
+    "Keno",
+    "Machine",
+    "Machines",
+    "Money",
+    "Poker",
+    "Roulette",
+    "Shuffling",
+    "Slot",
+    "Video",
+    "Wheel"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000,
+      "deviation": 1600,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 12,
+      "deviation": 10,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Slot and table games: coin rattle, roulette ball, card shuffle and bright electronic bell/jingle payouts - a multi-event machine scene.",
+     "Signal shares essentially everything with GAMES-ARCADE; text (slot, keno, roulette, craps, blackjack) is the only real evidence.",
+     "Pure dice and card handling with no electronics is GAMES-BOARD or GAMES-MISC."
+    ],
+    "confusable_with": [
+     "GAMEArcd",
+     "GAMEMisc",
+     "GAMEVideo"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "GAMEMisc",
+   "category_short": "GAME",
+   "emoji": "🎮",
+   "explanation": [
+    "Game sounds not fitting another category in this list. Cards would go here. Jenga."
+   ],
+   "synonyms": [
+    "a",
+    "Bag",
+    "Ball",
+    "Balloon",
+    "Basketball",
+    "Bean",
+    "Bottle",
+    "Bowl",
+    "Bowler",
+    "Break",
+    "Can",
+    "Clown",
+    "Coin",
+    "Crazy",
+    "Dart",
+    "Darts",
+    "Duck",
+    "Fish",
+    "Frog",
+    "Game",
+    "Goblet",
+    "High",
+    "Hoop",
+    "Knock-Down",
+    "Knockdown",
+    "Lucky",
+    "Milk",
+    "Miscellaneous",
+    "Number",
+    "Plate",
+    "Plinko",
+    "Pond",
+    "Prize",
+    "Ring",
+    "Roller",
+    "Roulette",
+    "Shoot",
+    "Shooting",
+    "Skee-Ball",
+    "Star",
+    "Strength",
+    "Striker",
+    "Test",
+    "the",
+    "Throw.",
+    "Toss",
+    "Up",
+    "Water",
+    "Whack-a-Mole",
+    "Wheel",
+    "Wiffle",
+    "Your"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Abstain target for GAMES: cards, Jenga, carnival midway games. No morphology of its own.",
+     "Never assert from signal."
+    ],
+    "confusable_with": [
+     "GAMEBoard",
+     "GAMEArcd"
+    ]
+   }
+  },
+  {
+   "subcategory": "VIDEO",
+   "category_id": "GAMEVideo",
+   "category_short": "GAME",
+   "emoji": "🎮",
+   "explanation": [
+    "Console video games from Atari to PS5",
+    "designed fake video games for consoles like Playstation."
+   ],
+   "synonyms": [
+    "360",
+    "64",
+    "Atari",
+    "Console",
+    "Fortnite",
+    "Gameboy",
+    "Halo",
+    "Megadrive",
+    "Minecraft",
+    "Nintendo",
+    "One",
+    "Pacman",
+    "Playstation",
+    "Pong",
+    "PS4",
+    "PS5",
+    "PSP",
+    "Sega",
+    "SNES",
+    "Xbox",
+    "Zelda"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 60
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.4,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 700,
+      "deviation": 450,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 12000,
+      "deviation": 6000,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Console/chiptune audio: short, hard-edged electronic beeps and blips - a stable synthetic tone (high stationarity, low spectral_flux) with an instantaneous attack and elevated total_harmonic_distortion from square/pulse waveforms.",
+     "A DRY rendered signal with no room: that is the split from GAMES-ARCADE and GAMES-CASINO, which are physical machines recorded in a space.",
+     "Musically intended synth material is MUSICAL-SYNTHESIZED; text (nintendo, atari, console, playstation) commits it here."
+    ],
+    "confusable_with": [
+     "GAMEArcd",
+     "MUSCSynth",
+     "TOYElec"
+    ]
+   }
+  }
+ ]
+}

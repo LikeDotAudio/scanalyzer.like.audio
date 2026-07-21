@@ -1,0 +1,8301 @@
+{
+ "schema": "fsd50k-calibration/2",
+ "dataset": "FSD50K.dev",
+ "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+ "date": "2026-07",
+ "clips_scanned": 40966,
+ "clips_used": 28790,
+ "clips_dropped_ambiguous": 7076,
+ "clips_dropped_unmapped": 5075,
+ "selection": "unambiguous single-subcategory clips, high/medium crosswalk confidence, >=30 clips per subcategory",
+ "policy": {
+  "location": "median (geometric for log features)",
+  "scale": "MAD->sigma, widened 1.2x, and never tightened below the reasoned deviation",
+  "never_calibrated": [
+   "band_limit_high_hz",
+   "beats_per_minute",
+   "clipping_density",
+   "dc_offset",
+   "length_seconds",
+   "lufs",
+   "root_mean_square_level",
+   "sample_rate",
+   "stereo_width",
+   "total_harmonic_distortion",
+   "voicing_ratio"
+  ],
+  "single_event_only": [
+   "crest_factor",
+   "decay_time_seconds_60db",
+   "envelope_attack_seconds",
+   "envelope_decay_seconds",
+   "envelope_kurtosis",
+   "envelope_release_seconds",
+   "envelope_skewness",
+   "envelope_sustain_level",
+   "envelope_temporal_centroid",
+   "sustain_ratio"
+  ],
+  "artifacts_excluded": [
+   "envelope ADSR, sustain_ratio, decay time and crest factor calibrated from one-shot clips only: on multi-event clips they measure the uploader's arrangement, not the sound (attack tracks clip length at r=+0.72; a keypress reads 10 ms one-shot vs 3.0 s multi-event)",
+   "decay_time_seconds_60db >= 0.9x clip length (truncation, not ring)",
+   "pitch_hz outside 50-2000 Hz",
+   "stationarity mass on the 0.0 clamp widens rather than tightens"
+  ]
+ },
+ "morphology_archetypes": {
+  "burst": {
+   "clips": 955,
+   "subcategories_contributing": [
+    "EXPLReal",
+    "FARTReal",
+    "HMNBurp"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 955,
+     "center": 3501.7,
+     "deviation": 1.408,
+     "transform": "log",
+     "percentile_05": 1733.7,
+     "median": 3501.7,
+     "percentile_95": 5086.6
+    },
+    "crest_factor": {
+     "clips": 403,
+     "center": 8.584,
+     "deviation": 2.077,
+     "transform": "log",
+     "percentile_05": 3.0518,
+     "median": 8.584,
+     "percentile_95": 26.523
+    },
+    "decay_time_seconds_60db": {
+     "clips": 150,
+     "center": 0.43069,
+     "deviation": 2.868,
+     "transform": "log",
+     "percentile_05": 0.12402,
+     "median": 0.42849,
+     "percentile_95": 3.8247
+    },
+    "envelope_attack_seconds": {
+     "clips": 385,
+     "center": 0.024943,
+     "deviation": 5.105,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.024943,
+     "percentile_95": 0.28934
+    },
+    "envelope_decay_seconds": {
+     "clips": 403,
+     "center": 0.23946,
+     "deviation": 2.977,
+     "transform": "log",
+     "percentile_05": 0.034921,
+     "median": 0.23946,
+     "percentile_95": 1.776
+    },
+    "envelope_kurtosis": {
+     "clips": 403,
+     "center": 2.9883,
+     "deviation": 6.63,
+     "transform": "linear",
+     "percentile_05": -1.3078,
+     "median": 2.9883,
+     "percentile_95": 58.886
+    },
+    "envelope_release_seconds": {
+     "clips": 401,
+     "center": 0.14966,
+     "deviation": 5.105,
+     "transform": "log",
+     "percentile_05": 0.024943,
+     "median": 0.14966,
+     "percentile_95": 1.1175
+    },
+    "envelope_skewness": {
+     "clips": 403,
+     "center": 1.8253,
+     "deviation": 1.781,
+     "transform": "linear",
+     "percentile_05": 0.050479,
+     "median": 1.8253,
+     "percentile_95": 6.9516
+    },
+    "envelope_sustain_level": {
+     "clips": 403,
+     "center": 0.07885,
+     "deviation": 0.1319,
+     "transform": "linear",
+     "percentile_05": 0.001034,
+     "median": 0.07885,
+     "percentile_95": 0.59601
+    },
+    "envelope_temporal_centroid": {
+     "clips": 403,
+     "center": 0.28159,
+     "deviation": 0.1957,
+     "transform": "linear",
+     "percentile_05": 0.064031,
+     "median": 0.28159,
+     "percentile_95": 0.49178
+    },
+    "harmonicity": {
+     "clips": 955,
+     "center": 0.36079,
+     "deviation": 0.3101,
+     "transform": "linear",
+     "percentile_05": 0.088777,
+     "median": 0.36079,
+     "percentile_95": 0.90152
+    },
+    "high_band_energy": {
+     "clips": 955,
+     "center": 0.49134,
+     "deviation": 0.2438,
+     "transform": "linear",
+     "percentile_05": 0.13255,
+     "median": 0.49134,
+     "percentile_95": 0.77522
+    },
+    "inharmonicity": {
+     "clips": 955,
+     "center": 0.42845,
+     "deviation": 0.1649,
+     "transform": "linear",
+     "percentile_05": 0.14374,
+     "median": 0.42845,
+     "percentile_95": 0.62779
+    },
+    "low_band_energy": {
+     "clips": 955,
+     "center": 0.055074,
+     "deviation": 0.05654,
+     "transform": "linear",
+     "percentile_05": 0.012209,
+     "median": 0.055074,
+     "percentile_95": 0.32803
+    },
+    "mid_band_energy": {
+     "clips": 955,
+     "center": 0.40764,
+     "deviation": 0.2053,
+     "transform": "linear",
+     "percentile_05": 0.1904,
+     "median": 0.40764,
+     "percentile_95": 0.71046
+    },
+    "onset_periodicity": {
+     "clips": 955,
+     "center": 0.29563,
+     "deviation": 0.1546,
+     "transform": "linear",
+     "percentile_05": 0.050346,
+     "median": 0.29563,
+     "percentile_95": 0.55624
+    },
+    "onset_rate_per_second": {
+     "clips": 955,
+     "center": 1.2912,
+     "deviation": 2.366,
+     "transform": "log",
+     "percentile_05": 0.26971,
+     "median": 1.2912,
+     "percentile_95": 3.3311
+    },
+    "partial_count": {
+     "clips": 954,
+     "center": 12.0,
+     "deviation": 1.188,
+     "transform": "log",
+     "percentile_05": 6.0,
+     "median": 12.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 679,
+     "center": 420.0,
+     "deviation": 4.68,
+     "transform": "log",
+     "percentile_05": 71.014,
+     "median": 420.0,
+     "percentile_95": 1764.0
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 77,
+     "center": -0.10926,
+     "deviation": 4.32,
+     "transform": "linear",
+     "percentile_05": -44.213,
+     "median": -0.10926,
+     "percentile_95": 16.282
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 955,
+     "center": 945.98,
+     "deviation": 695.0,
+     "transform": "linear",
+     "percentile_05": 328.69,
+     "median": 945.98,
+     "percentile_95": 2916.0
+    },
+    "spectral_centroid_hz": {
+     "clips": 955,
+     "center": 3292.6,
+     "deviation": 1.73,
+     "transform": "log",
+     "percentile_05": 1232.8,
+     "median": 3292.6,
+     "percentile_95": 5904.0
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 955,
+     "center": 3311.4,
+     "deviation": 1.504,
+     "transform": "log",
+     "percentile_05": 1190.6,
+     "median": 3311.4,
+     "percentile_95": 5905.9
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 955,
+     "center": 90.829,
+     "deviation": 828.3,
+     "transform": "linear",
+     "percentile_05": -2590.5,
+     "median": 90.829,
+     "percentile_95": 5506.8
+    },
+    "spectral_entropy": {
+     "clips": 955,
+     "center": 0.5188,
+     "deviation": 0.1574,
+     "transform": "linear",
+     "percentile_05": 0.28994,
+     "median": 0.5188,
+     "percentile_95": 0.68746
+    },
+    "spectral_flatness": {
+     "clips": 955,
+     "center": 0.18839,
+     "deviation": 0.1756,
+     "transform": "linear",
+     "percentile_05": 0.026164,
+     "median": 0.18839,
+     "percentile_95": 0.46612
+    },
+    "spectral_flux": {
+     "clips": 955,
+     "center": 0.21897,
+     "deviation": 0.01303,
+     "transform": "linear",
+     "percentile_05": 0.18756,
+     "median": 0.21897,
+     "percentile_95": 0.23437
+    },
+    "spectral_rolloff_hz": {
+     "clips": 955,
+     "center": 6658.4,
+     "deviation": 1.708,
+     "transform": "log",
+     "percentile_05": 1809.1,
+     "median": 6658.4,
+     "percentile_95": 11331.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 955,
+     "center": -3.723,
+     "deviation": 2.332,
+     "transform": "linear",
+     "percentile_05": -8.3046,
+     "median": -3.723,
+     "percentile_95": -0.74866
+    },
+    "stationarity": {
+     "clips": 955,
+     "center": 0.0,
+     "deviation": 0.2079,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.0,
+     "percentile_95": 0.52492
+    },
+    "sustain_ratio": {
+     "clips": 403,
+     "center": 0.15,
+     "deviation": 0.1821,
+     "transform": "linear",
+     "percentile_05": 0.013158,
+     "median": 0.15,
+     "percentile_95": 0.62069
+    },
+    "syllabic_modulation_energy": {
+     "clips": 821,
+     "center": 0.15953,
+     "deviation": 0.141,
+     "transform": "linear",
+     "percentile_05": 0.027502,
+     "median": 0.15953,
+     "percentile_95": 0.4158
+    },
+    "transient_count": {
+     "clips": 955,
+     "center": 2.0,
+     "deviation": 3.432,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 2.0,
+     "percentile_95": 7.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 955,
+     "center": 3027.6,
+     "deviation": 2.119,
+     "transform": "log",
+     "percentile_05": 516.6,
+     "median": 3027.6,
+     "percentile_95": 7435.3
+    }
+   }
+  },
+  "complex": {
+   "clips": 2408,
+   "subcategories_contributing": [
+    "BIRDMisc",
+    "BIRDSea",
+    "BOATMisc",
+    "COMTelph",
+    "CRWDMisc",
+    "DOORCab",
+    "DOORMisc",
+    "DRWRMisc",
+    "GLASMisc",
+    "TRNMisc",
+    "TRNSbwy",
+    "WOODMisc"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 2401,
+     "center": 3313.0,
+     "deviation": 1.613,
+     "transform": "log",
+     "percentile_05": 1421.2,
+     "median": 3313.0,
+     "percentile_95": 5331.4
+    },
+    "crest_factor": {
+     "clips": 533,
+     "center": 14.38,
+     "deviation": 3.15,
+     "transform": "log",
+     "percentile_05": 2.0933,
+     "median": 14.38,
+     "percentile_95": 52.018
+    },
+    "decay_time_seconds_60db": {
+     "clips": 292,
+     "center": 0.58714,
+     "deviation": 3.002,
+     "transform": "log",
+     "percentile_05": 0.10773,
+     "median": 0.58648,
+     "percentile_95": 3.2835
+    },
+    "envelope_attack_seconds": {
+     "clips": 466,
+     "center": 0.044898,
+     "deviation": 14.53,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.044898,
+     "percentile_95": 3.8812
+    },
+    "envelope_decay_seconds": {
+     "clips": 533,
+     "center": 0.29433,
+     "deviation": 3.538,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.29433,
+     "percentile_95": 2.5342
+    },
+    "envelope_kurtosis": {
+     "clips": 534,
+     "center": 17.132,
+     "deviation": 29.52,
+     "transform": "linear",
+     "percentile_05": -1.3082,
+     "median": 17.097,
+     "percentile_95": 175.56
+    },
+    "envelope_release_seconds": {
+     "clips": 502,
+     "center": 0.16961,
+     "deviation": 5.051,
+     "transform": "log",
+     "percentile_05": 0.014966,
+     "median": 0.16961,
+     "percentile_95": 2.4893
+    },
+    "envelope_skewness": {
+     "clips": 534,
+     "center": 3.8117,
+     "deviation": 4.052,
+     "transform": "linear",
+     "percentile_05": -0.7317,
+     "median": 3.8115,
+     "percentile_95": 12.06
+    },
+    "envelope_sustain_level": {
+     "clips": 534,
+     "center": 0.020816,
+     "deviation": 0.03458,
+     "transform": "linear",
+     "percentile_05": 0.00032639,
+     "median": 0.02061,
+     "percentile_95": 0.90966
+    },
+    "envelope_temporal_centroid": {
+     "clips": 534,
+     "center": 0.2595,
+     "deviation": 0.3239,
+     "transform": "linear",
+     "percentile_05": 0.010512,
+     "median": 0.25899,
+     "percentile_95": 0.68413
+    },
+    "harmonicity": {
+     "clips": 2408,
+     "center": 0.55659,
+     "deviation": 0.4768,
+     "transform": "linear",
+     "percentile_05": 0.11807,
+     "median": 0.55654,
+     "percentile_95": 0.98761
+    },
+    "high_band_energy": {
+     "clips": 2408,
+     "center": 0.44713,
+     "deviation": 0.332,
+     "transform": "linear",
+     "percentile_05": 0.085723,
+     "median": 0.44713,
+     "percentile_95": 0.93211
+    },
+    "inharmonicity": {
+     "clips": 2408,
+     "center": 0.39958,
+     "deviation": 0.1961,
+     "transform": "linear",
+     "percentile_05": 0.0035871,
+     "median": 0.39956,
+     "percentile_95": 0.62267
+    },
+    "low_band_energy": {
+     "clips": 2408,
+     "center": 0.062376,
+     "deviation": 0.0943,
+     "transform": "linear",
+     "percentile_05": 0.0015093,
+     "median": 0.06236,
+     "percentile_95": 0.40469
+    },
+    "mid_band_energy": {
+     "clips": 2408,
+     "center": 0.4026,
+     "deviation": 0.2771,
+     "transform": "linear",
+     "percentile_05": 0.05082,
+     "median": 0.4026,
+     "percentile_95": 0.82923
+    },
+    "onset_periodicity": {
+     "clips": 2407,
+     "center": 0.25092,
+     "deviation": 0.171,
+     "transform": "linear",
+     "percentile_05": 0.01079,
+     "median": 0.25092,
+     "percentile_95": 0.61146
+    },
+    "onset_rate_per_second": {
+     "clips": 2407,
+     "center": 0.95792,
+     "deviation": 3.183,
+     "transform": "log",
+     "percentile_05": 0.15143,
+     "median": 0.95792,
+     "percentile_95": 3.3504
+    },
+    "partial_count": {
+     "clips": 2331,
+     "center": 12.0,
+     "deviation": 1.933,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 12.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 1581,
+     "center": 588.0,
+     "deviation": 3.765,
+     "transform": "log",
+     "percentile_05": 74.368,
+     "median": 588.0,
+     "percentile_95": 1837.5
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 291,
+     "center": -0.00010971,
+     "deviation": 0.1475,
+     "transform": "linear",
+     "percentile_05": -5.4993,
+     "median": -0.00010971,
+     "percentile_95": 6.2693
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 2408,
+     "center": 870.3,
+     "deviation": 796.7,
+     "transform": "linear",
+     "percentile_05": 185.86,
+     "median": 870.16,
+     "percentile_95": 3107.9
+    },
+    "spectral_centroid_hz": {
+     "clips": 2401,
+     "center": 2922.0,
+     "deviation": 2.065,
+     "transform": "log",
+     "percentile_05": 1052.4,
+     "median": 2922.0,
+     "percentile_95": 7510.2
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 2407,
+     "center": 2755.4,
+     "deviation": 2.094,
+     "transform": "log",
+     "percentile_05": 1018.9,
+     "median": 2755.4,
+     "percentile_95": 7100.4
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 2407,
+     "center": 2.2194,
+     "deviation": 135.1,
+     "transform": "linear",
+     "percentile_05": -1178.9,
+     "median": 2.2194,
+     "percentile_95": 2757.8
+    },
+    "spectral_entropy": {
+     "clips": 2407,
+     "center": 0.43037,
+     "deviation": 0.1704,
+     "transform": "linear",
+     "percentile_05": 0.2096,
+     "median": 0.43037,
+     "percentile_95": 0.66026
+    },
+    "spectral_flatness": {
+     "clips": 2408,
+     "center": 0.15307,
+     "deviation": 0.1571,
+     "transform": "linear",
+     "percentile_05": 0.01922,
+     "median": 0.15301,
+     "percentile_95": 0.52988
+    },
+    "spectral_flux": {
+     "clips": 2408,
+     "center": 0.22028,
+     "deviation": 0.01705,
+     "transform": "linear",
+     "percentile_05": 0.10981,
+     "median": 0.22028,
+     "percentile_95": 0.24387
+    },
+    "spectral_rolloff_hz": {
+     "clips": 2401,
+     "center": 5513.5,
+     "deviation": 2.271,
+     "transform": "log",
+     "percentile_05": 1399.7,
+     "median": 5513.5,
+     "percentile_95": 13334.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 2407,
+     "center": -4.3886,
+     "deviation": 3.227,
+     "transform": "linear",
+     "percentile_05": -8.5513,
+     "median": -4.3886,
+     "percentile_95": 2.1286
+    },
+    "stationarity": {
+     "clips": 2407,
+     "center": 0.004533,
+     "deviation": 0.008065,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.004533,
+     "percentile_95": 0.73405
+    },
+    "sustain_ratio": {
+     "clips": 534,
+     "center": 0.044949,
+     "deviation": 0.06094,
+     "transform": "linear",
+     "percentile_05": 0.003876,
+     "median": 0.044444,
+     "percentile_95": 0.92308
+    },
+    "syllabic_modulation_energy": {
+     "clips": 2304,
+     "center": 0.21406,
+     "deviation": 0.1509,
+     "transform": "linear",
+     "percentile_05": 0.033172,
+     "median": 0.21406,
+     "percentile_95": 0.4553
+    },
+    "transient_count": {
+     "clips": 2407,
+     "center": 5.0,
+     "deviation": 5.105,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 5.0,
+     "percentile_95": 33.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 2406,
+     "center": 2295.5,
+     "deviation": 2.784,
+     "transform": "log",
+     "percentile_05": 495.4,
+     "median": 2294.8,
+     "percentile_95": 9794.5
+    }
+   }
+  },
+  "friction": {
+   "clips": 820,
+   "subcategories_contributing": [
+    "HMNSkin",
+    "OBJTape",
+    "OBJWrite",
+    "OBJZipr",
+    "SPRTSkate"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 820,
+     "center": 4683.7,
+     "deviation": 1.244,
+     "transform": "log",
+     "percentile_05": 2907.3,
+     "median": 4679.8,
+     "percentile_95": 5790.8
+    },
+    "crest_factor": {
+     "clips": 210,
+     "center": 26.352,
+     "deviation": 4.147,
+     "transform": "log",
+     "percentile_05": 5.1095,
+     "median": 26.128,
+     "percentile_95": 82.665
+    },
+    "decay_time_seconds_60db": {
+     "clips": 73,
+     "center": 0.19858,
+     "deviation": 2.65,
+     "transform": "log",
+     "percentile_05": 0.072736,
+     "median": 0.19858,
+     "percentile_95": 0.94107
+    },
+    "envelope_attack_seconds": {
+     "clips": 190,
+     "center": 0.014966,
+     "deviation": 7.061,
+     "transform": "log",
+     "percentile_05": 0.0049887,
+     "median": 0.014966,
+     "percentile_95": 0.67846
+    },
+    "envelope_decay_seconds": {
+     "clips": 210,
+     "center": 0.17959,
+     "deviation": 1.668,
+     "transform": "log",
+     "percentile_05": 0.054875,
+     "median": 0.17959,
+     "percentile_95": 0.48889
+    },
+    "envelope_kurtosis": {
+     "clips": 210,
+     "center": 46.179,
+     "deviation": 77.84,
+     "transform": "linear",
+     "percentile_05": -0.5418,
+     "median": 46.174,
+     "percentile_95": 301.83
+    },
+    "envelope_release_seconds": {
+     "clips": 209,
+     "center": 0.059864,
+     "deviation": 4.747,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.059864,
+     "percentile_95": 1.1873
+    },
+    "envelope_skewness": {
+     "clips": 210,
+     "center": 6.2883,
+     "deviation": 7.139,
+     "transform": "linear",
+     "percentile_05": 0.67123,
+     "median": 6.2076,
+     "percentile_95": 16.969
+    },
+    "envelope_sustain_level": {
+     "clips": 210,
+     "center": 0.005068,
+     "deviation": 0.009017,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.0049913,
+     "percentile_95": 0.40804
+    },
+    "envelope_temporal_centroid": {
+     "clips": 210,
+     "center": 0.10462,
+     "deviation": 0.1688,
+     "transform": "linear",
+     "percentile_05": 0.004734,
+     "median": 0.10279,
+     "percentile_95": 0.58579
+    },
+    "harmonicity": {
+     "clips": 820,
+     "center": 0.27759,
+     "deviation": 0.2621,
+     "transform": "linear",
+     "percentile_05": 0.051393,
+     "median": 0.27706,
+     "percentile_95": 0.91963
+    },
+    "high_band_energy": {
+     "clips": 820,
+     "center": 0.63595,
+     "deviation": 0.3253,
+     "transform": "linear",
+     "percentile_05": 0.26052,
+     "median": 0.63579,
+     "percentile_95": 0.9169
+    },
+    "inharmonicity": {
+     "clips": 820,
+     "center": 0.43991,
+     "deviation": 0.1286,
+     "transform": "linear",
+     "percentile_05": 0.11372,
+     "median": 0.43979,
+     "percentile_95": 0.62711
+    },
+    "low_band_energy": {
+     "clips": 820,
+     "center": 0.041736,
+     "deviation": 0.05824,
+     "transform": "linear",
+     "percentile_05": 0.0025119,
+     "median": 0.041635,
+     "percentile_95": 0.29966
+    },
+    "mid_band_energy": {
+     "clips": 820,
+     "center": 0.26582,
+     "deviation": 0.2268,
+     "transform": "linear",
+     "percentile_05": 0.068455,
+     "median": 0.26563,
+     "percentile_95": 0.59123
+    },
+    "onset_periodicity": {
+     "clips": 819,
+     "center": 0.26335,
+     "deviation": 0.1404,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.26335,
+     "percentile_95": 0.45251
+    },
+    "onset_rate_per_second": {
+     "clips": 820,
+     "center": 1.2564,
+     "deviation": 2.994,
+     "transform": "log",
+     "percentile_05": 0.22577,
+     "median": 1.2563,
+     "percentile_95": 3.9062
+    },
+    "partial_count": {
+     "clips": 788,
+     "center": 12.0,
+     "deviation": 1.188,
+     "transform": "log",
+     "percentile_05": 4.0,
+     "median": 12.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 523,
+     "center": 864.71,
+     "deviation": 2.57,
+     "transform": "log",
+     "percentile_05": 134.04,
+     "median": 864.71,
+     "percentile_95": 1837.5
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 84,
+     "center": -0.0019663,
+     "deviation": 1.207,
+     "transform": "linear",
+     "percentile_05": -26.169,
+     "median": -0.0029723,
+     "percentile_95": 17.845
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 820,
+     "center": 1285.1,
+     "deviation": 716.2,
+     "transform": "linear",
+     "percentile_05": 516.28,
+     "median": 1284.8,
+     "percentile_95": 3025.2
+    },
+    "spectral_centroid_hz": {
+     "clips": 820,
+     "center": 5005.5,
+     "deviation": 1.696,
+     "transform": "log",
+     "percentile_05": 2188.9,
+     "median": 5001.8,
+     "percentile_95": 9032.2
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 820,
+     "center": 4853.8,
+     "deviation": 1.704,
+     "transform": "log",
+     "percentile_05": 2110.0,
+     "median": 4847.7,
+     "percentile_95": 8624.4
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 820,
+     "center": -7.0076,
+     "deviation": 374.8,
+     "transform": "linear",
+     "percentile_05": -3904.4,
+     "median": -7.0995,
+     "percentile_95": 14464.0
+    },
+    "spectral_entropy": {
+     "clips": 820,
+     "center": 0.53961,
+     "deviation": 0.1861,
+     "transform": "linear",
+     "percentile_05": 0.21231,
+     "median": 0.53899,
+     "percentile_95": 0.79321
+    },
+    "spectral_flatness": {
+     "clips": 820,
+     "center": 0.38944,
+     "deviation": 0.25,
+     "transform": "linear",
+     "percentile_05": 0.11609,
+     "median": 0.38876,
+     "percentile_95": 0.67979
+    },
+    "spectral_flux": {
+     "clips": 820,
+     "center": 0.22816,
+     "deviation": 0.00943,
+     "transform": "linear",
+     "percentile_05": 0.20765,
+     "median": 0.22814,
+     "percentile_95": 0.24334
+    },
+    "spectral_rolloff_hz": {
+     "clips": 820,
+     "center": 10489.0,
+     "deviation": 1.503,
+     "transform": "log",
+     "percentile_05": 4189.4,
+     "median": 10488.0,
+     "percentile_95": 15110.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 820,
+     "center": -2.7348,
+     "deviation": 2.787,
+     "transform": "linear",
+     "percentile_05": -6.1419,
+     "median": -2.74,
+     "percentile_95": 1.5009
+    },
+    "stationarity": {
+     "clips": 820,
+     "center": 0.0,
+     "deviation": 0.169,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.0,
+     "percentile_95": 0.46114
+    },
+    "sustain_ratio": {
+     "clips": 210,
+     "center": 0.042866,
+     "deviation": 0.05466,
+     "transform": "linear",
+     "percentile_05": 0.0074074,
+     "median": 0.042254,
+     "percentile_95": 0.36364
+    },
+    "syllabic_modulation_energy": {
+     "clips": 716,
+     "center": 0.22633,
+     "deviation": 0.1441,
+     "transform": "linear",
+     "percentile_05": 0.047445,
+     "median": 0.22624,
+     "percentile_95": 0.45763
+    },
+    "transient_count": {
+     "clips": 820,
+     "center": 4.0,
+     "deviation": 4.232,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 4.0,
+     "percentile_95": 28.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 820,
+     "center": 3414.9,
+     "deviation": 2.681,
+     "transform": "log",
+     "percentile_05": 472.33,
+     "median": 3410.9,
+     "percentile_95": 11601.0
+    }
+   }
+  },
+  "impulsive": {
+   "clips": 3159,
+   "subcategories_contributing": [
+    "COMCam",
+    "MUSCPerc",
+    "TOOLHand",
+    "WATRDrip",
+    "WATRSplsh"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 3158,
+     "center": 4427.6,
+     "deviation": 1.385,
+     "transform": "log",
+     "percentile_05": 2133.2,
+     "median": 4426.9,
+     "percentile_95": 6041.9
+    },
+    "crest_factor": {
+     "clips": 1904,
+     "center": 16.821,
+     "deviation": 1.879,
+     "transform": "log",
+     "percentile_05": 6.0602,
+     "median": 16.816,
+     "percentile_95": 50.304
+    },
+    "decay_time_seconds_60db": {
+     "clips": 1253,
+     "center": 0.45505,
+     "deviation": 2.942,
+     "transform": "log",
+     "percentile_05": 0.14632,
+     "median": 0.45505,
+     "percentile_95": 2.813
+    },
+    "envelope_attack_seconds": {
+     "clips": 943,
+     "center": 0.014966,
+     "deviation": 2.057,
+     "transform": "log",
+     "percentile_05": 0.0049887,
+     "median": 0.014966,
+     "percentile_95": 0.39909
+    },
+    "envelope_decay_seconds": {
+     "clips": 1904,
+     "center": 0.61361,
+     "deviation": 3.695,
+     "transform": "log",
+     "percentile_05": 0.099773,
+     "median": 0.61361,
+     "percentile_95": 2.0304
+    },
+    "envelope_kurtosis": {
+     "clips": 1905,
+     "center": 18.288,
+     "deviation": 25.39,
+     "transform": "linear",
+     "percentile_05": 0.6145,
+     "median": 18.288,
+     "percentile_95": 108.43
+    },
+    "envelope_release_seconds": {
+     "clips": 1865,
+     "center": 0.15465,
+     "deviation": 4.693,
+     "transform": "log",
+     "percentile_05": 0.034921,
+     "median": 0.15465,
+     "percentile_95": 1.6562
+    },
+    "envelope_skewness": {
+     "clips": 1905,
+     "center": 3.9671,
+     "deviation": 2.892,
+     "transform": "linear",
+     "percentile_05": 1.2425,
+     "median": 3.9671,
+     "percentile_95": 9.3719
+    },
+    "envelope_sustain_level": {
+     "clips": 1905,
+     "center": 0.0065259,
+     "deviation": 0.01125,
+     "transform": "linear",
+     "percentile_05": 8.5817e-05,
+     "median": 0.0065259,
+     "percentile_95": 0.14288
+    },
+    "envelope_temporal_centroid": {
+     "clips": 1905,
+     "center": 0.047868,
+     "deviation": 0.05402,
+     "transform": "linear",
+     "percentile_05": 0.0075854,
+     "median": 0.047868,
+     "percentile_95": 0.36896
+    },
+    "harmonicity": {
+     "clips": 3159,
+     "center": 0.45907,
+     "deviation": 0.4921,
+     "transform": "linear",
+     "percentile_05": 0.096489,
+     "median": 0.45907,
+     "percentile_95": 0.97475
+    },
+    "high_band_energy": {
+     "clips": 3159,
+     "center": 0.67227,
+     "deviation": 0.3497,
+     "transform": "linear",
+     "percentile_05": 0.13811,
+     "median": 0.67227,
+     "percentile_95": 0.95442
+    },
+    "inharmonicity": {
+     "clips": 3159,
+     "center": 0.42127,
+     "deviation": 0.1642,
+     "transform": "linear",
+     "percentile_05": 0.041806,
+     "median": 0.42127,
+     "percentile_95": 0.6444
+    },
+    "low_band_energy": {
+     "clips": 3159,
+     "center": 0.024785,
+     "deviation": 0.04027,
+     "transform": "linear",
+     "percentile_05": 0.0012945,
+     "median": 0.024785,
+     "percentile_95": 0.46079
+    },
+    "mid_band_energy": {
+     "clips": 3159,
+     "center": 0.23312,
+     "deviation": 0.2246,
+     "transform": "linear",
+     "percentile_05": 0.040962,
+     "median": 0.23312,
+     "percentile_95": 0.61535
+    },
+    "onset_periodicity": {
+     "clips": 3158,
+     "center": 0.17894,
+     "deviation": 0.2911,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.17874,
+     "percentile_95": 0.51724
+    },
+    "onset_rate_per_second": {
+     "clips": 3158,
+     "center": 0.95644,
+     "deviation": 3.445,
+     "transform": "log",
+     "percentile_05": 0.19065,
+     "median": 0.95626,
+     "percentile_95": 3.5
+    },
+    "partial_count": {
+     "clips": 3089,
+     "center": 12.0,
+     "deviation": 1.691,
+     "transform": "log",
+     "percentile_05": 2.0,
+     "median": 12.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 2315,
+     "center": 355.65,
+     "deviation": 5.342,
+     "transform": "log",
+     "percentile_05": 68.161,
+     "median": 355.65,
+     "percentile_95": 1764.0
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 731,
+     "center": -0.015684,
+     "deviation": 0.7433,
+     "transform": "linear",
+     "percentile_05": -14.739,
+     "median": -0.015684,
+     "percentile_95": 6.3447
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 3159,
+     "center": 1524.1,
+     "deviation": 1063.0,
+     "transform": "linear",
+     "percentile_05": 428.1,
+     "median": 1524.1,
+     "percentile_95": 3287.3
+    },
+    "spectral_centroid_hz": {
+     "clips": 3158,
+     "center": 5149.7,
+     "deviation": 1.937,
+     "transform": "log",
+     "percentile_05": 1227.2,
+     "median": 5149.2,
+     "percentile_95": 10934.0
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 3158,
+     "center": 4678.3,
+     "deviation": 1.738,
+     "transform": "log",
+     "percentile_05": 1313.5,
+     "median": 4677.3,
+     "percentile_95": 8789.2
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 3158,
+     "center": 48.085,
+     "deviation": 1604.0,
+     "transform": "linear",
+     "percentile_05": -5448.8,
+     "median": 48.049,
+     "percentile_95": 8725.9
+    },
+    "spectral_entropy": {
+     "clips": 3158,
+     "center": 0.50303,
+     "deviation": 0.2475,
+     "transform": "linear",
+     "percentile_05": 0.19953,
+     "median": 0.50299,
+     "percentile_95": 0.78275
+    },
+    "spectral_flatness": {
+     "clips": 3159,
+     "center": 0.36848,
+     "deviation": 0.2955,
+     "transform": "linear",
+     "percentile_05": 0.052393,
+     "median": 0.36848,
+     "percentile_95": 0.71945
+    },
+    "spectral_flux": {
+     "clips": 3159,
+     "center": 0.20758,
+     "deviation": 0.03934,
+     "transform": "linear",
+     "percentile_05": 0.10838,
+     "median": 0.20758,
+     "percentile_95": 0.24654
+    },
+    "spectral_rolloff_hz": {
+     "clips": 3158,
+     "center": 10045.0,
+     "deviation": 1.701,
+     "transform": "log",
+     "percentile_05": 1830.1,
+     "median": 10044.0,
+     "percentile_95": 18043.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 3158,
+     "center": -1.5466,
+     "deviation": 4.462,
+     "transform": "linear",
+     "percentile_05": -9.3227,
+     "median": -1.5475,
+     "percentile_95": 3.6404
+    },
+    "stationarity": {
+     "clips": 3158,
+     "center": 0.0,
+     "deviation": 0.0611,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.0,
+     "percentile_95": 0.46424
+    },
+    "sustain_ratio": {
+     "clips": 1905,
+     "center": 0.04,
+     "deviation": 0.045,
+     "transform": "linear",
+     "percentile_05": 0.008,
+     "median": 0.04,
+     "percentile_95": 0.21739
+    },
+    "syllabic_modulation_energy": {
+     "clips": 2740,
+     "center": 0.12017,
+     "deviation": 0.2041,
+     "transform": "linear",
+     "percentile_05": 0.001328,
+     "median": 0.1201,
+     "percentile_95": 0.45802
+    },
+    "transient_count": {
+     "clips": 3158,
+     "center": 1.0,
+     "deviation": 3.482,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 1.0,
+     "percentile_95": 22.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 3158,
+     "center": 3729.6,
+     "deviation": 3.377,
+     "transform": "log",
+     "percentile_05": 261.78,
+     "median": 3729.6,
+     "percentile_95": 13359.0
+    }
+   }
+  },
+  "impulsive_with_tail": {
+   "clips": 4870,
+   "subcategories_contributing": [
+    "BELLLrg",
+    "FOODKware",
+    "FOODTware",
+    "HMNCough",
+    "HMNSneez",
+    "MUSCKeyd",
+    "MUSCPluck",
+    "OBJCoin",
+    "OBJKey"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 4870,
+     "center": 3112.9,
+     "deviation": 1.998,
+     "transform": "log",
+     "percentile_05": 1141.0,
+     "median": 3112.3,
+     "percentile_95": 5735.6
+    },
+    "crest_factor": {
+     "clips": 2248,
+     "center": 9.4271,
+     "deviation": 2.196,
+     "transform": "log",
+     "percentile_05": 3.6497,
+     "median": 9.4249,
+     "percentile_95": 27.572
+    },
+    "decay_time_seconds_60db": {
+     "clips": 833,
+     "center": 1.2767,
+     "deviation": 6.011,
+     "transform": "log",
+     "percentile_05": 0.14445,
+     "median": 1.2767,
+     "percentile_95": 10.117
+    },
+    "envelope_attack_seconds": {
+     "clips": 1891,
+     "center": 0.019955,
+     "deviation": 3.432,
+     "transform": "log",
+     "percentile_05": 0.0049887,
+     "median": 0.019955,
+     "percentile_95": 0.22948
+    },
+    "envelope_decay_seconds": {
+     "clips": 2248,
+     "center": 1.0351,
+     "deviation": 5.747,
+     "transform": "log",
+     "percentile_05": 0.049887,
+     "median": 1.0327,
+     "percentile_95": 4.7991
+    },
+    "envelope_kurtosis": {
+     "clips": 2248,
+     "center": 5.5237,
+     "deviation": 9.36,
+     "transform": "linear",
+     "percentile_05": -0.88974,
+     "median": 5.5214,
+     "percentile_95": 55.999
+    },
+    "envelope_release_seconds": {
+     "clips": 2183,
+     "center": 0.7483,
+     "deviation": 5.593,
+     "transform": "log",
+     "percentile_05": 0.034921,
+     "median": 0.7483,
+     "percentile_95": 4.1406
+    },
+    "envelope_skewness": {
+     "clips": 2248,
+     "center": 2.2441,
+     "deviation": 1.938,
+     "transform": "linear",
+     "percentile_05": -0.18508,
+     "median": 2.2441,
+     "percentile_95": 6.6779
+    },
+    "envelope_sustain_level": {
+     "clips": 2248,
+     "center": 0.051916,
+     "deviation": 0.07998,
+     "transform": "linear",
+     "percentile_05": 0.0017677,
+     "median": 0.051913,
+     "percentile_95": 0.65711
+    },
+    "envelope_temporal_centroid": {
+     "clips": 2248,
+     "center": 0.11364,
+     "deviation": 0.1137,
+     "transform": "linear",
+     "percentile_05": 0.026814,
+     "median": 0.11359,
+     "percentile_95": 0.45043
+    },
+    "harmonicity": {
+     "clips": 4870,
+     "center": 0.79426,
+     "deviation": 0.3525,
+     "transform": "linear",
+     "percentile_05": 0.18911,
+     "median": 0.7942,
+     "percentile_95": 0.99672
+    },
+    "high_band_energy": {
+     "clips": 4870,
+     "center": 0.34398,
+     "deviation": 0.366,
+     "transform": "linear",
+     "percentile_05": 0.038956,
+     "median": 0.34395,
+     "percentile_95": 0.95618
+    },
+    "inharmonicity": {
+     "clips": 4870,
+     "center": 0.21335,
+     "deviation": 0.352,
+     "transform": "linear",
+     "percentile_05": 0.00037341,
+     "median": 0.21332,
+     "percentile_95": 0.60313
+    },
+    "low_band_energy": {
+     "clips": 4870,
+     "center": 0.055759,
+     "deviation": 0.08265,
+     "transform": "linear",
+     "percentile_05": 0.0028135,
+     "median": 0.055755,
+     "percentile_95": 0.50967
+    },
+    "mid_band_energy": {
+     "clips": 4870,
+     "center": 0.50564,
+     "deviation": 0.3387,
+     "transform": "linear",
+     "percentile_05": 0.034823,
+     "median": 0.50561,
+     "percentile_95": 0.84704
+    },
+    "onset_periodicity": {
+     "clips": 4869,
+     "center": 0.27442,
+     "deviation": 0.209,
+     "transform": "linear",
+     "percentile_05": 0.0095838,
+     "median": 0.27442,
+     "percentile_95": 0.64988
+    },
+    "onset_rate_per_second": {
+     "clips": 4870,
+     "center": 0.8073,
+     "deviation": 4.825,
+     "transform": "log",
+     "percentile_05": 0.10508,
+     "median": 0.80725,
+     "percentile_95": 3.3338
+    },
+    "partial_count": {
+     "clips": 4694,
+     "center": 7.0,
+     "deviation": 2.609,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 7.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 4128,
+     "center": 264.07,
+     "deviation": 5.215,
+     "transform": "log",
+     "percentile_05": 58.179,
+     "median": 264.07,
+     "percentile_95": 1696.2
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 958,
+     "center": -0.0013994,
+     "deviation": 0.1022,
+     "transform": "linear",
+     "percentile_05": -2.7237,
+     "median": -0.0014102,
+     "percentile_95": 2.5846
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 4870,
+     "center": 868.13,
+     "deviation": 1068.0,
+     "transform": "linear",
+     "percentile_05": 65.927,
+     "median": 867.81,
+     "percentile_95": 3141.7
+    },
+    "spectral_centroid_hz": {
+     "clips": 4870,
+     "center": 2275.6,
+     "deviation": 2.71,
+     "transform": "log",
+     "percentile_05": 653.52,
+     "median": 2274.5,
+     "percentile_95": 10276.0
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 4870,
+     "center": 2240.3,
+     "deviation": 2.835,
+     "transform": "log",
+     "percentile_05": 405.79,
+     "median": 2238.6,
+     "percentile_95": 8366.4
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 4870,
+     "center": 46.352,
+     "deviation": 396.0,
+     "transform": "linear",
+     "percentile_05": -1888.1,
+     "median": 46.263,
+     "percentile_95": 2954.1
+    },
+    "spectral_entropy": {
+     "clips": 4870,
+     "center": 0.34374,
+     "deviation": 0.1792,
+     "transform": "linear",
+     "percentile_05": 0.1577,
+     "median": 0.34369,
+     "percentile_95": 0.66263
+    },
+    "spectral_flatness": {
+     "clips": 4870,
+     "center": 0.12162,
+     "deviation": 0.1679,
+     "transform": "linear",
+     "percentile_05": 0.01144,
+     "median": 0.12151,
+     "percentile_95": 0.59307
+    },
+    "spectral_flux": {
+     "clips": 4870,
+     "center": 0.14238,
+     "deviation": 0.1062,
+     "transform": "linear",
+     "percentile_05": 0.02184,
+     "median": 0.14235,
+     "percentile_95": 0.23814
+    },
+    "spectral_rolloff_hz": {
+     "clips": 4870,
+     "center": 4092.3,
+     "deviation": 3.649,
+     "transform": "log",
+     "percentile_05": 648.0,
+     "median": 4090.8,
+     "percentile_95": 16202.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 4870,
+     "center": -4.8821,
+     "deviation": 4.953,
+     "transform": "linear",
+     "percentile_05": -12.87,
+     "median": -4.8823,
+     "percentile_95": 1.7091
+    },
+    "stationarity": {
+     "clips": 4870,
+     "center": 0.0,
+     "deviation": 0.3325,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.0,
+     "percentile_95": 0.77572
+    },
+    "sustain_ratio": {
+     "clips": 2248,
+     "center": 0.086957,
+     "deviation": 0.1094,
+     "transform": "linear",
+     "percentile_05": 0.011111,
+     "median": 0.086957,
+     "percentile_95": 0.71739
+    },
+    "syllabic_modulation_energy": {
+     "clips": 4613,
+     "center": 0.14896,
+     "deviation": 0.2147,
+     "transform": "linear",
+     "percentile_05": 0.00092214,
+     "median": 0.14896,
+     "percentile_95": 0.4815
+    },
+    "transient_count": {
+     "clips": 4870,
+     "center": 2.0,
+     "deviation": 3.432,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 2.0,
+     "percentile_95": 20.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 4870,
+     "center": 1695.4,
+     "deviation": 3.507,
+     "transform": "log",
+     "percentile_05": 328.16,
+     "median": 1695.4,
+     "percentile_95": 12856.0
+    }
+   }
+  },
+  "rhythmic": {
+   "clips": 2853,
+   "subcategories_contributing": [
+    "ANMLAmph",
+    "BELLAnml",
+    "BIRDCrow",
+    "CLOCKTick",
+    "CMPTKey",
+    "FEETHmn",
+    "FOODEat",
+    "MACHOffc",
+    "MECHRtch",
+    "MOTRComb",
+    "VEHBike",
+    "VEHBus",
+    "VEHCar",
+    "VEHMoto",
+    "VEHTruck"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 2853,
+     "center": 3800.4,
+     "deviation": 1.506,
+     "transform": "log",
+     "percentile_05": 1934.7,
+     "median": 3800.4,
+     "percentile_95": 5615.7
+    },
+    "crest_factor": {
+     "clips": 495,
+     "center": 12.739,
+     "deviation": 2.388,
+     "transform": "log",
+     "percentile_05": 3.8061,
+     "median": 12.739,
+     "percentile_95": 41.178
+    },
+    "decay_time_seconds_60db": {
+     "clips": 270,
+     "center": 0.39496,
+     "deviation": 1.353,
+     "transform": "log",
+     "percentile_05": 0.1216,
+     "median": 0.39443,
+     "percentile_95": 4.9681
+    },
+    "envelope_attack_seconds": {
+     "clips": 443,
+     "center": 0.034921,
+     "deviation": 9.289,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.034921,
+     "percentile_95": 6.6399
+    },
+    "envelope_decay_seconds": {
+     "clips": 495,
+     "center": 0.34422,
+     "deviation": 6.006,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.34422,
+     "percentile_95": 1.9755
+    },
+    "envelope_kurtosis": {
+     "clips": 495,
+     "center": 18.745,
+     "deviation": 30.84,
+     "transform": "linear",
+     "percentile_05": -0.89443,
+     "median": 18.745,
+     "percentile_95": 129.46
+    },
+    "envelope_release_seconds": {
+     "clips": 448,
+     "center": 0.089796,
+     "deviation": 2.402,
+     "transform": "log",
+     "percentile_05": 0.014966,
+     "median": 0.089796,
+     "percentile_95": 2.9782
+    },
+    "envelope_skewness": {
+     "clips": 495,
+     "center": 4.143,
+     "deviation": 3.75,
+     "transform": "linear",
+     "percentile_05": -0.010379,
+     "median": 4.143,
+     "percentile_95": 10.019
+    },
+    "envelope_sustain_level": {
+     "clips": 495,
+     "center": 0.021195,
+     "deviation": 0.03771,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.021195,
+     "percentile_95": 0.74019
+    },
+    "envelope_temporal_centroid": {
+     "clips": 495,
+     "center": 0.20235,
+     "deviation": 0.3306,
+     "transform": "linear",
+     "percentile_05": 0.011221,
+     "median": 0.20235,
+     "percentile_95": 0.66389
+    },
+    "harmonicity": {
+     "clips": 2853,
+     "center": 0.47638,
+     "deviation": 0.4302,
+     "transform": "linear",
+     "percentile_05": 0.10393,
+     "median": 0.47638,
+     "percentile_95": 0.95922
+    },
+    "high_band_energy": {
+     "clips": 2853,
+     "center": 0.48319,
+     "deviation": 0.3296,
+     "transform": "linear",
+     "percentile_05": 0.15048,
+     "median": 0.48319,
+     "percentile_95": 0.90053
+    },
+    "inharmonicity": {
+     "clips": 2853,
+     "center": 0.41726,
+     "deviation": 0.1757,
+     "transform": "linear",
+     "percentile_05": 0.064563,
+     "median": 0.41726,
+     "percentile_95": 0.62453
+    },
+    "low_band_energy": {
+     "clips": 2853,
+     "center": 0.0767,
+     "deviation": 0.1094,
+     "transform": "linear",
+     "percentile_05": 0.0025662,
+     "median": 0.0767,
+     "percentile_95": 0.41589
+    },
+    "mid_band_energy": {
+     "clips": 2853,
+     "center": 0.36585,
+     "deviation": 0.2522,
+     "transform": "linear",
+     "percentile_05": 0.074737,
+     "median": 0.36585,
+     "percentile_95": 0.68244
+    },
+    "onset_periodicity": {
+     "clips": 2852,
+     "center": 0.26298,
+     "deviation": 0.1746,
+     "transform": "linear",
+     "percentile_05": 0.023163,
+     "median": 0.26297,
+     "percentile_95": 0.63265
+    },
+    "onset_rate_per_second": {
+     "clips": 2853,
+     "center": 0.99872,
+     "deviation": 3.404,
+     "transform": "log",
+     "percentile_05": 0.1303,
+     "median": 0.99872,
+     "percentile_95": 3.7295
+    },
+    "partial_count": {
+     "clips": 2821,
+     "center": 12.0,
+     "deviation": 1.516,
+     "transform": "log",
+     "percentile_05": 3.0,
+     "median": 12.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 1672,
+     "center": 848.08,
+     "deviation": 3.008,
+     "transform": "log",
+     "percentile_05": 87.674,
+     "median": 848.08,
+     "percentile_95": 1837.5
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 407,
+     "center": -0.0046738,
+     "deviation": 0.3989,
+     "transform": "linear",
+     "percentile_05": -4.9679,
+     "median": -0.0046738,
+     "percentile_95": 2.1159
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 2853,
+     "center": 949.87,
+     "deviation": 813.8,
+     "transform": "linear",
+     "percentile_05": 209.65,
+     "median": 949.87,
+     "percentile_95": 2453.7
+    },
+    "spectral_centroid_hz": {
+     "clips": 2853,
+     "center": 3334.5,
+     "deviation": 2.042,
+     "transform": "log",
+     "percentile_05": 1254.2,
+     "median": 3334.5,
+     "percentile_95": 8477.0
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 2853,
+     "center": 3418.3,
+     "deviation": 1.981,
+     "transform": "log",
+     "percentile_05": 1232.3,
+     "median": 3418.3,
+     "percentile_95": 7559.5
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 2852,
+     "center": 2.8955,
+     "deviation": 99.94,
+     "transform": "linear",
+     "percentile_05": -727.54,
+     "median": 2.8782,
+     "percentile_95": 4758.6
+    },
+    "spectral_entropy": {
+     "clips": 2853,
+     "center": 0.46638,
+     "deviation": 0.1799,
+     "transform": "linear",
+     "percentile_05": 0.22452,
+     "median": 0.46638,
+     "percentile_95": 0.73696
+    },
+    "spectral_flatness": {
+     "clips": 2853,
+     "center": 0.21748,
+     "deviation": 0.2161,
+     "transform": "linear",
+     "percentile_05": 0.039508,
+     "median": 0.21748,
+     "percentile_95": 0.60202
+    },
+    "spectral_flux": {
+     "clips": 2853,
+     "center": 0.22234,
+     "deviation": 0.01812,
+     "transform": "linear",
+     "percentile_05": 0.17193,
+     "median": 0.22234,
+     "percentile_95": 0.24245
+    },
+    "spectral_rolloff_hz": {
+     "clips": 2853,
+     "center": 6880.7,
+     "deviation": 2.112,
+     "transform": "log",
+     "percentile_05": 2006.5,
+     "median": 6880.7,
+     "percentile_95": 14738.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 2853,
+     "center": -4.2074,
+     "deviation": 3.115,
+     "transform": "linear",
+     "percentile_05": -7.9966,
+     "median": -4.2074,
+     "percentile_95": 0.83468
+    },
+    "stationarity": {
+     "clips": 2853,
+     "center": 0.051947,
+     "deviation": 0.09242,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.051947,
+     "percentile_95": 0.79698
+    },
+    "sustain_ratio": {
+     "clips": 495,
+     "center": 0.044944,
+     "deviation": 0.05031,
+     "transform": "linear",
+     "percentile_05": 0.0045249,
+     "median": 0.044944,
+     "percentile_95": 0.99408
+    },
+    "syllabic_modulation_energy": {
+     "clips": 2758,
+     "center": 0.20631,
+     "deviation": 0.1553,
+     "transform": "linear",
+     "percentile_05": 0.012391,
+     "median": 0.20612,
+     "percentile_95": 0.42618
+    },
+    "transient_count": {
+     "clips": 2853,
+     "center": 7.0,
+     "deviation": 4.515,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 7.0,
+     "percentile_95": 40.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 2852,
+     "center": 2325.5,
+     "deviation": 3.056,
+     "transform": "log",
+     "percentile_05": 448.29,
+     "median": 2324.1,
+     "percentile_95": 10287.0
+    }
+   }
+  },
+  "sustained_noise": {
+   "clips": 2329,
+   "subcategories_contributing": [
+    "AIRHiss",
+    "AMBTraf",
+    "FIREBurn",
+    "HMNBrth",
+    "MACHFan",
+    "WATRFlow",
+    "WATRPlmb",
+    "WATRPour",
+    "WATRSurf",
+    "WIND"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 2328,
+     "center": 4120.2,
+     "deviation": 1.401,
+     "transform": "log",
+     "percentile_05": 1941.1,
+     "median": 4119.5,
+     "percentile_95": 5732.7
+    },
+    "crest_factor": {
+     "clips": 413,
+     "center": 9.7084,
+     "deviation": 2.536,
+     "transform": "log",
+     "percentile_05": 4.1815,
+     "median": 9.7084,
+     "percentile_95": 79.688
+    },
+    "decay_time_seconds_60db": {
+     "clips": 181,
+     "center": 0.40701,
+     "deviation": 3.772,
+     "transform": "log",
+     "percentile_05": 0.11089,
+     "median": 0.40701,
+     "percentile_95": 3.5453
+    },
+    "envelope_attack_seconds": {
+     "clips": 405,
+     "center": 0.099773,
+     "deviation": 7.061,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.099773,
+     "percentile_95": 6.6449
+    },
+    "envelope_decay_seconds": {
+     "clips": 413,
+     "center": 0.23447,
+     "deviation": 5.515,
+     "transform": "log",
+     "percentile_05": 0.014966,
+     "median": 0.23447,
+     "percentile_95": 2.4744
+    },
+    "envelope_kurtosis": {
+     "clips": 413,
+     "center": 4.6208,
+     "deviation": 9.467,
+     "transform": "linear",
+     "percentile_05": -1.1407,
+     "median": 4.6208,
+     "percentile_95": 344.66
+    },
+    "envelope_release_seconds": {
+     "clips": 394,
+     "center": 0.26939,
+     "deviation": 9.748,
+     "transform": "log",
+     "percentile_05": 0.014966,
+     "median": 0.26939,
+     "percentile_95": 5.268
+    },
+    "envelope_skewness": {
+     "clips": 413,
+     "center": 2.1043,
+     "deviation": 2.875,
+     "transform": "linear",
+     "percentile_05": -0.5509,
+     "median": 2.1043,
+     "percentile_95": 14.909
+    },
+    "envelope_sustain_level": {
+     "clips": 413,
+     "center": 0.062656,
+     "deviation": 0.1046,
+     "transform": "linear",
+     "percentile_05": 0.0010215,
+     "median": 0.062656,
+     "percentile_95": 0.74455
+    },
+    "envelope_temporal_centroid": {
+     "clips": 413,
+     "center": 0.31978,
+     "deviation": 0.2555,
+     "transform": "linear",
+     "percentile_05": 0.042046,
+     "median": 0.31978,
+     "percentile_95": 0.64768
+    },
+    "harmonicity": {
+     "clips": 2329,
+     "center": 0.33987,
+     "deviation": 0.4052,
+     "transform": "linear",
+     "percentile_05": 0.045903,
+     "median": 0.33987,
+     "percentile_95": 0.95534
+    },
+    "high_band_energy": {
+     "clips": 2329,
+     "center": 0.57106,
+     "deviation": 0.3362,
+     "transform": "linear",
+     "percentile_05": 0.1076,
+     "median": 0.57106,
+     "percentile_95": 0.92388
+    },
+    "inharmonicity": {
+     "clips": 2329,
+     "center": 0.44723,
+     "deviation": 0.1366,
+     "transform": "linear",
+     "percentile_05": 0.14226,
+     "median": 0.44723,
+     "percentile_95": 0.62688
+    },
+    "low_band_energy": {
+     "clips": 2329,
+     "center": 0.047588,
+     "deviation": 0.06835,
+     "transform": "linear",
+     "percentile_05": 0.003431,
+     "median": 0.047588,
+     "percentile_95": 0.49512
+    },
+    "mid_band_energy": {
+     "clips": 2329,
+     "center": 0.31659,
+     "deviation": 0.2321,
+     "transform": "linear",
+     "percentile_05": 0.058977,
+     "median": 0.31659,
+     "percentile_95": 0.65408
+    },
+    "onset_periodicity": {
+     "clips": 2329,
+     "center": 0.24221,
+     "deviation": 0.1544,
+     "transform": "linear",
+     "percentile_05": 0.07225,
+     "median": 0.24221,
+     "percentile_95": 0.49266
+    },
+    "onset_rate_per_second": {
+     "clips": 2329,
+     "center": 0.7,
+     "deviation": 3.591,
+     "transform": "log",
+     "percentile_05": 0.10926,
+     "median": 0.7,
+     "percentile_95": 2.9701
+    },
+    "partial_count": {
+     "clips": 2291,
+     "center": 12.0,
+     "deviation": 1.275,
+     "transform": "log",
+     "percentile_05": 3.0,
+     "median": 12.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 1596,
+     "center": 773.68,
+     "deviation": 3.133,
+     "transform": "log",
+     "percentile_05": 142.26,
+     "median": 773.68,
+     "percentile_95": 1837.5
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 194,
+     "center": -0.0018365,
+     "deviation": 0.4369,
+     "transform": "linear",
+     "percentile_05": -13.542,
+     "median": -0.0018498,
+     "percentile_95": 12.217
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 2329,
+     "center": 919.74,
+     "deviation": 781.1,
+     "transform": "linear",
+     "percentile_05": 202.2,
+     "median": 919.74,
+     "percentile_95": 2634.6
+    },
+    "spectral_centroid_hz": {
+     "clips": 2328,
+     "center": 4199.3,
+     "deviation": 2.066,
+     "transform": "log",
+     "percentile_05": 1041.6,
+     "median": 4196.1,
+     "percentile_95": 9085.3
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 2329,
+     "center": 4256.2,
+     "deviation": 1.895,
+     "transform": "log",
+     "percentile_05": 1116.8,
+     "median": 4256.2,
+     "percentile_95": 8348.9
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 2329,
+     "center": -0.89585,
+     "deviation": 143.9,
+     "transform": "linear",
+     "percentile_05": -952.37,
+     "median": -0.89585,
+     "percentile_95": 1584.0
+    },
+    "spectral_entropy": {
+     "clips": 2329,
+     "center": 0.54766,
+     "deviation": 0.2297,
+     "transform": "linear",
+     "percentile_05": 0.24073,
+     "median": 0.54766,
+     "percentile_95": 0.80224
+    },
+    "spectral_flatness": {
+     "clips": 2329,
+     "center": 0.28158,
+     "deviation": 0.2765,
+     "transform": "linear",
+     "percentile_05": 0.039689,
+     "median": 0.28158,
+     "percentile_95": 0.6778
+    },
+    "spectral_flux": {
+     "clips": 2329,
+     "center": 0.22651,
+     "deviation": 0.008883,
+     "transform": "linear",
+     "percentile_05": 0.20284,
+     "median": 0.22651,
+     "percentile_95": 0.24668
+    },
+    "spectral_rolloff_hz": {
+     "clips": 2328,
+     "center": 8690.3,
+     "deviation": 1.905,
+     "transform": "log",
+     "percentile_05": 1488.5,
+     "median": 8689.8,
+     "percentile_95": 15234.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 2329,
+     "center": -2.9784,
+     "deviation": 3.377,
+     "transform": "linear",
+     "percentile_05": -8.2643,
+     "median": -2.9784,
+     "percentile_95": 1.5218
+    },
+    "stationarity": {
+     "clips": 2329,
+     "center": 0.21631,
+     "deviation": 0.3848,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.21631,
+     "percentile_95": 0.82364
+    },
+    "sustain_ratio": {
+     "clips": 413,
+     "center": 0.10289,
+     "deviation": 0.1692,
+     "transform": "linear",
+     "percentile_05": 0.0024361,
+     "median": 0.10289,
+     "percentile_95": 0.80769
+    },
+    "syllabic_modulation_energy": {
+     "clips": 2249,
+     "center": 0.19162,
+     "deviation": 0.1058,
+     "transform": "linear",
+     "percentile_05": 0.040728,
+     "median": 0.19162,
+     "percentile_95": 0.37152
+    },
+    "transient_count": {
+     "clips": 2329,
+     "center": 5.0,
+     "deviation": 4.747,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 5.0,
+     "percentile_95": 25.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 2329,
+     "center": 4026.0,
+     "deviation": 2.883,
+     "transform": "log",
+     "percentile_05": 494.54,
+     "median": 4026.0,
+     "percentile_95": 13841.0
+    }
+   }
+  },
+  "sustained_tonal": {
+   "clips": 5848,
+   "subcategories_contributing": [
+    "MACHAppl",
+    "MUSCBrass",
+    "MUSCStr",
+    "MUSCWind",
+    "TOOLPowr"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 5848,
+     "center": 2297.0,
+     "deviation": 1.529,
+     "transform": "log",
+     "percentile_05": 1356.6,
+     "median": 2296.8,
+     "percentile_95": 4316.1
+    },
+    "crest_factor": {
+     "clips": 2749,
+     "center": 4.9716,
+     "deviation": 2.208,
+     "transform": "log",
+     "percentile_05": 2.4297,
+     "median": 4.9716,
+     "percentile_95": 16.807
+    },
+    "decay_time_seconds_60db": {
+     "clips": 1854,
+     "center": 0.58752,
+     "deviation": 3.086,
+     "transform": "log",
+     "percentile_05": 0.15586,
+     "median": 0.58734,
+     "percentile_95": 4.0343
+    },
+    "envelope_attack_seconds": {
+     "clips": 2729,
+     "center": 0.069841,
+     "deviation": 6.245,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.069841,
+     "percentile_95": 1.9605
+    },
+    "envelope_decay_seconds": {
+     "clips": 2749,
+     "center": 0.49887,
+     "deviation": 3.775,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.49887,
+     "percentile_95": 2.22
+    },
+    "envelope_kurtosis": {
+     "clips": 2749,
+     "center": -0.16095,
+     "deviation": 2.466,
+     "transform": "linear",
+     "percentile_05": -1.7692,
+     "median": -0.16095,
+     "percentile_95": 27.15
+    },
+    "envelope_release_seconds": {
+     "clips": 2731,
+     "center": 0.19456,
+     "deviation": 3.999,
+     "transform": "log",
+     "percentile_05": 0.044898,
+     "median": 0.19456,
+     "percentile_95": 1.5265
+    },
+    "envelope_skewness": {
+     "clips": 2749,
+     "center": 0.41259,
+     "deviation": 2.025,
+     "transform": "linear",
+     "percentile_05": -1.4788,
+     "median": 0.41259,
+     "percentile_95": 4.66
+    },
+    "envelope_sustain_level": {
+     "clips": 2749,
+     "center": 0.23972,
+     "deviation": 0.4176,
+     "transform": "linear",
+     "percentile_05": 0.0028517,
+     "median": 0.23972,
+     "percentile_95": 0.89423
+    },
+    "envelope_temporal_centroid": {
+     "clips": 2749,
+     "center": 0.33919,
+     "deviation": 0.2489,
+     "transform": "linear",
+     "percentile_05": 0.038253,
+     "median": 0.33919,
+     "percentile_95": 0.55544
+    },
+    "harmonicity": {
+     "clips": 5848,
+     "center": 0.98695,
+     "deviation": 0.01992,
+     "transform": "linear",
+     "percentile_05": 0.4184,
+     "median": 0.98693,
+     "percentile_95": 0.99869
+    },
+    "high_band_energy": {
+     "clips": 5848,
+     "center": 0.28129,
+     "deviation": 0.2259,
+     "transform": "linear",
+     "percentile_05": 0.05047,
+     "median": 0.28114,
+     "percentile_95": 0.73526
+    },
+    "inharmonicity": {
+     "clips": 5848,
+     "center": 0.0077202,
+     "deviation": 0.01278,
+     "transform": "linear",
+     "percentile_05": 0.00026127,
+     "median": 0.0077184,
+     "percentile_95": 0.50883
+    },
+    "low_band_energy": {
+     "clips": 5848,
+     "center": 0.010289,
+     "deviation": 0.01629,
+     "transform": "linear",
+     "percentile_05": 0.00053549,
+     "median": 0.010288,
+     "percentile_95": 0.33961
+    },
+    "mid_band_energy": {
+     "clips": 5848,
+     "center": 0.63738,
+     "deviation": 0.238,
+     "transform": "linear",
+     "percentile_05": 0.23671,
+     "median": 0.63727,
+     "percentile_95": 0.89071
+    },
+    "onset_periodicity": {
+     "clips": 5848,
+     "center": 0.39431,
+     "deviation": 0.2664,
+     "transform": "linear",
+     "percentile_05": 0.092303,
+     "median": 0.39426,
+     "percentile_95": 0.84284
+    },
+    "onset_rate_per_second": {
+     "clips": 5848,
+     "center": 0.55343,
+     "deviation": 3.418,
+     "transform": "log",
+     "percentile_05": 0.14286,
+     "median": 0.55314,
+     "percentile_95": 2.4957
+    },
+    "partial_count": {
+     "clips": 5771,
+     "center": 5.0,
+     "deviation": 2.481,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 5.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 5611,
+     "center": 280.89,
+     "deviation": 2.853,
+     "transform": "log",
+     "percentile_05": 65.625,
+     "median": 280.89,
+     "percentile_95": 1050.0
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 641,
+     "center": 0.0016173,
+     "deviation": 0.2071,
+     "transform": "linear",
+     "percentile_05": -0.99376,
+     "median": 0.0016173,
+     "percentile_95": 1.0416
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 5848,
+     "center": 909.02,
+     "deviation": 717.6,
+     "transform": "linear",
+     "percentile_05": 227.73,
+     "median": 908.89,
+     "percentile_95": 2532.4
+    },
+    "spectral_centroid_hz": {
+     "clips": 5848,
+     "center": 1922.7,
+     "deviation": 1.673,
+     "transform": "log",
+     "percentile_05": 828.49,
+     "median": 1922.2,
+     "percentile_95": 4714.1
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 5848,
+     "center": 1966.1,
+     "deviation": 1.726,
+     "transform": "log",
+     "percentile_05": 858.9,
+     "median": 1966.0,
+     "percentile_95": 4748.9
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 5848,
+     "center": 9.677,
+     "deviation": 263.3,
+     "transform": "linear",
+     "percentile_05": -573.8,
+     "median": 9.656,
+     "percentile_95": 5361.9
+    },
+    "spectral_entropy": {
+     "clips": 5848,
+     "center": 0.29578,
+     "deviation": 0.1014,
+     "transform": "linear",
+     "percentile_05": 0.18509,
+     "median": 0.29578,
+     "percentile_95": 0.46792
+    },
+    "spectral_flatness": {
+     "clips": 5848,
+     "center": 0.064511,
+     "deviation": 0.05723,
+     "transform": "linear",
+     "percentile_05": 0.020414,
+     "median": 0.064502,
+     "percentile_95": 0.26276
+    },
+    "spectral_flux": {
+     "clips": 5848,
+     "center": 0.097707,
+     "deviation": 0.05344,
+     "transform": "linear",
+     "percentile_05": 0.047489,
+     "median": 0.097704,
+     "percentile_95": 0.20161
+    },
+    "spectral_rolloff_hz": {
+     "clips": 5848,
+     "center": 3024.7,
+     "deviation": 1.869,
+     "transform": "log",
+     "percentile_05": 934.87,
+     "median": 3024.6,
+     "percentile_95": 9486.6
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 5848,
+     "center": -1.9255,
+     "deviation": 4.875,
+     "transform": "linear",
+     "percentile_05": -10.214,
+     "median": -1.9263,
+     "percentile_95": 3.3176
+    },
+    "stationarity": {
+     "clips": 5848,
+     "center": 0.28977,
+     "deviation": 0.3887,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.28973,
+     "percentile_95": 0.66876
+    },
+    "sustain_ratio": {
+     "clips": 2749,
+     "center": 0.38158,
+     "deviation": 0.4736,
+     "transform": "linear",
+     "percentile_05": 0.025641,
+     "median": 0.38158,
+     "percentile_95": 0.85081
+    },
+    "syllabic_modulation_energy": {
+     "clips": 5742,
+     "center": 0.089763,
+     "deviation": 0.1154,
+     "transform": "linear",
+     "percentile_05": 0.0071002,
+     "median": 0.089703,
+     "percentile_95": 0.50743
+    },
+    "transient_count": {
+     "clips": 5848,
+     "center": 2.0,
+     "deviation": 3.432,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 2.0,
+     "percentile_95": 16.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 5848,
+     "center": 1543.0,
+     "deviation": 2.011,
+     "transform": "log",
+     "percentile_05": 425.71,
+     "median": 1542.7,
+     "percentile_95": 4533.3
+    }
+   }
+  },
+  "sweep": {
+   "clips": 335,
+   "subcategories_contributing": [
+    "ALRMSirn",
+    "WHSH"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 335,
+     "center": 3313.2,
+     "deviation": 1.491,
+     "transform": "log",
+     "percentile_05": 1389.9,
+     "median": 3313.2,
+     "percentile_95": 5327.7
+    },
+    "crest_factor": {
+     "clips": 212,
+     "center": 8.9053,
+     "deviation": 1.501,
+     "transform": "log",
+     "percentile_05": 4.7007,
+     "median": 8.8765,
+     "percentile_95": 23.992
+    },
+    "decay_time_seconds_60db": {
+     "clips": 122,
+     "center": 0.30132,
+     "deviation": 1.951,
+     "transform": "log",
+     "percentile_05": 0.1452,
+     "median": 0.30101,
+     "percentile_95": 0.69326
+    },
+    "envelope_attack_seconds": {
+     "clips": 210,
+     "center": 0.049887,
+     "deviation": 2.481,
+     "transform": "log",
+     "percentile_05": 0.014966,
+     "median": 0.049887,
+     "percentile_95": 0.16463
+    },
+    "envelope_decay_seconds": {
+     "clips": 212,
+     "center": 0.15465,
+     "deviation": 1.941,
+     "transform": "log",
+     "percentile_05": 0.064853,
+     "median": 0.15465,
+     "percentile_95": 0.5288
+    },
+    "envelope_kurtosis": {
+     "clips": 212,
+     "center": 8.6587,
+     "deviation": 8.472,
+     "transform": "linear",
+     "percentile_05": 0.62766,
+     "median": 8.6088,
+     "percentile_95": 79.964
+    },
+    "envelope_release_seconds": {
+     "clips": 209,
+     "center": 0.094785,
+     "deviation": 2.644,
+     "transform": "log",
+     "percentile_05": 0.019955,
+     "median": 0.094785,
+     "percentile_95": 0.37914
+    },
+    "envelope_skewness": {
+     "clips": 212,
+     "center": 2.9051,
+     "deviation": 1.342,
+     "transform": "linear",
+     "percentile_05": 1.2636,
+     "median": 2.9018,
+     "percentile_95": 7.7421
+    },
+    "envelope_sustain_level": {
+     "clips": 212,
+     "center": 0.026046,
+     "deviation": 0.03673,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.025638,
+     "percentile_95": 0.16062
+    },
+    "envelope_temporal_centroid": {
+     "clips": 212,
+     "center": 0.27812,
+     "deviation": 0.1761,
+     "transform": "linear",
+     "percentile_05": 0.10904,
+     "median": 0.27553,
+     "percentile_95": 0.50073
+    },
+    "harmonicity": {
+     "clips": 335,
+     "center": 0.63164,
+     "deviation": 0.3584,
+     "transform": "linear",
+     "percentile_05": 0.19647,
+     "median": 0.63164,
+     "percentile_95": 0.98233
+    },
+    "high_band_energy": {
+     "clips": 335,
+     "center": 0.28088,
+     "deviation": 0.2001,
+     "transform": "linear",
+     "percentile_05": 0.09135,
+     "median": 0.28088,
+     "percentile_95": 0.74324
+    },
+    "inharmonicity": {
+     "clips": 335,
+     "center": 0.43049,
+     "deviation": 0.1907,
+     "transform": "linear",
+     "percentile_05": 0.0012147,
+     "median": 0.43049,
+     "percentile_95": 0.65916
+    },
+    "low_band_energy": {
+     "clips": 335,
+     "center": 0.078428,
+     "deviation": 0.1054,
+     "transform": "linear",
+     "percentile_05": 0.0021359,
+     "median": 0.078428,
+     "percentile_95": 0.497
+    },
+    "mid_band_energy": {
+     "clips": 335,
+     "center": 0.58854,
+     "deviation": 0.2261,
+     "transform": "linear",
+     "percentile_05": 0.13959,
+     "median": 0.58854,
+     "percentile_95": 0.83993
+    },
+    "onset_periodicity": {
+     "clips": 335,
+     "center": 0.25002,
+     "deviation": 0.2644,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.25002,
+     "percentile_95": 0.5919
+    },
+    "onset_rate_per_second": {
+     "clips": 335,
+     "center": 1.4907,
+     "deviation": 2.456,
+     "transform": "log",
+     "percentile_05": 0.23624,
+     "median": 1.4907,
+     "percentile_95": 3.3016
+    },
+    "partial_count": {
+     "clips": 321,
+     "center": 10.0,
+     "deviation": 1.383,
+     "transform": "log",
+     "percentile_05": 2.0,
+     "median": 10.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 218,
+     "center": 495.54,
+     "deviation": 2.078,
+     "transform": "log",
+     "percentile_05": 98.438,
+     "median": 490.0,
+     "percentile_95": 1422.6
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 335,
+     "center": 1235.4,
+     "deviation": 993.9,
+     "transform": "linear",
+     "percentile_05": 209.17,
+     "median": 1235.4,
+     "percentile_95": 2871.0
+    },
+    "spectral_centroid_hz": {
+     "clips": 335,
+     "center": 2167.2,
+     "deviation": 1.854,
+     "transform": "log",
+     "percentile_05": 1019.1,
+     "median": 2167.2,
+     "percentile_95": 6134.3
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 335,
+     "center": 3036.4,
+     "deviation": 2.052,
+     "transform": "log",
+     "percentile_05": 1287.0,
+     "median": 3036.4,
+     "percentile_95": 5983.2
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 335,
+     "center": 345.58,
+     "deviation": 1777.0,
+     "transform": "linear",
+     "percentile_05": -3073.7,
+     "median": 345.58,
+     "percentile_95": 16566.0
+    },
+    "spectral_entropy": {
+     "clips": 335,
+     "center": 0.38642,
+     "deviation": 0.1694,
+     "transform": "linear",
+     "percentile_05": 0.16633,
+     "median": 0.38642,
+     "percentile_95": 0.63449
+    },
+    "spectral_flatness": {
+     "clips": 335,
+     "center": 0.1381,
+     "deviation": 0.1198,
+     "transform": "linear",
+     "percentile_05": 0.022098,
+     "median": 0.1381,
+     "percentile_95": 0.44191
+    },
+    "spectral_flux": {
+     "clips": 335,
+     "center": 0.22713,
+     "deviation": 0.01305,
+     "transform": "linear",
+     "percentile_05": 0.15253,
+     "median": 0.22713,
+     "percentile_95": 0.24766
+    },
+    "spectral_rolloff_hz": {
+     "clips": 335,
+     "center": 4467.5,
+     "deviation": 2.501,
+     "transform": "log",
+     "percentile_05": 1309.9,
+     "median": 4467.5,
+     "percentile_95": 12110.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 335,
+     "center": -4.6642,
+     "deviation": 2.521,
+     "transform": "linear",
+     "percentile_05": -7.8108,
+     "median": -4.6642,
+     "percentile_95": 1.2858
+    },
+    "stationarity": {
+     "clips": 335,
+     "center": 0.0,
+     "deviation": 0.1502,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.0,
+     "percentile_95": 0.69151
+    },
+    "sustain_ratio": {
+     "clips": 212,
+     "center": 0.081667,
+     "deviation": 0.07077,
+     "transform": "linear",
+     "percentile_05": 0.015873,
+     "median": 0.08,
+     "percentile_95": 0.26471
+    },
+    "syllabic_modulation_energy": {
+     "clips": 220,
+     "center": 0.27828,
+     "deviation": 0.2161,
+     "transform": "linear",
+     "percentile_05": 0.045363,
+     "median": 0.27611,
+     "percentile_95": 0.47754
+    },
+    "transient_count": {
+     "clips": 335,
+     "center": 1.0,
+     "deviation": 2.93,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 1.0,
+     "percentile_95": 18.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 335,
+     "center": 1847.0,
+     "deviation": 3.067,
+     "transform": "log",
+     "percentile_05": 363.33,
+     "median": 1847.0,
+     "percentile_95": 6839.7
+    }
+   }
+  },
+  "texture": {
+   "clips": 1476,
+   "subcategories_contributing": [
+    "ANMLInsc",
+    "CRWDApls",
+    "FIRECrkl",
+    "FOODCook",
+    "MUSCChim",
+    "PAPRHndl",
+    "RAIN",
+    "WATRBubl"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 1476,
+     "center": 4223.7,
+     "deviation": 1.349,
+     "transform": "log",
+     "percentile_05": 2389.9,
+     "median": 4223.2,
+     "percentile_95": 5790.2
+    },
+    "crest_factor": {
+     "clips": 163,
+     "center": 16.068,
+     "deviation": 3.278,
+     "transform": "log",
+     "percentile_05": 2.9312,
+     "median": 16.068,
+     "percentile_95": 66.61
+    },
+    "decay_time_seconds_60db": {
+     "clips": 62,
+     "center": 0.50646,
+     "deviation": 5.77,
+     "transform": "log",
+     "percentile_05": 0.087773,
+     "median": 0.49175,
+     "percentile_95": 6.8629
+    },
+    "envelope_attack_seconds": {
+     "clips": 147,
+     "center": 0.16463,
+     "deviation": 55.05,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.16463,
+     "percentile_95": 8.2612
+    },
+    "envelope_decay_seconds": {
+     "clips": 163,
+     "center": 0.16961,
+     "deviation": 10.64,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.16961,
+     "percentile_95": 3.512
+    },
+    "envelope_kurtosis": {
+     "clips": 163,
+     "center": 20.681,
+     "deviation": 37.05,
+     "transform": "linear",
+     "percentile_05": -0.92059,
+     "median": 20.681,
+     "percentile_95": 365.7
+    },
+    "envelope_release_seconds": {
+     "clips": 134,
+     "center": 0.35626,
+     "deviation": 26.12,
+     "transform": "log",
+     "percentile_05": 0.0099773,
+     "median": 0.33923,
+     "percentile_95": 8.2163
+    },
+    "envelope_skewness": {
+     "clips": 163,
+     "center": 3.8673,
+     "deviation": 5.607,
+     "transform": "linear",
+     "percentile_05": -0.29835,
+     "median": 3.8673,
+     "percentile_95": 15.69
+    },
+    "envelope_sustain_level": {
+     "clips": 163,
+     "center": 0.046973,
+     "deviation": 0.07764,
+     "transform": "linear",
+     "percentile_05": 0.0010602,
+     "median": 0.046973,
+     "percentile_95": 0.78518
+    },
+    "envelope_temporal_centroid": {
+     "clips": 163,
+     "center": 0.36992,
+     "deviation": 0.2705,
+     "transform": "linear",
+     "percentile_05": 0.038459,
+     "median": 0.36992,
+     "percentile_95": 0.68551
+    },
+    "harmonicity": {
+     "clips": 1476,
+     "center": 0.29492,
+     "deviation": 0.3997,
+     "transform": "linear",
+     "percentile_05": 0.040103,
+     "median": 0.29473,
+     "percentile_95": 0.96631
+    },
+    "high_band_energy": {
+     "clips": 1476,
+     "center": 0.66338,
+     "deviation": 0.3317,
+     "transform": "linear",
+     "percentile_05": 0.24138,
+     "median": 0.66327,
+     "percentile_95": 0.99175
+    },
+    "inharmonicity": {
+     "clips": 1476,
+     "center": 0.43988,
+     "deviation": 0.1681,
+     "transform": "linear",
+     "percentile_05": 0.0030771,
+     "median": 0.43987,
+     "percentile_95": 0.6514
+    },
+    "low_band_energy": {
+     "clips": 1476,
+     "center": 0.024657,
+     "deviation": 0.03886,
+     "transform": "linear",
+     "percentile_05": 0.00011847,
+     "median": 0.024623,
+     "percentile_95": 0.31635
+    },
+    "mid_band_energy": {
+     "clips": 1476,
+     "center": 0.25301,
+     "deviation": 0.2776,
+     "transform": "linear",
+     "percentile_05": 0.0059619,
+     "median": 0.25292,
+     "percentile_95": 0.61085
+    },
+    "onset_periodicity": {
+     "clips": 1476,
+     "center": 0.22954,
+     "deviation": 0.1395,
+     "transform": "linear",
+     "percentile_05": 0.080121,
+     "median": 0.22954,
+     "percentile_95": 0.5496
+    },
+    "onset_rate_per_second": {
+     "clips": 1476,
+     "center": 1.044,
+     "deviation": 3.386,
+     "transform": "log",
+     "percentile_05": 0.12629,
+     "median": 1.0432,
+     "percentile_95": 3.8111
+    },
+    "partial_count": {
+     "clips": 1410,
+     "center": 12.0,
+     "deviation": 1.691,
+     "transform": "log",
+     "percentile_05": 2.0,
+     "median": 12.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 1161,
+     "center": 980.0,
+     "deviation": 2.481,
+     "transform": "log",
+     "percentile_05": 116.36,
+     "median": 980.0,
+     "percentile_95": 1917.4
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 244,
+     "center": -2.0076e-05,
+     "deviation": 0.1625,
+     "transform": "linear",
+     "percentile_05": -3.0412,
+     "median": -2.6154e-05,
+     "percentile_95": 2.9134
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 1476,
+     "center": 803.03,
+     "deviation": 608.6,
+     "transform": "linear",
+     "percentile_05": 245.25,
+     "median": 802.65,
+     "percentile_95": 2186.3
+    },
+    "spectral_centroid_hz": {
+     "clips": 1476,
+     "center": 4811.9,
+     "deviation": 1.837,
+     "transform": "log",
+     "percentile_05": 1992.2,
+     "median": 4809.4,
+     "percentile_95": 10434.0
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 1476,
+     "center": 4723.2,
+     "deviation": 1.783,
+     "transform": "log",
+     "percentile_05": 1933.8,
+     "median": 4721.6,
+     "percentile_95": 9548.7
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 1476,
+     "center": -3.2222,
+     "deviation": 84.57,
+     "transform": "linear",
+     "percentile_05": -643.99,
+     "median": -3.2674,
+     "percentile_95": 581.01
+    },
+    "spectral_entropy": {
+     "clips": 1476,
+     "center": 0.57885,
+     "deviation": 0.2126,
+     "transform": "linear",
+     "percentile_05": 0.21601,
+     "median": 0.57876,
+     "percentile_95": 0.8168
+    },
+    "spectral_flatness": {
+     "clips": 1476,
+     "center": 0.30402,
+     "deviation": 0.2487,
+     "transform": "linear",
+     "percentile_05": 0.061396,
+     "median": 0.30388,
+     "percentile_95": 0.65211
+    },
+    "spectral_flux": {
+     "clips": 1476,
+     "center": 0.22611,
+     "deviation": 0.00874,
+     "transform": "linear",
+     "percentile_05": 0.17273,
+     "median": 0.22611,
+     "percentile_95": 0.24181
+    },
+    "spectral_rolloff_hz": {
+     "clips": 1476,
+     "center": 9581.6,
+     "deviation": 1.701,
+     "transform": "log",
+     "percentile_05": 3291.9,
+     "median": 9580.8,
+     "percentile_95": 15882.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 1476,
+     "center": -1.9666,
+     "deviation": 3.223,
+     "transform": "linear",
+     "percentile_05": -6.2623,
+     "median": -1.9688,
+     "percentile_95": 7.0267
+    },
+    "stationarity": {
+     "clips": 1476,
+     "center": 0.27824,
+     "deviation": 0.495,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.27813,
+     "percentile_95": 0.8225
+    },
+    "sustain_ratio": {
+     "clips": 163,
+     "center": 0.03125,
+     "deviation": 0.05023,
+     "transform": "linear",
+     "percentile_05": 0.0017361,
+     "median": 0.03125,
+     "percentile_95": 0.99944
+    },
+    "syllabic_modulation_energy": {
+     "clips": 1443,
+     "center": 0.23028,
+     "deviation": 0.1046,
+     "transform": "linear",
+     "percentile_05": 0.069712,
+     "median": 0.23028,
+     "percentile_95": 0.44423
+    },
+    "transient_count": {
+     "clips": 1476,
+     "center": 9.0,
+     "deviation": 4.232,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 9.0,
+     "percentile_95": 42.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 1475,
+     "center": 4693.9,
+     "deviation": 2.706,
+     "transform": "log",
+     "percentile_05": 760.25,
+     "median": 4693.9,
+     "percentile_95": 15688.0
+    }
+   }
+  },
+  "voiced": {
+   "clips": 3737,
+   "subcategories_contributing": [
+    "ANMLCat",
+    "ANMLDog",
+    "ANMLFarm",
+    "CRWDCheer",
+    "VOXCry",
+    "VOXEfrt",
+    "VOXLaff",
+    "VOXMisc",
+    "VOXScrm",
+    "VOXSing",
+    "VOXWhsp"
+   ],
+   "feature_observations": {
+    "complexity": {
+     "clips": 3736,
+     "center": 2767.7,
+     "deviation": 1.578,
+     "transform": "log",
+     "percentile_05": 1561.0,
+     "median": 2767.2,
+     "percentile_95": 4811.4
+    },
+    "crest_factor": {
+     "clips": 457,
+     "center": 6.2109,
+     "deviation": 1.851,
+     "transform": "log",
+     "percentile_05": 2.0422,
+     "median": 6.2109,
+     "percentile_95": 14.561
+    },
+    "decay_time_seconds_60db": {
+     "clips": 193,
+     "center": 0.39254,
+     "deviation": 2.354,
+     "transform": "log",
+     "percentile_05": 0.10101,
+     "median": 0.39254,
+     "percentile_95": 1.1264
+    },
+    "envelope_attack_seconds": {
+     "clips": 447,
+     "center": 0.089796,
+     "deviation": 2.846,
+     "transform": "log",
+     "percentile_05": 0.014966,
+     "median": 0.089796,
+     "percentile_95": 0.81814
+    },
+    "envelope_decay_seconds": {
+     "clips": 457,
+     "center": 0.17959,
+     "deviation": 2.63,
+     "transform": "log",
+     "percentile_05": 0.014966,
+     "median": 0.17959,
+     "percentile_95": 0.72834
+    },
+    "envelope_kurtosis": {
+     "clips": 457,
+     "center": 0.81973,
+     "deviation": 3.106,
+     "transform": "linear",
+     "percentile_05": -1.4533,
+     "median": 0.81973,
+     "percentile_95": 23.253
+    },
+    "envelope_release_seconds": {
+     "clips": 439,
+     "center": 0.10975,
+     "deviation": 3.16,
+     "transform": "log",
+     "percentile_05": 0.019955,
+     "median": 0.10975,
+     "percentile_95": 1.5515
+    },
+    "envelope_skewness": {
+     "clips": 457,
+     "center": 1.124,
+     "deviation": 1.66,
+     "transform": "linear",
+     "percentile_05": -1.233,
+     "median": 1.124,
+     "percentile_95": 4.537
+    },
+    "envelope_sustain_level": {
+     "clips": 457,
+     "center": 0.16595,
+     "deviation": 0.2699,
+     "transform": "linear",
+     "percentile_05": 0.0023113,
+     "median": 0.16595,
+     "percentile_95": 0.86494
+    },
+    "envelope_temporal_centroid": {
+     "clips": 457,
+     "center": 0.32487,
+     "deviation": 0.1905,
+     "transform": "linear",
+     "percentile_05": 0.11136,
+     "median": 0.32487,
+     "percentile_95": 0.54727
+    },
+    "harmonicity": {
+     "clips": 3737,
+     "center": 0.54375,
+     "deviation": 0.3296,
+     "transform": "linear",
+     "percentile_05": 0.19407,
+     "median": 0.54375,
+     "percentile_95": 0.951
+    },
+    "high_band_energy": {
+     "clips": 3737,
+     "center": 0.35378,
+     "deviation": 0.2528,
+     "transform": "linear",
+     "percentile_05": 0.084559,
+     "median": 0.35378,
+     "percentile_95": 0.72994
+    },
+    "inharmonicity": {
+     "clips": 3737,
+     "center": 0.31844,
+     "deviation": 0.2786,
+     "transform": "linear",
+     "percentile_05": 0.011049,
+     "median": 0.31844,
+     "percentile_95": 0.59818
+    },
+    "low_band_energy": {
+     "clips": 3737,
+     "center": 0.01942,
+     "deviation": 0.02798,
+     "transform": "linear",
+     "percentile_05": 0.0015001,
+     "median": 0.01942,
+     "percentile_95": 0.24812
+    },
+    "mid_band_energy": {
+     "clips": 3737,
+     "center": 0.58873,
+     "deviation": 0.256,
+     "transform": "linear",
+     "percentile_05": 0.20313,
+     "median": 0.58873,
+     "percentile_95": 0.8805
+    },
+    "onset_periodicity": {
+     "clips": 3737,
+     "center": 0.29054,
+     "deviation": 0.1262,
+     "transform": "linear",
+     "percentile_05": 0.1391,
+     "median": 0.29054,
+     "percentile_95": 0.53436
+    },
+    "onset_rate_per_second": {
+     "clips": 3737,
+     "center": 1.4995,
+     "deviation": 2.405,
+     "transform": "log",
+     "percentile_05": 0.33001,
+     "median": 1.4995,
+     "percentile_95": 4.2953
+    },
+    "partial_count": {
+     "clips": 3695,
+     "center": 9.0,
+     "deviation": 1.668,
+     "transform": "log",
+     "percentile_05": 2.0,
+     "median": 9.0,
+     "percentile_95": 12.0
+    },
+    "pitch_hz": {
+     "clips": 3305,
+     "center": 464.21,
+     "deviation": 2.389,
+     "transform": "log",
+     "percentile_05": 106.52,
+     "median": 464.21,
+     "percentile_95": 1470.0
+    },
+    "pitch_slope_semitones_per_second": {
+     "clips": 249,
+     "center": -0.074378,
+     "deviation": 2.528,
+     "transform": "linear",
+     "percentile_05": -15.797,
+     "median": -0.074378,
+     "percentile_95": 6.8659
+    },
+    "spectral_centroid_deviation_hz": {
+     "clips": 3737,
+     "center": 911.48,
+     "deviation": 777.5,
+     "transform": "linear",
+     "percentile_05": 242.46,
+     "median": 911.48,
+     "percentile_95": 2856.9
+    },
+    "spectral_centroid_hz": {
+     "clips": 3736,
+     "center": 2419.4,
+     "deviation": 1.711,
+     "transform": "log",
+     "percentile_05": 1116.0,
+     "median": 2419.3,
+     "percentile_95": 5123.5
+    },
+    "spectral_centroid_mean_hz": {
+     "clips": 3737,
+     "center": 2728.2,
+     "deviation": 1.736,
+     "transform": "log",
+     "percentile_05": 1189.2,
+     "median": 2728.2,
+     "percentile_95": 5518.3
+    },
+    "spectral_centroid_slope_hz_per_second": {
+     "clips": 3737,
+     "center": 16.967,
+     "deviation": 295.3,
+     "transform": "linear",
+     "percentile_05": -1503.1,
+     "median": 16.967,
+     "percentile_95": 1844.3
+    },
+    "spectral_entropy": {
+     "clips": 3737,
+     "center": 0.41906,
+     "deviation": 0.1334,
+     "transform": "linear",
+     "percentile_05": 0.23559,
+     "median": 0.41906,
+     "percentile_95": 0.59574
+    },
+    "spectral_flatness": {
+     "clips": 3737,
+     "center": 0.10999,
+     "deviation": 0.1034,
+     "transform": "linear",
+     "percentile_05": 0.024514,
+     "median": 0.10999,
+     "percentile_95": 0.37642
+    },
+    "spectral_flux": {
+     "clips": 3737,
+     "center": 0.22145,
+     "deviation": 0.02727,
+     "transform": "linear",
+     "percentile_05": 0.13051,
+     "median": 0.22145,
+     "percentile_95": 0.25386
+    },
+    "spectral_rolloff_hz": {
+     "clips": 3736,
+     "center": 4046.7,
+     "deviation": 2.117,
+     "transform": "log",
+     "percentile_05": 1421.2,
+     "median": 4045.2,
+     "percentile_95": 10600.0
+    },
+    "spectral_slope_db_per_octave": {
+     "clips": 3737,
+     "center": -3.1117,
+     "deviation": 3.017,
+     "transform": "linear",
+     "percentile_05": -7.5314,
+     "median": -3.1117,
+     "percentile_95": 1.317
+    },
+    "stationarity": {
+     "clips": 3737,
+     "center": 0.090808,
+     "deviation": 0.1616,
+     "transform": "linear",
+     "percentile_05": 0.0,
+     "median": 0.090808,
+     "percentile_95": 0.64541
+    },
+    "sustain_ratio": {
+     "clips": 457,
+     "center": 0.24138,
+     "deviation": 0.2812,
+     "transform": "linear",
+     "percentile_05": 0.022727,
+     "median": 0.24138,
+     "percentile_95": 0.86765
+    },
+    "syllabic_modulation_energy": {
+     "clips": 3500,
+     "center": 0.23855,
+     "deviation": 0.2157,
+     "transform": "linear",
+     "percentile_05": 0.042516,
+     "median": 0.23841,
+     "percentile_95": 0.65283
+    },
+    "transient_count": {
+     "clips": 3737,
+     "center": 5.0,
+     "deviation": 4.066,
+     "transform": "log",
+     "percentile_05": 1.0,
+     "median": 5.0,
+     "percentile_95": 26.0
+    },
+    "zero_crossings_per_second": {
+     "clips": 3734,
+     "center": 2405.1,
+     "deviation": 2.242,
+     "transform": "log",
+     "percentile_05": 798.56,
+     "median": 2404.4,
+     "percentile_95": 6270.3
+    }
+   }
+  }
+ },
+ "calibrated": [
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "onset_periodicity",
+   "clips": 493
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "onset_rate_per_second",
+   "clips": 494
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "low_band_energy",
+   "clips": 494
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "harmonicity",
+   "clips": 494
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "spectral_flatness",
+   "clips": 494
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "spectral_centroid_hz",
+   "clips": 494
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "stationarity",
+   "clips": 494
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "sustain_ratio",
+   "clips": 78
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "crest_factor",
+   "clips": 78
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "pitch_hz",
+   "clips": 227
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "harmonicity",
+   "clips": 1415
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "inharmonicity",
+   "clips": 1415
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "envelope_attack_seconds",
+   "clips": 665
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "envelope_sustain_level",
+   "clips": 759
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "decay_time_seconds_60db",
+   "clips": 344
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "partial_count",
+   "clips": 1349
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "envelope_skewness",
+   "clips": 759
+  },
+  {
+   "ucs_id": "MUSCKeyd",
+   "feature": "pitch_hz",
+   "clips": 1194
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "envelope_attack_seconds",
+   "clips": 914
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "envelope_sustain_level",
+   "clips": 1106
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "harmonicity",
+   "clips": 2061
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "inharmonicity",
+   "clips": 2061
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "decay_time_seconds_60db",
+   "clips": 264
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "envelope_temporal_centroid",
+   "clips": 1106
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "sustain_ratio",
+   "clips": 1106
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "envelope_skewness",
+   "clips": 1106
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "partial_count",
+   "clips": 1980
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "pitch_hz",
+   "clips": 1693
+  },
+  {
+   "ucs_id": "BOATMisc",
+   "feature": "spectral_flatness",
+   "clips": 84
+  },
+  {
+   "ucs_id": "BOATMisc",
+   "feature": "low_band_energy",
+   "clips": 84
+  },
+  {
+   "ucs_id": "BOATMisc",
+   "feature": "harmonicity",
+   "clips": 84
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "low_band_energy",
+   "clips": 198
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "spectral_centroid_hz",
+   "clips": 198
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "spectral_flatness",
+   "clips": 198
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "harmonicity",
+   "clips": 198
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "onset_periodicity",
+   "clips": 198
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "crest_factor",
+   "clips": 52
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "sustain_ratio",
+   "clips": 52
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "stationarity",
+   "clips": 198
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "zero_crossings_per_second",
+   "clips": 198
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "onset_periodicity",
+   "clips": 280
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "onset_rate_per_second",
+   "clips": 280
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "crest_factor",
+   "clips": 36
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "envelope_attack_seconds",
+   "clips": 32
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "sustain_ratio",
+   "clips": 36
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "spectral_centroid_hz",
+   "clips": 280
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "high_band_energy",
+   "clips": 280
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "harmonicity",
+   "clips": 280
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "low_band_energy",
+   "clips": 280
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "stationarity",
+   "clips": 280
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "envelope_kurtosis",
+   "clips": 36
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "harmonicity",
+   "clips": 724
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "spectral_flatness",
+   "clips": 724
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "spectral_flux",
+   "clips": 724
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "spectral_centroid_hz",
+   "clips": 724
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "mid_band_energy",
+   "clips": 724
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "stationarity",
+   "clips": 724
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "pitch_hz",
+   "clips": 667
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "low_band_energy",
+   "clips": 724
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "crest_factor",
+   "clips": 143
+  },
+  {
+   "ucs_id": "ANMLDog",
+   "feature": "envelope_attack_seconds",
+   "clips": 143
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "spectral_centroid_hz",
+   "clips": 338
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "high_band_energy",
+   "clips": 338
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "low_band_energy",
+   "clips": 338
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "zero_crossings_per_second",
+   "clips": 337
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "pitch_hz",
+   "clips": 264
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "onset_periodicity",
+   "clips": 338
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "onset_rate_per_second",
+   "clips": 338
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "stationarity",
+   "clips": 338
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "spectral_flatness",
+   "clips": 338
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "low_band_energy",
+   "clips": 83
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "spectral_centroid_hz",
+   "clips": 83
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "spectral_flatness",
+   "clips": 83
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "harmonicity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "onset_periodicity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "stationarity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "zero_crossings_per_second",
+   "clips": 83
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "harmonicity",
+   "clips": 941
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "envelope_sustain_level",
+   "clips": 447
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "spectral_centroid_hz",
+   "clips": 941
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "partial_count",
+   "clips": 939
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "inharmonicity",
+   "clips": 941
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "envelope_attack_seconds",
+   "clips": 447
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "sustain_ratio",
+   "clips": 447
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "spectral_flatness",
+   "clips": 941
+  },
+  {
+   "ucs_id": "MUSCBrass",
+   "feature": "pitch_hz",
+   "clips": 928
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "harmonicity",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "onset_rate_per_second",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "onset_periodicity",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "spectral_flatness",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "spectral_entropy",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "stationarity",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "spectral_centroid_hz",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "high_band_energy",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "low_band_energy",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "zero_crossings_per_second",
+   "clips": 245
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "syllabic_modulation_energy",
+   "clips": 245
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "harmonicity",
+   "clips": 2095
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "inharmonicity",
+   "clips": 2095
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "envelope_attack_seconds",
+   "clips": 662
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "crest_factor",
+   "clips": 1609
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "envelope_sustain_level",
+   "clips": 1610
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "decay_time_seconds_60db",
+   "clips": 1096
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "envelope_temporal_centroid",
+   "clips": 1610
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "low_band_energy",
+   "clips": 2095
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "envelope_skewness",
+   "clips": 1610
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "spectral_flatness",
+   "clips": 2095
+  },
+  {
+   "ucs_id": "WATRPlmb",
+   "feature": "stationarity",
+   "clips": 607
+  },
+  {
+   "ucs_id": "WATRPlmb",
+   "feature": "spectral_centroid_hz",
+   "clips": 606
+  },
+  {
+   "ucs_id": "WATRPlmb",
+   "feature": "spectral_flatness",
+   "clips": 607
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "harmonicity",
+   "clips": 280
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "spectral_flatness",
+   "clips": 280
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "spectral_flux",
+   "clips": 280
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "spectral_centroid_hz",
+   "clips": 280
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "mid_band_energy",
+   "clips": 280
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "stationarity",
+   "clips": 280
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "pitch_hz",
+   "clips": 204
+  },
+  {
+   "ucs_id": "ANMLFarm",
+   "feature": "low_band_energy",
+   "clips": 280
+  },
+  {
+   "ucs_id": "COMTelph",
+   "feature": "harmonicity",
+   "clips": 417
+  },
+  {
+   "ucs_id": "COMTelph",
+   "feature": "inharmonicity",
+   "clips": 417
+  },
+  {
+   "ucs_id": "COMTelph",
+   "feature": "onset_periodicity",
+   "clips": 417
+  },
+  {
+   "ucs_id": "COMTelph",
+   "feature": "low_band_energy",
+   "clips": 417
+  },
+  {
+   "ucs_id": "COMTelph",
+   "feature": "spectral_flatness",
+   "clips": 417
+  },
+  {
+   "ucs_id": "COMTelph",
+   "feature": "pitch_hz",
+   "clips": 382
+  },
+  {
+   "ucs_id": "TRNMisc",
+   "feature": "low_band_energy",
+   "clips": 297
+  },
+  {
+   "ucs_id": "TRNMisc",
+   "feature": "spectral_flatness",
+   "clips": 297
+  },
+  {
+   "ucs_id": "TRNMisc",
+   "feature": "harmonicity",
+   "clips": 297
+  },
+  {
+   "ucs_id": "VEHBike",
+   "feature": "low_band_energy",
+   "clips": 126
+  },
+  {
+   "ucs_id": "VEHBike",
+   "feature": "onset_periodicity",
+   "clips": 126
+  },
+  {
+   "ucs_id": "VEHBike",
+   "feature": "onset_rate_per_second",
+   "clips": 126
+  },
+  {
+   "ucs_id": "VEHBike",
+   "feature": "spectral_centroid_hz",
+   "clips": 126
+  },
+  {
+   "ucs_id": "VEHBike",
+   "feature": "high_band_energy",
+   "clips": 126
+  },
+  {
+   "ucs_id": "VEHBike",
+   "feature": "harmonicity",
+   "clips": 126
+  },
+  {
+   "ucs_id": "VEHBike",
+   "feature": "spectral_flatness",
+   "clips": 126
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "spectral_flatness",
+   "clips": 456
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "harmonicity",
+   "clips": 456
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "high_band_energy",
+   "clips": 456
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "mid_band_energy",
+   "clips": 456
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "zero_crossings_per_second",
+   "clips": 456
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "envelope_attack_seconds",
+   "clips": 164
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "sustain_ratio",
+   "clips": 167
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "onset_rate_per_second",
+   "clips": 456
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "onset_periodicity",
+   "clips": 456
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "syllabic_modulation_energy",
+   "clips": 391
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "harmonicity",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "spectral_flatness",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "spectral_flux",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "spectral_centroid_hz",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "mid_band_energy",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "stationarity",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "pitch_hz",
+   "clips": 52
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "low_band_energy",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "onset_periodicity",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "onset_rate_per_second",
+   "clips": 58
+  },
+  {
+   "ucs_id": "ANMLAmph",
+   "feature": "transient_count",
+   "clips": 58
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "stationarity",
+   "clips": 201
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "spectral_flux",
+   "clips": 201
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "spectral_flatness",
+   "clips": 201
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "spectral_centroid_hz",
+   "clips": 201
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 201
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "low_band_energy",
+   "clips": 201
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "onset_periodicity",
+   "clips": 201
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "harmonicity",
+   "clips": 201
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "spectral_centroid_hz",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "spectral_slope_db_per_octave",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "high_band_energy",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "mid_band_energy",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "low_band_energy",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "zero_crossings_per_second",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "crest_factor",
+   "clips": 39
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "spectral_flatness",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "onset_rate_per_second",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "stationarity",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "inharmonicity",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "onset_periodicity",
+   "clips": 234
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "spectral_flux",
+   "clips": 234
+  },
+  {
+   "ucs_id": "VOXSing",
+   "feature": "harmonicity",
+   "clips": 498
+  },
+  {
+   "ucs_id": "VOXSing",
+   "feature": "inharmonicity",
+   "clips": 498
+  },
+  {
+   "ucs_id": "VOXSing",
+   "feature": "sustain_ratio",
+   "clips": 39
+  },
+  {
+   "ucs_id": "VOXSing",
+   "feature": "partial_count",
+   "clips": 495
+  },
+  {
+   "ucs_id": "VOXSing",
+   "feature": "pitch_hz",
+   "clips": 460
+  },
+  {
+   "ucs_id": "VOXSing",
+   "feature": "syllabic_modulation_energy",
+   "clips": 496
+  },
+  {
+   "ucs_id": "VOXSing",
+   "feature": "spectral_flatness",
+   "clips": 498
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "pitch_hz",
+   "clips": 198
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "spectral_centroid_hz",
+   "clips": 267
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "high_band_energy",
+   "clips": 267
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "low_band_energy",
+   "clips": 267
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "zero_crossings_per_second",
+   "clips": 267
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 267
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "spectral_flatness",
+   "clips": 267
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "harmonicity",
+   "clips": 267
+  },
+  {
+   "ucs_id": "BIRDMisc",
+   "feature": "stationarity",
+   "clips": 267
+  },
+  {
+   "ucs_id": "WATRBubl",
+   "feature": "harmonicity",
+   "clips": 63
+  },
+  {
+   "ucs_id": "WATRBubl",
+   "feature": "onset_rate_per_second",
+   "clips": 63
+  },
+  {
+   "ucs_id": "WATRBubl",
+   "feature": "pitch_hz",
+   "clips": 38
+  },
+  {
+   "ucs_id": "WATRBubl",
+   "feature": "spectral_centroid_hz",
+   "clips": 63
+  },
+  {
+   "ucs_id": "WATRBubl",
+   "feature": "spectral_flatness",
+   "clips": 63
+  },
+  {
+   "ucs_id": "WATRBubl",
+   "feature": "mid_band_energy",
+   "clips": 63
+  },
+  {
+   "ucs_id": "WATRBubl",
+   "feature": "spectral_flux",
+   "clips": 63
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "envelope_attack_seconds",
+   "clips": 994
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "envelope_sustain_level",
+   "clips": 1007
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "harmonicity",
+   "clips": 1921
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "sustain_ratio",
+   "clips": 1007
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "inharmonicity",
+   "clips": 1921
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "envelope_temporal_centroid",
+   "clips": 1007
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "spectral_centroid_hz",
+   "clips": 1921
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "partial_count",
+   "clips": 1899
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "spectral_flux",
+   "clips": 1921
+  },
+  {
+   "ucs_id": "MUSCStr",
+   "feature": "pitch_hz",
+   "clips": 1806
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "low_band_energy",
+   "clips": 217
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "mid_band_energy",
+   "clips": 217
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "high_band_energy",
+   "clips": 217
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "spectral_centroid_hz",
+   "clips": 217
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "harmonicity",
+   "clips": 217
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "inharmonicity",
+   "clips": 217
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "spectral_flatness",
+   "clips": 217
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "crest_factor",
+   "clips": 77
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "envelope_attack_seconds",
+   "clips": 77
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "spectral_flux",
+   "clips": 217
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "low_band_energy",
+   "clips": 187
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "spectral_centroid_hz",
+   "clips": 187
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "spectral_flatness",
+   "clips": 187
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "harmonicity",
+   "clips": 187
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "onset_periodicity",
+   "clips": 187
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "stationarity",
+   "clips": 187
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "zero_crossings_per_second",
+   "clips": 187
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "envelope_attack_seconds",
+   "clips": 64
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "crest_factor",
+   "clips": 65
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "transient_count",
+   "clips": 300
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "harmonicity",
+   "clips": 300
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "sustain_ratio",
+   "clips": 65
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "spectral_centroid_hz",
+   "clips": 300
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "envelope_temporal_centroid",
+   "clips": 65
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "spectral_flatness",
+   "clips": 300
+  },
+  {
+   "ucs_id": "COMCam",
+   "feature": "onset_rate_per_second",
+   "clips": 300
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "harmonicity",
+   "clips": 284
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "spectral_flatness",
+   "clips": 284
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "spectral_flux",
+   "clips": 284
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "spectral_centroid_hz",
+   "clips": 283
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "mid_band_energy",
+   "clips": 284
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "stationarity",
+   "clips": 284
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "pitch_hz",
+   "clips": 203
+  },
+  {
+   "ucs_id": "ANMLCat",
+   "feature": "low_band_energy",
+   "clips": 284
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "harmonicity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "mid_band_energy",
+   "clips": 83
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "high_band_energy",
+   "clips": 83
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "spectral_centroid_hz",
+   "clips": 83
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "syllabic_modulation_energy",
+   "clips": 83
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "stationarity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "onset_periodicity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "CRWDCheer",
+   "feature": "spectral_flatness",
+   "clips": 83
+  },
+  {
+   "ucs_id": "FOODEat",
+   "feature": "onset_periodicity",
+   "clips": 172
+  },
+  {
+   "ucs_id": "FOODEat",
+   "feature": "onset_rate_per_second",
+   "clips": 172
+  },
+  {
+   "ucs_id": "FOODEat",
+   "feature": "spectral_flatness",
+   "clips": 172
+  },
+  {
+   "ucs_id": "FOODEat",
+   "feature": "harmonicity",
+   "clips": 172
+  },
+  {
+   "ucs_id": "FOODEat",
+   "feature": "spectral_centroid_hz",
+   "clips": 172
+  },
+  {
+   "ucs_id": "FOODEat",
+   "feature": "high_band_energy",
+   "clips": 172
+  },
+  {
+   "ucs_id": "MUSCChim",
+   "feature": "spectral_centroid_hz",
+   "clips": 156
+  },
+  {
+   "ucs_id": "MUSCChim",
+   "feature": "high_band_energy",
+   "clips": 156
+  },
+  {
+   "ucs_id": "MUSCChim",
+   "feature": "low_band_energy",
+   "clips": 156
+  },
+  {
+   "ucs_id": "MUSCChim",
+   "feature": "onset_rate_per_second",
+   "clips": 156
+  },
+  {
+   "ucs_id": "MUSCChim",
+   "feature": "transient_count",
+   "clips": 156
+  },
+  {
+   "ucs_id": "MUSCChim",
+   "feature": "onset_periodicity",
+   "clips": 156
+  },
+  {
+   "ucs_id": "MUSCChim",
+   "feature": "inharmonicity",
+   "clips": 156
+  },
+  {
+   "ucs_id": "VOXLaff",
+   "feature": "onset_rate_per_second",
+   "clips": 862
+  },
+  {
+   "ucs_id": "VOXLaff",
+   "feature": "onset_periodicity",
+   "clips": 862
+  },
+  {
+   "ucs_id": "VOXLaff",
+   "feature": "pitch_hz",
+   "clips": 783
+  },
+  {
+   "ucs_id": "VOXLaff",
+   "feature": "syllabic_modulation_energy",
+   "clips": 835
+  },
+  {
+   "ucs_id": "VOXLaff",
+   "feature": "harmonicity",
+   "clips": 862
+  },
+  {
+   "ucs_id": "VOXLaff",
+   "feature": "spectral_centroid_hz",
+   "clips": 862
+  },
+  {
+   "ucs_id": "BELLLrg",
+   "feature": "inharmonicity",
+   "clips": 59
+  },
+  {
+   "ucs_id": "BELLLrg",
+   "feature": "pitch_hz",
+   "clips": 54
+  },
+  {
+   "ucs_id": "BELLLrg",
+   "feature": "spectral_centroid_hz",
+   "clips": 59
+  },
+  {
+   "ucs_id": "BELLLrg",
+   "feature": "low_band_energy",
+   "clips": 59
+  },
+  {
+   "ucs_id": "BELLLrg",
+   "feature": "partial_count",
+   "clips": 59
+  },
+  {
+   "ucs_id": "BELLLrg",
+   "feature": "harmonicity",
+   "clips": 59
+  },
+  {
+   "ucs_id": "BELLLrg",
+   "feature": "onset_periodicity",
+   "clips": 59
+  },
+  {
+   "ucs_id": "CMPTKey",
+   "feature": "onset_rate_per_second",
+   "clips": 229
+  },
+  {
+   "ucs_id": "CMPTKey",
+   "feature": "transient_count",
+   "clips": 229
+  },
+  {
+   "ucs_id": "CMPTKey",
+   "feature": "harmonicity",
+   "clips": 229
+  },
+  {
+   "ucs_id": "CMPTKey",
+   "feature": "onset_periodicity",
+   "clips": 229
+  },
+  {
+   "ucs_id": "CMPTKey",
+   "feature": "spectral_centroid_hz",
+   "clips": 229
+  },
+  {
+   "ucs_id": "CMPTKey",
+   "feature": "spectral_flatness",
+   "clips": 229
+  },
+  {
+   "ucs_id": "VOXMisc",
+   "feature": "syllabic_modulation_energy",
+   "clips": 370
+  },
+  {
+   "ucs_id": "VOXMisc",
+   "feature": "pitch_hz",
+   "clips": 362
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "spectral_centroid_hz",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "spectral_rolloff_hz",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "high_band_energy",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "low_band_energy",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "inharmonicity",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "harmonicity",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "partial_count",
+   "clips": 393
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "decay_time_seconds_60db",
+   "clips": 46
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "transient_count",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "onset_rate_per_second",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "onset_periodicity",
+   "clips": 400
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "crest_factor",
+   "clips": 96
+  },
+  {
+   "ucs_id": "OBJCoin",
+   "feature": "envelope_temporal_centroid",
+   "clips": 96
+  },
+  {
+   "ucs_id": "HMNCough",
+   "feature": "spectral_centroid_hz",
+   "clips": 268
+  },
+  {
+   "ucs_id": "HMNCough",
+   "feature": "spectral_flatness",
+   "clips": 268
+  },
+  {
+   "ucs_id": "HMNCough",
+   "feature": "mid_band_energy",
+   "clips": 268
+  },
+  {
+   "ucs_id": "HMNCough",
+   "feature": "onset_rate_per_second",
+   "clips": 268
+  },
+  {
+   "ucs_id": "HMNCough",
+   "feature": "onset_periodicity",
+   "clips": 267
+  },
+  {
+   "ucs_id": "HMNCough",
+   "feature": "harmonicity",
+   "clips": 268
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "inharmonicity",
+   "clips": 162
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "decay_time_seconds_60db",
+   "clips": 160
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "spectral_centroid_hz",
+   "clips": 162
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "onset_rate_per_second",
+   "clips": 162
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "high_band_energy",
+   "clips": 162
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "pitch_hz",
+   "clips": 139
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "onset_periodicity",
+   "clips": 162
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "crest_factor",
+   "clips": 160
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "envelope_attack_seconds",
+   "clips": 130
+  },
+  {
+   "ucs_id": "BELLAnml",
+   "feature": "transient_count",
+   "clips": 162
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "onset_periodicity",
+   "clips": 181
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "spectral_flux",
+   "clips": 181
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "high_band_energy",
+   "clips": 181
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "stationarity",
+   "clips": 181
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "low_band_energy",
+   "clips": 181
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "envelope_kurtosis",
+   "clips": 34
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "sustain_ratio",
+   "clips": 34
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "onset_rate_per_second",
+   "clips": 181
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "crest_factor",
+   "clips": 34
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "transient_count",
+   "clips": 181
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "pitch_hz",
+   "clips": 55
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "spectral_centroid_hz",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "high_band_energy",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "low_band_energy",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "zero_crossings_per_second",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "spectral_flatness",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "harmonicity",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "stationarity",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "inharmonicity",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "onset_periodicity",
+   "clips": 61
+  },
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "onset_rate_per_second",
+   "clips": 61
+  },
+  {
+   "ucs_id": "CRWDMisc",
+   "feature": "stationarity",
+   "clips": 122
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "onset_rate_per_second",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "onset_periodicity",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "high_band_energy",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "low_band_energy",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "zero_crossings_per_second",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "spectral_centroid_hz",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "spectral_rolloff_hz",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "spectral_flatness",
+   "clips": 198
+  },
+  {
+   "ucs_id": "PAPRHndl",
+   "feature": "spectral_flux",
+   "clips": 198
+  },
+  {
+   "ucs_id": "GLASMisc",
+   "feature": "spectral_centroid_hz",
+   "clips": 238
+  },
+  {
+   "ucs_id": "GLASMisc",
+   "feature": "high_band_energy",
+   "clips": 238
+  },
+  {
+   "ucs_id": "GLASMisc",
+   "feature": "inharmonicity",
+   "clips": 238
+  },
+  {
+   "ucs_id": "GLASMisc",
+   "feature": "decay_time_seconds_60db",
+   "clips": 89
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "pitch_hz",
+   "clips": 89
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "harmonicity",
+   "clips": 96
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 96
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "inharmonicity",
+   "clips": 96
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "onset_rate_per_second",
+   "clips": 96
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "onset_periodicity",
+   "clips": 96
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "syllabic_modulation_energy",
+   "clips": 95
+  },
+  {
+   "ucs_id": "VOXCry",
+   "feature": "mid_band_energy",
+   "clips": 96
+  },
+  {
+   "ucs_id": "DOORCab",
+   "feature": "spectral_centroid_hz",
+   "clips": 60
+  },
+  {
+   "ucs_id": "DOORCab",
+   "feature": "transient_count",
+   "clips": 62
+  },
+  {
+   "ucs_id": "DOORCab",
+   "feature": "crest_factor",
+   "clips": 33
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "envelope_attack_seconds",
+   "clips": 80
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "spectral_centroid_hz",
+   "clips": 227
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "decay_time_seconds_60db",
+   "clips": 65
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "crest_factor",
+   "clips": 96
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "high_band_energy",
+   "clips": 227
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "low_band_energy",
+   "clips": 227
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "inharmonicity",
+   "clips": 227
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "transient_count",
+   "clips": 227
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "harmonicity",
+   "clips": 227
+  },
+  {
+   "ucs_id": "FOODTware",
+   "feature": "onset_rate_per_second",
+   "clips": 227
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "decay_time_seconds_60db",
+   "clips": 73
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "inharmonicity",
+   "clips": 216
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "envelope_attack_seconds",
+   "clips": 84
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "crest_factor",
+   "clips": 120
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "spectral_centroid_hz",
+   "clips": 216
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "high_band_energy",
+   "clips": 216
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "harmonicity",
+   "clips": 216
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "partial_count",
+   "clips": 214
+  },
+  {
+   "ucs_id": "FOODKware",
+   "feature": "transient_count",
+   "clips": 216
+  },
+  {
+   "ucs_id": "TOOLPowr",
+   "feature": "harmonicity",
+   "clips": 149
+  },
+  {
+   "ucs_id": "TOOLPowr",
+   "feature": "pitch_hz",
+   "clips": 131
+  },
+  {
+   "ucs_id": "TOOLPowr",
+   "feature": "spectral_flatness",
+   "clips": 149
+  },
+  {
+   "ucs_id": "TOOLPowr",
+   "feature": "stationarity",
+   "clips": 149
+  },
+  {
+   "ucs_id": "TOOLPowr",
+   "feature": "spectral_centroid_hz",
+   "clips": 149
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "onset_rate_per_second",
+   "clips": 98
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "crest_factor",
+   "clips": 37
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "stationarity",
+   "clips": 98
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "envelope_attack_seconds",
+   "clips": 36
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "envelope_kurtosis",
+   "clips": 37
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "sustain_ratio",
+   "clips": 37
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "harmonicity",
+   "clips": 98
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "envelope_decay_seconds",
+   "clips": 37
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "spectral_centroid_hz",
+   "clips": 98
+  },
+  {
+   "ucs_id": "WATRDrip",
+   "feature": "envelope_skewness",
+   "clips": 37
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "low_band_energy",
+   "clips": 207
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "decay_time_seconds_60db",
+   "clips": 53
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "envelope_attack_seconds",
+   "clips": 125
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "envelope_temporal_centroid",
+   "clips": 135
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "crest_factor",
+   "clips": 135
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "spectral_flatness",
+   "clips": 207
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "spectral_centroid_hz",
+   "clips": 207
+  },
+  {
+   "ucs_id": "EXPLReal",
+   "feature": "transient_count",
+   "clips": 207
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "low_band_energy",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "mid_band_energy",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "high_band_energy",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "spectral_centroid_hz",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "pitch_hz",
+   "clips": 433
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "inharmonicity",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "harmonicity",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "spectral_flux",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "onset_periodicity",
+   "clips": 531
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "envelope_temporal_centroid",
+   "clips": 191
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "crest_factor",
+   "clips": 191
+  },
+  {
+   "ucs_id": "WATRPour",
+   "feature": "stationarity",
+   "clips": 43
+  },
+  {
+   "ucs_id": "WATRPour",
+   "feature": "spectral_centroid_hz",
+   "clips": 43
+  },
+  {
+   "ucs_id": "WATRPour",
+   "feature": "spectral_flux",
+   "clips": 43
+  },
+  {
+   "ucs_id": "WATRPour",
+   "feature": "harmonicity",
+   "clips": 43
+  },
+  {
+   "ucs_id": "WATRPour",
+   "feature": "spectral_flatness",
+   "clips": 43
+  },
+  {
+   "ucs_id": "WATRPour",
+   "feature": "onset_rate_per_second",
+   "clips": 43
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "spectral_flatness",
+   "clips": 131
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "spectral_flux",
+   "clips": 131
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "spectral_centroid_hz",
+   "clips": 131
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 131
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "high_band_energy",
+   "clips": 131
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "zero_crossings_per_second",
+   "clips": 131
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "harmonicity",
+   "clips": 131
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "sustain_ratio",
+   "clips": 116
+  },
+  {
+   "ucs_id": "HMNSkin",
+   "feature": "onset_periodicity",
+   "clips": 131
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "stationarity",
+   "clips": 318
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "spectral_flux",
+   "clips": 318
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "spectral_flatness",
+   "clips": 318
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "low_band_energy",
+   "clips": 318
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "high_band_energy",
+   "clips": 318
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "harmonicity",
+   "clips": 318
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "sustain_ratio",
+   "clips": 99
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "envelope_temporal_centroid",
+   "clips": 99
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "crest_factor",
+   "clips": 99
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "onset_rate_per_second",
+   "clips": 318
+  },
+  {
+   "ucs_id": "FOODCook",
+   "feature": "spectral_flatness",
+   "clips": 61
+  },
+  {
+   "ucs_id": "FOODCook",
+   "feature": "high_band_energy",
+   "clips": 61
+  },
+  {
+   "ucs_id": "FOODCook",
+   "feature": "onset_rate_per_second",
+   "clips": 61
+  },
+  {
+   "ucs_id": "FOODCook",
+   "feature": "harmonicity",
+   "clips": 61
+  },
+  {
+   "ucs_id": "FOODCook",
+   "feature": "stationarity",
+   "clips": 61
+  },
+  {
+   "ucs_id": "FOODCook",
+   "feature": "zero_crossings_per_second",
+   "clips": 61
+  },
+  {
+   "ucs_id": "FOODCook",
+   "feature": "low_band_energy",
+   "clips": 61
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "high_band_energy",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "mid_band_energy",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "low_band_energy",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "zero_crossings_per_second",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "spectral_centroid_hz",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "spectral_rolloff_hz",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "spectral_flatness",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "spectral_flux",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "stationarity",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "harmonicity",
+   "clips": 112
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "crest_factor",
+   "clips": 40
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "sustain_ratio",
+   "clips": 40
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "envelope_temporal_centroid",
+   "clips": 40
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "spectral_slope_db_per_octave",
+   "clips": 112
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "pitch_hz",
+   "clips": 37
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "spectral_centroid_hz",
+   "clips": 51
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "high_band_energy",
+   "clips": 52
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "low_band_energy",
+   "clips": 52
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "zero_crossings_per_second",
+   "clips": 51
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 52
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "spectral_flatness",
+   "clips": 52
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "harmonicity",
+   "clips": 52
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "stationarity",
+   "clips": 51
+  },
+  {
+   "ucs_id": "BIRDSea",
+   "feature": "onset_rate_per_second",
+   "clips": 51
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "stationarity",
+   "clips": 247
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "spectral_flux",
+   "clips": 247
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "spectral_flatness",
+   "clips": 247
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "harmonicity",
+   "clips": 247
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "spectral_centroid_hz",
+   "clips": 247
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "onset_periodicity",
+   "clips": 247
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "crest_factor",
+   "clips": 71
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "transient_count",
+   "clips": 352
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "spectral_centroid_hz",
+   "clips": 352
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "decay_time_seconds_60db",
+   "clips": 43
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "inharmonicity",
+   "clips": 352
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "harmonicity",
+   "clips": 352
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "sustain_ratio",
+   "clips": 71
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "envelope_attack_seconds",
+   "clips": 61
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "high_band_energy",
+   "clips": 352
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "harmonicity",
+   "clips": 2706
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "spectral_centroid_hz",
+   "clips": 2706
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "envelope_sustain_level",
+   "clips": 1211
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "partial_count",
+   "clips": 2659
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "inharmonicity",
+   "clips": 2706
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "envelope_attack_seconds",
+   "clips": 1209
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "spectral_flatness",
+   "clips": 2706
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "high_band_energy",
+   "clips": 2706
+  },
+  {
+   "ucs_id": "MUSCWind",
+   "feature": "sustain_ratio",
+   "clips": 1211
+  },
+  {
+   "ucs_id": "VOXEfrt",
+   "feature": "pitch_hz",
+   "clips": 120
+  },
+  {
+   "ucs_id": "VOXEfrt",
+   "feature": "inharmonicity",
+   "clips": 122
+  },
+  {
+   "ucs_id": "VOXEfrt",
+   "feature": "harmonicity",
+   "clips": 122
+  },
+  {
+   "ucs_id": "VOXEfrt",
+   "feature": "syllabic_modulation_energy",
+   "clips": 118
+  },
+  {
+   "ucs_id": "VOXEfrt",
+   "feature": "spectral_centroid_hz",
+   "clips": 122
+  },
+  {
+   "ucs_id": "VOXEfrt",
+   "feature": "mid_band_energy",
+   "clips": 122
+  },
+  {
+   "ucs_id": "VOXEfrt",
+   "feature": "onset_rate_per_second",
+   "clips": 122
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "spectral_centroid_hz",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "spectral_rolloff_hz",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "high_band_energy",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "low_band_energy",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "inharmonicity",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "partial_count",
+   "clips": 152
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "transient_count",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "onset_rate_per_second",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "onset_periodicity",
+   "clips": 164
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "crest_factor",
+   "clips": 31
+  },
+  {
+   "ucs_id": "OBJKey",
+   "feature": "spectral_flux",
+   "clips": 164
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "stationarity",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "spectral_flux",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "spectral_flatness",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "harmonicity",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "spectral_centroid_hz",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "onset_rate_per_second",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "low_band_energy",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "partial_count",
+   "clips": 59
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "spectral_slope_db_per_octave",
+   "clips": 60
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "harmonicity",
+   "clips": 131
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "stationarity",
+   "clips": 131
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "pitch_hz",
+   "clips": 59
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "partial_count",
+   "clips": 127
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "spectral_flux",
+   "clips": 131
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "sustain_ratio",
+   "clips": 57
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "low_band_energy",
+   "clips": 131
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "spectral_flatness",
+   "clips": 131
+  },
+  {
+   "ucs_id": "MACHAppl",
+   "feature": "onset_periodicity",
+   "clips": 131
+  },
+  {
+   "ucs_id": "ALRMSirn",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 72
+  },
+  {
+   "ucs_id": "ALRMSirn",
+   "feature": "harmonicity",
+   "clips": 72
+  },
+  {
+   "ucs_id": "ALRMSirn",
+   "feature": "spectral_flatness",
+   "clips": 72
+  },
+  {
+   "ucs_id": "ALRMSirn",
+   "feature": "pitch_hz",
+   "clips": 67
+  },
+  {
+   "ucs_id": "ALRMSirn",
+   "feature": "onset_periodicity",
+   "clips": 72
+  },
+  {
+   "ucs_id": "ALRMSirn",
+   "feature": "spectral_centroid_slope_hz_per_second",
+   "clips": 72
+  },
+  {
+   "ucs_id": "ALRMSirn",
+   "feature": "partial_count",
+   "clips": 72
+  },
+  {
+   "ucs_id": "VEHMoto",
+   "feature": "low_band_energy",
+   "clips": 114
+  },
+  {
+   "ucs_id": "VEHMoto",
+   "feature": "spectral_centroid_hz",
+   "clips": 114
+  },
+  {
+   "ucs_id": "VEHMoto",
+   "feature": "spectral_flatness",
+   "clips": 114
+  },
+  {
+   "ucs_id": "VEHMoto",
+   "feature": "harmonicity",
+   "clips": 114
+  },
+  {
+   "ucs_id": "VEHMoto",
+   "feature": "onset_periodicity",
+   "clips": 114
+  },
+  {
+   "ucs_id": "VEHMoto",
+   "feature": "stationarity",
+   "clips": 114
+  },
+  {
+   "ucs_id": "VEHMoto",
+   "feature": "zero_crossings_per_second",
+   "clips": 114
+  },
+  {
+   "ucs_id": "OBJTape",
+   "feature": "spectral_centroid_hz",
+   "clips": 70
+  },
+  {
+   "ucs_id": "OBJTape",
+   "feature": "high_band_energy",
+   "clips": 70
+  },
+  {
+   "ucs_id": "OBJTape",
+   "feature": "harmonicity",
+   "clips": 70
+  },
+  {
+   "ucs_id": "MACHOffc",
+   "feature": "onset_periodicity",
+   "clips": 99
+  },
+  {
+   "ucs_id": "MACHOffc",
+   "feature": "spectral_centroid_hz",
+   "clips": 99
+  },
+  {
+   "ucs_id": "MACHOffc",
+   "feature": "low_band_energy",
+   "clips": 99
+  },
+  {
+   "ucs_id": "MACHOffc",
+   "feature": "harmonicity",
+   "clips": 99
+  },
+  {
+   "ucs_id": "MACHOffc",
+   "feature": "onset_rate_per_second",
+   "clips": 99
+  },
+  {
+   "ucs_id": "MACHOffc",
+   "feature": "stationarity",
+   "clips": 99
+  },
+  {
+   "ucs_id": "MACHOffc",
+   "feature": "spectral_flux",
+   "clips": 99
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "onset_rate_per_second",
+   "clips": 44
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "onset_periodicity",
+   "clips": 44
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "transient_count",
+   "clips": 44
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "spectral_centroid_hz",
+   "clips": 44
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "high_band_energy",
+   "clips": 44
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "harmonicity",
+   "clips": 44
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "low_band_energy",
+   "clips": 44
+  },
+  {
+   "ucs_id": "FEETHmn",
+   "feature": "onset_rate_per_second",
+   "clips": 546
+  },
+  {
+   "ucs_id": "FEETHmn",
+   "feature": "onset_periodicity",
+   "clips": 546
+  },
+  {
+   "ucs_id": "FEETHmn",
+   "feature": "spectral_centroid_hz",
+   "clips": 546
+  },
+  {
+   "ucs_id": "FEETHmn",
+   "feature": "low_band_energy",
+   "clips": 546
+  },
+  {
+   "ucs_id": "FEETHmn",
+   "feature": "harmonicity",
+   "clips": 546
+  },
+  {
+   "ucs_id": "FEETHmn",
+   "feature": "stationarity",
+   "clips": 546
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "spectral_centroid_hz",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "low_band_energy",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "high_band_energy",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "spectral_rolloff_hz",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "zero_crossings_per_second",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "spectral_flatness",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "harmonicity",
+   "clips": 263
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "envelope_temporal_centroid",
+   "clips": 206
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "crest_factor",
+   "clips": 206
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "sustain_ratio",
+   "clips": 206
+  },
+  {
+   "ucs_id": "VOXScrm",
+   "feature": "pitch_hz",
+   "clips": 200
+  },
+  {
+   "ucs_id": "VOXScrm",
+   "feature": "inharmonicity",
+   "clips": 211
+  },
+  {
+   "ucs_id": "VOXScrm",
+   "feature": "harmonicity",
+   "clips": 211
+  },
+  {
+   "ucs_id": "VOXScrm",
+   "feature": "spectral_centroid_hz",
+   "clips": 211
+  },
+  {
+   "ucs_id": "VOXScrm",
+   "feature": "high_band_energy",
+   "clips": 211
+  },
+  {
+   "ucs_id": "VOXScrm",
+   "feature": "sustain_ratio",
+   "clips": 60
+  },
+  {
+   "ucs_id": "VOXScrm",
+   "feature": "syllabic_modulation_energy",
+   "clips": 205
+  },
+  {
+   "ucs_id": "TRNSbwy",
+   "feature": "low_band_energy",
+   "clips": 269
+  },
+  {
+   "ucs_id": "TRNSbwy",
+   "feature": "harmonicity",
+   "clips": 269
+  },
+  {
+   "ucs_id": "TRNSbwy",
+   "feature": "onset_periodicity",
+   "clips": 269
+  },
+  {
+   "ucs_id": "TRNSbwy",
+   "feature": "spectral_centroid_hz",
+   "clips": 269
+  },
+  {
+   "ucs_id": "TRNSbwy",
+   "feature": "spectral_flux",
+   "clips": 269
+  },
+  {
+   "ucs_id": "TRNSbwy",
+   "feature": "stationarity",
+   "clips": 269
+  },
+  {
+   "ucs_id": "SPRTSkate",
+   "feature": "spectral_flatness",
+   "clips": 83
+  },
+  {
+   "ucs_id": "SPRTSkate",
+   "feature": "stationarity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "SPRTSkate",
+   "feature": "harmonicity",
+   "clips": 83
+  },
+  {
+   "ucs_id": "SPRTSkate",
+   "feature": "low_band_energy",
+   "clips": 83
+  },
+  {
+   "ucs_id": "SPRTSkate",
+   "feature": "spectral_centroid_hz",
+   "clips": 83
+  },
+  {
+   "ucs_id": "SPRTSkate",
+   "feature": "transient_count",
+   "clips": 83
+  },
+  {
+   "ucs_id": "SPRTSkate",
+   "feature": "zero_crossings_per_second",
+   "clips": 83
+  },
+  {
+   "ucs_id": "HMNSneez",
+   "feature": "spectral_centroid_hz",
+   "clips": 60
+  },
+  {
+   "ucs_id": "HMNSneez",
+   "feature": "high_band_energy",
+   "clips": 60
+  },
+  {
+   "ucs_id": "HMNSneez",
+   "feature": "spectral_flatness",
+   "clips": 60
+  },
+  {
+   "ucs_id": "HMNSneez",
+   "feature": "onset_rate_per_second",
+   "clips": 60
+  },
+  {
+   "ucs_id": "HMNSneez",
+   "feature": "zero_crossings_per_second",
+   "clips": 60
+  },
+  {
+   "ucs_id": "HMNSneez",
+   "feature": "harmonicity",
+   "clips": 60
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "crest_factor",
+   "clips": 122
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "envelope_attack_seconds",
+   "clips": 120
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "spectral_centroid_hz",
+   "clips": 314
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "low_band_energy",
+   "clips": 314
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "high_band_energy",
+   "clips": 314
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "envelope_decay_seconds",
+   "clips": 122
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "envelope_temporal_centroid",
+   "clips": 122
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "onset_rate_per_second",
+   "clips": 314
+  },
+  {
+   "ucs_id": "OBJWrite",
+   "feature": "spectral_centroid_hz",
+   "clips": 251
+  },
+  {
+   "ucs_id": "OBJWrite",
+   "feature": "high_band_energy",
+   "clips": 251
+  },
+  {
+   "ucs_id": "OBJWrite",
+   "feature": "zero_crossings_per_second",
+   "clips": 251
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "low_band_energy",
+   "clips": 47
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "spectral_centroid_hz",
+   "clips": 47
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "high_band_energy",
+   "clips": 47
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "stationarity",
+   "clips": 47
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "spectral_rolloff_hz",
+   "clips": 47
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "spectral_flux",
+   "clips": 47
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "spectral_flatness",
+   "clips": 47
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "zero_crossings_per_second",
+   "clips": 47
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "harmonicity",
+   "clips": 159
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "spectral_flatness",
+   "clips": 159
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "spectral_entropy",
+   "clips": 159
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "syllabic_modulation_energy",
+   "clips": 110
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "spectral_centroid_hz",
+   "clips": 159
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "high_band_energy",
+   "clips": 159
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "zero_crossings_per_second",
+   "clips": 159
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "crest_factor",
+   "clips": 44
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "spectral_flatness",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "stationarity",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "spectral_flux",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "spectral_centroid_deviation_hz",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "low_band_energy",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "high_band_energy",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "spectral_centroid_hz",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "spectral_slope_db_per_octave",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "harmonicity",
+   "clips": 238
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "onset_periodicity",
+   "clips": 238
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "onset_rate_per_second",
+   "clips": 285
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "onset_periodicity",
+   "clips": 285
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "sustain_ratio",
+   "clips": 40
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "envelope_temporal_centroid",
+   "clips": 40
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "spectral_centroid_hz",
+   "clips": 285
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "high_band_energy",
+   "clips": 285
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "zero_crossings_per_second",
+   "clips": 285
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "spectral_flatness",
+   "clips": 285
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "crest_factor",
+   "clips": 40
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "spectral_centroid_slope_hz_per_second",
+   "clips": 285
+  }
+ ],
+ "gate_false_kills": [
+  {
+   "ucs_id": "RAIN",
+   "feature": "onset_rate_per_second",
+   "gate": {
+    "min": 2.0
+   },
+   "clips": 234,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 85.0,
+   "measured_p05": 0.079073,
+   "measured_median": 0.78709,
+   "measured_p95": 2.899
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.6
+   },
+   "clips": 238,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 75.2,
+   "measured_p05": 0.080642,
+   "measured_median": 0.86162,
+   "measured_p95": 0.99129
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.55
+   },
+   "clips": 181,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 54.7,
+   "measured_p05": 0.048835,
+   "measured_median": 0.67268,
+   "measured_p95": 0.98271
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.45
+   },
+   "clips": 159,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 54.1,
+   "measured_p05": 0.04892,
+   "measured_median": 0.48941,
+   "measured_p95": 0.91581
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "spectral_centroid_hz",
+   "gate": {
+    "max": 4000.0
+   },
+   "clips": 531,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 43.3,
+   "measured_p05": 1684.0,
+   "measured_median": 3702.1,
+   "measured_p95": 6116.3
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "onset_periodicity",
+   "gate": {
+    "min": 0.3
+   },
+   "clips": 280,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 41.8,
+   "measured_p05": 0.0,
+   "measured_median": 0.35052,
+   "measured_p95": 0.78207
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.6
+   },
+   "clips": 456,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 37.1,
+   "measured_p05": 0.15628,
+   "measured_median": 0.47463,
+   "measured_p95": 0.94841
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.5
+   },
+   "clips": 234,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 35.9,
+   "measured_p05": 0.031731,
+   "measured_median": 0.33288,
+   "measured_p95": 0.92628
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.65
+   },
+   "clips": 318,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 33.3,
+   "measured_p05": 0.061465,
+   "measured_median": 0.39054,
+   "measured_p95": 0.95657
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "low_band_energy",
+   "gate": {
+    "min": 0.08
+   },
+   "clips": 47,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 29.8,
+   "measured_p05": 0.020537,
+   "measured_median": 0.11959,
+   "measured_p95": 0.44282
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "low_band_energy",
+   "gate": {
+    "min": 0.05
+   },
+   "clips": 198,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 28.8,
+   "measured_p05": 0.0072253,
+   "measured_median": 0.096237,
+   "measured_p95": 0.46812
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.5
+   },
+   "clips": 201,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 27.9,
+   "measured_p05": 0.026643,
+   "measured_median": 0.29141,
+   "measured_p95": 0.92257
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "low_band_energy",
+   "gate": {
+    "min": 0.05
+   },
+   "clips": 83,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 24.1,
+   "measured_p05": 0.0082625,
+   "measured_median": 0.13935,
+   "measured_p95": 0.44344
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "spectral_centroid_hz",
+   "gate": {
+    "max": 4000.0
+   },
+   "clips": 217,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 22.6,
+   "measured_p05": 1587.2,
+   "measured_median": 2959.9,
+   "measured_p95": 5319.2
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "crest_factor",
+   "gate": {
+    "max": 12.0
+   },
+   "clips": 40,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 22.5,
+   "measured_p05": 4.1819,
+   "measured_median": 9.5779,
+   "measured_p95": 14.329
+  },
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "low_band_energy",
+   "gate": {
+    "min": 0.05
+   },
+   "clips": 494,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 20.4,
+   "measured_p05": 0.014013,
+   "measured_median": 0.12558,
+   "measured_p95": 0.49115
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "spectral_flatness",
+   "gate": {
+    "min": 0.1
+   },
+   "clips": 60,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 20.0,
+   "measured_p05": 0.04506,
+   "measured_median": 0.14981,
+   "measured_p95": 0.35636
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "envelope_attack_seconds",
+   "gate": {
+    "max": 0.06
+   },
+   "clips": 914,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 18.4,
+   "measured_p05": 0.0049887,
+   "measured_median": 0.019955,
+   "measured_p95": 0.19456
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.55
+   },
+   "clips": 247,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 16.6,
+   "measured_p05": 0.026678,
+   "measured_median": 0.17474,
+   "measured_p95": 0.74937
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "crest_factor",
+   "gate": {
+    "max": 30.0
+   },
+   "clips": 52,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 15.4,
+   "measured_p05": 4.0281,
+   "measured_median": 11.093,
+   "measured_p95": 44.041
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "spectral_flatness",
+   "gate": {
+    "min": 0.15
+   },
+   "clips": 318,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 11.6,
+   "measured_p05": 0.038734,
+   "measured_median": 0.49776,
+   "measured_p95": 0.73464
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.55
+   },
+   "clips": 112,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 10.7,
+   "measured_p05": 0.039618,
+   "measured_median": 0.13227,
+   "measured_p95": 0.67885
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "sustain_ratio",
+   "gate": {
+    "max": 0.5
+   },
+   "clips": 71,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 8.5,
+   "measured_p05": 0.0049261,
+   "measured_median": 0.043478,
+   "measured_p95": 0.63582
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "onset_rate_per_second",
+   "gate": {
+    "min": 0.2,
+    "max": 12.0
+   },
+   "clips": 280,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 7.5,
+   "measured_p05": 0.11246,
+   "measured_median": 1.1,
+   "measured_p95": 4.017
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "crest_factor",
+   "gate": {
+    "max": 20.0
+   },
+   "clips": 40,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 7.5,
+   "measured_p05": 3.668,
+   "measured_median": 9.9344,
+   "measured_p95": 27.115
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "low_band_energy",
+   "gate": {
+    "min": 0.05
+   },
+   "clips": 187,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 6.4,
+   "measured_p05": 0.046024,
+   "measured_median": 0.15183,
+   "measured_p95": 0.47902
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "harmonicity",
+   "gate": {
+    "max": 0.45
+   },
+   "clips": 245,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 6.1,
+   "measured_p05": 0.033597,
+   "measured_median": 0.084954,
+   "measured_p95": 0.4789
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "envelope_attack_seconds",
+   "gate": {
+    "max": 0.08
+   },
+   "clips": 662,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 5.9,
+   "measured_p05": 0.0049887,
+   "measured_median": 0.0099773,
+   "measured_p95": 0.084807
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "envelope_attack_seconds",
+   "gate": {
+    "max": 0.3
+   },
+   "clips": 120,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 5.0,
+   "measured_p05": 0.0099773,
+   "measured_median": 0.029932,
+   "measured_p95": 0.28435
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "low_band_energy",
+   "gate": {
+    "max": 0.5
+   },
+   "clips": 338,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 4.7,
+   "measured_p05": 0.00015621,
+   "measured_median": 0.035768,
+   "measured_p95": 0.47027
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "transient_count",
+   "gate": {
+    "max": 12
+   },
+   "clips": 263,
+   "judged_on": "all_clips",
+   "percent_of_true_clips_killed": 3.0,
+   "measured_p05": 1.0,
+   "measured_median": 1.0,
+   "measured_p95": 6.0
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "crest_factor",
+   "gate": {
+    "min": 2.5
+   },
+   "clips": 36,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 2.8,
+   "measured_p05": 8.8231,
+   "measured_median": 25.209,
+   "measured_p95": 135.5
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "sustain_ratio",
+   "gate": {
+    "max": 0.4
+   },
+   "clips": 36,
+   "judged_on": "one_shot_clips",
+   "percent_of_true_clips_killed": 2.8,
+   "measured_p05": 0.00084034,
+   "measured_median": 0.027778,
+   "measured_p95": 0.093602
+  }
+ ],
+ "gate_changes": [
+  {
+   "ucs_id": "MOTRComb",
+   "feature": "low_band_energy",
+   "was": {
+    "min": 0.05
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 20.4,
+   "clips": 494,
+   "detail": "widening to the measured p01 (0.003935) reaches the feature's floor of 0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "MUSCPluck",
+   "feature": "envelope_attack_seconds",
+   "was": {
+    "max": 0.06
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 18.4,
+   "clips": 914,
+   "detail": "max 0.06 -> 1.095",
+   "now": {
+    "max": 1.095
+   }
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "low_band_energy",
+   "was": {
+    "min": 0.05
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 28.8,
+   "clips": 198,
+   "detail": "widening to the measured p01 (0.0005897) reaches the feature's floor of 0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "VEHCar",
+   "feature": "crest_factor",
+   "was": {
+    "max": 30.0
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 15.4,
+   "clips": 52,
+   "detail": "max 30.0 -> 78.16",
+   "now": {
+    "max": 78.16
+   }
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "onset_periodicity",
+   "was": {
+    "min": 0.3
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 41.8,
+   "clips": 280,
+   "detail": "widening to the measured p01 (0) reaches the feature's floor of 0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "onset_rate_per_second",
+   "was": {
+    "min": 0.2,
+    "max": 12.0
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 7.5,
+   "clips": 280,
+   "detail": "min 0.2 -> 0.04488",
+   "now": {
+    "min": 0.04488,
+    "max": 12.0
+   }
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "crest_factor",
+   "was": {
+    "min": 2.5
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 2.8,
+   "clips": 36,
+   "detail": "min 2.5 -> 1.349",
+   "now": {
+    "min": 1.349
+   }
+  },
+  {
+   "ucs_id": "CLOCKTick",
+   "feature": "sustain_ratio",
+   "was": {
+    "max": 0.4
+   },
+   "action": "kept",
+   "percent_of_true_clips_killed": 2.8,
+   "clips": 36,
+   "detail": "",
+   "now": {
+    "max": 0.4
+   }
+  },
+  {
+   "ucs_id": "ANMLInsc",
+   "feature": "low_band_energy",
+   "was": {
+    "max": 0.5
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 4.7,
+   "clips": 338,
+   "detail": "max 0.5 -> 0.7191",
+   "now": {
+    "max": 0.7191
+   }
+  },
+  {
+   "ucs_id": "VEHTruck",
+   "feature": "low_band_energy",
+   "was": {
+    "min": 0.05
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 24.1,
+   "clips": 83,
+   "detail": "widening to the measured p01 (0.002022) reaches the feature's floor of 0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "CRWDApls",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.45
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 6.1,
+   "clips": 245,
+   "detail": "max 0.45 -> 0.7543",
+   "now": {
+    "max": 0.7543
+   }
+  },
+  {
+   "ucs_id": "MUSCPerc",
+   "feature": "envelope_attack_seconds",
+   "was": {
+    "max": 0.08
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 5.9,
+   "clips": 662,
+   "detail": "max 0.08 -> 0.3876",
+   "now": {
+    "max": 0.3876
+   }
+  },
+  {
+   "ucs_id": "HMNBrth",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.6
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 37.1,
+   "clips": 456,
+   "detail": "widening to the measured p99 (0.98) reaches the feature's ceiling of 1.0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "WATRSurf",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.5
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 27.9,
+   "clips": 201,
+   "detail": "max 0.5 -> 0.9885",
+   "now": {
+    "max": 0.9885
+   }
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "onset_rate_per_second",
+   "was": {
+    "min": 2.0
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 85.0,
+   "clips": 234,
+   "detail": "min 2.0 -> 0.04826",
+   "now": {
+    "min": 0.04826
+   }
+  },
+  {
+   "ucs_id": "RAIN",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.5
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 35.9,
+   "clips": 234,
+   "detail": "max 0.5 -> 0.9978",
+   "now": {
+    "max": 0.9978
+   }
+  },
+  {
+   "ucs_id": "HMNBurp",
+   "feature": "spectral_centroid_hz",
+   "was": {
+    "max": 4000.0
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 22.6,
+   "clips": 217,
+   "detail": "max 4000.0 -> 7689.0",
+   "now": {
+    "max": 7689.0
+   }
+  },
+  {
+   "ucs_id": "VEHBus",
+   "feature": "low_band_energy",
+   "was": {
+    "min": 0.05
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 6.4,
+   "clips": 187,
+   "detail": "widening to the measured p01 (0.005451) reaches the feature's floor of 0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "FIRECrkl",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.55
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 54.7,
+   "clips": 181,
+   "detail": "widening to the measured p99 (1.00) reaches the feature's ceiling of 1.0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "FARTReal",
+   "feature": "spectral_centroid_hz",
+   "was": {
+    "max": 4000.0
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 43.3,
+   "clips": 531,
+   "detail": "max 4000.0 -> 7419.0",
+   "now": {
+    "max": 7419.0
+   }
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.65
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 33.3,
+   "clips": 318,
+   "detail": "max 0.65 -> 0.9982",
+   "now": {
+    "max": 0.9982
+   }
+  },
+  {
+   "ucs_id": "FIREBurn",
+   "feature": "spectral_flatness",
+   "was": {
+    "min": 0.15
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 11.6,
+   "clips": 318,
+   "detail": "widening to the measured p01 (0.01673) reaches the feature's floor of 0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "crest_factor",
+   "was": {
+    "max": 12.0
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 22.5,
+   "clips": 40,
+   "detail": "max 12.0 -> 18.2",
+   "now": {
+    "max": 18.2
+   }
+  },
+  {
+   "ucs_id": "AIRHiss",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.55
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 10.7,
+   "clips": 112,
+   "detail": "max 0.55 -> 0.8891",
+   "now": {
+    "max": 0.8891
+   }
+  },
+  {
+   "ucs_id": "WATRFlow",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.55
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 16.6,
+   "clips": 247,
+   "detail": "max 0.55 -> 0.904",
+   "now": {
+    "max": 0.904
+   }
+  },
+  {
+   "ucs_id": "TOOLHand",
+   "feature": "sustain_ratio",
+   "was": {
+    "max": 0.5
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 8.5,
+   "clips": 71,
+   "detail": "widening to the measured p99 (1.00) reaches the feature's ceiling of 1.0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "MACHFan",
+   "feature": "spectral_flatness",
+   "was": {
+    "min": 0.1
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 20.0,
+   "clips": 60,
+   "detail": "min 0.1 -> 0.009705",
+   "now": {
+    "min": 0.009705
+   }
+  },
+  {
+   "ucs_id": "WHSH",
+   "feature": "transient_count",
+   "was": {
+    "max": 12
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 3.0,
+   "clips": 263,
+   "detail": "max 12 -> 16.8",
+   "now": {
+    "max": 16.8
+   }
+  },
+  {
+   "ucs_id": "WATRSplsh",
+   "feature": "envelope_attack_seconds",
+   "was": {
+    "max": 0.3
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 5.0,
+   "clips": 120,
+   "detail": "max 0.3 -> 2.09",
+   "now": {
+    "max": 2.09
+   }
+  },
+  {
+   "ucs_id": "AMBTraf",
+   "feature": "low_band_energy",
+   "was": {
+    "min": 0.08
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 29.8,
+   "clips": 47,
+   "detail": "widening to the measured p01 (0.01785) reaches the feature's floor of 0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "VOXWhsp",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.45
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 54.1,
+   "clips": 159,
+   "detail": "widening to the measured p99 (0.98) reaches the feature's ceiling of 1.0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "WIND",
+   "feature": "harmonicity",
+   "was": {
+    "max": 0.6
+   },
+   "action": "removed",
+   "percent_of_true_clips_killed": 75.2,
+   "clips": 238,
+   "detail": "widening to the measured p99 (1.00) reaches the feature's ceiling of 1.0 — it excludes nothing"
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "crest_factor",
+   "was": {
+    "max": 20.0
+   },
+   "action": "widened",
+   "percent_of_true_clips_killed": 7.5,
+   "clips": 40,
+   "detail": "max 20.0 -> 54.11",
+   "now": {
+    "max": 54.11
+   }
+  }
+ ],
+ "disagreements": [
+  {
+   "ucs_id": "BIRDCrow",
+   "feature": "spectral_flatness",
+   "clips": 61,
+   "reasoned_mean": 0.6,
+   "measured_mean": 0.10262,
+   "spreads_apart": 2.5
+  },
+  {
+   "ucs_id": "OBJZipr",
+   "feature": "onset_periodicity",
+   "clips": 285,
+   "reasoned_mean": 0.72,
+   "measured_mean": 0.28735,
+   "spreads_apart": 2.4
+  },
+  {
+   "ucs_id": "WATRPour",
+   "feature": "stationarity",
+   "clips": 43,
+   "reasoned_mean": 0.6,
+   "measured_mean": 0.049689,
+   "spreads_apart": 2.2
+  },
+  {
+   "ucs_id": "MECHRtch",
+   "feature": "onset_periodicity",
+   "clips": 44,
+   "reasoned_mean": 0.72,
+   "measured_mean": 0.27208,
+   "spreads_apart": 2.2
+  },
+  {
+   "ucs_id": "BOATMisc",
+   "feature": "harmonicity",
+   "clips": 84,
+   "reasoned_mean": 0.25,
+   "measured_mean": 0.831,
+   "spreads_apart": 2.1
+  }
+ ],
+ "per_subcategory": {
+  "MOTRComb": {
+   "clips": 494,
+   "classes": {
+    "Accelerating_and_revving_and_vroom": 68,
+    "Engine": 494,
+    "Engine_starting": 76,
+    "Idling": 50
+   }
+  },
+  "MUSCKeyd": {
+   "clips": 1415,
+   "classes": {
+    "Accordion": 52,
+    "Keyboard_(musical)": 1363,
+    "Organ": 309,
+    "Piano": 771
+   }
+  },
+  "MUSCPluck": {
+   "clips": 2061,
+   "classes": {
+    "Acoustic_guitar": 531,
+    "Guitar": 1799,
+    "Plucked_string_instrument": 1885,
+    "Strum": 175,
+    "Bass_guitar": 320,
+    "Electric_guitar": 501,
+    "Harp": 177
+   }
+  },
+  "BOATMisc": {
+   "clips": 84,
+   "classes": {
+    "Boat_and_Water_vehicle": 84
+   }
+  },
+  "VEHCar": {
+   "clips": 198,
+   "classes": {
+    "Car": 198
+   }
+  },
+  "CLOCKTick": {
+   "clips": 280,
+   "classes": {
+    "Clock": 246,
+    "Tick": 132
+   }
+  },
+  "ANMLDog": {
+   "clips": 724,
+   "classes": {
+    "Dog": 724,
+    "Bark": 399
+   }
+  },
+  "DOORMisc": {
+   "clips": 346,
+   "classes": {
+    "Door": 346,
+    "Slam": 244
+   }
+  },
+  "ANMLInsc": {
+   "clips": 338,
+   "classes": {
+    "Insect": 338,
+    "Buzz": 71,
+    "Cricket": 150
+   }
+  },
+  "VEHTruck": {
+   "clips": 83,
+   "classes": {
+    "Truck": 83
+   }
+  },
+  "MUSCBrass": {
+   "clips": 941,
+   "classes": {
+    "Brass_instrument": 941,
+    "Trumpet": 579
+   }
+  },
+  "CRWDApls": {
+   "clips": 245,
+   "classes": {
+    "Applause": 245
+   }
+  },
+  "MUSCPerc": {
+   "clips": 2095,
+   "classes": {
+    "Bass_drum": 193,
+    "Drum": 1160,
+    "Percussion": 2095,
+    "Drum_kit": 337,
+    "Snare_drum": 736,
+    "Crash_cymbal": 213,
+    "Cymbal": 665,
+    "Tabla": 52
+   }
+  },
+  "WATRPlmb": {
+   "clips": 607,
+   "classes": {
+    "Bathtub_(filling_or_washing)": 105,
+    "Sink_(filling_or_washing)": 227,
+    "Water_tap_and_faucet": 214,
+    "Toilet_flush": 181
+   }
+  },
+  "ANMLFarm": {
+   "clips": 280,
+   "classes": {
+    "Livestock_and_farm_animals_and_working_animals": 280
+   }
+  },
+  "COMTelph": {
+   "clips": 417,
+   "classes": {
+    "Telephone": 417
+   }
+  },
+  "TRNMisc": {
+   "clips": 297,
+   "classes": {
+    "Train": 297
+   }
+  },
+  "VEHBike": {
+   "clips": 126,
+   "classes": {
+    "Bicycle": 126
+   }
+  },
+  "HMNBrth": {
+   "clips": 456,
+   "classes": {
+    "Breathing": 412,
+    "Gasp": 54,
+    "Sigh": 75
+   }
+  },
+  "ANMLAmph": {
+   "clips": 58,
+   "classes": {
+    "Frog": 58
+   }
+  },
+  "WATRSurf": {
+   "clips": 201,
+   "classes": {
+    "Ocean": 201,
+    "Waves_and_surf": 146
+   }
+  },
+  "RAIN": {
+   "clips": 234,
+   "classes": {
+    "Rain": 234,
+    "Raindrop": 35
+   }
+  },
+  "VOXSing": {
+   "clips": 498,
+   "classes": {
+    "Singing": 498,
+    "Female_singing": 137,
+    "Male_singing": 74
+   }
+  },
+  "BIRDMisc": {
+   "clips": 267,
+   "classes": {
+    "Bird_vocalization_and_bird_call_and_bird_song": 267
+   }
+  },
+  "WATRBubl": {
+   "clips": 63,
+   "classes": {
+    "Boiling": 63
+   }
+  },
+  "MUSCStr": {
+   "clips": 1921,
+   "classes": {
+    "Bowed_string_instrument": 1921
+   }
+  },
+  "HMNBurp": {
+   "clips": 217,
+   "classes": {
+    "Burping_and_eructation": 217
+   }
+  },
+  "VEHBus": {
+   "clips": 187,
+   "classes": {
+    "Bus": 187
+   }
+  },
+  "COMCam": {
+   "clips": 300,
+   "classes": {
+    "Camera": 300
+   }
+  },
+  "ANMLCat": {
+   "clips": 284,
+   "classes": {
+    "Cat": 284,
+    "Meow": 166,
+    "Purr": 68
+   }
+  },
+  "CRWDCheer": {
+   "clips": 83,
+   "classes": {
+    "Cheering": 83
+   }
+  },
+  "FOODEat": {
+   "clips": 172,
+   "classes": {
+    "Chewing_and_mastication": 172
+   }
+  },
+  "MUSCChim": {
+   "clips": 156,
+   "classes": {
+    "Chime": 156,
+    "Wind_chime": 61
+   }
+  },
+  "VOXLaff": {
+   "clips": 862,
+   "classes": {
+    "Chuckle_and_chortle": 50,
+    "Giggle": 104,
+    "Laughter": 862
+   }
+  },
+  "BELLLrg": {
+   "clips": 59,
+   "classes": {
+    "Church_bell": 59
+   }
+  },
+  "CMPTKey": {
+   "clips": 229,
+   "classes": {
+    "Typing": 229,
+    "Computer_keyboard": 129
+   }
+  },
+  "VOXMisc": {
+   "clips": 418,
+   "classes": {
+    "Speech": 418
+   }
+  },
+  "OBJCoin": {
+   "clips": 400,
+   "classes": {
+    "Coin_(dropping)": 400
+   }
+  },
+  "HMNCough": {
+   "clips": 268,
+   "classes": {
+    "Cough": 268
+   }
+  },
+  "BELLAnml": {
+   "clips": 162,
+   "classes": {
+    "Cowbell": 162
+   }
+  },
+  "FIRECrkl": {
+   "clips": 181,
+   "classes": {
+    "Crackle": 181
+   }
+  },
+  "WOODMisc": {
+   "clips": 121,
+   "classes": {
+    "Wood": 121
+   }
+  },
+  "BIRDCrow": {
+   "clips": 61,
+   "classes": {
+    "Crow": 61
+   }
+  },
+  "CRWDMisc": {
+   "clips": 122,
+   "classes": {
+    "Crowd": 122
+   }
+  },
+  "PAPRHndl": {
+   "clips": 198,
+   "classes": {
+    "Crumpling_and_crinkling": 198
+   }
+  },
+  "GLASMisc": {
+   "clips": 238,
+   "classes": {
+    "Glass": 238
+   }
+  },
+  "VOXCry": {
+   "clips": 96,
+   "classes": {
+    "Crying_and_sobbing": 96
+   }
+  },
+  "DOORCab": {
+   "clips": 62,
+   "classes": {
+    "Cupboard_open_or_close": 62
+   }
+  },
+  "FOODTware": {
+   "clips": 227,
+   "classes": {
+    "Cutlery_and_silverware": 227
+   }
+  },
+  "FOODKware": {
+   "clips": 216,
+   "classes": {
+    "Dishes_and_pots_and_pans": 216
+   }
+  },
+  "DRWRMisc": {
+   "clips": 133,
+   "classes": {
+    "Drawer_open_or_close": 133
+   }
+  },
+  "TOOLPowr": {
+   "clips": 149,
+   "classes": {
+    "Drill": 147,
+    "Power_tool": 149
+   }
+  },
+  "WATRDrip": {
+   "clips": 98,
+   "classes": {
+    "Drip": 98
+   }
+  },
+  "EXPLReal": {
+   "clips": 207,
+   "classes": {
+    "Explosion": 207
+   }
+  },
+  "FARTReal": {
+   "clips": 531,
+   "classes": {
+    "Fart": 531
+   }
+  },
+  "WATRPour": {
+   "clips": 43,
+   "classes": {
+    "Fill_(with_liquid)": 43,
+    "Pour": 2
+   }
+  },
+  "HMNSkin": {
+   "clips": 131,
+   "classes": {
+    "Finger_snapping": 131
+   }
+  },
+  "FIREBurn": {
+   "clips": 318,
+   "classes": {
+    "Fire": 318
+   }
+  },
+  "FOODCook": {
+   "clips": 61,
+   "classes": {
+    "Frying_(food)": 61
+   }
+  },
+  "AIRHiss": {
+   "clips": 112,
+   "classes": {
+    "Hiss": 112
+   }
+  },
+  "BIRDSea": {
+   "clips": 52,
+   "classes": {
+    "Gull_and_seagull": 52
+   }
+  },
+  "WATRFlow": {
+   "clips": 247,
+   "classes": {
+    "Gurgling": 79,
+    "Stream": 177
+   }
+  },
+  "TOOLHand": {
+   "clips": 352,
+   "classes": {
+    "Hammer": 143,
+    "Sawing": 104,
+    "Scissors": 106
+   }
+  },
+  "MUSCWind": {
+   "clips": 2706,
+   "classes": {
+    "Harmonica": 163,
+    "Wind_instrument_and_woodwind_instrument": 2543
+   }
+  },
+  "VOXEfrt": {
+   "clips": 122,
+   "classes": {
+    "Shout": 122,
+    "Yell": 82
+   }
+  },
+  "OBJKey": {
+   "clips": 164,
+   "classes": {
+    "Keys_jangling": 164
+   }
+  },
+  "MACHFan": {
+   "clips": 60,
+   "classes": {
+    "Mechanical_fan": 60
+   }
+  },
+  "MACHAppl": {
+   "clips": 131,
+   "classes": {
+    "Microwave_oven": 131
+   }
+  },
+  "ALRMSirn": {
+   "clips": 72,
+   "classes": {
+    "Siren": 72
+   }
+  },
+  "VEHMoto": {
+   "clips": 114,
+   "classes": {
+    "Motorcycle": 114
+   }
+  },
+  "OBJTape": {
+   "clips": 70,
+   "classes": {
+    "Packing_tape_and_duct_tape": 70
+   }
+  },
+  "MACHOffc": {
+   "clips": 99,
+   "classes": {
+    "Printer": 99
+   }
+  },
+  "MECHRtch": {
+   "clips": 44,
+   "classes": {
+    "Ratchet_and_pawl": 44
+   }
+  },
+  "FEETHmn": {
+   "clips": 546,
+   "classes": {
+    "Run": 231,
+    "Walk_and_footsteps": 326
+   }
+  },
+  "WHSH": {
+   "clips": 263,
+   "classes": {
+    "Whoosh_and_swoosh_and_swish": 263
+   }
+  },
+  "VOXScrm": {
+   "clips": 211,
+   "classes": {
+    "Screaming": 211
+   }
+  },
+  "TRNSbwy": {
+   "clips": 269,
+   "classes": {
+    "Subway_and_metro_and_underground": 269
+   }
+  },
+  "SPRTSkate": {
+   "clips": 83,
+   "classes": {
+    "Skateboard": 83
+   }
+  },
+  "HMNSneez": {
+   "clips": 60,
+   "classes": {
+    "Sneeze": 60
+   }
+  },
+  "WATRSplsh": {
+   "clips": 314,
+   "classes": {
+    "Splash_and_splatter": 314
+   }
+  },
+  "OBJWrite": {
+   "clips": 251,
+   "classes": {
+    "Writing": 251
+   }
+  },
+  "AMBTraf": {
+   "clips": 47,
+   "classes": {
+    "Traffic_noise_and_roadway_noise": 47
+   }
+  },
+  "VOXWhsp": {
+   "clips": 159,
+   "classes": {
+    "Whispering": 159
+   }
+  },
+  "WIND": {
+   "clips": 238,
+   "classes": {
+    "Wind": 238
+   }
+  },
+  "OBJZipr": {
+   "clips": 285,
+   "classes": {
+    "Zipper_(clothing)": 285
+   }
+  }
+ },
+ "not_calibrated": {
+  "length_seconds": "Clip duration in FSD50K is a Freesound upload artifact truncated to 0.3-30 s. It describes the uploader, not the sound.",
+  "lufs": "Freesound uploads carry arbitrary uploader-chosen normalization.",
+  "root_mean_square_level": "Same: absolute level is not a property of the source here.",
+  "stereo_width": "FSD50K is mono. The feature is undefined, not zero.",
+  "sample_rate": "A property of the dataset's encoding, not the sound.",
+  "beats_per_minute": "Not a target of this dataset.",
+  "dc_offset": "A recording defect, not a category property.",
+  "clipping_density": "A recording defect, and confounded by lossy-transcode overshoot.",
+  "total_harmonic_distortion": "Confounded by lossy-transcode artifacts.",
+  "band_limit_high_hz": "57 % of FSD50K clips are band-limited below 17 kHz and 8 % sit in the 15–16.5 kHz MP3 lowpass band. Freesound uploads are routinely lossy-origin, transcoded to WAV for release. This feature would measure the uploader's codec, not the sound.",
+  "voicing_ratio": "The WebRTC VAD is telephony-tuned and fires on any harmonic energy. On this data it rates AMBIENCE-TRAFFIC 0.96 voiced and CROWDS-APPLAUSE 0.79 — those are facts about the detector, not the sounds. Calibrating to them would enshrine a broken feature. Blocked until a real voicing detector replaces the VAD."
+ }
+}

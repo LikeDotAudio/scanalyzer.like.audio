@@ -1,0 +1,61 @@
+name: Build and Deploy Web Frontend
+
+# Triggers the workflow on push events to the main branch,
+# but only when files in the Web_Front directory change.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Web_Front/**'
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy to FTPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: 'Web_Front/package-lock.json'
+
+      - name: 🦀 Build Analyzer Wasm Module
+        working-directory: ./Web_Front/wasm_analyzer
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+          wasm-pack build --target web
+
+      - name: 🦀 Build Extractor Wasm Module
+        working-directory: ./Web_Front/wasm_extractor
+        run: wasm-pack build --target web
+
+      - name: 📦 Install Dependencies
+        working-directory: ./Web_Front
+        run: npm install
+
+      - name: 🔨 Build Vite Project
+        working-directory: ./Web_Front
+        run: npm run build
+
+      - name: 🚀 Sync files via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # The local directory to upload (the output of the Vite build)
+          local-dir: ./Web_Front/dist/
+          # Optional: specify the target path on your FTPS server (e.g. /public_html/)
+          server-dir: /
+          # Ensure FTPS is used securely
+          protocol: ftps
+          security: loose

@@ -1,0 +1,2669 @@
+{
+ "version": "8.2.1",
+ "category": "DESIGNED",
+ "emoji": "🎨",
+ "subcategories": [
+  {
+   "subcategory": "BASS DIVE",
+   "category_id": "DSGNBass",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Deep descending bass notes. Bass Drops."
+   ],
+   "synonyms": [
+    "Bass",
+    "Descending",
+    "Dive",
+    "Downer",
+    "Drop",
+    "Fall",
+    "Low-Frequency",
+    "Pitch",
+    "Rumble",
+    "Sub-Bass",
+    "Subsonic",
+    "Trailer",
+    "Vibration"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25,
+      "max": 60.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": -350.0,
+      "deviation": 300.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": -9.0,
+      "deviation": 7.0,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 240.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.06,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Defined by a monotonically FALLING trajectory: centroid slope and pitch slope are strongly negative. This is the sign-flip of DESIGNED-RISER, which is otherwise the same morphology.",
+     "Energy migrates into the sub-200 Hz band as the sound proceeds; DESIGNED-RUMBLE is low-band too but is stationary with no trajectory.",
+     "Longer and more continuous than DESIGNED-BOOM, which is a single front-loaded transient, not a glide."
+    ],
+    "confusable_with": [
+     "DSGNRise",
+     "DSGNRmbl",
+     "DSGNBoom",
+     "DSGNWhsh",
+     "DSGNMorph"
+    ]
+   }
+  },
+  {
+   "subcategory": "BOOM",
+   "category_id": "DSGNBoom",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Deep short and tight",
+    "low end stingers",
+    "big trailer deep hits. LFE type low end sweeteners."
+   ],
+   "synonyms": [
+    "Bang",
+    "Blast",
+    "Boom",
+    "Bump",
+    "Burst",
+    "Clap",
+    "Crash",
+    "Deep",
+    "Hit",
+    "Hypersonic",
+    "Impact",
+    "Low",
+    "Shockwave",
+    "Sting",
+    "Supersonic",
+    "Thump",
+    "Thunderous",
+    "Trailer"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 12.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.12
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.37866,
+      "deviation": 0.28994,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 146,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 0.28994,
+       "reasoned_mean": 0.68,
+       "reasoned_deviation": 0.16,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1214.6929,
+      "deviation": 2.81462,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 146,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 2.81462,
+       "reasoned_mean": 170.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.02494,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 53,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 2.79452,
+       "reasoned_mean": 0.006,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.12572,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 53,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 0.09334,
+       "reasoned_mean": 0.28,
+       "reasoned_deviation": 0.13,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.93348,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 53,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 1.75176,
+       "reasoned_mean": 9.0,
+       "reasoned_deviation": 1.9,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.15853,
+      "deviation": 0.19775,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 146,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 0.19775,
+       "reasoned_mean": 0.06,
+       "reasoned_deviation": 0.07,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.77324,
+      "deviation": 2.61737,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 53,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 2.61737,
+       "reasoned_mean": 0.8,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.73931,
+      "deviation": 1.70378,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 53,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 1.70378,
+       "reasoned_mean": 2.5,
+       "reasoned_deviation": 1.6,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.66878,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 146,
+       "fsd50k_classes": [
+        "Boom"
+       ],
+       "measured_deviation": 2.26124,
+       "reasoned_mean": 0.8,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Deep short and tight' — a single LF-dominated transient with a fast decay. Shorter and darker than DESIGNED-IMPACT, and far more front-loaded than DESIGNED-RUMBLE.",
+     "Unlike DESIGNED-BASS DIVE there is no pitch/centroid trajectory: the spectrum is fixed and the envelope does the work.",
+     "Darker than DESIGNED-STINGER, which carries substantial high-band content."
+    ],
+    "confusable_with": [
+     "DSGNImpt",
+     "DSGNStngr",
+     "DSGNRmbl",
+     "DSGNBass",
+     "EXPLDsgn"
+    ]
+   }
+  },
+  {
+   "subcategory": "BRAAM",
+   "category_id": "DSGNBram",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Long deep horn like sounds. Like a War of the World's type long sound",
+    "or like a long french horn braam type sound."
+   ],
+   "synonyms": [
+    "Bramm"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.6,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 85.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.15,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 12.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A long, LOW, strongly harmonic held note — a horn, not a hit. Harmonicity separates it from DESIGNED-RUMBLE (noise) and its length separates it from DESIGNED-BOOM (impulse).",
+     "Pitched and stable where DESIGNED-BASS DIVE glides downward.",
+     "Lower fundamental and more brass-like partial structure than DESIGNED-DRONE, and with a defined swell rather than an unchanging bed."
+    ],
+    "confusable_with": [
+     "DSGNDron",
+     "DSGNRmbl",
+     "DSGNTonl",
+     "DSGNBass",
+     "MUSCBrass"
+    ]
+   }
+  },
+  {
+   "subcategory": "DISTORTION",
+   "category_id": "DSGNDist",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Particulary distored designed sounds and distortion elements."
+   ],
+   "synonyms": [
+    "Buzz",
+    "Crackle",
+    "Distorted",
+    "Distortion",
+    "Feedback",
+    "Fuzz",
+    "Hiss",
+    "Hum",
+    "Noise",
+    "Off",
+    "Overdrive",
+    "Squared",
+    "Static"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "total_harmonic_distortion",
+      "min": 0.03
+     }
+    ],
+    "priors": [
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.35,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "clipping_density",
+      "mean": 0.08,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -3.0,
+      "deviation": 3.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The squashed signature: high total_harmonic_distortion and clipping_density with an ABNORMALLY LOW crest factor — the waveform has been driven into a wall, so peak/RMS collapses toward unity.",
+     "Low crest is what separates it from every other loud designed sound (BOOM, IMPACT, STINGER all have high crest).",
+     "Noisier and harmonically fouler than DESIGNED-SYNTHETIC; less periodic than DESIGNED-RHYTHMIC."
+    ],
+    "confusable_with": [
+     "DSGNSynth",
+     "DSGNGran",
+     "ELECBuzz",
+     "DSGNRythm",
+     "BEEPLofi"
+    ]
+   }
+  },
+  {
+   "subcategory": "DRONE",
+   "category_id": "DSGNDron",
+   "category_short": "DSGN",
+   "emoji": "🌫️",
+   "explanation": [
+    "Designed drones",
+    "eerie tense drones",
+    "long stylized sounds with not much activity or movement."
+   ],
+   "synonyms": [
+    "Ambient",
+    "Drone",
+    "Droning",
+    "Hum",
+    "Humming",
+    "Monotonous",
+    "Ominous",
+    "Pad",
+    "Pulsing",
+    "Resonant",
+    "Sustained",
+    "Tension",
+    "Texture",
+    "Throb",
+    "Throbbing",
+    "Whirring"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flux",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.9,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 20.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.1,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 120.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The textbook stationary case: 'long stylized sounds with not much activity or movement'. Near-zero spectral_flux, stationarity approaching 1, long length, flat envelope, almost no onsets.",
+     "Movement is the discriminator: any appreciable centroid trajectory makes it RISER/BASS DIVE; any churn makes it GRANULAR or MORPH; any onset train makes it RHYTHMIC.",
+     "DESIGNED-EERIE is the same family but restless — higher flux, lower stationarity, more inharmonic."
+    ],
+    "confusable_with": [
+     "DSGNErie",
+     "DSGNRmbl",
+     "DSGNTonl",
+     "DSGNBram",
+     "AMBDsgn",
+     "WINDTonl"
+    ]
+   }
+  },
+  {
+   "subcategory": "EERIE",
+   "category_id": "DSGNErie",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Often designed",
+    "but tense strange undefined sounds that are eerie",
+    "tense",
+    "suspenseful. Some overlap with DESIGNED-DRONE possible."
+   ],
+   "synonyms": [
+    "Apprehension",
+    "Bleak",
+    "Chilling",
+    "Creepy",
+    "Disturbing",
+    "Eerie",
+    "Freaky",
+    "Frightful",
+    "Ghostly",
+    "Grim",
+    "Haunting",
+    "Horror",
+    "Mysterious",
+    "Ominous",
+    "Otherworldly",
+    "Queer",
+    "Scary",
+    "Shadowed",
+    "Sinister",
+    "Spooky",
+    "Strange",
+    "Supernatural",
+    "Tense",
+    "Tension",
+    "Uncanny",
+    "Unnatural",
+    "Unsettling",
+    "Weird"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.09,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 500.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Explanation admits overlap with DESIGNED-DRONE. The measurable split: EERIE is a drone that MOVES — higher spectral_flux, lower stationarity, more centroid modulation, and markedly more inharmonic (detuned, unsettled partials).",
+     "Tension/dread is semantic; DSP can only narrow to 'long, unstable, inharmonic bed'. Require text agreement to commit."
+    ],
+    "confusable_with": [
+     "DSGNDron",
+     "DSGNEthr",
+     "DSGNTonl",
+     "AMBDsgn",
+     "MAGEvil"
+    ]
+   }
+  },
+  {
+   "subcategory": "ETHEREAL",
+   "category_id": "DSGNEthr",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Ethereal wispy designed sounds. Ghostlike whispers",
+    "or heavenly tones. Otherworldly. See also DESIGNED-EERIE."
+   ],
+   "synonyms": [
+    "Aethereal",
+    "Airy",
+    "Angelic",
+    "Celestial",
+    "Divine",
+    "Dreamy",
+    "Ethereal",
+    "Ghostly",
+    "Gossamer",
+    "Heavenly",
+    "Immaterial",
+    "Otherworldly",
+    "Spectral",
+    "Spirit",
+    "Surreal",
+    "Transcendent",
+    "Unearthly",
+    "Vaporous",
+    "Wispy"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.1,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.12,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Wispy', 'airy', 'heavenly': the bright, low-energy, HF-weighted sibling of DESIGNED-EERIE. Centroid sits well above 2 kHz and low_band_energy is near zero — the opposite weighting to DRONE/RUMBLE.",
+     "Softer and less percussive than MAGIC-SHIMMER, which has a dense onset train of glassy transients; ETHEREAL is a smooth bed."
+    ],
+    "confusable_with": [
+     "DSGNErie",
+     "DSGNDron",
+     "DSGNVocl",
+     "MAGAngl",
+     "MAGShim",
+     "CREAEthr"
+    ]
+   }
+  },
+  {
+   "subcategory": "GRANULAR",
+   "category_id": "DSGNGran",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Granular synthesis",
+    "sounds that have a gritty textural type sound",
+    "think PaulStretch",
+    "sounds broken down into tiny slices and recompiled."
+   ],
+   "synonyms": [
+    "Grained",
+    "Grains",
+    "Grainy",
+    "Granular",
+    "Granulated",
+    "Gritty",
+    "Particles",
+    "Paulstretch",
+    "Slices",
+    "Textured"
+   ],
+   "acoustic_signature": {
+    "morphology": "granular",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 25.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 60.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4000.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Gritty textural... think PaulStretch': a DENSE, high-flux micro-event field. spectral_flux is the headline — grains re-scatter the spectrum every frame, so flux is an order of magnitude above DESIGNED-DRONE.",
+     "Dense but APERIODIC: high onset_rate with LOW onset_periodicity is exactly what separates it from DESIGNED-RHYTHMIC, whose onsets lock to a grid.",
+     "More eventful than DESIGNED-DRONE (flux ~0.35 vs ~0.03) and less harmonically fouled than DESIGNED-DISTORTION (grit is temporal, not clipped)."
+    ],
+    "confusable_with": [
+     "DSGNRythm",
+     "DSGNDron",
+     "DSGNDist",
+     "DSGNMorph",
+     "DSGNSynth"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "DSGNImpt",
+   "category_short": "DSGN",
+   "emoji": "💥",
+   "explanation": [
+    "Designed huge impacts",
+    "collisions",
+    "stylized big hits. Possible overlap with DESIGNED-STINGER."
+   ],
+   "synonyms": [
+    "Blow",
+    "Bump",
+    "Collision",
+    "Crash",
+    "Hit",
+    "Impact",
+    "Jolt",
+    "Knock",
+    "Slam",
+    "Smash",
+    "Strike",
+    "Thud",
+    "Trailer"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.005,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.8,
+      "deviation": 1.6,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 1.2,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.1,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A big front-loaded hit: near-instant attack, temporal centroid early, high crest, then a designed tail. Explanation admits overlap with DESIGNED-STINGER; the honest split is spectral, not temporal — IMPACT is broadband/LF-weighted, STINGER is bright and piercing.",
+     "Longer and less exclusively sub-bass than DESIGNED-BOOM.",
+     "Not a sweep: no monotonic centroid trajectory (that would be BASS DIVE or WHOOSH)."
+    ],
+    "confusable_with": [
+     "DSGNStngr",
+     "DSGNBoom",
+     "SCIImpt",
+     "EXPLDsgn",
+     "TOONImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "DSGNMisc",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Designed sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "Deliberate catch-all. No morphology commitment and no priors: this is the abstention target when the top posterior inside DESIGNED is low or the top two are within a hair of each other.",
+     "Never assert MISC from signal — it wins only by default."
+    ],
+    "confusable_with": [
+     "DSGNSrce",
+     "DSGNSynth"
+    ]
+   }
+  },
+  {
+   "subcategory": "MORPH",
+   "category_id": "DSGNMorph",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "A stylized blending of elements",
+    "something transitioning into another thing."
+   ],
+   "synonyms": [
+    "Alter",
+    "Blend",
+    "Change",
+    "Convert",
+    "Evolving",
+    "Metamorphosis",
+    "Morph",
+    "Mutate",
+    "Reshape",
+    "Shape",
+    "Transfiguration",
+    "Transform",
+    "Transformation",
+    "Transition",
+    "Transmutation",
+    "Transmute"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flux",
+      "mean": 0.25,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Something transitioning into another thing': the spectrum at the end does not resemble the spectrum at the start. Low stationarity plus high centroid DEVIATION, but WITHOUT the monotonic slope that defines RISER/BASS DIVE — a morph wanders, a sweep travels.",
+     "Fewer, coarser events than DESIGNED-GRANULAR (which is a dense micro-event field, not a slow crossfade of identities)."
+    ],
+    "confusable_with": [
+     "DSGNGran",
+     "DSGNRise",
+     "DSGNBass",
+     "DSGNWhsh",
+     "MAGSpel"
+    ]
+   }
+  },
+  {
+   "subcategory": "RISER",
+   "category_id": "DSGNRise",
+   "category_short": "DSGN",
+   "emoji": "📈",
+   "explanation": [
+    "Tension risers",
+    "things rising in tone",
+    "something similar to a rising string line to create tension."
+   ],
+   "synonyms": [
+    "Ascend",
+    "Ascending",
+    "Climbing",
+    "Crescendo",
+    "Escalate",
+    "Frequency",
+    "Intensify",
+    "Pitch",
+    "Reverse",
+    "Riser",
+    "Rising",
+    "Rizer",
+    "Soar",
+    "Surge",
+    "Tension",
+    "Tone",
+    "Trailer"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "min": -50.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 700.0,
+      "deviation": 550.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 6.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.65,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1300.0,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": -0.5,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The cleanest sweep in UCS: spectral_centroid_slope_hz_per_second is strongly POSITIVE across the whole file, and the amplitude envelope is back-loaded (temporal centroid > 0.6, negative skew) because a riser crescendos into its own end.",
+     "The gate is the sign of the slope. A negative slope is DESIGNED-BASS DIVE — same morphology, opposite direction.",
+     "A WHOOSH rises then falls (large centroid deviation, near-zero net slope); a RISER only rises."
+    ],
+    "confusable_with": [
+     "DSGNBass",
+     "DSGNWhsh",
+     "DSGNMorph",
+     "DSGNTonl",
+     "SWSH"
+    ]
+   }
+  },
+  {
+   "subcategory": "RUMBLE",
+   "category_id": "DSGNRmbl",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Designed rumbles for layering into a mix. Earthquake rumbles. Composite rumble."
+   ],
+   "synonyms": [
+    "Bass",
+    "Deep",
+    "Earthquake",
+    "Grumble",
+    "Quake",
+    "Rumble",
+    "Shake",
+    "Subharmonic",
+    "Subsonic",
+    "Subwoofer",
+    "Tremble",
+    "Vibrate"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.25
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.78,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 95.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.03,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 220.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.06,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Sustained sub-bass NOISE bed. low_band_energy is dominant (~0.8) with essentially nothing above 2 kHz, and — unlike BASS DIVE — no trajectory at all.",
+     "Not front-loaded: DESIGNED-BOOM has the same spectral weighting but is an impulse with an early temporal centroid; RUMBLE holds.",
+     "Noisier and less pitched than DESIGNED-BRAAM or DESIGNED-DRONE."
+    ],
+    "confusable_with": [
+     "DSGNBoom",
+     "DSGNBass",
+     "DSGNDron",
+     "DSGNBram",
+     "AMBDsgn"
+    ]
+   }
+  },
+  {
+   "subcategory": "RHYTHMIC",
+   "category_id": "DSGNRythm",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Stattaco or glitchy machine type loops",
+    "things with definied starts",
+    "stops",
+    "rhythmic stutters."
+   ],
+   "synonyms": [
+    "Beat",
+    "Glitch",
+    "Pattern",
+    "Pulse",
+    "Rhythmic",
+    "Staccato",
+    "Stutter",
+    "Temp"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4
+     },
+     {
+      "feature": "transient_count",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.78,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 20.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 120.0,
+      "deviation": 1.45,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Staccato or glitchy machine type loops... things with defined starts, stops, rhythmic stutters.' The single decisive feature is onset_periodicity: the onset train autocorrelates strongly (a grid), and beats_per_minute is likely to fire non-zero.",
+     "DESIGNED-GRANULAR has an equally dense onset train but it is STOCHASTIC — high onset_rate, low onset_periodicity. Periodicity is the whole boundary.",
+     "Gated hard on transient_count: a one-shot cannot be rhythmic."
+    ],
+    "confusable_with": [
+     "DSGNGran",
+     "DSGNSynth",
+     "UIGlitch",
+     "MUSCLoop",
+     "DSGNDist"
+    ]
+   }
+  },
+  {
+   "subcategory": "SOURCE",
+   "category_id": "DSGNSrce",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "For recordings meant to be used as source for other designed sounds",
+    "experimental recordings",
+    "elements",
+    "etc."
+   ],
+   "synonyms": [
+    "Material",
+    "Raw",
+    "Recording",
+    "Source"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "provenance_only",
+    "gates": [],
+    "priors": [],
+    "discriminators": [
+     "Defined by INTENT, not by sound: 'recordings meant to be used as source for other designed sounds, experimental recordings, elements'. A source file is whatever it was recorded from — any morphology is legal.",
+     "Excluded from signal scoring entirely (alpha = 0). Only filename/metadata text ('source', 'raw', 'element') can select it."
+    ],
+    "confusable_with": [
+     "DSGNMisc",
+     "CREASrce"
+    ]
+   }
+  },
+  {
+   "subcategory": "STINGER",
+   "category_id": "DSGNStngr",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Stings",
+    "stylized screen sweeteners. Big trailer type sounds. Big shock scare type sounds. Stylized stings",
+    "hits and impacts. Overlap with DESIGNED-IMPACT."
+   ],
+   "synonyms": [
+    "Cinematic",
+    "Piercing",
+    "Slam",
+    "Stab",
+    "Startle",
+    "Sting",
+    "Stinging",
+    "Trailer"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 2.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.008,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Explanation concedes overlap with DESIGNED-IMPACT; treat as narrowable, not separable. The measurable lean: a stinger is PIERCING — high_band_energy and centroid well above IMPACT's — and its designed reverb tail runs longer relative to the hit.",
+     "Far brighter than DESIGNED-BOOM, which is almost pure low band.",
+     "Text ('sting', 'stab', 'trailer', 'cinematic') must agree before committing."
+    ],
+    "confusable_with": [
+     "DSGNImpt",
+     "DSGNBoom",
+     "MUSCStngr",
+     "SCIImpt",
+     "DSGNTonl"
+    ]
+   }
+  },
+  {
+   "subcategory": "SYNTHETIC",
+   "category_id": "DSGNSynth",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Very synthesized sounds",
+    "very electronic synth stuff. Raw work files of synth-play."
+   ],
+   "synonyms": [
+    "Analog",
+    "Digital",
+    "Granular",
+    "Mod",
+    "Modular",
+    "Synth",
+    "Synthesized"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.15,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 8.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 220.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Very synthesized... raw work files of synth-play.' Signal evidence is weak because a synth can make ANY morphology; what it cannot easily fake is a clean, exactly-harmonic partial ladder with a low noise floor.",
+     "Overlaps DESIGNED-TONAL (which is far more strictly single-pitched and flatness-free) and DESIGNED-DISTORTION (which is defined by clipping, not by harmonic purity).",
+     "Lean on synonyms ('modular', 'analog', 'synth') to commit."
+    ],
+    "confusable_with": [
+     "DSGNTonl",
+     "DSGNDist",
+     "DSGNRythm",
+     "MUSCSynth",
+     "DSGNMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TONAL",
+   "category_id": "DSGNTonl",
+   "category_short": "DSGN",
+   "emoji": "🎨",
+   "explanation": [
+    "Designed sounds with a particularly tonal nature. The ringing in your ear of tinnitus for example."
+   ],
+   "synonyms": [
+    "Bowed",
+    "Chord",
+    "Frequency",
+    "Harmonic",
+    "Harmonious",
+    "Melodic",
+    "Melodious",
+    "Musical",
+    "Note",
+    "Ping",
+    "Pitch",
+    "Resonance",
+    "Resonant",
+    "Ring",
+    "Ringing",
+    "Shell",
+    "Shing",
+    "Shock",
+    "Sonorous",
+    "Sound",
+    "Subjective",
+    "Timbre",
+    "Tinnitus",
+    "Tone",
+    "Vibration"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "spectral_flatness",
+      "max": 0.4
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.85,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.04,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 5.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 700.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "complexity",
+      "mean": 400.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'A particularly tonal nature. The ringing in your ear of tinnitus.' The two gates ARE the definition: harmonicity high and spectral_flatness near zero — a near-sinusoidal, stable-f0 signal.",
+     "Purer than DESIGNED-SYNTHETIC (which tolerates noise and distortion) and infinitely purer than DESIGNED-DRONE, which may be a noise bed with no f0 at all.",
+     "Held, so not BEEPS: a beep is a short gated tone in an onset train, this is a sustained ring."
+    ],
+    "confusable_with": [
+     "DSGNSynth",
+     "DSGNDron",
+     "DSGNBram",
+     "BEEP",
+     "MUSCSynth",
+     "WINDTonl"
+    ]
+   }
+  },
+  {
+   "subcategory": "VOCAL",
+   "category_id": "DSGNVocl",
+   "category_short": "DSGN",
+   "emoji": "🎤",
+   "explanation": [
+    "Design specifically around vocals",
+    "ghostly whispers",
+    "enchanted spells",
+    "reversed talking etc. Not for Creatures."
+   ],
+   "synonyms": [
+    "Bellow",
+    "Enchantment",
+    "Ghostly",
+    "Howl",
+    "Oral",
+    "Processed",
+    "Roar",
+    "Scream",
+    "Screech",
+    "Spell",
+    "Verbal",
+    "Vocal",
+    "Vocalized",
+    "Voiced",
+    "Wail",
+    "Whisper"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 900.0,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 180.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.18,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Vocal-derived DESIGN: formant structure and 3-8 Hz syllabic modulation survive the processing, so voicing_ratio stays high even when the source is reversed or pitched.",
+     "The 'designed' half is semantic — VOICES-WHISPER and DESIGNED-VOCAL measure alike. Text and heavy effects (long tails, reversal, extreme pitch) are the tiebreak.",
+     "Explicitly NOT for Creatures: CREATURES-* vocalizations belong there."
+    ],
+    "confusable_with": [
+     "VOXWhsp",
+     "VOXMisc",
+     "MAGSpel",
+     "CREAHmn",
+     "DSGNEthr"
+    ]
+   }
+  },
+  {
+   "subcategory": "WHOOSH",
+   "category_id": "DSGNWhsh",
+   "category_short": "DSGN",
+   "emoji": "🌀",
+   "explanation": [
+    "Stylized designed big whooshes",
+    "definite possible overlap confusion with SHOOSHES-WHOOSH",
+    "but this for less natural and more stylized versions."
+   ],
+   "synonyms": [
+    "Air",
+    "By",
+    "Dopplered",
+    "Fast",
+    "Flying",
+    "Motion",
+    "Movement",
+    "Rapid",
+    "Rushing",
+    "Speeding",
+    "Swish",
+    "Swishes",
+    "Swooping",
+    "Swoosh",
+    "Swooshes",
+    "Trailer",
+    "Whirr",
+    "Whooshed",
+    "Whooshes",
+    "Whooshing"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1600.0,
+      "deviation": 2.1,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.45,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.35,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.8,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Band-swept NOISE with a rise-fall envelope: high spectral_flatness (no f0), large spectral_centroid_deviation as the filter travels, but near-zero NET centroid slope because it comes back down. That rise-fall is the split against DESIGNED-RISER (monotonic up) and BASS DIVE (monotonic down).",
+     "Explanation concedes confusion with SWOOSHES-WHOOSH; this entry is for the LESS natural, MORE stylized versions — expect designed HF sheen, longer tails and layered sub content that a recorded swoosh lacks.",
+     "Not impulsive: attack is a slow swell (~0.3 s), not a click."
+    ],
+    "confusable_with": [
+     "WHSH",
+     "SWSH",
+     "DSGNRise",
+     "DSGNBass",
+     "DSGNMorph"
+    ]
+   }
+  }
+ ]
+}

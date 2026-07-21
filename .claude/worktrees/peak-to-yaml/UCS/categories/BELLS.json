@@ -1,0 +1,1566 @@
+{
+ "version": "8.2.1",
+ "category": "BELLS",
+ "emoji": "🔔",
+ "subcategories": [
+  {
+   "subcategory": "ANIMAL",
+   "category_id": "BELLAnml",
+   "category_short": "BELL",
+   "emoji": "🔔",
+   "explanation": [
+    "Bells attached to animals",
+    "like cow and sheep bells",
+    "or a dog or cat collar with a bell on it."
+   ],
+   "synonyms": [
+    "Bell",
+    "Collar",
+    "Cowbell",
+    "Hawkbell",
+    "Sheep",
+    "Sleigh"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.85
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.28211,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.75,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 162,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.27471
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.39115,
+      "deviation": 2.356,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 160,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.38963
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2675.8,
+      "deviation": 2000,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 162,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2865.92475
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.50166,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 162,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.54433
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.42916,
+      "deviation": 0.2421,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 162,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.47076
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 454.64,
+      "deviation": 500,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 139,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 454.63918
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.019215,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 162,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.45
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 13.431,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 160,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 13.3284
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0099773,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 130,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.00998
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.0,
+      "deviation": 7,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 162,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.0
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Small, bright and heavily damped: a collar, sheep or sleigh bell is tiny, so its pitch and spectral_centroid_hz are high and its decay_time_seconds_60db is far SHORTER than any other bell here — the strap and the animal's body damp the ring.",
+     "It is worn on something moving, so it usually arrives as a repeated jingle (a rhythmic onset train) rather than a single deliberate strike. That combination — bright, short-ringing, repeated — separates it from BELLS-HANDBELL, which is bigger, darker and rung on purpose.",
+     "BELLS-LARGE is the opposite extreme: low, and ringing for many seconds.",
+     "Orchestral sleigh bells or a kit cowbell are MUSICAL-PERCUSSION / MUSICAL-SHAKEN."
+    ],
+    "confusable_with": [
+     "BELLHand",
+     "BELLMisc",
+     "MUSCShake",
+     "MUSCPerc",
+     "METLImpt",
+     "ANMLFarm"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 162,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Cowbell": 162
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 162,
+       "percentile_05": 1781.7,
+       "median": 2567.3,
+       "percentile_95": 3499.1
+      },
+      "crest_factor": {
+       "clips": 160,
+       "percentile_05": 8.7804,
+       "median": 13.431,
+       "percentile_95": 26.383,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 160,
+       "percentile_05": 0.26679,
+       "median": 0.38963,
+       "percentile_95": 0.48229,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 130,
+       "percentile_05": 0.0049887,
+       "median": 0.0099773,
+       "percentile_95": 0.019955,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 160,
+       "percentile_05": 0.38912,
+       "median": 0.87302,
+       "percentile_95": 1.2422,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 160,
+       "percentile_05": 15.02,
+       "median": 29.799,
+       "percentile_95": 60.419,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 160,
+       "percentile_05": 0.064853,
+       "median": 0.079819,
+       "percentile_95": 0.10476,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 160,
+       "percentile_05": 3.9325,
+       "median": 5.2457,
+       "percentile_95": 7.182,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 160,
+       "percentile_05": 0.0,
+       "median": 0.0001097,
+       "percentile_95": 0.00057035,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 160,
+       "percentile_05": 0.0093588,
+       "median": 0.016603,
+       "percentile_95": 0.025942,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 162,
+       "percentile_05": 0.278,
+       "median": 0.5349,
+       "percentile_95": 0.91647
+      },
+      "high_band_energy": {
+       "clips": 162,
+       "percentile_05": 0.13889,
+       "median": 0.42814,
+       "percentile_95": 0.81373
+      },
+      "inharmonicity": {
+       "clips": 162,
+       "percentile_05": 0.067764,
+       "median": 0.28149,
+       "percentile_95": 0.54914
+      },
+      "low_band_energy": {
+       "clips": 162,
+       "percentile_05": 0.00072084,
+       "median": 0.0035362,
+       "percentile_95": 0.016413
+      },
+      "mid_band_energy": {
+       "clips": 162,
+       "percentile_05": 0.1707,
+       "median": 0.56687,
+       "percentile_95": 0.84491
+      },
+      "onset_periodicity": {
+       "clips": 162,
+       "percentile_05": 0.0,
+       "median": 0.018837,
+       "percentile_95": 0.49504
+      },
+      "onset_rate_per_second": {
+       "clips": 162,
+       "percentile_05": 0.34909,
+       "median": 0.50166,
+       "percentile_95": 0.78534
+      },
+      "partial_count": {
+       "clips": 162,
+       "percentile_05": 1.0,
+       "median": 7.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 139,
+       "percentile_05": 98.218,
+       "median": 454.64,
+       "percentile_95": 1002.3
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 92,
+       "percentile_05": -6.0698,
+       "median": -2.3411,
+       "percentile_95": 0.98273
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 162,
+       "percentile_05": 1514.1,
+       "median": 2042.3,
+       "percentile_95": 2539.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 162,
+       "percentile_05": 1165.3,
+       "median": 2669.3,
+       "percentile_95": 4397.4
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 162,
+       "percentile_05": 3177.8,
+       "median": 5102.8,
+       "percentile_95": 6048.3
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 162,
+       "percentile_05": 3400.1,
+       "median": 5166.9,
+       "percentile_95": 9024.6
+      },
+      "spectral_entropy": {
+       "clips": 162,
+       "percentile_05": 0.33433,
+       "median": 0.45454,
+       "percentile_95": 0.5763
+      },
+      "spectral_flatness": {
+       "clips": 162,
+       "percentile_05": 0.029078,
+       "median": 0.073747,
+       "percentile_95": 0.17024
+      },
+      "spectral_flux": {
+       "clips": 162,
+       "percentile_05": 0.15881,
+       "median": 0.19051,
+       "percentile_95": 0.2016
+      },
+      "spectral_rolloff_hz": {
+       "clips": 162,
+       "percentile_05": 1841.5,
+       "median": 5647.7,
+       "percentile_95": 6652.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 162,
+       "percentile_05": -4.239,
+       "median": -1.3634,
+       "percentile_95": 1.1806
+      },
+      "stationarity": {
+       "clips": 162,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.0,
+       "censored_at_floor_fraction": 0.994
+      },
+      "sustain_ratio": {
+       "clips": 160,
+       "percentile_05": 0.016129,
+       "median": 0.028846,
+       "percentile_95": 0.048077,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 162,
+       "percentile_05": 0.0041834,
+       "median": 0.011503,
+       "percentile_95": 0.037574
+      },
+      "transient_count": {
+       "clips": 162,
+       "percentile_05": 1.0,
+       "median": 1.0,
+       "percentile_95": 1.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 162,
+       "percentile_05": 378.97,
+       "median": 974.54,
+       "percentile_95": 2361.6
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "DOORBELL",
+   "category_id": "BELLDoor",
+   "category_short": "BELL",
+   "emoji": "🚪",
+   "explanation": [
+    "Mechanical doorbells. Would also maybe electronic doorbells in here as well to avoid confusion probably. Also see ALARMS-BUZZERS for a door buzzer."
+   ],
+   "synonyms": [
+    "Chime",
+    "Ding",
+    "Ding-Dong",
+    "Dong",
+    "Door",
+    "Doorbell",
+    "Ring"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.2,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 2.79452,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 80,
+       "fsd50k_classes": [
+        "Doorbell"
+       ],
+       "measured_deviation": 2.79452,
+       "reasoned_mean": 2,
+       "reasoned_deviation": 1.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.19296,
+      "deviation": 0.24983,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 80,
+       "fsd50k_classes": [
+        "Doorbell"
+       ],
+       "measured_deviation": 0.24983,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 169.61664,
+      "deviation": 300,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 80,
+       "fsd50k_classes": [
+        "Doorbell"
+       ],
+       "measured_deviation": 2.82301,
+       "reasoned_mean": 550,
+       "reasoned_deviation": 300,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.95651,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 80,
+       "fsd50k_classes": [
+        "Doorbell"
+       ],
+       "measured_deviation": 0.04862,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3496.14541,
+      "deviation": 900,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 80,
+       "fsd50k_classes": [
+        "Doorbell"
+       ],
+       "measured_deviation": 1.7805,
+       "reasoned_mean": 1600,
+       "reasoned_deviation": 900,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The classic ding-dong is two struck chime bars, so expect transient_count near 2 with a clean ring under and after them — a distinctive count for a bell.",
+     "Tuned bars are less inharmonic than a cast bell, so inharmonicity sits below BELLS-LARGE and BELLS-HANDBELL, and the ring is shorter than a tower bell but much longer than a tiny BELLS-ANIMAL.",
+     "A rasping door BUZZER is not a bell at all — that is ALARMS-BUZZER: sustained, distorted, no decay. The presence or absence of a decaying tail decides it outright.",
+     "UCS keeps electronic doorbell chimes here too, which is what caps this at narrowable: a synthesized ding-dong has the envelope but not the inharmonic partials."
+    ],
+    "confusable_with": [
+     "ALRMBuzr",
+     "BELLHand",
+     "BELLMisc",
+     "MUSCChim",
+     "CLOCKChim"
+    ]
+   }
+  },
+  {
+   "subcategory": "GONG",
+   "category_id": "BELLGong",
+   "category_short": "BELL",
+   "emoji": "🔔",
+   "explanation": [
+    "A large flat circular disc hit with a mallet. With v8.2 of the list most of these would now go into MUSICAL-BELLS instead."
+   ],
+   "synonyms": [
+    "Agung",
+    "Bowl",
+    "Buddhist",
+    "Gamelan",
+    "Gong",
+    "Meditation",
+    "Tam-Tam",
+    "Temple",
+    "Tibetan"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.34488,
+      "deviation": 0.23004,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 258,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 0.23004,
+       "reasoned_mean": 0.75,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 3.55856,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.85,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 162,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 3.48007,
+       "reasoned_mean": 8.0,
+       "reasoned_deviation": 6.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.73109,
+      "deviation": 0.30152,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 258,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 0.30152,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 162.73063,
+      "deviation": 90,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 229,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 2.94098,
+       "reasoned_mean": 150,
+       "reasoned_deviation": 90,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.05651,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 258,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 0.07761,
+       "reasoned_mean": 0.4,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 7.0,
+      "deviation": 15,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 258,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 2.22357,
+       "reasoned_mean": 30,
+       "reasoned_deviation": 15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 39.62766,
+      "deviation": 367.9596,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 258,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 367.9596,
+       "reasoned_mean": 60.0,
+       "reasoned_deviation": 80.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.02494,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 182,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 2.13262,
+       "reasoned_mean": 0.02,
+       "reasoned_deviation": 2.718,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.10529,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 182,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 0.07225,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 8.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "complexity",
+      "mean": 2971.02158,
+      "deviation": 1500,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 258,
+       "fsd50k_classes": [
+        "Gong"
+       ],
+       "measured_deviation": 1.5725,
+       "reasoned_mean": 2500,
+       "reasoned_deviation": 1500,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "The longest and most inharmonic ring in the whole taxonomy: a struck disc whose partials are so dense and so detuned that it barely reads as pitched at all — very high inharmonicity with LOW harmonicity, decaying over many seconds.",
+     "A gong blooms. Energy migrates upward after the strike through nonlinear coupling, so spectral_centroid_slope_hz_per_second is positive; a cast bell (BELLS-LARGE) rings out with a flat or falling centroid. That bloom, plus the low harmonicity, is the real gong/bell boundary.",
+     "Struck with a soft mallet, so the attack is slower than a metal clapper strike.",
+     "UCS v8.2 redirects most musical gongs, tam-tams and singing bowls to MUSICAL-BELLS, so this is a shrinking category and text should be trusted over signal when the two disagree."
+    ],
+    "confusable_with": [
+     "MUSCBell",
+     "MUSCPerc",
+     "MUSCTnprc",
+     "BELLLrg",
+     "METLTonl",
+     "BELLMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDBELL",
+   "category_id": "BELLHand",
+   "category_short": "BELL",
+   "emoji": "🔔",
+   "explanation": [
+    "Small to medium hand bells",
+    "dinner bells. Musical bells like HANDBELLS and CARILLION now go into MUSICAL-BELLS."
+   ],
+   "synonyms": [
+    "Alter",
+    "Bells",
+    "Butler",
+    "Dinner",
+    "Hand",
+    "Jingle",
+    "School",
+    "Service"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.2,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 850,
+      "deviation": 450,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800,
+      "deviation": 1500,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5,
+      "deviation": 4,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The middle of the bell size ladder, and size is the only real axis: brighter and shorter-ringing than BELLS-LARGE, darker and longer-ringing than the tiny BELLS-ANIMAL. Rung by hand, so several clapper strikes usually appear in one file.",
+     "Strong metallic inharmonicity is what makes any of these a bell and not a mallet instrument — MUSICAL-PERCUSSION TUNED bars (glockenspiel, marimba, vibraphone) are tuned to near-INTEGER harmonic ratios, so their inharmonicity is low. High inharmonicity plus a long ring is the archetypal bell.",
+     "Handbell choirs and carillons were moved to MUSICAL-BELLS in v8.2; this is the dinner, school and service bell."
+    ],
+    "confusable_with": [
+     "BELLAnml",
+     "BELLDoor",
+     "BELLMisc",
+     "MUSCBell",
+     "ALRMBell",
+     "MUSCTnprc"
+    ]
+   }
+  },
+  {
+   "subcategory": "LARGE",
+   "category_id": "BELLLrg",
+   "category_short": "BELL",
+   "emoji": "🔔",
+   "explanation": [
+    "Large bells like a church bell or tower bell",
+    "or city hall bells",
+    "Big Ben. Any large bell."
+   ],
+   "synonyms": [
+    "Ben",
+    "Big",
+    "Cathedral",
+    "Church",
+    "Liberty",
+    "Peal",
+    "Temple",
+    "Tower"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 10.0,
+      "deviation": 7.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.34864,
+      "deviation": 0.2031,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.36753
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 171.97,
+      "deviation": 110,
+      "transform": "log",
+      "weight": 0.75,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 54,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 146.02649
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2439.1,
+      "deviation": 500,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2199.81381
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.037684,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.03505
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 9.0,
+      "deviation": 10,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 8.0
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 15.0,
+      "deviation": 10.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.012,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.57754,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.60637
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.32199,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 59,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.55
+      }
+     }
+    ],
+    "discriminators": [
+     "Mass sets the pitch. A church or tower bell is LOW (hum well under ~300 Hz), rings for many seconds, and carries the famous inharmonic partial set — roughly 2.0, 2.4, 3.0 and 4.2 times the hum, nowhere near integers. High inharmonicity plus a very long decay_time_seconds_60db plus a low f0 is one of the strongest single signatures in UCS.",
+     "Every other bell is smaller, hence higher and shorter: BELLS-HANDBELL and especially BELLS-ANIMAL sit far up in pitch with a fraction of the ring time.",
+     "BELLS-GONG rings just as long but is a disc, not a cast bell: much less pitched (low harmonicity) and its brightness RISES after the strike instead of decaying flat.",
+     "Peals and tolling give a slow periodic onset train; a single toll is equally valid."
+    ],
+    "confusable_with": [
+     "BELLGong",
+     "BELLHand",
+     "BELLMisc",
+     "MUSCBell",
+     "ALRMBell",
+     "AMBRlgn"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 59,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Church_bell": 59
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 59,
+       "percentile_05": 1677.8,
+       "median": 2672.7,
+       "percentile_95": 5215.4
+      },
+      "harmonicity": {
+       "clips": 59,
+       "percentile_05": 0.2217,
+       "median": 0.57754,
+       "percentile_95": 0.88114
+      },
+      "high_band_energy": {
+       "clips": 59,
+       "percentile_05": 0.1237,
+       "median": 0.38279,
+       "percentile_95": 0.74883
+      },
+      "inharmonicity": {
+       "clips": 59,
+       "percentile_05": 0.11799,
+       "median": 0.34864,
+       "percentile_95": 0.62421
+      },
+      "low_band_energy": {
+       "clips": 59,
+       "percentile_05": 0.0086219,
+       "median": 0.037684,
+       "percentile_95": 0.3482
+      },
+      "mid_band_energy": {
+       "clips": 59,
+       "percentile_05": 0.22247,
+       "median": 0.53848,
+       "percentile_95": 0.81325
+      },
+      "onset_periodicity": {
+       "clips": 59,
+       "percentile_05": 0.12321,
+       "median": 0.32199,
+       "percentile_95": 0.54009
+      },
+      "onset_rate_per_second": {
+       "clips": 59,
+       "percentile_05": 0.075209,
+       "median": 0.39412,
+       "percentile_95": 2.0885
+      },
+      "partial_count": {
+       "clips": 59,
+       "percentile_05": 3.0,
+       "median": 9.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 54,
+       "percentile_05": 51.579,
+       "median": 160.95,
+       "percentile_95": 1102.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 59,
+       "percentile_05": 165.26,
+       "median": 408.56,
+       "percentile_95": 1458.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 59,
+       "percentile_05": 1172.1,
+       "median": 2439.1,
+       "percentile_95": 5326.9
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 59,
+       "percentile_05": 1167.8,
+       "median": 1974.8,
+       "percentile_95": 4290.3
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 59,
+       "percentile_05": -86.63,
+       "median": 7.334,
+       "percentile_95": 328.71
+      },
+      "spectral_entropy": {
+       "clips": 59,
+       "percentile_05": 0.24577,
+       "median": 0.42313,
+       "percentile_95": 0.5099
+      },
+      "spectral_flatness": {
+       "clips": 59,
+       "percentile_05": 0.043734,
+       "median": 0.11801,
+       "percentile_95": 0.39392
+      },
+      "spectral_flux": {
+       "clips": 59,
+       "percentile_05": 0.086282,
+       "median": 0.1665,
+       "percentile_95": 0.20741
+      },
+      "spectral_rolloff_hz": {
+       "clips": 59,
+       "percentile_05": 1661.4,
+       "median": 4325.6,
+       "percentile_95": 10597.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 59,
+       "percentile_05": -7.3017,
+       "median": -3.7625,
+       "percentile_95": -1.1515
+      },
+      "stationarity": {
+       "clips": 59,
+       "percentile_05": 0.0,
+       "median": 0.24647,
+       "percentile_95": 0.65897,
+       "censored_at_floor_fraction": 0.203
+      },
+      "syllabic_modulation_energy": {
+       "clips": 59,
+       "percentile_05": 0.04138,
+       "median": 0.16025,
+       "percentile_95": 0.2884
+      },
+      "transient_count": {
+       "clips": 59,
+       "percentile_05": 1.0,
+       "median": 8.0,
+       "percentile_95": 33.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 59,
+       "percentile_05": 776.1,
+       "median": 2272.0,
+       "percentile_95": 4156.9
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "BELLMisc",
+   "category_short": "BELL",
+   "emoji": "🔔",
+   "explanation": [
+    "Bell sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Bicycle",
+    "Fire",
+    "School",
+    "Train",
+    "Tram",
+    "Trolley"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.85
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.0591,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 94,
+       "fsd50k_classes": [
+        "Bicycle_bell"
+       ],
+       "measured_deviation": 0.08761,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.60153,
+      "deviation": 1.84409,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 43,
+       "fsd50k_classes": [
+        "Bicycle_bell"
+       ],
+       "measured_deviation": 1.84409,
+       "reasoned_mean": 1.5,
+       "reasoned_deviation": 1.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.01222,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 43,
+       "fsd50k_classes": [
+        "Bicycle_bell"
+       ],
+       "measured_deviation": 1.35063,
+       "reasoned_mean": 0.005,
+       "reasoned_deviation": 2.718,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 13.11813,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 43,
+       "fsd50k_classes": [
+        "Bicycle_bell"
+       ],
+       "measured_deviation": 1.40845,
+       "reasoned_mean": 8.0,
+       "reasoned_deviation": 5.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 8870.93145,
+      "deviation": 1500,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 94,
+       "fsd50k_classes": [
+        "Bicycle_bell"
+       ],
+       "measured_deviation": 1.21344,
+       "reasoned_mean": 2200,
+       "reasoned_deviation": 1500,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Unmistakably bell morphology — struck, inharmonic, ringing — but attached to an object the siblings do not name: bicycle, tram, trolley, fire and train bells. The object is not recoverable from DSP, only from the name.",
+     "Keeps the family gates (it still rings and is still inharmonic), so it prunes non-bells while never out-asserting a named sibling."
+    ],
+    "confusable_with": [
+     "BELLHand",
+     "BELLLrg",
+     "BELLAnml",
+     "ALRMBell",
+     "METLImpt",
+     "TRNMisc"
+    ]
+   }
+  }
+ ]
+}

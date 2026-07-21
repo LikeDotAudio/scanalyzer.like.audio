@@ -1,0 +1,2726 @@
+{
+ "version": "8.2.1",
+ "category": "CARTOON",
+ "emoji": "🎪",
+ "subcategories": [
+  {
+   "subcategory": "ANIMAL",
+   "category_id": "TOONAnml",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon animals",
+    "made from animals calls",
+    "props",
+    "etc. Very silly or stylized animals calls for use in Cartoons."
+   ],
+   "synonyms": [
+    "Animal",
+    "Animated",
+    "Call",
+    "Cartoony",
+    "Comic",
+    "Duck",
+    "Fake",
+    "Hanna",
+    "Hunting",
+    "Silly",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 20
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900,
+      "deviation": 600,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 550,
+      "deviation": 350,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A vocalization with formant structure but exaggerated past biology: pitched higher and modulated far more wildly (large spectral_centroid_deviation_hz, extreme |pitch_slope_semitones_per_second|) than a real ANIMALS call. The unnatural excess IS the cartoon cue.",
+     "Non-human timbre with no syllabic speech rhythm separates it from CARTOON-VOCAL; text (duck, silly, toon) commits it.",
+     "Which animal it is can never be read from signal."
+    ],
+    "confusable_with": [
+     "TOONVox",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "BOING",
+   "category_id": "TOONBoing",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon boings",
+    "like for a bouncing cartoon character. Roger Rabbit or Tigger from Winnie the Pooh."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Harp",
+    "Jaw",
+    "Mouth",
+    "Pogo",
+    "Silly",
+    "Spring",
+    "Stick",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     },
+     {
+      "feature": "length_seconds",
+      "max": 8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1200,
+      "deviation": 700,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.005,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 1.948,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 300,
+      "deviation": 200,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A struck spring: a pitched tone whose f0 swings violently and REPEATEDLY after a single sharp attack - very high spectral_centroid_deviation_hz with a large pitch_slope_semitones_per_second that changes sign. Physically impossible in nature; the exaggeration is the signature.",
+     "CARTOON-TWANG bends pitch down once, monotonically, then dies; BOING keeps oscillating.",
+     "Tonal, so it is not CARTOON-IMPACT (broadband) and not CARTOON-SWISH (noise)."
+    ],
+    "confusable_with": [
+     "TOONTwang",
+     "TOONPluk",
+     "TOONStrch"
+    ]
+   }
+  },
+  {
+   "subcategory": "CLANG",
+   "category_id": "TOONClang",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon clangs",
+    "like a funny anvil hit. Most likely a very metallic resonant hit."
+   ],
+   "synonyms": [
+    "Animated",
+    "Anvil",
+    "Bong",
+    "Cartoony",
+    "Clink",
+    "Comic",
+    "Hanna",
+    "Metallic",
+    "Silly",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.05
+     },
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.7,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 3.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3000,
+      "deviation": 1500,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 1.948,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12,
+      "deviation": 5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Metal: bright, strongly inharmonic, and it RINGS - a long decay_time_seconds_60db is the material-impedance split from CARTOON-IMPACT, whose bonk dies immediately.",
+     "The cartoon exaggeration is an anvil ring that outlasts anything a real anvil would do.",
+     "Untuned and inharmonic in the large, unlike MUSICAL-BELLS, which is a tuned instrument played musically."
+    ],
+    "confusable_with": [
+     "TOONImpt",
+     "MUSCBell",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CREAK",
+   "category_id": "TOONCreak",
+   "category_short": "TOON",
+   "emoji": "🚪",
+   "explanation": [
+    "Cartoon creaks",
+    "some overlap or confusion with CARTOON-STRETCH possible."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Screech",
+    "Silly",
+    "Toon",
+    "Wood"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flux",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1200,
+      "deviation": 700,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2500,
+      "deviation": 1400,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4000,
+      "deviation": 2500,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.1,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Stick-slip contact: sustained but unstable - high spectral_flux and a wandering centroid, neither cleanly tonal nor cleanly noisy.",
+     "The UCS text flags overlap with CARTOON-STRETCH. The measurable split: STRETCH trends MONOTONICALLY in pitch/centroid (one-signed spectral_centroid_slope_hz_per_second); CREAK jitters around no trend.",
+     "Lower and longer than CARTOON-SQUEAK, which is a short, very high, thin tone."
+    ],
+    "confusable_with": [
+     "TOONStrch",
+     "TOONSqk",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "HORN",
+   "category_id": "TOONHorn",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon horns",
+    "as in bulb horns",
+    "clown horns."
+   ],
+   "synonyms": [
+    "Animated",
+    "Bugle",
+    "Bulb",
+    "Cartoony",
+    "Clown",
+    "Comic",
+    "Hanna",
+    "Honk",
+    "Silly",
+    "Toon",
+    "Trumpet"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1
+     },
+     {
+      "feature": "length_seconds",
+      "max": 10
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.75,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.7,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 500,
+      "deviation": 300,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.6,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.02,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 10,
+      "deviation": 5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A bulb/clown horn: a short, buzzy, HELD tone on a flat pitch plateau - a steady f0 is what separates it from CARTOON-WHISTLE and CARTOON-BOING, which glide or oscillate.",
+     "Harmonic and pitched, so not CARTOON-IMPACT.",
+     "Rasping, distorted harmonics and comic brevity push it away from MUSICAL-BRASS, which is an expressive musical performance."
+    ],
+    "confusable_with": [
+     "TOONWhis",
+     "MUSCBrass",
+     "TOONVeh"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "TOONImpt",
+   "category_short": "TOON",
+   "emoji": "💥",
+   "explanation": [
+    "Cartoon hits",
+    "bonk",
+    "boink",
+    "doink.."
+   ],
+   "synonyms": [
+    "Animated",
+    "Bang",
+    "Biff",
+    "Boff",
+    "Boink",
+    "Bonk",
+    "Cartoony",
+    "Clobber",
+    "Comic",
+    "Doink",
+    "Hanna",
+    "Hit",
+    "Punch",
+    "Shtoink",
+    "Silly",
+    "Smack",
+    "Strike",
+    "Thunk",
+    "Toon",
+    "Wham",
+    "Zonk"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.05
+     },
+     {
+      "feature": "length_seconds",
+      "max": 5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 1.948,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 14,
+      "deviation": 6,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.35,
+      "deviation": 2.356,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 3.5,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.18,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A bonk: one broadband transient that dies fast. The SHORT decay_time_seconds_60db is the split from CARTOON-CLANG's long metallic ring.",
+     "Dry and low-banded, where CARTOON-SPLAT is wet - noisier, mid-banded, with a squelchy tail.",
+     "Bigger and longer than CARTOON-POP, which is a sub-200 ms blip.",
+     "A cartoon hit is an exaggerated impulse: crest_factor and envelope_skewness run higher than a real-world impact of the same size."
+    ],
+    "confusable_with": [
+     "TOONClang",
+     "TOONSplt",
+     "TOONPop"
+    ]
+   }
+  },
+  {
+   "subcategory": "MACHINE",
+   "category_id": "TOONMach",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon machines",
+    "an overly comical sounding machine or contraption. A Rube Goldberg contraption."
+   ],
+   "synonyms": [
+    "ACME",
+    "Animated",
+    "Apparatus",
+    "Cartoony",
+    "Comic",
+    "Comical",
+    "Contraption",
+    "Device",
+    "Gadget",
+    "Gizmo",
+    "Goldberg",
+    "Hanna",
+    "Machine",
+    "Rube",
+    "Silly",
+    "Toon",
+    "Trap"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 15,
+      "deviation": 12,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1200,
+      "deviation": 800,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 5.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A Rube Goldberg contraption is a multi-event scene: a long chain of heterogeneous gags with partial mechanical periodicity, so transient_count is high and no single one-shot morphology fits.",
+     "If it is one gag noise, prefer the specific sibling (CARTOON-IMPACT, CARTOON-BOING, CARTOON-ZIP) - length_seconds and transient_count are the discriminator.",
+     "Object identity (machine vs vehicle) is text-only: CARTOON-VEHICLE is the same soup plus horns and engine sputters."
+    ],
+    "confusable_with": [
+     "TOONVeh",
+     "TOONMisc",
+     "TOONShake"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "TOONMisc",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Animated",
+    "Blorb",
+    "Cartoony",
+    "Comic",
+    "Flump",
+    "Hanna",
+    "Silly",
+    "Squanch",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Abstain target for CARTOON: the file is clearly stylized and comic but matches no sibling morphology.",
+     "Never assert from signal."
+    ],
+    "confusable_with": [
+     "TOONImpt",
+     "TOONMach"
+    ]
+   }
+  },
+  {
+   "subcategory": "MUSICAL",
+   "category_id": "TOONMx",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon musical phrases. String plucks for a cartoon character sneaking up on another. Perhaps a cartoon musical phrase."
+   ],
+   "synonyms": [
+    "Animated",
+    "Ascend",
+    "Cartoony",
+    "Comic",
+    "Descend",
+    "Gliss",
+    "Hanna",
+    "Melodic",
+    "Musical",
+    "Silly",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 5,
+      "deviation": 4,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.1,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 8.0,
+      "deviation": 20.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A comic musical FIGURE (a sneak-up pizzicato line, a gliss): harmonic and multi-note, so transient_count > 1 and pitch moves in steps.",
+     "A gag, not a piece: shorter and unmetered next to MUSICAL-SONG & PHRASE and MUSICAL-LOOP (no beats_per_minute over bars).",
+     "One note only is CARTOON-PLUCK or CARTOON-TWANG, not this."
+    ],
+    "confusable_with": [
+     "MUSCStngr",
+     "TOONPluk",
+     "MUSCSong"
+    ]
+   }
+  },
+  {
+   "subcategory": "PLUCK",
+   "category_id": "TOONPluk",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon string plucks",
+    "violin plucks",
+    "dental floss plucks."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Plink",
+    "Pluck",
+    "Silly",
+    "String",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.05
+     },
+     {
+      "feature": "length_seconds",
+      "max": 5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.75,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.8,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 400,
+      "deviation": 250,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.7,
+      "deviation": 2.043,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.5,
+      "deviation": 1.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "One plucked, pitched note with a fast harmonic decay - the same physics as MUSICAL-PLUCKED but isolated, dry and gag-length; only text and the comic exaggeration place it in CARTOON.",
+     "Pitch is STABLE: that is the split from CARTOON-TWANG (audible downward bend) and CARTOON-BOING (oscillating pitch).",
+     "Harmonic, so not CARTOON-IMPACT."
+    ],
+    "confusable_with": [
+     "TOONTwang",
+     "MUSCPluck",
+     "TOONBoing"
+    ]
+   }
+  },
+  {
+   "subcategory": "POP",
+   "category_id": "TOONPop",
+   "category_short": "TOON",
+   "emoji": "🎈",
+   "explanation": [
+    "Cartoon funny pops",
+    "mouth pops",
+    "suction cup pops."
+   ],
+   "synonyms": [
+    "Animated",
+    "Bubble",
+    "Bubblegum",
+    "Cartoony",
+    "Comic",
+    "Cup",
+    "Gun",
+    "Hanna",
+    "Mouth",
+    "Pop",
+    "Pops",
+    "Silly",
+    "Suction",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 1.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.02
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.12,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.08,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 15,
+      "deviation": 6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 12,
+      "deviation": 8,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The smallest cartoon one-shot: a single tiny transient, typically well under 200 ms, with essentially no ring. length_seconds and decay_time_seconds_60db alone separate it from CARTOON-IMPACT and CARTOON-CLANG.",
+     "Dry and clean, where CARTOON-SPLAT is noisy, wet and several times longer."
+    ],
+    "confusable_with": [
+     "TOONImpt",
+     "TOONSplt",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "SHAKE",
+   "category_id": "TOONShake",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon shake",
+    "like a noisemaker toy",
+    "maraca."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Rattle",
+    "Silly",
+    "Toon",
+    "Tremble"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6000,
+      "deviation": 3500,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.08,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A rattling grain train: dense, bright, unpitched micro-onsets with low crest_factor - noise, not a strike.",
+     "Measurably identical to MUSICAL-SHAKEN; only text (cartoony, toon, noisemaker) and the comic context place it here, so do not assert it from signal alone.",
+     "A sustained rattle rather than one hit rules out CARTOON-IMPACT."
+    ],
+    "confusable_with": [
+     "MUSCShake",
+     "TOONMach",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "SPLAT",
+   "category_id": "TOONSplt",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon splats",
+    "funny liquid and mud like splats and things."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Silly",
+    "Splat",
+    "Splort",
+    "Squelch",
+    "Squish",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.08
+     },
+     {
+      "feature": "length_seconds",
+      "max": 4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.25,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.6,
+      "deviation": 1.948,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A wet burst: noisy, mid-banded and unpitched, with a squelchy noisy tail instead of a clean decay - higher spectral_flatness and LOWER crest_factor than the dry, bass-heavy CARTOON-IMPACT.",
+     "Longer and messier than CARTOON-POP.",
+     "No harmonic content at all, unlike CARTOON-PLUCK or CARTOON-BOING."
+    ],
+    "confusable_with": [
+     "TOONImpt",
+     "TOONPop",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "SQUEAK",
+   "category_id": "TOONSqk",
+   "category_short": "TOON",
+   "emoji": "🐭",
+   "explanation": [
+    "Cartoon squeaks. funny little sounding squeaks of things."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Rubber",
+    "Silly",
+    "Squeak",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500,
+      "deviation": 1800,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1200,
+      "deviation": 600,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900,
+      "deviation": 600,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000,
+      "deviation": 3000,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rubber stick-slip: a very HIGH, thin, slightly unstable pitch with essentially zero low_band_energy - the missing bass is the strongest cue.",
+     "Higher, shorter and more pitched than CARTOON-CREAK (low, long, jittery, wooden).",
+     "Pitched, so not CARTOON-SHAKE (noise). If the pitch glides monotonically across a wide range it is CARTOON-WHISTLE or CARTOON-ZIP, not a squeak."
+    ],
+    "confusable_with": [
+     "TOONCreak",
+     "TOONWhis",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "STRETCH",
+   "category_id": "TOONStrch",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon stretches",
+    "funny rubber or other type stretching sounds",
+    "exaggerated."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Elongate",
+    "Extend",
+    "Hanna",
+    "Lengthen",
+    "Pull",
+    "Silly",
+    "Strain",
+    "Toon",
+    "Yank"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 400,
+      "deviation": 500,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 6.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1000,
+      "deviation": 600,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.15,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rubber under tension: a sustained sound whose pitch and centroid climb MONOTONICALLY as it is pulled - a one-signed slope held over a second or more.",
+     "That trend is the split from CARTOON-CREAK, which jitters around no trend (the UCS text warns these two overlap).",
+     "CARTOON-ZIP has the same monotonic trajectory but is roughly an order of magnitude faster and far shorter."
+    ],
+    "confusable_with": [
+     "TOONCreak",
+     "TOONZip",
+     "TOONBoing"
+    ]
+   }
+  },
+  {
+   "subcategory": "SWISH",
+   "category_id": "TOONSwsh",
+   "category_short": "TOON",
+   "emoji": "🌀",
+   "explanation": [
+    "Cartoon swishes",
+    "specifically very funny cartoony swishes."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Silly",
+    "Swirl",
+    "Swoosh",
+    "Toon",
+    "Twirl",
+    "Whoosh"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.08,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.7,
+      "deviation": 2.043,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 8000,
+      "deviation": 4000,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": -800,
+      "deviation": 1500,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1500,
+      "deviation": 900,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Broadband noise moving past: UNPITCHED (near-zero harmonicity, high spectral_flatness) with a swept centroid and a smooth swell-and-fall envelope centred in the file.",
+     "CARTOON-ZIP is the pitched, much faster cousin - a swish stays noise.",
+     "Low crest_factor and no sharp transient rule out CARTOON-IMPACT."
+    ],
+    "confusable_with": [
+     "TOONZip",
+     "TOONStrch",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TWANG",
+   "category_id": "TOONTwang",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon twangs",
+    "that classic ruler twang type sound."
+   ],
+   "synonyms": [
+    "Animated",
+    "Band",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Harp",
+    "Jaw",
+    "Pluck",
+    "Rubber",
+    "Ruler",
+    "Silly",
+    "String",
+    "Toon",
+    "Twanging"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.05
+     },
+     {
+      "feature": "length_seconds",
+      "max": 6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": -12.0,
+      "deviation": 10.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 800,
+      "deviation": 500,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.014,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.9,
+      "deviation": 2.177,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A ruler or rubber-band twang: plucked attack whose pitch bends audibly DOWNWARD as tension relaxes. A negative pitch_slope_semitones_per_second is the discriminator against CARTOON-PLUCK, which holds a stable pitch.",
+     "It falls once and dies; CARTOON-BOING oscillates and reverses sign.",
+     "More inharmonic than a musical string (MUSICAL-PLUCKED) - a flapping ruler is not a tuned instrument."
+    ],
+    "confusable_with": [
+     "TOONPluk",
+     "TOONBoing",
+     "MUSCPluck"
+    ]
+   }
+  },
+  {
+   "subcategory": "VEHICLE",
+   "category_id": "TOONVeh",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon vehicles",
+    "think Jetsons spaceship or Flintstones cars."
+   ],
+   "synonyms": [
+    "Animated",
+    "Backfire",
+    "Cartoony",
+    "Comic",
+    "Contraption.",
+    "Flintstones",
+    "Hanna",
+    "Jetsons",
+    "Silly",
+    "Toon"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Object identity, not morphology: a comic vehicle is assembled from horns, sputters, rattles and whooshes, so no single morphology holds.",
+     "Signal can only rule out short one-shots; text (jetsons, flintstones, backfire) decides.",
+     "Indistinguishable from CARTOON-MACHINE by DSP - both are comic contraption scenes."
+    ],
+    "confusable_with": [
+     "TOONMach",
+     "TOONHorn",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "VOCAL",
+   "category_id": "TOONVox",
+   "category_short": "TOON",
+   "emoji": "🎤",
+   "explanation": [
+    "Cartoon vocals",
+    "specifically very silly. See also CARTOON-ANIMALS for non-human vocals."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Grumble",
+    "Hanna",
+    "Mumble",
+    "Mutter",
+    "Ramble",
+    "Silly",
+    "Toon",
+    "Voice"
+   ],
+   "acoustic_signature": {
+    "morphology": "voiced",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 30
+     }
+    ],
+    "priors": [
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.75,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.35,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 320,
+      "deviation": 200,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900,
+      "deviation": 600,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 1.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Human vocal formants with syllabic modulation: a high voicing_ratio is what rules out every other CARTOON subcategory, none of which is voiced.",
+     "It differs from ordinary VOICES only by EXAGGERATION - an unnaturally wide pitch range and violent modulation - and by text (silly, toon, mumble, grumble).",
+     "Non-human, animal-like calls belong in CARTOON-ANIMAL."
+    ],
+    "confusable_with": [
+     "TOONAnml",
+     "MUSCChor",
+     "TOONMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "WARBLE",
+   "category_id": "TOONWarb",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon warble."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Quaver",
+    "Silly",
+    "Toon",
+    "Vibrato",
+    "Warbling",
+    "Wobble"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 700,
+      "deviation": 450,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 600,
+      "deviation": 350,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.28,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 1.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A HELD tone under fast periodic frequency modulation (vibrato/wobble): sustained and harmonic, with rhythmic spectral_centroid_deviation_hz but NO net trend - pitch_slope_semitones_per_second averages near zero.",
+     "That zero net slope is the split from CARTOON-STRETCH and CARTOON-ZIP, which sweep monotonically.",
+     "CARTOON-BOING modulates far more violently and decays away; a warble just sits there wobbling."
+    ],
+    "confusable_with": [
+     "TOONBoing",
+     "TOONWhis",
+     "TOONSqk"
+    ]
+   }
+  },
+  {
+   "subcategory": "WHISTLE",
+   "category_id": "TOONWhis",
+   "category_short": "TOON",
+   "emoji": "😗",
+   "explanation": [
+    "Cartoon whistles",
+    "most likely slide whistles",
+    "other very silly whistles. A Wolf-Whistle."
+   ],
+   "synonyms": [
+    "Animated",
+    "Blow",
+    "Cartoony",
+    "Comic",
+    "Hanna",
+    "Silly",
+    "Slide",
+    "Toon",
+    "Toot",
+    "Whistle",
+    "Wolf"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1400,
+      "deviation": 600,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 2,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.02,
+      "deviation": 0.02,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 15.0,
+      "deviation": 20.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.05,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1200,
+      "deviation": 700,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A near-sinusoidal, very high tone that GLIDES (slide whistle, wolf whistle): tiny partial_count, almost no low_band_energy, high pitch_hz, and a large |pitch_slope_semitones_per_second|.",
+     "Far purer (fewer partials) than CARTOON-HORN, which is buzzy and holds a flat pitch.",
+     "Pitched, so not CARTOON-SWISH (noise); slower and more musical than CARTOON-ZIP."
+    ],
+    "confusable_with": [
+     "TOONHorn",
+     "TOONZip",
+     "TOONSqk"
+    ]
+   }
+  },
+  {
+   "subcategory": "ZIP",
+   "category_id": "TOONZip",
+   "category_short": "TOON",
+   "emoji": "🎪",
+   "explanation": [
+    "Cartoon zips. Very fast 'zip' type sounds",
+    "often for fast movement aways."
+   ],
+   "synonyms": [
+    "Animated",
+    "Cartoony",
+    "Comic",
+    "Dart",
+    "Flash",
+    "Fly",
+    "Hanna",
+    "Rico",
+    "Silly",
+    "Toon",
+    "Whizz",
+    "Zing",
+    "Zip",
+    "Zippy",
+    "Zoom"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 60.0,
+      "deviation": 50.0,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.35,
+      "deviation": 2.043,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": 6000,
+      "deviation": 5000,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4000,
+      "deviation": 2000,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The defining cartoon exaggeration: an EXTREME, very fast monotonic sweep - tens of semitones per second crammed into a few hundred milliseconds. No physical object moves like that; the impossible slope IS the label.",
+     "Same trajectory as CARTOON-STRETCH but roughly an order of magnitude faster and shorter.",
+     "More pitched and far steeper than CARTOON-SWISH, which stays broadband noise."
+    ],
+    "confusable_with": [
+     "TOONSwsh",
+     "TOONWhis",
+     "TOONStrch"
+    ]
+   }
+  }
+ ]
+}

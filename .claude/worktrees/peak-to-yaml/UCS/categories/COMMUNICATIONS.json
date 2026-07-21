@@ -1,0 +1,2662 @@
+{
+ "version": "8.2.1",
+ "category": "COMMUNICATIONS",
+ "emoji": "📡",
+ "subcategories": [
+  {
+   "subcategory": "AUDIO VISUAL",
+   "category_id": "COMAv",
+   "category_short": "COM",
+   "emoji": "📡",
+   "explanation": [
+    "Various AV devices such a projector or tape recorder",
+    "video cameras here too. Some overlap or confusion with COMMUNICATIONS-CAMERA."
+   ],
+   "synonyms": [
+    "16mm",
+    "8mm",
+    "Amplification",
+    "Amplifier",
+    "Audio",
+    "Audiovisual",
+    "Aural",
+    "AV",
+    "Betamax",
+    "Bias",
+    "Bolex",
+    "Cables",
+    "Camcorder",
+    "Camera",
+    "Cassette",
+    "CD",
+    "Cinematography",
+    "Conferencing",
+    "Device",
+    "Digital",
+    "Dollies",
+    "Film",
+    "Filming",
+    "Footage",
+    "Hypermedia",
+    "Ipod",
+    "Laserdisc",
+    "Media",
+    "Mixer",
+    "Monitoring",
+    "Motion",
+    "Multimedia",
+    "Nagra",
+    "Picture",
+    "Playback",
+    "Player",
+    "Presentation",
+    "Projector",
+    "Radiotelephone",
+    "Receiver",
+    "Recorder",
+    "Reel",
+    "Render",
+    "Slide",
+    "Sound",
+    "Spooling",
+    "Streaming",
+    "System",
+    "Tape",
+    "Taping",
+    "Telecommunication",
+    "Television",
+    "To",
+    "Transient",
+    "Tripod",
+    "VCR",
+    "Video",
+    "Videocam",
+    "Videophone",
+    "Visual",
+    "Walkman",
+    "Wall"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Projectors, tape decks, VCRs, camcorders — these are all TRANSPORT MECHANISMS. The shared physical core is a small motor turning a reel or a sprocket, so the honest shared morphology is a PERIODIC MECHANICAL CYCLE (a film projector's ~24 Hz sprocket flutter, a tape deck's capstan whir, a VCR's head-drum whine) plus button clacks. Moderate onset_periodicity riding a motor bed.",
+     "A projector's 24 Hz shutter is the most measurable single fact in this subcategory: a strong amplitude modulation at exactly the frame rate.",
+     "But nothing in DSP distinguishes a projector from a tape recorder from a VCR — that is DEVICE IDENTITY, and it is semantic. UCS itself concedes the mess: 'Some overlap or confusion with COMMUNICATIONS-CAMERA.'",
+     "Against COMCam: UCS routes by device CLASS, not by sound — MOVIE and VIDEO cameras come HERE, STILL cameras go to COMCam. That rule is untestable from a waveform.",
+     "Against COMPhono: both are rotating media transports with motor rumble. Text ('projector', 'tape', 'VCR' versus 'turntable', 'vinyl') is the only reliable discriminator."
+    ],
+    "confusable_with": [
+     "COMCam",
+     "COMPhono",
+     "COMTv",
+     "MOTRElec",
+     "COMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CAMERA",
+   "category_id": "COMCam",
+   "category_short": "COM",
+   "emoji": "📷",
+   "explanation": [
+    "Still camera shutters",
+    "automatic winding",
+    "old flash-bulbs. Movie and video cameras to COMMUNICATIONS-AV."
+   ],
+   "synonyms": [
+    "120mm",
+    "35mm",
+    "Action",
+    "Autofocus",
+    "Body",
+    "Bulb",
+    "Cam",
+    "Camara",
+    "Camera",
+    "Cameraman",
+    "Cameramen",
+    "Cameraperson",
+    "Camra",
+    "Canon",
+    "CCTV",
+    "Digicam",
+    "Digital",
+    "DSLR",
+    "Film",
+    "Flash",
+    "Format",
+    "Fuji",
+    "Fujifilm",
+    "Hasselblad",
+    "Image",
+    "Imaging",
+    "Instant",
+    "Kodak",
+    "Leica",
+    "Lens",
+    "Lense",
+    "Mamiya",
+    "Medium",
+    "Minicam",
+    "Nikon",
+    "Olympus",
+    "Photo",
+    "Photog",
+    "Photograph",
+    "Photographer",
+    "Photographic",
+    "Photographing",
+    "Photography",
+    "Picture",
+    "Pictures",
+    "Point-And-Shoot",
+    "Polaroid",
+    "Sensor",
+    "Shutter",
+    "SLR",
+    "Sony",
+    "Surveillance",
+    "Trail",
+    "Viewfinder",
+    "Webcam",
+    "Winding"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "max": 6.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.097247,
+      "deviation": 12.33,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 64,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.07696
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 27.933,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 65,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 28.29454
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.25,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 3.0,
+      "deviation": 3.432,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 300,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3.0
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.18477,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 300,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.18088
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.035714,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 65,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.04444
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6841.8,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 300,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 6866.50528
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.05,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.42983,
+      "deviation": 0.2214,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 65,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.41593
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.48858,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 300,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.50083
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.1803,
+      "deviation": 3.188,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 300,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.18799
+      }
+     }
+    ],
+    "discriminators": [
+     "A SHUTTER IS A COMPOUND MECHANICAL IMPULSE — and that compound structure is the one genuinely measurable thing here. An SLR fires mirror-up, shutter-open, shutter-close, mirror-down inside roughly 100-250 ms, so DSP sees 2-4 TIGHTLY SPACED sharp transients, not one. transient_count of 2-4 inside a sub-300 ms window is a real, checkable signature and it is why this earns signal_narrowable rather than semantic_only.",
+     "Motor winding (auto-advance) appends a short buzzy rhythmic burst immediately after the clack — a brief periodic impulse train. Old flash-bulbs are a single burst with a bright tail and a glass tinkle.",
+     "Against COMAv: UCS routes by device, not by sound — 'Movie and video cameras to COMMUNICATIONS-AV.' Untestable from signal; text must decide.",
+     "Against MECHClik, MECHRtch and UIClick: physically the same family of small mechanical clicks. DSP can only narrow to 'small compound mechanical impulse'; the words 'camera' or 'shutter' commit it.",
+     "A PHONE camera shutter is a synthetic SAMPLE of this and will measure as UIClick — single transient, band-limited, no mechanism."
+    ],
+    "confusable_with": [
+     "COMAv",
+     "MECHClik",
+     "MECHRtch",
+     "UIClick",
+     "COMMisc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 300,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Camera": 300
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 300,
+       "percentile_05": 2760.6,
+       "median": 4543.7,
+       "percentile_95": 5602.7
+      },
+      "crest_factor": {
+       "clips": 65,
+       "percentile_05": 4.4573,
+       "median": 27.933,
+       "percentile_95": 67.75,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 64,
+       "percentile_05": 0.0099773,
+       "median": 0.094785,
+       "percentile_95": 9.7977,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 65,
+       "percentile_05": 0.0099773,
+       "median": 0.11474,
+       "percentile_95": 0.44399,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 65,
+       "percentile_05": 0.8527,
+       "median": 33.698,
+       "percentile_95": 220.29,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 61,
+       "percentile_05": 0.0099773,
+       "median": 0.049887,
+       "percentile_95": 0.80317,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 65,
+       "percentile_05": -0.28753,
+       "median": 5.0463,
+       "percentile_95": 14.325,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 65,
+       "percentile_05": 0.0015542,
+       "median": 0.017624,
+       "percentile_95": 0.65792,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 65,
+       "percentile_05": 0.052655,
+       "median": 0.42983,
+       "percentile_95": 0.78714,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 300,
+       "percentile_05": 0.083756,
+       "median": 0.18446,
+       "percentile_95": 0.82455
+      },
+      "high_band_energy": {
+       "clips": 300,
+       "percentile_05": 0.66807,
+       "median": 0.86087,
+       "percentile_95": 0.9534
+      },
+      "inharmonicity": {
+       "clips": 300,
+       "percentile_05": 0.0077592,
+       "median": 0.42396,
+       "percentile_95": 0.60727
+      },
+      "low_band_energy": {
+       "clips": 300,
+       "percentile_05": 0.00089777,
+       "median": 0.0065624,
+       "percentile_95": 0.060676
+      },
+      "mid_band_energy": {
+       "clips": 300,
+       "percentile_05": 0.039216,
+       "median": 0.12723,
+       "percentile_95": 0.28534
+      },
+      "onset_periodicity": {
+       "clips": 300,
+       "percentile_05": 0.053763,
+       "median": 0.27959,
+       "percentile_95": 0.54211
+      },
+      "onset_rate_per_second": {
+       "clips": 300,
+       "percentile_05": 0.14178,
+       "median": 1.1753,
+       "percentile_95": 5.4175
+      },
+      "partial_count": {
+       "clips": 291,
+       "percentile_05": 4.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 265,
+       "percentile_05": 226.15,
+       "median": 1102.5,
+       "percentile_95": 1837.5
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 44,
+       "percentile_05": -5.4612,
+       "median": -0.10816,
+       "percentile_95": 3.7034
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 300,
+       "percentile_05": 416.29,
+       "median": 1117.0,
+       "percentile_95": 2483.2
+      },
+      "spectral_centroid_hz": {
+       "clips": 300,
+       "percentile_05": 4053.5,
+       "median": 6839.9,
+       "percentile_95": 9823.5
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 300,
+       "percentile_05": 3383.5,
+       "median": 5812.2,
+       "percentile_95": 9301.5
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 300,
+       "percentile_05": -2555.4,
+       "median": -22.013,
+       "percentile_95": 1696.1
+      },
+      "spectral_entropy": {
+       "clips": 300,
+       "percentile_05": 0.2525,
+       "median": 0.59781,
+       "percentile_95": 0.80035
+      },
+      "spectral_flatness": {
+       "clips": 300,
+       "percentile_05": 0.11445,
+       "median": 0.48658,
+       "percentile_95": 0.72222
+      },
+      "spectral_flux": {
+       "clips": 300,
+       "percentile_05": 0.18349,
+       "median": 0.22708,
+       "percentile_95": 0.24435
+      },
+      "spectral_rolloff_hz": {
+       "clips": 300,
+       "percentile_05": 6624.2,
+       "median": 11994.0,
+       "percentile_95": 16378.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 300,
+       "percentile_05": -2.9883,
+       "median": 0.25215,
+       "percentile_95": 3.4251
+      },
+      "stationarity": {
+       "clips": 300,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.60589,
+       "censored_at_floor_fraction": 0.73
+      },
+      "sustain_ratio": {
+       "clips": 65,
+       "percentile_05": 0.0014184,
+       "median": 0.035714,
+       "percentile_95": 0.9322,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 268,
+       "percentile_05": 0.056928,
+       "median": 0.2353,
+       "percentile_95": 0.46778
+      },
+      "transient_count": {
+       "clips": 300,
+       "percentile_05": 1.0,
+       "median": 3.0,
+       "percentile_95": 20.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 300,
+       "percentile_05": 1186.3,
+       "median": 6205.3,
+       "percentile_95": 13740.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "CELLPHONE",
+   "category_id": "COMCell",
+   "category_short": "COM",
+   "emoji": "📱",
+   "explanation": [
+    "Cellphones and Smartphones.",
+    "clicks and rings",
+    "tones."
+   ],
+   "synonyms": [
+    "Android",
+    "Blackberry",
+    "Calling",
+    "Cameraphone",
+    "Carphone",
+    "Cell",
+    "Cellular",
+    "Femtocell",
+    "Flip",
+    "Galaxy",
+    "Handsfree",
+    "Iphone",
+    "Mobile",
+    "Motorola",
+    "Nokia",
+    "Phone",
+    "Pocketphone",
+    "Portability",
+    "Roaming",
+    "Screenphone",
+    "SIM",
+    "Smartphone",
+    "Wireless",
+    "Wristphone"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.83866,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 81,
+       "fsd50k_classes": [
+        "Ringtone"
+       ],
+       "measured_deviation": 0.20443,
+       "reasoned_mean": 0.65,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.08757,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 81,
+       "fsd50k_classes": [
+        "Ringtone"
+       ],
+       "measured_deviation": 0.06974,
+       "reasoned_mean": 0.2,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 235.82888,
+      "deviation": 3.55591,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 79,
+       "fsd50k_classes": [
+        "Ringtone"
+       ],
+       "measured_deviation": 3.55591,
+       "reasoned_mean": 900.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.00507,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 81,
+       "fsd50k_classes": [
+        "Ringtone"
+       ],
+       "measured_deviation": 0.00633,
+       "reasoned_mean": 0.15,
+       "reasoned_deviation": 0.12,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "Cellphones emit SAMPLES, not physics. Ringtones, clicks and tones are synthetic and were designed to be salient, so their acoustic profile is 'a short bright tonal event, or a cyclic tonal pattern' — which is exactly what UIBeep, UIAlert, BEEP and ALRMElec are too. There is no cellphone-shaped region of feature space, and that is the honest finding.",
+     "The one weakly real cue is BAND-LIMITING at the SPEAKER: a phone's tiny transducer rolls off hard below ~300 Hz, so low_band_energy is unusually low even for a synthetic tone. Recorded CALL audio is band-limited at the top as well (~3.4 kHz), like all telephony.",
+     "Ring CADENCES are periodic (a repeating on/off pattern), which lifts onset_periodicity above a one-shot UI beep.",
+     "Vibration/haptic buzz is the exception and looks nothing like the rest of the subcategory: a low-frequency motor rattle, high low_band_energy — closer to MOTRElec.",
+     "Against COMTelph: the ONLY rule is UCS's own device rule — 'technically any telephone that isn't a mobile or cell phone' goes to TELEPHONE. Pure text. No DSP will ever adjudicate it."
+    ],
+    "confusable_with": [
+     "COMTelph",
+     "UIBeep",
+     "UIAlert",
+     "BEEP",
+     "COMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MICROPHONE",
+   "category_id": "COMMic",
+   "category_short": "COM",
+   "emoji": "📱",
+   "explanation": [
+    "Feedback and mic bumps and handling. Megaphones would go here too."
+   ],
+   "synonyms": [
+    "Cardioids",
+    "Dictaphone",
+    "Electret",
+    "Feedback",
+    "Handling",
+    "Headsets",
+    "Hydrophone",
+    "Hypercardioid",
+    "Lapel",
+    "Larsen",
+    "Lavalier",
+    "Lavaliere",
+    "Lectern",
+    "Megaphone",
+    "Mic",
+    "Microphone",
+    "Mics",
+    "Mike",
+    "Mikes",
+    "Podium",
+    "Preamplifier",
+    "Tap",
+    "Transducer"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A HETEROGENEOUS BAG — which is exactly why it must be semantic_only, and why every prior here is deliberately broad. It unions two acoustically OPPOSITE things.",
+     "(1) FEEDBACK — a Larsen howl — is one of the more separable events in all of COMMUNICATIONS: a loud, SUSTAINED, near-pure tone with a RISING envelope (loop gain builds exponentially), harmonicity > 0.85, spectral_flatness near 0, often with a slow pitch drift as one room mode hands over to another. If a file matches THAT, the call is safe.",
+     "(2) HANDLING and BUMPS — the exact opposite: low-frequency thumps and rumble dominated by low_band_energy, high crest, short. Mic handling is an IMPACT on a diaphragm; it is nearly all sub-200 Hz.",
+     "Because the subcategory unions a sustained pure tone with a low thud, NO single gate or tight prior is defensible: any gate that fits the howl would kill the bump. Split on text: 'feedback'/'Larsen' versus 'handling'/'bump'/'tap'.",
+     "Megaphones live here too: heavily band-limited, horn-loaded, distorted speech."
+    ],
+    "confusable_with": [
+     "COMMisc",
+     "COMAv",
+     "VOXFutz",
+     "COMTran"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "COMMisc",
+   "category_short": "COM",
+   "emoji": "📡",
+   "explanation": [
+    "Communication sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Comm",
+    "Communicator",
+    "Fax",
+    "Miscellaneous",
+    "Newsletter",
+    "Reporting",
+    "Telecom",
+    "Telecommunication",
+    "Telecommunications",
+    "Telecoms",
+    "Telematics",
+    "Transmittal",
+    "Transmitted"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The COMMUNICATIONS catch-all. Un-gated so it remains reachable as the category's abstention target when every sibling's gates fire.",
+     "Claim it only when the file is a communications device by text but is NONE of: STATIC (stationary broadband noise), TELEMETRY (periodic coded tone or impulse train), CAMERA (compound mechanical impulse), TYPEWRITER (ringing impulse train), or one of the purely semantic device classes."
+    ],
+    "confusable_with": [
+     "COMStatic",
+     "COMTelm",
+     "COMRadio",
+     "COMTran",
+     "COMTelph"
+    ]
+   }
+  },
+  {
+   "subcategory": "PHONOGRAPH",
+   "category_id": "COMPhono",
+   "category_short": "COM",
+   "emoji": "📡",
+   "explanation": [
+    "Turntable",
+    "Victrola",
+    "motors and mechanics. STATIC has its own subcategory here."
+   ],
+   "synonyms": [
+    "33",
+    "45",
+    "78",
+    "Audion",
+    "Changer",
+    "Cinematograph",
+    "Edison",
+    "EP",
+    "Gramophone",
+    "Gramophones",
+    "Graphogram",
+    "Graphophone",
+    "Jukebox",
+    "Jukeboxes",
+    "Kinetoscope",
+    "LP",
+    "Orchestrion",
+    "Phonautograph",
+    "Phono",
+    "Phonogram",
+    "Phonographic",
+    "Phonography",
+    "Phonorecord",
+    "Photophone",
+    "Pianola",
+    "Player",
+    "Portable",
+    "Radiogram",
+    "Record",
+    "Stereophonic",
+    "Stereopticon",
+    "Stylus",
+    "Turntable",
+    "Turntables",
+    "Victrola",
+    "Vinyl"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A phonograph has ONE quietly beautiful measurable property, and it is worth stating precisely: its surface noise is PERIODIC AT THE ROTATION RATE. A click, pop or warp recurs ONCE PER REVOLUTION — 33 1/3 rpm = 0.56 Hz (1.8 s period), 45 rpm = 0.75 Hz (1.33 s), 78 rpm = 1.3 Hz (0.77 s). A crackle bed whose onset envelope autocorrelates with a peak at ~0.8-1.8 s IS a record, and nothing else in this ontology is. That is why onset_rate_per_second and onset_periodicity carry real weight here despite the semantic_only tier.",
+     "Underneath: a low motor rumble (turntable wow and flutter) plus discrete mechanical events — stylus drop, tonearm lift and return, the changer mechanism.",
+     "Against COMStatic: UCS explicitly routes surface noise away — 'STATIC has its own subcategory here.' A featureless, STATIONARY hiss with NO rotational periodicity is COMStatic. A crackle bed WITH rotational periodicity stays here. The autocorrelation peak is the deciding test.",
+     "Against COMAv: both are media transports with motors. Text ('turntable', 'vinyl', 'gramophone', 'Victrola' versus 'tape', 'projector') decides."
+    ],
+    "confusable_with": [
+     "COMStatic",
+     "COMAv",
+     "MOTRElec",
+     "COMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "RADIO",
+   "category_id": "COMRadio",
+   "category_short": "COM",
+   "emoji": "📻",
+   "explanation": [
+    "Tuning",
+    "radio and shortwave sounds. STATIC has its own subcategory here. A radio broadcast would go here too. Overlap with VOICES-FUTZED."
+   ],
+   "synonyms": [
+    "Airing",
+    "Airwaves",
+    "AM",
+    "Antenna",
+    "BBC",
+    "Boombox",
+    "Broadcast",
+    "Broadcaster",
+    "Broadcasting",
+    "Car",
+    "Clock",
+    "Communications",
+    "FM",
+    "Futz",
+    "HD",
+    "Longwave",
+    "Newscasting",
+    "Portable",
+    "Radar",
+    "Radial",
+    "Radiocast",
+    "Radiocommunication",
+    "Radiofrequency",
+    "Radiophonic",
+    "Radiotelegraph",
+    "Radiotelegraphy",
+    "Radiotelephone",
+    "Receiver",
+    "Receiving",
+    "Shortwave",
+    "Side-Band",
+    "Signal",
+    "Siriusxm",
+    "Squelch",
+    "Station",
+    "Tabletop",
+    "Transmission",
+    "Tuner",
+    "Tuning",
+    "Waves",
+    "Weather",
+    "Wireless"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 5000.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.4,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 10.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The real, measurable gift here is BAND-LIMITING. Broadcast radio through a receiver is bandwidth-restricted at BOTH ends — AM brutally so (roughly 100 Hz to 5 kHz, often less), FM less so. A band_limit_high_hz well below the file's Nyquist, together with a hollowed-out low band, is GENUINE, DETECTABLE evidence of a radio chain. UCS notices the consequence itself: 'Overlap with VOICES-FUTZED.'",
+     "TUNING is the other measurable behaviour, and it is distinctive: sweeping the dial produces an ALTERNATION between broadband static and briefly-locked band-limited program material. So spectral_flatness SWINGS wildly over time (between ~0.9 and ~0.4), spectral_flux is high and stationarity is low. A file whose flatness oscillates like that is being tuned, and nothing else does that.",
+     "Squelch, heterodyne whistles and carrier beats add narrow drifting tones over the static — another radio-specific tell.",
+     "Against COMStatic: UCS routes pure noise away — 'STATIC has its own subcategory here.' Inter-station hiss with NO program content is COMStatic; radio keeps the station.",
+     "Against COMTran: a broadcast radio is CONTINUOUS and one-way; a transceiver is BURSTY and half-duplex, with PTT clicks and squelch tails.",
+     "If the content is a person talking through the futz, UCS wants the VOICE in VOXFutz."
+    ],
+    "confusable_with": [
+     "COMStatic",
+     "COMTran",
+     "VOXFutz",
+     "COMTv",
+     "COMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "STATIC",
+   "category_id": "COMStatic",
+   "category_short": "COM",
+   "emoji": "📺",
+   "explanation": [
+    "Static from any electronic source",
+    "radio",
+    "CB",
+    "television",
+    "optical noise",
+    "phonograph noise."
+   ],
+   "synonyms": [
+    "Aliasing",
+    "Brown",
+    "Buzz",
+    "Crackle",
+    "Crunchy",
+    "Electrostatic",
+    "Fuzz",
+    "Hiss",
+    "Hum",
+    "Interference",
+    "Noise",
+    "Noisy",
+    "Pink",
+    "Radio",
+    "Scramble",
+    "Squelched",
+    "TV",
+    "White"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25
+     },
+     {
+      "feature": "spectral_flatness",
+      "min": 0.35
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.55
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.85,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.9,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.9,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 9000.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -1.5,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_sustain_level",
+      "mean": 0.88,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "PURE BROADBAND NOISE — the single cleanest DSP target in the whole COMMUNICATIONS category, and the only reason any subcategory here is signal_separable. UCS gave STATIC its own home precisely because it is a SIGNAL TYPE, not a device: 'static from ANY electronic source — radio, CB, television, optical noise, phonograph noise.' The ontology itself is telling you to classify it by DSP.",
+     "Signature: spectral_flatness approaching 1.0 (0.8+), harmonicity approaching 0.0, spectral_flux near zero, stationarity near 1.0, sustain_ratio near 1.0. A featureless, unchanging, unpitched wall. Crest factor sits near the Gaussian value (~3-5) because that is literally what the signal is.",
+     "spectral_slope_db_per_octave sorts the flavours: white ~0, pink ~-3, brown ~-6. All are still STATIC.",
+     "Against UIGlitch — the one real trap, and it shows why flatness alone is insufficient. A glitch is EQUALLY FLAT but NOT STATIONARY: it churns (flux ~0.55, stationarity ~0.3). Static is flat AND STILL (flux ~0.08, stationarity ~0.9). Use flux and stationarity, never flatness, to separate them.",
+     "Against AIRHiss: acoustically near-identical — both are stationary broadband hiss. This is a genuine IRREDUCIBLE confusion, and the honest response is to say so: only text ('radio', 'TV', 'interference', 'noise' versus 'air', 'hiss', 'nozzle', 'valve') resolves it.",
+     "Against ELECBuzz: the noise and tonal poles. A hum is a harmonic comb; static has no comb at all."
+    ],
+    "confusable_with": [
+     "UIGlitch",
+     "AIRHiss",
+     "ELECMisc",
+     "COMRadio",
+     "COMTv"
+    ]
+   }
+  },
+  {
+   "subcategory": "TELEMETRY",
+   "category_id": "COMTelm",
+   "category_short": "COM",
+   "emoji": "📡",
+   "explanation": [
+    "Fax machine tones",
+    "modem tones",
+    "telegraph",
+    "teletype. UI is it's own category"
+   ],
+   "synonyms": [
+    "Analog",
+    "Analytics",
+    "Code",
+    "Comms",
+    "Data",
+    "Datalink",
+    "Datalogger",
+    "Dataloggers",
+    "Digital",
+    "Downlink",
+    "Downlinks",
+    "FSK",
+    "GPS",
+    "Modem",
+    "Monitoring",
+    "Morse",
+    "PPM",
+    "PSK",
+    "Ranging",
+    "Readout",
+    "Readouts",
+    "Satellites",
+    "Sensors",
+    "SOS",
+    "Spectrum",
+    "Telegraph",
+    "Tracker",
+    "Trackers",
+    "Tracking",
+    "Transmission",
+    "Uplinking"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.65,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 3400.0,
+      "deviation": 1.8,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 20.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 900.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.28,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "MACHINE-TO-MACHINE CODE — and codes are PERIODIC. Everything in this subcategory is a tone or an impulse switched ON A CLOCK, so the highest-value feature by a wide margin is onset_periodicity: high, with a clean autocorrelation peak on the onset envelope.",
+     "TELEGRAPH / MORSE is the clearest case and the most beautifully DSP-tractable thing in COMMUNICATIONS after STATIC: a RHYTHMIC IMPULSE TRAIN — a single carrier tone (or a sounder's mechanical clack) gated on and off in dots and dashes. High harmonicity, very high onset_periodicity, onset_rate ~3-15/s, and — crucially — TIGHTLY QUANTIZED inter-onset intervals, because a dash is EXACTLY three dots and the inter-element gap is exactly one dot. The distribution of event durations collapses onto a 1:3 ratio. No natural sound is quantized like that; it is a machine writing in time.",
+     "MODEM / FAX handshake is the noisy cousin: a warbling FSK/PSK carrier, still band-limited to the telephone channel (300 Hz - 3.4 kHz, hence the band_limit_high_hz prior), with HIGH spectral_flux as it hops between mark and space tones — then climbing toward noise-like flatness once the link trains up to full-rate data.",
+     "TELETYPE adds a mechanical printer: an impulse train that is simultaneously tone-coded and physically clacking.",
+     "Against UIData: the same idea in a different world. UI 'gak' is designed screen chatter and is FULL-BANDWIDTH; telemetry is a real device on a real line and is band-limited at 3.4 kHz. That band-limit is the tell.",
+     "Against COMType: a teletype straddles both. If it PRINTS, prefer COMType; if it CODES, prefer here."
+    ],
+    "confusable_with": [
+     "UIData",
+     "COMType",
+     "COMTelph",
+     "COMRadio",
+     "COMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TELEPHONE",
+   "category_id": "COMTelph",
+   "category_short": "COM",
+   "emoji": "📱",
+   "explanation": [
+    "Old school rotary dial and digital telephones. Technically any telephone that isn't a mobile or cell phone."
+   ],
+   "synonyms": [
+    "Answerphone",
+    "Autodial",
+    "Calling",
+    "Cord",
+    "Cordless",
+    "Dial",
+    "Dialer",
+    "Dialing",
+    "Directory",
+    "Handset",
+    "Helpdesk",
+    "Helpline",
+    "Hotline",
+    "Hotlines",
+    "Interphone",
+    "Key",
+    "Landline",
+    "Number",
+    "Numero",
+    "Pad",
+    "Payphone",
+    "Phone",
+    "Phonecall",
+    "Phoned",
+    "Phoneline",
+    "Phoning",
+    "Push-Button",
+    "Radiotelephone",
+    "Radiotelephony",
+    "Receiver",
+    "Rotary",
+    "Speakerphone",
+    "Switchboard",
+    "Switchboards",
+    "Tel",
+    "Tele",
+    "Telecom",
+    "Telecommunication",
+    "Telecommunications",
+    "Teleconference",
+    "Teleconferencing",
+    "Telefonica",
+    "Telemarketing",
+    "Telephonic",
+    "Telephonically",
+    "Telephonist",
+    "Telephonists",
+    "Telephony",
+    "Touch-Tone",
+    "Touchtone",
+    "Voicemail"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 3400.0,
+      "deviation": 1.6,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.83301,
+      "deviation": 0.2634,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 417,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.80425
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.21333,
+      "deviation": 0.3319,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 417,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.23741
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.32866,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 417,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.65
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.02217,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 417,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.02178
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.12599,
+      "deviation": 0.1694,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 417,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.10137
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 327.88,
+      "deviation": 3.78,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 382,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 380.17241
+      }
+     }
+    ],
+    "discriminators": [
+     "THE TELEPHONE BAND IS REAL AND MEASURABLE: 300 Hz to 3.4 kHz. Anything that has passed through a telephone chain is HARD band-limited at BOTH ends — band_limit_high_hz ~3.4 kHz with a gutted low band. This is the most detectable single property of the subcategory, and it is shared with VOXFutz and COMTelm.",
+     "DTMF is a lovely, decisive edge case. Touch-tones are DUAL tones (e.g. '1' = 697 + 1209 Hz) whose two frequencies were deliberately chosen to be NON-HARMONICALLY related, so that no voice or line harmonic could counterfeit them. Consequence for DSP: DTMF measures as HIGH harmonicity AND HIGH inharmonicity SIMULTANEOUSLY — a combination almost nothing else in the ontology produces. If you see that pair, you are looking at a keypad.",
+     "Ring and dial tones are cyclic and periodic (US ring = 2 s on / 4 s off; US dial tone = 350 + 440 Hz continuous — itself a dual tone), which lifts onset_periodicity.",
+     "ROTARY mechanics are the other half, and they are countable: the dial's return drives a rhythmic mechanical impulse train whose PULSE COUNT EQUALS THE DIGIT DIALLED — 1 pulse for '1', 10 for '0', at exactly 10 pulses per second. A 10 Hz impulse burst of countable length is a rotary phone and genuinely nothing else.",
+     "Against COMCell: UCS's rule is pure device identity — 'technically any telephone that isn't a mobile or cell phone.' No DSP will ever adjudicate this, and the signature should never try."
+    ],
+    "confusable_with": [
+     "COMCell",
+     "COMTelm",
+     "VOXFutz",
+     "UIBeep",
+     "COMMisc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 417,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Telephone": 417
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 417,
+       "percentile_05": 909.69,
+       "median": 3205.6,
+       "percentile_95": 5505.4
+      },
+      "crest_factor": {
+       "clips": 83,
+       "percentile_05": 1.5769,
+       "median": 2.6514,
+       "percentile_95": 27.895,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 26,
+       "percentile_05": 0.10337,
+       "median": 0.27273,
+       "percentile_95": 1.7186,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 65,
+       "percentile_05": 0.0099773,
+       "median": 0.029932,
+       "percentile_95": 3.6018,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 83,
+       "percentile_05": 0.0049887,
+       "median": 0.099773,
+       "percentile_95": 1.776,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 83,
+       "percentile_05": -1.742,
+       "median": 1.1653,
+       "percentile_95": 175.54,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 63,
+       "percentile_05": 0.0049887,
+       "median": 0.054875,
+       "percentile_95": 1.1175,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 83,
+       "percentile_05": -2.543,
+       "median": -0.077885,
+       "percentile_95": 11.938,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 83,
+       "percentile_05": 0.0,
+       "median": 0.73109,
+       "percentile_95": 0.98998,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 83,
+       "percentile_05": 0.10359,
+       "median": 0.48108,
+       "percentile_95": 0.64363,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 417,
+       "percentile_05": 0.19339,
+       "median": 0.83301,
+       "percentile_95": 0.99522
+      },
+      "high_band_energy": {
+       "clips": 417,
+       "percentile_05": 0.022307,
+       "median": 0.3579,
+       "percentile_95": 0.84583
+      },
+      "inharmonicity": {
+       "clips": 417,
+       "percentile_05": 0.0,
+       "median": 0.21333,
+       "percentile_95": 0.64293
+      },
+      "low_band_energy": {
+       "clips": 417,
+       "percentile_05": 0.00097143,
+       "median": 0.02217,
+       "percentile_95": 0.42696
+      },
+      "mid_band_energy": {
+       "clips": 417,
+       "percentile_05": 0.11968,
+       "median": 0.50713,
+       "percentile_95": 0.9628
+      },
+      "onset_periodicity": {
+       "clips": 417,
+       "percentile_05": 0.032433,
+       "median": 0.32866,
+       "percentile_95": 0.84378
+      },
+      "onset_rate_per_second": {
+       "clips": 417,
+       "percentile_05": 0.18708,
+       "median": 1.001,
+       "percentile_95": 4.4551
+      },
+      "partial_count": {
+       "clips": 387,
+       "percentile_05": 1.0,
+       "median": 4.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 382,
+       "percentile_05": 68.799,
+       "median": 326.67,
+       "percentile_95": 1520.7
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 108,
+       "percentile_05": -1.3149,
+       "median": -1.715e-05,
+       "percentile_95": 11.685
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 417,
+       "percentile_05": 54.612,
+       "median": 1186.8,
+       "percentile_95": 5600.7
+      },
+      "spectral_centroid_hz": {
+       "clips": 417,
+       "percentile_05": 732.11,
+       "median": 2446.9,
+       "percentile_95": 7628.2
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 417,
+       "percentile_05": 910.03,
+       "median": 3142.7,
+       "percentile_95": 7669.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 417,
+       "percentile_05": -830.85,
+       "median": 5.7659,
+       "percentile_95": 2189.9
+      },
+      "spectral_entropy": {
+       "clips": 417,
+       "percentile_05": 0.16721,
+       "median": 0.34496,
+       "percentile_95": 0.59664
+      },
+      "spectral_flatness": {
+       "clips": 417,
+       "percentile_05": 0.0048521,
+       "median": 0.12599,
+       "percentile_95": 0.44255
+      },
+      "spectral_flux": {
+       "clips": 417,
+       "percentile_05": 0.027586,
+       "median": 0.17098,
+       "percentile_95": 0.24371
+      },
+      "spectral_rolloff_hz": {
+       "clips": 417,
+       "percentile_05": 561.94,
+       "median": 3581.8,
+       "percentile_95": 13931.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 417,
+       "percentile_05": -9.1944,
+       "median": -3.613,
+       "percentile_95": 1.9111
+      },
+      "stationarity": {
+       "clips": 417,
+       "percentile_05": 0.0,
+       "median": 0.011267,
+       "percentile_95": 0.8747,
+       "censored_at_floor_fraction": 0.487
+      },
+      "sustain_ratio": {
+       "clips": 83,
+       "percentile_05": 0.0047281,
+       "median": 0.70115,
+       "percentile_95": 1.0,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 402,
+       "percentile_05": 0.019253,
+       "median": 0.15821,
+       "percentile_95": 0.56171
+      },
+      "transient_count": {
+       "clips": 417,
+       "percentile_05": 1.0,
+       "median": 6.0,
+       "percentile_95": 34.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 417,
+       "percentile_05": 462.08,
+       "median": 2703.1,
+       "percentile_95": 12720.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "TELEVISION",
+   "category_id": "COMTv",
+   "category_short": "COM",
+   "emoji": "📺",
+   "explanation": [
+    "Television programs",
+    "on and off",
+    "channel changes",
+    "TV Remote controls. STATIC has its own subcategory here. A television broadcast would go here too. Overlap with VOICES-FUTZED."
+   ],
+   "synonyms": [
+    "4K",
+    "Advertising",
+    "Antenna",
+    "Broadcast",
+    "Broadcaster",
+    "Channel",
+    "Commercials",
+    "CRT",
+    "Curved",
+    "Dial",
+    "Documentaries",
+    "Drama",
+    "Emissions",
+    "Flatscreen",
+    "Futz",
+    "HDR",
+    "LCD",
+    "LED",
+    "Movies",
+    "News",
+    "Newscaster",
+    "OLED",
+    "Opera",
+    "Plasma",
+    "Program",
+    "Programming",
+    "QLED",
+    "Remote",
+    "Show",
+    "Sitcom",
+    "Sitcoms",
+    "Smart",
+    "Soap",
+    "Sports",
+    "Talk",
+    "Teevee",
+    "Teleshopping",
+    "Televised",
+    "Television",
+    "Telly",
+    "Tube",
+    "TV",
+    "UFH",
+    "VHF",
+    "Viewing"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 8000.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.45,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 10.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A TELEVISION IS A LOUDSPEAKER PLAYING SOMETHING ELSE — which makes it semantic_only in the strongest sense. Its content is arbitrary (drama, news, sport, adverts, a laugh track) and its only acoustic fingerprint is the small-speaker colouration of the set plus the room it plays into. Band-limiting and a thinned low end are weak evidence at best.",
+     "TWO exceptions carry real signal content. (1) The CRT FLYBACK WHINE: a piercing, extremely stable near-pure tone at the horizontal scan rate — 15.625 kHz (PAL/625-line) or 15.734 kHz (NTSC/525-line). A stable tone at ~15.7 kHz inside an otherwise ordinary room recording is an UNMISTAKABLE, essentially decisive CRT signature, and one of the few genuinely diagnostic frequencies in this whole ontology. (2) OFF-AIR STATIC — which UCS explicitly routes elsewhere: 'STATIC has its own subcategory here.'",
+     "Channel changes and remote clicks are ordinary small synthetic/mechanical impulses. The on/off thunk and degauss of a CRT is a low-frequency burst with a brief magnetic buzz.",
+     "Speech through the set overlaps VOXFutz, as UCS notes. Put the VOICE in VOXFutz and keep the DEVICE here."
+    ],
+    "confusable_with": [
+     "COMStatic",
+     "VOXFutz",
+     "COMRadio",
+     "COMAv",
+     "COMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TRANSCEIVER",
+   "category_id": "COMTran",
+   "category_short": "COM",
+   "emoji": "📡",
+   "explanation": [
+    "Walkie Talkies",
+    "CBs",
+    "Ham Radios",
+    "all two-way transceivers and radios go here. Put voices into VOICES-FUTZED."
+   ],
+   "synonyms": [
+    "Allonge",
+    "Antenna",
+    "Array",
+    "Bleep",
+    "Broadcast",
+    "CB",
+    "Collect",
+    "Collecting",
+    "Compander",
+    "Converter",
+    "Cradle",
+    "Cross",
+    "Directional",
+    "Dispatch",
+    "Downlink",
+    "Ear",
+    "Frequency",
+    "Ham",
+    "Heterodyne",
+    "Intercom",
+    "Keying",
+    "Lead",
+    "Modulation",
+    "Multipath",
+    "Omnidirectional",
+    "Racon",
+    "Radar",
+    "Radio",
+    "Radiogram",
+    "Radioman",
+    "Radios",
+    "Radiosonde",
+    "Receive",
+    "Received",
+    "Receiver",
+    "Receiving",
+    "Rig",
+    "Satellite",
+    "Signal",
+    "Squelch",
+    "Talkies",
+    "Transmitter",
+    "Transponder",
+    "Two-Way",
+    "Walkie",
+    "Wavelength",
+    "Wireless"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [],
+    "priors": [
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 3000.0,
+      "deviation": 1.8,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.4,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.12,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Walkie-talkies, CBs, ham rigs. Heavily BAND-LIMITED — comms audio is deliberately squeezed into ~300 Hz to 3 kHz for intelligibility, then companded and clipped on top — so band_limit_high_hz plus a near-empty low band is real, detectable evidence.",
+     "The genuinely distinctive EVENT is the SQUELCH TAIL: the burst of white noise that fires the instant the carrier drops at the end of a transmission. Acoustically it is a sharp switch from band-limited content to BROADBAND NOISE and then to SILENCE — spectral_flatness JUMPING from ~0.3 to ~0.9 within a few tens of milliseconds, then a hard gate to nothing. Combined with the PTT click at each end, a transceiver transmission has a very recognisable FRAME: [PTT click] - [band-limited content] - [squelch noise burst] - [silence]. That frame is detectable in principle.",
+     "What is NOT detectable is the DEVICE — walkie versus CB versus ham rig are the same electronics. Hence semantic_only despite the distinctive frame.",
+     "UCS routes the content away explicitly: 'Put voices into VOICES-FUTZED.' A transceiver file that is mostly speech should be VOXFutz; keep the radio's own mechanics, squelch and clicks here.",
+     "Against COMRadio: broadcast is CONTINUOUS and one-way; a transceiver is BURSTY and half-duplex. The squelch/PTT frame is the discriminator."
+    ],
+    "confusable_with": [
+     "COMRadio",
+     "VOXFutz",
+     "COMStatic",
+     "COMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TYPEWRITER",
+   "category_id": "COMType",
+   "category_short": "COM",
+   "emoji": "⌨️",
+   "explanation": [
+    "Old school typewriters",
+    "not modern computer keyboards."
+   ],
+   "synonyms": [
+    "Braillewriter",
+    "Brother",
+    "Carriage",
+    "Corona",
+    "Daisywheel",
+    "Electric",
+    "Keyboard",
+    "Knob",
+    "Manual",
+    "Mimeographs",
+    "Olivetti",
+    "Olympia",
+    "Platen",
+    "Platten",
+    "Portable",
+    "Return",
+    "Ribbon",
+    "Royal",
+    "Smith-Corona",
+    "Stenograph",
+    "Stenographer",
+    "Tabulator",
+    "Teleprinter",
+    "Teletype",
+    "Teletypes",
+    "Teletypewriters",
+    "Treadle",
+    "Typeball",
+    "Typebar",
+    "Typebars",
+    "Typeface",
+    "Typehead",
+    "Typewrite",
+    "Typewriter",
+    "Typewritten",
+    "Typist",
+    "Typists",
+    "Typograph",
+    "Typographer",
+    "Underwood"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.00998,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 33,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 1.8242,
+       "reasoned_mean": 0.001,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 50.06957,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 33,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 1.49886,
+       "reasoned_mean": 14.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.09724,
+      "deviation": 2.61119,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 73,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 2.61119,
+       "reasoned_mean": 3.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.12,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.47619,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 73,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 0.09276,
+       "reasoned_mean": 0.6,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 2.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 73,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 2.79452,
+       "reasoned_mean": 15.0,
+       "reasoned_deviation": 3.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.3,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6708.05312,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 73,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 1.11797,
+       "reasoned_mean": 3000.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.158,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 73,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 0.11068,
+       "reasoned_mean": 0.25,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 87.03416,
+      "deviation": 38.06614,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 33,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 38.06614,
+       "reasoned_mean": 9.0,
+       "reasoned_deviation": 5.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.54308,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 73,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 0.09019,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.85886,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 73,
+       "fsd50k_classes": [
+        "Typewriter"
+       ],
+       "measured_deviation": 0.06395,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "A METAL TYPE-BAR STRIKING A RUBBER PLATEN, at 2-6 strikes per second. The signature is an impulse train of very high-crest transients that RING — the frame, the bars and the carriage are all steel, and steel resonates. Long-ish decay_time_seconds_60db (~100-200 ms) and high inharmonicity (a metallic, non-integer ring) are the material evidence.",
+     "Against CMPTKey — the boundary UCS explicitly draws ('not modern computer keyboards'), and one of the few boundaries in COMPUTERS/COMMUNICATIONS that DSP can genuinely adjudicate. It is a MATERIAL-IMPEDANCE test, exactly what decay_time_seconds_60db exists for: a typewriter RINGS (metal, decay 100-200 ms, high inharmonicity, loud, very high crest); a plastic computer keyboard THUDS (decay < 50 ms, no ring). Trust this one.",
+     "THREE extra events seal a typewriter and have NO computer analogue: the MARGIN BELL (a clear struck-metal tone with a long harmonic ring, exactly once per line), the CARRIAGE RETURN (a fast mechanical sweep terminated by an end-stop clunk), and the platen RATCHET on line advance. A bell tone embedded in an impulse train is decisive.",
+     "Against MACHAntq: a treadle or early electric typewriter is antique machinery too — but UCS gives typewriters their own home, so prefer this on text.",
+     "Teletypes straddle COMTelm and COMType. If it PRINTS, it is here."
+    ],
+    "confusable_with": [
+     "CMPTKey",
+     "COMTelm",
+     "MACHAntq",
+     "MACHOffc",
+     "MECHRtch"
+    ]
+   }
+  }
+ ]
+}

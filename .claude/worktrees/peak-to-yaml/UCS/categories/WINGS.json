@@ -1,0 +1,562 @@
+{
+ "version": "8.2.1",
+ "category": "WINGS",
+ "emoji": "🪽",
+ "subcategories": [
+  {
+   "subcategory": "BIRD",
+   "category_id": "WINGBird",
+   "category_short": "WING",
+   "emoji": "🐦",
+   "explanation": [
+    "Bird wing flaps",
+    "hummingbirds",
+    "pigeon wings. Group or single."
+   ],
+   "synonyms": [
+    "Avian",
+    "Bird",
+    "Feather",
+    "Feathered",
+    "Flap",
+    "Flapping",
+    "Flight",
+    "Flutter",
+    "Flying",
+    "Pinion",
+    "Wing",
+    "Winged",
+    "Wingspan",
+    "Wingspread"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.8
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.65,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.01,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "WINGS is the rare UCS category defined by a MORPHOLOGY rather than a source, and it is a good one: flapping is a PERIODIC ONSET TRAIN. onset_periodicity is genuinely diagnostic (a flap train is periodic where a rustle or an applause burst is stochastic), and onset_rate_per_second lands in the ~3-20/s band for a bird - fast enough to be clearly rhythmic, slow enough that the individual flaps remain resolvable as separate broadband thumps rather than fusing into a pitch. That is real, so signal_narrowable.",
+     "Each flap is an unvoiced broadband air/feather thump: low harmonicity, high spectral_flatness. If the file has a tonal fundamental, it is not a bird wing.",
+     "Against WINGS-INSECT: an insect beats its wings so fast (100-600 Hz) that the onset train FUSES INTO A TONE - the wingbeat rate becomes the audible pitch. Resolvable individual flaps means bird; a steady buzz whose pitch IS the flap rate means insect. That is a clean, physical, DSP-decidable boundary.",
+     "Against WINGS-CREATURE: only implied body size (a dragon's flap is slower and lower). That part is text.",
+     "A single takeoff burst rather than a flap train reads as one broadband impulse and can be lost to CLOTH or AIR movement."
+    ],
+    "confusable_with": [
+     "WINGCrea",
+     "WINGMisc",
+     "WINGInsc",
+     "CLOTHMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "CREATURE",
+   "category_id": "WINGCrea",
+   "category_short": "WING",
+   "emoji": "🍽️",
+   "explanation": [
+    "Dragon wings",
+    "fairy wings",
+    "any manner of creature and monster wings."
+   ],
+   "synonyms": [
+    "Angel",
+    "Bird",
+    "Creature",
+    "Dragon",
+    "Fairy",
+    "Fantastical",
+    "Giant",
+    "Griffin",
+    "Legendary",
+    "Monster",
+    "Mythical",
+    "Phoenix",
+    "Sphinx",
+    "Supernatural",
+    "Wing"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.55,
+      "deviation": 0.28,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 700.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.03,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Shares the WINGS morphology (a periodic flap train, measurable via onset_periodicity), which is what makes the CATEGORY narrowable; but WINGS-CREATURE vs WINGS-BIRD is not a DSP boundary, it is a fiction boundary. A dragon wing is a slowed, layered, low-passed bird or cloth flap. semantic_only.",
+     "The one defensible weak prior is scale: a large implied wing beats SLOWER (onset_rate ~0.5-3/s against a bird's 3-20/s) and carries far more low-frequency weight per flap. That is real aerodynamics - wingbeat frequency falls as wing size rises - and it is mined from the design convention. But a fairy wing inverts it completely (fast and bright), so the class is bimodal and the prior stays weak.",
+     "Fairy wings are effectively WINGS-INSECT with reverb; expect them to score there."
+    ],
+    "confusable_with": [
+     "WINGBird",
+     "WINGMisc",
+     "WINGInsc",
+     "CLOTHMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "INSECT",
+   "category_id": "WINGInsc",
+   "category_short": "WING",
+   "emoji": "🐛",
+   "explanation": [
+    "Fly and bee wings",
+    "dragonflies",
+    "moths",
+    "butterflies. Any insect wings. Some overlap and confusion with ANIMALS-INECTS likely."
+   ],
+   "synonyms": [
+    "Bee",
+    "Beetle",
+    "Bug",
+    "Butterfly",
+    "Cicada",
+    "Damselfly",
+    "Dragonfly",
+    "Firefly",
+    "Flies",
+    "Fly",
+    "Gnats",
+    "Grasshopper",
+    "Hornet",
+    "Insectoid",
+    "Katydid",
+    "Ladybug",
+    "Locust",
+    "Mayfly",
+    "Mosquito",
+    "Moth",
+    "Scarab",
+    "Wasp"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 120.0
+     },
+     {
+      "feature": "low_band_energy",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 220.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 2.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The physical fact that makes this one measurable: an insect beats its wings roughly 100-600 times a second, far above the ear's flutter-fusion limit, so the onset train STOPS being rhythmic and BECOMES A TONE. A bee's wingbeat IS its pitch (~200 Hz); a mosquito's is ~600 Hz. So this subcategory is sustained_tonal with a harmonic-rich buzz, LOW onset_periodicity (there are no resolvable onsets left to be periodic), and high sustain and stationarity - the exact inverse of WINGS-BIRD's resolvable flap train. That boundary is genuine physics and needs no text: signal_narrowable.",
+     "A Doppler-ish pitch and amplitude wobble as the insect passes the mic is characteristic; expect moderate spectral_flux on an otherwise stationary tone.",
+     "It does NOT tell a bee from a wasp from a fly - the pitch differences are real but the ranges overlap, and recording distance changes the level, not the frequency. Species is text.",
+     "The explanation admits overlap with ANIMALS-INSECT, and that overlap is total for a buzzing bee: the same file, filed by editorial intent. Do not expect DSP to split WINGS-INSECT from ANIMALS-INSECT.",
+     "Confusable with a small motor, a fan or a MOTORS drone, all of which are also periodic-blade tones - a genuine failure mode of this signature."
+    ],
+    "confusable_with": [
+     "ANMLInsc",
+     "WINGBird",
+     "MOTRMisc",
+     "WINGMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "WINGMisc",
+   "category_short": "WING",
+   "emoji": "🪽",
+   "explanation": [
+    "Wing sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Appendage",
+    "Feather",
+    "Miscellaneous",
+    "Pinion",
+    "Winglet",
+    "Wingtip"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 90.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 6.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.2,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The catch-all, and the explicit home for BAT wings per the ANIMALS-BAT explanation. It carries only the WINGS class shape (a broadband, unvoiced, roughly periodic flap train) and leaves the flier to text.",
+     "Abstention target for this category: correct when the flap morphology is present but no sibling's synonyms fire."
+    ],
+    "confusable_with": [
+     "WINGBird",
+     "WINGCrea",
+     "WINGInsc",
+     "ANMLBat"
+    ]
+   }
+  }
+ ]
+}

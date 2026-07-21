@@ -1,0 +1,1175 @@
+{
+ "version": "8.2.1",
+ "category": "FOOTSTEPS",
+ "emoji": "👣",
+ "subcategories": [
+  {
+   "subcategory": "ANIMAL",
+   "category_id": "FEETAnml",
+   "category_short": "FEET",
+   "emoji": "👣",
+   "explanation": [
+    "Individual animal footsteps",
+    "dog",
+    "elephant. Group animals like a herd or stampede to MOVEMENT-ANIMALS. See also FOOTSTEPS-HORSE"
+   ],
+   "synonyms": [
+    "Bolt",
+    "Buck",
+    "Clack",
+    "Claws",
+    "Clomp",
+    "Footfall",
+    "Footprints",
+    "Hoof",
+    "Hooves",
+    "Jump",
+    "Lope",
+    "March",
+    "Pace",
+    "Patter",
+    "Paw",
+    "Plod",
+    "Prance",
+    "Rear",
+    "Run",
+    "Scuff",
+    "Scurry",
+    "Scurrying",
+    "Shuffle",
+    "Skip",
+    "Sprint",
+    "Stamp",
+    "Stampede",
+    "Step",
+    "Steps",
+    "Stomp",
+    "Stride",
+    "Strut",
+    "Stumble",
+    "Thud",
+    "Tracks",
+    "Tramp",
+    "Tread",
+    "Walk"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 300.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.08,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.02,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.08,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 8.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 4.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "An impulsive footfall train, but the four-legged gait and claw-patter give a faster, less evenly-spaced onset train than a human's ~2 /s biped rhythm. A tendency only: a dog's paws and a person in socks are the same physics.",
+     "Species is semantic — nothing in the spectrum says 'elephant' rather than 'large dog'. The signal only confirms 'footsteps'.",
+     "UCS routes hooves to FOOTSTEPS-HORSE and herds or stampedes to MOVEMENT-ANIMALS; a very dense, non-resolvable onset train should go there."
+    ],
+    "confusable_with": [
+     "FEETHmn",
+     "FEETHors",
+     "FEETMisc",
+     "FEETCrea"
+    ]
+   }
+  },
+  {
+   "subcategory": "CREATURE",
+   "category_id": "FEETCrea",
+   "category_short": "FEET",
+   "emoji": "🍽️",
+   "explanation": [
+    "Monster feet",
+    "Put dinosaur feet in here too",
+    "but also for small fantasy creatures."
+   ],
+   "synonyms": [
+    "Alien",
+    "Beast",
+    "Clack",
+    "Clomp",
+    "Creature",
+    "Dinosaur",
+    "Dragon",
+    "Footfall",
+    "March",
+    "Monster",
+    "Mythical",
+    "Pace",
+    "Patter",
+    "Plod",
+    "Scuff",
+    "Shuffle",
+    "Stamp",
+    "Step",
+    "Stomp",
+    "Stride",
+    "Thud",
+    "Tramp",
+    "Tread"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.62,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 350.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.9,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.4,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_release_seconds",
+      "mean": 1.2,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.24,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Designed giant/monster footfalls: the LF-heavy, long-decay end of the footstep axis — sub-heavy impacts with a rumble tail and a slow onset rate, because a big creature strides slowly.",
+     "The measurable claim is only SCALE (implied mass and decay time), never species. Small fantasy-creature feet, which UCS also puts here, collapse entirely into FOOTSTEPS-ANIMAL.",
+     "Far darker and longer-tailed than FOOTSTEPS-HUMAN, and slower than FOOTSTEPS-HORSE."
+    ],
+    "confusable_with": [
+     "FEETAnml",
+     "FEETHmn",
+     "FEETMisc",
+     "FEETHors"
+    ]
+   }
+  },
+  {
+   "subcategory": "HORSE",
+   "category_id": "FEETHors",
+   "category_short": "FEET",
+   "emoji": "🐎",
+   "explanation": [
+    "All manner of horse feet",
+    "from single to running."
+   ],
+   "synonyms": [
+    "Canter",
+    "Cantering",
+    "Clack",
+    "Clip-Clop",
+    "Clomp",
+    "Clop",
+    "Clopping",
+    "Footfall",
+    "Gallop",
+    "Hoof",
+    "Hooves",
+    "March",
+    "Pace",
+    "Patter",
+    "Plod",
+    "Run",
+    "Scuff",
+    "Shuffle",
+    "Stamp",
+    "Step",
+    "Stomp",
+    "Stride",
+    "Thud",
+    "Tramp",
+    "Tread",
+    "Trot",
+    "Trots",
+    "Trotting",
+    "Walk"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 300.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.5,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.68,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.002,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.1,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 13.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 12.0,
+      "deviation": 6.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.02,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The most separable footstep: a keratin hoof on a hard surface is a near-ideal impulse — very fast attack, very high crest factor, bright clop — and the walk/trot/canter gaits are strongly metrical, so onset_periodicity is the highest in the category.",
+     "Sharper, brighter and more periodic than FOOTSTEPS-HUMAN (soled shoe, ~2 /s, damped).",
+     "On soft ground the clop is damped and it collapses toward FOOTSTEPS-ANIMAL — hence narrowable, not separable."
+    ],
+    "confusable_with": [
+     "FEETAnml",
+     "FEETHmn",
+     "FEETMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "HUMAN",
+   "category_id": "FEETHmn",
+   "category_short": "FEET",
+   "emoji": "🎤",
+   "explanation": [
+    "Human feet",
+    "any surface",
+    "barefoot",
+    "shoes",
+    "it all goes here."
+   ],
+   "synonyms": [
+    "Ambling",
+    "Clack",
+    "Climb",
+    "Clomp",
+    "Feet",
+    "Foot",
+    "Footfall",
+    "Footstep",
+    "Gallivanting",
+    "Hike",
+    "Hiking",
+    "Hobble",
+    "Hobbling",
+    "Hop",
+    "Jog",
+    "Jump",
+    "Limp",
+    "Limping",
+    "March",
+    "Marching",
+    "Meandering",
+    "Moseying",
+    "Pace",
+    "Pacing",
+    "Pad.",
+    "Patter",
+    "Perambulating",
+    "Plod",
+    "Plodding",
+    "Promenading",
+    "Rambling",
+    "Roaming",
+    "Run",
+    "Running",
+    "Sashaying",
+    "Saunter",
+    "Sauntering",
+    "Schlepping",
+    "Scuff",
+    "Scuffling",
+    "Shambles",
+    "Shuffle",
+    "Shuffling",
+    "Skip",
+    "Sprint",
+    "Stamp",
+    "Step",
+    "Stepping",
+    "Stomp",
+    "Stomping",
+    "Stride",
+    "Striding",
+    "Stroll",
+    "Strolling",
+    "Swaggering",
+    "Thud",
+    "Tip-Toe",
+    "Tiptoe",
+    "Traipsing",
+    "Tramp",
+    "Tramping",
+    "Tread",
+    "Treading",
+    "Trekking",
+    "Trudging",
+    "Walk",
+    "Walking",
+    "Wandering"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.5371,
+      "deviation": 2.007,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.6084
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25073,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.58
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.005,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.09,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2925.6,
+      "deviation": 2.3,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2792.97226
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.10602,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.10602
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.02,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.3761,
+      "deviation": 0.4138,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.37059
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 8.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 546,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.0
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A biped gait: an impulsive onset train at roughly 1.5–2.5 steps/s walking (up to ~3.5 running) with genuinely high onset_periodicity. That rate-plus-regularity pair is the core measurable claim.",
+     "Unvoiced and impulsive, so it never competes with VOICES or CROWDS despite the shared human context.",
+     "UCS puts EVERY surface and shoe here, so the material axis (bright slappy concrete vs damped grass vs crunchy high-frequency snow) varies wildly WITHIN the class — which is why spectral_centroid carries a wide deviation and a low weight here. Surface separates recordings, not subcategories.",
+     "Slower and duller than FOOTSTEPS-HORSE; a human running (~3 /s) is where it blurs into FOOTSTEPS-ANIMAL."
+    ],
+    "confusable_with": [
+     "FEETAnml",
+     "FEETHors",
+     "FEETMisc",
+     "FEETCrea"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 546,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Run": 231,
+      "Walk_and_footsteps": 326
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 546,
+       "percentile_05": 2148.9,
+       "median": 3916.2,
+       "percentile_95": 5520.1
+      },
+      "crest_factor": {
+       "clips": 29,
+       "percentile_05": 6.9723,
+       "median": 12.935,
+       "percentile_95": 29.919,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 29,
+       "percentile_05": 0.0099773,
+       "median": 0.054875,
+       "percentile_95": 0.3941,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 29,
+       "percentile_05": 0.024943,
+       "median": 0.14966,
+       "percentile_95": 0.25442,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 29,
+       "percentile_05": 0.19877,
+       "median": 16.614,
+       "percentile_95": 92.16,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 28,
+       "percentile_05": 0.029932,
+       "median": 0.094785,
+       "percentile_95": 0.27937,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 29,
+       "percentile_05": 1.0139,
+       "median": 3.5564,
+       "percentile_95": 8.9814,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 29,
+       "percentile_05": 0.0087609,
+       "median": 0.053684,
+       "percentile_95": 0.23837,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 29,
+       "percentile_05": 0.087099,
+       "median": 0.23258,
+       "percentile_95": 0.58818,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 546,
+       "percentile_05": 0.066792,
+       "median": 0.37587,
+       "percentile_95": 0.96209
+      },
+      "high_band_energy": {
+       "clips": 546,
+       "percentile_05": 0.12824,
+       "median": 0.3981,
+       "percentile_95": 0.79932
+      },
+      "inharmonicity": {
+       "clips": 546,
+       "percentile_05": 0.23977,
+       "median": 0.46519,
+       "percentile_95": 0.62502
+      },
+      "low_band_energy": {
+       "clips": 546,
+       "percentile_05": 0.0169,
+       "median": 0.10593,
+       "percentile_95": 0.46665
+      },
+      "mid_band_energy": {
+       "clips": 546,
+       "percentile_05": 0.12999,
+       "median": 0.42485,
+       "percentile_95": 0.69847
+      },
+      "onset_periodicity": {
+       "clips": 546,
+       "percentile_05": 0.12155,
+       "median": 0.25034,
+       "percentile_95": 0.45067
+      },
+      "onset_rate_per_second": {
+       "clips": 546,
+       "percentile_05": 0.4,
+       "median": 1.5369,
+       "percentile_95": 3.3091
+      },
+      "partial_count": {
+       "clips": 536,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 237,
+       "percentile_05": 109.98,
+       "median": 518.82,
+       "percentile_95": 1764.0
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 54,
+       "percentile_05": -1.1092,
+       "median": -0.01316,
+       "percentile_95": 4.8153
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 546,
+       "percentile_05": 440.83,
+       "median": 1090.6,
+       "percentile_95": 2341.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 546,
+       "percentile_05": 1193.4,
+       "median": 2923.7,
+       "percentile_95": 6593.3
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 546,
+       "percentile_05": 1579.9,
+       "median": 3766.5,
+       "percentile_95": 6859.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 546,
+       "percentile_05": -477.59,
+       "median": 7.9187,
+       "percentile_95": 2175.0
+      },
+      "spectral_entropy": {
+       "clips": 546,
+       "percentile_05": 0.20674,
+       "median": 0.47859,
+       "percentile_95": 0.7465
+      },
+      "spectral_flatness": {
+       "clips": 546,
+       "percentile_05": 0.05061,
+       "median": 0.22529,
+       "percentile_95": 0.55542
+      },
+      "spectral_flux": {
+       "clips": 546,
+       "percentile_05": 0.20732,
+       "median": 0.22889,
+       "percentile_95": 0.23866
+      },
+      "spectral_rolloff_hz": {
+       "clips": 546,
+       "percentile_05": 1624.5,
+       "median": 6337.8,
+       "percentile_95": 13257.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 546,
+       "percentile_05": -8.0222,
+       "median": -4.7458,
+       "percentile_95": -0.96766
+      },
+      "stationarity": {
+       "clips": 546,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.47399,
+       "censored_at_floor_fraction": 0.608
+      },
+      "sustain_ratio": {
+       "clips": 29,
+       "percentile_05": 0.0065789,
+       "median": 0.076923,
+       "percentile_95": 0.25,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 521,
+       "percentile_05": 0.12712,
+       "median": 0.26082,
+       "percentile_95": 0.50586
+      },
+      "transient_count": {
+       "clips": 546,
+       "percentile_05": 1.0,
+       "median": 8.0,
+       "percentile_95": 41.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 546,
+       "percentile_05": 466.9,
+       "median": 2679.8,
+       "percentile_95": 10261.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "FEETMisc",
+   "category_short": "FEET",
+   "emoji": "👣",
+   "explanation": [
+    "Footstep sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Clack",
+    "Clomp",
+    "Footfall",
+    "March",
+    "Miscellaneous",
+    "Pace",
+    "Patter",
+    "Plod",
+    "Scuff",
+    "Shuffle",
+    "Stamp",
+    "Step",
+    "Stomp",
+    "Stride",
+    "Thud",
+    "Tramp",
+    "Tread"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 600.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.2,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 5.0,
+      "deviation": 3.2,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The category's abstain target: a confident impulsive footfall train whose walker (human, animal, horse, creature) the signal cannot name. Emit when the footstep morphology is certain but the agent is not."
+    ],
+    "confusable_with": [
+     "FEETHmn",
+     "FEETAnml",
+     "FEETHors",
+     "FEETCrea"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,1153 @@
+{
+ "version": "8.2.1",
+ "category": "ALARMS",
+ "emoji": "🚨",
+ "subcategories": [
+  {
+   "subcategory": "BELL",
+   "category_id": "ALRMBell",
+   "category_short": "ALRM",
+   "emoji": "🔔",
+   "explanation": [
+    "All alarms which use bells",
+    "a school bell",
+    "fire alarm bell",
+    "a railroad crossing bell."
+   ],
+   "synonyms": [
+    "Alarms",
+    "Alert",
+    "Bank",
+    "Burglar",
+    "Caution",
+    "Clanger",
+    "Clock",
+    "Crossing",
+    "Fire",
+    "Notice",
+    "Railroad",
+    "Reminder",
+    "School",
+    "Signal",
+    "Striker",
+    "Tower",
+    "Warning"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 2.0,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.005,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.75,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.12,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 4.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 14,
+      "deviation": 8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000,
+      "deviation": 1200,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Struck metal that rings: a fast attack followed by a long, strongly INHARMONIC decaying tail. Inharmonicity is the whole call — a cast bell's partials sit near 2.0, 2.4, 3.0 and 4.2 times the hum, not at integers.",
+     "ALARMS-BUZZER holds a continuous, harmonically dense drive and never decays; ALARMS-ELECTRONIC is a near-pure synthetic tone with almost no inharmonicity. A bell is the only alarm mechanism here that is struck.",
+     "ALARMS-SIREN sweeps; a bell's partials are fixed in frequency.",
+     "Alarm function (repeated strikes, warning context) rather than the single musical strike of BELLS-LARGE or BELLS-HANDBELL, which are otherwise the same object."
+    ],
+    "confusable_with": [
+     "BELLLrg",
+     "BELLHand",
+     "BELLMisc",
+     "ALRMClok",
+     "MUSCBell",
+     "METLImpt",
+     "CLOCKChim"
+    ]
+   }
+  },
+  {
+   "subcategory": "BUZZER",
+   "category_id": "ALRMBuzr",
+   "category_short": "ALRM",
+   "emoji": "📳",
+   "explanation": [
+    "All alarms using buzzers",
+    "or buzzers in general even if not technically an alarm",
+    "would probably go here. A front door buzzer."
+   ],
+   "synonyms": [
+    "Alarm",
+    "Alarms",
+    "Alert",
+    "Burglar",
+    "Buzzing",
+    "Caution",
+    "Door",
+    "Doorkeeper",
+    "Doorman",
+    "Emergency",
+    "Entry",
+    "Fire",
+    "Front",
+    "Game",
+    "Home",
+    "Hospital",
+    "Intercom",
+    "Notice",
+    "Reminder",
+    "Security",
+    "Show",
+    "Signal",
+    "Warning"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.12
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 25,
+      "deviation": 12,
+      "transform": "log",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.18,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.0,
+      "deviation": 1.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 250,
+      "deviation": 150,
+      "transform": "log",
+      "weight": 0.55,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.08,
+      "deviation": 2.117,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.01,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.5,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A rasp, not a ring: sustained, low-crest, flat-topped drive with a dense odd-harmonic comb — high total_harmonic_distortion and a high partial_count are the signature. The energy is held, so sustain_ratio is high and decay time is near zero.",
+     "ALARMS-BELL is impulsive with a long inharmonic tail; the buzzer has no tail because it is never struck.",
+     "ALARMS-ELECTRONIC is the opposite spectrum: a near-sinusoid, very low spectral_flatness, few partials, low distortion. Buzzer = many partials and dirty; electronic = few partials and clean.",
+     "A rasping door buzzer belongs here; a mechanical ding-dong doorbell is BELLS-DOORBELL."
+    ],
+    "confusable_with": [
+     "ALRMElec",
+     "ALRMMisc",
+     "BELLDoor",
+     "ELECBuzz",
+     "UIAlert",
+     "MACHAppl"
+    ]
+   }
+  },
+  {
+   "subcategory": "CLOCK",
+   "category_id": "ALRMClok",
+   "category_short": "ALRM",
+   "emoji": "🕰️",
+   "explanation": [
+    "Specifically alarm clocks",
+    "digital or analog. A bit of overlap with ALARMS-BELL",
+    "but clock alarms of all kinds probably best to go here."
+   ],
+   "synonyms": [
+    "Alarm",
+    "Alarms",
+    "Analog",
+    "Clock",
+    "Digital",
+    "Sleep",
+    "Snooze",
+    "Timepiece",
+    "Timer",
+    "Wind"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 4.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 8,
+      "deviation": 6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.15,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 800,
+      "deviation": 500,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The repeating pulse train is the cue: high onset_periodicity at a few hits per second. A single held tone is ALARMS-ELECTRONIC; a single inharmonic ring is ALARMS-BELL.",
+     "UCS puts BOTH digital (piezo beeping) and analog (bell-striking) clock alarms here, so the subcategory deliberately spans two morphologies and DSP cannot finish the call. The words clock, alarm, snooze, timer or wind in the name are the deciding evidence.",
+     "Clock mechanism ticking without an alarm is CLOCKS-TICK; a chiming clock is CLOCKS-CHIME."
+    ],
+    "confusable_with": [
+     "ALRMBell",
+     "ALRMElec",
+     "ALRMBuzr",
+     "CLOCKTick",
+     "CLOCKChim",
+     "UIBeep"
+    ]
+   }
+  },
+  {
+   "subcategory": "ELECTRONIC",
+   "category_id": "ALRMElec",
+   "category_short": "ALRM",
+   "emoji": "🚨",
+   "explanation": [
+    "All electronic alarms",
+    "pure electronic tone alarms. Home burglar alarms",
+    "smoke detectors",
+    "etc. Car alarms would go to VEHICLES-ALARMS."
+   ],
+   "synonyms": [
+    "Alarms",
+    "Alert",
+    "Button",
+    "Car",
+    "Carbon",
+    "Caution",
+    "CO2",
+    "Detector",
+    "Digital",
+    "Home",
+    "Intruder",
+    "Intrusion",
+    "Keycard",
+    "Monoxide",
+    "Notice",
+    "Panic",
+    "Programable",
+    "Reminder",
+    "Security",
+    "Signal",
+    "Smoke",
+    "Timer",
+    "Warning"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.25
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.55
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.9,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.05,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 4,
+      "deviation": 3,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.06,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.75,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200,
+      "deviation": 1800,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.7,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.65,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "total_harmonic_distortion",
+      "mean": 0.08,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 1400,
+      "deviation": 700,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.5,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.003,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A synthetic near-pure tone: very high harmonicity, very low spectral_flatness, very few partials, almost no inharmonicity, and usually pulsed rather than continuous (smoke-detector chirp, keypad alert), so onset_periodicity is high.",
+     "ALARMS-BUZZER is the spectral inverse — a dense, distorted harmonic comb. Buzzer is dirty and many-partialled; electronic is clean and few-partialled.",
+     "No inharmonic decaying tail, which rules out ALARMS-BELL. No frequency sweep, which rules out ALARMS-SIREN.",
+     "Car alarms are acoustically identical but go to VEHICLES-ALARM by UCS rule, so the name must decide between the two."
+    ],
+    "confusable_with": [
+     "ALRMBuzr",
+     "ALRMClok",
+     "VEHAlrm",
+     "UIBeep",
+     "UIAlert",
+     "TOYElec",
+     "MACHMed"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "ALRMMisc",
+   "category_short": "ALRM",
+   "emoji": "🚨",
+   "explanation": [
+    "Alarm sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Alarms",
+    "Alert",
+    "Anti-Theft",
+    "Caution",
+    "Homing",
+    "Miscellaneous",
+    "Notice",
+    "Reminder",
+    "Signal",
+    "Warning"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.15,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Fallback: an alarm whose mechanism is not a bell, a buzzer, a clock, an electronic tone or a siren. Assert only when the named siblings are gated out or tied.",
+     "All that is shared across the family is the function — loud, attention-getting, repetitive, mid-to-high band energy — and function is not a measurable morphology."
+    ],
+    "confusable_with": [
+     "ALRMBell",
+     "ALRMBuzr",
+     "ALRMClok",
+     "ALRMElec",
+     "ALRMSirn"
+    ]
+   }
+  },
+  {
+   "subcategory": "SIREN",
+   "category_id": "ALRMSirn",
+   "category_short": "ALRM",
+   "emoji": "🚨",
+   "explanation": [
+    "Mechanical sirens",
+    "like old klaxons. Vehicle sirens such a police",
+    "fire and ambulance to go to VEHICLES-SIREN."
+   ],
+   "synonyms": [
+    "Ahooga",
+    "Air",
+    "Air-Raid",
+    "Alarms",
+    "Blare",
+    "Civil",
+    "Claxon",
+    "Defense",
+    "Doppler",
+    "Hailer",
+    "Hooters",
+    "Horn",
+    "Klaxon",
+    "Raid",
+    "Siren",
+    "Sirenidae",
+    "Tornado"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3
+     },
+     {
+      "feature": "spectral_flatness",
+      "max": 0.75
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 374.53,
+      "deviation": 450,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 72,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 430.88523
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.51505,
+      "deviation": 0.3777,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 72,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.58926
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.7,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.064103,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.55,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 72,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.05151
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 648.53,
+      "deviation": 350,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 67,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 384.40953
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.30539,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 72,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.6
+      }
+     },
+     {
+      "feature": "spectral_centroid_slope_hz_per_second",
+      "mean": -1.0858,
+      "deviation": 400.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 72,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": -0.41577
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 7.0,
+      "deviation": 7,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 72,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5.0
+      }
+     },
+     {
+      "feature": "pitch_slope_semitones_per_second",
+      "mean": 0.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.5,
+      "deviation": 1.5,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The slow frequency sweep IS the category. A siren wails: pitch and brightness climb, reverse and cycle, so spectral_centroid_deviation_hz is very large while the NET spectral_centroid_slope_hz_per_second over the whole file sits near zero. That signed-slope-near-zero-with-huge-deviation pattern separates a cycling siren from a one-way riser or whoosh, which have a large net slope.",
+     "Every sibling alarm holds a fixed spectrum: ALARMS-BUZZER and ALARMS-ELECTRONIC lock f0, ALARMS-BELL has fixed partials. None of them sweeps. This is the most distinctive signature in the category.",
+     "Mechanical sirens and klaxons only. Police, fire and ambulance sirens go to VEHICLES-SIREN and are acoustically identical, so the name decides.",
+     "A klaxon or ahooga that honks on a fixed pitch rather than wailing will look like HORNS-AIR POWERED; the sweep is what should be trusted."
+    ],
+    "confusable_with": [
+     "VEHSirn",
+     "ALRMElec",
+     "ALRMMisc",
+     "HORNAir",
+     "VEHHorn"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 72,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Siren": 72
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 72,
+       "percentile_05": 1139.4,
+       "median": 2271.2,
+       "percentile_95": 3771.1
+      },
+      "harmonicity": {
+       "clips": 72,
+       "percentile_05": 0.19647,
+       "median": 0.5139,
+       "percentile_95": 0.93657
+      },
+      "high_band_energy": {
+       "clips": 72,
+       "percentile_05": 0.050844,
+       "median": 0.21828,
+       "percentile_95": 0.64446
+      },
+      "inharmonicity": {
+       "clips": 72,
+       "percentile_05": 0.0068475,
+       "median": 0.36908,
+       "percentile_95": 0.65903
+      },
+      "low_band_energy": {
+       "clips": 72,
+       "percentile_05": 0.00026361,
+       "median": 0.017795,
+       "percentile_95": 0.1947
+      },
+      "mid_band_energy": {
+       "clips": 72,
+       "percentile_05": 0.33079,
+       "median": 0.70388,
+       "percentile_95": 0.89545
+      },
+      "onset_periodicity": {
+       "clips": 72,
+       "percentile_05": 0.10167,
+       "median": 0.30315,
+       "percentile_95": 0.7168
+      },
+      "onset_rate_per_second": {
+       "clips": 72,
+       "percentile_05": 0.1,
+       "median": 0.62145,
+       "percentile_95": 3.855
+      },
+      "partial_count": {
+       "clips": 72,
+       "percentile_05": 2.0,
+       "median": 7.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 67,
+       "percentile_05": 71.475,
+       "median": 648.53,
+       "percentile_95": 1378.1
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 72,
+       "percentile_05": 128.98,
+       "median": 372.38,
+       "percentile_95": 1577.9
+      },
+      "spectral_centroid_hz": {
+       "clips": 72,
+       "percentile_05": 921.17,
+       "median": 1782.9,
+       "percentile_95": 4044.5
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 72,
+       "percentile_05": 954.51,
+       "median": 1873.4,
+       "percentile_95": 4060.1
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 72,
+       "percentile_05": -158.17,
+       "median": -1.3687,
+       "percentile_95": 103.66
+      },
+      "spectral_entropy": {
+       "clips": 72,
+       "percentile_05": 0.16633,
+       "median": 0.36151,
+       "percentile_95": 0.50037
+      },
+      "spectral_flatness": {
+       "clips": 72,
+       "percentile_05": 0.014221,
+       "median": 0.062723,
+       "percentile_95": 0.16976
+      },
+      "spectral_flux": {
+       "clips": 72,
+       "percentile_05": 0.052494,
+       "median": 0.20868,
+       "percentile_95": 0.28898
+      },
+      "spectral_rolloff_hz": {
+       "clips": 72,
+       "percentile_05": 1142.8,
+       "median": 2760.5,
+       "percentile_95": 6498.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 72,
+       "percentile_05": -7.964,
+       "median": -3.6974,
+       "percentile_95": 3.0905
+      },
+      "stationarity": {
+       "clips": 72,
+       "percentile_05": 0.0,
+       "median": 0.40084,
+       "percentile_95": 0.88947,
+       "censored_at_floor_fraction": 0.306
+      },
+      "syllabic_modulation_energy": {
+       "clips": 72,
+       "percentile_05": 0.023327,
+       "median": 0.18718,
+       "percentile_95": 0.45196
+      },
+      "transient_count": {
+       "clips": 72,
+       "percentile_05": 1.0,
+       "median": 7.0,
+       "percentile_95": 39.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 72,
+       "percentile_05": 914.6,
+       "median": 2045.3,
+       "percentile_95": 4310.6
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  }
+ ]
+}

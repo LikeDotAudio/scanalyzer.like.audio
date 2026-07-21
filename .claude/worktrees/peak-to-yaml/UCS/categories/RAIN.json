@@ -1,0 +1,2512 @@
+{
+ "version": "8.2.1",
+ "category": "RAIN",
+ "emoji": "🌧️",
+ "subcategories": [
+  {
+   "subcategory": "CLOTH",
+   "category_id": "RAINClth",
+   "category_short": "RAIN",
+   "emoji": "🧵",
+   "explanation": [
+    "Rain on cloth",
+    "like a person's clothes",
+    "or more likely a patio umbrella",
+    "awning."
+   ],
+   "synonyms": [
+    "Awning",
+    "Cloth",
+    "Cotton",
+    "Drizzle",
+    "Jacket",
+    "Precipitation",
+    "Rain",
+    "Raincoat",
+    "Rainwear",
+    "Tarp",
+    "Tent",
+    "Umbrella",
+    "Waterproof"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1600.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -10.5,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.01,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.23,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.48,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.29,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.44,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 38.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.78,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The DARK, DEAD extreme of the RAIN material-impedance axis. Cloth is the highest-loss surface in the set: a patio umbrella, awning or tarp absorbs the droplet almost completely. Lowest spectral_centroid_hz (~1.6 kHz), steepest spectral_slope_db_per_octave (-10.5 dB/oct), lowest high_band_energy, and the shortest decay_time_seconds_60db (~10 ms) of any RAIN surface.",
+     "But a taut fabric membrane still THUMPS: individual drops are resolvable low-mid thuds, so crest_factor stays well above RAIN-VEGETATION's diffuse hiss and low_band_energy is the highest in RAIN.",
+     "Against RAIN-METAL: the exact opposite end of the axis — a factor of ~4 in centroid and ~9 in ring time. If the two ever score close, the measurement is wrong.",
+     "Against RAIN-VEGETATION: comparably damped, comparably dark; the separator is transient structure (cloth thumps, foliage hisses) and low_band_energy.",
+     "Against RAIN-PLASTIC: a tarp is the boundary case. Plastic is stiffer and brighter with an audible tick; cloth has none."
+    ],
+    "confusable_with": [
+     "RAINConc",
+     "RAIN",
+     "RAINGlas",
+     "RAINInt",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWatr",
+     "RAINWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "CONCRETE",
+   "category_id": "RAINConc",
+   "category_short": "RAIN",
+   "emoji": "🌧️",
+   "explanation": [
+    "Rain on asphalt or concrete or patio tile. Rain on a hard slappy solid surface."
+   ],
+   "synonyms": [
+    "Asphalt",
+    "Brick",
+    "Cement",
+    "Drizzle",
+    "Masonry",
+    "Path",
+    "Pavement",
+    "Precipitation",
+    "Rain",
+    "Sidewalk",
+    "Street"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3800.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -6.5,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.02,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.46,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.38,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.16,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5200.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.44,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 48.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.74,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS, verbatim: 'a hard slappy solid surface'. Concrete and asphalt are a rigid, massive half-space — the droplet's energy radiates as a broadband SLAP with essentially no resonance. Bright-ish (centroid ~3.8 kHz) but DEAD: decay_time_seconds_60db ~20 ms, four times shorter than RAIN-METAL.",
+     "Slappy means discrete: individual droplet impacts stay resolvable, so crest_factor is the highest of the hard surfaces and stationarity is lower than the diffuse surfaces.",
+     "Against RAIN-METAL: same brightness family, opposite ring. Bright + ringing = metal; bright + dead = concrete. decay_time_seconds_60db is the axis.",
+     "Against RAIN-WOOD: wood is a lossy plate — noticeably darker (~2.6 kHz) with a mid-band drum body.",
+     "Against RAIN-WATER: puddles are darker and produce pitched droplet plops (measurable harmonicity), not slaps."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAIN",
+     "RAINGlas",
+     "RAINInt",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWatr",
+     "RAINWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "GENERAL",
+   "category_id": "RAIN",
+   "category_short": "RAIN",
+   "emoji": "🌧️",
+   "explanation": [
+    "General downpour",
+    "rain on mixed materials."
+   ],
+   "synonyms": [
+    "Damp",
+    "Deluge",
+    "Downpour",
+    "Drenched",
+    "Drizzle",
+    "Mist",
+    "Monsoon",
+    "Precipitate",
+    "Precipitation",
+    "Rain",
+    "Rainfall",
+    "Raining",
+    "Rains",
+    "Rainstorm",
+    "Rainy",
+    "Shower",
+    "Sprinkle",
+    "Torrent",
+    "Wet"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 0.04826,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "action": "widened",
+       "clips": 234,
+       "was": {
+        "min": 2.0
+       },
+       "reason": "the reasoned gate rejected 85% of this subcategory's own true clips",
+       "date": "2026-07"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.9978,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "action": "widened",
+       "clips": 234,
+       "was": {
+        "max": 0.5
+       },
+       "reason": "the reasoned gate rejected 36% of this subcategory's own true clips",
+       "date": "2026-07"
+      }
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4665.8,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 4799.77399
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -2.803,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": -2.40194
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.03,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.62136,
+      "deviation": 0.238,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.63403
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.29956,
+      "deviation": 0.1737,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.29571
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.052696,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.04401
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4481.1,
+      "deviation": 2.323,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5031.62626
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 14.549,
+      "deviation": 2.432,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 39,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 13.07725
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.34147,
+      "deviation": 0.2204,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.34907
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.78971,
+      "deviation": 4.074,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.81187
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.58512,
+      "deviation": 0.3755,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.64509
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.46543,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.47031
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.16844,
+      "deviation": 0.1228,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.08
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22696,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 234,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.22724
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "'Rain on mixed materials' — by definition the centroid of the whole material-impedance axis, with every prior set to the middle of the RAIN family and wide deviations so it never beats a committed surface on that surface's own evidence.",
+     "This is the RAIN abstention target: when the damping/brightness measurement lands between two surfaces, or when no surface word appears in the filename, GENERAL is the correct answer.",
+     "A general downpour still gates as rain: a dense stochastic texture, long, unpitched, with a high onset_rate_per_second. It cannot be a single impact.",
+     "If a specific surface word (metal, tin, leaves, umbrella, pavement) appears, prefer the surface subcategory — its priors are far sharper than these."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAINGlas",
+     "RAINInt",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWatr",
+     "RAINWood"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 234,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Rain": 234,
+      "Raindrop": 35
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 234,
+       "percentile_05": 2539.4,
+       "median": 4412.1,
+       "percentile_95": 5566.6
+      },
+      "crest_factor": {
+       "clips": 39,
+       "percentile_05": 1.7062,
+       "median": 14.549,
+       "percentile_95": 55.873,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 33,
+       "percentile_05": 0.0049887,
+       "median": 1.0077,
+       "percentile_95": 7.4132,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 39,
+       "percentile_05": 0.014966,
+       "median": 0.12472,
+       "percentile_95": 2.7837,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 39,
+       "percentile_05": 0.091059,
+       "median": 24.974,
+       "percentile_95": 177.91,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 29,
+       "percentile_05": 0.0099773,
+       "median": 0.23946,
+       "percentile_95": 4.9138,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 39,
+       "percentile_05": -0.29043,
+       "median": 4.2694,
+       "percentile_95": 12.125,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 39,
+       "percentile_05": 0.0011691,
+       "median": 0.05309,
+       "percentile_95": 0.7605,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 39,
+       "percentile_05": 0.018783,
+       "median": 0.44855,
+       "percentile_95": 0.55107,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 234,
+       "percentile_05": 0.031731,
+       "median": 0.33288,
+       "percentile_95": 0.92628
+      },
+      "high_band_energy": {
+       "clips": 234,
+       "percentile_05": 0.20316,
+       "median": 0.62019,
+       "percentile_95": 0.87917
+      },
+      "inharmonicity": {
+       "clips": 234,
+       "percentile_05": 0.21786,
+       "median": 0.46455,
+       "percentile_95": 0.62518
+      },
+      "low_band_energy": {
+       "clips": 234,
+       "percentile_05": 0.0047733,
+       "median": 0.052023,
+       "percentile_95": 0.28595
+      },
+      "mid_band_energy": {
+       "clips": 234,
+       "percentile_05": 0.090872,
+       "median": 0.29937,
+       "percentile_95": 0.57619
+      },
+      "onset_periodicity": {
+       "clips": 234,
+       "percentile_05": 0.067686,
+       "median": 0.16822,
+       "percentile_95": 0.45238
+      },
+      "onset_rate_per_second": {
+       "clips": 234,
+       "percentile_05": 0.079073,
+       "median": 0.78709,
+       "percentile_95": 2.899
+      },
+      "partial_count": {
+       "clips": 232,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 154,
+       "percentile_05": 117.6,
+       "median": 938.3,
+       "percentile_95": 1917.4
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 31,
+       "percentile_05": -0.71834,
+       "median": -0.0073352,
+       "percentile_95": 0.33961
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 234,
+       "percentile_05": 191.98,
+       "median": 572.52,
+       "percentile_95": 1861.2
+      },
+      "spectral_centroid_hz": {
+       "clips": 234,
+       "percentile_05": 1635.6,
+       "median": 4649.2,
+       "percentile_95": 7767.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 234,
+       "percentile_05": 1897.4,
+       "median": 4633.6,
+       "percentile_95": 7929.5
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 234,
+       "percentile_05": -84.16,
+       "median": 3.2247,
+       "percentile_95": 2790.3
+      },
+      "spectral_entropy": {
+       "clips": 234,
+       "percentile_05": 0.31145,
+       "median": 0.60226,
+       "percentile_95": 0.82972
+      },
+      "spectral_flatness": {
+       "clips": 234,
+       "percentile_05": 0.064388,
+       "median": 0.34046,
+       "percentile_95": 0.63635
+      },
+      "spectral_flux": {
+       "clips": 234,
+       "percentile_05": 0.21524,
+       "median": 0.22695,
+       "percentile_95": 0.24259
+      },
+      "spectral_rolloff_hz": {
+       "clips": 234,
+       "percentile_05": 2951.1,
+       "median": 9322.9,
+       "percentile_95": 14237.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 234,
+       "percentile_05": -6.5762,
+       "median": -2.8164,
+       "percentile_95": 1.2315
+      },
+      "stationarity": {
+       "clips": 234,
+       "percentile_05": 0.0,
+       "median": 0.58388,
+       "percentile_95": 0.88518,
+       "censored_at_floor_fraction": 0.205
+      },
+      "sustain_ratio": {
+       "clips": 39,
+       "percentile_05": 0.003268,
+       "median": 0.0375,
+       "percentile_95": 1.0,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 225,
+       "percentile_05": 0.12302,
+       "median": 0.22845,
+       "percentile_95": 0.31873
+      },
+      "transient_count": {
+       "clips": 234,
+       "percentile_05": 1.0,
+       "median": 8.0,
+       "percentile_95": 39.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 234,
+       "percentile_05": 1024.5,
+       "median": 4475.0,
+       "percentile_95": 13292.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "GLASS",
+   "category_id": "RAINGlas",
+   "category_short": "RAIN",
+   "emoji": "🥂",
+   "explanation": [
+    "Rain on a glass roof like a sunroof",
+    "or rain blown against a window as well."
+   ],
+   "synonyms": [
+    "Drizzle",
+    "Glass",
+    "Greenhouse",
+    "Pane",
+    "Precipitation",
+    "Rain",
+    "Sheet",
+    "Skylight",
+    "Sunroof",
+    "Window",
+    "Windshield"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 5200.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -4.5,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.055,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.57,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.32,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.11,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 7000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.47,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 40.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.76,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 10000.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Second-brightest RAIN surface. Glass is stiff and lossy-in-the-bass: droplets excite a thin, glassy tick with a short ring — bright (centroid ~5.2 kHz) but with a decay_time_seconds_60db (~55 ms) well below RAIN-METAL's ~90 ms and almost no low_band_energy panel body.",
+     "Against RAIN-METAL: metal rings roughly twice as long and reaches higher; glass is brighter than everything else but deader than metal.",
+     "Against RAIN-PLASTIC: plastic and vinyl are lossy polymers — much duller (centroid ~3.2 kHz) and with a boomier mid/low body.",
+     "A window pane recorded from indoors is RAIN-INTERIOR (low-passed by the structure), not RAIN-GLASS."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAIN",
+     "RAINInt",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWatr",
+     "RAINWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "INTERIOR",
+   "category_id": "RAINInt",
+   "category_short": "RAIN",
+   "emoji": "🌧️",
+   "explanation": [
+    "Interior recordings of Rain",
+    "from inside house or barn",
+    "or vehicle."
+   ],
+   "synonyms": [
+    "Drizzle",
+    "Indoor",
+    "Interior",
+    "Precipitation",
+    "Rain",
+    "Rainstorm",
+    "Roof",
+    "Sunroof",
+    "Windshield"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1500.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -11.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.03,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.2,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.46,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.34,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1800.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 35.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.84,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "band_limit_high_hz",
+      "mean": 7000.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.2,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Defined by the RECORDING POSITION, not the surface: rain heard through a wall, roof or windshield. The building is a low-pass filter, so this is the only RAIN subcategory with a collapsed band_limit_high_hz (~7 kHz) and dominant low_band_energy.",
+     "That LP signature is a real, measurable cue — but it is a transmission-path cue, and an outdoor cloth or vegetation recording can mimic the darkness. Damping alone will not settle it; the words 'interior', 'inside' or 'indoor' should.",
+     "Against RAIN-CLOTH and RAIN-VEGETATION: those are dark because the SURFACE absorbs the high frequencies at the impact; INTERIOR is dark because the WALL removes them in transit. band_limit_high_hz (a hard shelf) separates the two mechanisms from a gradual spectral_slope_db_per_octave roll-off.",
+     "Narrower stereo_width and a more stationary bed than any exterior RAIN recording."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAIN",
+     "RAINGlas",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWatr",
+     "RAINWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "METAL",
+   "category_id": "RAINMetl",
+   "category_short": "RAIN",
+   "emoji": "🔗",
+   "explanation": [
+    "Rain on a metal surface",
+    "so exterior rain on a car",
+    "or metal sheet",
+    "metal roof."
+   ],
+   "synonyms": [
+    "Can",
+    "Car",
+    "Drizzle",
+    "Gutters",
+    "Metal",
+    "Ping",
+    "Precipitation",
+    "Rain",
+    "Roof",
+    "Tin"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6000.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -3.5,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.09,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.62,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.28,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 8000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 45.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.78,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 11000.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The BRIGHT, RINGING extreme of the RAIN material-impedance axis. A metal roof or car panel is a low-loss plate: each droplet excites flexural modes that RING. Highest spectral_centroid_hz (~6 kHz), flattest spectral_slope_db_per_octave (-3.5 dB/oct), and by far the longest decay_time_seconds_60db (~90 ms) of any RAIN surface — an order of magnitude above RAIN-VEGETATION.",
+     "The ring is inharmonic and non-pitched (a plate, not a bell): high inharmonicity with low harmonicity. That is what distinguishes a metal 'ping' from a tonal impact.",
+     "Against RAIN-GLASS: glass is nearly as bright but stiffer and thinner-sounding, with a much shorter ring (~60 ms vs ~90 ms) and less low-frequency panel body.",
+     "Against RAIN-CONCRETE: concrete is a rigid half-space, so it SLAPS and does not ring at all (decay ~20 ms). Metal ringing versus concrete slapping is the cleanest pair on this axis.",
+     "Subtle but physically real: this is a damping/brightness measurement, not a guess. Confirm with the filename before committing."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAIN",
+     "RAINGlas",
+     "RAINInt",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWatr",
+     "RAINWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "PLASTIC",
+   "category_id": "RAINPlas",
+   "category_short": "RAIN",
+   "emoji": "🧴",
+   "explanation": [
+    "Rain on plastic or vinyl surfaces",
+    "like a grill cover",
+    "or a plastic shed."
+   ],
+   "synonyms": [
+    "Drizzle",
+    "Plastic",
+    "Plexiglass",
+    "Precipitation",
+    "Rain",
+    "Vinyl"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -7.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.03,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.42,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4400.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 44.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.76,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.4,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Plastic and vinyl are lossy polymer membranes: they thump and rattle rather than ring. Mid-dominant (mid_band_energy is the largest band), moderately dark (centroid ~3.2 kHz), with a short, damped decay (~30 ms) — well under RAIN-GLASS or RAIN-METAL.",
+     "A stretched plastic cover behaves as a drum head, so it carries more low/mid body (low_band_energy ~0.18) than any of the hard surfaces.",
+     "Against RAIN-METAL: metal is far brighter and rings 3x longer.",
+     "Against RAIN-CLOTH: cloth is even more damped and much darker; plastic still has an audible tick, cloth has almost none.",
+     "The plastic/wood boundary is the weakest pair on this axis: both are lossy plates in the same mid-dark range. Expect to need the filename."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAIN",
+     "RAINGlas",
+     "RAINInt",
+     "RAINMetl",
+     "RAINVege",
+     "RAINWatr",
+     "RAINWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "VEGETATION",
+   "category_id": "RAINVege",
+   "category_short": "RAIN",
+   "emoji": "🌧️",
+   "explanation": [
+    "Rain on plants",
+    "leaves and grass. Jungle or tropical rain on plant leaves."
+   ],
+   "synonyms": [
+    "Drizzle",
+    "Foliage",
+    "Grass",
+    "Jungle",
+    "Leaf",
+    "Leaves",
+    "Plants",
+    "Precipitation",
+    "Rainforest",
+    "Tree",
+    "Vegetation"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2000.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -9.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.012,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.3,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.44,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.26,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2600.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.58,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 70.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.88,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS: 'rain on plants, leaves and grass'. Foliage is a diffuse, high-loss scatterer: thousands of tiny lightweight leaves each absorb the droplet. The result is the DEADEST decay_time_seconds_60db in RAIN (~12 ms), a steep spectral_slope_db_per_octave (-9 dB/oct), and a dark centroid (~2 kHz).",
+     "Diffuse means no individual drop is resolvable: the highest onset_rate_per_second and stationarity, the highest spectral_flatness, and the LOWEST crest_factor of any RAIN surface. It reads as a soft hiss, not a patter.",
+     "Against RAIN-METAL: the two poles of the whole axis. Metal is bright, spiky and ringing; vegetation is dark, smooth and dead.",
+     "Against RAIN-CLOTH: cloth is comparably damped but darker still, and an umbrella or awning is a taut membrane, so individual drops DO produce a resolvable thump (higher crest_factor) — foliage does not.",
+     "Against RAIN-WOOD: wood is brighter and has a resolvable per-drop knock."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAIN",
+     "RAINGlas",
+     "RAINInt",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINWatr",
+     "RAINWood"
+    ]
+   }
+  },
+  {
+   "subcategory": "WATER",
+   "category_id": "RAINWatr",
+   "category_short": "RAIN",
+   "emoji": "💧",
+   "explanation": [
+    "Rain on water",
+    "puddles",
+    "lakes",
+    "ponds."
+   ],
+   "synonyms": [
+    "Drizzle",
+    "Droplets",
+    "Drops",
+    "Lake",
+    "Pond",
+    "Precipitation",
+    "Puddle",
+    "Rain",
+    "Ripples",
+    "Surface"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2300.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -8.5,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.022,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.31,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.45,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.24,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3000.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.42,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 50.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.8,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.45,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Rain on standing water: each droplet entrains a bubble whose Minnaert resonance gives a faintly PITCHED plop. Elevated harmonicity (~0.25) with low inharmonicity is unique among the RAIN surfaces — every other surface here is a purely inharmonic solid.",
+     "Water absorbs, so the surface is dark (centroid ~2.3 kHz) and dead (decay ~22 ms), with more low_band_energy than the hard surfaces from the cavity plops.",
+     "Against RAIN-CONCRETE: both are hard-surfaced in the sense of being non-resonant, but concrete slaps bright and inharmonic; puddles plop dark and pitched.",
+     "Against WATER-DRIP: same droplet physics, but RAIN-WATER is a dense texture (onset_rate_per_second ~50), not sparse isolated transients."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAIN",
+     "RAINGlas",
+     "RAINInt",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWood",
+     "WATRDrip"
+    ]
+   }
+  },
+  {
+   "subcategory": "WOOD",
+   "category_id": "RAINWood",
+   "category_short": "RAIN",
+   "emoji": "🪵",
+   "explanation": [
+    "Rain on wood surfaces",
+    "so a deck for example."
+   ],
+   "synonyms": [
+    "Barn",
+    "Deck",
+    "Drizzle",
+    "Floor",
+    "Precipitation",
+    "Rain",
+    "Roof",
+    "Shed",
+    "Wood"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "min": 2.0
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_slope_db_per_octave",
+      "mean": -8.0,
+      "deviation": 2.5,
+      "transform": "linear",
+      "weight": 0.95,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.035,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.34,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.85,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.46,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.2,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3600.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.5,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.46,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 42.0,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.77,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.14,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 25.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Wood is the classic lossy plate of the material-impedance axis: high internal damping kills the ring (decay ~35 ms) and rolls off the top (centroid ~2.6 kHz, slope -8 dB/oct), leaving a warm mid-band-dominant knock. Deck, barn or shed.",
+     "Against RAIN-METAL: the canonical impedance contrast. Metal is ~2.3x brighter and rings ~2.5x longer; wood is dark and dead.",
+     "Against RAIN-CONCRETE: similar deadness but concrete is markedly brighter and slappier; wood has the mid body of a plate, concrete the crack of a half-space.",
+     "Against RAIN-VEGETATION: leaves are darker still, far more diffuse, and have almost no resolvable per-drop transient."
+    ],
+    "confusable_with": [
+     "RAINClth",
+     "RAINConc",
+     "RAIN",
+     "RAINGlas",
+     "RAINInt",
+     "RAINMetl",
+     "RAINPlas",
+     "RAINVege",
+     "RAINWatr"
+    ]
+   }
+  }
+ ]
+}

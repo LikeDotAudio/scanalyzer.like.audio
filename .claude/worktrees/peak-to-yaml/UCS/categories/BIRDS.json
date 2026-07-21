@@ -1,0 +1,2408 @@
+{
+ "version": "8.2.1",
+ "category": "BIRDS",
+ "emoji": "🐦",
+ "subcategories": [
+  {
+   "subcategory": "BIRD OF PREY",
+   "category_id": "BIRDPrey",
+   "category_short": "BIRD",
+   "emoji": "🐦",
+   "explanation": [
+    "Birds that prey on vertebrates",
+    "especially rodents. Raptors."
+   ],
+   "synonyms": [
+    "Avivore",
+    "Bald",
+    "Birdlover",
+    "Birdseye",
+    "Birdtrap",
+    "Buzzard",
+    "Caracara",
+    "Condor",
+    "Eagle",
+    "Eaglehawk",
+    "Falcon",
+    "Fishhawk",
+    "Golden",
+    "Goshawk",
+    "Harrier",
+    "Hawk",
+    "Hawkling",
+    "Kestrel",
+    "Kite",
+    "Merlin",
+    "Osprey",
+    "Owl",
+    "Peregrine",
+    "Raptor",
+    "Red-Tailed",
+    "Redtail",
+    "Sparhawk",
+    "Sparrowhawk",
+    "Swallow-Tailed",
+    "Talon",
+    "Verreaux",
+    "Vulture",
+    "White-Tailed"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1600.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.08,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "This subcategory is BIMODAL and therefore not narrowable by a single Gaussian: a hawk or eagle screech is a harsh, broadband, high-flatness scream, while an owl hoot is the opposite - a low (300-600 Hz), pure, near-sinusoidal tone with very little HF energy. Averaging them produces priors that describe neither. Marked semantic_only for that reason, and the pitch prior is deliberately weak and wide.",
+     "An owl hoot is the one bird call that can be mistaken for a low tonal drone or a blown-bottle tone; the bird class gates barely hold it.",
+     "Against BIRDSong: a raptor screech is noisy (high spectral_flatness, low harmonicity); a songbird is tonal (the inverse). That axis is real - see BIRDCrow and BIRDSong."
+    ],
+    "confusable_with": [
+     "BIRDCrow",
+     "BIRDSea",
+     "BIRDMisc",
+     "CREAAvian"
+    ]
+   }
+  },
+  {
+   "subcategory": "CROW",
+   "category_id": "BIRDCrow",
+   "category_short": "BIRD",
+   "emoji": "🐦",
+   "explanation": [
+    "Birds in Corvid family",
+    "which includes crows and ravens."
+   ],
+   "synonyms": [
+    "Beak",
+    "Blue",
+    "BluJay",
+    "Cawed",
+    "Cawing",
+    "Caws",
+    "Chough",
+    "Choughs",
+    "Corvid",
+    "Corvine",
+    "Crow",
+    "Crowe",
+    "Grackle",
+    "Jackdaw",
+    "Jay",
+    "Jays",
+    "Magpie",
+    "Nutcracker",
+    "Raven",
+    "Ravens",
+    "Rook",
+    "Rooks",
+    "Squawking",
+    "Treecreeper",
+    "Treepies"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1378.1,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 55,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 900.0
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2495.8,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3200.0
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.36262,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.55
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.05286,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.08
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2768.7,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5000.0
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 421.79,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 900.0
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.10262,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.6
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.55225,
+      "deviation": 0.3017,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.28
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.32574,
+      "deviation": 0.4381,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.3
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.42631,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.5
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.28635,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.5
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.1253,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 61,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.5
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "Corvids carry a real, defensible acoustic axis: a caw is a HARSH, BROADBAND, inharmonic rasp - high spectral_flatness, low harmonicity - delivered in repeated, evenly spaced bursts (measurable onset_periodicity). That is the exact opposite of a songbird's pure narrowband whistle, and the flatness/harmonicity axis separates the two without any text. Hence signal_narrowable.",
+     "It does NOT separate a crow from a raptor screech or a parrot squawk, which are equally harsh - those need text.",
+     "Pitch is low FOR A BIRD (roughly 0.5-1.5 kHz), which is another honest nudge against BIRDSong."
+    ],
+    "confusable_with": [
+     "BIRDSong",
+     "BIRDPrey",
+     "BIRDTrop",
+     "BIRDSea"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 61,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Crow": 61
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 61,
+       "percentile_05": 959.53,
+       "median": 2574.1,
+       "percentile_95": 4891.9
+      },
+      "harmonicity": {
+       "clips": 61,
+       "percentile_05": 0.20778,
+       "median": 0.55225,
+       "percentile_95": 0.90738
+      },
+      "high_band_energy": {
+       "clips": 61,
+       "percentile_05": 0.12981,
+       "median": 0.36262,
+       "percentile_95": 0.7517
+      },
+      "inharmonicity": {
+       "clips": 61,
+       "percentile_05": 0.11988,
+       "median": 0.42631,
+       "percentile_95": 0.64015
+      },
+      "low_band_energy": {
+       "clips": 61,
+       "percentile_05": 0.00072209,
+       "median": 0.05286,
+       "percentile_95": 0.30598
+      },
+      "mid_band_energy": {
+       "clips": 61,
+       "percentile_05": 0.20857,
+       "median": 0.50603,
+       "percentile_95": 0.84999
+      },
+      "onset_periodicity": {
+       "clips": 61,
+       "percentile_05": 0.14936,
+       "median": 0.28635,
+       "percentile_95": 0.55468
+      },
+      "onset_rate_per_second": {
+       "clips": 61,
+       "percentile_05": 0.51577,
+       "median": 1.1253,
+       "percentile_95": 2.3817
+      },
+      "partial_count": {
+       "clips": 61,
+       "percentile_05": 4.0,
+       "median": 11.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 55,
+       "percentile_05": 350.0,
+       "median": 1378.1,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 61,
+       "percentile_05": 137.8,
+       "median": 421.79,
+       "percentile_95": 1836.6
+      },
+      "spectral_centroid_hz": {
+       "clips": 61,
+       "percentile_05": 1535.1,
+       "median": 2495.8,
+       "percentile_95": 4762.3
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 61,
+       "percentile_05": 1500.5,
+       "median": 2500.2,
+       "percentile_95": 4632.5
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 61,
+       "percentile_05": -795.43,
+       "median": -6.2046,
+       "percentile_95": 175.08
+      },
+      "spectral_entropy": {
+       "clips": 61,
+       "percentile_05": 0.27112,
+       "median": 0.50704,
+       "percentile_95": 0.6368
+      },
+      "spectral_flatness": {
+       "clips": 61,
+       "percentile_05": 0.010183,
+       "median": 0.10262,
+       "percentile_95": 0.31307
+      },
+      "spectral_flux": {
+       "clips": 61,
+       "percentile_05": 0.2121,
+       "median": 0.22462,
+       "percentile_95": 0.23451
+      },
+      "spectral_rolloff_hz": {
+       "clips": 61,
+       "percentile_05": 1868.2,
+       "median": 4291.2,
+       "percentile_95": 9416.7
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 61,
+       "percentile_05": -6.3816,
+       "median": -4.2498,
+       "percentile_95": 1.0271
+      },
+      "stationarity": {
+       "clips": 61,
+       "percentile_05": 0.0,
+       "median": 0.32574,
+       "percentile_95": 0.67081,
+       "censored_at_floor_fraction": 0.295
+      },
+      "syllabic_modulation_energy": {
+       "clips": 60,
+       "percentile_05": 0.029307,
+       "median": 0.1393,
+       "percentile_95": 0.30609
+      },
+      "transient_count": {
+       "clips": 61,
+       "percentile_05": 1.0,
+       "median": 10.0,
+       "percentile_95": 31.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 61,
+       "percentile_05": 1072.2,
+       "median": 2768.7,
+       "percentile_95": 5684.9
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "FOWL",
+   "category_id": "BIRDFowl",
+   "category_short": "BIRD",
+   "emoji": "🦉",
+   "explanation": [
+    "Landfowl",
+    "wildfowl and waterfowl",
+    "also poultry. Ground feeding and many water feeding birds."
+   ],
+   "synonyms": [
+    "Barnyard",
+    "Capon",
+    "Chachalacas",
+    "Chicken",
+    "Chitterling",
+    "Chukar",
+    "Cockerel",
+    "Curassow",
+    "Duck",
+    "Duckling",
+    "Ducks",
+    "Eider",
+    "Emu",
+    "Fowl",
+    "Fowle",
+    "Gamebirds",
+    "Geese",
+    "Giblet",
+    "Goose",
+    "Grebe",
+    "Grouse",
+    "Guans",
+    "Guineafowl",
+    "Hen",
+    "Hens",
+    "Mallard",
+    "Muscovy",
+    "Ostrich",
+    "Partridge",
+    "Partridges",
+    "Peafowl",
+    "Pheasant",
+    "Pheasants",
+    "Plumage",
+    "Poulterer",
+    "Poussin",
+    "Ptarmigan",
+    "Quail",
+    "Quails",
+    "Rooster",
+    "Squab",
+    "Swan",
+    "Teal",
+    "Turkey",
+    "Turkeys",
+    "Turkies",
+    "Waterfowl",
+    "Woodcocks"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 787.5,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 57,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 1.36274,
+       "reasoned_mean": 1100.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2494.08472,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 1.33277,
+       "reasoned_mean": 3200.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.34604,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 0.14033,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.00575,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 0.00695,
+       "reasoned_mean": 0.08,
+       "reasoned_deviation": 0.1,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3224.24417,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 1.39945,
+       "reasoned_mean": 5000.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 771.69971,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 525.06158,
+       "reasoned_mean": 900.0,
+       "reasoned_deviation": 600.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.08565,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 0.05942,
+       "reasoned_mean": 0.5,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.69124,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 0.22341,
+       "reasoned_mean": 0.35,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0098,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 0.01452,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.45,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.35,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.92144,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 58,
+       "fsd50k_classes": [
+        "Chicken_and_rooster"
+       ],
+       "measured_deviation": 1.62969,
+       "reasoned_mean": 3.0,
+       "reasoned_deviation": 3.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "Landfowl, waterfowl and poultry - a habitat/husbandry set, not an acoustic one. A duck quack, a hen cluck, a rooster crow and a goose honk share nothing measurable that excludes the other bird subcategories. semantic_only; the synonyms decide.",
+     "Weak tendency: fowl calls are lower and harsher than a songbird (clucks and quacks are rough, mid-band, repeated), landing them nearer BIRDCrow than BIRDSong on the flatness axis. That tendency cannot tell a duck from a crow.",
+     "Farm MAMMALS go to ANIMALS-FARM; a dense barnyard bed is AMBIENCE-FARM."
+    ],
+    "confusable_with": [
+     "BIRDCrow",
+     "BIRDSea",
+     "BIRDWade",
+     "ANMLFarm"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "BIRDMisc",
+   "category_short": "BIRD",
+   "emoji": "🐦",
+   "explanation": [
+    "Bird sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Ani",
+    "Cassowary",
+    "Cuckoo",
+    "Emu",
+    "Hummingbird",
+    "Kiwi",
+    "Nighthawk",
+    "Nightjar",
+    "Ostrich",
+    "Poorwill",
+    "Roadrunner",
+    "Woodpecker"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1260.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 198,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1191.89189
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3717.1,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3778.11925
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.69555,
+      "deviation": 0.397,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.7871
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.024057,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.01267
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4597.5,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 5080.03425
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 616.76,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 618.56149
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.13525,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.1007
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.49835,
+      "deviation": 0.3492,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.49884
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.6,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.015018,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.0
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "The catch-all: it asserts only the BIRD class (it is a bird, not a mammal or a machine) and leaves the species to text. Correct destination when the bird class gates pass but no sibling's synonyms fire - i.e. the abstention target for this category.",
+     "Woodpecker material is the odd one out: a drum roll is a rhythmic IMPACT train with no vocal pitch at all, and it will fail these tonal priors. Score it as a rhythmic wood impact if the signal is what matters."
+    ],
+    "confusable_with": [
+     "BIRDSong",
+     "BIRDPrey",
+     "ANMLMisc",
+     "WINGBird"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 267,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Bird_vocalization_and_bird_call_and_bird_song": 267
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 267,
+       "percentile_05": 1107.6,
+       "median": 2818.0,
+       "percentile_95": 5036.7
+      },
+      "harmonicity": {
+       "clips": 267,
+       "percentile_05": 0.15309,
+       "median": 0.49835,
+       "percentile_95": 0.95197
+      },
+      "high_band_energy": {
+       "clips": 267,
+       "percentile_05": 0.17903,
+       "median": 0.69555,
+       "percentile_95": 0.99893
+      },
+      "inharmonicity": {
+       "clips": 267,
+       "percentile_05": 0.070949,
+       "median": 0.41139,
+       "percentile_95": 0.64512
+      },
+      "low_band_energy": {
+       "clips": 267,
+       "percentile_05": 2.4319e-05,
+       "median": 0.024057,
+       "percentile_95": 0.37575
+      },
+      "mid_band_energy": {
+       "clips": 267,
+       "percentile_05": 0.00080551,
+       "median": 0.19337,
+       "percentile_95": 0.67879
+      },
+      "onset_periodicity": {
+       "clips": 267,
+       "percentile_05": 0.074285,
+       "median": 0.26499,
+       "percentile_95": 0.49086
+      },
+      "onset_rate_per_second": {
+       "clips": 267,
+       "percentile_05": 0.13694,
+       "median": 1.1667,
+       "percentile_95": 4.2222
+      },
+      "partial_count": {
+       "clips": 262,
+       "percentile_05": 2.0,
+       "median": 10.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 198,
+       "percentile_05": 275.62,
+       "median": 1260.0,
+       "percentile_95": 1837.5
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 43,
+       "percentile_05": -9.6756,
+       "median": -0.011179,
+       "percentile_95": 1.2583
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 267,
+       "percentile_05": 242.79,
+       "median": 616.76,
+       "percentile_95": 1769.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 267,
+       "percentile_05": 1391.7,
+       "median": 3717.1,
+       "percentile_95": 6098.8
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 267,
+       "percentile_05": 1594.8,
+       "median": 3772.2,
+       "percentile_95": 6866.4
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 267,
+       "percentile_05": -337.65,
+       "median": 1.5043,
+       "percentile_95": 634.96
+      },
+      "spectral_entropy": {
+       "clips": 267,
+       "percentile_05": 0.25649,
+       "median": 0.50094,
+       "percentile_95": 0.66071
+      },
+      "spectral_flatness": {
+       "clips": 267,
+       "percentile_05": 0.013373,
+       "median": 0.13525,
+       "percentile_95": 0.38837
+      },
+      "spectral_flux": {
+       "clips": 267,
+       "percentile_05": 0.21232,
+       "median": 0.23232,
+       "percentile_95": 0.2572
+      },
+      "spectral_rolloff_hz": {
+       "clips": 267,
+       "percentile_05": 2253.4,
+       "median": 5561.4,
+       "percentile_95": 11072.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 267,
+       "percentile_05": -6.9179,
+       "median": -2.8909,
+       "percentile_95": 6.257
+      },
+      "stationarity": {
+       "clips": 267,
+       "percentile_05": 0.0,
+       "median": 0.015018,
+       "percentile_95": 0.6939,
+       "censored_at_floor_fraction": 0.483
+      },
+      "syllabic_modulation_energy": {
+       "clips": 262,
+       "percentile_05": 0.078357,
+       "median": 0.24772,
+       "percentile_95": 0.56274
+      },
+      "transient_count": {
+       "clips": 267,
+       "percentile_05": 1.0,
+       "median": 12.0,
+       "percentile_95": 47.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 267,
+       "percentile_05": 872.75,
+       "median": 4597.5,
+       "percentile_95": 10490.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "SEA",
+   "category_id": "BIRDSea",
+   "category_short": "BIRD",
+   "emoji": "🐦",
+   "explanation": [
+    "Birds that live mostly near the ocean. Seagulls",
+    "pelicans."
+   ],
+   "synonyms": [
+    "Albatross",
+    "Auk",
+    "Auklet",
+    "Black-Legged",
+    "Booby",
+    "Bowerbird",
+    "Brown",
+    "Cormorant",
+    "Dunlin",
+    "Frigatebird",
+    "Fulmar",
+    "Gannet",
+    "Guillemot",
+    "Gull",
+    "Kittiwake",
+    "Migratory",
+    "Murrelet",
+    "Noddy",
+    "Oystercatcher",
+    "Pelican",
+    "Penguin",
+    "Petrel",
+    "Plover",
+    "Puffin",
+    "Razorbill",
+    "Sandpiper",
+    "Sandplover",
+    "Seabird",
+    "Seaduck",
+    "Seafowl",
+    "Seagull",
+    "Seahawk",
+    "Shearwater",
+    "Sheerwater",
+    "Shorebird",
+    "Skua",
+    "Skuas",
+    "Tern",
+    "Waterfowl",
+    "Widowbird",
+    "Yellow"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1130.8,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.35,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 37,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1800.0
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2353.3,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 51,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2326.17487
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.40988,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 52,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.41466
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.09571,
+      "deviation": 0.1385,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 52,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.06423
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 2070.2,
+      "deviation": 2.551,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 51,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2414.01441
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 412.94,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 52,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 344.66468
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.10793,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 52,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.09307
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.60632,
+      "deviation": 0.335,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 52,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.62495
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.37513,
+      "deviation": 0.3379,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 51,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.37428
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0308,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 51,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.02592
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "'Birds that live mostly near the ocean' is a habitat label. A gull cry is a harsh, mid-high, strongly modulated wail; that is not distinguishable from a tern, a crow or a raptor by DSP. semantic_only.",
+     "Beware the recording context rather than the bird: seabird material usually arrives over a surf bed, so the file may score partly as WATER/AMBIENCE. Foregrounded calls belong here; a wide, stationary surf-plus-gulls bed is AMBIENCE."
+    ],
+    "confusable_with": [
+     "BIRDCrow",
+     "BIRDWade",
+     "BIRDFowl",
+     "BIRDMisc"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 52,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Gull_and_seagull": 52
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 51,
+       "percentile_05": 1788.8,
+       "median": 2687.0,
+       "percentile_95": 4048.2
+      },
+      "harmonicity": {
+       "clips": 52,
+       "percentile_05": 0.17229,
+       "median": 0.60456,
+       "percentile_95": 0.98902
+      },
+      "high_band_energy": {
+       "clips": 52,
+       "percentile_05": 0.13011,
+       "median": 0.40874,
+       "percentile_95": 0.81341
+      },
+      "inharmonicity": {
+       "clips": 52,
+       "percentile_05": 0.0,
+       "median": 0.42734,
+       "percentile_95": 0.60637
+      },
+      "low_band_energy": {
+       "clips": 52,
+       "percentile_05": 0.0020551,
+       "median": 0.094172,
+       "percentile_95": 0.59248
+      },
+      "mid_band_energy": {
+       "clips": 52,
+       "percentile_05": 0.070172,
+       "median": 0.40394,
+       "percentile_95": 0.60125
+      },
+      "onset_periodicity": {
+       "clips": 51,
+       "percentile_05": 0.104,
+       "median": 0.24445,
+       "percentile_95": 0.41289
+      },
+      "onset_rate_per_second": {
+       "clips": 51,
+       "percentile_05": 0.15793,
+       "median": 1.0308,
+       "percentile_95": 3.0848
+      },
+      "partial_count": {
+       "clips": 49,
+       "percentile_05": 2.0,
+       "median": 10.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 37,
+       "percentile_05": 295.97,
+       "median": 1130.8,
+       "percentile_95": 1520.7
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 52,
+       "percentile_05": 219.41,
+       "median": 411.4,
+       "percentile_95": 1723.3
+      },
+      "spectral_centroid_hz": {
+       "clips": 51,
+       "percentile_05": 1093.2,
+       "median": 2353.3,
+       "percentile_95": 4346.0
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 51,
+       "percentile_05": 929.31,
+       "median": 2295.6,
+       "percentile_95": 4516.1
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 51,
+       "percentile_05": -95.906,
+       "median": 5.6755,
+       "percentile_95": 226.05
+      },
+      "spectral_entropy": {
+       "clips": 51,
+       "percentile_05": 0.16777,
+       "median": 0.46568,
+       "percentile_95": 0.61816
+      },
+      "spectral_flatness": {
+       "clips": 52,
+       "percentile_05": 0.032375,
+       "median": 0.10126,
+       "percentile_95": 0.25047
+      },
+      "spectral_flux": {
+       "clips": 52,
+       "percentile_05": 0.18159,
+       "median": 0.22762,
+       "percentile_95": 0.26671
+      },
+      "spectral_rolloff_hz": {
+       "clips": 51,
+       "percentile_05": 1774.5,
+       "median": 4094.0,
+       "percentile_95": 7748.6
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 51,
+       "percentile_05": -7.8322,
+       "median": -5.3136,
+       "percentile_95": -0.52262
+      },
+      "stationarity": {
+       "clips": 51,
+       "percentile_05": 0.0,
+       "median": 0.37513,
+       "percentile_95": 0.74666,
+       "censored_at_floor_fraction": 0.196
+      },
+      "syllabic_modulation_energy": {
+       "clips": 49,
+       "percentile_05": 0.12313,
+       "median": 0.22593,
+       "percentile_95": 0.48272
+      },
+      "transient_count": {
+       "clips": 51,
+       "percentile_05": 1.0,
+       "median": 13.0,
+       "percentile_95": 34.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 51,
+       "percentile_05": 220.58,
+       "median": 2070.2,
+       "percentile_95": 6545.3
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "SONGBIRD",
+   "category_id": "BIRDSong",
+   "category_short": "BIRD",
+   "emoji": "🐦",
+   "explanation": [
+    "Specifically singing birds",
+    "warblers",
+    "robins",
+    "thrushes",
+    "what you imagine pretty dawn chorus birds."
+   ],
+   "synonyms": [
+    "Antechinus",
+    "Bellbird",
+    "Bellbirds",
+    "Birdcall",
+    "Birdy",
+    "Blackbird",
+    "Bluebird",
+    "Bobwhite",
+    "Bowerbird",
+    "Bowerbirds",
+    "Budgerigar",
+    "Bullfinch",
+    "Bunting",
+    "Canary",
+    "Cardinal",
+    "Chaffinch",
+    "Chat",
+    "Chickadee",
+    "Chirrups",
+    "Cisticola",
+    "Cockatiel",
+    "Creeper",
+    "Dipper",
+    "Dove",
+    "Finch",
+    "Flycatcher",
+    "Gnatcatcher",
+    "Greenfinch",
+    "Grosbeak",
+    "Hawfinch",
+    "Honeyeater",
+    "Kinglet",
+    "Lark",
+    "Lovebird",
+    "Meadowlark",
+    "Mockingbird",
+    "Nightingale",
+    "Nuthatch",
+    "Oriole",
+    "Oscine",
+    "Ovenbird",
+    "Parula",
+    "Penduline",
+    "Pigeon",
+    "Robin",
+    "Serin",
+    "Skylark",
+    "Songful",
+    "Songster",
+    "Songstress",
+    "Sparrow",
+    "Starling",
+    "Swallow",
+    "Tanager",
+    "Thrasher",
+    "Thrush",
+    "Tit",
+    "Titmouse",
+    "Towhee",
+    "Treecreeper",
+    "Troupial",
+    "Vireo",
+    "Warble",
+    "Warbler",
+    "Warblers",
+    "Warbles",
+    "Waxwing",
+    "Whitethroat",
+    "Woodlark",
+    "Wren"
+   ],
+   "acoustic_signature": {
+    "morphology": "sweep",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1378.125,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 107,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 1.49656,
+       "reasoned_mean": 3500.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4696.21579,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 1.28938,
+       "reasoned_mean": 3200.0,
+       "reasoned_deviation": 2.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.96111,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 0.05125,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.00194,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 0.00286,
+       "reasoned_mean": 0.08,
+       "reasoned_deviation": 0.1,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 7098.63354,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 1.46833,
+       "reasoned_mean": 5000.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 907.78715,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 608.09892,
+       "reasoned_mean": 1400.0,
+       "reasoned_deviation": 700.0,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.08966,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 0.09746,
+       "reasoned_mean": 0.15,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.51235,
+      "deviation": 0.26702,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 0.26702,
+       "reasoned_mean": 0.75,
+       "reasoned_deviation": 0.25,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 0.17769,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.3394,
+      "deviation": 0.2233,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 0.2233,
+       "reasoned_mean": 0.15,
+       "reasoned_deviation": 0.15,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.24677,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 0.02532,
+       "reasoned_mean": 0.45,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 119,
+       "fsd50k_classes": [
+        "Chirp_and_tweet"
+       ],
+       "measured_deviation": 2.13262,
+       "reasoned_mean": 3.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "Songbirds carry the one genuinely diagnostic axis inside BIRDS: their calls are PURE NARROWBAND WHISTLES - very high harmonicity, very low spectral_flatness, few partials (often a near-sinusoid, since the syrinx suppresses harmonics) - swept fast in frequency, which shows up as a large spectral_centroid_deviation_hz and high spectral_flux. The harsh-broadband siblings (BIRDCrow, BIRDPrey, BIRDTrop) sit at the opposite end of the same axis. That is a real measurement, so signal_narrowable.",
+     "It does NOT tell a robin from a wren from a warbler; species is text.",
+     "A dawn chorus of many overlapping birds is AMBIENCE, not this: expect high stationarity and no foreground event structure."
+    ],
+    "confusable_with": [
+     "BIRDTrop",
+     "BIRDMisc",
+     "BIRDCrow",
+     "WHSTMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "TROPICAL",
+   "category_id": "BIRDTrop",
+   "category_short": "BIRD",
+   "emoji": "🐦",
+   "explanation": [
+    "Birds living in tropical locations",
+    "jungle and tropical rainforest birds. Parrots and Toucans."
+   ],
+   "synonyms": [
+    "Antbird",
+    "Aracari",
+    "Barbet",
+    "Bellbird",
+    "Bulbul",
+    "Cockatoo",
+    "Coquette",
+    "Eye",
+    "Firebird",
+    "Honeycreeper",
+    "Hornbill",
+    "Ibis",
+    "Jacamar",
+    "Kookaburra",
+    "Lorikeet",
+    "Lyrebird",
+    "Macaw",
+    "Manakin",
+    "Mango",
+    "Motmot",
+    "Mynah",
+    "Mynas",
+    "Parakeet",
+    "Parrot",
+    "Parroting",
+    "Parrots",
+    "Peacock",
+    "Potoo",
+    "Puffbird",
+    "Quetzal",
+    "Runner",
+    "Shoebill",
+    "Skimmer",
+    "Sunbird",
+    "Tanager",
+    "Toucan",
+    "Trogon",
+    "Tropicbird"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 2200.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.08,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1100.0,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "'Birds living in tropical locations' is a geographic label with no acoustic content whatsoever - it contains both the harshest calls in the category (macaw and cockatoo squawks: broadband, high-flatness, screaming) and some of the purest (trogons, sunbirds). Bimodal and geography-defined, so semantic_only with weak, wide priors. Text is the only route in.",
+     "A parrot squawk is essentially indistinguishable from a corvid caw on flatness/harmonicity; a kookaburra is a rhythmic laugh that reads like a monkey call. Do not assert from signal."
+    ],
+    "confusable_with": [
+     "BIRDSong",
+     "BIRDCrow",
+     "BIRDMisc",
+     "ANMLPrim"
+    ]
+   }
+  },
+  {
+   "subcategory": "WADING",
+   "category_id": "BIRDWade",
+   "category_short": "BIRD",
+   "emoji": "🔔",
+   "explanation": [
+    "Long-legged",
+    "long-billed birds that feed primarily in shallow water. Think Herons and Egrets."
+   ],
+   "synonyms": [
+    "Avocet",
+    "Bittern",
+    "Blue",
+    "Bower",
+    "Coot",
+    "Crane",
+    "Curlew",
+    "Dowitcher",
+    "Egret",
+    "Flamingo",
+    "Godwit",
+    "Heron",
+    "Ibis",
+    "Little",
+    "Oystercatcher",
+    "Plover",
+    "Rail",
+    "Redshank",
+    "Ruff",
+    "Sanderling",
+    "Sandpiper",
+    "Shorebird",
+    "Snipe",
+    "Sora",
+    "Spoonbill",
+    "Stork",
+    "Wader",
+    "Waterbird",
+    "Waterfowl",
+    "Whimbrel",
+    "Wildfowl",
+    "Yellowlegs"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 90.0
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "min": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "pitch_hz",
+      "mean": 1500.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.08,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5000.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.25,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.3,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "BIRDS as a CATEGORY is signal_narrowable: bird vocalization is a genuinely measurable class (high f0, typically 1-8 kHz, narrowband FM chirps, very fast pitch/centroid modulation, almost no energy below 200 Hz) and is reliably separable from a dog, an engine or an impact. The SUBCATEGORIES are species taxonomy and mostly are not.",
+     "Defined by anatomy and feeding habitat (long legs, shallow water) - about as far from an acoustic definition as UCS gets. A heron's croak, a crane's bugle and a sandpiper's peep have no common signature. semantic_only.",
+     "One notable outlier that strains the bird class gates: a bittern's boom is ~150-200 Hz with almost all energy in the low band, and reads as a low tonal drone rather than a bird. Expect the class gates, not the priors, to be the weak point there."
+    ],
+    "confusable_with": [
+     "BIRDSea",
+     "BIRDFowl",
+     "BIRDMisc",
+     "BIRDPrey"
+    ]
+   }
+  }
+ ]
+}

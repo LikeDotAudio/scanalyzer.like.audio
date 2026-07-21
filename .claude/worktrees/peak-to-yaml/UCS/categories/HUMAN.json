@@ -1,0 +1,3814 @@
+{
+ "version": "8.2.1",
+ "category": "HUMAN",
+ "emoji": "🧍",
+ "subcategories": [
+  {
+   "subcategory": "BLOW",
+   "category_id": "HMNBlow",
+   "category_short": "HMN",
+   "emoji": "🧍",
+   "explanation": [
+    "Blowing air",
+    "blowing up a balloon",
+    "blowing out candles",
+    "etc. See also HUMAN-BREATH for less forceful breathing."
+   ],
+   "synonyms": [
+    "Adult",
+    "Blow",
+    "Child",
+    "Female",
+    "Male",
+    "Man",
+    "Person",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 60.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.45
+     },
+     {
+      "feature": "harmonicity",
+      "max": 0.6
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.48,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.18,
+      "deviation": 0.14,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.06,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.12,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Forceful directed air: louder, brighter and more sustained than HUMAN-BREATH, which UCS defines as the less forceful case.",
+     "Unvoiced throughout — voicing_ratio near zero separates it from every VOICES subcategory.",
+     "Longer and flatter-enveloped than HUMAN-SPIT or HUMAN-SNEEZE, which are impulsive."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "HMNSniff",
+     "HMNSpit",
+     "AIRBlow"
+    ]
+   }
+  },
+  {
+   "subcategory": "BREATH",
+   "category_id": "HMNBrth",
+   "category_short": "HMN",
+   "emoji": "😮‍💨",
+   "explanation": [
+    "Breathing",
+    "normal to heavy",
+    "big inhales",
+    "sighs."
+   ],
+   "synonyms": [
+    "Adult",
+    "Asphyxiate",
+    "Asthma",
+    "Breath",
+    "Breathing",
+    "Breaths",
+    "Child",
+    "Exhalation",
+    "Exhale",
+    "Exhaled",
+    "Exhales",
+    "Exhaling",
+    "Female",
+    "Gasp",
+    "Gasping",
+    "Heave",
+    "Huff",
+    "Huffing",
+    "Hyperventilate",
+    "Hyperventilating",
+    "Inhalation",
+    "Inhale",
+    "Inhaled",
+    "Inhales",
+    "Inhaling",
+    "Labored",
+    "Male",
+    "Man",
+    "Meditation",
+    "Pant",
+    "Panting",
+    "Person",
+    "Puffing",
+    "Respiration",
+    "Sigh",
+    "Suffocate",
+    "Suffocates",
+    "Suffocating",
+    "Wheeze",
+    "Wheezing",
+    "Whoop",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 120.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.17846,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 456,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.17354
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.08,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.47473,
+      "deviation": 0.3509,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 456,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.46886
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.05,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.46257,
+      "deviation": 0.2574,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 456,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.44263
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.40252,
+      "deviation": 0.2114,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 456,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.44127
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3077.0,
+      "deviation": 2.339,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 456,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2945.37125
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.094785,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 164,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.0898
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.19697,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 167,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.20678
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0779,
+      "deviation": 1.011,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 456,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.14233
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.34286,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 456,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.45
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.10631,
+      "deviation": 0.1208,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 391,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.10562
+      }
+     }
+    ],
+    "discriminators": [
+     "Unvoiced airy noise with a soft, rounded attack — quieter and gentler than HUMAN-BLOW, which UCS explicitly reserves for the forceful case.",
+     "Panting and hyperventilating give a slow inhale/exhale onset train (~0.3–1.5 /s); slower and far less pitched than HUMAN-SNORE, which is voiced-buzzy and strongly periodic.",
+     "No glottal impulse — separates it from HUMAN-COUGH and HUMAN-SNEEZE, which are impulsive bursts."
+    ],
+    "confusable_with": [
+     "HMNBlow",
+     "HMNSniff",
+     "HMNSnor",
+     "VOXEfrt"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 456,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Breathing": 412,
+      "Gasp": 54,
+      "Sigh": 75
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 456,
+       "percentile_05": 1924.5,
+       "median": 3466.6,
+       "percentile_95": 4966.1
+      },
+      "crest_factor": {
+       "clips": 167,
+       "percentile_05": 4.0499,
+       "median": 6.9789,
+       "percentile_95": 17.934,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 93,
+       "percentile_05": 0.1148,
+       "median": 0.43754,
+       "percentile_95": 1.9159,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 164,
+       "percentile_05": 0.024943,
+       "median": 0.094785,
+       "percentile_95": 0.94286,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 167,
+       "percentile_05": 0.049887,
+       "median": 0.22449,
+       "percentile_95": 0.9678,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 167,
+       "percentile_05": -1.241,
+       "median": 1.0082,
+       "percentile_95": 22.608,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 166,
+       "percentile_05": 0.024943,
+       "median": 0.14467,
+       "percentile_95": 0.87302,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 167,
+       "percentile_05": -0.069353,
+       "median": 1.4561,
+       "percentile_95": 4.6376,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 167,
+       "percentile_05": 0.0012016,
+       "median": 0.064214,
+       "percentile_95": 0.59542,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 167,
+       "percentile_05": 0.12019,
+       "median": 0.32702,
+       "percentile_95": 0.66035,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 456,
+       "percentile_05": 0.15628,
+       "median": 0.47463,
+       "percentile_95": 0.94841
+      },
+      "high_band_energy": {
+       "clips": 456,
+       "percentile_05": 0.14372,
+       "median": 0.46192,
+       "percentile_95": 0.77727
+      },
+      "inharmonicity": {
+       "clips": 456,
+       "percentile_05": 0.1319,
+       "median": 0.4271,
+       "percentile_95": 0.64811
+      },
+      "low_band_energy": {
+       "clips": 456,
+       "percentile_05": 0.004146,
+       "median": 0.062861,
+       "percentile_95": 0.49503
+      },
+      "mid_band_energy": {
+       "clips": 456,
+       "percentile_05": 0.14862,
+       "median": 0.40241,
+       "percentile_95": 0.68724
+      },
+      "onset_periodicity": {
+       "clips": 456,
+       "percentile_05": 0.11018,
+       "median": 0.3426,
+       "percentile_95": 0.55373
+      },
+      "onset_rate_per_second": {
+       "clips": 456,
+       "percentile_05": 0.26899,
+       "median": 1.0767,
+       "percentile_95": 3.0635
+      },
+      "partial_count": {
+       "clips": 448,
+       "percentile_05": 3.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 339,
+       "percentile_05": 205.12,
+       "median": 801.82,
+       "percentile_95": 1837.5
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 46,
+       "percentile_05": -31.816,
+       "median": -0.16367,
+       "percentile_95": 19.817
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 456,
+       "percentile_05": 363.04,
+       "median": 1033.3,
+       "percentile_95": 2858.0
+      },
+      "spectral_centroid_hz": {
+       "clips": 456,
+       "percentile_05": 1110.3,
+       "median": 3156.1,
+       "percentile_95": 5879.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 456,
+       "percentile_05": 1503.4,
+       "median": 3550.7,
+       "percentile_95": 6715.7
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 456,
+       "percentile_05": -3307.6,
+       "median": -3.3261,
+       "percentile_95": 4365.1
+      },
+      "spectral_entropy": {
+       "clips": 456,
+       "percentile_05": 0.23772,
+       "median": 0.49129,
+       "percentile_95": 0.70221
+      },
+      "spectral_flatness": {
+       "clips": 456,
+       "percentile_05": 0.036293,
+       "median": 0.17835,
+       "percentile_95": 0.40908
+      },
+      "spectral_flux": {
+       "clips": 456,
+       "percentile_05": 0.19556,
+       "median": 0.2241,
+       "percentile_95": 0.23823
+      },
+      "spectral_rolloff_hz": {
+       "clips": 456,
+       "percentile_05": 1965.9,
+       "median": 6246.1,
+       "percentile_95": 11791.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 456,
+       "percentile_05": -7.8649,
+       "median": -3.3738,
+       "percentile_95": 0.21405
+      },
+      "stationarity": {
+       "clips": 456,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.51607,
+       "censored_at_floor_fraction": 0.537
+      },
+      "sustain_ratio": {
+       "clips": 167,
+       "percentile_05": 0.03125,
+       "median": 0.19697,
+       "percentile_95": 0.56667,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 391,
+       "percentile_05": 0.016644,
+       "median": 0.10631,
+       "percentile_95": 0.37345
+      },
+      "transient_count": {
+       "clips": 456,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 14.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 456,
+       "percentile_05": 581.84,
+       "median": 3064.4,
+       "percentile_95": 9528.0
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "BURP",
+   "category_id": "HMNBurp",
+   "category_short": "HMN",
+   "emoji": "😮",
+   "explanation": [
+    "Human belches",
+    "burps."
+   ],
+   "synonyms": [
+    "Adult",
+    "Belch",
+    "Belching",
+    "Burp",
+    "Burping",
+    "Child",
+    "Female",
+    "Hiccup",
+    "Male",
+    "Man",
+    "Person",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 20.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 7689.0,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "action": "widened",
+       "clips": 217,
+       "was": {
+        "max": 4000.0
+       },
+       "reason": "the reasoned gate rejected 23% of this subcategory's own true clips",
+       "date": "2026-07"
+      }
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.8,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.066036,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.0666
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.48385,
+      "deviation": 0.1937,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.48398
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.41566,
+      "deviation": 0.2062,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.42394
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2959.9,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2990.92807
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.51197,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.5026
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.36785,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.36767
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.19396,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.19301
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.093,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 77,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 7.42785
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.064853,
+      "deviation": 3.008,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 77,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.05986
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.35,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.21294,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 217,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.21374
+      }
+     }
+    ],
+    "discriminators": [
+     "Low, buzzy, gurgling eructation: a dark centroid and a strong sub-200 Hz share, unlike the bright unvoiced bursts of HUMAN-COUGH and HUMAN-SNEEZE.",
+     "Same low buzzy family as FARTS but with vocal-tract formants and a higher mid-band share; the FARTS bands sit lower still.",
+     "Longer and less sharply front-loaded than HUMAN-SPIT."
+    ],
+    "confusable_with": [
+     "HMNVomit",
+     "FARTReal",
+     "FARTDsgn",
+     "HMNCough"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 217,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Burping_and_eructation": 217
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 217,
+       "percentile_05": 2350.4,
+       "median": 3692.0,
+       "percentile_95": 4995.5
+      },
+      "crest_factor": {
+       "clips": 77,
+       "percentile_05": 3.9052,
+       "median": 7.093,
+       "percentile_95": 16.483,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 77,
+       "percentile_05": 0.0099773,
+       "median": 0.064853,
+       "percentile_95": 0.28934,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 77,
+       "percentile_05": 0.024943,
+       "median": 0.14467,
+       "percentile_95": 0.62358,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 77,
+       "percentile_05": -1.3818,
+       "median": 0.73775,
+       "percentile_95": 35.136,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 75,
+       "percentile_05": 0.029932,
+       "median": 0.12472,
+       "percentile_95": 1.5116,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 77,
+       "percentile_05": -0.126,
+       "median": 1.2726,
+       "percentile_95": 5.3388,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 77,
+       "percentile_05": 0.0048501,
+       "median": 0.19222,
+       "percentile_95": 0.68798,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 77,
+       "percentile_05": 0.13607,
+       "median": 0.30371,
+       "percentile_95": 0.45405,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 217,
+       "percentile_05": 0.28964,
+       "median": 0.51197,
+       "percentile_95": 0.74954
+      },
+      "high_band_energy": {
+       "clips": 217,
+       "percentile_05": 0.19488,
+       "median": 0.41566,
+       "percentile_95": 0.65185
+      },
+      "inharmonicity": {
+       "clips": 217,
+       "percentile_05": 0.11275,
+       "median": 0.36785,
+       "percentile_95": 0.62871
+      },
+      "low_band_energy": {
+       "clips": 217,
+       "percentile_05": 0.020617,
+       "median": 0.066036,
+       "percentile_95": 0.20701
+      },
+      "mid_band_energy": {
+       "clips": 217,
+       "percentile_05": 0.29225,
+       "median": 0.48385,
+       "percentile_95": 0.70664
+      },
+      "onset_periodicity": {
+       "clips": 217,
+       "percentile_05": 0.16125,
+       "median": 0.3307,
+       "percentile_95": 0.61684
+      },
+      "onset_rate_per_second": {
+       "clips": 217,
+       "percentile_05": 0.34119,
+       "median": 1.6842,
+       "percentile_95": 4.2016
+      },
+      "partial_count": {
+       "clips": 217,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 179,
+       "percentile_05": 86.64,
+       "median": 544.44,
+       "percentile_95": 1260.0
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 28,
+       "percentile_05": -22.061,
+       "median": -0.5505,
+       "percentile_95": 6.7984
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 217,
+       "percentile_05": 336.61,
+       "median": 1061.2,
+       "percentile_95": 2375.8
+      },
+      "spectral_centroid_hz": {
+       "clips": 217,
+       "percentile_05": 1587.2,
+       "median": 2959.9,
+       "percentile_95": 5319.2
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 217,
+       "percentile_05": 1908.9,
+       "median": 3350.1,
+       "percentile_95": 5515.8
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 217,
+       "percentile_05": -2877.6,
+       "median": 281.26,
+       "percentile_95": 4861.4
+      },
+      "spectral_entropy": {
+       "clips": 217,
+       "percentile_05": 0.29419,
+       "median": 0.44432,
+       "percentile_95": 0.58975
+      },
+      "spectral_flatness": {
+       "clips": 217,
+       "percentile_05": 0.053032,
+       "median": 0.19396,
+       "percentile_95": 0.44831
+      },
+      "spectral_flux": {
+       "clips": 217,
+       "percentile_05": 0.18225,
+       "median": 0.21294,
+       "percentile_95": 0.23627
+      },
+      "spectral_rolloff_hz": {
+       "clips": 217,
+       "percentile_05": 2592.5,
+       "median": 6090.3,
+       "percentile_95": 11154.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 217,
+       "percentile_05": -6.6072,
+       "median": -4.2216,
+       "percentile_95": -2.0156
+      },
+      "stationarity": {
+       "clips": 217,
+       "percentile_05": 0.0,
+       "median": 0.19873,
+       "percentile_95": 0.58809,
+       "censored_at_floor_fraction": 0.35
+      },
+      "sustain_ratio": {
+       "clips": 77,
+       "percentile_05": 0.028986,
+       "median": 0.23077,
+       "percentile_95": 0.64,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 163,
+       "percentile_05": 0.030435,
+       "median": 0.14253,
+       "percentile_95": 0.35552
+      },
+      "transient_count": {
+       "clips": 217,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 7.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 217,
+       "percentile_05": 650.79,
+       "median": 2359.8,
+       "percentile_95": 4312.6
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "COUGH",
+   "category_id": "HMNCough",
+   "category_short": "HMN",
+   "emoji": "😷",
+   "explanation": [
+    "Human coughs and coughing."
+   ],
+   "synonyms": [
+    "Adult",
+    "Ahem",
+    "Bronchitis",
+    "Child",
+    "Choking",
+    "Clear",
+    "Clearing",
+    "Convulse",
+    "Coughing",
+    "Covid",
+    "Expectoration",
+    "Female",
+    "Gag",
+    "Hack",
+    "Hacking",
+    "Hiccough",
+    "Hiccoughing",
+    "Hiccoughs",
+    "Hoarse",
+    "Male",
+    "Man",
+    "Person",
+    "Throat",
+    "Wet",
+    "Whooping",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.7,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.008,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.2,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 9.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.2,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3244.4,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 268,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3507.72214
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.20996,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 268,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.21836
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.18,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.48376,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 268,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.46846
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.6309,
+      "deviation": 1.309,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 268,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1.59248
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.27648,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 267,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.3
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.38852,
+      "deviation": 0.1956,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 268,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.37988
+      }
+     }
+    ],
+    "discriminators": [
+     "Explosive glottal release: near-instant attack on top of an unvoiced noisy body, with a short throaty tail. Bursts often repeat in irregular fits, unlike the single event of HUMAN-SNEEZE.",
+     "Darker and more throat-centred than HUMAN-SNEEZE, whose nasal release pushes energy above 2 kHz.",
+     "Far spikier (high crest, high envelope skewness) than HUMAN-BREATH or HUMAN-BLOW."
+    ],
+    "confusable_with": [
+     "HMNSneez",
+     "HMNSpit",
+     "HMNVomit",
+     "HMNBrth",
+     "VOXEfrt"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 268,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Cough": 268
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 268,
+       "percentile_05": 1812.3,
+       "median": 3718.8,
+       "percentile_95": 5066.7
+      },
+      "harmonicity": {
+       "clips": 268,
+       "percentile_05": 0.17562,
+       "median": 0.38744,
+       "percentile_95": 0.78156
+      },
+      "high_band_energy": {
+       "clips": 268,
+       "percentile_05": 0.23608,
+       "median": 0.46942,
+       "percentile_95": 0.69966
+      },
+      "inharmonicity": {
+       "clips": 268,
+       "percentile_05": 0.14257,
+       "median": 0.41716,
+       "percentile_95": 0.57888
+      },
+      "low_band_energy": {
+       "clips": 268,
+       "percentile_05": 0.0074227,
+       "median": 0.034719,
+       "percentile_95": 0.18046
+      },
+      "mid_band_energy": {
+       "clips": 268,
+       "percentile_05": 0.25408,
+       "median": 0.48376,
+       "percentile_95": 0.70937
+      },
+      "onset_periodicity": {
+       "clips": 267,
+       "percentile_05": 0.13574,
+       "median": 0.27648,
+       "percentile_95": 0.44131
+      },
+      "onset_rate_per_second": {
+       "clips": 268,
+       "percentile_05": 0.41923,
+       "median": 1.6297,
+       "percentile_95": 4.3532
+      },
+      "partial_count": {
+       "clips": 265,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 214,
+       "percentile_05": 156.38,
+       "median": 376.92,
+       "percentile_95": 1837.5
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 268,
+       "percentile_05": 375.8,
+       "median": 1069.0,
+       "percentile_95": 2572.2
+      },
+      "spectral_centroid_hz": {
+       "clips": 268,
+       "percentile_05": 1518.8,
+       "median": 3234.4,
+       "percentile_95": 5355.4
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 268,
+       "percentile_05": 1618.1,
+       "median": 3556.8,
+       "percentile_95": 6002.5
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 268,
+       "percentile_05": -2512.7,
+       "median": -14.544,
+       "percentile_95": 3083.2
+      },
+      "spectral_entropy": {
+       "clips": 268,
+       "percentile_05": 0.28548,
+       "median": 0.4808,
+       "percentile_95": 0.62812
+      },
+      "spectral_flatness": {
+       "clips": 268,
+       "percentile_05": 0.032731,
+       "median": 0.20991,
+       "percentile_95": 0.42148
+      },
+      "spectral_flux": {
+       "clips": 268,
+       "percentile_05": 0.20104,
+       "median": 0.22857,
+       "percentile_95": 0.24892
+      },
+      "spectral_rolloff_hz": {
+       "clips": 268,
+       "percentile_05": 2589.8,
+       "median": 6737.5,
+       "percentile_95": 11773.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 268,
+       "percentile_05": -6.6378,
+       "median": -3.0336,
+       "percentile_95": -0.52162
+      },
+      "stationarity": {
+       "clips": 268,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.33555,
+       "censored_at_floor_fraction": 0.668
+      },
+      "syllabic_modulation_energy": {
+       "clips": 250,
+       "percentile_05": 0.098069,
+       "median": 0.2921,
+       "percentile_95": 0.54559
+      },
+      "transient_count": {
+       "clips": 268,
+       "percentile_05": 1.0,
+       "median": 4.0,
+       "percentile_95": 15.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 268,
+       "percentile_05": 856.53,
+       "median": 2905.2,
+       "percentile_95": 6628.7
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "HEARTBEAT",
+   "category_id": "HMNHart",
+   "category_short": "HMN",
+   "emoji": "🫀",
+   "explanation": [
+    "Heartbeats",
+    "both literal as in a Dr. office",
+    "and stylized or designed heartbeats."
+   ],
+   "synonyms": [
+    "Adult",
+    "Arrhythmia",
+    "Arrhythmic",
+    "Arrythmia",
+    "Beating",
+    "Cardiac",
+    "Child",
+    "Coronary",
+    "EKG",
+    "Female",
+    "Fetal",
+    "Fibrillation",
+    "Heart",
+    "Male",
+    "Man",
+    "Palpitate",
+    "Palpitates",
+    "Palpitating",
+    "Palpitation",
+    "Palpitations",
+    "Person",
+    "Pulsate",
+    "Pulsated",
+    "Pulsates",
+    "Pulsating",
+    "Pulse",
+    "Rate",
+    "Rhythm",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25,
+      "max": 600.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 1500.0
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "max": 6.0
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 8.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.3,
+      "deviation": 0.7,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.8,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.8,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.16,
+      "deviation": 0.13,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.03,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 120.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 400.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 260.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "beats_per_minute",
+      "mean": 72.0,
+      "deviation": 1.35,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.02,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The cleanest case in HUMAN: a slow, strongly periodic train of very low-frequency thumps at roughly 1–1.5 /s (60–90 BPM), with almost no energy above 2 kHz.",
+     "Periodicity plus the sub-200 Hz concentration separates it from every other HUMAN subcategory; onset_periodicity near 0.8 with onset_rate near 1 /s is diagnostic.",
+     "Slower and much darker than HUMAN-SNORE, which cycles at ~0.2–0.4 /s but carries buzzy mid-band harmonics."
+    ],
+    "confusable_with": [
+     "HMNSnor",
+     "HMNMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "KISS",
+   "category_id": "HMNKiss",
+   "category_short": "HMN",
+   "emoji": "💋",
+   "explanation": [
+    "Human kissing."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "French",
+    "Hickey",
+    "Kiss",
+    "Lips",
+    "Make",
+    "Male",
+    "Man",
+    "Necking",
+    "Out",
+    "Peck",
+    "Person",
+    "Smooch",
+    "Smooching",
+    "Snog",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.35,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.004,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.06,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.06,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.55,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Small, quiet, bright wet clicks — a suction transient, not a vocalization: voicing_ratio near zero and a very low absolute level.",
+     "Much shorter and quieter than HUMAN-BLOW; brighter and far less energetic than HUMAN-SPIT.",
+     "Sparser and wetter-sounding than HUMAN-SKIN friction, which is sustained rather than impulsive."
+    ],
+    "confusable_with": [
+     "HMNSkin",
+     "HMNSpit",
+     "HMNMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "HMNMisc",
+   "category_short": "HMN",
+   "emoji": "🧍",
+   "explanation": [
+    "Human sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "Male",
+    "Man",
+    "Miscellaneous",
+    "Person",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 600.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.2,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1200.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The category's abstain target: a human-produced sound that fits no sibling. Assert only when the signal is human-plausible but no sibling's morphology wins clearly."
+    ],
+    "confusable_with": [
+     "HMNSkin",
+     "HMNBrth",
+     "VOXMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "PEE",
+   "category_id": "HMNPee",
+   "category_short": "HMN",
+   "emoji": "🧍",
+   "explanation": [
+    "Human urinating."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "Male",
+    "Man",
+    "Micturition",
+    "Peeing",
+    "Person",
+    "Piss",
+    "Tinkle",
+    "Urinate",
+    "Urinating",
+    "Urination",
+    "Wee",
+    "Wizz",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.5,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 9.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.68,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.62,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 5200.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 12.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.03,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 4.5,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A liquid stream: a dense, stationary, bright stochastic texture — physically a WATER trickle, and only the human context puts it here.",
+     "Unvoiced and stationary, unlike anything in VOICES; longer and steadier than HUMAN-SPIT.",
+     "Denser and higher-onset-rate than HUMAN-BREATH, and with no inhale/exhale cycling."
+    ],
+    "confusable_with": [
+     "HMNSpit",
+     "HMNMisc",
+     "WATRTrkl",
+     "WATRPour"
+    ]
+   }
+  },
+  {
+   "subcategory": "SKIN",
+   "category_id": "HMNSkin",
+   "category_short": "HMN",
+   "emoji": "🧍",
+   "explanation": [
+    "Human skin",
+    "Scratching",
+    "handshakes",
+    "skin on skin action",
+    "back rubbing",
+    "etc."
+   ],
+   "synonyms": [
+    "Adult",
+    "Backrub",
+    "Brush",
+    "Caress",
+    "Child",
+    "Clap",
+    "Dermis",
+    "Female",
+    "Flick",
+    "Grab",
+    "Hand",
+    "Handshake",
+    "Itch",
+    "Male",
+    "Man",
+    "Massage",
+    "Pat",
+    "Person",
+    "Pores",
+    "Rash",
+    "Rub",
+    "Rubbing",
+    "Scratch",
+    "Scratching",
+    "Skin",
+    "Slap",
+    "Tap",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.01,
+      "max": 300.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.35
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 1.6,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.5113,
+      "deviation": 0.1849,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.48811
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22685,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.22527
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 6402.2,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 6282.34333
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1731.4,
+      "deviation": 1257.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 1599.04103
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.8661,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.8661
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 1638.9,
+      "deviation": 8.054,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 2055.65761
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.03,
+      "deviation": 0.03,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.02,
+      "deviation": 0.05,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.28447,
+      "deviation": 0.2255,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.31559
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.019419,
+      "deviation": 0.24,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 116,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "one_shot_clips_only",
+       "reasoned_mean_before_calibration": 0.02064
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.0,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 131,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.25
+      }
+     }
+    ],
+    "discriminators": [
+     "Quiet, dry, high-centroid contact noise with an unstable envelope — the friction morphology, not an impulse. Rubbing, scratching and back-rubs dominate the class.",
+     "Slaps and pats are the impulsive tail of this class and blur into HUMAN-KISS; the sustained, flux-heavy rubs are what make it separable.",
+     "Unvoiced throughout, which excludes all of VOICES; drier and less bright-crackly than CROWDS-APPLAUSE, which is a dense multi-source impulse train."
+    ],
+    "confusable_with": [
+     "HMNKiss",
+     "HMNMisc",
+     "CRWDApls",
+     "CLTHMovm"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 131,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Finger_snapping": 131
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 131,
+       "percentile_05": 3203.2,
+       "median": 4749.3,
+       "percentile_95": 5751.9
+      },
+      "crest_factor": {
+       "clips": 116,
+       "percentile_05": 21.178,
+       "median": 54.612,
+       "percentile_95": 85.006,
+       "measured_on": "one_shot_clips_only"
+      },
+      "decay_time_seconds_60db": {
+       "clips": 34,
+       "percentile_05": 0.07107,
+       "median": 0.12749,
+       "percentile_95": 0.32179,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_attack_seconds": {
+       "clips": 98,
+       "percentile_05": 0.0049887,
+       "median": 0.0099773,
+       "percentile_95": 0.044898,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_decay_seconds": {
+       "clips": 116,
+       "percentile_05": 0.10975,
+       "median": 0.19456,
+       "percentile_95": 0.46893,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_kurtosis": {
+       "clips": 116,
+       "percentile_05": 21.81,
+       "median": 134.26,
+       "percentile_95": 325.34,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_release_seconds": {
+       "clips": 116,
+       "percentile_05": 0.0099773,
+       "median": 0.029932,
+       "percentile_95": 0.14966,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_skewness": {
+       "clips": 116,
+       "percentile_05": 4.4204,
+       "median": 11.142,
+       "percentile_95": 17.376,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_sustain_level": {
+       "clips": 116,
+       "percentile_05": 0.0,
+       "median": 0.00035264,
+       "percentile_95": 0.024799,
+       "measured_on": "one_shot_clips_only"
+      },
+      "envelope_temporal_centroid": {
+       "clips": 116,
+       "percentile_05": 0.002939,
+       "median": 0.049746,
+       "percentile_95": 0.46886,
+       "measured_on": "one_shot_clips_only"
+      },
+      "harmonicity": {
+       "clips": 131,
+       "percentile_05": 0.0,
+       "median": 0.28447,
+       "percentile_95": 0.81898
+      },
+      "high_band_energy": {
+       "clips": 131,
+       "percentile_05": 0.74158,
+       "median": 0.8661,
+       "percentile_95": 0.93534
+      },
+      "inharmonicity": {
+       "clips": 131,
+       "percentile_05": 0.0,
+       "median": 0.41229,
+       "percentile_95": 0.58158
+      },
+      "low_band_energy": {
+       "clips": 131,
+       "percentile_05": 0.0012107,
+       "median": 0.0087732,
+       "percentile_95": 0.056692
+      },
+      "mid_band_energy": {
+       "clips": 131,
+       "percentile_05": 0.043811,
+       "median": 0.12157,
+       "percentile_95": 0.19736
+      },
+      "onset_periodicity": {
+       "clips": 131,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.42822
+      },
+      "onset_rate_per_second": {
+       "clips": 131,
+       "percentile_05": 0.44583,
+       "median": 0.88799,
+       "percentile_95": 3.0762
+      },
+      "partial_count": {
+       "clips": 109,
+       "percentile_05": 5.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 73,
+       "percentile_05": 109.16,
+       "median": 1260.0,
+       "percentile_95": 1837.5
+      },
+      "pitch_slope_semitones_per_second": {
+       "clips": 21,
+       "percentile_05": -32.962,
+       "median": 0.19331,
+       "percentile_95": 18.018
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 131,
+       "percentile_05": 635.92,
+       "median": 1731.4,
+       "percentile_95": 3157.4
+      },
+      "spectral_centroid_hz": {
+       "clips": 131,
+       "percentile_05": 4027.0,
+       "median": 6402.2,
+       "percentile_95": 9001.9
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 131,
+       "percentile_05": 3921.1,
+       "median": 5981.9,
+       "percentile_95": 8243.0
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 131,
+       "percentile_05": -19358.0,
+       "median": 1396.2,
+       "percentile_95": 32107.0
+      },
+      "spectral_entropy": {
+       "clips": 131,
+       "percentile_05": 0.30502,
+       "median": 0.61645,
+       "percentile_95": 0.82547
+      },
+      "spectral_flatness": {
+       "clips": 131,
+       "percentile_05": 0.21802,
+       "median": 0.5113,
+       "percentile_95": 0.71329
+      },
+      "spectral_flux": {
+       "clips": 131,
+       "percentile_05": 0.20211,
+       "median": 0.22685,
+       "percentile_95": 0.24063
+      },
+      "spectral_rolloff_hz": {
+       "clips": 131,
+       "percentile_05": 6901.0,
+       "median": 11865.0,
+       "percentile_95": 16102.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 131,
+       "percentile_05": -3.0465,
+       "median": -0.089677,
+       "percentile_95": 2.3457
+      },
+      "stationarity": {
+       "clips": 131,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.0,
+       "censored_at_floor_fraction": 0.977
+      },
+      "sustain_ratio": {
+       "clips": 116,
+       "percentile_05": 0.0074074,
+       "median": 0.019231,
+       "percentile_95": 0.078947,
+       "measured_on": "one_shot_clips_only"
+      },
+      "syllabic_modulation_energy": {
+       "clips": 85,
+       "percentile_05": 0.00096668,
+       "median": 0.20172,
+       "percentile_95": 0.31522
+      },
+      "transient_count": {
+       "clips": 131,
+       "percentile_05": 1.0,
+       "median": 1.0,
+       "percentile_95": 5.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 131,
+       "percentile_05": 401.69,
+       "median": 1638.9,
+       "percentile_95": 9412.1
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "SNEEZE",
+   "category_id": "HMNSneez",
+   "category_short": "HMN",
+   "emoji": "🤧",
+   "explanation": [
+    "Human sneezing."
+   ],
+   "synonyms": [
+    "Achoo",
+    "Adult",
+    "Ah-Choo",
+    "Ahchoo",
+    "Allergic",
+    "Allergy",
+    "Child",
+    "Female",
+    "Fever",
+    "Hay",
+    "Male",
+    "Man",
+    "Nasal",
+    "Person",
+    "Sinus",
+    "Sneeze",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 2.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.9,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.01,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.3,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 1.8,
+      "deviation": 1.4,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 4316.6,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 4286.36066
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.61563,
+      "deviation": 0.2447,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.58123
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.30686,
+      "deviation": 0.194,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.30144
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.15,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.94796,
+      "deviation": 0.9,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.82627
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 3025.9,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 3218.58247
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.29111,
+      "deviation": 0.1796,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "fsd50k_measured",
+       "dataset": "FSD50K.dev",
+       "clips": 60,
+       "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+       "date": "2026-07",
+       "measured_on": "all_unambiguous_clips",
+       "reasoned_mean_before_calibration": 0.31209
+      }
+     }
+    ],
+    "discriminators": [
+     "One-shot: a short voiced/held pre-phase then a bright, nasal, hissy explosive release. The release is the brightest thing in HUMAN — high_band_energy and centroid sit above HUMAN-COUGH.",
+     "A sneeze is a single event; a cough recording usually contains an irregular fit of several. Higher onset counts favour HUMAN-COUGH.",
+     "Sharper and much louder than HUMAN-SNIFF, which is the quiet inhale with no explosive release."
+    ],
+    "confusable_with": [
+     "HMNCough",
+     "HMNSniff",
+     "HMNBlow"
+    ],
+    "measured_evidence": {
+     "dataset": "FSD50K.dev — 40,966 human-labelled Freesound clips",
+     "analyzer_version": "20260714.0350-d356b3ca938a00f9",
+     "date": "2026-07",
+     "clip_count": 60,
+     "selection": "clips whose FSD50K labels map unambiguously to this one subcategory (high/medium crosswalk confidence only)",
+     "contributing_fsd50k_classes": {
+      "Sneeze": 60
+     },
+     "feature_observations": {
+      "complexity": {
+       "clips": 60,
+       "percentile_05": 2250.6,
+       "median": 3896.4,
+       "percentile_95": 5295.2
+      },
+      "harmonicity": {
+       "clips": 60,
+       "percentile_05": 0.11935,
+       "median": 0.29037,
+       "percentile_95": 0.8202
+      },
+      "high_band_energy": {
+       "clips": 60,
+       "percentile_05": 0.21502,
+       "median": 0.61449,
+       "percentile_95": 0.87378
+      },
+      "inharmonicity": {
+       "clips": 60,
+       "percentile_05": 0.096456,
+       "median": 0.39235,
+       "percentile_95": 0.57512
+      },
+      "low_band_energy": {
+       "clips": 60,
+       "percentile_05": 0.0019449,
+       "median": 0.019231,
+       "percentile_95": 0.090612
+      },
+      "mid_band_energy": {
+       "clips": 60,
+       "percentile_05": 0.083533,
+       "median": 0.34178,
+       "percentile_95": 0.65791
+      },
+      "onset_periodicity": {
+       "clips": 60,
+       "percentile_05": 0.038618,
+       "median": 0.3075,
+       "percentile_95": 0.54507
+      },
+      "onset_rate_per_second": {
+       "clips": 60,
+       "percentile_05": 0.23852,
+       "median": 0.93889,
+       "percentile_95": 2.6306
+      },
+      "partial_count": {
+       "clips": 59,
+       "percentile_05": 4.0,
+       "median": 12.0,
+       "percentile_95": 12.0
+      },
+      "pitch_hz": {
+       "clips": 53,
+       "percentile_05": 105.0,
+       "median": 501.14,
+       "percentile_95": 1633.3
+      },
+      "spectral_centroid_deviation_hz": {
+       "clips": 60,
+       "percentile_05": 471.48,
+       "median": 1377.0,
+       "percentile_95": 4731.3
+      },
+      "spectral_centroid_hz": {
+       "clips": 60,
+       "percentile_05": 1742.2,
+       "median": 4286.4,
+       "percentile_95": 6642.1
+      },
+      "spectral_centroid_mean_hz": {
+       "clips": 60,
+       "percentile_05": 1540.0,
+       "median": 4093.5,
+       "percentile_95": 6310.5
+      },
+      "spectral_centroid_slope_hz_per_second": {
+       "clips": 60,
+       "percentile_05": -1130.7,
+       "median": 41.754,
+       "percentile_95": 4507.8
+      },
+      "spectral_entropy": {
+       "clips": 60,
+       "percentile_05": 0.22874,
+       "median": 0.44815,
+       "percentile_95": 0.60089
+      },
+      "spectral_flatness": {
+       "clips": 60,
+       "percentile_05": 0.071009,
+       "median": 0.30617,
+       "percentile_95": 0.51563
+      },
+      "spectral_flux": {
+       "clips": 60,
+       "percentile_05": 0.20046,
+       "median": 0.22627,
+       "percentile_95": 0.24606
+      },
+      "spectral_rolloff_hz": {
+       "clips": 60,
+       "percentile_05": 2671.8,
+       "median": 8587.8,
+       "percentile_95": 12056.0
+      },
+      "spectral_slope_db_per_octave": {
+       "clips": 60,
+       "percentile_05": -6.1771,
+       "median": -1.7664,
+       "percentile_95": 0.88213
+      },
+      "stationarity": {
+       "clips": 60,
+       "percentile_05": 0.0,
+       "median": 0.0,
+       "percentile_95": 0.0,
+       "censored_at_floor_fraction": 0.95
+      },
+      "syllabic_modulation_energy": {
+       "clips": 60,
+       "percentile_05": 0.02778,
+       "median": 0.20472,
+       "percentile_95": 0.40385
+      },
+      "transient_count": {
+       "clips": 60,
+       "percentile_05": 1.0,
+       "median": 2.0,
+       "percentile_95": 10.0
+      },
+      "zero_crossings_per_second": {
+       "clips": 60,
+       "percentile_05": 1049.1,
+       "median": 2940.6,
+       "percentile_95": 7196.4
+      }
+     },
+     "features_not_measurable_here": {
+      "band_limit_high_hz": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "beats_per_minute": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "clipping_density": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "dc_offset": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "length_seconds": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "lufs": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "root_mean_square_level": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "sample_rate": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "stereo_width": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "total_harmonic_distortion": "left reasoned — see not_calibrated in fsd50k_calibration.json",
+      "voicing_ratio": "left reasoned — see not_calibrated in fsd50k_calibration.json"
+     },
+     "caveat": "Amateur Freesound audio, mono, arbitrary normalization. Treat as a prior on the prior, not as truth. Duration, level, stereo width and band limit are NOT measurable here and are left reasoned."
+    }
+   }
+  },
+  {
+   "subcategory": "SNIFF",
+   "category_id": "HMNSniff",
+   "category_short": "HMN",
+   "emoji": "🧍",
+   "explanation": [
+    "Human sniffing",
+    "smelling."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Female",
+    "Inhalation",
+    "Inhale",
+    "Male",
+    "Man",
+    "Nose",
+    "Odor",
+    "Person",
+    "Smell",
+    "Sniff",
+    "Sniffing",
+    "Sniffle",
+    "Snivel",
+    "Snort",
+    "Snorting",
+    "Snuffle",
+    "Whiff",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_noise",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.05,
+      "max": 60.0
+     },
+     {
+      "feature": "voicing_ratio",
+      "max": 0.4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.55,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.62,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2400.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.44,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.05,
+      "deviation": 0.08,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.05,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.2,
+      "deviation": 1.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 4800.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A short, quiet, bright nasal inrush — a sharply time-limited unvoiced noise burst, typically repeating a few times.",
+     "Shorter, quieter and more nasal-bright than HUMAN-BREATH; no explosive release, which is what separates it from HUMAN-SNEEZE.",
+     "Direction is inward, so it lacks the long forceful outflow of HUMAN-BLOW."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "HMNSneez",
+     "HMNBlow"
+    ]
+   }
+  },
+  {
+   "subcategory": "SNORE",
+   "category_id": "HMNSnor",
+   "category_short": "HMN",
+   "emoji": "😴",
+   "explanation": [
+    "Human snoring."
+   ],
+   "synonyms": [
+    "Adult",
+    "Apnea",
+    "Breathing",
+    "Child",
+    "Congested",
+    "Doze",
+    "Dozing",
+    "Female",
+    "Heavy",
+    "Male",
+    "Man",
+    "Person",
+    "Slumber",
+    "Snooze",
+    "Snore",
+    "Snoring",
+    "Woman",
+    "ZZZ"
+   ],
+   "acoustic_signature": {
+    "morphology": "rhythmic",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.4,
+      "max": 600.0
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "max": 3500.0
+     },
+     {
+      "feature": "high_band_energy",
+      "max": 0.4
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 12.0,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.72,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 0.3,
+      "deviation": 0.3,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 110.0,
+      "deviation": 1.7,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.52,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.38,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 480.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.45,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.45,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "syllabic_modulation_energy",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A very slow, strongly periodic breath cycle (~0.2–0.4 /s, one snore per respiratory cycle) carrying a low, buzzy, rough voiced rasp around 80–150 Hz.",
+     "Periodicity plus low pitch separates it from HUMAN-BREATH, which is aperiodic and unvoiced.",
+     "Much slower and far more harmonic/mid-band than HUMAN-HEARTBEAT, which is ~1 /s and almost purely sub-200 Hz.",
+     "Lacks the 3–8 Hz syllabic modulation of speech, so it never wins against VOICES."
+    ],
+    "confusable_with": [
+     "HMNBrth",
+     "HMNHart",
+     "FARTReal"
+    ]
+   }
+  },
+  {
+   "subcategory": "SPIT",
+   "category_id": "HMNSpit",
+   "category_short": "HMN",
+   "emoji": "🧍",
+   "explanation": [
+    "Human spits."
+   ],
+   "synonyms": [
+    "Adult",
+    "Child",
+    "Drool",
+    "Expectoration",
+    "Female",
+    "Gob",
+    "Hawk",
+    "Hock",
+    "Male",
+    "Man",
+    "Mucus",
+    "Person",
+    "Phlegm",
+    "Saliva",
+    "Slobber",
+    "Spew",
+    "Spit",
+    "Spitoon",
+    "Spitting",
+    "Spittle",
+    "Spittoon",
+    "Sputum",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 30.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 2.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.006,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 0.1,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_skewness",
+      "mean": 2.2,
+      "deviation": 1.5,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.28,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2200.0,
+      "deviation": 2.1,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.4,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.06,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 1.0,
+      "deviation": 0.9,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.1,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A wet, bright, front-loaded expulsion: a sharp unvoiced transient often followed by a small liquid splat.",
+     "Shorter and spikier than HUMAN-BLOW; unvoiced and much shorter than HUMAN-VOMIT, which is a long voiced retch plus liquid.",
+     "Louder and less nasal than HUMAN-KISS."
+    ],
+    "confusable_with": [
+     "HMNKiss",
+     "HMNBlow",
+     "HMNVomit",
+     "HMNCough"
+    ]
+   }
+  },
+  {
+   "subcategory": "VOMIT",
+   "category_id": "HMNVomit",
+   "category_short": "HMN",
+   "emoji": "🧍",
+   "explanation": [
+    "Human vomiting."
+   ],
+   "synonyms": [
+    "Adult",
+    "Barf",
+    "Barfing",
+    "Child",
+    "Chunder",
+    "Expunge",
+    "Female",
+    "Gag",
+    "Gagging",
+    "Heave",
+    "Hurl",
+    "Male",
+    "Man",
+    "Nausea",
+    "Nauseous",
+    "Person",
+    "Puke",
+    "Pukes",
+    "Reflex",
+    "Reflux",
+    "Regurgitate",
+    "Regurgitated",
+    "Regurgitation",
+    "Retch",
+    "Retched",
+    "Retching",
+    "Seasick",
+    "Spew",
+    "Throwing",
+    "Up",
+    "Upchuck",
+    "Vomit",
+    "Vomitus",
+    "Woman"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.35,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 150.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.34,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "mid_band_energy",
+      "mean": 0.44,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 2.1,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.42,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.48,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.55,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 2.0,
+      "deviation": 2.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.25,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A two-part scene: a rough, low, voiced retch/heave followed by a wet liquid splatter — high spectral flux across a single event, with rough (inharmonic) phonation.",
+     "Longer and wetter than HUMAN-COUGH, and it carries voicing that HUMAN-SPIT does not.",
+     "The gag/heave overlaps VOICES-EFFORTS; the liquid splatter component is what tips it here."
+    ],
+    "confusable_with": [
+     "HMNCough",
+     "HMNSpit",
+     "HMNBurp",
+     "VOXEfrt"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,1249 @@
+{
+ "version": "8.2.1",
+ "category": "CERAMICS",
+ "emoji": "🏺",
+ "subcategories": [
+  {
+   "subcategory": "BREAK",
+   "category_id": "CERMBrk",
+   "category_short": "CERM",
+   "emoji": "🏺",
+   "explanation": [
+    "Ceramics break of a more singular nature",
+    "a plate shatter",
+    "breaking",
+    "cracking",
+    "crunching. Mostly for single items breaking. See also CERAMICS-CRASH & DEBRIS."
+   ],
+   "synonyms": [
+    "Apart",
+    "Break",
+    "Burst",
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Chip",
+    "Clay",
+    "Crack",
+    "Crockery",
+    "Crumble",
+    "Crunch",
+    "Crush",
+    "Demolish",
+    "Destroy",
+    "Disintegrate",
+    "Earthenware",
+    "Fracture",
+    "Fragment",
+    "Porcelain",
+    "Pottery",
+    "Shatter",
+    "Smash",
+    "Snap",
+    "Splinter",
+    "Split",
+    "Stoneware",
+    "Terracotta",
+    "Tile",
+    "Ware"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.08,
+      "max": 30.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.5
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0018,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 12.0,
+      "deviation": 5.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3400.0,
+      "deviation": 1700.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.48,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 8.0,
+      "deviation": 6.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 12.0,
+      "deviation": 9.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.5,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.15,
+      "deviation": 2.379,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.26,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.2,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A plate shatter: a sharp crack/crunch burst plus a shard-scatter tail. The same burst-then-texture morphology as GLASS-BREAK, shifted DOWN in brightness and DOWN in ring time (damped body, chalkier fracture noise).",
+     "UCS: 'mostly for single items breaking' - one failure event, front-loaded. CERAMICS-CRASH & DEBRIS is the group version: longer, with onsets spread across the file.",
+     "Against CERAMICS-IMPACT: an IMPACT leaves the object whole - no HF fracture burst, transient_count near 1."
+    ],
+    "confusable_with": [
+     "CERMCrsh",
+     "CERMImpt",
+     "GLASBrk",
+     "ROCKBrk"
+    ]
+   }
+  },
+  {
+   "subcategory": "CRASH & DEBRIS",
+   "category_id": "CERMCrsh",
+   "category_short": "CERM",
+   "emoji": "🏺",
+   "explanation": [
+    "Ceramics destruction of more of a group nature",
+    "multiple crashes and debris. See also CERAMICS-BREAK."
+   ],
+   "synonyms": [
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Clay",
+    "Collision",
+    "Crockery",
+    "Debris",
+    "Earthenware",
+    "Fall",
+    "Fragments",
+    "Porcelain",
+    "Pottery",
+    "Remains",
+    "Rubble",
+    "Ruins",
+    "Scatter",
+    "Shards",
+    "Smash",
+    "Stoneware",
+    "Terracotta",
+    "Tile",
+    "Trash",
+    "Ware",
+    "Wreckage"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 60.0
+     },
+     {
+      "feature": "transient_count",
+      "min": 3
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 20.0,
+      "deviation": 14.0,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 7.0,
+      "deviation": 5.0,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.12,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3200.0,
+      "deviation": 1600.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.14,
+      "deviation": 2.356,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.42,
+      "deviation": 0.16,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.8,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.5,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Group destruction: a stack of crockery going over - many damped, chalky, clattering onsets spread across the file, irregular (low onset_periodicity).",
+     "Against CERAMICS-BREAK: BREAK is one item front-loaded on a single burst; CRASH & DEBRIS is many items, spread out.",
+     "Against GLASS-CRASH & DEBRIS: duller and thuddier - lower spectral_centroid_hz, less high_band_energy, shorter per-shard ring."
+    ],
+    "confusable_with": [
+     "CERMBrk",
+     "GLASCrsh",
+     "CERMMvmt",
+     "ROCKCrsh"
+    ]
+   }
+  },
+  {
+   "subcategory": "FRICTION",
+   "category_id": "CERMFric",
+   "category_short": "CERM",
+   "emoji": "🏺",
+   "explanation": [
+    "Ceramics friction",
+    "scraping",
+    "squeaking",
+    "screeching."
+   ],
+   "synonyms": [
+    "Abrasion",
+    "Attrition",
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Clay",
+    "Creak",
+    "Crockery",
+    "Earthenware",
+    "Erosion",
+    "Grating",
+    "Grinding",
+    "Porcelain",
+    "Pottery",
+    "Rasping",
+    "Rubbing",
+    "Scouring",
+    "Scrape",
+    "Scraping",
+    "Scratching",
+    "Screech",
+    "Scuffing",
+    "Sliding",
+    "Squeak",
+    "Stoneware",
+    "Stress",
+    "Terracotta",
+    "Tile",
+    "Ware",
+    "Wear"
+   ],
+   "acoustic_signature": {
+    "morphology": "friction",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.15,
+      "max": 120.0
+     },
+     {
+      "feature": "crest_factor",
+      "max": 25.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.35,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3800.0,
+      "deviation": 1900.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 1200.0,
+      "deviation": 700.0,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "zero_crossings_per_second",
+      "mean": 6500.0,
+      "deviation": 4000.0,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 5.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.25,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 1.8,
+      "deviation": 1.6,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.35,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Grating, scraping, squeaking crockery: a sustained, restless, mid-bright contact. Duller than GLASS-FRICTION and METAL-FRICTION (lower centroid); brighter and less granular than ROCKS-FRICTION.",
+     "Not impulsive: low crest_factor and held sustain_ratio separate it from CERAMICS-IMPACT and CERAMICS-BREAK."
+    ],
+    "confusable_with": [
+     "GLASFric",
+     "METLFric",
+     "ROCKFric",
+     "CERMTonl"
+    ]
+   }
+  },
+  {
+   "subcategory": "HANDLE",
+   "category_id": "CERMHndl",
+   "category_short": "CERM",
+   "emoji": "🏺",
+   "explanation": [
+    "Ceramics handling",
+    "picking up a coffee mug",
+    "handling a plant pot. Some overlap with CERAMICS-MOVEMENT."
+   ],
+   "synonyms": [
+    "Caress",
+    "Catch",
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Clasp",
+    "Clay",
+    "Clench",
+    "Clutch",
+    "Crockery",
+    "Down",
+    "Earthenware",
+    "Embrace",
+    "Fondle",
+    "Grab",
+    "Grasp",
+    "Grip",
+    "Handle",
+    "Hold",
+    "Manipulate",
+    "Operate",
+    "Palm",
+    "Pickup",
+    "Porcelain",
+    "Pottery",
+    "Seize",
+    "Set",
+    "Stoneware",
+    "Take",
+    "Terracotta",
+    "Tile",
+    "Toss",
+    "Touch",
+    "Use",
+    "Ware"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.1,
+      "max": 60.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.04,
+      "deviation": 2.399,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 4.0,
+      "deviation": 3.5,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 1500.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.15,
+      "deviation": 2.543,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 7.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 2.0,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Intent, not morphology: picking up a mug, handling a plant pot. UCS admits the overlap with CERAMICS-MOVEMENT; DSP only asserts 'damped ceramic contact, quiet, nothing broke'."
+    ],
+    "confusable_with": [
+     "CERMMvmt",
+     "CERMImpt",
+     "CERMMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "IMPACT",
+   "category_id": "CERMImpt",
+   "category_short": "CERM",
+   "emoji": "💥",
+   "explanation": [
+    "Ceramics impacts without breaking",
+    "so hits drops",
+    "clunks and clinks. See also CERAMICS-BREAK."
+   ],
+   "synonyms": [
+    "Bang",
+    "Banging",
+    "Bash",
+    "Bump",
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Clap",
+    "Clay",
+    "Clink",
+    "Clunk",
+    "Collide",
+    "Colliding",
+    "Collision",
+    "Crash",
+    "Crashing",
+    "Crockery",
+    "Drop",
+    "Earthenware",
+    "Hit",
+    "Hitting",
+    "Impact",
+    "Impacting",
+    "Jolt",
+    "Knock",
+    "Porcelain",
+    "Pottery",
+    "Pound",
+    "Ram",
+    "Shock",
+    "Slam",
+    "Slamming",
+    "Smack",
+    "Smacking",
+    "Stoneware",
+    "Strike",
+    "Striking",
+    "Terracotta",
+    "Thrust",
+    "Thump",
+    "Tile",
+    "Ware"
+   ],
+   "acoustic_signature": {
+    "morphology": "impulsive_with_tail",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.03,
+      "max": 20.0
+     },
+     {
+      "feature": "crest_factor",
+      "min": 3.0
+     },
+     {
+      "feature": "envelope_attack_seconds",
+      "max": 0.08
+     }
+    ],
+    "priors": [
+     {
+      "feature": "envelope_attack_seconds",
+      "mean": 0.0025,
+      "deviation": 2.226,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 1400.0,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.18,
+      "deviation": 2.301,
+      "transform": "log",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 4.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.38,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.4,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 9.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "transient_count",
+      "mean": 1.5,
+      "deviation": 1.0,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.16,
+      "deviation": 0.09,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 0.5,
+      "deviation": 2.718,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "A clunk/clink from a mug or plate that does NOT break: bright-ish but visibly DAMPED - the middle of the impedance axis. Ring is short (decay_time_seconds_60db ~0.05-0.4 s), well under GLASS (~0.15-1 s) and an order of magnitude under METAL (0.5-3 s).",
+     "Against GLASS-IMPACT: lower spectral_centroid_hz and lower high_band_energy - ceramics is the duller cousin.",
+     "Against CERAMICS-BREAK: nothing shatters - no HF fracture burst, no shard tail, transient_count near 1.",
+     "Against ROCKS-IMPACT: ceramics still rings and is far brighter; rock is a dull broadband thud with essentially no ring."
+    ],
+    "confusable_with": [
+     "CERMBrk",
+     "GLASImpt",
+     "ROCKImpt",
+     "CERMMvmt",
+     "METLImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "CERMMisc",
+   "category_short": "CERM",
+   "emoji": "🏺",
+   "explanation": [
+    "Ceramics sounds not fitting another category in this list."
+   ],
+   "synonyms": [
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Clay",
+    "Crockery",
+    "Earthenware",
+    "Miscellaneous",
+    "Porcelain",
+    "Pottery",
+    "Stoneware",
+    "Terracotta",
+    "Tile",
+    "Ware"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.02,
+      "max": 300.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2600.0,
+      "deviation": 1600.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.18,
+      "deviation": 3.038,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.42,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.38,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Residual class: ceramic-timbred (damped, mid-bright, short ring - between glass and wood) but matching no other CERAMICS morphology. Abstention target for the category."
+    ],
+    "confusable_with": [
+     "CERMImpt",
+     "CERMMvmt",
+     "CERMHndl",
+     "GLASMisc"
+    ]
+   }
+  },
+  {
+   "subcategory": "MOVEMENT",
+   "category_id": "CERMMvmt",
+   "category_short": "CERM",
+   "emoji": "🏺",
+   "explanation": [
+    "Ceramics single or group movement",
+    "so dragging",
+    "shaking and rattling. See also CERAMICS-HANDLE."
+   ],
+   "synonyms": [
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Clatter",
+    "Clay",
+    "Crockery",
+    "Drag",
+    "Earthenware",
+    "Jiggle",
+    "Jingle",
+    "Move",
+    "Porcelain",
+    "Pottery",
+    "Rattle",
+    "Roll",
+    "Shake",
+    "Shift",
+    "Stoneware",
+    "Terracotta",
+    "Tile",
+    "Vibrate",
+    "Ware",
+    "Wobble"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.2,
+      "max": 120.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "transient_count",
+      "mean": 10.0,
+      "deviation": 8.0,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 3.5,
+      "deviation": 2.8,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 2800.0,
+      "deviation": 1500.0,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 0.15,
+      "deviation": 2.379,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 6.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "root_mean_square_level",
+      "mean": 0.045,
+      "deviation": 2.432,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.36,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Dragging, shaking, rattling crockery: quiet, damped, multi-onset clatter with almost no ring.",
+     "Against CERAMICS-CRASH & DEBRIS: nothing breaks - lower level, lower crest_factor, no fracture burst, steadier (higher stationarity).",
+     "Against GLASS-MOVEMENT: duller - chalky clatter rather than bright tinkle (lower spectral_centroid_hz, lower high_band_energy).",
+     "Against CERAMICS-HANDLE: not separable by signal; UCS concedes the overlap."
+    ],
+    "confusable_with": [
+     "CERMHndl",
+     "CERMCrsh",
+     "GLASMvmt",
+     "CERMImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "TONAL",
+   "category_id": "CERMTonl",
+   "category_short": "CERM",
+   "emoji": "🏺",
+   "explanation": [
+    "Ceramics ringing",
+    "as in being bowed."
+   ],
+   "synonyms": [
+    "Bowed",
+    "Ceramic",
+    "Ceramics",
+    "China",
+    "Clay",
+    "Crockery",
+    "Earthenware",
+    "Frequency",
+    "Harmonic",
+    "Melodic",
+    "Melodious",
+    "Musical",
+    "Ping",
+    "Pitch",
+    "Porcelain",
+    "Pottery",
+    "Resonance",
+    "Resonant",
+    "Ring",
+    "Shing",
+    "Sonorous",
+    "Sound",
+    "Stoneware",
+    "Terracotta",
+    "Tile",
+    "Timbre",
+    "Tonal",
+    "Tone",
+    "Ware"
+   ],
+   "acoustic_signature": {
+    "morphology": "sustained_tonal",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.25,
+      "max": 120.0
+     },
+     {
+      "feature": "harmonicity",
+      "min": 0.2
+     }
+    ],
+    "priors": [
+     {
+      "feature": "harmonicity",
+      "mean": 0.72,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.08,
+      "deviation": 0.06,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "sustain_ratio",
+      "mean": 0.55,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "inharmonicity",
+      "mean": 0.25,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "decay_time_seconds_60db",
+      "mean": 1.2,
+      "deviation": 1.1,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "partial_count",
+      "mean": 7.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "pitch_hz",
+      "mean": 600.0,
+      "deviation": 400.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 3.5,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1800.0,
+      "deviation": 1100.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 3.8,
+      "deviation": 1.8,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS: 'ceramics ringing as in being bowed'. Bowing overcomes the damping, so this is a driven, sustained tone (high sustain_ratio, high harmonicity) - the rare case where ceramics holds a pitch.",
+     "Against GLASS-TONAL: less pure and less bright - higher inharmonicity, higher spectral_flatness, shorter free decay.",
+     "Against CERAMICS-IMPACT: a struck mug rings for a fraction of a second; TONAL is held - sustain_ratio far higher, crest_factor far lower."
+    ],
+    "confusable_with": [
+     "GLASTonl",
+     "METLTonl",
+     "CERMFric",
+     "CERMImpt"
+    ]
+   }
+  }
+ ]
+}

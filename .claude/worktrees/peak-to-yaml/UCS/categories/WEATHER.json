@@ -1,0 +1,643 @@
+{
+ "version": "8.2.1",
+ "category": "WEATHER",
+ "emoji": "🌦️",
+ "subcategories": [
+  {
+   "subcategory": "HAIL",
+   "category_id": "HAIL",
+   "category_short": "HAIL",
+   "emoji": "🌨️",
+   "explanation": [
+    "Hail on various surfaces."
+   ],
+   "synonyms": [
+    "Balls",
+    "Frozen",
+    "Graupel",
+    "Hail",
+    "Hailstones",
+    "Hailstorm",
+    "Ice",
+    "Pellets",
+    "Rain",
+    "Sleet"
+   ],
+   "acoustic_signature": {
+    "morphology": "texture",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "high_band_energy",
+      "mean": 0.45,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.9,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 3500.0,
+      "deviation": 1.9,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_rate_per_second",
+      "mean": 20.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "onset_periodicity",
+      "mean": 0.08,
+      "deviation": 0.1,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.72,
+      "deviation": 0.18,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.6,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 8.0,
+      "deviation": 2.0,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.15,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 45.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.5,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "Hail is a dense stochastic impact texture -- discrete ice pellets striking a hard surface -- not a hiss. Versus RAIN it has a brighter spectrum and a markedly higher crest factor, because each grain is a real transient rather than a droplet splash.",
+     "Its grain onsets are stochastic, not periodic: onset_periodicity stays near zero, which separates it from any rhythmic mechanical texture.",
+     "Versus WEATHER-STORM: a storm is a composite (wind + rain + thunder) and carries far more low-frequency energy and far more dynamic variation."
+    ],
+    "confusable_with": [
+     "RAIN",
+     "RAINMetl",
+     "RAINConc",
+     "STORM",
+     "ICEImpt"
+    ]
+   }
+  },
+  {
+   "subcategory": "MISC",
+   "category_id": "WTHR",
+   "category_short": "WTHR",
+   "emoji": "🌦️",
+   "explanation": [
+    "Weather sounds not fitting another category in this list. See also NATURAL DISASTER category."
+   ],
+   "synonyms": [
+    "Atmosphere",
+    "Atmospheric",
+    "Climate",
+    "Conditions",
+    "Elements",
+    "Forecast",
+    "Meteorology",
+    "Miscellaneous"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "semantic_only",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 1.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 60.0,
+      "deviation": 3.5,
+      "transform": "log",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.7,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.6,
+      "deviation": 0.25,
+      "transform": "linear",
+      "weight": 0.3,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.18,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.2,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "The abstain target for WEATHER: 'weather sounds not fitting another category in this list.' UCS points at the NATURAL DISASTER category for the extreme end.",
+     "Deliberately weak priors and a single generous gate, so it wins only when no sibling clears threshold."
+    ],
+    "confusable_with": [
+     "STORM",
+     "THUN",
+     "HAIL",
+     "NATDMisc",
+     "WIND"
+    ]
+   }
+  },
+  {
+   "subcategory": "STORM",
+   "category_id": "STORM",
+   "category_short": "STORM",
+   "emoji": "🌩️",
+   "explanation": [
+    "Composite storms",
+    "wind",
+    "rain",
+    "thunder",
+    "where elements aren't isolated. Mixed storm composite recordings. Also see WIND-TURBULENT for wind only elements and NATURAL-DISASTER."
+   ],
+   "synonyms": [
+    "Blizzard",
+    "Cyclone",
+    "Electrical",
+    "Gale",
+    "Hailstorm",
+    "Hurricane",
+    "Ice",
+    "Monsoon",
+    "Rainstorm",
+    "Sandstorm",
+    "Sleet",
+    "Snowstorm",
+    "Squall",
+    "Storm",
+    "Supercell",
+    "Tempest",
+    "Thunderhead",
+    "Thunderstorm",
+    "Tornado",
+    "Typhoon",
+    "Windstorm"
+   ],
+   "acoustic_signature": {
+    "morphology": "complex",
+    "separability": "signal_narrowable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 3.0
+     }
+    ],
+    "priors": [
+     {
+      "feature": "length_seconds",
+      "mean": 120.0,
+      "deviation": 3.0,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "low_band_energy",
+      "mean": 0.45,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.8,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.6,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flux",
+      "mean": 0.22,
+      "deviation": 0.12,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 6.0,
+      "deviation": 4.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 11.0,
+      "deviation": 2.4,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 1100.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.65,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "stereo_width",
+      "mean": 0.65,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "voicing_ratio",
+      "mean": 0.02,
+      "deviation": 0.04,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "spectral_centroid_deviation_hz",
+      "mean": 900.0,
+      "deviation": 600.0,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "reasoned"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS: 'composite storms, wind, rain, thunder, where elements aren't isolated.' The signature of a composite is exactly that it is NOT stationary: a rain or wind bed alone has low flux and low kurtosis, a storm has thunder bursts riding on it, which lifts envelope_kurtosis and crest factor well above either element on its own.",
+     "Versus WIND-TURBULENT: UCS says to use that 'for wind only elements'. Wind alone lacks the impulsive thunder content and the rain texture.",
+     "Versus WEATHER-THUNDER: THUNDER is the isolated event; a storm is the bed it sits in."
+    ],
+    "confusable_with": [
+     "THUN",
+     "WINDTurb",
+     "RAIN",
+     "WTHR",
+     "NATDTorn"
+    ]
+   }
+  },
+  {
+   "subcategory": "THUNDER",
+   "category_id": "THUN",
+   "category_short": "THUN",
+   "emoji": "⛈️",
+   "explanation": [
+    "Thunder and lightning",
+    "dry",
+    "wet",
+    "distant rumbles to sharp thunder cracks. Combination RAIN & THUNDER may best go into WEATHER-STORM"
+   ],
+   "synonyms": [
+    "Boom",
+    "Clap",
+    "Crack",
+    "Crash",
+    "Lightening",
+    "Lightning",
+    "Roar",
+    "Roll",
+    "Rumble",
+    "Thunder",
+    "Thunderbolt",
+    "Thunderclap",
+    "Thunderstorm"
+   ],
+   "acoustic_signature": {
+    "morphology": "burst",
+    "separability": "signal_separable",
+    "gates": [
+     {
+      "feature": "length_seconds",
+      "min": 0.3,
+      "max": 180.0
+     },
+     {
+      "feature": "low_band_energy",
+      "min": 0.12
+     }
+    ],
+    "priors": [
+     {
+      "feature": "low_band_energy",
+      "mean": 0.42117,
+      "deviation": 0.24062,
+      "transform": "linear",
+      "weight": 1.0,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Thunder"
+       ],
+       "measured_deviation": 0.24062,
+       "reasoned_mean": 0.62,
+       "reasoned_deviation": 0.18,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_centroid_hz",
+      "mean": 736.1377,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.9,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Thunder"
+       ],
+       "measured_deviation": 1.5882,
+       "reasoned_mean": 300.0,
+       "reasoned_deviation": 2.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "length_seconds",
+      "mean": 9.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_decay_seconds",
+      "mean": 4.0,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.7,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_kurtosis",
+      "mean": 9.0,
+      "deviation": 5.0,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "envelope_temporal_centroid",
+      "mean": 0.3,
+      "deviation": 0.15,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "crest_factor",
+      "mean": 10.0,
+      "deviation": 2.2,
+      "transform": "log",
+      "weight": 0.6,
+      "provenance": {
+       "source": "reasoned"
+      }
+     },
+     {
+      "feature": "high_band_energy",
+      "mean": 0.05262,
+      "deviation": 0.07,
+      "transform": "linear",
+      "weight": 0.6,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Thunder"
+       ],
+       "measured_deviation": 0.04116,
+       "reasoned_mean": 0.06,
+       "reasoned_deviation": 0.07,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_rolloff_hz",
+      "mean": 867.28299,
+      "deviation": 2.5,
+      "transform": "log",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Thunder"
+       ],
+       "measured_deviation": 1.92161,
+       "reasoned_mean": 1500.0,
+       "reasoned_deviation": 2.5,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "spectral_flatness",
+      "mean": 0.04113,
+      "deviation": 0.22,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Thunder"
+       ],
+       "measured_deviation": 0.0319,
+       "reasoned_mean": 0.55,
+       "reasoned_deviation": 0.22,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "harmonicity",
+      "mean": 0.78317,
+      "deviation": 0.20689,
+      "transform": "linear",
+      "weight": 0.4,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Thunder"
+       ],
+       "measured_deviation": 0.20689,
+       "reasoned_mean": 0.05,
+       "reasoned_deviation": 0.07,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     },
+     {
+      "feature": "stationarity",
+      "mean": 0.0,
+      "deviation": 0.2,
+      "transform": "linear",
+      "weight": 0.5,
+      "provenance": {
+       "source": "measured",
+       "dataset": "FSD50K",
+       "clips": 180,
+       "fsd50k_classes": [
+        "Thunder"
+       ],
+       "measured_deviation": 0.13549,
+       "reasoned_mean": 0.3,
+       "reasoned_deviation": 0.2,
+       "policy": "mean replaced by the measured median; deviation widened only, never tightened"
+      }
+     }
+    ],
+    "discriminators": [
+     "UCS: 'distant rumbles to sharp thunder cracks.' Both ends of that range are the same thing physically: a broadband low-frequency burst with a long decaying rumble tail. Overwhelming sub-200 Hz energy and a very dark centroid make this one of the few signal_separable WEATHER entries.",
+     "Versus EXPLOSIONS-REAL: acoustically close -- both are LF bursts with tails -- but thunder's tail is much longer and more diffuse (atmospheric propagation, kilometres of path) and it has almost no high-frequency crack compared with a real detonation.",
+     "UCS: 'combination RAIN & THUNDER may best go into WEATHER-STORM' -- if the file has a continuous rain bed under it, its stationarity rises and STORM should win."
+    ],
+    "confusable_with": [
+     "STORM",
+     "EXPLReal",
+     "DSGNBoom",
+     "DSGNRmbl",
+     "WTHR"
+    ]
+   }
+  }
+ ]
+}

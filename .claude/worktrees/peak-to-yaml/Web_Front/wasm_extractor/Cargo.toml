@@ -1,0 +1,16 @@
+[package]
+name = "wasm_extractor"
+version = "0.1.0"
+edition = "2021"
+description = "WASM wrapper for the Extractor cutting engine — region detection, slicing/fades, WAV export, and per-chunk UCS analysis. Mirrors the native path so web and desktop cut identically."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2.84"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+console_error_panic_hook = "0.1.7"
+extractor_engine = { path = "../../extractor_engine_rs" }
+oa-sample-analyzer = { path = "../../sample_analyzer_rs" }
