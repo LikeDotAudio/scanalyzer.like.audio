@@ -255,6 +255,25 @@ export default function ScanalyzeTab({
     void startAnalysis(toProcess, absorbed);
   };
 
+  const [dbLoading, setDbLoading] = useState(false);
+  const loadFromDatabase = async () => {
+    setDbLoading(true);
+    try {
+      const res = await fetch('./api/get_peaks.php');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setAnalysisResult(data);
+        onViewCloud();
+      } else {
+        alert("Failed to load from database");
+      }
+    } catch (e) {
+      alert("Error connecting to database");
+    } finally {
+      setDbLoading(false);
+    }
+  };
+
   const handleFolderUpload = (e: React.ChangeEvent<HTMLInputElement>) => { void discover(e.target.files, 1); };
 
   // Rebuild the slim manifest at the folder root from the given (same-engine) record set,
@@ -645,6 +664,12 @@ export default function ScanalyzeTab({
             disabled={!wasmReady}
           />
         </label>
+
+        {!isTauri() && (
+          <button className="btn" style={{ cursor: 'pointer', padding: '0.6rem 1.5rem', marginTop: '1rem', background: 'rgba(255,255,255,0.05)', color: 'var(--accent-primary)' }} disabled={dbLoading} onClick={loadFromDatabase}>
+            {dbLoading ? 'Loading Database...' : '☁️ Load All Cloud Records from Database'}
+          </button>
+        )}
       </div>
 
       {analysisResult.length > 0 && (
