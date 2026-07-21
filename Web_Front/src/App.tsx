@@ -35,6 +35,20 @@ function tabFromHash(): string {
 function App() {
   const [analysisResult, setAnalysisResult] = useState<any[]>([])
   const [audioFiles, setAudioFiles] = useState<File[]>([])
+  // DB Live Status for Web deployment
+  const [dbStatus, setDbStatus] = useState<{ online: boolean; records: number; checked: boolean }>({ online: false, records: 0, checked: false });
+  useEffect(() => {
+    // We only expect this to work when deployed to a web server running PHP
+    if (!isTauri()) {
+      fetch('./api/db_status.php')
+        .then(res => res.json())
+        .then(data => {
+          setDbStatus({ online: data.status === 'online', records: data.records || 0, checked: true });
+        })
+        .catch(() => setDbStatus({ online: false, records: 0, checked: true }));
+    }
+  }, []);
+
   const [activeTab, setActiveTab] = useState(tabFromHash())
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -723,6 +737,13 @@ function App() {
       )}
       <audio ref={el => { footerAudioRef.current = el; setFooterAudioEl(el); }} style={{ display: 'none' }} loop={autoLoop && !digging}
         onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={handleFooterEnded} />
+
+      {/* Global DB Connection Status (Web Only) */}
+      {!isTauri() && dbStatus.checked && (
+        <div style={{ position: 'fixed', bottom: '12px', right: '16px', fontSize: '0.75rem', color: dbStatus.online ? 'var(--accent-primary)' : 'var(--accent-secondary)', zIndex: 9999, background: 'rgba(0,0,0,0.6)', padding: '6px 10px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
+          {dbStatus.online ? `🟢 DB Live: ${dbStatus.records.toLocaleString()} peaks` : '🔴 DB Offline'}
+        </div>
+      )}
     </div>
   )
 }
