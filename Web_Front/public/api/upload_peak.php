@@ -13,7 +13,7 @@ if (!$data || !is_array($data)) {
     exit(json_encode(['error' => 'Invalid JSON payload']));
 }
 
-$host = 'scanalyzer.like.audio';
+$host = 'localhost';
 $db   = 'tandapho_scanalyzer';
 $user = 'tandapho_scanalyzer';
 $pass = 'GITHUB_SECRET_DB_PASSWORD';

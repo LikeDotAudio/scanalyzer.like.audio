@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-$host = 'scanalyzer.like.audio';
+$host = 'localhost';
 $db   = 'tandapho_scanalyzer';
 $user = 'tandapho_scanalyzer';
 $pass = 'GITHUB_SECRET_DB_PASSWORD';
