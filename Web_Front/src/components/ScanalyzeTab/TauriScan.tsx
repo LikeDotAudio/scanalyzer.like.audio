@@ -52,6 +52,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
   // Paging the finished .PEAK back out of Rust.
   const [loaded, setLoaded] = useState<{ done: number; total: number } | null>(null);
   const [dbStatus, setDbStatus] = useState<{ success: boolean; count?: number } | null>(null);
+  const [recentDir, setRecentDir] = useState<string | null>(localStorage.getItem('scanalyzer_recent_dir'));
 
   const threadsTextRef = useRef<Record<number, HTMLSpanElement>>({});
   const threadsProgressRef = useRef<Record<number, HTMLDivElement>>({});
@@ -184,9 +185,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
   // straight from the picker into a full re-analysis of a library it may already have
   // done, with no way to see what was there or to say no. This is the same survey the
   // browser has always shown, and it costs a directory listing.
-  const handlePickAndSurvey = async (stride?: number) => {
-    const dir = await open({ directory: true, multiple: false });
-    if (!dir || typeof dir !== 'string') return;
+  const handleSurveyDir = async (dir: string, stride?: number) => {
     targetDirRef.current = dir;   // read by the finish handler; no re-subscribe
     // The folder you scan IS the folder the audio lives in. Recording it as the audio
     // root is what lets playback resolve a record's relative path.
@@ -194,9 +193,17 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
     setStrideRef(stride);
     try {
       setSurvey(await invoke<Survey>('survey_directory', { directory: dir }));
+      localStorage.setItem('scanalyzer_recent_dir', dir);
+      setRecentDir(dir);
     } catch (err) {
       alert(`Could not read that folder: ${err}`);
     }
+  };
+
+  const handlePickAndSurvey = async (stride?: number) => {
+    const dir = await open({ directory: true, multiple: false });
+    if (!dir || typeof dir !== 'string') return;
+    await handleSurveyDir(dir, stride);
   };
 
   const beginAnalysis = (force: boolean) => {
@@ -412,6 +419,13 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
       <button className="btn primary" style={{ cursor: 'pointer', padding: '1rem 2.5rem', fontSize: '1.2rem' }} onClick={() => handlePickAndSurvey()}>
         SCAN with RUST engine...
       </button>
+      
+      {recentDir && (
+        <button className="btn" style={{ cursor: 'pointer', padding: '0.6rem 2rem', fontSize: '1rem', background: 'rgba(255,255,255,0.05)' }} onClick={() => handleSurveyDir(recentDir)}>
+          Quick Scan: {recentDir.split(/[/\\]/).pop()}
+        </button>
+      )}
+
       <button className="btn" style={{ cursor: 'pointer', padding: '0.5rem 1.5rem', fontSize: '0.9rem', opacity: 0.8 }} onClick={() => handlePickAndSurvey(50)}>
         SAMPLE scan (1 of 50 files)
       </button>
