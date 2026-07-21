@@ -30,21 +30,17 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     
-    // Ensure table exists
-    $pdo->exec("CREATE TABLE IF NOT EXISTS peaks (
-        file_path VARCHAR(1024) PRIMARY KEY,
-        peak_data JSON NOT NULL
-    )");
-
-    $stmt = $pdo->prepare("INSERT INTO peaks (file_path, peak_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE peak_data = VALUES(peak_data)");
+    $stmt = $pdo->prepare("INSERT INTO peaks (path, name, folder, json_data) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data), name = VALUES(name), folder = VALUES(folder)");
     
     $pdo->beginTransaction();
     foreach ($data as $record) {
         if (!isset($record['metadata']['name'])) continue;
         
         $filePath = $record['metadata']['name'];
+        $name = basename($filePath);
+        $folder = dirname($filePath);
         $peakData = json_encode($record);
-        $stmt->execute([$filePath, $peakData]);
+        $stmt->execute([$filePath, $name, $folder, $peakData]);
     }
     $pdo->commit();
     
