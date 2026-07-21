@@ -568,7 +568,7 @@ export default function ScanalyzeTab({
               </div>
               <div style={stat}>
                 <span>Current engine</span>
-                <strong style={{ ...mono, color: 'var(--text-primary)' }}>{engine || '—'}</strong>
+                <strong style={{ ...mono, color: currentScan ? 'var(--accent-primary)' : 'var(--text-primary)' }}>{engine || '—'}</strong>
               </div>
             </>
           )}
