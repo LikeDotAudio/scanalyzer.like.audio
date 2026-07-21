@@ -350,12 +350,15 @@ export default function ScanalyzeTab({
     let nextFileIdx = 0;
     const dirHandle = await getDirHandle();
 
-    // wait for all workers to be ready
+    // wait for all workers to be ready (with a 10s timeout to prevent deadlocks)
     await Promise.all(workers.map(worker => new Promise(resolve => {
+        let done = false;
+        const complete = () => { if (!done) { done = true; resolve(true); } };
         worker.onmessage = (e) => {
-            if (e.data.type === 'ready') resolve(true);
+            if (e.data.type === 'ready' || e.data.type === 'init_error') complete();
         };
         worker.postMessage({ type: 'ping' });
+        setTimeout(complete, 10000); // safety timeout
     })));
 
     await new Promise<void>((resolve) => {
@@ -383,7 +386,8 @@ export default function ScanalyzeTab({
                 const folder = parts.length > 1 ? parts.slice(0, -1).join('/') : '';
                 
                 worker.onmessage = async (e) => {
-                    const { result, error } = e.data;
+                    const { result, error, type } = e.data;
+                    if (type === 'ready' || type === 'init_error') return; // ignore stray init messages
                     if (error) {
                         console.error(`Failed to analyze ${file.name}`, error);
                     } else if (result) {

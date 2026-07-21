@@ -14,6 +14,8 @@ let ready = false;
 initWasmBytes().then(() => {
     ready = true;
     postMessage({ type: 'ready', version: analyzer_version() });
+}).catch(err => {
+    postMessage({ type: 'init_error', error: String(err) });
 });
 
 onmessage = async (e) => {
