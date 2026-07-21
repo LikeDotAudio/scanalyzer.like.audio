@@ -18,28 +18,27 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     
-    // Check if table exists
-    $stmt = $pdo->query("SHOW TABLES LIKE 'audio_files'");
+    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 50000;
+    
+    // Check if the peaks table exists
+    $stmt = $pdo->query("SHOW TABLES LIKE 'peaks'");
     if (count($stmt->fetchAll()) == 0) {
         echo "[]";
         exit;
     }
     $stmt->closeCursor();
 
+    // Strip heavy arrays on the database side to keep the payload small
     $sql = "
-        SELECT 
-            a.filename, a.folder_path, a.analyzer_version,
-            m.length_seconds, m.sample_rate, m.bit_depth, m.channels, m.source_format, m.lossy_source, m.dc_offset,
-            c.ucs_category, c.ucs_subcategory, c.group_name, c.subgroup, c.timbre, c.acoustic_types, c.instrument_family,
-            s.root_mean_square_level, s.crest_factor, s.complexity, s.spectral_centroid_hz, s.spectral_rolloff_hz, s.spectral_flatness, s.harmonicity, s.total_harmonic_distortion, s.clipping_density,
-            mu.pitch_hz, mu.root_note_name, mu.root_midi_note, mu.root_cents_offset, mu.beats_per_minute,
-            e.transient_count, e.attack_seconds, e.decay_seconds, e.sustain_level, e.release_seconds, e.temporal_centroid, e.shape
-        FROM audio_files a
-        LEFT JOIN metadata m ON a.id = m.file_id
-        LEFT JOIN classification c ON a.id = c.file_id
-        LEFT JOIN spectral_features s ON a.id = s.file_id
-        LEFT JOIN musicality mu ON a.id = mu.file_id
-        LEFT JOIN envelope e ON a.id = e.file_id
+        SELECT JSON_REMOVE(json_data, 
+            '$.unsupervised.principal_components',
+            '$.spectral_features.mel_frequency_cepstral_coefficients',
+            '$.preview',
+            '$.regions'
+        ) as stripped_json
+        FROM peaks
+        WHERE json_data IS NOT NULL
+        LIMIT $limit
     ";
 
     $stmt = $pdo->query($sql);
@@ -47,70 +46,8 @@ try {
     echo "[";
     $first = true;
     while ($row = $stmt->fetch()) {
-        if (!$first) echo ",";
-        
-        $record = [
-            "metadata" => [
-                "name" => $row['folder_path'] . '/' . $row['filename'],
-                "analyzer_version" => $row['analyzer_version'],
-                "length_seconds" => (float)$row['length_seconds'],
-                "sample_rate" => (int)$row['sample_rate'],
-                "bit_depth" => (int)$row['bit_depth'],
-                "channels" => (int)$row['channels'],
-                "source_format" => $row['source_format'],
-                "lossy_source" => $row['lossy_source'] ? true : false,
-                "dc_offset" => (float)$row['dc_offset']
-            ],
-            "classification" => [
-                "group" => $row['group_name'],
-                "subgroup" => $row['subgroup'],
-                "timbre" => $row['timbre'],
-                "acoustic_types" => $row['acoustic_types'],
-                "instrument_family" => $row['instrument_family']
-            ],
-            "ucs" => [
-                "category" => $row['ucs_category'],
-                "subcategory" => $row['ucs_subcategory']
-            ],
-            "spectral_features" => [
-                "root_mean_square_level" => (float)$row['root_mean_square_level'],
-                "crest_factor" => (float)$row['crest_factor'],
-                "complexity" => (float)$row['complexity'],
-                "spectral_centroid_hz" => (float)$row['spectral_centroid_hz'],
-                "spectral_rolloff_hz" => (float)$row['spectral_rolloff_hz'],
-                "spectral_flatness" => (float)$row['spectral_flatness'],
-                "harmonicity" => (float)$row['harmonicity'],
-                "total_harmonic_distortion" => (float)$row['total_harmonic_distortion'],
-                "clipping_density" => (float)$row['clipping_density']
-            ],
-            "musicality" => [
-                "pitch_hz" => (float)$row['pitch_hz'],
-                "root_note_name" => $row['root_note_name'],
-                "root_midi_note" => (int)$row['root_midi_note'],
-                "root_cents_offset" => (float)$row['root_cents_offset'],
-                "beats_per_minute" => (float)$row['beats_per_minute']
-            ],
-            "envelope" => [
-                "transient_count" => (int)$row['transient_count'],
-                "attack_seconds" => (float)$row['attack_seconds'],
-                "envelope_decay_seconds" => (float)$row['decay_seconds'],
-                "envelope_sustain_level" => (float)$row['sustain_level'],
-                "envelope_release_seconds" => (float)$row['release_seconds'],
-                "envelope_temporal_centroid" => (float)$row['temporal_centroid'],
-                "envelope_shape" => $row['shape']
-            ],
-            "unsupervised" => [
-                "cluster" => -1,
-                "tsne_x" => 0,
-                "tsne_y" => 0,
-                "tsne_z" => 0,
-                "umap_x" => 0,
-                "umap_y" => 0,
-                "umap_z" => 0
-            ]
-        ];
-        
-        echo json_encode($record);
+        if (!$first) echo ",\n";
+        echo $row['stripped_json'];
         $first = false;
     }
     echo "]";
