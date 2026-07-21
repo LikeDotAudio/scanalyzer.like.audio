@@ -107,7 +107,7 @@ try {
     echo "]";
     
 } catch (\PDOException $e) {
-    http_response_code(500);
+    // http_response_code(500); // Commented out to prevent host 503 intercept
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
