@@ -60,6 +60,7 @@ export default function SampleFooter({
 
   // Brief "✓ Copied" flash after a successful copy.
   const [copied, setCopied] = useState(false);
+  const [showDbMenu, setShowDbMenu] = useState(false);
   const handleCopy = async () => {
     await onCopyData?.();
     setCopied(true);
@@ -108,8 +109,52 @@ export default function SampleFooter({
 
       {/* DB Status (Web only) */}
       {dbStatus?.checked && !narrow && (
-        <div style={{ fontSize: '0.75rem', color: dbStatus.online ? 'var(--accent-primary)' : 'var(--accent-secondary)', paddingLeft: '0.5rem', marginLeft: '0.5rem', borderLeft: '1px solid var(--border-color)' }}>
-          {dbStatus.online ? `🟢 ${dbStatus.records.toLocaleString()}` : '🔴 Offline'}
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--border-color)', margin: '0 0.5rem' }} />
+          <button 
+            onClick={() => setShowDbMenu(!showDbMenu)}
+            style={{ 
+              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+              fontSize: '0.75rem', 
+              color: dbStatus.online ? 'var(--accent-primary)' : 'var(--accent-secondary)' 
+            }}
+          >
+            {dbStatus.online ? `🟢 ${dbStatus.records.toLocaleString()}` : '🔴 Offline'}
+          </button>
+          
+          {showDbMenu && (
+            <div className="glass-panel" style={{
+              position: 'absolute', bottom: '100%', right: 0, marginBottom: '0.5rem',
+              width: '240px', padding: '1rem',
+              background: 'rgba(11,14,20,0.95)', border: '1px solid var(--border-color)', borderRadius: '6px',
+              boxShadow: '0 -8px 32px rgba(0,0,0,0.5)', zIndex: 110,
+              color: 'var(--text-primary)', textAlign: 'left', fontSize: '0.8rem',
+              lineHeight: '1.4'
+            }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem' }}>Database Status</h4>
+              {dbStatus.online ? (
+                <>
+                  <p style={{ margin: '0 0 0.5rem 0', color: 'var(--accent-primary)' }}>🟢 Online</p>
+                  <ul style={{ margin: 0, paddingLeft: '1.2rem', color: 'var(--text-secondary)' }}>
+                    <li>Cloud Search is working</li>
+                    <li>Global Stats are working</li>
+                    <li>Uploads are working</li>
+                  </ul>
+                </>
+              ) : (
+                <>
+                  <p style={{ margin: '0 0 0.5rem 0', color: 'var(--accent-secondary)' }}>🔴 Offline</p>
+                  <p style={{ margin: '0 0 0.5rem 0', color: 'var(--text-secondary)' }}>The remote database cannot be reached.</p>
+                  <ul style={{ margin: 0, paddingLeft: '1.2rem', color: 'var(--text-secondary)' }}>
+                    <li style={{ color: 'var(--accent-secondary)' }}>Cloud Search unavailable</li>
+                    <li style={{ color: 'var(--accent-secondary)' }}>Global Stats unavailable</li>
+                    <li>Local Analysis is working</li>
+                    <li>Local Extraction is working</li>
+                  </ul>
+                </>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
