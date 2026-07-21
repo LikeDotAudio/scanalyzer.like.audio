@@ -145,9 +145,7 @@ export default function CloudTab({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
-      <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}>
-        <button className="btn secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem', background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.2)' }} onClick={() => setShowGraphOptions(!showGraphOptions)}>⚙ Axes</button>
-      </div>
+
       <section className="main-view glass-panel" style={{ margin: 0, padding: 0, overflow: 'hidden', flex: 1, position: 'relative' }}>
         {glOk ? (
           <WebGLBoundary resetKey={data} fallback={(error, retry) => <CloudCrashed error={error} onRetry={retry} />}>
@@ -164,21 +162,6 @@ export default function CloudTab({
           <WebGLUnavailable />
         )}
 
-        {/* Axes Menu */}
-        {showGraphOptions && (
-          <div className="glass-panel" style={{
-            position: 'absolute', top: '40px', right: '10px', width: '260px', zIndex: 20, padding: '1rem',
-            background: 'rgba(11,14,20,0.95)', border: '1px solid var(--border-color)', borderRadius: '6px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
-          }}>
-            <GraphOptionsMenu
-              xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis}
-              zAxis={zAxis} setZAxis={setZAxis} sizeAxis={sizeAxis} setSizeAxis={setSizeAxis}
-              colorBy={colorBy} setColorBy={setColorBy} showAxes={showAxes} setShowAxes={setShowAxes}
-              audioFilesLength={isTauri() ? 1 : audioFiles.length}
-            />
-          </div>
-        )}
 
 
 
