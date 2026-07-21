@@ -329,11 +329,28 @@ export default function ScanalyzeTab({
     const flushDbBatch = async (records: any[]) => {
       // Only upload if running in browser (Tauri app handles its own DB sync in Rust)
       if (isTauri()) return;
+
+      // Phase 2: Frontend Payload Optimization (Strip arrays to reduce payload by 99%)
+      const stripArrays = (obj: any): any => {
+        if (Array.isArray(obj)) return undefined; // Destroy all arrays (waveforms, MFCCs, etc)
+        if (typeof obj === 'object' && obj !== null) {
+          const stripped: any = {};
+          for (const key in obj) {
+            const val = stripArrays(obj[key]);
+            if (val !== undefined) stripped[key] = val;
+          }
+          return stripped;
+        }
+        return obj;
+      };
+
+      const lightweightRecords = records.map(stripArrays);
+
       try {
         await fetch('./api/upload_peak.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(records)
+          body: JSON.stringify(lightweightRecords)
         });
       } catch (e) {
         console.warn("DB upload failed for batch", e);
