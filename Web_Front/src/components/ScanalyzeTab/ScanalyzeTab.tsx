@@ -259,7 +259,7 @@ export default function ScanalyzeTab({
   const loadFromDatabase = async () => {
     setDbLoading(true);
     try {
-      const res = await fetch('./api/get_peaks.php');
+      const res = await fetch('./api/get_peaks.php?t=' + Date.now());
       
       // Attempt to parse the response text first so we can safely log it on failure
       const text = await res.text();
