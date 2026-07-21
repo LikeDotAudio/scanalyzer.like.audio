@@ -15,13 +15,11 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     
-    // Find all rows where json_data is not valid JSON
-    $stmt = $pdo->query("SELECT name, LENGTH(json_data) as len, RIGHT(json_data, 20) as tail FROM peaks WHERE json_data NOT LIKE '%}'");
-    $rows = $stmt->fetchAll();
-    echo "Rows not ending in '}': " . count($rows) . "<br>";
-    print_r($rows);
+    // Check table sizes
+    $stmt = $pdo->query("SELECT COUNT(*) as c FROM audio_files");
+    print_r($stmt->fetch());
     
-    $stmt = $pdo->query("SELECT COUNT(*) as c, MAX(LENGTH(json_data)) as m FROM peaks");
+    $stmt = $pdo->query("SELECT COUNT(*) as c FROM metadata");
     print_r($stmt->fetch());
     
 } catch (\PDOException $e) {
