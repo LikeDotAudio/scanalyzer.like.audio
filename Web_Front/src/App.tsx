@@ -709,33 +709,31 @@ function App() {
       </main>
 
       {/* Global footer */}
-      {analysisResult.length > 0 && (
-        <SampleFooter
-          item={footerItem}
-          favorite={footerItem ? favorites.has(favoriteKeyOf(footerItem)) : false}
-          onToggleFavorite={() => { if (footerItem) toggleFavorite(footerItem); }}
-          playing={tabOwnsAudio ? tabPlaying : footerPlaying}
-          digging={tabOwnsAudio ? tabDigging : digging}
-          autoPlay={autoPlay}
-          autoLoop={autoLoop}
-          current={activeTab as FooterTab}
-          onPlay={footerPlay}
-          onDig={() => { if (tabOwnsAudio && tabTransportRef.current) tabTransportRef.current.dig(); else setDigging(!digging); }}
-          onToggleAutoPlay={setAutoPlay}
-          onToggleAutoLoop={setAutoLoop}
-          onDownload={footerDownload}
-          onCopyData={() => {
-            if (footerItem) {
-              navigator.clipboard.writeText(JSON.stringify(footerItem, null, 2));
-            }
-          }}
-          onPush={footerPush}
-          layersMenu={(activeTab === 'examiner' || activeTab === 'favorites')
-            ? <LayersMenu stereo={Number(footerItem?.metadata?.channels) >= 2} />
-            : undefined}
-          dbStatus={!isTauri() ? dbStatus : null}
-        />
-      )}
+      <SampleFooter
+        item={footerItem}
+        favorite={footerItem ? favorites.has(favoriteKeyOf(footerItem)) : false}
+        onToggleFavorite={() => { if (footerItem) toggleFavorite(footerItem); }}
+        playing={tabOwnsAudio ? tabPlaying : footerPlaying}
+        digging={tabOwnsAudio ? tabDigging : digging}
+        autoPlay={autoPlay}
+        autoLoop={autoLoop}
+        current={activeTab as FooterTab}
+        onPlay={footerPlay}
+        onDig={() => { if (tabOwnsAudio && tabTransportRef.current) tabTransportRef.current.dig(); else setDigging(!digging); }}
+        onToggleAutoPlay={setAutoPlay}
+        onToggleAutoLoop={setAutoLoop}
+        onDownload={footerDownload}
+        onCopyData={() => {
+          if (footerItem) {
+            navigator.clipboard.writeText(JSON.stringify(footerItem, null, 2));
+          }
+        }}
+        onPush={footerPush}
+        layersMenu={(activeTab === 'examiner' || activeTab === 'favorites')
+          ? <LayersMenu stereo={Number(footerItem?.metadata?.channels) >= 2} />
+          : undefined}
+        dbStatus={!isTauri() ? dbStatus : null}
+      />
       <audio ref={el => { footerAudioRef.current = el; setFooterAudioEl(el); }} style={{ display: 'none' }} loop={autoLoop && !digging}
         onPlay={() => setFooterPlaying(true)} onPause={() => setFooterPlaying(false)} onEnded={handleFooterEnded} />
     </div>
