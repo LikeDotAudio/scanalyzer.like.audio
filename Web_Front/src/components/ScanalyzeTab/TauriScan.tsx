@@ -51,6 +51,7 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
   const [version, setVersion] = useState('');
   // Paging the finished .PEAK back out of Rust.
   const [loaded, setLoaded] = useState<{ done: number; total: number } | null>(null);
+  const [dbStatus, setDbStatus] = useState<{ success: boolean; count?: number } | null>(null);
 
   const threadsTextRef = useRef<Record<number, HTMLSpanElement>>({});
   const threadsProgressRef = useRef<Record<number, HTMLDivElement>>({});
@@ -96,6 +97,13 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
                 setTotal(msg.total || 0);
                 setWorkerCount(msg.workers || 0);
                 setStartTime(Date.now());
+                setDbStatus(null);
+            } else if (msg.type === 'db_export') {
+                if (msg.status === 'success') {
+                    setDbStatus({ success: true, count: msg.count });
+                } else {
+                    setDbStatus({ success: false });
+                }
             } else if (msg.type === 'thread_start') {
                 const textEl = threadsTextRef.current[msg.thread_id];
                 const progEl = threadsProgressRef.current[msg.thread_id];
@@ -412,6 +420,12 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
         <div style={{ marginTop: '2.5rem', textAlign: 'center', width: '100%', maxWidth: '1200px' }}>
           <h3 style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem' }}>Analysis Complete</h3>
           <p className="text-secondary">{analysisResult.length} files successfully processed.</p>
+          
+          {dbStatus && (
+             <div style={{ marginTop: '0.75rem', padding: '0.5rem', borderRadius: '4px', background: dbStatus.success ? 'rgba(0,200,100,0.1)' : 'rgba(255,50,50,0.1)', color: dbStatus.success ? 'var(--accent-primary)' : 'var(--accent-secondary)' }}>
+                 {dbStatus.success ? `✅ Database sync successful (${dbStatus.count} records)` : '⚠️ Database sync failed'}
+             </div>
+          )}
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
             <button className="btn primary" onClick={onViewCloud}>
               View 3D Cloud

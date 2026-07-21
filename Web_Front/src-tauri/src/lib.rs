@@ -17,7 +17,7 @@ fn slim_progress(line: &str) -> Option<String> {
     let v: serde_json::Value = serde_json::from_str(line).ok()?;
     let o = v.as_object()?;
     let mut out = serde_json::Map::new();
-    for key in ["type", "done", "total", "thread_id", "workers", "file", "name", "count"] {
+    for key in ["type", "done", "total", "thread_id", "workers", "file", "name", "count", "status"] {
         if let Some(val) = o.get(key) {
             out.insert(key.to_string(), val.clone());
         }
