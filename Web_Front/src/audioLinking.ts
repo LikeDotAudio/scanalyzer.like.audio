@@ -215,14 +215,14 @@ const isAbsolutePath = (p: string) => p.startsWith('/') || /^[A-Za-z]:[\\/]/.tes
  *  `files` as blobs) resolves audio; the desktop build also uses it so those blobs play
  *  without going through the filesystem asset protocol. */
 export function findAudioFile(files: File[], item: any): File | undefined {
-  const wantPath = String(item?.metadata?.path || '').replace(/^\.?\/+/, '');
+  const wantPath = String(item?.metadata?.path || '').replace(/\\/g, '/').replace(/^\.?\/+/, '');
   const wantName = String(item?.metadata?.name || '').toLowerCase();
 
   let found: File | undefined;
   if (wantPath) {
     found = files.find(f => {
       const rp = relPathOf(f);
-      return rp && (rp === wantPath || rp.endsWith('/' + wantPath) || rp.endsWith(wantPath));
+      return rp && (rp === wantPath || rp.endsWith('/' + wantPath) || rp.endsWith(wantPath) || wantPath.endsWith('/' + rp) || wantPath.endsWith(rp));
     });
   }
   if (!found) {
