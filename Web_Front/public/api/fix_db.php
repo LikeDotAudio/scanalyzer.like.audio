@@ -19,8 +19,8 @@ try {
     $pdo->exec("ALTER TABLE peaks MODIFY COLUMN json_data MEDIUMTEXT");
     echo "Column json_data upgraded to MEDIUMTEXT.<br>";
     
-    // 2. Delete any corrupted/truncated rows so they don't break the JSON stream
-    $deleted = $pdo->exec("DELETE FROM peaks WHERE json_data NOT LIKE '%}'");
+    // 2. Delete any corrupted/truncated rows using MySQL's native JSON validator
+    $deleted = $pdo->exec("DELETE FROM peaks WHERE NOT JSON_VALID(json_data)");
     echo "Deleted $deleted corrupted rows.<br>";
     
     echo "Database fix applied successfully!";
