@@ -53,13 +53,13 @@ try {
             "metadata" => [
                 "name" => $row['folder_path'] . '/' . $row['filename'],
                 "analyzer_version" => $row['analyzer_version'],
-                "length_seconds" => $row['length_seconds'],
-                "sample_rate" => $row['sample_rate'],
-                "bit_depth" => $row['bit_depth'],
-                "channels" => $row['channels'],
+                "length_seconds" => (float)$row['length_seconds'],
+                "sample_rate" => (int)$row['sample_rate'],
+                "bit_depth" => (int)$row['bit_depth'],
+                "channels" => (int)$row['channels'],
                 "source_format" => $row['source_format'],
                 "lossy_source" => $row['lossy_source'] ? true : false,
-                "dc_offset" => $row['dc_offset']
+                "dc_offset" => (float)$row['dc_offset']
             ],
             "classification" => [
                 "group" => $row['group_name'],
@@ -73,30 +73,30 @@ try {
                 "subcategory" => $row['ucs_subcategory']
             ],
             "spectral_features" => [
-                "root_mean_square_level" => $row['root_mean_square_level'],
-                "crest_factor" => $row['crest_factor'],
-                "complexity" => $row['complexity'],
-                "spectral_centroid_hz" => $row['spectral_centroid_hz'],
-                "spectral_rolloff_hz" => $row['spectral_rolloff_hz'],
-                "spectral_flatness" => $row['spectral_flatness'],
-                "harmonicity" => $row['harmonicity'],
-                "total_harmonic_distortion" => $row['total_harmonic_distortion'],
-                "clipping_density" => $row['clipping_density']
+                "root_mean_square_level" => (float)$row['root_mean_square_level'],
+                "crest_factor" => (float)$row['crest_factor'],
+                "complexity" => (float)$row['complexity'],
+                "spectral_centroid_hz" => (float)$row['spectral_centroid_hz'],
+                "spectral_rolloff_hz" => (float)$row['spectral_rolloff_hz'],
+                "spectral_flatness" => (float)$row['spectral_flatness'],
+                "harmonicity" => (float)$row['harmonicity'],
+                "total_harmonic_distortion" => (float)$row['total_harmonic_distortion'],
+                "clipping_density" => (float)$row['clipping_density']
             ],
             "musicality" => [
-                "pitch_hz" => $row['pitch_hz'],
+                "pitch_hz" => (float)$row['pitch_hz'],
                 "root_note_name" => $row['root_note_name'],
-                "root_midi_note" => $row['root_midi_note'],
-                "root_cents_offset" => $row['root_cents_offset'],
-                "beats_per_minute" => $row['beats_per_minute']
+                "root_midi_note" => (int)$row['root_midi_note'],
+                "root_cents_offset" => (float)$row['root_cents_offset'],
+                "beats_per_minute" => (float)$row['beats_per_minute']
             ],
             "envelope" => [
-                "transient_count" => $row['transient_count'],
-                "attack_seconds" => $row['attack_seconds'],
-                "envelope_decay_seconds" => $row['decay_seconds'],
-                "envelope_sustain_level" => $row['sustain_level'],
-                "envelope_release_seconds" => $row['release_seconds'],
-                "envelope_temporal_centroid" => $row['temporal_centroid'],
+                "transient_count" => (int)$row['transient_count'],
+                "attack_seconds" => (float)$row['attack_seconds'],
+                "envelope_decay_seconds" => (float)$row['decay_seconds'],
+                "envelope_sustain_level" => (float)$row['sustain_level'],
+                "envelope_release_seconds" => (float)$row['release_seconds'],
+                "envelope_temporal_centroid" => (float)$row['temporal_centroid'],
                 "envelope_shape" => $row['shape']
             ]
         ];
