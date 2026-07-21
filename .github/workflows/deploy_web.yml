@@ -47,17 +47,18 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           python3 -c "
-          import os, sys
+          import os, sys, glob
           db_pass = os.environ.get('DB_PASSWORD', '')
           if not db_pass:
               print('ERROR: DB_PASSWORD secret is empty or missing! Make sure it is a Repository Secret.', file=sys.stderr)
               sys.exit(1)
-          for filename in ['Web_Front/public/api/get_peaks.php', 'Web_Front/public/api/upload_peak.php', 'Web_Front/public/api/fix_db.php', 'Web_Front/public/api/db_status.php', 'Web_Front/public/api/debug_db.php', 'Web_Front/public/api/test_last.php', 'Web_Front/public/api/init_db.php']:
+          for filename in glob.glob('Web_Front/public/api/*.php'):
               with open(filename, 'r') as f:
                   content = f.read()
-              content = content.replace('GITHUB_SECRET_DB_PASSWORD', db_pass)
-              with open(filename, 'w') as f:
-                  f.write(content)
+              if 'GITHUB_SECRET_DB_PASSWORD' in content:
+                  content = content.replace('GITHUB_SECRET_DB_PASSWORD', db_pass)
+                  with open(filename, 'w') as f:
+                      f.write(content)
           "
 
       - name: 🔨 Build Vite Project
