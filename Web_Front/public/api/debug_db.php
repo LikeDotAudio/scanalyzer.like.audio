@@ -21,6 +21,19 @@ try {
     
     $stmt = $pdo->query("SELECT COUNT(*) as c FROM metadata");
     print_r($stmt->fetch());
+
+    $sql = "
+        SELECT a.filename, m.length_seconds, c.ucs_category, s.root_mean_square_level, mu.pitch_hz, e.transient_count
+        FROM audio_files a
+        LEFT JOIN metadata m ON a.id = m.file_id
+        LEFT JOIN classification c ON a.id = c.file_id
+        LEFT JOIN spectral_features s ON a.id = s.file_id
+        LEFT JOIN musicality mu ON a.id = mu.file_id
+        LEFT JOIN envelope e ON a.id = e.file_id
+        LIMIT 1
+    ";
+    $stmt = $pdo->query($sql);
+    print_r($stmt->fetch());
     
 } catch (\PDOException $e) {
     echo "Error: " . $e->getMessage();
