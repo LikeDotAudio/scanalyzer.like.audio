@@ -17,7 +17,7 @@ if (!$data || !is_array($data)) {
 $host = 'scanalyzer.like.audio';
 $db   = 'tandapho_scanalyzer';
 $user = 'tandapho_scanalyzer';
-$pass = 'z7hGhX)x)?UXtuo]';
+$pass = 'GITHUB_SECRET_DB_PASSWORD';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

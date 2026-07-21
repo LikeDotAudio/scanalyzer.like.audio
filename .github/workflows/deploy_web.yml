@@ -42,6 +42,20 @@ jobs:
         working-directory: ./Web_Front
         run: npm install
 
+      - name: 🔐 Inject Database Secrets
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          python3 -c "
+          import os
+          for filename in ['Web_Front/public/api/get_peaks.php', 'Web_Front/public/api/upload_peak.php']:
+              with open(filename, 'r') as f:
+                  content = f.read()
+              content = content.replace('GITHUB_SECRET_DB_PASSWORD', os.environ['DB_PASSWORD'])
+              with open(filename, 'w') as f:
+                  f.write(content)
+          "
+
       - name: 🔨 Build Vite Project
         working-directory: ./Web_Front
         run: npm run build
