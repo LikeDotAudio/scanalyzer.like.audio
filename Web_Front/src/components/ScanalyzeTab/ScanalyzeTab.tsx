@@ -355,6 +355,7 @@ export default function ScanalyzeTab({
         worker.onmessage = (e) => {
             if (e.data.type === 'ready') resolve(true);
         };
+        worker.postMessage({ type: 'ping' });
     })));
 
     await new Promise<void>((resolve) => {

@@ -17,6 +17,10 @@ initWasmBytes().then(() => {
 });
 
 onmessage = async (e) => {
+    if (e.data.type === 'ping') {
+        if (ready) postMessage({ type: 'ready' });
+        return;
+    }
     const { id, buffer, name, folder } = e.data;
     if (!ready) {
         postMessage({ type: 'result', id, error: 'WASM not ready' });
