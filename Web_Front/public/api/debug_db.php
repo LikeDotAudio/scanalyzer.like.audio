@@ -23,7 +23,13 @@ try {
     print_r($stmt->fetch());
 
     $sql = "
-        SELECT a.filename, m.length_seconds, c.ucs_category, s.root_mean_square_level, mu.pitch_hz, e.transient_count
+        SELECT 
+            a.filename, a.folder_path, a.analyzer_version,
+            m.length_seconds, m.sample_rate, m.bit_depth, m.channels, m.source_format, m.lossy_source, m.dc_offset,
+            c.ucs_category, c.ucs_subcategory, c.group_name, c.subgroup, c.timbre, c.acoustic_types, c.instrument_family,
+            s.root_mean_square_level, s.crest_factor, s.complexity, s.spectral_centroid_hz, s.spectral_rolloff_hz, s.spectral_flatness, s.harmonicity, s.total_harmonic_distortion, s.clipping_density,
+            mu.pitch_hz, mu.root_note_name, mu.root_midi_note, mu.root_cents_offset, mu.beats_per_minute,
+            e.transient_count, e.attack_seconds, e.decay_seconds, e.sustain_level, e.release_seconds, e.temporal_centroid, e.shape
         FROM audio_files a
         LEFT JOIN metadata m ON a.id = m.file_id
         LEFT JOIN classification c ON a.id = c.file_id
