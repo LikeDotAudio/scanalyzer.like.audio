@@ -17,9 +17,10 @@ $options = [
 
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
-    // test connection
-    $stmt = $pdo->query("SELECT 1");
-    echo json_encode(['status' => 'online']);
+    // test connection and get record count
+    $stmt = $pdo->query("SELECT COUNT(*) FROM audio_files");
+    $records = (int)$stmt->fetchColumn();
+    echo json_encode(['status' => 'online', 'records' => $records]);
 } catch (\PDOException $e) {
     http_response_code(500);
     echo json_encode(['status' => 'offline', 'error' => $e->getMessage()]);
