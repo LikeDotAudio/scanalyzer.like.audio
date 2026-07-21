@@ -51,6 +51,7 @@ pub mod decode;
 pub mod discover;
 #[path = "Scananalyzers/Spectral/distortion.rs"]
 pub mod distortion;
+#[cfg(not(target_arch = "wasm32"))]
 #[path = "Encoders/db.rs"]
 pub mod db;
 #[path = "Encoders/emit.rs"]

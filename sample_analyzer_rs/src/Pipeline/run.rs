@@ -9,6 +9,7 @@ use rayon::prelude::*;
 use crate::analyze::analyze;
 use crate::args::Config;
 use crate::cluster::cluster_samples;
+#[cfg(not(target_arch = "wasm32"))]
 use crate::db;
 use crate::discover::discover_audio;
 use crate::emit::emit;
@@ -19,6 +20,7 @@ use crate::stream::{emit_result, emit_skip};
 use crate::version::ANALYZER_VERSION;
 
 pub fn run(cfg: &Config) {
+    #[cfg(not(target_arch = "wasm32"))]
     let db_pool = cfg.db_url.as_ref().and_then(|url| {
         db::get_pool(url).map_err(|e| eprintln!("DB Connect Error: {}", e)).ok().and_then(|pool| {
             if db::init_db(&pool).is_ok() {
@@ -146,6 +148,7 @@ pub fn run(cfg: &Config) {
         }
     }
 
+    #[cfg(not(target_arch = "wasm32"))]
     if let Some(pool) = &db_pool {
         if let Err(e) = db::write_peaks(pool, &results) {
             eprintln!("Warning: DB write failed: {}", e);
