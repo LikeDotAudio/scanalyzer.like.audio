@@ -60,11 +60,16 @@ use crate::peak::Regions;
 /// the literature sit comfortably inside this.
 const MAX_SLICE_TYPES: usize = 12;
 
-/// The dendrogram is cut at the largest RELATIVE jump in merge height (the
-/// classic elbow). If even the largest jump is below this ratio there is no
-/// real gap in the linkage — the slices form one continuum, so the file has a
-/// single type rather than an arbitrary split.
-const MINIMUM_MERGE_JUMP_RATIO: f64 = 1.6;
+/// Mean silhouette a candidate split must reach before the file is credited with
+/// more than one syllable type. 0.5 is Kaufman & Rousseeuw's "reasonable
+/// structure" line, and the bar exists because the alternative — cutting the
+/// dendrogram at its biggest jump and taking whatever falls out — invents a
+/// repertoire out of nothing: standardizing within one file rescales even
+/// microscopic differences to unit variance, so six recordings of the SAME
+/// syllable produce a tidy-looking five-way split. Requiring the clusters to be
+/// genuinely tighter than the gaps between them is what makes "this file has one
+/// word" an available answer.
+const MINIMUM_SILHOUETTE: f64 = 0.5;
 
 /// A gap whose level sits within this many dB of the preceding slice's peak was
 /// never really a silence — the gate dipped, the sound did not stop.
@@ -76,9 +81,17 @@ const BOUND_WITHIN_DECIBELS: f64 = 12.0;
 /// while the same slope over two seconds is a plain audible fade.
 const JUNCTION_CHANGE_DECIBELS: f64 = 3.0;
 
-/// How far above the file's own noise floor a flat gap must sit before it is a
-/// continuous background bed rather than silence.
-const NOISE_FLOOR_MARGIN_DECIBELS: f64 = 6.0;
+/// Below this level, measured at the END of the gap, nothing has survived to
+/// meet the next slice and the junction is a silence whatever shape the residue
+/// had on the way down. Absolute (dBFS), not relative to the file's own floor,
+/// because in a digitally-silent edit that floor is zero and *everything* would
+/// read as "above" it. −60 dBFS puts editing dither and quantization residue on
+/// the silent side and a real room tone on the sounding side.
+const AUDIBLE_AT_ONSET_DECIBELS_FULL_SCALE: f64 = -60.0;
+
+/// The share of the gap, at its end, read as "what is still present when the
+/// next slice begins".
+const ONSET_APPROACH_FRACTION: f64 = 0.25;
 
 /// Longest phrase the motif search will look for, in slices.
 const MAXIMUM_MOTIF_LENGTH: usize = 16;
@@ -631,15 +644,17 @@ fn slice_vector(region: &crate::peak::Region) -> Option<Vec<f64>> {
 
 // ---------------------------------------------------------------- clustering
 
-/// Complete-linkage agglomerative clustering with an automatic cut.
+/// Complete-linkage agglomerative clustering, cut where the split is best
+/// SUPPORTED rather than merely largest.
 ///
 /// K-means is the wrong tool here: it needs `k` up front, and the repertoire
 /// size is precisely the unknown. Agglomerative merging builds the whole
-/// dendrogram instead, and the cut is taken at the largest RELATIVE jump in
-/// merge height — the point where joining two more groups suddenly costs much
-/// more than every merge before it. If no jump is large enough
-/// (`MINIMUM_MERGE_JUMP_RATIO`), the slices are a continuum and everything is
-/// one type; that outcome is a real answer, not a failure.
+/// dendrogram instead, and every level of it is then scored by mean silhouette —
+/// how much tighter each cluster is than its distance to the nearest other one.
+/// The best-scoring level wins, and only if it clears `MINIMUM_SILHOUETTE`;
+/// otherwise the slices are one continuum and the file has a single type. That
+/// outcome is a real answer, not a failure, and it has to be reachable — a
+/// repeated call sung six times is one word, not six.
 ///
 /// Complete linkage (cluster distance = the FARTHEST pair) rather than single
 /// linkage, because single linkage chains: one intermediate slice would fuse two
@@ -651,7 +666,8 @@ fn cluster_slices(x: &[Vec<f64>]) -> Vec<usize> {
     if n < 2 {
         return vec![0; n];
     }
-    // Pairwise distance matrix; the merge loop updates it in place.
+    // Pairwise distances. `d` is consumed by the merge loop (complete linkage
+    // rewrites it in place); `d0` is kept pristine for scoring the cuts.
     let mut d = vec![vec![0.0f64; n]; n];
     for i in 0..n {
         for j in (i + 1)..n {
@@ -665,27 +681,29 @@ fn cluster_slices(x: &[Vec<f64>]) -> Vec<usize> {
             d[j][i] = dist;
         }
     }
+    let d0 = d.clone();
 
     let mut active: Vec<bool> = vec![true; n];
     let mut members: Vec<Vec<usize>> = (0..n).map(|i| vec![i]).collect();
-    // Each step records (height, the partition BEFORE the merge collapsed it).
-    let mut merges: Vec<(f64, Vec<usize>)> = Vec::with_capacity(n - 1);
+    // One entry per level of the dendrogram: the partition standing BEFORE that
+    // step's merge collapsed it. `levels[m]` therefore holds `n - m` clusters.
+    let mut levels: Vec<Vec<usize>> = Vec::with_capacity(n - 1);
     let mut assignment: Vec<usize> = (0..n).collect();
 
     for _ in 0..(n - 1) {
-        let (mut best, mut pair) = (f64::INFINITY, (0usize, 0usize));
+        let (mut nearest, mut pair) = (f64::INFINITY, (0usize, 0usize));
         for i in 0..n {
             if !active[i] {
                 continue;
             }
             for j in (i + 1)..n {
-                if active[j] && d[i][j] < best {
-                    best = d[i][j];
+                if active[j] && d[i][j] < nearest {
+                    nearest = d[i][j];
                     pair = (i, j);
                 }
             }
         }
-        merges.push((best, assignment.clone()));
+        levels.push(assignment.clone());
 
         let (i, j) = pair;
         let absorbed = std::mem::take(&mut members[j]);
@@ -703,36 +721,68 @@ fn cluster_slices(x: &[Vec<f64>]) -> Vec<usize> {
         }
     }
 
-    // Walk the merge heights and cut at the biggest relative jump. Merge m
-    // leaves `n - m` clusters, so only consider cuts that keep the repertoire
-    // inside MAX_SLICE_TYPES and leave at least two clusters.
-    let floor = merges
-        .iter()
-        .map(|(h, _)| *h)
-        .fold(0.0f64, f64::max)
-        * 1e-6;
-    let mut best_ratio = 0.0;
+    // Score every level and keep the best-supported one, provided it clears the
+    // bar. Nothing clearing it means the slices are one continuum: one type.
+    let mut best_score = f64::NEG_INFINITY;
     let mut cut: Option<usize> = None;
-    for m in 0..merges.len() - 1 {
-        let clusters_after = n - (m + 1);
-        if clusters_after < 2 || clusters_after > MAX_SLICE_TYPES {
+    for (m, partition) in levels.iter().enumerate() {
+        let clusters = n - m;
+        if !(2..=MAX_SLICE_TYPES).contains(&clusters) {
             continue;
         }
-        let here = merges[m].0.max(floor).max(1e-9);
-        let next = merges[m + 1].0;
-        let ratio = next / here;
-        if ratio > best_ratio {
-            best_ratio = ratio;
-            // The partition to keep is the one standing AFTER this merge, i.e.
-            // the snapshot recorded at the following step.
-            cut = Some(m + 1);
+        let score = silhouette(&compact(partition), &d0);
+        if score > best_score {
+            best_score = score;
+            cut = Some(m);
         }
     }
 
     match cut {
-        Some(m) if best_ratio >= MINIMUM_MERGE_JUMP_RATIO => compact(&merges[m].1),
+        Some(m) if best_score >= MINIMUM_SILHOUETTE => compact(&levels[m]),
         _ => vec![0; n],
     }
+}
+
+/// Mean silhouette of a partition: for each slice, how much closer it sits to
+/// its own cluster than to the nearest other one, on a −1..1 scale. Singleton
+/// clusters score 0 by convention — a cluster of one has no internal scatter to
+/// compare against, and scoring it 1 would reward shattering the set into
+/// one-word-per-slice, which is the exact failure this bar exists to catch.
+fn silhouette(assignment: &[usize], d: &[Vec<f64>]) -> f64 {
+    let n = assignment.len();
+    let k = assignment.iter().copied().max().map_or(0, |m| m + 1);
+    if k < 2 || n < 2 {
+        return -1.0;
+    }
+    let mut sizes = vec![0usize; k];
+    for &c in assignment {
+        sizes[c] += 1;
+    }
+
+    let mut total = 0.0;
+    for i in 0..n {
+        // Total distance from i to each cluster, its own included.
+        let mut sums = vec![0.0f64; k];
+        for j in 0..n {
+            if i != j {
+                sums[assignment[j]] += d[i][j];
+            }
+        }
+        let own = assignment[i];
+        if sizes[own] < 2 {
+            continue; // singleton: scores 0
+        }
+        let a = sums[own] / (sizes[own] - 1) as f64;
+        let b = (0..k)
+            .filter(|&c| c != own && sizes[c] > 0)
+            .map(|c| sums[c] / sizes[c] as f64)
+            .fold(f64::INFINITY, f64::min);
+        let scale = a.max(b);
+        if b.is_finite() && scale > 1e-12 {
+            total += (b - a) / scale;
+        }
+    }
+    total / n as f64
 }
 
 /// Renumber arbitrary group ids to a dense 0..k range.
@@ -904,21 +954,37 @@ fn measure_junction(
     // Spectrum of the residue: is the quiet bright hiss, low rumble, or a tone?
     let (centroid, flatness) = gap_spectrum(frames, gap_start, gap_end, sr_f, n_fft, hop);
 
-    // Classify. Order matters: "the sound never stopped" outranks any reading of
-    // the shape, and a measurable rise or fall outranks the flat-gap split.
+    // What is still sounding as the next slice arrives. This, not the gap's
+    // average, is what decides whether the two slices are joined by anything: a
+    // release that has fallen to nothing long before the next onset binds them
+    // no more tightly than a hard edit does, and treating it as a tail would
+    // stamp "Resonant Tail" on every ordinary one-shot library.
+    let approach_level = if window.is_empty() {
+        0.0
+    } else {
+        let take = ((window.len() as f64 * ONSET_APPROACH_FRACTION).ceil() as usize).max(1);
+        let approach = &window[window.len() - take.min(window.len())..];
+        (approach.iter().map(|v| v * v).sum::<f64>() / approach.len() as f64).sqrt()
+    };
+    let sounding_at_onset =
+        20.0 * approach_level.max(1e-9).log10() >= AUDIBLE_AT_ONSET_DECIBELS_FULL_SCALE;
+
+    // Classify. Order matters: "the sound never stopped" outranks everything,
+    // then "nothing reaches the next onset", and only what is left gets read for
+    // its shape.
     let change_decibels = slope * gap_seconds;
     let junction_class = if window.is_empty() {
         SILENCE
     } else if below_previous_peak > -BOUND_WITHIN_DECIBELS {
         CONTINUOUS
+    } else if !sounding_at_onset {
+        SILENCE
     } else if change_decibels <= -JUNCTION_CHANGE_DECIBELS {
         RESONANT_TAIL
     } else if change_decibels >= JUNCTION_CHANGE_DECIBELS {
         BREATH
-    } else if above_noise_floor >= NOISE_FLOOR_MARGIN_DECIBELS {
-        NOISE_BED
     } else {
-        SILENCE
+        NOISE_BED
     };
 
     Junction {
@@ -937,8 +1003,10 @@ fn measure_junction(
         gap_spectral_flatness: flatness,
         junction_class: junction_class.to_string(),
         transition_probability,
+        // `max(0.0)` rather than plain negation: a certain transition has
+        // probability 1, and −log2(1) is −0.0, which serializes as "-0.0".
         surprisal_bits: if transition_probability > 0.0 {
-            -transition_probability.log2()
+            (-transition_probability.log2()).max(0.0)
         } else {
             0.0
         },
