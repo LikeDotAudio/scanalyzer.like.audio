@@ -133,13 +133,18 @@ function Wireframe({
 
 /** A marker + label at each face centre, coloured by response family. */
 function FaceMarkers({
-  solid, hovered, onHover, visibleFaces,
+  solid, hovered, onHover, visibleFaces, intensity,
 }: {
   solid: ReturnType<typeof truncatedIcosahedron>;
   hovered: number | null;
   onHover: (i: number | null) => void;
   visibleFaces: Set<number>;
+  /** 0..2. Below 1 the category patches fade toward invisible; above 1 they
+   *  saturate toward opaque, so the ball can read as a coloured solid when you
+   *  want the categories loud and as bare wireframe when you want the samples. */
+  intensity: number;
 }) {
+  if (intensity <= 0) return null;
   return (
     <group>
       {solid.faces.map((f) => {
@@ -171,7 +176,7 @@ function FaceMarkers({
               <meshBasicMaterial
                 color={FAMILY_COLOR[r.family]}
                 transparent
-                opacity={isHovered ? 0.55 : 0.22}
+                opacity={Math.min(1, (isHovered ? 0.55 : 0.22) * intensity)}
                 side={THREE.DoubleSide}
                 depthWrite={false}
                 toneMapped={false}
@@ -361,6 +366,7 @@ export default function FaceBall(props: Props) {
         hovered={hovered}
         onHover={setHovered}
         visibleFaces={props.visibleFaces}
+        intensity={props.categoryIntensity}
       />
       <Samples {...props} />
       <OrbitControls enableDamping dampingFactor={0.08} />
