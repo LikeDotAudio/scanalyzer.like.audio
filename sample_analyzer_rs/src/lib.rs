@@ -111,7 +111,7 @@ pub mod stft;
 pub mod stream;
 #[path = "Scananalyzers/Temporal/sustain.rs"]
 pub mod sustain;
-#[path = "Scananalyzers/Sequence/syntax.rs"]
+#[path = "Scananalyzers/Sequence/syntax/mod.rs"]
 pub mod syntax;
 #[path = "Tagging/tags.rs"]
 pub mod tags;
