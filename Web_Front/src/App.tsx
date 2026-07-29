@@ -754,7 +754,8 @@ function App() {
             favorites={favorites}
             autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} />}
-          {activeTab === 'faceball' && <FaceBallTab filteredData={scopedData} selectedItem={footerItem} onSound={setCurrentSound} />}
+          {activeTab === 'faceball' && <FaceBallTab filteredData={scopedData} selectedItem={footerItem} onSound={setCurrentSound}
+            audioFiles={audioFiles} eyeAudio={footerAudioEl} onEyePlay={footerPlay} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} />}
         </Suspense>
 

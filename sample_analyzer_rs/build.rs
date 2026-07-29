@@ -5,10 +5,11 @@
 //!    which drifted. We now splice them into one array in OUT_DIR and embed
 //!    that, so the two cannot disagree.
 //!
-//! 2. Stamp the build with an analyzer revision: an FNV-1a hash over all of
-//!    src/*.rs AND the UCS data. Same inputs ⇒ same revision ⇒ existing .PEAK
-//!    sidecars stay valid; any change to an extractor OR to a category
-//!    signature produces a new revision and invalidates them.
+//! 2. Stamp the build with an analyzer version: the timestamp, to the minute.
+//!    The `rerun-if-changed` lines below scope it — this file re-runs only when
+//!    an extractor under src/ or a UCS category signature changes, so the stamp
+//!    marks when the analyzer's inputs last moved, and every existing .PEAK
+//!    sidecar carrying an older stamp is invalidated and re-analyzed.
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -144,24 +145,10 @@ fn main() {
     fs::write(out.join("ucs_signed.json"), &bundle).expect("write ucs_signed.json");
     fs::write(out.join("ucs_roles.json"), &role_bundle).expect("write ucs_roles.json");
 
-    // Revision hash over the extractors and the category data together.
-    let mut h: u64 = 0xcbf2_9ce4_8422_2325;
-    let mut absorb = |bytes: &[u8]| {
-        for b in bytes {
-            h ^= *b as u64;
-            h = h.wrapping_mul(0x0000_0100_0000_01b3);
-        }
-    };
-    for p in sorted_files(Path::new("src"), "rs") {
-        absorb(&fs::read(&p).expect("read src file"));
-    }
-    absorb(bundle.as_bytes());
-    // The role taxonomy decides a field we write into every record, so a change to
-    // it must invalidate existing sidecars exactly as a change to a signature does.
-    absorb(role_bundle.as_bytes());
-
-    println!("cargo:rustc-env=ANALYZER_REV={:016x}", h);
-
+    // Stamp the build. The `rerun-if-changed` lines above are what make this a
+    // meaningful version: this file only re-runs when `src/` or the UCS data
+    // changes, so the timestamp marks the minute the analyzer's inputs last
+    // changed, and a record stamped with an older one needs re-analysis.
     let date_output = std::process::Command::new("date")
         .arg("+%Y%m%d.%H%M")
         .output()

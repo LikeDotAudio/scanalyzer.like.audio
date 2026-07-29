@@ -11,8 +11,8 @@
 //! Anywhere in between shows how much the acoustics agree with the taxonomy —
 //! a sample that stays far from its face is one whose sound does not match the
 //! category it was filed under.
-import { useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Canvas, type ThreeEvent } from '@react-three/fiber';
 import { OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import {
@@ -20,6 +20,7 @@ import {
   type ResponseFamily, type Vec3,
 } from '../../facialResponse';
 import { adsrNumber } from '../../envelopeSlices';
+import { ucsColor, ucsSubColor, taxonomyKeys } from '../../groupColors';
 
 /** World radius of the ball. */
 const R = 26;
@@ -29,7 +30,8 @@ const FACE_DEPTH = 2.2;
 /** Half-width of the free (unpulled) scatter cube. */
 const FREE_SPAN = 30;
 
-/** One colour per response family, so the ball reads as regions at a glance. */
+/** One colour per response family, so the ball reads as regions at a glance.
+ *  This paints the FACES; the samples on them get their own scheme below. */
 const FAMILY_COLOR: Record<ResponseFamily, string> = {
   Viseme: '#4dd0e1',
   Startle: '#ff5252',
@@ -38,6 +40,22 @@ const FAMILY_COLOR: Record<ResponseFamily, string> = {
   Attend: '#81c784',
   Ambient: '#78909c',
 };
+
+/** How the sample dots are coloured.
+ *
+ * Six family colours would waste the palette: the face a sample sits on already
+ * states its family, so colouring the dot the same says nothing a second time.
+ * Colouring by UCS subcategory instead makes the dot carry the finer taxonomy
+ * the geometry cannot — which is what gives the ball the many-hued look, with
+ * each face showing the internal variety of the categories that route to it. */
+export const COLOR_MODES = ['UCS Subcategory', 'UCS Category', 'Response Family'] as const;
+export type ColorMode = (typeof COLOR_MODES)[number];
+
+function sampleColor(item: any, mode: ColorMode, faceIndex: number): string {
+  if (mode === 'Response Family') return FAMILY_COLOR[RESPONSES[faceIndex].family];
+  const [category, subcategory] = taxonomyKeys(item);
+  return mode === 'UCS Category' ? ucsColor(category) : ucsSubColor(category, subcategory);
+}
 
 /** Numeric readers for the three acoustic axes. Kept small and local: this view
  *  is about the 4th dimension, the other three just need to be reasonable. */
@@ -81,6 +99,7 @@ interface Props {
   axes: [string, string, string];
   /** Faces to draw; empty means all. */
   visibleFaces: Set<number>;
+  colorBy: ColorMode;
 }
 
 /** The wireframe ball: the real 90 edges between the real 60 vertices. */
@@ -97,7 +116,7 @@ function Wireframe({ solid }: { solid: ReturnType<typeof truncatedIcosahedron> }
   }, [solid]);
   return (
     <lineSegments geometry={geometry}>
-      <lineBasicMaterial color="#3a4750" transparent opacity={0.55} />
+      <lineBasicMaterial color="#6b7d8c" transparent opacity={0.75} toneMapped={false} />
     </lineSegments>
   );
 }
@@ -119,20 +138,33 @@ function FaceMarkers({
         const r = RESPONSES[f.index];
         const p = v3(f.center).multiplyScalar(R);
         const isHovered = hovered === f.index;
+        // A circleGeometry lies in the XY plane. Left unrotated it points at the
+        // camera's Z regardless of where on the ball it sits, so 30 of the 32
+        // faces render edge-on as slivers. Turn each one to face outward along
+        // its own normal so it lies flat ON the face it represents.
+        const facing = new THREE.Quaternion().setFromUnitVectors(
+          new THREE.Vector3(0, 0, 1),
+          v3(f.center),
+        );
+        // Inradius of the real face, so the disc fills its polygon instead of
+        // floating as a dot in the middle of it.
+        const span = f.kind === 'pentagon' ? 2.6 : 3.2;
         return (
-          <group key={f.index} position={p}>
+          <group key={f.index} position={p} quaternion={facing}>
             <mesh
               onPointerOver={(e: ThreeEvent<PointerEvent>) => { e.stopPropagation(); onHover(f.index); }}
               onPointerOut={() => onHover(null)}
             >
               {/* A pentagon face gets 5 sides, a hexagon 6 — the marker states
                   which kind of face it is without needing a legend. */}
-              <circleGeometry args={[isHovered ? 1.5 : 1.0, f.kind === 'pentagon' ? 5 : 6]} />
+              <circleGeometry args={[isHovered ? span * 1.15 : span, f.kind === 'pentagon' ? 5 : 6]} />
               <meshBasicMaterial
                 color={FAMILY_COLOR[r.family]}
                 transparent
-                opacity={isHovered ? 0.95 : 0.5}
+                opacity={isHovered ? 0.55 : 0.22}
                 side={THREE.DoubleSide}
+                depthWrite={false}
+                toneMapped={false}
               />
             </mesh>
             {isHovered && (
@@ -155,7 +187,7 @@ function FaceMarkers({
 }
 
 /** The samples, one instanced sphere each. */
-function Samples({ data, selectedItem, onSelect, pull, axes, visibleFaces }: Props) {
+function Samples({ data, selectedItem, onSelect, pull, axes, visibleFaces, colorBy }: Props) {
   const solid = useMemo(() => truncatedIcosahedron(), []);
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
@@ -181,27 +213,41 @@ function Samples({ data, selectedItem, onSelect, pull, axes, visibleFaces }: Pro
         .add(v3(face.tangentV).multiplyScalar(b * FACE_SPREAD));
 
       positions.push(free.lerp(anchored, pull));
-      colors.push(new THREE.Color(FAMILY_COLOR[RESPONSES[fi].family]));
+      colors.push(new THREE.Color(sampleColor(it, colorBy, fi)));
       items.push(it);
     }
     return { positions, colors, items };
-  }, [data, pull, axes, visibleFaces, solid]);
+  }, [data, pull, axes, visibleFaces, solid, colorBy]);
 
-  // Write the instance transforms whenever the layout changes.
-  useFrame(() => {
+  // Write the instance transforms and colours BEFORE the first paint.
+  //
+  // This has to be a layout effect, not `useFrame`. `setColorAt` is what
+  // allocates `instanceColor`, and three decides whether to compile the
+  // instancing-colour path into the shader from whether that attribute exists
+  // when the material's program is built (`WebGLPrograms.js`: `instancingColor:
+  // IS_INSTANCEDMESH && object.instanceColor !== null`). Filling it on the first
+  // animation frame is one beat too late — the program is already compiled
+  // without the path.
+  //
+  // Necessary but NOT sufficient: this timing was right and the dots still
+  // rendered black, because the material also carried `vertexColors`. See the
+  // note on the material below for what actually zeroed them.
+  useLayoutEffect(() => {
     const mesh = meshRef.current;
     if (!mesh) return;
-    if (mesh.userData.written === positions) return;
     const m = new THREE.Matrix4();
     positions.forEach((p, i) => {
       m.makeTranslation(p.x, p.y, p.z);
       mesh.setMatrixAt(i, m);
       mesh.setColorAt(i, colors[i]);
     });
+    mesh.count = positions.length;
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-    mesh.userData.written = positions;
-  });
+    // The attribute may have come into existence just now, so let the material
+    // recompile against it rather than keep the colourless program.
+    (mesh.material as THREE.Material).needsUpdate = true;
+  }, [positions, colors]);
 
   const selectedIndex = items.indexOf(selectedItem);
 
@@ -215,8 +261,24 @@ function Samples({ data, selectedItem, onSelect, pull, axes, visibleFaces }: Pro
           if (e.instanceId != null && items[e.instanceId]) onSelect?.(items[e.instanceId]);
         }}
       >
-        <sphereGeometry args={[0.32, 8, 8]} />
-        <meshBasicMaterial vertexColors />
+        {/* Unlit, so a dot renders at its literal colour rather than being
+            dimmed toward black by the scene's lighting.
+
+            NO `vertexColors` here, and that is the whole reason the dots render
+            in colour. Per-INSTANCE colour comes from `instanceColor` (written by
+            setColorAt below), which three enables on its own via
+            USE_INSTANCING_COLOR. `vertexColors` asks for something different —
+            per-VERTEX colour from a `color` attribute on the geometry — and the
+            two defines are wired asymmetrically (WebGLProgram.js): the fragment
+            shader gets USE_COLOR from `vertexColors || instancingColor`, but the
+            VERTEX shader gets it from `vertexColors` alone. Setting it therefore
+            compiles `attribute vec3 color; ... vColor.rgb *= color;` into the
+            vertex shader, and sphereGeometry has no `color` attribute — only
+            position, normal, uv. An unbound attribute reads as (0,0,0,1), so
+            every instance colour was multiplied by zero one line before
+            `vColor.rgb *= instanceColor.rgb` ever ran. Hence: black dots. */}
+        <sphereGeometry args={[0.42, 8, 8]} />
+        <meshBasicMaterial toneMapped={false} />
       </instancedMesh>
       {selectedIndex >= 0 && (
         <mesh position={positions[selectedIndex]}>
