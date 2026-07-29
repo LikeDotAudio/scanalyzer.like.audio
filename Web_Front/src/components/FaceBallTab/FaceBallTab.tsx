@@ -6,7 +6,8 @@
 //! by the per-transient ADSR slices, one trigger per hit, because a single
 //! file-level envelope would make a 15-round burst wince once, slowly.
 import { useEffect, useMemo, useState } from 'react';
-import FaceBall, { AXIS_NAMES, COLOR_MODES, type ColorMode } from './FaceBall';
+import FaceBall, { COLOR_MODES, type ColorMode } from './FaceBall';
+import { AXIS_GROUPS, CORNER_SCHEME_NAMES } from './axes';
 import { WebGLBoundary, webglAvailable } from '../CloudTab/WebGLBoundary';
 import { RESPONSES, faceOfItem, blendshapeTimeline } from '../../facialResponse';
 import AudioEye from '../AudioEye';
@@ -44,6 +45,15 @@ export default function FaceBallTab({
   // Wireframe brightness. 1 is the cage's natural look; the range runs to 2 so it
   // can be pushed brighter than default, and to 0 to hide it entirely.
   const [outline, setOutline] = useState(() => Number(getPref('outline', '0.75')));
+  // How loudly the category patches read, independent of the cage.
+  const [categoryIntensity, setCategoryIntensity] = useState(() => Number(getPref('cat', '1')));
+  // Corner placement: which features weight the face's 5 or 6 corners, and how
+  // far the sample is pulled toward them.
+  const [cornerScheme, setCornerScheme] = useState(() => getPref('corners', 'Off'));
+  const [cornerPull, setCornerPull] = useState(() => Number(getPref('cornerPull', '0.6')));
+  const [signX, setSignX] = useState<1 | -1>(() => (getPref('sx', '1') === '-1' ? -1 : 1));
+  const [signY, setSignY] = useState<1 | -1>(() => (getPref('sy', '1') === '-1' ? -1 : 1));
+  const [signZ, setSignZ] = useState<1 | -1>(() => (getPref('sz', '1') === '-1' ? -1 : 1));
   const [axisX, setAxisX] = useState(() => getPref('x', 'Brightness'));
   const [axisY, setAxisY] = useState(() => getPref('y', 'Harmonicity'));
   const [axisZ, setAxisZ] = useState(() => getPref('z', 'Transients'));
@@ -96,17 +106,38 @@ export default function FaceBallTab({
     return () => { cancelled = true; };
   }, [item, audioFiles]);
 
-  const axisSelect = (value: string, set: (v: string) => void, prefKey: string, label: string) => (
+  // One axis: a grouped picker plus a ± that flips its direction. Sixty options
+  // are only navigable grouped, and the flip is what un-squashes a scatter that
+  // has piled into one corner.
+  const axisSelect = (
+    value: string, set: (v: string) => void, prefKey: string, label: string,
+    sign: 1 | -1, setSign: (v: 1 | -1) => void, signKey: string,
+  ) => (
     <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 2 }}>
       {label}
-      <select
-        className="btn"
-        value={value}
-        onChange={(e) => { set(e.target.value); setPref(prefKey, e.target.value); }}
-        style={{ fontSize: '0.75rem', padding: '0.15rem 0.3rem' }}
-      >
-        {AXIS_NAMES.map((n) => <option key={n} value={n}>{n}</option>)}
-      </select>
+      <div style={{ display: 'flex', gap: 2 }}>
+        <select
+          className="btn"
+          value={value}
+          onChange={(e) => { set(e.target.value); setPref(prefKey, e.target.value); }}
+          style={{ fontSize: '0.75rem', padding: '0.15rem 0.3rem', maxWidth: 150 }}
+        >
+          {AXIS_GROUPS.map((g) => (
+            <optgroup key={g.label} label={g.label}>
+              {g.axes.map((n) => <option key={n} value={n}>{n}</option>)}
+            </optgroup>
+          ))}
+        </select>
+        <button
+          className="btn"
+          onClick={() => { const v = sign === 1 ? -1 : 1; setSign(v); setPref(signKey, String(v)); }}
+          title={sign === 1 ? 'Ascending — click to invert' : 'Inverted — click to restore'}
+          style={{ fontSize: '0.75rem', padding: '0.15rem 0.35rem', minWidth: 26,
+            color: sign === -1 ? 'var(--accent-primary)' : undefined }}
+        >
+          {sign === 1 ? '+' : '−'}
+        </button>
+      </div>
     </label>
   );
 
@@ -123,9 +154,9 @@ export default function FaceBallTab({
       {/* ---- the ball */}
       <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', gap: '0.7rem', alignItems: 'flex-end', padding: '0.4rem 0.6rem', borderBottom: '1px solid var(--border-color)', flexWrap: 'wrap' }}>
-          {axisSelect(axisX, setAxisX, 'x', 'Across face')}
-          {axisSelect(axisY, setAxisY, 'y', 'Up face')}
-          {axisSelect(axisZ, setAxisZ, 'z', 'Off face')}
+          {axisSelect(axisX, setAxisX, 'x', 'Across face', signX, setSignX, 'sx')}
+          {axisSelect(axisY, setAxisY, 'y', 'Up face', signY, setSignY, 'sy')}
+          {axisSelect(axisZ, setAxisZ, 'z', 'Off face', signZ, setSignZ, 'sz')}
           <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 2 }}>
             Colour
             <select
@@ -182,6 +213,10 @@ export default function FaceBallTab({
               onSelect={(it) => { setPicked(it); onSound?.(it?.metadata?.name); }}
               pull={pull}
               outline={outline}
+              categoryIntensity={categoryIntensity}
+              axisSigns={[signX, signY, signZ]}
+              cornerScheme={cornerScheme}
+              cornerPull={cornerPull}
               axes={[axisX, axisY, axisZ]}
               visibleFaces={visibleFaces}
               colorBy={colorBy}
