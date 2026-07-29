@@ -118,16 +118,22 @@ pub fn family_of(group: &str) -> Option<&'static str> {
 /// instrument maps to its family (MUSICPROD.json); anything the name could not place is
 /// classified by its measured envelope. `subgroup` is unused — the family is decided by
 /// the instrument alone — but kept so the call site and record schema do not change.
+///
+/// `file_shape` is the FILE's categorical shape ("Multi" when it holds several
+/// transients); `env` is the representative single event's measurement. The two are
+/// separate because a multi-event file has no single-event ADSR — its slices each
+/// have one — so the shape must come from the file and the durations from a slice.
 pub fn music_prod_category(
     group: &str,
     _subgroup: &str,
     is_loop: bool,
+    file_shape: &str,
     env: &Envelope,
 ) -> &'static str {
     if is_loop {
         return LOOP;
     }
-    family_of(group).unwrap_or_else(|| from_envelope(env))
+    family_of(group).unwrap_or_else(|| from_envelope(file_shape, env))
 }
 
 /// A struck / hit family, where a root note is usually meaningless noise. Read from the
@@ -137,8 +143,8 @@ pub fn is_percussive_family(family: &str) -> bool {
 }
 
 /// Family for a file whose name told us nothing — decided by the envelope shape.
-fn from_envelope(env: &Envelope) -> &'static str {
-    match env.shape {
+fn from_envelope(file_shape: &str, env: &Envelope) -> &'static str {
+    match file_shape {
         "Multi" => LOOP,
         "Sustained" | "Swell" => MELODIC,
         "Plucky" => CORE_KIT,
@@ -212,34 +218,50 @@ mod tests {
         }
     }
 
+    /// The pipeline's own pairing: the representative slice carries the shape on a
+    /// one-shot, and the file overrides it with "Multi" when there are several.
+    fn family(group: &str, subgroup: &str, is_loop: bool, e: &Envelope) -> &'static str {
+        music_prod_category(group, subgroup, is_loop, e.shape, e)
+    }
+
     #[test]
     fn instruments_map_to_their_families() {
         let e = env("Plucky", 0.05, 0.05);
-        assert_eq!(music_prod_category("Kick", "", false, &e), "CORE KIT");
-        assert_eq!(music_prod_category("Snare", "Rimshot", false, &e), "CORE KIT");
-        assert_eq!(music_prod_category("Crash", "", false, &e), "CYMBALS & METALS");
-        assert_eq!(music_prod_category("Shaker", "", false, &e), "HAND PERCUSSION");
-        assert_eq!(music_prod_category("Perc", "", false, &e), "HAND PERCUSSION");
-        assert_eq!(music_prod_category("Conga", "", false, &e), "WORLD & REGIONAL");
-        assert_eq!(music_prod_category("Marimba", "", false, &e), "ORCHESTRAL & PITCHED");
-        assert_eq!(music_prod_category("808", "", false, &e), "ELECTRONIC & DESIGN");
-        assert_eq!(music_prod_category("Vocal", "", false, &e), "ELECTRONIC & DESIGN");
-        assert_eq!(music_prod_category("Guitar", "", false, &e), "MELODIC");
-        assert_eq!(music_prod_category("Keyboards", "Synth", false, &e), "MELODIC");
-        assert_eq!(music_prod_category("IR", "", false, &e), "IMPULSE RESPONSE");
+        assert_eq!(family("Kick", "", false, &e), "CORE KIT");
+        assert_eq!(family("Snare", "Rimshot", false, &e), "CORE KIT");
+        assert_eq!(family("Crash", "", false, &e), "CYMBALS & METALS");
+        assert_eq!(family("Shaker", "", false, &e), "HAND PERCUSSION");
+        assert_eq!(family("Perc", "", false, &e), "HAND PERCUSSION");
+        assert_eq!(family("Conga", "", false, &e), "WORLD & REGIONAL");
+        assert_eq!(family("Marimba", "", false, &e), "ORCHESTRAL & PITCHED");
+        assert_eq!(family("808", "", false, &e), "ELECTRONIC & DESIGN");
+        assert_eq!(family("Vocal", "", false, &e), "ELECTRONIC & DESIGN");
+        assert_eq!(family("Guitar", "", false, &e), "MELODIC");
+        assert_eq!(family("Keyboards", "Synth", false, &e), "MELODIC");
+        assert_eq!(family("IR", "", false, &e), "IMPULSE RESPONSE");
     }
 
     #[test]
     fn loop_wins_and_envelope_fallback() {
         let e = env("Plucky", 0.05, 0.05);
-        assert_eq!(music_prod_category("Kick", "", true, &e), "LOOP");
-        assert_eq!(music_prod_category("Loops/Patterns", "", false, &e), "LOOP");
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Plucky", 0.05, 0.05)), "CORE KIT");
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Decaying", 1.2, 0.8)), "IMPULSE RESPONSE");
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Decaying", 0.1, 0.1)), "CORE KIT");
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Sustained", 0.1, 0.4)), "MELODIC");
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Multi", 0.1, 0.1)), "LOOP");
-        assert_eq!(music_prod_category("Unclassified", "", false, &env("Silent", 0.0, 0.0)), "MISC");
+        assert_eq!(family("Kick", "", true, &e), "LOOP");
+        assert_eq!(family("Loops/Patterns", "", false, &e), "LOOP");
+        assert_eq!(family("Unclassified", "", false, &env("Plucky", 0.05, 0.05)), "CORE KIT");
+        assert_eq!(family("Unclassified", "", false, &env("Decaying", 1.2, 0.8)), "IMPULSE RESPONSE");
+        assert_eq!(family("Unclassified", "", false, &env("Decaying", 0.1, 0.1)), "CORE KIT");
+        assert_eq!(family("Unclassified", "", false, &env("Sustained", 0.1, 0.4)), "MELODIC");
+        assert_eq!(family("Unclassified", "", false, &env("Silent", 0.0, 0.0)), "MISC");
+    }
+
+    /// A multi-transient file is a LOOP on the FILE's shape, whatever the loudest
+    /// slice measured — the slice is a single hit and will never say "Multi".
+    #[test]
+    fn a_multi_event_file_falls_back_to_loop_on_the_file_shape() {
+        let loudest_hit = env("Plucky", 0.05, 0.05);
+        assert_eq!(
+            music_prod_category("Unclassified", "", false, "Multi", &loudest_hit),
+            "LOOP"
+        );
     }
 
     #[test]

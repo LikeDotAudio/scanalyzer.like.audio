@@ -15,7 +15,6 @@ pub fn pca_assign(results: &mut [Peak]) {
         return;
     }
     let feats: Vec<Vec<f64>> = results.iter().map(feature_vec).collect();
-    let d = feats[0].len();
     if n < 2 {
         results[0].unsupervised.principal_components = vec![0.0; N_COMPONENTS];
         return;
@@ -24,12 +23,34 @@ pub fn pca_assign(results: &mut [Peak]) {
     // Z-score standardize each column (PCA on the correlation structure, so
     // Hz-scaled features don't drown the 0..1 ones) — shared with k-means so both
     // views share one geometry.
-    let nf = n as f64;
     let x = standardize(&feats);
+    let coords = project(&x, N_COMPONENTS);
+    for (i, row) in coords.into_iter().enumerate() {
+        results[i].unsupervised.principal_components = row;
+    }
+}
+
+/// Project already-standardized rows onto their own top `n_components`
+/// principal axes. Split out of [`pca_assign`] so the same deterministic
+/// projection lays out the library map AND the per-file slice map the
+/// bioacoustic-syntax extractor draws — one geometry, one implementation.
+///
+/// Returns one coordinate vector per input row. Fewer than two rows have no
+/// covariance to decompose, so they land at the origin.
+pub fn project(x: &[Vec<f64>], n_components: usize) -> Vec<Vec<f64>> {
+    let n = x.len();
+    if n == 0 {
+        return Vec::new();
+    }
+    let d = x[0].len();
+    if n < 2 || d == 0 {
+        return vec![vec![0.0; n_components]; n];
+    }
+    let nf = n as f64;
 
     // Covariance matrix C = XᵀX / (n-1).
     let mut cov = vec![vec![0.0f64; d]; d];
-    for row in &x {
+    for row in x {
         for j in 0..d {
             if row[j] == 0.0 {
                 continue;
@@ -54,8 +75,8 @@ pub fn pca_assign(results: &mut [Peak]) {
         seed ^= seed << 17;
         (seed >> 11) as f64 / ((1u64 << 53) as f64) - 0.5
     };
-    let mut components: Vec<Vec<f64>> = Vec::with_capacity(N_COMPONENTS);
-    for _ in 0..N_COMPONENTS.min(d) {
+    let mut components: Vec<Vec<f64>> = Vec::with_capacity(n_components);
+    for _ in 0..n_components.min(d) {
         let mut v: Vec<f64> = (0..d).map(|_| rnd()).collect();
         normalize(&mut v);
         let mut lambda = 0.0f64;
@@ -78,12 +99,14 @@ pub fn pca_assign(results: &mut [Peak]) {
         components.push(v);
     }
 
-    for (i, row) in x.iter().enumerate() {
-        results[i].unsupervised.principal_components = components
-            .iter()
-            .map(|c| c.iter().zip(row).map(|(a, b)| a * b).sum())
-            .collect();
-    }
+    x.iter()
+        .map(|row| {
+            components
+                .iter()
+                .map(|c| c.iter().zip(row).map(|(a, b)| a * b).sum())
+                .collect()
+        })
+        .collect()
 }
 
 fn matvec(m: &[Vec<f64>], v: &[f64]) -> Vec<f64> {

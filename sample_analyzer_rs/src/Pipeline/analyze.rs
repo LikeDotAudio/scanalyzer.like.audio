@@ -25,7 +25,7 @@ use crate::root::{extract_root, midi_to_name};
 use crate::spectrum::spectral_features;
 use crate::sustain::sustain_ratio;
 use crate::tags::{acoustic_tags, sound_design_tags};
-use crate::transients::count_transients;
+use crate::transients::{count_transients, transient_onsets};
 use crate::version::ANALYZER_VERSION;
 
 /// STFT geometry for the frame-based features (flux, MFCC, centroid stats).
@@ -151,6 +151,7 @@ fn preview_only_record(
         ucs: crate::peak::Ucs::default(),
         regions: crate::peak::Regions::default(),
         preview: crate::preview::build_preview(data),
+        bioacoustic_syntax: None,
     }
 }
 
@@ -179,8 +180,14 @@ fn analyze_core(
     let mfcc = mfcc_mean(&frames, sr_f, N_FFT);
     let (centroid_mean, centroid_std) = centroid_stats(&frames, sr_f, N_FFT);
 
-    // Measured ADSR envelope + its statistical moments and shape.
-    let env = envelope_analysis(data, sr, transients);
+    // Measured ADSR, one entry per transient. On a one-shot that is a single
+    // slice over the whole file and `file_level()` is Some; on a multi-event
+    // file it is None, because a peak-relative measurement has no defined peak
+    // to be relative to. The classifiers below read `representative()` — the
+    // loudest slice — since "what object is vibrating" is a per-event question.
+    let onsets = transient_onsets(data, sr);
+    let env_analysis = envelope_analysis(data, sr, &onsets);
+    let env = env_analysis.representative();
 
     // The morphology axis (spec §4b) rides on the STFT and the amplitude envelope.
     let (amplitude_track, envelope_rate_hz) = crate::envelope::amplitude_envelope(data, sr);
@@ -252,7 +259,8 @@ fn analyze_core(
         bpm = crate::tempo::estimate_bpm(&frames, sr_f, HOP);
     }
     bpm = bpm.round();
-    let mut music_class = music_prod_category(&l.group, &l.subgroup, is_loop, &env).to_string();
+    let mut music_class =
+        music_prod_category(&l.group, &l.subgroup, is_loop, env_analysis.shape, env).to_string();
 
     // The voice detector overrides the NAME — but not a loop.
     if is_vocal && !is_loop {
@@ -278,10 +286,18 @@ fn analyze_core(
     let root_part = if root_name.is_empty() { String::new() } else { format!(" · root {}", root_name) };
     let reason = vec![
         format!("1) {}", l.reason),
-        format!("2) envelope {} (attack {:.0} ms, sustain {:.0}%, {} transient{})",
-            env.shape, env.attack * 1000.0, env.sustain * 100.0,
-            transients, if transients == 1 { "" } else { "s" }
-        ),
+        // On a multi-event file the ADSR quoted here is the LOUDEST SLICE's, not
+        // the file's — say so, rather than presenting a per-event number as if it
+        // described the whole recording.
+        if env_analysis.single_event {
+            format!("2) envelope {} (attack {:.0} ms, sustain {:.0}%, 1 transient)",
+                env_analysis.shape, env.attack * 1000.0, env.sustain * 100.0)
+        } else {
+            format!(
+                "2) envelope {} ({} transients — loudest of {} slices: attack {:.0} ms, sustain {:.0}%)",
+                env_analysis.shape, transients, env_analysis.slices.len(),
+                env.attack * 1000.0, env.sustain * 100.0)
+        },
         format!("3) {} · {}-band {:.0}%{}", acoustic.join("+"), band.0, band.1 * 100.0, root_part),
     ];
 
@@ -318,15 +334,36 @@ fn analyze_core(
             attack_seconds: amp.attack,
             sustain_ratio: sustain,
             sustained: l.sustained,
-            envelope_attack_seconds: env.attack,
-            envelope_decay_seconds: env.decay,
-            envelope_sustain_level: env.sustain,
-            envelope_release_seconds: env.release,
-            envelope_temporal_centroid: env.centroid,
-            envelope_skewness: env.skew,
-            envelope_kurtosis: env.kurt,
-            envelope_shape: env.shape.to_string(),
-            decay_time_seconds_60db: env.decay_time_60db,
+            // Peak-relative, so file-level only when the file holds one event.
+            // `file_level()` is None otherwise — the numbers live per-slice.
+            envelope_attack_seconds: env_analysis.file_level().map(|e| e.attack),
+            envelope_decay_seconds: env_analysis.file_level().map(|e| e.decay),
+            envelope_sustain_level: env_analysis.file_level().map(|e| e.sustain),
+            envelope_release_seconds: env_analysis.file_level().map(|e| e.release),
+            envelope_temporal_centroid: env_analysis.file_level().map(|e| e.centroid),
+            envelope_skewness: env_analysis.file_level().map(|e| e.skew),
+            envelope_kurtosis: env_analysis.file_level().map(|e| e.kurt),
+            envelope_shape: env_analysis.shape.to_string(),
+            decay_time_seconds_60db: env_analysis.file_level().and_then(|e| e.decay_time_60db),
+            slices: env_analysis
+                .slices
+                .iter()
+                .map(|s| crate::peak::EnvelopeSlice {
+                    index: s.index,
+                    start_seconds: s.start_seconds,
+                    end_seconds: s.end_seconds,
+                    relative_level: s.relative_level,
+                    envelope_attack_seconds: s.envelope.attack,
+                    envelope_decay_seconds: s.envelope.decay,
+                    envelope_sustain_level: s.envelope.sustain,
+                    envelope_release_seconds: s.envelope.release,
+                    envelope_temporal_centroid: s.envelope.centroid,
+                    envelope_skewness: s.envelope.skew,
+                    envelope_kurtosis: s.envelope.kurt,
+                    envelope_shape: s.envelope.shape.to_string(),
+                    decay_time_seconds_60db: s.envelope.decay_time_60db,
+                })
+                .collect(),
             onset_periodicity,
             onset_rate_per_second: if length > 0.0 { Some(transients as f64 / length) } else { None },
         },
@@ -381,6 +418,9 @@ fn analyze_core(
         // The binary waveform preview — every file gets one, computed from the PCM
         // already in memory, so the UI paints without decoding any audio.
         preview: crate::preview::build_preview(data),
+        // Filled in below, once every region carries its own analysis — the
+        // syntax is read off those, so it cannot be computed before they exist.
+        bioacoustic_syntax: None,
     });
 
     // Per-region full analysis: re-run the whole pipeline on each region's slice so every
@@ -406,6 +446,14 @@ fn analyze_core(
                 }
             }
         }
+
+        // Bioacoustic syntax LAST, for the same reason the UCS verdict is last:
+        // it reads the finished record. Every other extractor describes one
+        // sound; this one describes the ORDER of them and the junctions in
+        // between, so it needs every region's own analysis already in place.
+        peak.bioacoustic_syntax = crate::syntax::bioacoustic_syntax(
+            &peak.regions, &frames, sr_f, N_FFT, HOP, &amplitude_track, envelope_rate_hz,
+        );
     }
 
     Some(peak)

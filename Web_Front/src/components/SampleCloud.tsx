@@ -4,6 +4,7 @@ import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { subKey, ucsColor, ucsSubColor, taxonomyKeys } from '../groupColors'
 import type { Taxonomy } from '../groupColors'
+import { adsrNumber } from '../envelopeSlices'
 
 // Feature registry: label → how to read it. Numeric features are normalized
 // across the dataset; categorical ones are spread into bands. Mirrors the
@@ -18,7 +19,9 @@ export const CLOUD_FEATURES: Record<string, Feature> = {
   Complexity: { get: (it) => it.spectral_features?.complexity ?? 0 },
   'Brightness (centroid)': { get: (it) => it.spectral_features?.spectral_centroid_hz ?? 0 },
   Harmonicity: { get: (it) => it.spectral_features?.harmonicity ?? 0 },
-  Sustain: { get: (it) => it.envelope?.envelope_sustain_level ?? 0 },
+  // Peak-relative, so null on a multi-event file — read the loudest slice
+  // rather than 0, which would stack every loop at the origin of this axis.
+  Sustain: { get: (it) => adsrNumber(it, 'envelope_sustain_level') },
   Attack: { get: (it) => it.envelope?.attack_seconds ?? 0 },
   Pitch: { get: (it) => it.musicality?.pitch_hz ?? 0 },
   BPM: { get: (it) => it.musicality?.beats_per_minute ?? 0 },

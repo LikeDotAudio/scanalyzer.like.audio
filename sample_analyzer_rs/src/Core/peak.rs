@@ -77,12 +77,19 @@ pub struct Ucs {
     pub reason: String,
 }
 
+/// One transient's ADSR, measured against that slice's own peak.
+///
+/// Every field here is unconditionally valid: a slice holds exactly one event by
+/// construction, which is the precondition the file-level scalars cannot meet.
 #[derive(Serialize, Deserialize, Clone, Default)]
-pub struct Envelope {
-    pub transient_count: usize,
-    pub attack_seconds: f64,
-    pub sustain_ratio: f64,
-    pub sustained: bool,
+#[serde(default)]
+pub struct EnvelopeSlice {
+    pub index: usize,
+    pub start_seconds: f64,
+    pub end_seconds: f64,
+    /// This slice's peak as a fraction of the file's loudest frame (0..1). The
+    /// slice at 1.0 is the one the file-level reading is taken from.
+    pub relative_level: f64,
     pub envelope_attack_seconds: f64,
     pub envelope_decay_seconds: f64,
     pub envelope_sustain_level: f64,
@@ -91,8 +98,45 @@ pub struct Envelope {
     pub envelope_skewness: f64,
     pub envelope_kurtosis: f64,
     pub envelope_shape: String,
+    pub decay_time_seconds_60db: Option<f64>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Default)]
+pub struct Envelope {
+    pub transient_count: usize,
+    pub attack_seconds: f64,
+    pub sustain_ratio: f64,
+    pub sustained: bool,
+    // ---- Peak-relative ADSR. Defined against THE peak of the sound, so they
+    // exist only when the file holds one event: on a multi-event file the
+    // loudest peak is an artefact of the edit, and measuring 10 %→90 % against
+    // it reports the distance to the loudest hit as an "attack" (a 3 s typing
+    // recording read 2.5 s). null here means "not measurable at file level" —
+    // the real per-event numbers are in `slices`, never zero, never a guess.
+    #[serde(default)]
+    pub envelope_attack_seconds: Option<f64>,
+    #[serde(default)]
+    pub envelope_decay_seconds: Option<f64>,
+    #[serde(default)]
+    pub envelope_sustain_level: Option<f64>,
+    #[serde(default)]
+    pub envelope_release_seconds: Option<f64>,
+    #[serde(default)]
+    pub envelope_temporal_centroid: Option<f64>,
+    #[serde(default)]
+    pub envelope_skewness: Option<f64>,
+    #[serde(default)]
+    pub envelope_kurtosis: Option<f64>,
+    /// The categorical shape stays a plain field: "Multi" is the correct and
+    /// useful answer for a multi-event file, where the numbers above are not.
+    pub envelope_shape: String,
     #[serde(default)]
     pub decay_time_seconds_60db: Option<f64>,
+    /// One entry per transient, in time order — the ADSR array. Always at least
+    /// one element for audible audio; exactly one for a one-shot, in which case
+    /// it carries the same numbers as the file-level fields above.
+    #[serde(default)]
+    pub slices: Vec<EnvelopeSlice>,
     #[serde(default)]
     pub onset_periodicity: Option<f64>,
     // Distinct onsets per second — transient_count over the clip length. None only
@@ -100,6 +144,23 @@ pub struct Envelope {
     // than re-deriving it (the UCS matcher used to compute it on the fly).
     #[serde(default)]
     pub onset_rate_per_second: Option<f64>,
+}
+
+impl Envelope {
+    /// The loudest slice — the best single-event ADSR the file contains.
+    ///
+    /// This is what to read when a consumer needs a number on a multi-event file
+    /// and "no evidence" is not an option (the clustering feature vector, a UI
+    /// bar). It is an honest measurement of one real event, which the file-level
+    /// fields are not; it is simply not a measurement of the *file*, so it must
+    /// never be written back into them.
+    pub fn representative_slice(&self) -> Option<&EnvelopeSlice> {
+        self.slices.iter().max_by(|a, b| {
+            a.relative_level
+                .partial_cmp(&b.relative_level)
+                .unwrap_or(std::cmp::Ordering::Equal)
+        })
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]
@@ -235,4 +296,10 @@ pub struct Peak {
     // re-emitted old record stays byte-comparable to its source.
     #[serde(default, skip_serializing_if = "Preview::is_empty")]
     pub preview: Preview,
+    /// The sequence-level analysis: syllable-type vocabulary, slice-to-slice
+    /// transition probabilities, and the measured junctions between the slices.
+    /// `None` for anything that is not a sequence — a single-region file has no
+    /// order to analyze — so absence is meaningful and is not written out.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bioacoustic_syntax: Option<crate::syntax::BioacousticSyntax>,
 }

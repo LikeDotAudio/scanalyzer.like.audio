@@ -269,13 +269,19 @@ fn feature(p: &Peak, name: &str) -> Option<f64> {
         "high_band_energy" => p.spectral_features.high_band_energy,
         "total_harmonic_distortion" => p.spectral_features.total_harmonic_distortion,
         "clipping_density" => p.spectral_features.clipping_density,
-        "envelope_attack_seconds" => p.envelope.envelope_attack_seconds,
-        "envelope_decay_seconds" => p.envelope.envelope_decay_seconds,
-        "envelope_sustain_level" => p.envelope.envelope_sustain_level,
-        "envelope_release_seconds" => p.envelope.envelope_release_seconds,
-        "envelope_temporal_centroid" => p.envelope.envelope_temporal_centroid,
-        "envelope_skewness" => p.envelope.envelope_skewness,
-        "envelope_kurtosis" => p.envelope.envelope_kurtosis,
+        // --- Peak-relative ADSR. None on a multi-event file, where there is no
+        // --- single peak to be relative to, so the scorer drops the term rather
+        // --- than matching a signature against the shape of somebody's edit.
+        // --- (These signatures were only ever calibrated on one-shot clips —
+        // --- see SINGLE_EVENT_ONLY in UCS/fsd50k_calibrate.py — so scoring them
+        // --- on a multi-event record was always outside their evidence.)
+        "envelope_attack_seconds" => p.envelope.envelope_attack_seconds?,
+        "envelope_decay_seconds" => p.envelope.envelope_decay_seconds?,
+        "envelope_sustain_level" => p.envelope.envelope_sustain_level?,
+        "envelope_release_seconds" => p.envelope.envelope_release_seconds?,
+        "envelope_temporal_centroid" => p.envelope.envelope_temporal_centroid?,
+        "envelope_skewness" => p.envelope.envelope_skewness?,
+        "envelope_kurtosis" => p.envelope.envelope_kurtosis?,
         "dc_offset" => p.metadata.dc_offset,
         "beats_per_minute" => {
             if p.musicality.beats_per_minute <= 0.0 {

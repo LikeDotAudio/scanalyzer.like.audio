@@ -7,6 +7,23 @@ const MFCC_IN_VEC: usize = 5;
 /// The acoustic feature vector used for blind clustering and the PCA map
 /// (name-independent): envelope, spectral, and timbral-fingerprint features.
 pub fn feature_vec(p: &Peak) -> Vec<f64> {
+    // The ADSR terms are peak-relative, so the file-level fields are null on a
+    // multi-event file. k-means needs a number in every column, and dropping the
+    // dimension for some rows is not an option — so read the loudest slice, which
+    // is a real single-event measurement, rather than substituting 0.0 (which
+    // would place every loop at the "no sustain, no skew" corner of the space and
+    // cluster loops together by their nullness instead of by their sound).
+    let slice = p.envelope.representative_slice();
+    let sustain_level = p
+        .envelope
+        .envelope_sustain_level
+        .or_else(|| slice.map(|s| s.envelope_sustain_level))
+        .unwrap_or(0.0);
+    let skewness = p
+        .envelope
+        .envelope_skewness
+        .or_else(|| slice.map(|s| s.envelope_skewness))
+        .unwrap_or(0.0);
     let mut v = vec![
         (1.0 + p.metadata.length_seconds).ln(),
         p.spectral_features.root_mean_square_level,
@@ -17,8 +34,8 @@ pub fn feature_vec(p: &Peak) -> Vec<f64> {
         p.spectral_features.high_band_energy,
         p.spectral_features.crest_factor,
         p.envelope.attack_seconds,
-        p.envelope.envelope_sustain_level,
-        p.envelope.envelope_skewness,
+        sustain_level,
+        skewness,
         p.spectral_features.spectral_flux,
         p.spectral_features.inharmonicity,
         p.spectral_features.spectral_centroid_deviation_hz,

@@ -97,13 +97,18 @@ try {
                 "root_cents_offset" => (float)$row['root_cents_offset'],
                 "beats_per_minute" => (float)$row['beats_per_minute']
             ],
+            // The peak-relative ADSR columns are NULL for a multi-event file:
+            // there is no single peak to measure against, so the analyzer stores
+            // nothing rather than a number describing the loudest edit point.
+            // (float)NULL is 0.0, which would turn "not measurable" into the
+            // positive claim "this sound has no sustain" — so keep the null.
             "envelope" => [
                 "transient_count" => (int)$row['transient_count'],
                 "attack_seconds" => (float)$row['attack_seconds'],
-                "envelope_decay_seconds" => (float)$row['decay_seconds'],
-                "envelope_sustain_level" => (float)$row['sustain_level'],
-                "envelope_release_seconds" => (float)$row['release_seconds'],
-                "envelope_temporal_centroid" => (float)$row['temporal_centroid'],
+                "envelope_decay_seconds" => $row['decay_seconds'] === null ? null : (float)$row['decay_seconds'],
+                "envelope_sustain_level" => $row['sustain_level'] === null ? null : (float)$row['sustain_level'],
+                "envelope_release_seconds" => $row['release_seconds'] === null ? null : (float)$row['release_seconds'],
+                "envelope_temporal_centroid" => $row['temporal_centroid'] === null ? null : (float)$row['temporal_centroid'],
                 "envelope_shape" => $row['shape']
             ],
             "unsupervised" => [

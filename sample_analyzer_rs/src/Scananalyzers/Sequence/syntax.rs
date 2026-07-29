@@ -1,0 +1,1364 @@
+//! Bioacoustic syntax — the grammar of a multi-slice file.
+//!
+//! Every other extractor answers "what does this sound like". This one answers
+//! "in what ORDER, and what sits in between". A field recording of a bird, a
+//! spoken take, a drum loop, a machine cycling — none of them are one sound.
+//! They are a sequence of sounds drawn from a small vocabulary, and the
+//! information is as much in the sequence as in any single event.
+//!
+//! The pipeline already does the hard part twice over:
+//!   * `regions::detect_regions` segments the file into sounding stretches
+//!     (the "slices"/syllables), and
+//!   * `analyze_core` re-runs the WHOLE analysis on each slice, so every slice
+//!     arrives here with its own MFCCs, centroid, harmonicity and envelope.
+//!
+//! What was missing is everything downstream of that. This module adds it:
+//!
+//! 1. **Vocabulary.** Cluster the slices by their own acoustic features into
+//!    *types* (A, B, C…) — the discrete neighborhoods of a syllable map. Deep
+//!    bioacoustics work (Best 2023; Morales 2022) learns this embedding with a
+//!    convolutional auto-encoder; here the embedding is the MFCC + envelope +
+//!    spectral vector the analyzer already computes, standardized within the
+//!    file. The clustering is agglomerative with an automatic cut, because the
+//!    repertoire size is exactly the thing we do not know in advance.
+//!
+//! 2. **A 2-D layout.** The same vectors are projected through the analyzer's
+//!    own PCA so the record carries an (x, y) per slice. That is the node
+//!    layout of a grammar map — the analog of the UMAP scatter, computed with
+//!    the deterministic linear projection this codebase already trusts.
+//!
+//! 3. **Syntax.** First-order transition probabilities between types, and the
+//!    information-theoretic verdict on whether the ordering carries any
+//!    information at all: mutual information between consecutive slices, in
+//!    bits. Zero means the order is random and there is no grammar to find.
+//!
+//! 4. **The junctions — what is BETWEEN the slices.** The gap between two
+//!    slices is not nothing. It has a level, a spectrum, and a slope, and its
+//!    shape says whether the two slices are separate utterances or one gesture:
+//!    a decaying tail means the first sound is still ringing into the second, a
+//!    rising gap is a breath or a wind-up before the next onset, a flat gap well
+//!    above the noise floor is a continuous bed that never stops. TweetyNet
+//!    (Cohen 2022) makes the same move by giving its network an explicit
+//!    "background" class rather than treating the quiet as absence. Every
+//!    junction is measured and classified here, and carries the surprisal of
+//!    the transition it spans.
+//!
+//! Cost: arithmetic over the STFT frames, the RMS envelope and the per-region
+//! analyses that already exist. No new transform, and it only runs for files
+//! that actually have more than one slice.
+
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+
+use crate::peak::Regions;
+
+// ---------------------------------------------------------------- tunables
+
+/// Ceiling on the repertoire. A "vocabulary" where nearly every slice is its own
+/// word is not a vocabulary, it is a failure to cluster; and a grammar map with
+/// more than a dozen node colors stops being readable. Birdsong repertoires in
+/// the literature sit comfortably inside this.
+const MAX_SLICE_TYPES: usize = 12;
+
+/// The dendrogram is cut at the largest RELATIVE jump in merge height (the
+/// classic elbow). If even the largest jump is below this ratio there is no
+/// real gap in the linkage — the slices form one continuum, so the file has a
+/// single type rather than an arbitrary split.
+const MINIMUM_MERGE_JUMP_RATIO: f64 = 1.6;
+
+/// A gap whose level sits within this many dB of the preceding slice's peak was
+/// never really a silence — the gate dipped, the sound did not stop.
+const BOUND_WITHIN_DECIBELS: f64 = 12.0;
+
+/// Total level change ACROSS the gap (slope × duration) that counts as a real
+/// decay or a real rise. Expressed as a total rather than a rate because a
+/// −3 dB/s slope over a 150 ms gap is 0.45 dB — indistinguishable from noise,
+/// while the same slope over two seconds is a plain audible fade.
+const JUNCTION_CHANGE_DECIBELS: f64 = 3.0;
+
+/// How far above the file's own noise floor a flat gap must sit before it is a
+/// continuous background bed rather than silence.
+const NOISE_FLOOR_MARGIN_DECIBELS: f64 = 6.0;
+
+/// Longest phrase the motif search will look for, in slices.
+const MAXIMUM_MOTIF_LENGTH: usize = 16;
+
+/// Below this many transitions per possible type-pair, the transition table is
+/// too sparse for its entropy to mean much, and the record says so.
+const ADEQUATE_TRANSITIONS_PER_PAIR: f64 = 2.0;
+
+// ---------------------------------------------------------------- the record
+
+/// One slice, placed. The node of the grammar map: which type it belongs to and
+/// where it sits in the file's own acoustic embedding.
+#[derive(Serialize, Deserialize, Clone, Default, Debug)]
+#[serde(default)]
+pub struct SliceNode {
+    pub region_index: usize,
+    pub type_label: String,
+    pub start_seconds: f64,
+    pub duration_seconds: f64,
+    /// Position in the file's 2-D acoustic projection — the layout coordinates
+    /// for drawing the map. Arbitrary units, centered near zero.
+    pub embedding_x: f64,
+    pub embedding_y: f64,
+}
+
+/// One entry in the vocabulary — a cluster of acoustically similar slices.
+#[derive(Serialize, Deserialize, Clone, Default, Debug)]
+#[serde(default)]
+pub struct SliceType {
+    /// "A", "B", "C"… assigned by descending frequency, so "A" is always the
+    /// most-used syllable and sequences read consistently across files.
+    pub label: String,
+    /// A plain-language read of the medoid: length, brightness, tonality.
+    pub descriptor: String,
+    pub occurrences: usize,
+    /// Share of all slices, 0..1.
+    pub share: f64,
+    /// The region index of the medoid — the most typical member, the one to
+    /// audition or draw as this type's exemplar.
+    pub exemplar_region_index: usize,
+    pub mean_duration_seconds: f64,
+    pub mean_spectral_centroid_hz: f64,
+    pub mean_harmonicity: f64,
+}
+
+/// One edge of the grammar map: how likely `from` is followed by `to`.
+#[derive(Serialize, Deserialize, Clone, Default, Debug)]
+#[serde(default)]
+pub struct Transition {
+    pub from_label: String,
+    pub to_label: String,
+    pub count: usize,
+    /// P(to | from) — row-normalized, so the edges leaving one node sum to 1.
+    pub probability: f64,
+    pub mean_gap_seconds: f64,
+    pub mean_inter_onset_seconds: f64,
+}
+
+/// The measured, classified space BETWEEN two consecutive slices.
+#[derive(Serialize, Deserialize, Clone, Default, Debug)]
+#[serde(default)]
+pub struct Junction {
+    pub index: usize,
+    pub from_region_index: usize,
+    pub to_region_index: usize,
+    pub from_label: String,
+    pub to_label: String,
+    /// End of the previous slice to the start of the next.
+    pub gap_seconds: f64,
+    /// Onset to onset — the interval bioacoustics actually reports, because it
+    /// is the one that survives a disagreement about where a syllable ends.
+    pub inter_onset_seconds: f64,
+    pub gap_root_mean_square_level: f64,
+    /// How far the gap sits below the preceding slice's peak. Small means the
+    /// sound never really stopped.
+    pub gap_level_below_previous_peak_decibels: f64,
+    /// How far the gap sits above the file's own quietest moment.
+    pub gap_level_above_noise_floor_decibels: f64,
+    /// Negative = falling (a tail ringing out), positive = rising (a breath or
+    /// wind-up into the next onset), ~0 = a steady bed.
+    pub gap_slope_decibels_per_second: f64,
+    pub gap_spectral_centroid_hz: f64,
+    pub gap_spectral_flatness: f64,
+    /// Silence / Noise Bed / Resonant Tail / Breath / Continuous.
+    pub junction_class: String,
+    /// P(to | from) for the transition this junction spans.
+    pub transition_probability: f64,
+    /// −log2(probability): how surprising this particular move was, in bits. A
+    /// rare transition in an otherwise rigid song is where the interesting
+    /// behavior lives.
+    pub surprisal_bits: f64,
+}
+
+#[derive(Serialize, Deserialize, Clone, Default, Debug)]
+#[serde(default)]
+pub struct JunctionCount {
+    pub junction_class: String,
+    pub count: usize,
+}
+
+#[derive(Serialize, Deserialize, Clone, Default, Debug)]
+#[serde(default)]
+pub struct BioacousticSyntax {
+    pub slice_count: usize,
+    pub type_count: usize,
+    /// The whole file as one string, one letter per slice: "ABABACAB".
+    pub sequence: String,
+    pub slices: Vec<SliceNode>,
+    pub slice_types: Vec<SliceType>,
+    pub transitions: Vec<Transition>,
+    pub junctions: Vec<Junction>,
+    pub junction_profile: Vec<JunctionCount>,
+    pub dominant_junction_class: String,
+
+    /// Shannon entropy of the type distribution, in bits — how evenly the
+    /// repertoire is used. 0 = one type only.
+    pub repertoire_entropy_bits: f64,
+    /// The same, over its own maximum (log2 of the type count), 0..1.
+    pub repertoire_entropy_normalized: f64,
+    /// H(next | current): the average uncertainty remaining about the next
+    /// slice once the current one is known.
+    pub transition_entropy_bits: f64,
+    /// H(next) − H(next | current): the mutual information between consecutive
+    /// slices. THE number. Zero bits means the order carries no information —
+    /// the sequence is a bag of sounds, not a grammar.
+    pub syntactic_information_bits: f64,
+    /// Syntactic information over H(next), 0..1. 0 = order is random,
+    /// 1 = each slice fully determines the next.
+    pub determinism: f64,
+    /// Fraction of transitions that stay on the same type (A→A).
+    pub repeat_ratio: f64,
+    pub distinct_bigrams: usize,
+    /// Distinct bigrams over the type_count² possible ones. A low coverage with
+    /// plenty of transitions is a strict grammar: most moves are never made.
+    pub bigram_coverage: f64,
+    /// The longest slice phrase that occurs more than once, and how often.
+    pub dominant_motif: String,
+    pub dominant_motif_occurrences: usize,
+
+    pub median_gap_seconds: f64,
+    /// 1 − coefficient of variation of the inter-onset intervals, 0..1. Near 1
+    /// is metronomic delivery (a trill, a loop, a machine); near 0 is free.
+    pub gap_regularity: f64,
+    /// Fraction of junctions where the two slices are acoustically bound
+    /// (a tail or no real break) rather than genuinely separated.
+    pub bound_ratio: f64,
+
+    /// The verdict: Isolated / Repetition / Isochronous Repetition /
+    /// Alternation / Structured / Variable / Stochastic.
+    pub syntax_class: String,
+    /// Transitions per possible type-pair — the sample adequacy behind the
+    /// entropy figures. Below ~2 the table is sparse and the numbers are
+    /// suggestive rather than measured.
+    pub transitions_per_type_pair: f64,
+    pub reason: Vec<String>,
+}
+
+// ---------------------------------------------------------------- entry point
+
+/// Build the syntax record for one file.
+///
+/// `regions` must be the top-level regions with their per-region `analysis`
+/// filled in (that is what carries each slice's own features). `frames` is the
+/// shared STFT the rest of the pipeline uses, `envelope` the RMS amplitude
+/// track at `envelope_rate_hz`. Returns `None` for anything with fewer than two
+/// slices — one slice is a sound, not a sequence.
+#[allow(clippy::too_many_arguments)]
+pub fn bioacoustic_syntax(
+    regions: &Regions,
+    frames: &[Vec<f32>],
+    sr_f: f64,
+    n_fft: usize,
+    hop: usize,
+    envelope: &[f64],
+    envelope_rate_hz: f64,
+) -> Option<BioacousticSyntax> {
+    // Chronological order is the whole premise — sort defensively rather than
+    // trusting the detector's ordering.
+    let mut order: Vec<usize> = (0..regions.regions.len()).collect();
+    order.sort_by(|&a, &b| {
+        regions.regions[a]
+            .start_seconds
+            .partial_cmp(&regions.regions[b].start_seconds)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+    if order.len() < 2 {
+        return None;
+    }
+
+    // ---- vocabulary: embed, cluster, label.
+    let vectors: Vec<Option<Vec<f64>>> =
+        order.iter().map(|&i| slice_vector(&regions.regions[i])).collect();
+    let measured: Vec<usize> = (0..order.len()).filter(|&k| vectors[k].is_some()).collect();
+
+    let (assignment, embedding) = if measured.len() >= 2 {
+        let feats: Vec<Vec<f64>> =
+            measured.iter().map(|&k| vectors[k].clone().unwrap()).collect();
+        let standardized = crate::feature_vec::standardize(&feats);
+        let clusters = cluster_slices(&standardized);
+        let projected = crate::pca::project(&standardized, 2);
+
+        // Lift the per-measured-slice results back onto every slice. A slice
+        // without an analysis (an older record, or one too short to measure)
+        // still belongs to the sequence — it just cannot be typed, so it gets
+        // its own catch-all cluster rather than being silently dropped.
+        let unmeasured_cluster = clusters.iter().copied().max().map_or(0, |m| m + 1);
+        let mut assignment = vec![unmeasured_cluster; order.len()];
+        let mut embedding = vec![(0.0, 0.0); order.len()];
+        for (slot, &k) in measured.iter().enumerate() {
+            assignment[k] = clusters[slot];
+            embedding[k] = (
+                projected[slot].first().copied().unwrap_or(0.0),
+                projected[slot].get(1).copied().unwrap_or(0.0),
+            );
+        }
+        (assignment, embedding)
+    } else {
+        (vec![0usize; order.len()], vec![(0.0, 0.0); order.len()])
+    };
+
+    // Relabel by descending frequency so "A" is always the commonest syllable.
+    let cluster_count = assignment.iter().copied().max().unwrap_or(0) + 1;
+    let mut counts = vec![0usize; cluster_count];
+    for &c in &assignment {
+        counts[c] += 1;
+    }
+    let mut ranking: Vec<usize> = (0..cluster_count).filter(|&c| counts[c] > 0).collect();
+    // Ties broken by first appearance, so the labelling is deterministic.
+    let first_seen: Vec<usize> = (0..cluster_count)
+        .map(|c| assignment.iter().position(|&a| a == c).unwrap_or(usize::MAX))
+        .collect();
+    ranking.sort_by(|&a, &b| counts[b].cmp(&counts[a]).then(first_seen[a].cmp(&first_seen[b])));
+    let mut rank_of = vec![0usize; cluster_count];
+    for (rank, &c) in ranking.iter().enumerate() {
+        rank_of[c] = rank;
+    }
+    let type_count = ranking.len();
+    let types: Vec<usize> = assignment.iter().map(|&c| rank_of[c]).collect();
+    let labels: Vec<String> = types.iter().map(|&t| type_label(t)).collect();
+    let sequence: String = labels.concat();
+
+    // ---- the vocabulary entries themselves.
+    let standardized_for_medoid: Vec<Option<Vec<f64>>> = {
+        // Recompute once for the medoid search; cheap and keeps the branch above
+        // free of extra bookkeeping.
+        let feats: Vec<Vec<f64>> =
+            measured.iter().map(|&k| vectors[k].clone().unwrap_or_default()).collect();
+        if feats.len() >= 2 {
+            let s = crate::feature_vec::standardize(&feats);
+            let mut out = vec![None; order.len()];
+            for (slot, &k) in measured.iter().enumerate() {
+                out[k] = Some(s[slot].clone());
+            }
+            out
+        } else {
+            vec![None; order.len()]
+        }
+    };
+    let slice_types = build_slice_types(
+        regions, &order, &types, type_count, &standardized_for_medoid,
+    );
+
+    // ---- the nodes.
+    let slices: Vec<SliceNode> = order
+        .iter()
+        .enumerate()
+        .map(|(k, &i)| SliceNode {
+            region_index: regions.regions[i].index,
+            type_label: labels[k].clone(),
+            start_seconds: regions.regions[i].start_seconds,
+            duration_seconds: regions.regions[i].duration_seconds,
+            embedding_x: embedding[k].0,
+            embedding_y: embedding[k].1,
+        })
+        .collect();
+
+    // ---- transitions.
+    let mut bigrams: HashMap<(usize, usize), BigramStats> = HashMap::new();
+    let mut from_totals = vec![0usize; type_count];
+    let mut to_totals = vec![0usize; type_count];
+    for k in 0..order.len() - 1 {
+        let (a, b) = (types[k], types[k + 1]);
+        let previous = &regions.regions[order[k]];
+        let next = &regions.regions[order[k + 1]];
+        let entry = bigrams.entry((a, b)).or_default();
+        entry.count += 1;
+        entry.gap_total += (next.start_seconds - previous.end_seconds).max(0.0);
+        entry.inter_onset_total += (next.start_seconds - previous.start_seconds).max(0.0);
+        from_totals[a] += 1;
+        to_totals[b] += 1;
+    }
+    let transition_total = (order.len() - 1) as f64;
+
+    let mut transitions: Vec<Transition> = bigrams
+        .iter()
+        .map(|(&(a, b), s)| Transition {
+            from_label: type_label(a),
+            to_label: type_label(b),
+            count: s.count,
+            probability: s.count as f64 / from_totals[a].max(1) as f64,
+            mean_gap_seconds: s.gap_total / s.count as f64,
+            mean_inter_onset_seconds: s.inter_onset_total / s.count as f64,
+        })
+        .collect();
+    transitions.sort_by(|x, y| {
+        y.count
+            .cmp(&x.count)
+            .then(x.from_label.cmp(&y.from_label))
+            .then(x.to_label.cmp(&y.to_label))
+    });
+
+    // ---- information.
+    let repertoire_entropy_bits = entropy(&counts.iter().copied().filter(|&c| c > 0).collect::<Vec<_>>());
+    let repertoire_entropy_normalized = if type_count > 1 {
+        repertoire_entropy_bits / (type_count as f64).log2()
+    } else {
+        0.0
+    };
+    // H(next | current), averaged over the from-states by how often each occurs.
+    let mut transition_entropy_bits = 0.0;
+    for a in 0..type_count {
+        if from_totals[a] == 0 {
+            continue;
+        }
+        let row: Vec<usize> = (0..type_count)
+            .filter_map(|b| bigrams.get(&(a, b)).map(|s| s.count))
+            .collect();
+        transition_entropy_bits += (from_totals[a] as f64 / transition_total) * entropy(&row);
+    }
+    // Measured against H(next) — the destination marginal — so the difference is
+    // a true mutual information and can never come out negative.
+    let destination_entropy_bits = entropy(&to_totals);
+    let syntactic_information_bits = (destination_entropy_bits - transition_entropy_bits).max(0.0);
+    let determinism = if destination_entropy_bits > 1e-9 {
+        (syntactic_information_bits / destination_entropy_bits).clamp(0.0, 1.0)
+    } else {
+        0.0
+    };
+    let repeat_count = bigrams.iter().filter(|(&(a, b), _)| a == b).map(|(_, s)| s.count).sum::<usize>();
+    let repeat_ratio = repeat_count as f64 / transition_total;
+    let distinct_bigrams = bigrams.len();
+    let bigram_coverage = distinct_bigrams as f64 / (type_count * type_count).max(1) as f64;
+    let transitions_per_type_pair = transition_total / (type_count * type_count).max(1) as f64;
+    let (dominant_motif, dominant_motif_occurrences) = longest_repeated_motif(&sequence);
+
+    // ---- the junctions: measure and classify what sits between the slices.
+    let noise_floor = percentile(envelope, 0.05);
+    let junctions: Vec<Junction> = (0..order.len() - 1)
+        .map(|k| {
+            let previous = &regions.regions[order[k]];
+            let next = &regions.regions[order[k + 1]];
+            let probability = bigrams
+                .get(&(types[k], types[k + 1]))
+                .map(|s| s.count as f64 / from_totals[types[k]].max(1) as f64)
+                .unwrap_or(0.0);
+            measure_junction(
+                k,
+                previous,
+                next,
+                &labels[k],
+                &labels[k + 1],
+                probability,
+                noise_floor,
+                frames,
+                sr_f,
+                n_fft,
+                hop,
+                envelope,
+                envelope_rate_hz,
+            )
+        })
+        .collect();
+
+    let mut profile: HashMap<&str, usize> = HashMap::new();
+    for j in &junctions {
+        *profile.entry(j.junction_class.as_str()).or_insert(0) += 1;
+    }
+    let mut junction_profile: Vec<JunctionCount> = profile
+        .iter()
+        .map(|(&class, &count)| JunctionCount { junction_class: class.to_string(), count })
+        .collect();
+    junction_profile.sort_by(|x, y| {
+        y.count.cmp(&x.count).then(x.junction_class.cmp(&y.junction_class))
+    });
+    let dominant_junction_class = junction_profile
+        .first()
+        .map(|c| c.junction_class.clone())
+        .unwrap_or_default();
+    let bound_ratio = junctions
+        .iter()
+        .filter(|j| j.junction_class == CONTINUOUS || j.junction_class == RESONANT_TAIL)
+        .count() as f64
+        / junctions.len().max(1) as f64;
+
+    let mut gaps: Vec<f64> = junctions.iter().map(|j| j.gap_seconds).collect();
+    gaps.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+    let median_gap_seconds = gaps[gaps.len() / 2];
+    let inter_onsets: Vec<f64> = junctions.iter().map(|j| j.inter_onset_seconds).collect();
+    let gap_regularity = regularity(&inter_onsets);
+
+    // ---- the verdict.
+    let alternation_ratio = 1.0 - repeat_ratio;
+    let syntax_class = if order.len() < 3 {
+        "Isolated"
+    } else if type_count == 1 {
+        if gap_regularity >= 0.8 { "Isochronous Repetition" } else { "Repetition" }
+    } else if type_count == 2 && alternation_ratio >= 0.8 {
+        "Alternation"
+    } else if determinism >= 0.35 {
+        "Structured"
+    } else if determinism < 0.15 {
+        "Stochastic"
+    } else {
+        "Variable"
+    }
+    .to_string();
+
+    let adequacy = if transitions_per_type_pair >= ADEQUATE_TRANSITIONS_PER_PAIR {
+        String::new()
+    } else {
+        format!(
+            " (sparse: {:.1} transitions per type-pair — suggestive, not measured)",
+            transitions_per_type_pair
+        )
+    };
+    let motif_part = if dominant_motif_occurrences > 1 {
+        format!(" · motif \"{}\" ×{}", dominant_motif, dominant_motif_occurrences)
+    } else {
+        String::new()
+    };
+    let reason = vec![
+        format!(
+            "1) {} slices over {} type{} — sequence {}{}",
+            order.len(),
+            type_count,
+            if type_count == 1 { "" } else { "s" },
+            truncate_sequence(&sequence),
+            motif_part
+        ),
+        format!(
+            "2) {:.2} bits of syntactic information (determinism {:.0}%, H(next|current) {:.2} bits){}",
+            syntactic_information_bits,
+            determinism * 100.0,
+            transition_entropy_bits,
+            adequacy
+        ),
+        format!(
+            "3) junctions mostly {} · median gap {:.0} ms · regularity {:.0}% · {:.0}% bound",
+            if dominant_junction_class.is_empty() { "unmeasured" } else { &dominant_junction_class },
+            median_gap_seconds * 1000.0,
+            gap_regularity * 100.0,
+            bound_ratio * 100.0
+        ),
+    ];
+
+    Some(BioacousticSyntax {
+        slice_count: order.len(),
+        type_count,
+        sequence,
+        slices,
+        slice_types,
+        transitions,
+        junctions,
+        junction_profile,
+        dominant_junction_class,
+        repertoire_entropy_bits,
+        repertoire_entropy_normalized,
+        transition_entropy_bits,
+        syntactic_information_bits,
+        determinism,
+        repeat_ratio,
+        distinct_bigrams,
+        bigram_coverage,
+        dominant_motif,
+        dominant_motif_occurrences,
+        median_gap_seconds,
+        gap_regularity,
+        bound_ratio,
+        syntax_class,
+        transitions_per_type_pair,
+        reason,
+    })
+}
+
+#[derive(Default)]
+struct BigramStats {
+    count: usize,
+    gap_total: f64,
+    inter_onset_total: f64,
+}
+
+// ---------------------------------------------------------------- the embedding
+
+/// The acoustic vector for one slice, read off the full analysis the pipeline
+/// already ran on that slice. This is deliberately NOT `feature_vec::feature_vec`:
+/// that vector is tuned to separate whole files across a library (it leans on
+/// loudness and length), while this one has to separate syllables inside ONE
+/// recording, where absolute level is a property of the microphone distance and
+/// says nothing about which syllable was sung. Timbre and shape carry it.
+fn slice_vector(region: &crate::peak::Region) -> Option<Vec<f64>> {
+    let p = region.analysis.as_ref()?;
+    let s = &p.spectral_features;
+    let e = &p.envelope;
+    // The ADSR terms are peak-relative and so are null at file level whenever a
+    // slice happens to hold more than one transient. Fall back to that slice's
+    // loudest event, the same reading `feature_vec` takes: a real measurement of
+    // one event beats a 0.0 that would herd every multi-event slice into the
+    // same corner of the space and cluster them by their nullness.
+    let event = e.representative_slice();
+    let temporal_centroid = e
+        .envelope_temporal_centroid
+        .or_else(|| event.map(|x| x.envelope_temporal_centroid))
+        .unwrap_or(0.0);
+    let attack_seconds = e
+        .envelope_attack_seconds
+        .or_else(|| event.map(|x| x.envelope_attack_seconds))
+        .unwrap_or(0.0);
+    let sustain_level = e
+        .envelope_sustain_level
+        .or_else(|| event.map(|x| x.envelope_sustain_level))
+        .unwrap_or(0.0);
+    let mut v = vec![
+        (1.0 + p.metadata.length_seconds).ln(),
+        (1.0 + s.spectral_centroid_hz).ln(),
+        (1.0 + s.spectral_rolloff_hz).ln(),
+        (1.0 + s.zero_crossings_per_second).ln(),
+        s.spectral_flatness,
+        s.harmonicity,
+        s.inharmonicity,
+        s.low_band_energy,
+        s.mid_band_energy,
+        s.high_band_energy,
+        (1.0 + p.musicality.pitch_hz).ln(),
+        temporal_centroid,
+        (1.0 + attack_seconds).ln(),
+        sustain_level,
+        s.crest_factor,
+    ];
+    // MFCC 1..5 — the timbral fingerprint, and the closest thing this pipeline
+    // has to the learned embedding an auto-encoder would produce. c0 is skipped
+    // for the same reason level is: it is loudness.
+    for j in 1..=5 {
+        v.push(s.mel_frequency_cepstral_coefficients.get(j).copied().unwrap_or(0.0));
+    }
+    if v.iter().any(|x| !x.is_finite()) {
+        return None;
+    }
+    Some(v)
+}
+
+// ---------------------------------------------------------------- clustering
+
+/// Complete-linkage agglomerative clustering with an automatic cut.
+///
+/// K-means is the wrong tool here: it needs `k` up front, and the repertoire
+/// size is precisely the unknown. Agglomerative merging builds the whole
+/// dendrogram instead, and the cut is taken at the largest RELATIVE jump in
+/// merge height — the point where joining two more groups suddenly costs much
+/// more than every merge before it. If no jump is large enough
+/// (`MINIMUM_MERGE_JUMP_RATIO`), the slices are a continuum and everything is
+/// one type; that outcome is a real answer, not a failure.
+///
+/// Complete linkage (cluster distance = the FARTHEST pair) rather than single
+/// linkage, because single linkage chains: one intermediate slice would fuse two
+/// genuinely distinct syllable types into a smear.
+///
+/// Returns a cluster index per input row.
+fn cluster_slices(x: &[Vec<f64>]) -> Vec<usize> {
+    let n = x.len();
+    if n < 2 {
+        return vec![0; n];
+    }
+    // Pairwise distance matrix; the merge loop updates it in place.
+    let mut d = vec![vec![0.0f64; n]; n];
+    for i in 0..n {
+        for j in (i + 1)..n {
+            let dist = x[i]
+                .iter()
+                .zip(&x[j])
+                .map(|(a, b)| (a - b) * (a - b))
+                .sum::<f64>()
+                .sqrt();
+            d[i][j] = dist;
+            d[j][i] = dist;
+        }
+    }
+
+    let mut active: Vec<bool> = vec![true; n];
+    let mut members: Vec<Vec<usize>> = (0..n).map(|i| vec![i]).collect();
+    // Each step records (height, the partition BEFORE the merge collapsed it).
+    let mut merges: Vec<(f64, Vec<usize>)> = Vec::with_capacity(n - 1);
+    let mut assignment: Vec<usize> = (0..n).collect();
+
+    for _ in 0..(n - 1) {
+        let (mut best, mut pair) = (f64::INFINITY, (0usize, 0usize));
+        for i in 0..n {
+            if !active[i] {
+                continue;
+            }
+            for j in (i + 1)..n {
+                if active[j] && d[i][j] < best {
+                    best = d[i][j];
+                    pair = (i, j);
+                }
+            }
+        }
+        merges.push((best, assignment.clone()));
+
+        let (i, j) = pair;
+        let absorbed = std::mem::take(&mut members[j]);
+        for &m in &absorbed {
+            assignment[m] = i;
+        }
+        members[i].extend(absorbed);
+        active[j] = false;
+        for k in 0..n {
+            if active[k] && k != i {
+                let far = d[i][k].max(d[j][k]);
+                d[i][k] = far;
+                d[k][i] = far;
+            }
+        }
+    }
+
+    // Walk the merge heights and cut at the biggest relative jump. Merge m
+    // leaves `n - m` clusters, so only consider cuts that keep the repertoire
+    // inside MAX_SLICE_TYPES and leave at least two clusters.
+    let floor = merges
+        .iter()
+        .map(|(h, _)| *h)
+        .fold(0.0f64, f64::max)
+        * 1e-6;
+    let mut best_ratio = 0.0;
+    let mut cut: Option<usize> = None;
+    for m in 0..merges.len() - 1 {
+        let clusters_after = n - (m + 1);
+        if clusters_after < 2 || clusters_after > MAX_SLICE_TYPES {
+            continue;
+        }
+        let here = merges[m].0.max(floor).max(1e-9);
+        let next = merges[m + 1].0;
+        let ratio = next / here;
+        if ratio > best_ratio {
+            best_ratio = ratio;
+            // The partition to keep is the one standing AFTER this merge, i.e.
+            // the snapshot recorded at the following step.
+            cut = Some(m + 1);
+        }
+    }
+
+    match cut {
+        Some(m) if best_ratio >= MINIMUM_MERGE_JUMP_RATIO => compact(&merges[m].1),
+        _ => vec![0; n],
+    }
+}
+
+/// Renumber arbitrary group ids to a dense 0..k range.
+fn compact(assignment: &[usize]) -> Vec<usize> {
+    let mut map: HashMap<usize, usize> = HashMap::new();
+    assignment
+        .iter()
+        .map(|&a| {
+            let next = map.len();
+            *map.entry(a).or_insert(next)
+        })
+        .collect()
+}
+
+/// "A".."Z" then "a".."z"; beyond that, a number. `MAX_SLICE_TYPES` keeps us in
+/// the first stretch, but the fallback means no input can produce a collision.
+fn type_label(index: usize) -> String {
+    if index < 26 {
+        ((b'A' + index as u8) as char).to_string()
+    } else if index < 52 {
+        ((b'a' + (index - 26) as u8) as char).to_string()
+    } else {
+        format!("#{}", index)
+    }
+}
+
+fn build_slice_types(
+    regions: &Regions,
+    order: &[usize],
+    types: &[usize],
+    type_count: usize,
+    standardized: &[Option<Vec<f64>>],
+) -> Vec<SliceType> {
+    (0..type_count)
+        .map(|t| {
+            let slots: Vec<usize> = (0..order.len()).filter(|&k| types[k] == t).collect();
+            let mut duration = 0.0;
+            let mut centroid = 0.0;
+            let mut harmonicity = 0.0;
+            let mut measured = 0.0;
+            for &k in &slots {
+                let region = &regions.regions[order[k]];
+                duration += region.duration_seconds;
+                if let Some(p) = region.analysis.as_ref() {
+                    centroid += p.spectral_features.spectral_centroid_hz;
+                    harmonicity += p.spectral_features.harmonicity;
+                    measured += 1.0;
+                }
+            }
+            let n = slots.len().max(1) as f64;
+            let exemplar = medoid(&slots, standardized).unwrap_or(slots[0]);
+            let mean_centroid = if measured > 0.0 { centroid / measured } else { 0.0 };
+            let mean_harmonicity = if measured > 0.0 { harmonicity / measured } else { 0.0 };
+            SliceType {
+                label: type_label(t),
+                descriptor: descriptor(duration / n, mean_centroid, mean_harmonicity),
+                occurrences: slots.len(),
+                share: slots.len() as f64 / order.len() as f64,
+                exemplar_region_index: regions.regions[order[exemplar]].index,
+                mean_duration_seconds: duration / n,
+                mean_spectral_centroid_hz: mean_centroid,
+                mean_harmonicity,
+            }
+        })
+        .collect()
+}
+
+/// The member with the smallest total distance to its siblings — the most
+/// typical example of the type, and a better exemplar than the centroid because
+/// it is an actual slice you can audition.
+fn medoid(slots: &[usize], standardized: &[Option<Vec<f64>>]) -> Option<usize> {
+    let usable: Vec<usize> = slots.iter().copied().filter(|&k| standardized[k].is_some()).collect();
+    if usable.is_empty() {
+        return None;
+    }
+    usable
+        .iter()
+        .map(|&k| {
+            let a = standardized[k].as_ref().unwrap();
+            let total: f64 = usable
+                .iter()
+                .map(|&m| {
+                    let b = standardized[m].as_ref().unwrap();
+                    a.iter().zip(b).map(|(p, q)| (p - q) * (p - q)).sum::<f64>().sqrt()
+                })
+                .sum();
+            (k, total)
+        })
+        .min_by(|x, y| x.1.partial_cmp(&y.1).unwrap_or(std::cmp::Ordering::Equal))
+        .map(|(k, _)| k)
+}
+
+/// A plain-language read of a type, from its own measurements only.
+fn descriptor(duration_seconds: f64, centroid_hz: f64, harmonicity: f64) -> String {
+    let length = if duration_seconds < 0.15 {
+        "click"
+    } else if duration_seconds < 0.5 {
+        "short"
+    } else if duration_seconds < 1.5 {
+        "medium"
+    } else {
+        "long"
+    };
+    let brightness = if centroid_hz <= 0.0 {
+        "unmeasured"
+    } else if centroid_hz < 500.0 {
+        "dark"
+    } else if centroid_hz < 2000.0 {
+        "warm"
+    } else if centroid_hz < 6000.0 {
+        "bright"
+    } else {
+        "airy"
+    };
+    let tonality = if harmonicity > 0.7 {
+        "tonal"
+    } else if harmonicity > 0.4 {
+        "mixed"
+    } else {
+        "noisy"
+    };
+    format!("{} {} {}", length, brightness, tonality)
+}
+
+// ---------------------------------------------------------------- junctions
+
+pub const SILENCE: &str = "Silence";
+pub const NOISE_BED: &str = "Noise Bed";
+pub const RESONANT_TAIL: &str = "Resonant Tail";
+pub const BREATH: &str = "Breath";
+pub const CONTINUOUS: &str = "Continuous";
+
+#[allow(clippy::too_many_arguments)]
+fn measure_junction(
+    index: usize,
+    previous: &crate::peak::Region,
+    next: &crate::peak::Region,
+    from_label: &str,
+    to_label: &str,
+    transition_probability: f64,
+    noise_floor: f64,
+    frames: &[Vec<f32>],
+    sr_f: f64,
+    n_fft: usize,
+    hop: usize,
+    envelope: &[f64],
+    envelope_rate_hz: f64,
+) -> Junction {
+    let gap_start = previous.end_seconds;
+    let gap_end = next.start_seconds;
+    let gap_seconds = (gap_end - gap_start).max(0.0);
+    let inter_onset_seconds = (next.start_seconds - previous.start_seconds).max(0.0);
+
+    // Level and slope come off the RMS envelope (~200 fps) — fine enough to see
+    // a tail fall inside a 150 ms gap, which the 86 fps STFT is not.
+    let first = (gap_start * envelope_rate_hz).round().max(0.0) as usize;
+    let last = ((gap_end * envelope_rate_hz).round().max(0.0) as usize).min(envelope.len());
+    let window = if last > first { &envelope[first..last] } else { &[][..] };
+
+    let level = if window.is_empty() {
+        0.0
+    } else {
+        (window.iter().map(|v| v * v).sum::<f64>() / window.len() as f64).sqrt()
+    };
+    let slope = decibel_slope(window, envelope_rate_hz);
+    let below_previous_peak = ratio_decibels(level, previous.peak_amplitude);
+    let above_noise_floor = ratio_decibels(level, noise_floor);
+
+    // Spectrum of the residue: is the quiet bright hiss, low rumble, or a tone?
+    let (centroid, flatness) = gap_spectrum(frames, gap_start, gap_end, sr_f, n_fft, hop);
+
+    // Classify. Order matters: "the sound never stopped" outranks any reading of
+    // the shape, and a measurable rise or fall outranks the flat-gap split.
+    let change_decibels = slope * gap_seconds;
+    let junction_class = if window.is_empty() {
+        SILENCE
+    } else if below_previous_peak > -BOUND_WITHIN_DECIBELS {
+        CONTINUOUS
+    } else if change_decibels <= -JUNCTION_CHANGE_DECIBELS {
+        RESONANT_TAIL
+    } else if change_decibels >= JUNCTION_CHANGE_DECIBELS {
+        BREATH
+    } else if above_noise_floor >= NOISE_FLOOR_MARGIN_DECIBELS {
+        NOISE_BED
+    } else {
+        SILENCE
+    };
+
+    Junction {
+        index,
+        from_region_index: previous.index,
+        to_region_index: next.index,
+        from_label: from_label.to_string(),
+        to_label: to_label.to_string(),
+        gap_seconds,
+        inter_onset_seconds,
+        gap_root_mean_square_level: level,
+        gap_level_below_previous_peak_decibels: below_previous_peak,
+        gap_level_above_noise_floor_decibels: above_noise_floor,
+        gap_slope_decibels_per_second: slope,
+        gap_spectral_centroid_hz: centroid,
+        gap_spectral_flatness: flatness,
+        junction_class: junction_class.to_string(),
+        transition_probability,
+        surprisal_bits: if transition_probability > 0.0 {
+            -transition_probability.log2()
+        } else {
+            0.0
+        },
+    }
+}
+
+/// Least-squares slope of the envelope in dB against time in seconds. The dB
+/// floor is set well under any real noise floor so a digitally silent frame
+/// contributes a finite value instead of −∞ dragging the fit to nonsense.
+fn decibel_slope(window: &[f64], rate_hz: f64) -> f64 {
+    if window.len() < 3 || rate_hz <= 0.0 {
+        return 0.0;
+    }
+    let decibels: Vec<f64> = window.iter().map(|&v| 20.0 * (v.max(1e-9)).log10()).collect();
+    let n = decibels.len() as f64;
+    let mean_t = (n - 1.0) / 2.0 / rate_hz;
+    let mean_d = decibels.iter().sum::<f64>() / n;
+    let mut numerator = 0.0;
+    let mut denominator = 0.0;
+    for (i, &d) in decibels.iter().enumerate() {
+        let t = i as f64 / rate_hz - mean_t;
+        numerator += t * (d - mean_d);
+        denominator += t * t;
+    }
+    if denominator <= 1e-12 {
+        0.0
+    } else {
+        numerator / denominator
+    }
+}
+
+/// Centroid and flatness of whatever is sounding inside the gap, averaged over
+/// the STFT frames whose centers fall in it. Reuses the pipeline's own STFT —
+/// no second transform.
+fn gap_spectrum(
+    frames: &[Vec<f32>],
+    gap_start: f64,
+    gap_end: f64,
+    sr_f: f64,
+    n_fft: usize,
+    hop: usize,
+) -> (f64, f64) {
+    if frames.is_empty() || hop == 0 || sr_f <= 0.0 || n_fft < 2 {
+        return (0.0, 0.0);
+    }
+    let bin_hz = sr_f / n_fft as f64;
+    let center_offset = n_fft as f64 / 2.0;
+    let mut sum = vec![0.0f64; frames[0].len()];
+    let mut used = 0usize;
+    for (f, frame) in frames.iter().enumerate() {
+        let center = (f * hop) as f64 + center_offset;
+        let t = center / sr_f;
+        if t < gap_start {
+            continue;
+        }
+        if t > gap_end {
+            break;
+        }
+        for (b, &m) in frame.iter().enumerate() {
+            sum[b] += m as f64;
+        }
+        used += 1;
+    }
+    if used == 0 {
+        return (0.0, 0.0);
+    }
+    let magnitudes: Vec<f64> = sum.iter().map(|v| v / used as f64).collect();
+    let total: f64 = magnitudes.iter().sum();
+    if total <= 1e-12 {
+        return (0.0, 0.0);
+    }
+    let centroid = magnitudes
+        .iter()
+        .enumerate()
+        .map(|(b, m)| b as f64 * bin_hz * m)
+        .sum::<f64>()
+        / total;
+    // Flatness = geometric mean / arithmetic mean. 1 is white noise, →0 a tone.
+    let n = magnitudes.len() as f64;
+    let log_sum: f64 = magnitudes.iter().map(|m| m.max(1e-12).ln()).sum();
+    let flatness = (log_sum / n).exp() / (total / n);
+    (centroid, flatness.clamp(0.0, 1.0))
+}
+
+// ---------------------------------------------------------------- small math
+
+/// Shannon entropy of a count vector, in bits.
+fn entropy(counts: &[usize]) -> f64 {
+    let total: usize = counts.iter().sum();
+    if total == 0 {
+        return 0.0;
+    }
+    let total = total as f64;
+    -counts
+        .iter()
+        .filter(|&&c| c > 0)
+        .map(|&c| {
+            let p = c as f64 / total;
+            p * p.log2()
+        })
+        .sum::<f64>()
+}
+
+/// `1 − coefficient of variation`, clamped to 0..1 — 1 is perfectly even.
+fn regularity(values: &[f64]) -> f64 {
+    if values.len() < 2 {
+        return 0.0;
+    }
+    let n = values.len() as f64;
+    let mean = values.iter().sum::<f64>() / n;
+    if mean <= 1e-9 {
+        return 0.0;
+    }
+    let variance = values.iter().map(|v| (v - mean) * (v - mean)).sum::<f64>() / n;
+    (1.0 - variance.sqrt() / mean).clamp(0.0, 1.0)
+}
+
+/// `q`-quantile of an unsorted slice; the file's noise floor is read at q=0.05.
+fn percentile(values: &[f64], q: f64) -> f64 {
+    if values.is_empty() {
+        return 0.0;
+    }
+    let mut v: Vec<f64> = values.to_vec();
+    v.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+    let i = ((v.len() - 1) as f64 * q.clamp(0.0, 1.0)).round() as usize;
+    v[i]
+}
+
+/// 20·log10(a/b), floored so a silent numerator or denominator stays finite.
+fn ratio_decibels(a: f64, b: f64) -> f64 {
+    20.0 * (a.max(1e-9) / b.max(1e-9)).log10()
+}
+
+/// The longest phrase that occurs more than once, and how many times. Searched
+/// from long to short so the first hit is the answer; capped at
+/// `MAXIMUM_MOTIF_LENGTH` because a "motif" the length of the song is just the
+/// song. Occurrences may overlap — a stutter (AAAA) is a real repetition of AA.
+fn longest_repeated_motif(sequence: &str) -> (String, usize) {
+    let letters: Vec<char> = sequence.chars().collect();
+    let n = letters.len();
+    let longest = MAXIMUM_MOTIF_LENGTH.min(n / 2);
+    for length in (2..=longest).rev() {
+        let mut seen: HashMap<&[char], usize> = HashMap::new();
+        for start in 0..=(n - length) {
+            *seen.entry(&letters[start..start + length]).or_insert(0) += 1;
+        }
+        if let Some((phrase, count)) = seen
+            .iter()
+            .filter(|(_, &c)| c > 1)
+            .max_by(|x, y| x.1.cmp(y.1).then(y.0.cmp(x.0)))
+        {
+            return (phrase.iter().collect(), *count);
+        }
+    }
+    (String::new(), 0)
+}
+
+/// The sequence is written in full into its own field; the reason line only
+/// needs enough of it to recognize the shape.
+fn truncate_sequence(sequence: &str) -> String {
+    const SHOWN: usize = 32;
+    if sequence.chars().count() <= SHOWN {
+        sequence.to_string()
+    } else {
+        format!("{}…", sequence.chars().take(SHOWN).collect::<String>())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::peak::{Region, Regions};
+
+    /// A region carrying just enough analysis for the vector: the fields
+    /// `slice_vector` reads. `kind` picks one of two very different timbres.
+    fn region(index: usize, start: f64, duration: f64, kind: usize) -> Region {
+        let mut p = crate::peak::Peak {
+            metadata: crate::peak::Metadata {
+                analyzer_version: String::new(),
+                name: String::new(),
+                folder: String::new(),
+                sub: String::new(),
+                path: String::new(),
+                length_seconds: duration,
+                sample_rate: 44100,
+                bit_depth: 16,
+                channels: 1,
+                source_format: String::new(),
+                lossy_source: false,
+                dc_offset: 0.0,
+                trailing_silence_ms: 0.0,
+                analysis_depth: "full".to_string(),
+            },
+            classification: Default::default(),
+            envelope: Default::default(),
+            spectral_features: Default::default(),
+            musicality: Default::default(),
+            unsupervised: Default::default(),
+            ucs: Default::default(),
+            regions: Default::default(),
+            preview: Default::default(),
+            bioacoustic_syntax: None,
+        };
+        // Two well-separated timbres so the clustering has something real to find.
+        let (centroid, harmonicity, mfcc) = if kind == 0 {
+            (400.0, 0.9, vec![0.0, 5.0, -3.0, 1.0, 0.5, 0.2])
+        } else {
+            (6000.0, 0.1, vec![0.0, -6.0, 4.0, -2.0, -1.0, 0.8])
+        };
+        p.spectral_features.spectral_centroid_hz = centroid;
+        p.spectral_features.spectral_rolloff_hz = centroid * 2.0;
+        p.spectral_features.harmonicity = harmonicity;
+        p.spectral_features.spectral_flatness = 1.0 - harmonicity;
+        p.spectral_features.mel_frequency_cepstral_coefficients = mfcc;
+        p.envelope.envelope_temporal_centroid = Some(0.3 + 0.2 * kind as f64);
+        Region {
+            index,
+            start_seconds: start,
+            end_seconds: start + duration,
+            duration_seconds: duration,
+            peak_amplitude: 0.8,
+            name: String::new(),
+            analysis: Some(Box::new(p)),
+        }
+    }
+
+    /// Regions laid out on a fixed period, alternating between `kinds`.
+    fn sequence_of(kinds: &[usize], duration: f64, gap: f64) -> Regions {
+        let regions: Vec<Region> = kinds
+            .iter()
+            .enumerate()
+            .map(|(i, &k)| region(i, i as f64 * (duration + gap), duration, k))
+            .collect();
+        Regions { count: regions.len(), regions, ..Default::default() }
+    }
+
+    /// A flat, quiet envelope covering `seconds` at 200 fps, with the regions
+    /// themselves loud — enough for the junction measurements to run.
+    fn envelope_for(regions: &Regions, seconds: f64) -> (Vec<f64>, f64) {
+        let rate = 200.0;
+        let frames = (seconds * rate).ceil() as usize;
+        let mut v = vec![0.0005; frames];
+        for r in &regions.regions {
+            let a = (r.start_seconds * rate) as usize;
+            let b = ((r.end_seconds * rate) as usize).min(frames);
+            for x in v.iter_mut().take(b).skip(a) {
+                *x = 0.8;
+            }
+        }
+        (v, rate)
+    }
+
+    fn analyze(regions: &Regions, seconds: f64) -> BioacousticSyntax {
+        let (env, rate) = envelope_for(regions, seconds);
+        bioacoustic_syntax(regions, &[], 44100.0, 2048, 512, &env, rate).expect("syntax")
+    }
+
+    #[test]
+    fn one_slice_has_no_syntax() {
+        let r = sequence_of(&[0], 0.2, 0.3);
+        let (env, rate) = envelope_for(&r, 1.0);
+        assert!(bioacoustic_syntax(&r, &[], 44100.0, 2048, 512, &env, rate).is_none());
+    }
+
+    #[test]
+    fn a_repeated_syllable_is_one_type() {
+        let r = sequence_of(&[0, 0, 0, 0, 0, 0], 0.2, 0.3);
+        let s = analyze(&r, 3.5);
+        assert_eq!(s.type_count, 1, "one timbre repeated is one word: {}", s.sequence);
+        assert_eq!(s.sequence, "AAAAAA");
+        // Even spacing, so the delivery reads as metronomic.
+        assert!(s.gap_regularity > 0.9, "regularity {}", s.gap_regularity);
+        assert_eq!(s.syntax_class, "Isochronous Repetition");
+        // One word carries no choice, so no information rides on the order.
+        assert!(s.syntactic_information_bits < 1e-9);
+    }
+
+    #[test]
+    fn two_timbres_split_into_two_types() {
+        let r = sequence_of(&[0, 1, 0, 1, 0, 1, 0, 1], 0.2, 0.3);
+        let s = analyze(&r, 4.5);
+        assert_eq!(s.type_count, 2, "two distinct timbres: {}", s.sequence);
+        assert_eq!(s.slice_types.len(), 2);
+        // Strict alternation: knowing the current slice fully determines the next.
+        assert!(s.determinism > 0.99, "determinism {}", s.determinism);
+        assert_eq!(s.syntax_class, "Alternation");
+        assert_eq!(s.repeat_ratio, 0.0);
+        assert_eq!(s.distinct_bigrams, 2);
+    }
+
+    #[test]
+    fn an_alternating_song_has_a_motif() {
+        let r = sequence_of(&[0, 1, 0, 1, 0, 1], 0.2, 0.3);
+        let s = analyze(&r, 3.5);
+        assert!(s.dominant_motif_occurrences > 1, "no repeated motif in {}", s.sequence);
+        assert!(s.dominant_motif.len() >= 2);
+    }
+
+    #[test]
+    fn every_gap_becomes_one_classified_junction() {
+        let r = sequence_of(&[0, 1, 0, 1], 0.2, 0.3);
+        let s = analyze(&r, 2.5);
+        assert_eq!(s.junctions.len(), 3, "one junction per gap");
+        for j in &s.junctions {
+            assert!((j.gap_seconds - 0.3).abs() < 0.02, "gap {}", j.gap_seconds);
+            assert!((j.inter_onset_seconds - 0.5).abs() < 0.02);
+            assert!(!j.junction_class.is_empty());
+        }
+        assert_eq!(s.junction_profile.iter().map(|c| c.count).sum::<usize>(), 3);
+    }
+
+    #[test]
+    fn a_quiet_flat_gap_reads_as_silence_not_as_a_bed() {
+        let r = sequence_of(&[0, 0], 0.2, 0.4);
+        let s = analyze(&r, 1.0);
+        assert_eq!(s.junctions[0].junction_class, SILENCE);
+        assert!(s.junctions[0].gap_level_below_previous_peak_decibels < -50.0);
+    }
+
+    #[test]
+    fn a_falling_gap_reads_as_a_resonant_tail() {
+        let mut r = sequence_of(&[0, 0], 0.2, 0.6);
+        r.regions[1].start_seconds = 0.8;
+        r.regions[1].end_seconds = 1.0;
+        let rate = 200.0;
+        let mut env = vec![0.0005; 220];
+        for x in env.iter_mut().take(40) {
+            *x = 0.8;
+        }
+        // The gap starts loud and fades — the first sound ringing out.
+        for (i, x) in env.iter_mut().enumerate().take(160).skip(40) {
+            *x = 0.4 * (0.02f64).powf((i - 40) as f64 / 120.0);
+        }
+        for x in env.iter_mut().take(200).skip(160) {
+            *x = 0.8;
+        }
+        let s = bioacoustic_syntax(&r, &[], 44100.0, 2048, 512, &env, rate).expect("syntax");
+        assert_eq!(s.junctions[0].junction_class, RESONANT_TAIL);
+        assert!(s.junctions[0].gap_slope_decibels_per_second < 0.0);
+        assert!(s.bound_ratio > 0.0);
+    }
+
+    #[test]
+    fn a_rising_gap_reads_as_a_breath() {
+        let mut r = sequence_of(&[0, 0], 0.2, 0.6);
+        r.regions[1].start_seconds = 0.8;
+        r.regions[1].end_seconds = 1.0;
+        let rate = 200.0;
+        let mut env = vec![0.0005; 220];
+        for x in env.iter_mut().take(40) {
+            *x = 0.8;
+        }
+        // Level climbs through the gap — an inhale, or a wind-up into the onset.
+        for (i, x) in env.iter_mut().enumerate().take(160).skip(40) {
+            *x = 0.0002 * (50.0f64).powf((i - 40) as f64 / 120.0);
+        }
+        for x in env.iter_mut().take(200).skip(160) {
+            *x = 0.8;
+        }
+        let s = bioacoustic_syntax(&r, &[], 44100.0, 2048, 512, &env, rate).expect("syntax");
+        assert_eq!(s.junctions[0].junction_class, BREATH);
+        assert!(s.junctions[0].gap_slope_decibels_per_second > 0.0);
+    }
+
+    #[test]
+    fn a_gap_that_never_drops_reads_as_continuous() {
+        let r = sequence_of(&[0, 0], 0.2, 0.4);
+        let rate = 200.0;
+        // The gate dipped, the sound did not stop: the "gap" is 6 dB down.
+        let env = vec![0.4; 200];
+        let s = bioacoustic_syntax(&r, &[], 44100.0, 2048, 512, &env, rate).expect("syntax");
+        assert_eq!(s.junctions[0].junction_class, CONTINUOUS);
+        assert_eq!(s.bound_ratio, 1.0);
+    }
+
+    #[test]
+    fn surprisal_marks_the_rare_move() {
+        // Seven A→A repeats and one departure to B: the departure is the news.
+        let r = sequence_of(&[0, 0, 0, 0, 0, 0, 0, 0, 1], 0.2, 0.3);
+        let s = analyze(&r, 5.0);
+        assert_eq!(s.type_count, 2);
+        let rare = s.junctions.last().expect("a junction");
+        let common = &s.junctions[0];
+        assert!(
+            rare.surprisal_bits > common.surprisal_bits,
+            "rare {} vs common {}",
+            rare.surprisal_bits,
+            common.surprisal_bits
+        );
+    }
+
+    #[test]
+    fn labels_are_assigned_by_frequency() {
+        // Kind 1 appears once, kind 0 five times — so kind 0 must be "A".
+        let r = sequence_of(&[1, 0, 0, 0, 0, 0], 0.2, 0.3);
+        let s = analyze(&r, 3.5);
+        assert_eq!(s.type_count, 2);
+        assert_eq!(s.sequence, "BAAAAA");
+        assert_eq!(s.slice_types[0].label, "A");
+        assert_eq!(s.slice_types[0].occurrences, 5);
+    }
+
+    #[test]
+    fn entropy_of_a_fair_coin_is_one_bit() {
+        assert!((entropy(&[4, 4]) - 1.0).abs() < 1e-12);
+        assert_eq!(entropy(&[7]), 0.0);
+        assert_eq!(entropy(&[]), 0.0);
+    }
+
+    #[test]
+    fn regularity_is_one_for_an_even_series() {
+        assert!((regularity(&[0.5, 0.5, 0.5]) - 1.0).abs() < 1e-12);
+        assert!(regularity(&[0.1, 2.0, 0.1]) < 0.5);
+    }
+
+    #[test]
+    fn motif_search_finds_the_longest_repeat() {
+        assert_eq!(longest_repeated_motif("ABCABC"), ("ABC".to_string(), 2));
+        assert_eq!(longest_repeated_motif("ABCD"), (String::new(), 0));
+        let (phrase, count) = longest_repeated_motif("AAAA");
+        assert_eq!(count, 3, "overlapping repeats of {} count", phrase);
+    }
+}

@@ -21,6 +21,9 @@
 //!   morphology   — the UCS morphology axis (spec §4b): stationarity, spectral
 //!                  entropy/tilt/band-limit, centroid & pitch sweep slopes,
 //!                  syllabic modulation
+//!   syntax       — bioacoustic syntax: cluster the file's regions into syllable
+//!                  types, map the slice-to-slice transition probabilities, and
+//!                  measure + classify the junctions between them
 //!   partials     — overtone peak-picking → inharmonicity (harmonic vs metallic)
 //!   distortion   — THD + clipping density → Clean / Dirty / Clipped
 //!   moments      — mean / variance / skewness / kurtosis of a series
@@ -108,6 +111,8 @@ pub mod stft;
 pub mod stream;
 #[path = "Scananalyzers/Temporal/sustain.rs"]
 pub mod sustain;
+#[path = "Scananalyzers/Sequence/syntax.rs"]
+pub mod syntax;
 #[path = "Tagging/tags.rs"]
 pub mod tags;
 #[path = "Scananalyzers/Temporal/tempo.rs"]
