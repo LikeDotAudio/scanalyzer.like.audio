@@ -99,6 +99,10 @@ const AUDIBLE_AT_ONSET_DECIBELS_FULL_SCALE: f64 = -60.0;
 /// next slice begins".
 const ONSET_APPROACH_FRACTION: f64 = 0.25;
 
+/// An envelope level at or below this (≈−120 dBFS) is a hard-edited zero, not a
+/// quiet noise floor. Anything measured *relative* to it is undefined.
+const DIGITAL_SILENCE: f64 = 1e-6;
+
 /// Longest phrase the motif search will look for, in slices.
 const MAXIMUM_MOTIF_LENGTH: usize = 16;
 
@@ -174,8 +178,11 @@ pub struct Junction {
     /// How far the gap sits below the preceding slice's peak. Small means the
     /// sound never really stopped.
     pub gap_level_below_previous_peak_decibels: f64,
-    /// How far the gap sits above the file's own quietest moment.
-    pub gap_level_above_noise_floor_decibels: f64,
+    /// How far the gap sits above the file's own quietest moment. `None` when
+    /// the file has been edited to digital silence and so HAS no noise floor —
+    /// dividing by that zero produced readings like "+119 dB above the floor",
+    /// which is not a measurement of anything.
+    pub gap_level_above_noise_floor_decibels: Option<f64>,
     /// Negative = falling (a tail ringing out), positive = rising (a breath or
     /// wind-up into the next onset), ~0 = a steady bed.
     pub gap_slope_decibels_per_second: f64,
@@ -1077,7 +1084,11 @@ fn measure_junction(
     };
     let slope = decibel_slope(window, envelope_rate_hz);
     let below_previous_peak = ratio_decibels(level, previous.peak_amplitude);
-    let above_noise_floor = ratio_decibels(level, noise_floor);
+    let above_noise_floor = if noise_floor > DIGITAL_SILENCE {
+        Some(ratio_decibels(level, noise_floor))
+    } else {
+        None
+    };
 
     // Spectrum of the residue: is the quiet bright hiss, low rumble, or a tone?
     let (centroid, flatness) = gap_spectrum(frames, gap_start, gap_end, sr_f, n_fft, hop);
@@ -1181,22 +1192,44 @@ fn gap_spectrum(
         return (0.0, 0.0);
     }
     let bin_hz = sr_f / n_fft as f64;
-    let center_offset = n_fft as f64 / 2.0;
+
+    // Prefer frames whose whole ANALYSIS WINDOW lies inside the gap. An STFT
+    // window is 46 ms at 44.1 kHz, so a frame merely *centered* just inside the
+    // gap still has the previous slice's tail in it, and the "spectrum of the
+    // silence" would really be a smeared copy of the sound before it. Gaps are
+    // at least 150 ms by construction, so containment normally holds; the
+    // center-based pass is the fallback for the rare gap too short to fit one.
+    let contained = |f: usize| {
+        let start = (f * hop) as f64 / sr_f;
+        let end = ((f * hop + n_fft) as f64) / sr_f;
+        start >= gap_start && end <= gap_end
+    };
+    let centered = |f: usize| {
+        let t = ((f * hop) as f64 + n_fft as f64 / 2.0) / sr_f;
+        t >= gap_start && t <= gap_end
+    };
+
     let mut sum = vec![0.0f64; frames[0].len()];
     let mut used = 0usize;
     for (f, frame) in frames.iter().enumerate() {
-        let center = (f * hop) as f64 + center_offset;
-        let t = center / sr_f;
-        if t < gap_start {
+        if !contained(f) {
             continue;
-        }
-        if t > gap_end {
-            break;
         }
         for (b, &m) in frame.iter().enumerate() {
             sum[b] += m as f64;
         }
         used += 1;
+    }
+    if used == 0 {
+        for (f, frame) in frames.iter().enumerate() {
+            if !centered(f) {
+                continue;
+            }
+            for (b, &m) in frame.iter().enumerate() {
+                sum[b] += m as f64;
+            }
+            used += 1;
+        }
     }
     if used == 0 {
         return (0.0, 0.0);
@@ -1410,6 +1443,48 @@ mod tests {
         assert_eq!(s.syntax_class, "Isochronous Repetition");
         // One word carries no choice, so no information rides on the order.
         assert!(s.syntactic_information_bits < 1e-9);
+    }
+
+    /// The same syllable, measured six times with the small wobble a segmenter
+    /// introduces: region edges snap to envelope frames, so durations quantize
+    /// and the discrete features (inharmonicity above all) twitch. Standardizing
+    /// by the within-file spread turns exactly this into a tidy fake vocabulary,
+    /// so it has to stay one type.
+    #[test]
+    fn segmenter_wobble_does_not_invent_a_vocabulary() {
+        let mut regions = Vec::new();
+        for i in 0..6 {
+            let mut r = region(i, i as f64 * 0.5, 0.2, 0);
+            let p = r.analysis.as_mut().unwrap();
+            // Bimodal jitter — the worst case, and the shape frame quantization
+            // actually produces: two crisp little blobs a hair apart.
+            let wobble = if i % 2 == 0 { 1.0 } else { -1.0 };
+            p.metadata.length_seconds += 0.002 * wobble;
+            p.spectral_features.inharmonicity += 0.05 * wobble;
+            p.spectral_features.spectral_centroid_hz += 6.0 * wobble;
+            p.spectral_features.mel_frequency_cepstral_coefficients[1] += 0.3 * wobble;
+            regions.push(r);
+        }
+        let regions = Regions { count: regions.len(), regions, ..Default::default() };
+        let s = analyze(&regions, 3.2);
+        assert_eq!(s.type_count, 1, "wobble became a vocabulary: {}", s.sequence);
+        assert_eq!(s.type_separation, 0.0);
+        assert_eq!(s.syntax_class, "Isochronous Repetition");
+    }
+
+    #[test]
+    fn a_sounding_flat_gap_reads_as_a_noise_bed() {
+        let r = sequence_of(&[0, 0], 0.2, 0.4);
+        // The two slices sit at 0..0.2 s and 0.6..0.8 s (frames 0..40 and
+        // 120..160 at 200 fps). Between them, a steady −50 dBFS bed: audible
+        // when the next slice arrives, and going neither up nor down.
+        let env: Vec<f64> = (0..200)
+            .map(|i| if i < 40 || (120..160).contains(&i) { 0.8 } else { 0.003 })
+            .collect();
+        let s = bioacoustic_syntax(&r, &[], 44100.0, 2048, 512, &env, 200.0).expect("syntax");
+        assert_eq!(s.junctions[0].junction_class, NOISE_BED);
+        // A bed is not a bond — the two slices are still separate events.
+        assert_eq!(s.bound_ratio, 0.0);
     }
 
     #[test]
