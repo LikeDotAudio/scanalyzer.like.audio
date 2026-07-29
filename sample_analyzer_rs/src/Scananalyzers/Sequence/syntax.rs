@@ -71,6 +71,12 @@ const MAX_SLICE_TYPES: usize = 12;
 /// word" an available answer.
 const MINIMUM_SILHOUETTE: f64 = 0.5;
 
+/// How far apart two type centroids must sit, in just-noticeable differences
+/// (see `SLICE_FEATURE_FLOORS`), before they count as different words. Two
+/// syllables that differ by less than two JNDs summed across twenty features
+/// are the same syllable sung twice.
+const MINIMUM_TYPE_SEPARATION: f64 = 2.0;
+
 /// A gap whose level sits within this many dB of the preceding slice's peak was
 /// never really a silence — the gate dipped, the sound did not stop.
 const BOUND_WITHIN_DECIBELS: f64 = 12.0;
@@ -201,6 +207,11 @@ pub struct BioacousticSyntax {
     pub sequence: String,
     pub slices: Vec<SliceNode>,
     pub slice_types: Vec<SliceType>,
+    /// How far apart the two closest types sit, in just-noticeable differences.
+    /// The confidence behind `type_count`: a big number means the vocabulary is
+    /// obvious, a number near the cut-off means the split is arguable. 0 when
+    /// the file has a single type.
+    pub type_separation: f64,
     pub transitions: Vec<Transition>,
     pub junctions: Vec<Junction>,
     pub junction_profile: Vec<JunctionCount>,
@@ -514,10 +525,15 @@ pub fn bioacoustic_syntax(
     };
     let reason = vec![
         format!(
-            "1) {} slices over {} type{} — sequence {}{}",
+            "1) {} slices over {} type{} ({}) — sequence {}{}",
             order.len(),
             type_count,
             if type_count == 1 { "" } else { "s" },
+            if type_count > 1 {
+                format!("separated by {:.1} JND", type_separation)
+            } else {
+                "one continuum, no vocabulary".to_string()
+            },
             truncate_sequence(&sequence),
             motif_part
         ),
@@ -543,6 +559,7 @@ pub fn bioacoustic_syntax(
         sequence,
         slices,
         slice_types,
+        type_separation,
         transitions,
         junctions,
         junction_profile,
@@ -790,8 +807,60 @@ fn cluster_slices(x: &[Vec<f64>]) -> Vec<usize> {
     }
 
     match cut {
-        Some(m) if best_score >= MINIMUM_SILHOUETTE => compact(&levels[m]),
+        // Both bars, because each catches what the other misses: silhouette
+        // rejects a split into overlapping smears, separation rejects a split
+        // into two crisp blobs that are nonetheless a hair apart.
+        Some(m)
+            if best_score >= MINIMUM_SILHOUETTE
+                && closest_type_separation(&compact(&levels[m]), x)
+                    >= MINIMUM_TYPE_SEPARATION =>
+        {
+            compact(&levels[m])
+        }
         _ => vec![0; n],
+    }
+}
+
+/// Distance between the two closest type centroids, in just-noticeable
+/// differences (the units `scale_slices` leaves behind).
+///
+/// Silhouette is scale-invariant — it asks only whether the clusters are tight
+/// RELATIVE to the space between them, so two blobs of pure quantization noise
+/// score as well as a snare and a flute. This is the absolute companion: how far
+/// apart the types actually are. Zero for a single type.
+fn closest_type_separation(assignment: &[usize], rows: &[Vec<f64>]) -> f64 {
+    let k = assignment.iter().copied().max().map_or(0, |m| m + 1);
+    if k < 2 || rows.is_empty() {
+        return 0.0;
+    }
+    let d = rows[0].len();
+    let mut sums = vec![vec![0.0f64; d]; k];
+    let mut sizes = vec![0usize; k];
+    for (i, row) in rows.iter().enumerate() {
+        for j in 0..d {
+            sums[assignment[i]][j] += row[j];
+        }
+        sizes[assignment[i]] += 1;
+    }
+    let centroids: Vec<Vec<f64>> = (0..k)
+        .map(|c| sums[c].iter().map(|v| v / sizes[c].max(1) as f64).collect())
+        .collect();
+    let mut closest = f64::INFINITY;
+    for a in 0..k {
+        for b in (a + 1)..k {
+            let dist = centroids[a]
+                .iter()
+                .zip(&centroids[b])
+                .map(|(p, q)| (p - q) * (p - q))
+                .sum::<f64>()
+                .sqrt();
+            closest = closest.min(dist);
+        }
+    }
+    if closest.is_finite() {
+        closest
+    } else {
+        0.0
     }
 }
 

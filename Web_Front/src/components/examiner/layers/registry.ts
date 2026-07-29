@@ -18,6 +18,7 @@ import { PianoScaleLayer } from './PianoScaleLayer';
 import { EnvelopeLayer } from './EnvelopeLayer';
 import { BeatsLayer } from './BeatsLayer';
 import { RegionsLayer } from './RegionsLayer';
+import { TransientsLayer } from './TransientsLayer';
 
 export const EXAMINER_LAYERS: ExaminerLayer[] = [
   // frequency domain
@@ -32,6 +33,7 @@ export const EXAMINER_LAYERS: ExaminerLayer[] = [
   LoudnessLayer,
   PhaseLayer,
   EnvelopeLayer,
+  TransientsLayer,
   BeatsLayer,
   RegionsLayer,
 ];
@@ -52,6 +54,7 @@ export const MENU_SWATCHES: Record<string, string> = {
   notes: '#A78BFA',
   piano: '#c9cdd6',
   envelope: '#e5e7eb',
+  transients: '#F59E0B',
   beats: 'linear-gradient(90deg, #EF4444, #9ca3af)',
   regions: 'linear-gradient(90deg, #e05c5c, #5ce08a, #5c9ae0)',
 };
