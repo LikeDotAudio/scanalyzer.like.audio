@@ -24,6 +24,8 @@ import { ucsColor, ucsSubColor, taxonomyKeys } from '../../groupColors';
 
 /** World radius of the ball. */
 const R = 26;
+/** The cage's natural colour at intensity 1. */
+const WIREFRAME_COLOR = '#6b7d8c';
 /** How far samples spread across their face, and how far they float above it. */
 const FACE_SPREAD = 3.4;
 const FACE_DEPTH = 2.2;
@@ -94,16 +96,31 @@ interface Props {
   data: any[];
   selectedItem?: any;
   onSelect?: (item: any) => void;
-  /** Pull toward the response face: 0 = free acoustic scatter, 1 = fully anchored. */
+  /** Pull toward the response face: 0 = free acoustic scatter, 1 = fully anchored,
+   *  and beyond 1 the samples OVERSHOOT their face — the categories fly apart, which
+   *  separates neighbouring faces that overlap at 1. `lerp` extrapolates, so no
+   *  special case is needed for t > 1. */
   pull: number;
+  /** Wireframe brightness, 0..2. See `Wireframe`. */
+  outline: number;
   axes: [string, string, string];
   /** Faces to draw; empty means all. */
   visibleFaces: Set<number>;
   colorBy: ColorMode;
 }
 
-/** The wireframe ball: the real 90 edges between the real 60 vertices. */
-function Wireframe({ solid }: { solid: ReturnType<typeof truncatedIcosahedron> }) {
+/** The wireframe ball: the real 90 edges between the real 60 vertices.
+ *
+ *  `intensity` runs 0..2 rather than 0..1 so the cage can be pushed past its
+ *  natural brightness. Up to 1 it fades the line in; beyond 1 the line is already
+ *  fully opaque, so the extra range lifts the COLOUR toward white instead —
+ *  otherwise the top half of the slider would do nothing. */
+function Wireframe({
+  solid, intensity,
+}: {
+  solid: ReturnType<typeof truncatedIcosahedron>;
+  intensity: number;
+}) {
   const geometry = useMemo(() => {
     const pts: number[] = [];
     for (const [a, b] of solid.edges) {
@@ -114,9 +131,21 @@ function Wireframe({ solid }: { solid: ReturnType<typeof truncatedIcosahedron> }
     g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
     return g;
   }, [solid]);
+  const color = useMemo(() => {
+    const c = new THREE.Color(WIREFRAME_COLOR);
+    if (intensity > 1) c.lerp(new THREE.Color('#ffffff'), Math.min(1, intensity - 1));
+    return c;
+  }, [intensity]);
+
+  if (intensity <= 0) return null; // fully down: no cage at all
   return (
     <lineSegments geometry={geometry}>
-      <lineBasicMaterial color="#6b7d8c" transparent opacity={0.75} toneMapped={false} />
+      <lineBasicMaterial
+        color={color}
+        transparent
+        opacity={Math.min(1, intensity)}
+        toneMapped={false}
+      />
     </lineSegments>
   );
 }
@@ -308,7 +337,7 @@ export default function FaceBall(props: Props) {
   return (
     <Canvas camera={{ position: [0, 0, 78], fov: 50 }} style={{ background: '#0a0e12' }}>
       <ambientLight intensity={1} />
-      <Wireframe solid={solid} />
+      <Wireframe solid={solid} intensity={props.outline} />
       <FaceMarkers
         solid={solid}
         hovered={hovered}

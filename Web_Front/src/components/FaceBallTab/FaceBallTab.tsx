@@ -41,6 +41,9 @@ export default function FaceBallTab({
   filteredData, selectedItem, onSound, audioFiles = [], eyeAudio, onEyePlay,
 }: Props) {
   const [pull, setPull] = useState(() => Number(getPref('pull', '0.85')));
+  // Wireframe brightness. 1 is the cage's natural look; the range runs to 2 so it
+  // can be pushed brighter than default, and to 0 to hide it entirely.
+  const [outline, setOutline] = useState(() => Number(getPref('outline', '0.75')));
   const [axisX, setAxisX] = useState(() => getPref('x', 'Brightness'));
   const [axisY, setAxisY] = useState(() => getPref('y', 'Harmonicity'));
   const [axisZ, setAxisZ] = useState(() => getPref('z', 'Transients'));
@@ -137,14 +140,22 @@ export default function FaceBallTab({
           <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 2, minWidth: 190 }}>
             Category pull — {(pull * 100).toFixed(0)}%
             <input
-              type="range" min={0} max={1} step={0.01} value={pull}
+              type="range" min={0} max={2} step={0.01} value={pull}
               onChange={(e) => { const v = Number(e.target.value); setPull(v); setPref('pull', String(v)); }}
+            />
+          </label>
+          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 2, minWidth: 170 }}>
+            Outline intensity — {(outline * 100).toFixed(0)}%
+            <input
+              type="range" min={0} max={2} step={0.01} value={outline}
+              onChange={(e) => { const v = Number(e.target.value); setOutline(v); setPref('outline', String(v)); }}
             />
           </label>
           <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', maxWidth: 300, lineHeight: 1.35 }}>
             0 % is the plain 3-feature scatter. 100 % seats every sample on its
-            response face. A sample that resists the pull is one whose sound
-            disagrees with its category.
+            response face. Past 100 % the samples overshoot outward, which pulls
+            crowded neighbouring faces apart. A sample that resists the pull is one
+            whose sound disagrees with its category.
           </div>
           {soloFace != null && (
             <button className="btn" onClick={() => setSoloFace(null)} style={{ fontSize: '0.72rem' }}>
@@ -170,6 +181,7 @@ export default function FaceBallTab({
               selectedItem={item}
               onSelect={(it) => { setPicked(it); onSound?.(it?.metadata?.name); }}
               pull={pull}
+              outline={outline}
               axes={[axisX, axisY, axisZ]}
               visibleFaces={visibleFaces}
               colorBy={colorBy}

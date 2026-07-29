@@ -14,6 +14,7 @@ import FileGroups from './FileGroups';
 import WavePlayer from './WavePlayer';
 import WaveCircle from './WaveCircle';
 import { regionColor } from './shared';
+import { staleReason, rescanRegionCounts, applyCounts, type RescanProgress } from './regionRescan';
 
 interface ExtractorTabProps {
   analysisResult: any[];
@@ -156,6 +157,34 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
     }
     return out;
   }, [rows]);
+
+  // ---- Stale region counts.
+  //
+  // "Multiple regions only" filters on a count written by whichever engine last
+  // analyzed the file. When the detector changes, every stored count is wrong and
+  // the filter reports "0 file(s)" over a library full of segmented material —
+  // with nothing on screen to say why. Records loaded from the cloud never carried
+  // a count at all. Surface both, and offer to re-measure.
+  const [rescanning, setRescanning] = useState<RescanProgress | null>(null);
+  const rescanStopRef = useRef(false);
+  const stale = useMemo(
+    () => filteredData.filter((it: any) => staleReason(it) !== null),
+    [filteredData],
+  );
+
+  const runRegionRescan = async () => {
+    rescanStopRef.current = false;
+    setRescanning({ done: 0, total: stale.length, updated: 0, failed: 0, current: '' });
+    const result = await rescanRegionCounts(
+      stale, audioFiles, (p) => setRescanning(p), () => rescanStopRef.current,
+    );
+    if (result.counts.size) {
+      // Rewrite the loaded set so the filter and the cut-count sort see the new
+      // numbers immediately, without a reload.
+      setAnalysisResult(applyCounts(analysisResult, result.counts));
+    }
+    setRescanning(null);
+  };
 
   // A region count of 1 is a region of none: a lone region just restates "the whole
   // file", so identifying it wastes list space and load time. Only 2+ regions are real.
@@ -685,6 +714,45 @@ export default function ExtractorTab({ analysisResult, filteredData, audioFiles,
 
         {/* Center: waveform + controls + region table */}
         <div style={{ flex: isNarrow ? 'none' : 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#0A0A0A' }}>
+          {/* Stale region counts. Without this the "multiple regions only" filter
+              just reads "0 file(s)" and there is nothing on screen to say the
+              counts are the problem rather than the library. */}
+          {(stale.length > 0 || rescanning) && (
+            <div style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)',
+              background: 'rgba(244,144,44,0.10)', display: 'flex', alignItems: 'center',
+              gap: '0.75rem', flexWrap: 'wrap', fontSize: '0.78rem' }}>
+              {rescanning ? (
+                <>
+                  <span style={{ color: 'var(--text-secondary)' }}>
+                    Re-detecting regions — <strong style={{ color: 'var(--accent-primary)' }}>
+                      {rescanning.done.toLocaleString()}</strong> of {rescanning.total.toLocaleString()}
+                    {rescanning.updated > 0 && <> · {rescanning.updated.toLocaleString()} measured</>}
+                    {rescanning.failed > 0 && <> · {rescanning.failed.toLocaleString()} unreadable</>}
+                  </span>
+                  <span style={{ color: 'var(--text-secondary)', opacity: 0.7, overflow: 'hidden',
+                    textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 260 }}>
+                    {rescanning.current}
+                  </span>
+                  <button className="btn secondary" style={{ fontSize: '0.72rem' }}
+                    onClick={() => { rescanStopRef.current = true; }}>
+                    Stop
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span style={{ color: 'var(--text-secondary)' }}>
+                    <strong style={{ color: 'var(--accent-primary)' }}>{stale.length.toLocaleString()}</strong>
+                    {' '}file{stale.length === 1 ? '' : 's'} have no usable region count — either never
+                    counted, or counted as one region despite reporting several transients.
+                    The <em>multiple regions only</em> filter can't see them.
+                  </span>
+                  <button className="btn primary" style={{ fontSize: '0.72rem' }} onClick={runRegionRescan}>
+                    ↻ Re-detect regions
+                  </button>
+                </>
+              )}
+            </div>
+          )}
           {!selectedItem ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
               Select a file (or drop one) to detect its regions.
