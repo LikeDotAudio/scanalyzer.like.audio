@@ -14,6 +14,7 @@ import GroupsTabRaw from './components/GroupsTab'
 import ExaminerTabRaw from './components/ExaminerTab'
 import ExtractorTabRaw from './components/ExtractorTab'
 import RenameTabRaw from './components/RenameTab'
+import FaceBallTabRaw from './components/FaceBallTab/FaceBallTab'
 import ScopeBar from './components/ScopeBar'
 import { matchesScope } from './groupColors'
 import { altCategory, altSubcategory } from './ucsIndex'
@@ -24,8 +25,9 @@ const GroupsTab = lazy(async () => ({ default: GroupsTabRaw }))
 const ExaminerTab = lazy(async () => ({ default: ExaminerTabRaw }))
 const ExtractorTab = lazy(async () => ({ default: ExtractorTabRaw }))
 const RenameTab = lazy(async () => ({ default: RenameTabRaw }))
+const FaceBallTab = lazy(async () => ({ default: FaceBallTabRaw }))
 
-const TAB_IDS = ['scanalyze', 'cloud', 'stats', 'groups', 'examiner', 'favorites', 'extractor', 'rename'] as const;
+const TAB_IDS = ['scanalyze', 'cloud', 'faceball', 'stats', 'groups', 'examiner', 'favorites', 'extractor', 'rename'] as const;
 
 function tabFromHash(): string {
   const h = window.location.hash.replace(/^#\/?/, '');
@@ -600,6 +602,7 @@ function App() {
   const tabs = [
     { id: 'scanalyze', label: 'SCANALYZE' },
     { id: 'cloud', label: '3D' },
+    { id: 'faceball', label: '4D' },
     { id: 'stats', label: '2D' },
     { id: 'examiner', label: 'Examiner' },
     { id: 'favorites', label: '★ Favorites' },
@@ -725,6 +728,7 @@ function App() {
             favorites={favorites}
             autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} />}
+          {activeTab === 'faceball' && <FaceBallTab filteredData={scopedData} selectedItem={footerItem} onSound={setCurrentSound} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} />}
         </Suspense>
 

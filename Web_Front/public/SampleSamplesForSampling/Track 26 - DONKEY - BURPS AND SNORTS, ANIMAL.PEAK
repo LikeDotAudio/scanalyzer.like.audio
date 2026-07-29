@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 26 - DONKEY - BURPS AND SNORTS, ANIMAL.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 26 - DONKEY - BURPS AND SNORTS, ANIMAL.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 26 - DONKEY - BURPS AND SNORTS, ANIMAL.mp3",
     "length_seconds": 7.366530612244898,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0009015544821929359,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 7 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 40 ms, sustain 44%, 7 transients)",
+      "2) envelope Multi (7 transients — loudest of 7 slices: attack 120 ms, sustain 46%)",
       "3) Inharmonic · mid-band 81% · root B3"
     ],
     "timbre": "Loop",
@@ -39,15 +40,122 @@
     "attack_seconds": 5.393718820861678,
     "sustain_ratio": 0.43665158371040724,
     "sustained": false,
-    "envelope_attack_seconds": 0.039909297052154194,
-    "envelope_decay_seconds": 0.029931972789115645,
-    "envelope_sustain_level": 0.4423647557966837,
-    "envelope_release_seconds": 0.783219954648526,
-    "envelope_temporal_centroid": 0.43159545775781766,
-    "envelope_skewness": 0.23699953064974966,
-    "envelope_kurtosis": -1.5217833410470243,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 40.22927539810335,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.7333333333333333,
+        "relative_level": 0.9144437077700501,
+        "envelope_attack_seconds": 0.039909297052154194,
+        "envelope_decay_seconds": 0.07981859410430839,
+        "envelope_sustain_level": 0.36045901139677555,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.7945604300496296,
+        "envelope_skewness": 1.7734173663094221,
+        "envelope_kurtosis": 1.8415205612646357,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.7333333333333333,
+        "end_seconds": 0.9328798185941043,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.11972789115646258,
+        "envelope_decay_seconds": 0.029931972789115645,
+        "envelope_sustain_level": 0.4618833518334795,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.5394745768053502,
+        "envelope_skewness": 0.14939897075820646,
+        "envelope_kurtosis": -1.3979659856333464,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 0.9328798185941043,
+        "end_seconds": 3.0829931972789115,
+        "relative_level": 0.8810001759882736,
+        "envelope_attack_seconds": 0.14467120181405896,
+        "envelope_decay_seconds": 0.029931972789115645,
+        "envelope_sustain_level": 0.5929475746006728,
+        "envelope_release_seconds": 0.5986394557823129,
+        "envelope_temporal_centroid": 0.32745050535458303,
+        "envelope_skewness": -0.3020833917204642,
+        "envelope_kurtosis": -1.1939168144053711,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 4.7727992957048375
+      },
+      {
+        "index": 3,
+        "start_seconds": 3.0829931972789115,
+        "end_seconds": 4.3002267573696145,
+        "relative_level": 0.959879281684135,
+        "envelope_attack_seconds": 0.029931972789115645,
+        "envelope_decay_seconds": 0.05487528344671202,
+        "envelope_sustain_level": 0.6920912379956479,
+        "envelope_release_seconds": 0.45895691609977324,
+        "envelope_temporal_centroid": 0.3118299592578737,
+        "envelope_skewness": -0.23199880972091466,
+        "envelope_kurtosis": -1.67304692602621,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 4.013998747650313
+      },
+      {
+        "index": 4,
+        "start_seconds": 4.3002267573696145,
+        "end_seconds": 5.297959183673469,
+        "relative_level": 0.9502694145271493,
+        "envelope_attack_seconds": 0.029931972789115645,
+        "envelope_decay_seconds": 0.4290249433106576,
+        "envelope_sustain_level": 0.5793804560193101,
+        "envelope_release_seconds": 0.42403628117913833,
+        "envelope_temporal_centroid": 0.286661624914708,
+        "envelope_skewness": 0.042409492817167556,
+        "envelope_kurtosis": -1.6790564152442342,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 0.338054441853655
+      },
+      {
+        "index": 5,
+        "start_seconds": 5.297959183673469,
+        "end_seconds": 6.4353741496598635,
+        "relative_level": 0.9074080616028988,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.19954648526077096,
+        "envelope_sustain_level": 0.5812985276617774,
+        "envelope_release_seconds": 0.45895691609977324,
+        "envelope_temporal_centroid": 0.2819694666379318,
+        "envelope_skewness": 0.12255019553289809,
+        "envelope_kurtosis": -1.604304763838705,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 1.842705040411529
+      },
+      {
+        "index": 6,
+        "start_seconds": 6.4353741496598635,
+        "end_seconds": 7.368253968253968,
+        "relative_level": 0.2577008588617315,
+        "envelope_attack_seconds": 0.11473922902494331,
+        "envelope_decay_seconds": 0.254421768707483,
+        "envelope_sustain_level": 0.034746952123581934,
+        "envelope_release_seconds": 0.07482993197278912,
+        "envelope_temporal_centroid": 0.1589076826059571,
+        "envelope_skewness": 1.823434544954977,
+        "envelope_kurtosis": 2.5713325778680627,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.8090653239073564
+      }
+    ],
     "onset_periodicity": 0.22673075409234353,
     "onset_rate_per_second": 0.9502437943262411
   },
@@ -121,42 +229,42 @@
     ]
   },
   "unsupervised": {
-    "cluster": 11,
+    "cluster": 9,
     "principal_components": [
-      2.102137695437345,
-      -1.1227654851308837,
-      -2.451388253767911
+      2.718305245661506,
+      0.1789931142687929,
+      -2.104742841050774
     ]
   },
   "ucs": {
     "category": "ANIMALS",
     "subcategory": "FARM",
     "id": "ANMLFarm",
-    "confidence": 0.47457240224377384,
+    "confidence": 0.37901475929422435,
     "alternatives": [
       {
         "category": "ANIMALS",
         "subcategory": "HORSE",
         "id": "ANMLHors",
-        "probability": 0.4,
+        "probability": 0.32,
         "synonyms": [
           "donkey"
-        ]
-      },
-      {
-        "category": "CARTOON",
-        "subcategory": "ANIMAL",
-        "id": "TOONAnml",
-        "probability": 0.106,
-        "synonyms": [
-          "animal"
         ]
       },
       {
         "category": "BELLS",
         "subcategory": "ANIMAL",
         "id": "BELLAnml",
-        "probability": 0.012,
+        "probability": 0.213,
+        "synonyms": [
+          "animal"
+        ]
+      },
+      {
+        "category": "CARTOON",
+        "subcategory": "ANIMAL",
+        "id": "TOONAnml",
+        "probability": 0.085,
         "synonyms": [
           "animal"
         ]
@@ -183,5 +291,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 1269,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
   }
 }

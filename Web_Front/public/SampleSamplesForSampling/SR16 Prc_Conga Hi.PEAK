@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "SR16 Prc_Conga Hi.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Conga Hi.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Conga Hi.wav",
     "length_seconds": 0.29183673469387755,
     "sample_rate": 22050,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.000046817331973581975,
-    "trailing_silence_ms": 0.8616780045351474
+    "trailing_silence_ms": 0.8616780045351474,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Conga",
@@ -52,6 +53,23 @@
     "envelope_kurtosis": 4.739466959360411,
     "envelope_shape": "Plucky",
     "decay_time_seconds_60db": 0.38126657801057195,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.2943310657596372,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.13968253968253969,
+        "envelope_sustain_level": 0.05499994663799492,
+        "envelope_release_seconds": 0.08979591836734693,
+        "envelope_temporal_centroid": 0.06178964998376367,
+        "envelope_skewness": 2.309799828523753,
+        "envelope_kurtosis": 4.739466959360411,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.38126657801057195
+      }
+    ],
     "onset_periodicity": 0.0,
     "onset_rate_per_second": 3.4265734265734267
   },
@@ -127,9 +145,9 @@
   "unsupervised": {
     "cluster": 6,
     "principal_components": [
-      -1.0492938214867296,
-      -1.394867368666896,
-      1.3594069888940945
+      -0.7076821569274535,
+      1.7476596153248356,
+      1.0280834025221504
     ]
   },
   "ucs": {
@@ -169,5 +187,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 26,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "gX6Seco2zCndK+YZ5hbxFPEN8A31DPcI+gf7BfsE/QT+Av8B/wH/AQAAAAAAAAAAAAAAAA=="
   }
 }

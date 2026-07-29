@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "skratch6.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/skratch6.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/skratch6.wav",
     "length_seconds": 0.24888888888888888,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,13 +12,14 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.00006278680295360331,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 2 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 70 ms, sustain 51%, 2 transients)",
+      "2) envelope Multi (2 transients — loudest of 2 slices: attack 70 ms, sustain 73%)",
       "3) Inharmonic · high-band 61% · root E1"
     ],
     "timbre": "Loop",
@@ -39,15 +40,47 @@
     "attack_seconds": 0.07922902494331066,
     "sustain_ratio": 0.7333333333333333,
     "sustained": false,
-    "envelope_attack_seconds": 0.06984126984126984,
-    "envelope_decay_seconds": 0.019954648526077097,
-    "envelope_sustain_level": 0.5084547070896507,
-    "envelope_release_seconds": 0.004988662131519274,
-    "envelope_temporal_centroid": 0.45396474422252664,
-    "envelope_skewness": 0.16985477825210543,
-    "envelope_kurtosis": 0.005611931468742171,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
     "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.11473922902494331,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.06984126984126984,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.7270496278417811,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.542701622603399,
+        "envelope_skewness": 0.005525643040394168,
+        "envelope_kurtosis": -0.19708585020752034,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.11473922902494331,
+        "end_seconds": 0.2494331065759637,
+        "relative_level": 0.664779278553819,
+        "envelope_attack_seconds": 0.04988662131519274,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.806582198292446,
+        "envelope_release_seconds": 0.004988662131519274,
+        "envelope_temporal_centroid": 0.5738218129744145,
+        "envelope_skewness": -0.43849865380656305,
+        "envelope_kurtosis": -1.2804925282914315,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      }
+    ],
     "onset_periodicity": 0.2449319347175044,
     "onset_rate_per_second": 8.035714285714286
   },
@@ -123,41 +156,41 @@
   "unsupervised": {
     "cluster": 12,
     "principal_components": [
-      -1.225429029009862,
-      0.2598885678387778,
-      -1.7260858521629099
+      -1.0634926224341965,
+      0.12597092597053686,
+      -2.0123181618995973
     ]
   },
   "ucs": {
     "category": "MALLET",
     "subcategory": "MISC",
     "id": "MALTMisc",
-    "confidence": 0.018751923061768618,
+    "confidence": 0.014931078916453724,
     "alternatives": [
       {
-        "category": "ANIMALS",
-        "subcategory": "RODENT",
-        "id": "ANMLRdnt",
-        "probability": 0.012,
+        "category": "ALARMS",
+        "subcategory": "BELL",
+        "id": "ALRMBell",
+        "probability": 0.013,
         "synonyms": []
       },
       {
-        "category": "MOTORS",
-        "subcategory": "SERVO",
-        "id": "MOTRSrvo",
-        "probability": 0.012,
+        "category": "SPORTS",
+        "subcategory": "INDOOR",
+        "id": "SPRTIndor",
+        "probability": 0.011,
         "synonyms": []
       },
       {
-        "category": "FARTS",
-        "subcategory": "REAL",
-        "id": "FARTReal",
+        "category": "FOOD & DRINK",
+        "subcategory": "GLASSWARE",
+        "id": "FOODGware",
         "probability": 0.011,
         "synonyms": []
       }
     ],
     "synonyms": [],
-    "reason": "no name evidence; signal 0.99, tier signal_separable, 439 candidates in contention; gate ruled out AIRBlow (spectral_flatness 0.0847 < min 0.1200); ABSTAINED to MISC (confidence below threshold)"
+    "reason": "no name evidence; signal 0.99, tier signal_separable, 448 candidates in contention; gate ruled out AIRBlow (spectral_flatness 0.0847 < min 0.1200); ABSTAINED to MISC (confidence below threshold)"
   },
   "regions": {
     "count": 1,
@@ -175,5 +208,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 43,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "/wT2BeEb3SLVNNMy1ijZHtMi5iDIL9MrxRrgPsYg2TbVIOs06AL0FPMR7g35DfMI8gr5BOIX4CPRKtMt3yfdI9oh2yPcINYe1ybXIOYuxy7qLNse7RM="
   }
 }

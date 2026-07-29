@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "OS Thumb Piano 02.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/OS Thumb Piano 02.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/OS Thumb Piano 02.wav",
     "length_seconds": 2.8629166666666666,
     "sample_rate": 48000,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.0012232452201593428,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Kalimba",
@@ -50,6 +51,23 @@
     "envelope_kurtosis": 5.337753619938118,
     "envelope_shape": "Decaying",
     "decay_time_seconds_60db": 6.957464400121863,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 2.865,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 1.135,
+        "envelope_sustain_level": 0.10438043384777833,
+        "envelope_release_seconds": 1.935,
+        "envelope_temporal_centroid": 0.14022196397232603,
+        "envelope_skewness": 2.031474638248198,
+        "envelope_kurtosis": 5.337753619938118,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 6.957464400121863
+      }
+    ],
     "onset_periodicity": 0.12912465029297138,
     "onset_rate_per_second": 0.34929413476932036
   },
@@ -125,9 +143,9 @@
   "unsupervised": {
     "cluster": 0,
     "principal_components": [
-      0.7232366134110768,
-      -2.080017311461308,
-      1.572994178784095
+      1.2857278228391515,
+      1.7355207019745567,
+      1.5903565822563484
     ]
   },
   "ucs": {
@@ -185,5 +203,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 537,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "wibqJOUZ6RboDewS7hHvEO8R7hTxDu8P7xHxEO8P7w70DvEM8w7xDfEP8Q/xDvEO8gvwD/AO8w3zDfUK9QvyC/UL9gv1CvUL9gv0CvYJ9gr2CPgK9gj4CPcJ9gr5CvcJ9wn2CPYH+Qj4BvkI+Aj5BvgH+Af3CPgJ+Aj5CPcG+Ab4BvkH+Qf5B/sH+Ab4B/kI9wf6CPcG9wf5CPgI+Af5B/gI+Qj3B/gJ+Aj3CfgI+Qf4CPcI+Qj6CPkG+Qj4CPgH+Aj4CPoI+Aj5BvsG+Qf7BvsG+gb6B/kG+gj6BfsG+wf7BvsG+wT8BfsG+wX8BvsG+wX6BfoG+wb7BfwG/AX8BPsF/Ab7CPkG+gf7B/kG+Af8B/oG+gb7BvoG+gf6B/oH+Qf7B/oH+gb6B/sF/AX7BvsF/Ab7BfsG/Ab7BfwG+wX7Bf0F/AP+BfsD/AX8Bf0F/gX8A/wF/gb9A/0E/QT9BPwE/QT9BfwE/QT9BPwD/gb8BPwE/gX8Bf0F+wX7BfwF+wf7BfsF+wX9BvsE/AX7BPwF+wX9BfwF/AT8BfwG/AT+BfwC/QX9Bf0D/gP9A/0D/gX9BP0D/QP+BP0D/QP+BP4E/gT9A/0D/QT9BP0D/wT9A/0C/QP+BP0D/gT9BP0E/AP8BPwE/QT8BP0F/QX8BP4E/QP8BPwE/QP9Bf0D/QT9BP0C/gP9Av8E/QP9Av0D/QT+BP0C/gT9Av0D/gP/A/0C/wP9Av4D/gP+Av4D/QH/A/4D/gL+Av8D/gP+A/0C/wP+A/4C/QP9Av8E/QH/A/0D/QP9A/0E/gT9A/0D/QP+A/4D/wP+Af4C/QL+A/0D/QL/A/4C/gP+Av4C/gL+Av8D/gL+Av0C/wT9Av8D/gL9Af8C/wH+Av4C/wL+Av4C/gL+Av8D/gL/A/4C/gL+Av4C/gL9Av4D/gL+A/0D/QP+A/4C/gL+Av4D/QL/A/4C/QL+A/0C/gL+Af8D/gP+Af8C/wH/Av4B/gP/A/4B/wL+Af4B/wH/Af8D/gH/Av8B/gL+Av4C/gH+Af8D/wL/AgAD/gH+Af4C/wL+Av4D/wL/Av4B/gL+Av8B/wL/Av8C/gL9Af8C/wL/Av8C/gL+Af4B/wP/Av4B/wL+Af8C/wL/Af8B/wH/Af4BAAL/Af8C/wL+Af4C/gH/Af8B/wL/AgAB/wH+Af8C/gH/Av8C/gIAAv4B/wL/Af8B/wH/Af8C/gH/A/8D/gH/Av8B/wH/Af8C/wH/Af8C/wL+AQAB/wL/Av8B/wH/Af8BAAH/Af8B/wH/AP8C/wH/Af8BAAH/Af8B/wL/Af8B/wH/AQACAAH/Af4A/wL/Af8C/wL+AQAC/gH/AQAC/gH/Av8B/wH/Af8BAAH/Af8B/wH+Af8B/wEAAf8B/wH/Af8BAAL/Af8B/wH/Af8B/wH/AgAC/wEAAQAB"
   }
 }

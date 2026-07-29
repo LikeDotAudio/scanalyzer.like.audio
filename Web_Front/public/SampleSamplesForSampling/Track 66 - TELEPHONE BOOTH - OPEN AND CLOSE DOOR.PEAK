@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 66 - TELEPHONE BOOTH - OPEN AND CLOSE DOOR.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 66 - TELEPHONE BOOTH - OPEN AND CLOSE DOOR.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 66 - TELEPHONE BOOTH - OPEN AND CLOSE DOOR.mp3",
     "length_seconds": 4.884897959183673,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0004857909485685534,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 5 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 2255 ms, sustain 1%, 5 transients)",
+      "2) envelope Multi (5 transients — loudest of 5 slices: attack 50 ms, sustain 24%)",
       "3) Inharmonic · high-band 63% · root F3"
     ],
     "timbre": "Loop",
@@ -39,15 +40,92 @@
     "attack_seconds": 2.691950113378685,
     "sustain_ratio": 0.061224489795918366,
     "sustained": false,
-    "envelope_attack_seconds": 2.254875283446712,
-    "envelope_decay_seconds": 0.8829931972789116,
-    "envelope_sustain_level": 0.009842640242420413,
-    "envelope_release_seconds": 0.37414965986394555,
-    "envelope_temporal_centroid": 0.4531760768366691,
-    "envelope_skewness": 3.0491750043856563,
-    "envelope_kurtosis": 10.073454058781463,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
     "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 2.6489795918367345,
+        "relative_level": 0.8739045609415322,
+        "envelope_attack_seconds": 0.03492063492063492,
+        "envelope_decay_seconds": 0.19954648526077096,
+        "envelope_sustain_level": 0.09551465952446783,
+        "envelope_release_seconds": 1.7859410430839002,
+        "envelope_temporal_centroid": 0.37759070371197784,
+        "envelope_skewness": 3.5382330120397216,
+        "envelope_kurtosis": 14.790733061715972,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 2.5164145472420953
+      },
+      {
+        "index": 1,
+        "start_seconds": 2.6489795918367345,
+        "end_seconds": 2.8485260770975054,
+        "relative_level": 0.6775480300701817,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.05986394557823129,
+        "envelope_sustain_level": 0.3807618227536055,
+        "envelope_release_seconds": 0.029931972789115645,
+        "envelope_temporal_centroid": 0.37057674683132735,
+        "envelope_skewness": 0.9833923131551713,
+        "envelope_kurtosis": -0.28402728856332393,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 2.8485260770975054,
+        "end_seconds": 3.0480725623582767,
+        "relative_level": 0.9185104006103847,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.029931972789115645,
+        "envelope_sustain_level": 0.41231117428655556,
+        "envelope_release_seconds": 0.03492063492063492,
+        "envelope_temporal_centroid": 0.37664499759639236,
+        "envelope_skewness": 0.6183483829706667,
+        "envelope_kurtosis": -1.041887956882496,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 3.0480725623582767,
+        "end_seconds": 3.1977324263038547,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.04988662131519274,
+        "envelope_decay_seconds": 0.044897959183673466,
+        "envelope_sustain_level": 0.23632021567963998,
+        "envelope_release_seconds": 0.05487528344671202,
+        "envelope_temporal_centroid": 0.41118343689837367,
+        "envelope_skewness": 1.2951110022398402,
+        "envelope_kurtosis": 0.5520456631222594,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 4,
+        "start_seconds": 3.1977324263038547,
+        "end_seconds": 4.888888888888888,
+        "relative_level": 0.6501714035943644,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.728344671201814,
+        "envelope_sustain_level": 0.012086070793237817,
+        "envelope_release_seconds": 0.5287981859410431,
+        "envelope_temporal_centroid": 0.058066375035563667,
+        "envelope_skewness": 5.522175195029828,
+        "envelope_kurtosis": 34.929177923152274,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.6844995476825126
+      }
+    ],
     "onset_periodicity": 0.22909789918122064,
     "onset_rate_per_second": 1.023562834224599
   },
@@ -123,49 +201,49 @@
   "unsupervised": {
     "cluster": 8,
     "principal_components": [
-      2.4261010667986067,
-      0.363931814823802,
-      -0.05631883126143117
+      1.856423694018086,
+      -0.9619573577397884,
+      -0.5455278230829596
     ]
   },
   "ucs": {
-    "category": "DOORS",
-    "subcategory": "METAL",
-    "id": "DOORMetl",
-    "confidence": 0.21539444321856374,
+    "category": "BOATS",
+    "subcategory": "MISC",
+    "id": "BOATMisc",
+    "confidence": 0.15082266655196797,
     "alternatives": [
+      {
+        "category": "DOORS",
+        "subcategory": "METAL",
+        "id": "DOORMetl",
+        "probability": 0.139,
+        "synonyms": [
+          "door"
+        ]
+      },
+      {
+        "category": "DOORS",
+        "subcategory": "HARDWARE",
+        "id": "DOORHdwr",
+        "probability": 0.097,
+        "synonyms": [
+          "door"
+        ]
+      },
       {
         "category": "DOORS",
         "subcategory": "GLASS",
         "id": "DOORGlas",
-        "probability": 0.142,
+        "probability": 0.087,
         "synonyms": [
           "door"
-        ]
-      },
-      {
-        "category": "DOORS",
-        "subcategory": "SLIDING",
-        "id": "DOORSlid",
-        "probability": 0.138,
-        "synonyms": [
-          "door"
-        ]
-      },
-      {
-        "category": "COMMUNICATIONS",
-        "subcategory": "TELEPHONE",
-        "id": "COMTelph",
-        "probability": 0.114,
-        "synonyms": [
-          "telephone"
         ]
       }
     ],
     "synonyms": [
       "door"
     ],
-    "reason": "name matched [door]; signal 0.77, tier signal_narrowable, 22 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.8849 > max 4.0000)"
+    "reason": "name matched [door]; signal 0.66, tier semantic_only, 23 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.8849 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
   },
   "regions": {
     "count": 1,
@@ -183,5 +261,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 842,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
   }
 }

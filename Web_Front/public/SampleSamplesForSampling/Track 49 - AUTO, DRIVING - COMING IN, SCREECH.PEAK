@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 49 - AUTO, DRIVING - COMING IN, SCREECH.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 49 - AUTO, DRIVING - COMING IN, SCREECH.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 49 - AUTO, DRIVING - COMING IN, SCREECH.mp3",
     "length_seconds": 4.780408163265306,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0006574178132043126,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 6 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 624 ms, sustain 6%, 6 transients)",
+      "2) envelope Multi (6 transients — loudest of 6 slices: attack 35 ms, sustain 89%)",
       "3) Harmonic · mid-band 64% · root A5"
     ],
     "timbre": "Loop",
@@ -39,15 +40,107 @@
     "attack_seconds": 1.9047392290249434,
     "sustain_ratio": 0.13937282229965156,
     "sustained": false,
-    "envelope_attack_seconds": 0.6235827664399093,
-    "envelope_decay_seconds": 1.3768707482993197,
-    "envelope_sustain_level": 0.06447475666417662,
-    "envelope_release_seconds": 0.6136054421768707,
-    "envelope_temporal_centroid": 0.43819002978874333,
-    "envelope_skewness": 1.7133257866041964,
-    "envelope_kurtosis": 2.2252951284899023,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 4.470522241284386,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.616326530612245,
+        "relative_level": 0.47514557963690374,
+        "envelope_attack_seconds": 0.5786848072562358,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.9959088039621901,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.9324260662705092,
+        "envelope_skewness": 3.3128063090114015,
+        "envelope_kurtosis": 13.229898605731282,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.616326530612245,
+        "end_seconds": 1.7160997732426304,
+        "relative_level": 0.8053382319402602,
+        "envelope_attack_seconds": 0.04988662131519274,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.7546740977238471,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.486448149157473,
+        "envelope_skewness": 0.21716867365135714,
+        "envelope_kurtosis": -1.083942513907197,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 1.7160997732426304,
+        "end_seconds": 1.835827664399093,
+        "relative_level": 0.7240920656279757,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.004988662131519274,
+        "envelope_sustain_level": 0.9172747698432119,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.5471400403294046,
+        "envelope_skewness": 0.10620777272292009,
+        "envelope_kurtosis": -1.16476998020199,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 1.835827664399093,
+        "end_seconds": 1.9356009070294784,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.03492063492063492,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.8860897378832339,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.4561214177000227,
+        "envelope_skewness": 0.19467780192535708,
+        "envelope_kurtosis": -0.9520636762133159,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 4,
+        "start_seconds": 1.9356009070294784,
+        "end_seconds": 2.234920634920635,
+        "relative_level": 0.9563330258931112,
+        "envelope_attack_seconds": 0.08979591836734693,
+        "envelope_decay_seconds": 0.019954648526077097,
+        "envelope_sustain_level": 0.4944199580418857,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.425073417736016,
+        "envelope_skewness": 1.1228065924548953,
+        "envelope_kurtosis": 1.1744829368865313,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 5,
+        "start_seconds": 2.234920634920635,
+        "end_seconds": 4.784126984126984,
+        "relative_level": 0.7845339179663826,
+        "envelope_attack_seconds": 0.06984126984126984,
+        "envelope_decay_seconds": 1.1523809523809523,
+        "envelope_sustain_level": 0.04485390523670241,
+        "envelope_release_seconds": 0.5287981859410431,
+        "envelope_temporal_centroid": 0.09953838429932456,
+        "envelope_skewness": 1.9631032361088434,
+        "envelope_kurtosis": 3.4194714337878116,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 3.1647777963436825
+      }
+    ],
     "onset_periodicity": 0.30979296977668463,
     "onset_rate_per_second": 1.2551229508196722
   },
@@ -121,24 +214,24 @@
     ]
   },
   "unsupervised": {
-    "cluster": 13,
+    "cluster": 11,
     "principal_components": [
-      1.8225404692550018,
-      -0.34744201046768736,
-      -0.7839546448038797
+      1.409150697787229,
+      0.11947402181235584,
+      -2.307565195276778
     ]
   },
   "ucs": {
     "category": "VEHICLES",
     "subcategory": "CAR",
     "id": "VEHCar",
-    "confidence": 0.21648434342802106,
+    "confidence": 0.1977680579944694,
     "alternatives": [
       {
         "category": "VEHICLES",
         "subcategory": "BRAKE",
         "id": "VEHBrake",
-        "probability": 0.133,
+        "probability": 0.121,
         "synonyms": [
           "auto",
           "screech"
@@ -148,16 +241,16 @@
         "category": "VEHICLES",
         "subcategory": "GENERIC BY",
         "id": "VEHBy",
-        "probability": 0.086,
+        "probability": 0.092,
         "synonyms": [
           "auto"
         ]
       },
       {
         "category": "VEHICLES",
-        "subcategory": "EMERGENCY",
-        "id": "VEHEmrg",
-        "probability": 0.058,
+        "subcategory": "ALARM",
+        "id": "VEHAlrm",
+        "probability": 0.054,
         "synonyms": [
           "auto"
         ]
@@ -166,7 +259,7 @@
     "synonyms": [
       "auto"
     ],
-    "reason": "name matched [auto]; signal 0.93, tier semantic_only, 32 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.7804 > max 4.0000)"
+    "reason": "name matched [auto]; signal 0.93, tier semantic_only, 33 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.7804 > max 4.0000)"
   },
   "regions": {
     "count": 1,
@@ -184,5 +277,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 824,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
   }
 }

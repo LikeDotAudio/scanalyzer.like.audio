@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
     "length_seconds": 4.519183673469388,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0007827084841684034,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 7 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 384 ms, sustain 2%, 7 transients)",
+      "2) envelope Multi (7 transients — loudest of 7 slices: attack 25 ms, sustain 13%)",
       "3) Inharmonic · mid-band 61% · root F#2"
     ],
     "timbre": "Loop",
@@ -39,15 +40,122 @@
     "attack_seconds": 0.8887755102040816,
     "sustain_ratio": 0.058823529411764705,
     "sustained": false,
-    "envelope_attack_seconds": 0.3841269841269841,
-    "envelope_decay_seconds": 0.26439909297052155,
-    "envelope_sustain_level": 0.022987531314683833,
-    "envelope_release_seconds": 0.4090702947845805,
-    "envelope_temporal_centroid": 0.3149204968980327,
-    "envelope_skewness": 3.3247803354244825,
-    "envelope_kurtosis": 11.38142919571457,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 0.37675033924911705,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.7482993197278911,
+        "relative_level": 0.26530988263779764,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.10975056689342404,
+        "envelope_sustain_level": 0.15356222826447308,
+        "envelope_release_seconds": 0.1346938775510204,
+        "envelope_temporal_centroid": 0.7093739554055452,
+        "envelope_skewness": 2.9989107639993735,
+        "envelope_kurtosis": 9.353385273671803,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.5473830893778404
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.7482993197278911,
+        "end_seconds": 1.1523809523809523,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.02494331065759637,
+        "envelope_decay_seconds": 0.12970521541950114,
+        "envelope_sustain_level": 0.13412987483411912,
+        "envelope_release_seconds": 0.08979591836734693,
+        "envelope_temporal_centroid": 0.38764628526860195,
+        "envelope_skewness": 1.3908766851911643,
+        "envelope_kurtosis": 0.5905319052002289,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.37675033924911705
+      },
+      {
+        "index": 2,
+        "start_seconds": 1.1523809523809523,
+        "end_seconds": 1.5015873015873016,
+        "relative_level": 0.9221160415796338,
+        "envelope_attack_seconds": 0.009977324263038548,
+        "envelope_decay_seconds": 0.12471655328798185,
+        "envelope_sustain_level": 0.07206883140640302,
+        "envelope_release_seconds": 0.10975056689342404,
+        "envelope_temporal_centroid": 0.19221823877383976,
+        "envelope_skewness": 1.8022086572503193,
+        "envelope_kurtosis": 2.24645477500572,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.4280617456697654
+      },
+      {
+        "index": 3,
+        "start_seconds": 1.5015873015873016,
+        "end_seconds": 1.965532879818594,
+        "relative_level": 0.8997736169033947,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.15963718820861678,
+        "envelope_sustain_level": 0.08641829118456656,
+        "envelope_release_seconds": 0.19455782312925168,
+        "envelope_temporal_centroid": 0.33861108477031865,
+        "envelope_skewness": 1.999426549186388,
+        "envelope_kurtosis": 3.105734510767258,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.42377038670825246
+      },
+      {
+        "index": 4,
+        "start_seconds": 1.965532879818594,
+        "end_seconds": 2.2848072562358275,
+        "relative_level": 0.38131293417844764,
+        "envelope_attack_seconds": 0.009977324263038548,
+        "envelope_decay_seconds": 0.11473922902494331,
+        "envelope_sustain_level": 0.15182302922286425,
+        "envelope_release_seconds": 0.1895691609977324,
+        "envelope_temporal_centroid": 0.25117620303974375,
+        "envelope_skewness": 1.904468578491193,
+        "envelope_kurtosis": 2.772410472067677,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.5738377076853186
+      },
+      {
+        "index": 5,
+        "start_seconds": 2.2848072562358275,
+        "end_seconds": 2.619047619047619,
+        "relative_level": 0.7269395829664296,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.12970521541950114,
+        "envelope_sustain_level": 0.0681120749273181,
+        "envelope_release_seconds": 0.08979591836734693,
+        "envelope_temporal_centroid": 0.22483343988809731,
+        "envelope_skewness": 1.8384243902397504,
+        "envelope_kurtosis": 2.1727675963106856,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.3577414889642545
+      },
+      {
+        "index": 6,
+        "start_seconds": 2.619047619047619,
+        "end_seconds": 4.519727891156463,
+        "relative_level": 0.3354578637476311,
+        "envelope_attack_seconds": 0.019954648526077097,
+        "envelope_decay_seconds": 0.3292517006802721,
+        "envelope_sustain_level": 0.010948035513987622,
+        "envelope_release_seconds": 0.16961451247165532,
+        "envelope_temporal_centroid": 0.06297324449528019,
+        "envelope_skewness": 5.631766157912938,
+        "envelope_kurtosis": 37.134682278100854,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      }
+    ],
     "onset_periodicity": 0.2911732873831204,
     "onset_rate_per_second": 1.5489523121387283
   },
@@ -121,24 +229,33 @@
     ]
   },
   "unsupervised": {
-    "cluster": 10,
+    "cluster": 8,
     "principal_components": [
-      2.5380466356444344,
-      -0.7135582397059141,
-      0.00955344213990239
+      2.33202179571717,
+      -0.017159449855021852,
+      -0.3437523970429624
     ]
   },
   "ucs": {
     "category": "VOICES",
     "subcategory": "BABY",
     "id": "VOXBaby",
-    "confidence": 0.31313552255632643,
+    "confidence": 0.25191477746358165,
     "alternatives": [
+      {
+        "category": "FOOD & DRINK",
+        "subcategory": "KITCHENWARE",
+        "id": "FOODKware",
+        "probability": 0.17,
+        "synonyms": [
+          "wooden"
+        ]
+      },
       {
         "category": "VOICES",
         "subcategory": "CHILD",
         "id": "VOXChld",
-        "probability": 0.192,
+        "probability": 0.155,
         "synonyms": [
           "one"
         ]
@@ -147,16 +264,7 @@
         "category": "VOICES",
         "subcategory": "MALE",
         "id": "VOXMale",
-        "probability": 0.153,
-        "synonyms": [
-          "person"
-        ]
-      },
-      {
-        "category": "VOICES",
-        "subcategory": "FEMALE",
-        "id": "VOXFem",
-        "probability": 0.107,
+        "probability": 0.123,
         "synonyms": [
           "person"
         ]
@@ -165,7 +273,7 @@
     "synonyms": [
       "one"
     ],
-    "reason": "name matched [one]; signal 0.86, tier signal_narrowable, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.5192 > max 4.0000)"
+    "reason": "name matched [one]; signal 0.86, tier signal_narrowable, 16 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.5192 > max 4.0000)"
   },
   "regions": {
     "count": 2,
@@ -182,11 +290,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
             "length_seconds": 2.374580498866213,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -194,13 +302,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0008029625121356987,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 6 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 384 ms, sustain 5%, 6 transients)",
+              "2) envelope Multi (6 transients — loudest of 6 slices: attack 384 ms, sustain 15%)",
               "3) Inharmonic · mid-band 61% · root G#2"
             ],
             "timbre": "Loop",
@@ -221,15 +330,107 @@
             "attack_seconds": 0.3899092970521542,
             "sustain_ratio": 0.1048951048951049,
             "sustained": false,
-            "envelope_attack_seconds": 0.3841269841269841,
-            "envelope_decay_seconds": 0.16462585034013605,
-            "envelope_sustain_level": 0.04775577881988929,
-            "envelope_release_seconds": 0.04988662131519274,
-            "envelope_temporal_centroid": 0.3871516900814659,
-            "envelope_skewness": 2.2373218031825823,
-            "envelope_kurtosis": 4.453384165824139,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 0.37675033924911705,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.6485260770975056,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.3841269841269841,
+                "envelope_decay_seconds": 0.11972789115646258,
+                "envelope_sustain_level": 0.15027760368349738,
+                "envelope_release_seconds": 0.08979591836734693,
+                "envelope_temporal_centroid": 0.6016330658530533,
+                "envelope_skewness": 2.0338577101966955,
+                "envelope_kurtosis": 3.141836358803112,
+                "envelope_shape": "Swell",
+                "decay_time_seconds_60db": 0.37675033924911705
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.6485260770975056,
+                "end_seconds": 0.9977324263038548,
+                "relative_level": 0.9221160415796338,
+                "envelope_attack_seconds": 0.009977324263038548,
+                "envelope_decay_seconds": 0.12471655328798185,
+                "envelope_sustain_level": 0.07206883140640302,
+                "envelope_release_seconds": 0.10975056689342404,
+                "envelope_temporal_centroid": 0.20647397999455058,
+                "envelope_skewness": 1.803918575513054,
+                "envelope_kurtosis": 2.2518589659494737,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.4280617456697654
+              },
+              {
+                "index": 2,
+                "start_seconds": 0.9977324263038548,
+                "end_seconds": 1.4666666666666666,
+                "relative_level": 0.8997736169033947,
+                "envelope_attack_seconds": 0.014965986394557823,
+                "envelope_decay_seconds": 0.15963718820861678,
+                "envelope_sustain_level": 0.08641829118456656,
+                "envelope_release_seconds": 0.19455782312925168,
+                "envelope_temporal_centroid": 0.34564447438380674,
+                "envelope_skewness": 2.014616340709833,
+                "envelope_kurtosis": 3.174080956433391,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 0.42377038670825246
+              },
+              {
+                "index": 3,
+                "start_seconds": 1.4666666666666666,
+                "end_seconds": 1.7809523809523808,
+                "relative_level": 0.38131293417844764,
+                "envelope_attack_seconds": 0.009977324263038548,
+                "envelope_decay_seconds": 0.11473922902494331,
+                "envelope_sustain_level": 0.15182302922286425,
+                "envelope_release_seconds": 0.14467120181405896,
+                "envelope_temporal_centroid": 0.25493739454238207,
+                "envelope_skewness": 1.8812513069464087,
+                "envelope_kurtosis": 2.6754442819308712,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 0.5738377076853186
+              },
+              {
+                "index": 4,
+                "start_seconds": 1.7809523809523808,
+                "end_seconds": 2.1151927437641724,
+                "relative_level": 0.7269395829664296,
+                "envelope_attack_seconds": 0.014965986394557823,
+                "envelope_decay_seconds": 0.12970521541950114,
+                "envelope_sustain_level": 0.07127773368182508,
+                "envelope_release_seconds": 0.08979591836734693,
+                "envelope_temporal_centroid": 0.23972254581674793,
+                "envelope_skewness": 1.839806532301566,
+                "envelope_kurtosis": 2.1767210167431674,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.3577414889642545
+              },
+              {
+                "index": 5,
+                "start_seconds": 2.1151927437641724,
+                "end_seconds": 2.3746031746031746,
+                "relative_level": 0.3354578637476311,
+                "envelope_attack_seconds": 0.019954648526077097,
+                "envelope_decay_seconds": 0.08480725623582766,
+                "envelope_sustain_level": 0.11811009154164884,
+                "envelope_release_seconds": 0.0947845804988662,
+                "envelope_temporal_centroid": 0.2950286151504334,
+                "envelope_skewness": 1.926209164790502,
+                "envelope_kurtosis": 2.9690779251700796,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": null
+              }
+            ],
             "onset_periodicity": 0.2892778419372941,
             "onset_rate_per_second": 2.5267620966586772
           },
@@ -307,43 +508,43 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "VOICES",
-            "subcategory": "BABY",
-            "id": "VOXBaby",
-            "confidence": 0.30097239718482194,
+            "category": "FOOD & DRINK",
+            "subcategory": "MISC",
+            "id": "FOODMisc",
+            "confidence": 0.24610303973675196,
             "alternatives": [
               {
                 "category": "VOICES",
-                "subcategory": "CHILD",
-                "id": "VOXChld",
-                "probability": 0.173,
+                "subcategory": "BABY",
+                "id": "VOXBaby",
+                "probability": 0.219,
                 "synonyms": [
                   "one"
                 ]
               },
               {
                 "category": "VOICES",
-                "subcategory": "MALE",
-                "id": "VOXMale",
-                "probability": 0.141,
+                "subcategory": "CHILD",
+                "id": "VOXChld",
+                "probability": 0.126,
                 "synonyms": [
-                  "person"
+                  "one"
                 ]
               },
               {
                 "category": "HUMAN",
                 "subcategory": "BURP",
                 "id": "HMNBurp",
-                "probability": 0.124,
+                "probability": 0.115,
                 "synonyms": [
                   "person"
                 ]
               }
             ],
             "synonyms": [
-              "one"
+              "wooden"
             ],
-            "reason": "name matched [one]; signal 0.84, tier signal_narrowable, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.3841 > max 0.1500)"
+            "reason": "name matched [wooden]; signal 0.86, tier signal_narrowable, 16 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.2893 < min 0.3500); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -351,6 +552,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 410,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "7xPzDOsQ8Q/0CfgK9gr3CfUK+An6CPwG+gX6BPkF+gP9BP0D/QL9A/4C/gT+Av4B/QP+Av8B/wH/Af8B/wH/Af4B/wH/Af8B/wH+Af8B/wD/AP8A/wH/AP8B/wD/Af8B/wH/Af8A/wH/AP8B/wD/AQAB/wD/Af8B/wD/Av4C1j2/M9A1xjTESMg1xDPTKs0h5h/IHtopyh/uDekP5yDyHOYR7g/vEPcS+Q3yCPUG9wf6CPsI+Qr7BfkD/gT9A/0D/QL9A/4C/wP9Av0C/gL+A/4D/QD+Av4D/wL+Af4A/gH/AQAB/wD/AP0B/wL+Ad4p1j3HKdgv1RbsMOUc4RjVH94b7B7pG/IP8AzyDfcK+AX4BPsF/An9BPoH/AP8AvwE/gT9Av4D/AP9BP0D/AP9A/4B/QL+Af4C/gL+Av4B/wL+Af8B/wH+Af8B/wEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/Af8A/wH/Af4B/wH+Af8B+gj0DNgs0zrYOMklzjHaFtcm4QrmJfIV2xfoF+IU6A3xFfIO8An2CvsM+Qf2CPoE+Qn7BfoI+QT7BfsG/AT+B/sB/QP+Av8D/gP+Af0C+wT9A/wC/QL8A/4D/wL9Av4D/gL+Af0D/QP+A/0C/gL+Af4C/wH/Af8B/gH/Af8B/wD/AP8A/wD/Af4B5BznGu8R8g7lFesY6gzyGfEH8hD6CvgG+Qz2BfoF/QX8AvwE/AP6BP4F/AL+Av0C/AT+BP0C/QP+Af4C/wP+Av4A/gH/Af8B/wH+AP8B/wH/Af8A/wH/Af8B/wH/Af8B/wH/Af8B/wH/Af8B9gnjJtAv1xjrK98R5iDaH+gZ8RTzD+YS7xD0CfYK9gr3CPoH9wX7B/oG/AT4BvwE/QH8BP0C/gL9A/4C/wL+A/4B/wH/Af8B/wH/AP8B/wH/Af8C/wH/Af8A/wH/Af8B/wH/AAAB/wD/AAAAAAH/AP4B+wT2B/QL8Ab0FPIC/wnxCP4L9gL/A/0D/QL9BP0D/gL8A/0D/gL+Av4C/gH+Af8C/wH/Af8A/wD/AQAA/wAAAP8AAAAAAQAB/wAAAA=="
           }
         }
       },
@@ -363,11 +572,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 34 - FOOTSTEPS, STAIRS - ONE PERSON UP WOODEN STAIRS.mp3",
             "length_seconds": 0.24945578231292517,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -375,7 +584,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0007733213961818356,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Perc",
@@ -411,6 +621,23 @@
             "envelope_kurtosis": 1.372474115093194,
             "envelope_shape": "Decaying",
             "decay_time_seconds_60db": 0.8104956594183094,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.254421768707483,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.02494331065759637,
+                "envelope_decay_seconds": 0.07981859410430839,
+                "envelope_sustain_level": 0.304621622284783,
+                "envelope_release_seconds": 0.05986394557823129,
+                "envelope_temporal_centroid": 0.25531052690062095,
+                "envelope_skewness": 1.2684715938524567,
+                "envelope_kurtosis": 1.372474115093194,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 0.8104956594183094
+              }
+            ],
             "onset_periodicity": 0.0,
             "onset_rate_per_second": 4.008726479410963
           },
@@ -532,9 +759,117 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 43,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/wH+Af4D+wP3BPwG/QT7BP0F/AL7A/4D/gL9A/4D/QH9Af4D/QL+Af4B/gH/Av8B/gH/AQAC/wH/AP8B/wEAAv8A/wD/AQABAAH/AP8AAAEAAAAA/wA="
           }
         }
       }
+    ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 779,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO8T8wzrEPUP9An4CvYK9wn1CvgJ+gj8BvoF+gT5BfsD/QT9A/0C/QP+Av4E/gL+Av0D/gL/Af8B/wH/Af8B/wH+Af8B/wH/Af8B/gH/Af8A/wD/AP8B/wD/Af8A/wH/Af8B/wH/AP8B/wD/Af8A/wEAAf8A/wH/Af8A/wL+AtY9vzPGNc00xEjINcQz0yrNIeYfyB7aKcof7g3pD+cg8hzmEe4M7xD3EvkN8gj1BvcH+gj7CPkK+wX5BP4E/QP9A/0C/QP+Av8D/QL9Av4C/gP+A/0B/gL+A/8C/gH+AP4B/wEAAf8A/wD9Af8C/gHeKdY9xynVL9YW7DDlHOEY1R/eG+we6RvyD/AM8g33CvgF+AT7BfwJ/QX6B/wD/AP8BP4E/QL+A/wD/QT9A/wD/QP+Av0C/gH+Av4C/gL+Af4C/gH/Af8B/gH/Af8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8B/wH/AP8B/wH+Af8B/gH/AfoI9AzYLNM62DjJJc4x3hbXJuEK5iXyFtsX6BfiFOgN8RXyC/AJ9gz5DPkH9gj6CfkJ+wX6CPkE+wX7BvwE/gf7Af0D/gL/A/4D/gH9AvsE/QP8Av0D/AP+A/8C/QL+A/4C/gH9A/0D/gP9Av4C/gH+Av8B/wH/Af4B/wH/Af8A/wD/AP8A/wH+AeQc5xrvEfIO5RjrGOoM8Rn0C/IQ+gr4BvkM9gX9Bf0F/AL8BPwD+gT+BfwC/gL9AfwE/gT9A/0C/gH+Av8D/gL+AP4B/wH/Af8B/gD/Af8B/wH/AP8B/wH/Af8B/wH/Af8B/wH/Af8B/wH/AesJ0CbYL9cr6yvfEeYg2gzoGfEU+A/mEu8Q9An2CvYK9wj6B/cF+wf6BvsE+Ab8BP0C/AT9Av4D/QP+Av8C/gP+Af8B/wH/Af8B/wD/Af8B/wH/Av8B/wH/AP8B/wH/Af8B/wAAAf8A/wAAAAAB/wD+AfkE9gf0C/AE8hTyAv8J8Qj/C/YC/wP9A/0C/QT9Av4C/AP9A/4C/gL+Av4B/gH/Av8B/wH/AP8B/wEAAP8AAAD/AAAAAAEAAP8AAAAAAAAAAAAAAAAAAAAAAAAB/wAAAAAAAAD/AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8B/wH+Af4D+wP3A/wG/AP7BP0F/AL7A/4D/gL9A/0D/QH9Af0D/QL+Af4B/gH/Av8C/gD/AQAC/wH/AP8B/wEAAv8A/wD/AQABAAH/AP8AAAAAAQAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+  },
+  "bioacoustic_syntax": {
+    "slice_count": 2,
+    "type_count": 1,
+    "sequence": "AA",
+    "slices": [
+      {
+        "region_index": 0,
+        "type_label": "A",
+        "start_seconds": 0.4988662131519274,
+        "duration_seconds": 2.3746031746031746,
+        "embedding_x": 4.358898943540674,
+        "embedding_y": 5.991493996823053e-28
+      },
+      {
+        "region_index": 1,
+        "type_label": "A",
+        "start_seconds": 3.0480725623582763,
+        "duration_seconds": 0.24943310657596385,
+        "embedding_x": -4.358898943540671,
+        "embedding_y": -5.99149399682305e-28
+      }
+    ],
+    "slice_types": [
+      {
+        "label": "A",
+        "descriptor": "medium warm mixed",
+        "occurrences": 2,
+        "share": 1.0,
+        "exemplar_region_index": 0,
+        "mean_duration_seconds": 1.3120181405895692,
+        "mean_spectral_centroid_hz": 1731.645614908542,
+        "mean_harmonicity": 0.46184356985863195
+      }
+    ],
+    "transitions": [
+      {
+        "from_label": "A",
+        "to_label": "A",
+        "count": 1,
+        "probability": 1.0,
+        "mean_gap_seconds": 0.17460317460317443,
+        "mean_inter_onset_seconds": 2.549206349206349
+      }
+    ],
+    "junctions": [
+      {
+        "index": 0,
+        "from_region_index": 0,
+        "to_region_index": 1,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.17460317460317443,
+        "inter_onset_seconds": 2.549206349206349,
+        "gap_root_mean_square_level": 0.0014783065792999164,
+        "gap_level_below_previous_peak_decibels": -44.62571723475868,
+        "gap_level_above_noise_floor_decibels": 6.320453937634559,
+        "gap_slope_decibels_per_second": -17.942147118941595,
+        "gap_spectral_centroid_hz": 1859.063512215691,
+        "gap_spectral_flatness": 0.013136457947694342,
+        "junction_class": "Resonant Tail",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      }
+    ],
+    "junction_profile": [
+      {
+        "junction_class": "Resonant Tail",
+        "count": 1
+      }
+    ],
+    "dominant_junction_class": "Resonant Tail",
+    "repertoire_entropy_bits": -0.0,
+    "repertoire_entropy_normalized": 0.0,
+    "transition_entropy_bits": 0.0,
+    "syntactic_information_bits": 0.0,
+    "determinism": 0.0,
+    "repeat_ratio": 1.0,
+    "distinct_bigrams": 1,
+    "bigram_coverage": 1.0,
+    "dominant_motif": "",
+    "dominant_motif_occurrences": 0,
+    "median_gap_seconds": 0.17460317460317443,
+    "gap_regularity": 0.0,
+    "bound_ratio": 1.0,
+    "syntax_class": "Isolated",
+    "transitions_per_type_pair": 1.0,
+    "reason": [
+      "1) 2 slices over 1 type — sequence AA",
+      "2) 0.00 bits of syntactic information (determinism 0%, H(next|current) 0.00 bits) (sparse: 1.0 transitions per type-pair — suggestive, not measured)",
+      "3) junctions mostly Resonant Tail · median gap 175 ms · regularity 0% · 100% bound"
     ]
   }
 }

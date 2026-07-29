@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "RIDE_R.WAV",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/RIDE_R.WAV",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/RIDE_R.WAV",
     "length_seconds": 0.5910657596371882,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": -0.00018399409154585956,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Ride",
@@ -51,6 +52,23 @@
     "envelope_kurtosis": 3.005149076029131,
     "envelope_shape": "Decaying",
     "decay_time_seconds_60db": 0.6926988781686724,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.5936507936507937,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.2893424036281179,
+        "envelope_sustain_level": 0.050657125594011906,
+        "envelope_release_seconds": 0.15963718820861678,
+        "envelope_temporal_centroid": 0.07574842836462313,
+        "envelope_skewness": 1.9001168632270873,
+        "envelope_kurtosis": 3.005149076029131,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.6926988781686724
+      }
+    ],
     "onset_periodicity": 0.05538749440086029,
     "onset_rate_per_second": 1.6918591268318883
   },
@@ -126,9 +144,9 @@
   "unsupervised": {
     "cluster": 3,
     "principal_components": [
-      -2.2653860753858828,
-      4.72052770975945,
-      1.406321684971494
+      -3.889114353880822,
+      -3.612610993084008,
+      1.0765109807516948
     ]
   },
   "ucs": {
@@ -177,5 +195,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 102,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "vUXdNM8p1iThJtsp1yHeIuoe4hnkGeoX6hPmFOwU7RbqE/MM8QzwD/EQ8g7zDfQM9gv0DPQI+Av2CvQJ+Qr3CPkI+wb7BfsF+wX7BfsF/AT8BfsF/AT8BPsD/QP9BPwD/QP9A/0C/gL9Av4C/gL+Av8C/gL/Av8C/wH+Af8B/wH/Af8B/wH/Af8B/wH/Af8B/wH/Af8BAAH/AAAB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   }
 }

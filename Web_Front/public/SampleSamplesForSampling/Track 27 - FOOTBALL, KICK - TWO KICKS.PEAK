@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 27 - FOOTBALL, KICK - TWO KICKS.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 27 - FOOTBALL, KICK - TWO KICKS.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 27 - FOOTBALL, KICK - TWO KICKS.mp3",
     "length_seconds": 4.25795918367347,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0007782638103369733,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Kick",
     "reason": [
       "1) path matched \"kick\"",
-      "2) envelope Multi (attack 2270 ms, sustain 0%, 2 transients)",
+      "2) envelope Multi (2 transients — loudest of 2 slices: attack 15 ms, sustain 0%)",
       "3) Inharmonic · mid-band 61% · root D#2"
     ],
     "timbre": "Loop",
@@ -40,15 +41,47 @@
     "attack_seconds": 2.750204081632653,
     "sustain_ratio": 0.01171875,
     "sustained": false,
-    "envelope_attack_seconds": 2.2698412698412698,
-    "envelope_decay_seconds": 0.7034013605442176,
-    "envelope_sustain_level": 0.004664801595811589,
-    "envelope_release_seconds": 0.3142857142857143,
-    "envelope_temporal_centroid": 0.4475506259135944,
-    "envelope_skewness": 8.689564988801044,
-    "envelope_kurtosis": 81.89060797746083,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 0.1325608586461623,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 2.6689342403628116,
+        "relative_level": 0.7777638822123655,
+        "envelope_attack_seconds": 0.009977324263038548,
+        "envelope_decay_seconds": 0.2594104308390023,
+        "envelope_sustain_level": 0.014533693980441997,
+        "envelope_release_seconds": 0.11972789115646258,
+        "envelope_temporal_centroid": 0.19595317126931294,
+        "envelope_skewness": 9.578819626154184,
+        "envelope_kurtosis": 98.234446151433,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.20157676819886702
+      },
+      {
+        "index": 1,
+        "start_seconds": 2.6689342403628116,
+        "end_seconds": 4.26031746031746,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.7034013605442176,
+        "envelope_sustain_level": 0.004664801595811589,
+        "envelope_release_seconds": 0.3142857142857143,
+        "envelope_temporal_centroid": 0.060509222418446536,
+        "envelope_skewness": 7.278678893218889,
+        "envelope_kurtosis": 56.2300482903496,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.1325608586461623
+      }
+    ],
     "onset_periodicity": 0.0,
     "onset_rate_per_second": 0.46970858895705514
   },
@@ -124,22 +157,31 @@
   "unsupervised": {
     "cluster": 0,
     "principal_components": [
-      4.245410948548832,
-      -0.9588530373770094,
-      2.2460347581715543
+      3.973683894768535,
+      -0.46232549849135496,
+      2.220143823499087
     ]
   },
   "ucs": {
-    "category": "VEHICLES",
-    "subcategory": "MOTORCYCLE",
-    "id": "VEHMoto",
-    "confidence": 0.48192584563117025,
+    "category": "SPORTS",
+    "subcategory": "FIELD",
+    "id": "SPRTField",
+    "confidence": 0.45283965987730884,
     "alternatives": [
+      {
+        "category": "VEHICLES",
+        "subcategory": "MOTORCYCLE",
+        "id": "VEHMoto",
+        "probability": 0.256,
+        "synonyms": [
+          "two"
+        ]
+      },
       {
         "category": "MOTORS",
         "subcategory": "COMBUSTION",
         "id": "MOTRComb",
-        "probability": 0.287,
+        "probability": 0.152,
         "synonyms": [
           "two"
         ]
@@ -148,25 +190,16 @@
         "category": "COMMUNICATIONS",
         "subcategory": "TRANSCEIVER",
         "id": "COMTran",
-        "probability": 0.099,
+        "probability": 0.053,
         "synonyms": [
           "two"
-        ]
-      },
-      {
-        "category": "CROWDS",
-        "subcategory": "SPORT",
-        "id": "CRWDSprt",
-        "probability": 0.079,
-        "synonyms": [
-          "football"
         ]
       }
     ],
     "synonyms": [
-      "two"
+      "football"
     ],
-    "reason": "name matched [two]; signal 0.56, tier semantic_only, 8 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.2580 > max 4.0000)"
+    "reason": "name matched [football]; signal 0.77, tier semantic_only, 9 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.2580 > max 4.0000)"
   },
   "regions": {
     "count": 1,
@@ -184,5 +217,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 734,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AP8B2i3bNswd2yr8FfML9Q33CPkK+Av6Bf0G/AL9A/wD/QP8A/wE/QH+Av4B/gH9A/4C/wP+Av4E/gL+Af4C/gH+Av8B/gH/Av4C/wL+Af8B/wH/Af4B/wL/Af8B/wD/Af8B/wH/Af8B/wH/Af8B/wH/Af8B/wH/Af8B/gH/Af8C/gL/Af8B/wD/Af8B/wD/Af8A/wH/Af8B/wH/Af8B/wH/AP8B/wH/AP8B/wH+Av8B/gH+Af0B/wH/Af4C/QP+Av4B/wH+Av4B/wL+Av4B/wH/Af8B/wH+Af4B/wL/Af8B/wH/Af4B/wH/Af8C/gL/Af8B/gH/Af8B/gL+Av4B/wH/AQAB/wH/AP8B/wH/AP8A/wH+Af8A/wH/Af8B/wH/AP8B/wH/AP8B/wH/Af8A/wH/AAAB/wH/AP8A/wD/Af8B/wD/Af8B/wH+AQAB/wH/Af8BAAH/Af8B/wH/Af8B/gH/Af8B/wH/Af8B/wH/Af8A/wAAAP8A/wH/Af8A/wH/Af8A/wD/Af8A/wEAAf8B/wH/AAAA/wD/Af8BAAD/AP8A/wH/AP8B/wD/AP8B/wD/Af8AAAH/AP8B/wD/AP8B/wD/AP8A/wH/Af8B/wEAAP8B/wAAAf8B/wD/AAAA/wH/AP8BAAAAAP8A/wD/AAAA/wH/Af8B/wAAAP8AAAH/AP8AAAAAAP8A/wD/Af8B/wD/AP8B/wD/AP8A/wD/AP8BAAD/AAAAAAH/Af8A/wD/AP8A/wD/Af8AAAD/AP8A/wD/Af8A/wD/Af8BAAAAAP8B/wH/Af8B/wEAAf8AAAAAAAAAAAD/AAAAAAD/AP8AAAAAAP8B/wH/Af8B/wH/Af8A/wD/AAAAAAD/AAAAAAAAAAAA/wAAAP8AAAAAAAAA/wD/AP8A/wAAAP8AAAAAAP8A/wAAAAABAAAAAAAA/wD/Af8B/wD/Af8A/wAAAAAAAAAAAAAAAAD/AP8AAAAAAAAA/wD/AQAAAAD/AP8AAAAAAP8A/wD/AAAAAAAAAAAA/wAAAP8A/wD/AAAAAAD/ANdJzUa5L8oo9BrqCu8U+Ab7B/cM/AP8A/0C/QX9Av0D/AL8A/4B/gL/Af8D/AT8A/4D/gL9Av4D/gH/Af8B/gT9Av4C/gL/Af8B/QL+Av4C/QH+Af4D/wL+Av4C/gL+Av4C/gH+Av0C/QP/Av8C/gL+Af0C/gL9Av4E/wH/Af8C/wL+Af8C/wH/Af4C/gH/Af8B/gH/Af4B/gL+Av4B/gH+Af8B/wP/Af8B/gL+A/4C/gH+Av4C/AL+Af8B/wH+Av4C/gL+Af8B/wH/Af8B/wH/Af8B/wH/AP8A/wH/Af8B/wH/Af8B/wH/AP8A/wD/AP8B/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
   }
 }

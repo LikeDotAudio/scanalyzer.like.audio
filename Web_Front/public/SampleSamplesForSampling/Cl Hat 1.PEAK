@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Cl Hat 1.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Cl Hat 1.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Cl Hat 1.wav",
     "length_seconds": 0.042630385487528344,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": -0.0004108185463763298,
-    "trailing_silence_ms": 0.022675736961451247
+    "trailing_silence_ms": 0.022675736961451247,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Hi-Hat",
@@ -49,6 +50,23 @@
     "envelope_kurtosis": 0.0397291773619286,
     "envelope_shape": "Decaying",
     "decay_time_seconds_60db": 0.06479520212859434,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.044897959183673466,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.2803660573526825,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.06850502171558047,
+        "envelope_skewness": 1.17656958342646,
+        "envelope_kurtosis": 0.0397291773619286,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.06479520212859434
+      }
+    ],
     "onset_periodicity": null,
     "onset_rate_per_second": 23.45744680851064
   },
@@ -124,9 +142,9 @@
   "unsupervised": {
     "cluster": 5,
     "principal_components": [
-      -3.3782476697337604,
-      2.037645204925139,
-      0.5270830970547538
+      -3.8562809406605205,
+      -0.8056640178710245,
+      0.3817347691786017
     ]
   },
   "ucs": {
@@ -156,5 +174,13 @@
     "minimum_silence_seconds": 0.15,
     "minimum_region_seconds": 0.05,
     "regions": []
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 8,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "gX+Lf88w4RrqD/YH+QT9Aw=="
   }
 }

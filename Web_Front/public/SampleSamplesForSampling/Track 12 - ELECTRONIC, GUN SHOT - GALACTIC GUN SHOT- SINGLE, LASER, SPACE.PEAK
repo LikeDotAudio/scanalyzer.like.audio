@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 12 - ELECTRONIC, GUN SHOT - GALACTIC GUN SHOT- SINGLE, LASER, SPACE.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 12 - ELECTRONIC, GUN SHOT - GALACTIC GUN SHOT- SINGLE, LASER, SPACE.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 12 - ELECTRONIC, GUN SHOT - GALACTIC GUN SHOT- SINGLE, LASER, SPACE.mp3",
     "length_seconds": 5.0416326530612245,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0013408290516357868,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "FX",
     "reason": [
       "1) path matched \"laser\"",
-      "2) envelope Multi (attack 120 ms, sustain 2%, 2 transients)",
+      "2) envelope Multi (2 transients — loudest of 2 slices: attack 75 ms, sustain 2%)",
       "3) Harmonic · high-band 58% · root F2"
     ],
     "timbre": "Loop",
@@ -38,15 +39,47 @@
     "attack_seconds": 0.5670521541950113,
     "sustain_ratio": 0.09900990099009901,
     "sustained": false,
-    "envelope_attack_seconds": 0.11972789115646258,
-    "envelope_decay_seconds": 0.5936507936507937,
-    "envelope_sustain_level": 0.020584663687846633,
-    "envelope_release_seconds": 0.18458049886621314,
-    "envelope_temporal_centroid": 0.407556507209156,
-    "envelope_skewness": 1.9691987679365899,
-    "envelope_kurtosis": 2.958214826654851,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 0.8127540040135477,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 2.6689342403628116,
+        "relative_level": 0.9434263051368252,
+        "envelope_attack_seconds": 0.11473922902494331,
+        "envelope_decay_seconds": 0.8281179138321996,
+        "envelope_sustain_level": 0.0886089843611448,
+        "envelope_release_seconds": 1.017687074829932,
+        "envelope_temporal_centroid": 0.2782618677887904,
+        "envelope_skewness": 1.7394831671543252,
+        "envelope_kurtosis": 2.2954018607703706,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 3.412139098145852
+      },
+      {
+        "index": 1,
+        "start_seconds": 2.6689342403628116,
+        "end_seconds": 5.043537414965987,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.07482993197278912,
+        "envelope_decay_seconds": 0.5936507936507937,
+        "envelope_sustain_level": 0.020584663687846633,
+        "envelope_release_seconds": 0.18458049886621314,
+        "envelope_temporal_centroid": 0.45685533867545336,
+        "envelope_skewness": 2.292197897655716,
+        "envelope_kurtosis": 4.048700706655424,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.8127540040135477
+      }
+    ],
     "onset_periodicity": 0.20633314173544692,
     "onset_rate_per_second": 0.39669689119170987
   },
@@ -122,22 +155,22 @@
   "unsupervised": {
     "cluster": 0,
     "principal_components": [
-      1.2863571567548833,
-      -0.39504337449916743,
-      0.4369277082432673
+      1.3501706048135256,
+      -0.08636259681637622,
+      0.9438359502935175
     ]
   },
   "ucs": {
     "category": "TOYS",
     "subcategory": "MISC",
     "id": "TOYMisc",
-    "confidence": 0.22701313474244944,
+    "confidence": 0.18986307858172152,
     "alternatives": [
       {
         "category": "MACHINES",
         "subcategory": "OFFICE",
         "id": "MACHOffc",
-        "probability": 0.218,
+        "probability": 0.182,
         "synonyms": [
           "laser"
         ]
@@ -146,7 +179,7 @@
         "category": "EQUIPMENT",
         "subcategory": "HITECH",
         "id": "EQUIPTech",
-        "probability": 0.16,
+        "probability": 0.133,
         "synonyms": [
           "space"
         ]
@@ -155,7 +188,7 @@
         "category": "MACHINES",
         "subcategory": "HITECH",
         "id": "MACHTech",
-        "probability": 0.138,
+        "probability": 0.115,
         "synonyms": [
           "laser"
         ]
@@ -164,7 +197,7 @@
     "synonyms": [
       "electronic"
     ],
-    "reason": "name matched [electronic]; signal 0.86, tier semantic_only, 24 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 5.0416 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
+    "reason": "name matched [electronic]; signal 0.86, tier semantic_only, 30 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 5.0416 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
   },
   "regions": {
     "count": 1,
@@ -182,5 +215,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 869,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
   }
 }

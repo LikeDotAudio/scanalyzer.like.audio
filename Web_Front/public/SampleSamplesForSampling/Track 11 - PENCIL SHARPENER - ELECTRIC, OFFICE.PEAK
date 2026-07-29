@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 11 - PENCIL SHARPENER - ELECTRIC, OFFICE.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 11 - PENCIL SHARPENER - ELECTRIC, OFFICE.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 11 - PENCIL SHARPENER - ELECTRIC, OFFICE.mp3",
     "length_seconds": 5.250612244897959,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0005746767610807946,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 8 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 2180 ms, sustain 38%, 8 transients)",
+      "2) envelope Multi (8 transients — loudest of 8 slices: attack 65 ms, sustain 79%)",
       "3) Inharmonic · high-band 71% · root C5"
     ],
     "timbre": "Loop",
@@ -39,15 +40,137 @@
     "attack_seconds": 2.8325850340136056,
     "sustain_ratio": 0.25316455696202533,
     "sustained": false,
-    "envelope_attack_seconds": 2.1800453514739226,
-    "envelope_decay_seconds": 0.2494331065759637,
-    "envelope_sustain_level": 0.3768944115270529,
-    "envelope_release_seconds": 0.16462585034013605,
-    "envelope_temporal_centroid": 0.4361835492869582,
-    "envelope_skewness": 0.00326329384050975,
-    "envelope_kurtosis": -0.6547626197598237,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 12.480024886415812,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.0326530612244897,
+        "relative_level": 0.7786218725947845,
+        "envelope_attack_seconds": 0.17959183673469387,
+        "envelope_decay_seconds": 0.004988662131519274,
+        "envelope_sustain_level": 0.8815883551798943,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.8108122753936038,
+        "envelope_skewness": 0.6991231077124328,
+        "envelope_kurtosis": -1.2725694521590725,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.0326530612244897,
+        "end_seconds": 1.7809523809523808,
+        "relative_level": 0.6960294865885993,
+        "envelope_attack_seconds": 0.47891156462585033,
+        "envelope_decay_seconds": 0.02494331065759637,
+        "envelope_sustain_level": 0.6884455453609729,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.4969827031370945,
+        "envelope_skewness": 0.7571135048569047,
+        "envelope_kurtosis": 0.49324647730380455,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 1.7809523809523808,
+        "end_seconds": 2.0653061224489795,
+        "relative_level": 0.846732220761763,
+        "envelope_attack_seconds": 0.09977324263038548,
+        "envelope_decay_seconds": 0.07482993197278912,
+        "envelope_sustain_level": 0.6618493591426486,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.45173751998218103,
+        "envelope_skewness": 0.37082701173537597,
+        "envelope_kurtosis": -0.8141706388938039,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 2.0653061224489795,
+        "end_seconds": 2.434467120181406,
+        "relative_level": 0.593694939243989,
+        "envelope_attack_seconds": 0.08480725623582766,
+        "envelope_decay_seconds": 0.07482993197278912,
+        "envelope_sustain_level": 0.7213628288761412,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.48633782647768203,
+        "envelope_skewness": -0.27900858910069687,
+        "envelope_kurtosis": -0.6840952001089486,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 4,
+        "start_seconds": 2.434467120181406,
+        "end_seconds": 2.7337868480725622,
+        "relative_level": 0.594233086718375,
+        "envelope_attack_seconds": 0.14965986394557823,
+        "envelope_decay_seconds": 0.044897959183673466,
+        "envelope_sustain_level": 0.6436273188755429,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.5296673257752869,
+        "envelope_skewness": 0.7849524607911371,
+        "envelope_kurtosis": 0.10427619747878536,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 5,
+        "start_seconds": 2.7337868480725622,
+        "end_seconds": 2.8834467120181406,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.7904757109330159,
+        "envelope_release_seconds": 0.019954648526077097,
+        "envelope_temporal_centroid": 0.5209464226660486,
+        "envelope_skewness": 0.5485103302781601,
+        "envelope_kurtosis": -0.6497507028233578,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 6,
+        "start_seconds": 2.8834467120181406,
+        "end_seconds": 3.7814058956916097,
+        "relative_level": 0.7310626806272987,
+        "envelope_attack_seconds": 0.04988662131519274,
+        "envelope_decay_seconds": 0.044897959183673466,
+        "envelope_sustain_level": 0.5347105915097927,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.4647124203950743,
+        "envelope_skewness": 1.2442559012992183,
+        "envelope_kurtosis": 2.1635229179816333,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 7,
+        "start_seconds": 3.7814058956916097,
+        "end_seconds": 5.253061224489795,
+        "relative_level": 0.9470566040737721,
+        "envelope_attack_seconds": 0.11972789115646258,
+        "envelope_decay_seconds": 0.6684807256235827,
+        "envelope_sustain_level": 0.03635525138611718,
+        "envelope_release_seconds": 0.16961451247165532,
+        "envelope_temporal_centroid": 0.1471883271783669,
+        "envelope_skewness": 1.231521487559323,
+        "envelope_kurtosis": 1.182339339320838,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 2.288058069817965
+      }
+    ],
     "onset_periodicity": 0.2964625398350203,
     "onset_rate_per_second": 1.5236318407960199
   },
@@ -123,22 +246,22 @@
   "unsupervised": {
     "cluster": 12,
     "principal_components": [
-      0.8289567989949511,
-      1.7549378553150998,
-      -1.9921845176982873
+      0.4184216735393342,
+      -1.9582223634935292,
+      -2.1220344557253057
     ]
   },
   "ucs": {
     "category": "MACHINES",
     "subcategory": "MISC",
     "id": "MACHMisc",
-    "confidence": 0.24233263680041564,
+    "confidence": 0.18921341632487562,
     "alternatives": [
       {
         "category": "OBJECTS",
         "subcategory": "WRITING",
         "id": "OBJWrite",
-        "probability": 0.232,
+        "probability": 0.182,
         "synonyms": [
           "pencil"
         ]
@@ -147,18 +270,18 @@
         "category": "OBJECTS",
         "subcategory": "OFFICE",
         "id": "OBJOffc",
-        "probability": 0.183,
+        "probability": 0.143,
         "synonyms": [
           "office"
         ]
       },
       {
-        "category": "MACHINES",
-        "subcategory": "APPLIANCE",
-        "id": "MACHAppl",
-        "probability": 0.129,
+        "category": "OBJECTS",
+        "subcategory": "KEYS",
+        "id": "OBJKey",
+        "probability": 0.101,
         "synonyms": [
-          "electric"
+          "office"
         ]
       }
     ],
@@ -183,5 +306,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 905,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
   }
 }

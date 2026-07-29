@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
     "length_seconds": 4.519183673469388,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,7 +12,8 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0029606843630537545,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Horn",
@@ -48,6 +49,23 @@
     "envelope_kurtosis": -1.4354876265812129,
     "envelope_shape": "Sustained",
     "decay_time_seconds_60db": 10.05046053084601,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 4.519727891156463,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.5038548752834467,
+        "envelope_sustain_level": 0.5115291504229972,
+        "envelope_release_seconds": 0.3492063492063492,
+        "envelope_temporal_centroid": 0.3503869430489497,
+        "envelope_skewness": 0.11043829561427425,
+        "envelope_kurtosis": -1.4354876265812129,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 10.05046053084601
+      }
+    ],
     "onset_periodicity": 0.28839898296652516,
     "onset_rate_per_second": 0.22127890173410406
   },
@@ -123,9 +141,9 @@
   "unsupervised": {
     "cluster": 7,
     "principal_components": [
-      0.004291727130222786,
-      1.6394746720849933,
-      -2.684493429296494
+      -0.17484589764643177,
+      -1.7266320692813768,
+      -2.3437879069167034
     ]
   },
   "ucs": {
@@ -183,11 +201,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
             "length_seconds": 0.2743764172335601,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -195,7 +213,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0033269441662517893,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Horn",
@@ -233,6 +252,23 @@
             "envelope_kurtosis": -1.2225638585062077,
             "envelope_shape": "Sustained",
             "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.2743764172335601,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.0,
+                "envelope_decay_seconds": 0.07981859410430839,
+                "envelope_sustain_level": 0.8065170501476316,
+                "envelope_release_seconds": 0.0,
+                "envelope_temporal_centroid": 0.4064790462678858,
+                "envelope_skewness": -0.02006839228463824,
+                "envelope_kurtosis": -1.2225638585062077,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              }
+            ],
             "onset_periodicity": 0.0,
             "onset_rate_per_second": 3.644628099173554
           },
@@ -313,7 +349,7 @@
             "category": "BRASS",
             "subcategory": "TUBA",
             "id": "BRASTuba",
-            "confidence": 0.27198384000012005,
+            "confidence": 0.2720299132655722,
             "alternatives": [
               {
                 "category": "WOODWIND",
@@ -346,7 +382,7 @@
             "synonyms": [
               "horn"
             ],
-            "reason": "name matched [horn]; signal 0.51, tier signal_separable, 25 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRHiss (length_seconds 0.2744 < min 0.5000)"
+            "reason": "name matched [horn]; signal 0.51, tier signal_separable, 24 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRHiss (length_seconds 0.2744 < min 0.5000)"
           },
           "regions": {
             "count": 0,
@@ -354,6 +390,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 48,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         }
       },
@@ -366,11 +410,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 52 - INDUSTRY, STEAM BLAST - SHORT BLAST, FACTORY, HORN.mp3",
             "length_seconds": 3.3773469387755104,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -378,7 +422,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.003400410128822371,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Horn",
@@ -414,6 +459,23 @@
             "envelope_kurtosis": -0.7493143240612472,
             "envelope_shape": "Sustained",
             "decay_time_seconds_60db": 10.050746005004028,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 3.382312925170068,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.05986394557823129,
+                "envelope_decay_seconds": 0.45396825396825397,
+                "envelope_sustain_level": 0.5454542595616124,
+                "envelope_release_seconds": 0.364172335600907,
+                "envelope_temporal_centroid": 0.310424641674633,
+                "envelope_skewness": -0.44909600402333866,
+                "envelope_kurtosis": -0.7493143240612472,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": 10.050746005004028
+              }
+            ],
             "onset_periodicity": 0.2938180779619317,
             "onset_rate_per_second": 0.2960903982113723
           },
@@ -494,7 +556,7 @@
             "category": "FOOD & DRINK",
             "subcategory": "MISC",
             "id": "FOODMisc",
-            "confidence": 0.16930690879175514,
+            "confidence": 0.16930916302471158,
             "alternatives": [
               {
                 "category": "EXPLOSIONS",
@@ -528,7 +590,7 @@
             "synonyms": [
               "steam"
             ],
-            "reason": "name matched [steam]; signal 0.78, tier signal_narrowable, 27 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.3104 < min 0.4000); ABSTAINED to MISC (top two too close to call)"
+            "reason": "name matched [steam]; signal 0.78, tier signal_narrowable, 26 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.3104 < min 0.4000); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -536,9 +598,117 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 582,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gL+Av4D8BThHtkf0CfNL8ot0TbQK8ktyjjDOcI5wDTFOM46xz26NMo0wzbHLc05xzbOPcc4vzXHOMw5xz7ANsA/tT61Q8k20DnFPsY8x0LCN8U20ELCP8UuxTqzO8U7wjPNM8ktwzPHLs8zyi3IMc4v1TbSKdUz0DDIMso00CvNNtQqxTbHPc4zzzLFMdE00zO+M88yzzjOM7w2zjTQNNQmxzPVK9Mq0yvYLNgy3CnXMNos1CPOKNorxS7ZIs4p1ynVJ9Yu0ybRJNcq1yPZKt4j4CXZHt4o2SfTJdgq1yTNJs8izijVKt4n2yrWHtsj3yDeH9Yi3h7WJuAh3yHRH9kp3S7RKt8m1CfVLtkj1SjXLdgq2yvPK9Ii3ibcK90q2iTZJ9cn1SPaJdgn1CzVKNQk2CbYKtcv2yHmIOAczijYK9so2CXULdso2iTaIt0m1yXRLtgs1DDPMNkxyCzQL9cm1CbcJtsi1SvUJtIq1SPcItgr2SbOLdQuzyvSLdYs1SjRKNkn3C3XKtsp2ijaJN4h3iTcH9km2SHbJN0h3iLhJd0j5CHeHuUg3h7jGtke2h7kGuAf2iDOH9Yh2STWI9ok3yDZKdQi3SDcJN4h3CPbI+Am3yTZIt4c1SPZI9og2yLjHd4e2B/gIuEe3SLYIeAg3iDcHNIk3CXcId8j4SHeIuAk3CbbIN0m4BvmJN0e3RreI9we2CHcJtwi3h/dJt4j4RzcIeEe5B7dHdwd4R3fHuAj3x7bHd0d1iDbKNsj2iDeHt4k3yTYJd0g3x/gGuIf2yfgIt0g2iHjHNol5BzbIeMc4hvbIOAh1iDcHdwb2CDaIdso2yTdI9wd1CbbId0i1CPdId4h2x/bH90i3STcJdsn2yHfJN0l2ybkIOEh4x7cJd4h3yTeI9ke2yLdId8d1yXYKNkk2iTcKNUg2SLcItcmziXOJNIt0yfbJ+Am2iXdJ9cp1SXVKtcp0STVLtQw0STWJtsm0y7OK9Uqzy3YKtEt0yTSJtkqzyTVL80p2SXVJ9Mo2iXaJNgy2CTaHOAq3hzeHdsd4SHiINwk5B/hGeEe4SHdHeAc4iPbH+Mf3yXhHNcl4CHhHuId4xjgG+Ab5SHfHN8e4RzfJeYa4hjgH+Ya5RjiG+kY4hXlEukV5xPqF+QW6BPsFOgT6hHnGe0W6BHwD/AQ6BbwEe8Q8BDvD/IN8g31E+0O8Q7xDPUM8Qz0C/QJ9gz5CPcJ+Qf5BvcK+Qj5BvgG+Qf7BfsG+wX6BfgE+gP7BfoF+wP7BPsE+wP7Bf0C/QL7A/sE+wP8A/wC/AL9Av0B/QH9BPwB/AH9Av0D/AL9Av4C/QL8Af0C/gH+Af4B/gL+Af4B/gH+Af4B/gD+Af4B/gH+Af4B/gH+AP4B/gD+Af4A/wD/AP8A/wD+AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8AAAAAAP8AAAAAAAAA"
           }
         }
       }
+    ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 779,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
+  },
+  "bioacoustic_syntax": {
+    "slice_count": 2,
+    "type_count": 1,
+    "sequence": "AA",
+    "slices": [
+      {
+        "region_index": 0,
+        "type_label": "A",
+        "start_seconds": 0.02494331065759637,
+        "duration_seconds": 0.2743764172335601,
+        "embedding_x": -4.472135954999581,
+        "embedding_y": 1.3191775994770632e-28
+      },
+      {
+        "region_index": 1,
+        "type_label": "A",
+        "start_seconds": 0.5337868480725623,
+        "duration_seconds": 3.377324263038549,
+        "embedding_x": 4.472135954999581,
+        "embedding_y": -1.319177599477063e-28
+      }
+    ],
+    "slice_types": [
+      {
+        "label": "A",
+        "descriptor": "long bright mixed",
+        "occurrences": 2,
+        "share": 1.0,
+        "exemplar_region_index": 0,
+        "mean_duration_seconds": 1.8258503401360544,
+        "mean_spectral_centroid_hz": 2901.989505664282,
+        "mean_harmonicity": 0.5395832602886859
+      }
+    ],
+    "transitions": [
+      {
+        "from_label": "A",
+        "to_label": "A",
+        "count": 1,
+        "probability": 1.0,
+        "mean_gap_seconds": 0.2344671201814058,
+        "mean_inter_onset_seconds": 0.5088435374149659
+      }
+    ],
+    "junctions": [
+      {
+        "index": 0,
+        "from_region_index": 0,
+        "to_region_index": 1,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.2344671201814058,
+        "inter_onset_seconds": 0.5088435374149659,
+        "gap_root_mean_square_level": 0.0018193550038843964,
+        "gap_level_below_previous_peak_decibels": -7.216782293261165,
+        "gap_level_above_noise_floor_decibels": 11.413970299228504,
+        "gap_slope_decibels_per_second": -29.995328265296497,
+        "gap_spectral_centroid_hz": 609.038467002144,
+        "gap_spectral_flatness": 0.007788762115257836,
+        "junction_class": "Continuous",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      }
+    ],
+    "junction_profile": [
+      {
+        "junction_class": "Continuous",
+        "count": 1
+      }
+    ],
+    "dominant_junction_class": "Continuous",
+    "repertoire_entropy_bits": -0.0,
+    "repertoire_entropy_normalized": 0.0,
+    "transition_entropy_bits": 0.0,
+    "syntactic_information_bits": 0.0,
+    "determinism": 0.0,
+    "repeat_ratio": 1.0,
+    "distinct_bigrams": 1,
+    "bigram_coverage": 1.0,
+    "dominant_motif": "",
+    "dominant_motif_occurrences": 0,
+    "median_gap_seconds": 0.2344671201814058,
+    "gap_regularity": 0.0,
+    "bound_ratio": 1.0,
+    "syntax_class": "Isolated",
+    "transitions_per_type_pair": 1.0,
+    "reason": [
+      "1) 2 slices over 1 type — sequence AA",
+      "2) 0.00 bits of syntactic information (determinism 0%, H(next|current) 0.00 bits) (sparse: 1.0 transitions per type-pair — suggestive, not measured)",
+      "3) junctions mostly Continuous · median gap 234 ms · regularity 0% · 100% bound"
     ]
   }
 }

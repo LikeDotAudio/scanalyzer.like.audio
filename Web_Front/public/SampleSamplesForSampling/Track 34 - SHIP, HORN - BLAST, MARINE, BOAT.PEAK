@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 34 - SHIP, HORN - BLAST, MARINE, BOAT.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 34 - SHIP, HORN - BLAST, MARINE, BOAT.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 34 - SHIP, HORN - BLAST, MARINE, BOAT.mp3",
     "length_seconds": 4.310204081632653,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.000535281968663798,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Horn",
     "reason": [
       "1) path matched \"horn\"",
-      "2) envelope Multi (attack 1352 ms, sustain 17%, 2 transients)",
+      "2) envelope Multi (2 transients — loudest of 2 slices: attack 249 ms, sustain 17%)",
       "3) Harmonic · high-band 50% · root C#3"
     ],
     "timbre": "Loop",
@@ -39,15 +40,47 @@
     "attack_seconds": 2.188639455782313,
     "sustain_ratio": 0.47104247104247104,
     "sustained": false,
-    "envelope_attack_seconds": 1.3519274376417234,
-    "envelope_decay_seconds": 1.107482993197279,
-    "envelope_sustain_level": 0.17260906088341801,
-    "envelope_release_seconds": 0.24444444444444444,
-    "envelope_temporal_centroid": 0.4763925402298173,
-    "envelope_skewness": 0.1373794023256128,
-    "envelope_kurtosis": -1.4273456589006315,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 1.1995962032592402,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.6312925170068027,
+        "relative_level": 0.7932494288730094,
+        "envelope_attack_seconds": 0.7183673469387755,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.775003742082038,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.7545249268311515,
+        "envelope_skewness": -0.04213277953999413,
+        "envelope_kurtosis": -1.464399724054023,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.6312925170068027,
+        "end_seconds": 4.310204081632653,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.2494331065759637,
+        "envelope_decay_seconds": 1.107482993197279,
+        "envelope_sustain_level": 0.17260906088341801,
+        "envelope_release_seconds": 0.24444444444444444,
+        "envelope_temporal_centroid": 0.2622799983584174,
+        "envelope_skewness": 0.030338286303512346,
+        "envelope_kurtosis": -1.627458746683316,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.1995962032592402
+      }
+    ],
     "onset_periodicity": 0.405495121103315,
     "onset_rate_per_second": 0.4640151515151515
   },
@@ -123,40 +156,41 @@
   "unsupervised": {
     "cluster": 0,
     "principal_components": [
-      1.6299035282978567,
-      -0.13938954272020976,
-      -1.4153724576832685
+      1.7522473602323556,
+      -0.49235164362074585,
+      -0.8895571585532186
     ]
   },
   "ucs": {
     "category": "ANIMALS",
-    "subcategory": "AQUATIC",
-    "id": "ANMLAqua",
-    "confidence": 0.25549977424346426,
+    "subcategory": "MISC",
+    "id": "ANMLMisc",
+    "confidence": 0.16814769469477736,
     "alternatives": [
       {
-        "category": "ALARMS",
-        "subcategory": "SIREN",
-        "id": "ALRMSirn",
-        "probability": 0.128,
+        "category": "BOATS",
+        "subcategory": "DOOR",
+        "id": "BOATDoor",
+        "probability": 0.146,
         "synonyms": [
-          "horn"
+          "boat",
+          "ship"
         ]
       },
       {
-        "category": "CREATURES",
-        "subcategory": "AQUATIC",
-        "id": "CREAAqua",
-        "probability": 0.107,
+        "category": "BOATS",
+        "subcategory": "MECHANISM",
+        "id": "BOATMech",
+        "probability": 0.099,
         "synonyms": [
-          "marine"
+          "ship"
         ]
       },
       {
-        "category": "FIREWORKS",
-        "subcategory": "RECREATIONAL",
-        "id": "FRWKRec",
-        "probability": 0.105,
+        "category": "EXPLOSIONS",
+        "subcategory": "REAL",
+        "id": "EXPLReal",
+        "probability": 0.092,
         "synonyms": [
           "blast"
         ]
@@ -165,7 +199,7 @@
     "synonyms": [
       "marine"
     ],
-    "reason": "name matched [marine]; signal 0.79, tier semantic_only, 32 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.3102 > max 4.0000)"
+    "reason": "name matched [marine]; signal 0.79, tier semantic_only, 34 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.3102 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
   },
   "regions": {
     "count": 1,
@@ -183,5 +217,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 743,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8B/wH/Af8B/gL+Av4D/QP9A/0D/QP+A/wD/QL8A/wE/AX8BvsF+wb7BfsG/QP8BP0D/AT8A/sE+gX7BvsG+wT7B/oI+gj6BfkH+Qj5CPgI+Af6BvoH+gj5BvgI9wn5B/gI+Aj5CfcK9wr3CfgJ9gn6CvgK9wn4C/cK+Af1C/cL9wf5CPgH9wn5CvoK+gf6CfoJ9wj3B/cI+Qn4C/kL+Ar5DPkM+Av4CvgJ+Qj4CvgM+Qv5CvkL+Qv6C/cI9wv3DPYM9gz2DPYN9A70DvgL8g7zD/EM9w3xDfAR8g71DfQP7hDwEPcQ9gz0C/ML8ArzEfIM8g74E/IR9Q7zD/cN8A7zEPEQ8xH2CvUV9wvzBvgK9BP0C/EL8w/3C/YL7gn1DPQI9Qz4CvMK9Q72DfcS9RHzCvQJ9A32DfEP9wj1DvIP9g71D/QM9wryCfkM8wvyEvYG8xD0FfEQ9BLxFPMJ9hD2EPYJ9RT1DPkN9Qr2DvgQ+BP3CPYQ9g33B/ML+Q74C/QN9wz1CvYN+RT4CPQM9Qz5CvMS+Aj1DvQN9gn2CvUR9Q72C/YP8wvxE/YN9hH0D+wL9RDvFPIK9A3tEu4J7A3tG/YT7g7sE/EQ8xHzEfMS7Q/xDfER6xryDOoV7hXwDu4V7hXvFO8S6xTxD+0T8w3uE+4X8BDuFe4d9BHzFesV7wv0EO0T9RTsF+0Q8hXsEfQN8BTqFfEP6w/oFfEQ7hPsGPQW7xHwEfIT8BDvE/AU7xHzF+4V7hzuD/IZ8xLqFfAP5xHyDese8RjyE+0X8xjwFPEN8Q7vEOsW9BLwE/IU8Q70GfMa9Q/1EvQV8QryEfUU9BLxFesN9RbuEPYM8RXyE/IM8A3xEPMN8Q70FvgN8gjwEvYO8gj1DvcK9g70DPIS7xXxC/AU8wr1CfQM8hT1CvYP8hPyD/ER8RH0FPQK9BD0EfMT9w7vDfYT8g33FPUX8g7xC/IO9gnyC/AW9g/xFPAK9hT0DvkL9A3wDvQO8w3uFvUR9Q7vDvYO8xXzFvEO7w70EPIM8Av2EvEM8xHpC/YX9xLxDPAP6xDwDe0O9BfyDe4T7gzzGfMN9Q3wD+8P9A32DO8R8gv3EfEY9wn2EfIO9g7wDekZ9RP3Fe8P+AztEfcK9gvtDvgK9wzxEvcH9grzE/UH9QvwE/IM8gzyE/cP9RLtFfcO9Aj5CPgM9Af4BvkH9wX6BPoE/AX8BfsE/QT9AvwD/QP9A/sE/QP+A/0C/QP9BP0D/QL9Av4D/QL9Av4D/gL+Av4C/QL+Af4C/QL+Av4D/gL+Av4C/gL+Av8B/gH+Av8B/wH/Af8B/wH/Af8B/wEAAf8B/wH/Af8B/wEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
   }
 }

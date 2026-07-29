@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 07 - AIRPLANE, SINGLE PROP - EXT- PASS BY OVERHEAD QUICKLY.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 07 - AIRPLANE, SINGLE PROP - EXT- PASS BY OVERHEAD QUICKLY.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 07 - AIRPLANE, SINGLE PROP - EXT- PASS BY OVERHEAD QUICKLY.mp3",
     "length_seconds": 6.844081632653062,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0008886521392943413,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 4 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 1437 ms, sustain 9%, 4 transients)",
+      "2) envelope Multi (4 transients — loudest of 4 slices: attack 55 ms, sustain 68%)",
       "3) Inharmonic · high-band 54% · root C4"
     ],
     "timbre": "Loop",
@@ -39,15 +40,77 @@
     "attack_seconds": 2.677573696145125,
     "sustain_ratio": 0.29683698296836986,
     "sustained": false,
-    "envelope_attack_seconds": 1.436734693877551,
-    "envelope_decay_seconds": 1.636281179138322,
-    "envelope_sustain_level": 0.09024036130850005,
-    "envelope_release_seconds": 0.9378684807256236,
-    "envelope_temporal_centroid": 0.43515326445177405,
-    "envelope_skewness": 0.7922494977502835,
-    "envelope_kurtosis": -0.4612769920790285,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 5.019896075557953,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 2.8485260770975054,
+        "relative_level": 0.9144649757714207,
+        "envelope_attack_seconds": 1.3419501133786849,
+        "envelope_decay_seconds": 0.02494331065759637,
+        "envelope_sustain_level": 0.7150317903112114,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.8082876850887979,
+        "envelope_skewness": 0.6669344359492141,
+        "envelope_kurtosis": -0.5602912592311053,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 2.8485260770975054,
+        "end_seconds": 3.018140589569161,
+        "relative_level": 0.9300705685362017,
+        "envelope_attack_seconds": 0.09977324263038548,
+        "envelope_decay_seconds": 0.004988662131519274,
+        "envelope_sustain_level": 0.8915454085955623,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.5681955993039557,
+        "envelope_skewness": 0.723281574932298,
+        "envelope_kurtosis": -0.03971609924973851,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 3.018140589569161,
+        "end_seconds": 3.5519274376417234,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.05487528344671202,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.6789871619926926,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.4691920356563978,
+        "envelope_skewness": 0.4344717771811227,
+        "envelope_kurtosis": 0.006448078897069998,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 3.5519274376417234,
+        "end_seconds": 6.844444444444444,
+        "relative_level": 0.8131046048277079,
+        "envelope_attack_seconds": 0.07981859410430839,
+        "envelope_decay_seconds": 1.436734693877551,
+        "envelope_sustain_level": 0.0741793588346473,
+        "envelope_release_seconds": 0.7931972789115646,
+        "envelope_temporal_centroid": 0.12504839136338547,
+        "envelope_skewness": 1.231857647915641,
+        "envelope_kurtosis": 0.41906172346123194,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 4.14123689056585
+      }
+    ],
     "onset_periodicity": 0.3600751326451475,
     "onset_rate_per_second": 0.5844465648854962
   },
@@ -121,24 +184,33 @@
     ]
   },
   "unsupervised": {
-    "cluster": 13,
+    "cluster": 12,
     "principal_components": [
-      2.061589846501481,
-      0.9507644053904958,
-      -1.4182180000778095
+      1.494837130550524,
+      -1.3853866627682727,
+      -2.130047435196107
     ]
   },
   "ucs": {
     "category": "VEHICLES",
     "subcategory": "GENERIC BY",
     "id": "VEHBy",
-    "confidence": 0.5369811009461666,
+    "confidence": 0.37738671407167496,
     "alternatives": [
+      {
+        "category": "AIRCRAFT",
+        "subcategory": "MECHANISM",
+        "id": "AEROMech",
+        "probability": 0.259,
+        "synonyms": [
+          "airplane"
+        ]
+      },
       {
         "category": "AIRCRAFT",
         "subcategory": "RADIO CONTROLLED",
         "id": "AERORadio",
-        "probability": 0.173,
+        "probability": 0.141,
         "synonyms": [
           "airplane"
         ]
@@ -147,25 +219,16 @@
         "category": "SWOOSHES",
         "subcategory": "WHOOSH",
         "id": "WHSH",
-        "probability": 0.138,
+        "probability": 0.105,
         "synonyms": [
           "pass"
-        ]
-      },
-      {
-        "category": "AMBIENCE",
-        "subcategory": "RESIDENTIAL",
-        "id": "AMBHome",
-        "probability": 0.052,
-        "synonyms": [
-          "single"
         ]
       }
     ],
     "synonyms": [
       "pass"
     ],
-    "reason": "name matched [pass]; signal 0.83, tier signal_narrowable, 11 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 6.8441 > max 4.0000)"
+    "reason": "name matched [pass]; signal 0.78, tier signal_narrowable, 12 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 6.8441 > max 4.0000)"
   },
   "regions": {
     "count": 1,
@@ -183,5 +246,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 1179,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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/wH+Af4C/gL+Af4C/gL+Av4B/gH+Af8C/wL/Af4C/gH/Af4B/wH+Af8B/gH+Af4B/wH/Af8B/wH/Af8C/gH/Af8B/wH/Af8B/wH/Af4C/wH/Af8B/wH/Af8B/wH/Af8B/wH/Af8B/wD/Af8B/wH/Af8B/wH/Af8B/wD/Af8B/wD/AP8A/wH/Af8A/wH/Af8B/wH/AP8A/wD/AQAAAAD/AAAA/wAAAP8A/wD/AP8A/wD/AQAA/wD/AP8AAAD/AAAA/wEAAP8AAAAAAAAA/wAAAP8AAAD/AAAA/wAAAAABAAAAAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   }
 }

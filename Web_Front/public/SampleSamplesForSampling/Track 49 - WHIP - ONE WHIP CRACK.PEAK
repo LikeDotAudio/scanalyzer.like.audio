@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 49 - WHIP - ONE WHIP CRACK.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 49 - WHIP - ONE WHIP CRACK.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 49 - WHIP - ONE WHIP CRACK.mp3",
     "length_seconds": 5.433469387755102,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0016548323998528496,
-    "trailing_silence_ms": 15.215419501133786
+    "trailing_silence_ms": 15.215419501133786,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 11 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 4260 ms, sustain 0%, 11 transients)",
+      "2) envelope Multi (11 transients — loudest of 11 slices: attack 55 ms, sustain 0%)",
       "3) Inharmonic · high-band 79% · root G5"
     ],
     "timbre": "Loop",
@@ -39,15 +40,182 @@
     "attack_seconds": 4.77437641723356,
     "sustain_ratio": 0.0856269113149847,
     "sustained": false,
-    "envelope_attack_seconds": 4.26031746031746,
-    "envelope_decay_seconds": 0.20453514739229026,
-    "envelope_sustain_level": 0.0016572763575712771,
-    "envelope_release_seconds": 0.044897959183673466,
-    "envelope_temporal_centroid": 0.38387631740712747,
-    "envelope_skewness": 0.8291302417944879,
-    "envelope_kurtosis": -0.019790515519124252,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 0.22572218212075434,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.9478458049886621,
+        "relative_level": 0.6385449186132988,
+        "envelope_attack_seconds": 0.02494331065759637,
+        "envelope_decay_seconds": 0.044897959183673466,
+        "envelope_sustain_level": 0.733354182488373,
+        "envelope_release_seconds": 0.044897959183673466,
+        "envelope_temporal_centroid": 0.7182266683956574,
+        "envelope_skewness": 0.39458625004422665,
+        "envelope_kurtosis": -1.6429770349104633,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 0.2614329948003253
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.9478458049886621,
+        "end_seconds": 1.1324263038548752,
+        "relative_level": 0.482671823603793,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.019954648526077097,
+        "envelope_sustain_level": 0.8911675233101007,
+        "envelope_release_seconds": 0.029931972789115645,
+        "envelope_temporal_centroid": 0.5007985565920503,
+        "envelope_skewness": -0.7334516398967612,
+        "envelope_kurtosis": -0.8833217062230383,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 1.1324263038548752,
+        "end_seconds": 1.4018140589569161,
+        "relative_level": 0.6888226257094007,
+        "envelope_attack_seconds": 0.07981859410430839,
+        "envelope_decay_seconds": 0.04988662131519274,
+        "envelope_sustain_level": 0.6241153902117018,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.46905695261876185,
+        "envelope_skewness": -0.3455749607447707,
+        "envelope_kurtosis": -0.3497676564352097,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 0.5692591556988436
+      },
+      {
+        "index": 3,
+        "start_seconds": 1.4018140589569161,
+        "end_seconds": 1.7011337868480725,
+        "relative_level": 0.5898588923974872,
+        "envelope_attack_seconds": 0.029931972789115645,
+        "envelope_decay_seconds": 0.07981859410430839,
+        "envelope_sustain_level": 0.29964939390778655,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.3836940002609873,
+        "envelope_skewness": 0.09688644507737432,
+        "envelope_kurtosis": -1.0535081901033398,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 2.9080675220840737
+      },
+      {
+        "index": 4,
+        "start_seconds": 1.7011337868480725,
+        "end_seconds": 2.050340136054422,
+        "relative_level": 0.7232543613995028,
+        "envelope_attack_seconds": 0.04988662131519274,
+        "envelope_decay_seconds": 0.039909297052154194,
+        "envelope_sustain_level": 0.41269741078059957,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.3894251723997268,
+        "envelope_skewness": 0.4237912493790077,
+        "envelope_kurtosis": 0.7724871477046138,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 2.003769272681618
+      },
+      {
+        "index": 5,
+        "start_seconds": 2.050340136054422,
+        "end_seconds": 2.185034013605442,
+        "relative_level": 0.49452529777826826,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.019954648526077097,
+        "envelope_sustain_level": 0.7272783727921246,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.5968122825686,
+        "envelope_skewness": -0.20900451588351127,
+        "envelope_kurtosis": -1.151671918269628,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 6,
+        "start_seconds": 2.185034013605442,
+        "end_seconds": 2.399546485260771,
+        "relative_level": 0.4093265086112602,
+        "envelope_attack_seconds": 0.07482993197278912,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.8655847779333004,
+        "envelope_release_seconds": 0.019954648526077097,
+        "envelope_temporal_centroid": 0.5285906935075841,
+        "envelope_skewness": -0.8656548034757789,
+        "envelope_kurtosis": -0.7697631733140033,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": 0.05222493115158494
+      },
+      {
+        "index": 7,
+        "start_seconds": 2.399546485260771,
+        "end_seconds": 2.74875283446712,
+        "relative_level": 0.6576051839144978,
+        "envelope_attack_seconds": 0.06984126984126984,
+        "envelope_decay_seconds": 0.04988662131519274,
+        "envelope_sustain_level": 0.4489315670788877,
+        "envelope_release_seconds": 0.019954648526077097,
+        "envelope_temporal_centroid": 0.4413594553119775,
+        "envelope_skewness": 0.5432062504967373,
+        "envelope_kurtosis": 1.0445102206401948,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 2.6513188522069724
+      },
+      {
+        "index": 8,
+        "start_seconds": 2.74875283446712,
+        "end_seconds": 3.147845804988662,
+        "relative_level": 0.3917428261874863,
+        "envelope_attack_seconds": 0.09977324263038548,
+        "envelope_decay_seconds": 0.03492063492063492,
+        "envelope_sustain_level": 0.9346744329468173,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.5634590081562753,
+        "envelope_skewness": -0.19154014888554874,
+        "envelope_kurtosis": -1.3267439554155132,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 9,
+        "start_seconds": 3.147845804988662,
+        "end_seconds": 4.649433106575963,
+        "relative_level": 0.7394419089586086,
+        "envelope_attack_seconds": 0.06984126984126984,
+        "envelope_decay_seconds": 0.6485260770975056,
+        "envelope_sustain_level": 0.00510332419439922,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.10362015625700369,
+        "envelope_skewness": 2.3865252141240676,
+        "envelope_kurtosis": 5.621239850432678,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 2.768576516027799
+      },
+      {
+        "index": 10,
+        "start_seconds": 4.649433106575963,
+        "end_seconds": 5.437641723356009,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.05487528344671202,
+        "envelope_decay_seconds": 0.20453514739229026,
+        "envelope_sustain_level": 0.0016572763575712771,
+        "envelope_release_seconds": 0.044897959183673466,
+        "envelope_temporal_centroid": 0.14645109178216087,
+        "envelope_skewness": 2.683998042717098,
+        "envelope_kurtosis": 6.641648351185973,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.22572218212075434
+      }
+    ],
     "onset_periodicity": 0.24220300171730874,
     "onset_rate_per_second": 2.0244891826923075
   },
@@ -123,22 +291,31 @@
   "unsupervised": {
     "cluster": 14,
     "principal_components": [
-      1.9839102689281924,
-      1.1119106962441894,
-      -1.3813265018133636
+      1.8007387248150586,
+      -1.8821566485089603,
+      -0.20789214069018327
     ]
   },
   "ucs": {
     "category": "FIRE",
     "subcategory": "CRACKLE",
     "id": "FIRECrkl",
-    "confidence": 0.4081080098853312,
+    "confidence": 0.19322592237359107,
     "alternatives": [
+      {
+        "category": "DRUMS",
+        "subcategory": "SNARE",
+        "id": "DRUMSnr",
+        "probability": 0.153,
+        "synonyms": [
+          "crack"
+        ]
+      },
       {
         "category": "VOICES",
         "subcategory": "CHILD",
         "id": "VOXChld",
-        "probability": 0.262,
+        "probability": 0.124,
         "synonyms": [
           "one"
         ]
@@ -147,25 +324,16 @@
         "category": "VOICES",
         "subcategory": "BABY",
         "id": "VOXBaby",
-        "probability": 0.238,
+        "probability": 0.113,
         "synonyms": [
           "one"
-        ]
-      },
-      {
-        "category": "ROCKS",
-        "subcategory": "CRASH & DEBRIS",
-        "id": "ROCKCrsh",
-        "probability": 0.055,
-        "synonyms": [
-          "crack"
         ]
       }
     ],
     "synonyms": [
       "crack"
     ],
-    "reason": "name matched [crack]; signal 0.80, tier signal_separable, 13 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 5.4335 > max 4.0000)"
+    "reason": "name matched [crack]; signal 0.80, tier signal_separable, 17 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 5.4335 > max 4.0000)"
   },
   "regions": {
     "count": 2,
@@ -182,11 +350,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 49 - WHIP - ONE WHIP CRACK.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 49 - WHIP - ONE WHIP CRACK.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 49 - WHIP - ONE WHIP CRACK.mp3",
             "length_seconds": 3.2176870748299318,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -194,13 +362,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.00247049846978029,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 12 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 728 ms, sustain 39%, 12 transients)",
+              "2) envelope Multi (12 transients — loudest of 12 slices: attack 70 ms, sustain 32%)",
               "3) Inharmonic · high-band 83% · root E5"
             ],
             "timbre": "Loop",
@@ -221,15 +390,197 @@
             "attack_seconds": 1.3030612244897959,
             "sustain_ratio": 0.33505154639175255,
             "sustained": false,
-            "envelope_attack_seconds": 0.728344671201814,
-            "envelope_decay_seconds": 0.044897959183673466,
-            "envelope_sustain_level": 0.3864338877049968,
-            "envelope_release_seconds": 0.014965986394557823,
-            "envelope_temporal_centroid": 0.3972722476613323,
-            "envelope_skewness": 0.020209637158758356,
-            "envelope_kurtosis": -0.5956643526831829,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 2.0037692726816174,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.4839002267573696,
+                "relative_level": 0.8635498081419162,
+                "envelope_attack_seconds": 0.02494331065759637,
+                "envelope_decay_seconds": 0.044897959183673466,
+                "envelope_sustain_level": 0.733354182488373,
+                "envelope_release_seconds": 0.044897959183673466,
+                "envelope_temporal_centroid": 0.43777385259451096,
+                "envelope_skewness": -1.2107142529567352,
+                "envelope_kurtosis": 0.5603915932333159,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": 0.2614329948003253
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.4839002267573696,
+                "end_seconds": 0.6684807256235827,
+                "relative_level": 0.6527515113169103,
+                "envelope_attack_seconds": 0.014965986394557823,
+                "envelope_decay_seconds": 0.019954648526077097,
+                "envelope_sustain_level": 0.8911675233101007,
+                "envelope_release_seconds": 0.0,
+                "envelope_temporal_centroid": 0.4847268679143861,
+                "envelope_skewness": -0.8289327337074233,
+                "envelope_kurtosis": -0.6167791097892503,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 2,
+                "start_seconds": 0.6684807256235827,
+                "end_seconds": 0.818140589569161,
+                "relative_level": 0.9315439351814702,
+                "envelope_attack_seconds": 0.07482993197278912,
+                "envelope_decay_seconds": 0.014965986394557823,
+                "envelope_sustain_level": 0.7723459127037074,
+                "envelope_release_seconds": 0.004988662131519274,
+                "envelope_temporal_centroid": 0.5585711112008144,
+                "envelope_skewness": 0.1169588596510215,
+                "envelope_kurtosis": -0.46099061765570903,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 3,
+                "start_seconds": 0.818140589569161,
+                "end_seconds": 0.9179138321995465,
+                "relative_level": 0.8606292202210777,
+                "envelope_attack_seconds": 0.03492063492063492,
+                "envelope_decay_seconds": 0.02494331065759637,
+                "envelope_sustain_level": 0.6952838404663294,
+                "envelope_release_seconds": 0.019954648526077097,
+                "envelope_temporal_centroid": 0.42635721914369185,
+                "envelope_skewness": -0.22958924975712303,
+                "envelope_kurtosis": -0.7222573740215692,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": 0.06679706705981513
+              },
+              {
+                "index": 4,
+                "start_seconds": 0.9179138321995465,
+                "end_seconds": 1.217233560090703,
+                "relative_level": 0.7977082246098463,
+                "envelope_attack_seconds": 0.029931972789115645,
+                "envelope_decay_seconds": 0.05487528344671202,
+                "envelope_sustain_level": 0.4425654676754873,
+                "envelope_release_seconds": 0.004988662131519274,
+                "envelope_temporal_centroid": 0.4334529448866644,
+                "envelope_skewness": 0.09491954753986008,
+                "envelope_kurtosis": -1.053096482287318,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 5,
+                "start_seconds": 1.217233560090703,
+                "end_seconds": 1.58140589569161,
+                "relative_level": 0.9781084256072212,
+                "envelope_attack_seconds": 0.04988662131519274,
+                "envelope_decay_seconds": 0.039909297052154194,
+                "envelope_sustain_level": 0.41269741078059957,
+                "envelope_release_seconds": 0.02494331065759637,
+                "envelope_temporal_centroid": 0.414432431013563,
+                "envelope_skewness": 0.38168503345700533,
+                "envelope_kurtosis": 0.516693425806964,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 2.003769272681618
+              },
+              {
+                "index": 6,
+                "start_seconds": 1.58140589569161,
+                "end_seconds": 1.7510204081632652,
+                "relative_level": 0.6687818093442011,
+                "envelope_attack_seconds": 0.044897959183673466,
+                "envelope_decay_seconds": 0.039909297052154194,
+                "envelope_sustain_level": 0.5095999186238772,
+                "envelope_release_seconds": 0.0,
+                "envelope_temporal_centroid": 0.521982375470083,
+                "envelope_skewness": -0.023485719241642274,
+                "envelope_kurtosis": -1.0834732871792248,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 7,
+                "start_seconds": 1.7510204081632652,
+                "end_seconds": 1.9356009070294784,
+                "relative_level": 0.5535614138881231,
+                "envelope_attack_seconds": 0.039909297052154194,
+                "envelope_decay_seconds": 0.014965986394557823,
+                "envelope_sustain_level": 0.8732249991430523,
+                "envelope_release_seconds": 0.019954648526077097,
+                "envelope_temporal_centroid": 0.4631044622144714,
+                "envelope_skewness": -1.1685988046164326,
+                "envelope_kurtosis": -0.1659204276323316,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": 0.05222493115158494
+              },
+              {
+                "index": 8,
+                "start_seconds": 1.9356009070294784,
+                "end_seconds": 2.2848072562358275,
+                "relative_level": 0.8893263635011364,
+                "envelope_attack_seconds": 0.06984126984126984,
+                "envelope_decay_seconds": 0.04988662131519274,
+                "envelope_sustain_level": 0.4490469720298218,
+                "envelope_release_seconds": 0.02494331065759637,
+                "envelope_temporal_centroid": 0.4272252722131457,
+                "envelope_skewness": 0.5713926557815664,
+                "envelope_kurtosis": 1.0472775741744957,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 1.915784093575267
+              },
+              {
+                "index": 9,
+                "start_seconds": 2.2848072562358275,
+                "end_seconds": 2.4643990929705213,
+                "relative_level": 0.48503425267251854,
+                "envelope_attack_seconds": 0.014965986394557823,
+                "envelope_decay_seconds": 0.009977324263038548,
+                "envelope_sustain_level": 0.8562731227783973,
+                "envelope_release_seconds": 0.02494331065759637,
+                "envelope_temporal_centroid": 0.5555279228349285,
+                "envelope_skewness": -0.4815731070767303,
+                "envelope_kurtosis": -1.2715767631640722,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 10,
+                "start_seconds": 2.4643990929705213,
+                "end_seconds": 2.6839002267573697,
+                "relative_level": 0.5297817468030672,
+                "envelope_attack_seconds": 0.09977324263038548,
+                "envelope_decay_seconds": 0.03492063492063492,
+                "envelope_sustain_level": 0.9346744329468173,
+                "envelope_release_seconds": 0.014965986394557823,
+                "envelope_temporal_centroid": 0.5721998567039012,
+                "envelope_skewness": -0.02998055186568153,
+                "envelope_kurtosis": -1.4586027518368427,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 11,
+                "start_seconds": 2.6839002267573697,
+                "end_seconds": 3.2176870748299318,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.06984126984126984,
+                "envelope_decay_seconds": 0.06485260770975057,
+                "envelope_sustain_level": 0.3230710015966809,
+                "envelope_release_seconds": 0.009977324263038548,
+                "envelope_temporal_centroid": 0.2818432761559525,
+                "envelope_skewness": 0.8780908344209285,
+                "envelope_kurtosis": 0.3130526608356443,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 2.768576516027799
+              }
+            ],
             "onset_periodicity": 0.1856595354091586,
             "onset_rate_per_second": 3.72938689217759
           },
@@ -307,43 +658,43 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "VOICES",
+            "category": "CERAMICS",
             "subcategory": "MISC",
-            "id": "VOXMisc",
-            "confidence": 0.3885769783319488,
+            "id": "CERMMisc",
+            "confidence": 0.15710683525382746,
             "alternatives": [
               {
+                "category": "DRUMS",
+                "subcategory": "SNARE",
+                "id": "DRUMSnr",
+                "probability": 0.132,
+                "synonyms": [
+                  "crack"
+                ]
+              },
+              {
+                "category": "GLASS",
+                "subcategory": "BREAK",
+                "id": "GLASBrk",
+                "probability": 0.128,
+                "synonyms": [
+                  "crack"
+                ]
+              },
+              {
                 "category": "VOICES",
-                "subcategory": "CHILD",
-                "id": "VOXChld",
-                "probability": 0.38,
+                "subcategory": "BABY",
+                "id": "VOXBaby",
+                "probability": 0.121,
                 "synonyms": [
                   "one"
-                ]
-              },
-              {
-                "category": "FIRE",
-                "subcategory": "CRACKLE",
-                "id": "FIRECrkl",
-                "probability": 0.124,
-                "synonyms": [
-                  "crack"
-                ]
-              },
-              {
-                "category": "ROCKS",
-                "subcategory": "CRASH & DEBRIS",
-                "id": "ROCKCrsh",
-                "probability": 0.066,
-                "synonyms": [
-                  "crack"
                 ]
               }
             ],
             "synonyms": [
-              "one"
+              "crack"
             ],
-            "reason": "name matched [one]; signal 0.55, tier signal_narrowable, 13 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.7283 > max 0.1500); ABSTAINED to MISC (top two too close to call)"
+            "reason": "name matched [crack]; signal 0.70, tier signal_narrowable, 16 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.1857 < min 0.3500); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -351,6 +702,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 555,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "AAEAAf0C9wbvEOYb3yHdJN0k3CPcIt4f3x7gHeId4xzkG+Qc5BvmGuYa6BfoGOcY5xjoGOcY5xfoGOgY6RfoGOcY6BjnGegZ5xrmGuUb5RvkHeMc4xzjHOMb5BvlGegV6RfjHOMc5RvmGeYZ4h7gH+Ua5hrjHOQa4x3iHOAg3yDhHeQb5hrpFekW7BToF+kX6xTsE/UN9Q3yDfUM9gn4Cf4C/gH/Af8B/wAAAAAA/wD8BeUa5RrlGuYZ5xjnGOYZ5xjnGOcY6BjoGOgX6RbpFewT7hLtE+wU7BPwEPIN9AzxEfAU6xfmHOca6xTvEPUL7xHpFukX5RrrFOYY4xvaI9oj1CnXJNgl4B7kGtol3CLhHOAf5BjkGesT7BHuEesV5hrdItYn2iLXJtMp4BzgHeUZ5xbqFvMN+Qb7BPwE/wH/Af8A/wD/APoF8A3oFeEc3x/fHtcl4BzeH90g3B/ZJeIa4RvlF+oW7BLpFuQa6RbyD+wU6BntFPgI+Qj6BfcH6xLuFN8j4iDqFvgJ+wX0DPIM8QzxDfEO8A7wDukW6RXzDvsE/gH/Af8A/wH/AfQN7RXpGewX8gvkGuUZ3h7aI88r0yrXJt4g3SLjHOQZ6BftEusT7BLnF+cY5xjmFOUY4xriGOkV6xLoFO0Q7BHtD+4P8A3zC+8N7g/uD+4P7Q7tEOwQ6xHrEesR6hHrEesR7BDvDvUK+wT8A/0D/QL/AP8A/wD/AP8A/gH8BPAN7RHrFeoW6xXsFuQe2CTbKN4e5RnpFeoX5xrqF/ML8gzxD/YL9wj5BuwQ7BHpFu8P6BbrFPgH+gTuE+kX6BbpFesU6xTrFOsU6xTrE+wT7BPsE+wT7BPtEu0S7BPtE+wT7BPsE/EO9gr8A/8A/wD/AfgH+AfzDfEO7hHvEuoZ7hTxDucW6xTnGdwh1CnUKdki3SDcIeIc3SHnF+kU7hHsFO4R7xDuEOoU5RriG+Qb4xfrEu0S7g/rEfAO7w3uD+4P7Q/uD+0P7Q/tEO0Q7A/uDu4O7Q/uD+4O8A7xDfEN9wj7BP0C/QL/AP8A/wD/AP8A/QL0CugV4xvjGuUX7BPwDe4P7BHtEO0R7BLsEewS7BHrE+oV5xjoFe4S9Qn5B/cK8g33CfoH/AT7A/gH9Qr3CPMM7BLvEPQM9gj4BuwO6hDlGukV5B7hHucY7RH5Bu8O6BXpFusU6xTqFOoU7BPsE+sT7BPtEvQK/AP+Af4B/wH/AP8AAAD/AP4B9wjtEu0R8BLqGOYd4x/oGecW4xnpFdwi0SnPLtAq2CbaI9sh3x7kGesU7BHuEO4Q8Q7xDe0S6xLlGOYW5RbrFO4Q7g/tEO4P7w7xDPEM8A3xDPAN8A3wDe8O7w/tEOwR7BLtEe8P+Qb9Av0B/gH/AP8A/wD/AP8A////AAAAAAD/AP8A/wAAAAAAAAD/AP8A/wD/AAAAAAAAAP8A/wD/AP8A/wD/AP8AAAAAAAAA"
           }
         }
       },
@@ -363,11 +722,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 49 - WHIP - ONE WHIP CRACK.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 49 - WHIP - ONE WHIP CRACK.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 49 - WHIP - ONE WHIP CRACK.mp3",
             "length_seconds": 0.2544444444444444,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -375,7 +734,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0002077790104329231,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Perc",
@@ -412,6 +772,23 @@
             "envelope_kurtosis": -0.041075413100880365,
             "envelope_shape": "Plucky",
             "decay_time_seconds_60db": 0.22581294936976473,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.2594104308390023,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.05487528344671202,
+                "envelope_decay_seconds": 0.0947845804988662,
+                "envelope_sustain_level": 0.11771483868217339,
+                "envelope_release_seconds": 0.044897959183673466,
+                "envelope_temporal_centroid": 0.2911823650897826,
+                "envelope_skewness": 1.0332524762790452,
+                "envelope_kurtosis": -0.041075413100880365,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.22581294936976473
+              }
+            ],
             "onset_periodicity": 0.09456750239552135,
             "onset_rate_per_second": 3.9301310043668125
           },
@@ -533,9 +910,117 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 44,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "+AbyE+4Q4CLfJOwd2RfpGO8ZslKiXrlRp0uwTJ9XwDjNN9UsxTLKPdQ01ynWHegX3xnuDu8L9Qz4C/gH+Qf7Bf0F/gP9Av4B/gL+Af8C/wH/AQAB/wH/AA=="
           }
         }
       }
+    ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 936,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAH/AfsD9wjtEuQb3yLdJN0k3CPcId8e3x7gHeId4xzkG+Qc5hnmGuYa6BfoGOcY5xjoGOcY5xjoGOkY6BjoGOcY6BnnGegY5xrmGuUb5RvkHeMc4xzjHOMb5RrlGeoV5xnjHOQb5RvmGeYa4B/gHuUa5BvjHOUa4h3lG98g3yDjGuQb5xjqFekW7BToF+kX7BTuEfUN9A3yDfcK9gn5Bf4C/gH/Af8A/wAAAP8A/wHxDeUa5RrlGuYZ5xjmGecZ5xjnGOcY6BjoGOgX6RbqFewS7RPtE+wU7RLxEPIN9AzxEfAU6RrmHOca6xTxEPMN7hLpFukX5RrrFOYY4xvaI9ck1CnXJNgl4B7kGtol4RzjG+Af5BnpFOwS7g7uEesV5BrZJNYn2iLTKdMp4BzgHeUZ6RbsFPQL+wT7BP0C/wH/Af8A/wD/APgH7g/mFuAe3x/aItcl3h7eH9wg3SHZJeEb4RvlF+oW6xPkGucY6RbwEOoW6BnwEPgI+Qb6BfMM6xLmG98j5RvqE/gI+gb0DPEM8QzxDfEO8A7wDukW6hX7Bf0D/gH/AP8A/wH/Ae8P7RfpGfET8A7kGuYX3CLWJ88r0yrZJN4g3SLjHOgX6RXrE+0T7BLnF+cY5xjmF+MY4hrlF+0R6BToEuwR7RDtD+4P8A30Ce8O7g/uD+4P7Q/sEOwR6xHrEeoR6hHrEesR7RDwDvYK/AT8A/0D/gH/AP8A/wD/AP8A/gH6BvAP6xPrFeoW7BTsFuQe2CjeId4e6BXpFeca6hfvEfML8Q/xDfYL9wj5B+wQ7BHpFu8O6BbsFPoH+gTqFekX6BbqFesU6xTrFOsU6xTrE+wT7RPsE+wT7BLtEuwS7BPtE+wT7BPsEvUK+wT9Av8A/wD/AfgH+QbxDvEO7hHsFeoZ8BPwD+cW7BPhHdoh1CnUKd0g4B/cId0h3h/nF+0P7hHsFO8Q8Q/uEeYU4hriG+MX5xfsEu0S7BHrEfAO7w3uD+4P7Q/uD+0P7Q/tEOwQ7Q/uDu4P7Q/uD+4O8A3xDfEN+Af8BP0C/QH/AP8A/wD/AP8A+wPxDOYV4xvjGucX7w/vDu4Q7BHtEe0R7BLsEOwS7BDqFesT5xjoFe4S9Qj5B/IN9Qr3CfoH/AT7BPcH9Qr3CvIO7BLvEPQM9wj4BuoQ6RflGu0S5B7hHu0R8wv5BuwQ6BXqFusU6xTqFOoU7BPsE+sT7BPtEvcI/AL+Af4B/wH/AP8A/wD/AP4C8gztEu8Q7xPqGOUf4x/pF+UY4xnpFNgmzyvQLtgl2CbaI98f4B7kGewS7hHvD+4Q8Q7xD+0S5xPlGOUW5RbrFO8O7RDuD+4P7w3yDPEM8A3wDPAN8A3wDe8O7w/tEOwR7BLtEfEN+wX9Af0B/wH/AP8A/wD/AP8A////AAAA/wD///8A/wAAAAAAAAD/AP8A/wD/AAAAAAAAAP8A/wD/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wL4BvET7hDfI98k7B3ZF+kY7xmmXqJbuVGnQ7BMn1fNLc031SzFMso91DTaKdYb6BjfGe4N8gz2CvgL+Qf5B/sE/QX9A/4C/gH+Av4B/wL/Af8BAAH/Af8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  },
+  "bioacoustic_syntax": {
+    "slice_count": 2,
+    "type_count": 1,
+    "sequence": "AA",
+    "slices": [
+      {
+        "region_index": 0,
+        "type_label": "A",
+        "start_seconds": 0.4689342403628118,
+        "duration_seconds": 3.2176870748299318,
+        "embedding_x": -4.472135954999576,
+        "embedding_y": -1.5320179458879471e-28
+      },
+      {
+        "region_index": 1,
+        "type_label": "A",
+        "start_seconds": 4.6893424036281175,
+        "duration_seconds": 0.25442176870748323,
+        "embedding_x": 4.472135954999586,
+        "embedding_y": 1.5320179458879503e-28
+      }
+    ],
+    "slice_types": [
+      {
+        "label": "A",
+        "descriptor": "long bright noisy",
+        "occurrences": 2,
+        "share": 1.0,
+        "exemplar_region_index": 0,
+        "mean_duration_seconds": 1.7360544217687075,
+        "mean_spectral_centroid_hz": 3834.4250460567864,
+        "mean_harmonicity": 0.17350270029352735
+      }
+    ],
+    "transitions": [
+      {
+        "from_label": "A",
+        "to_label": "A",
+        "count": 1,
+        "probability": 1.0,
+        "mean_gap_seconds": 1.0027210884353739,
+        "mean_inter_onset_seconds": 4.220408163265306
+      }
+    ],
+    "junctions": [
+      {
+        "index": 0,
+        "from_region_index": 0,
+        "to_region_index": 1,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 1.0027210884353739,
+        "inter_onset_seconds": 4.220408163265306,
+        "gap_root_mean_square_level": 0.001113688262937982,
+        "gap_level_below_previous_peak_decibels": -46.481244754725296,
+        "gap_level_above_noise_floor_decibels": 22.590766114875596,
+        "gap_slope_decibels_per_second": -33.8758456744198,
+        "gap_spectral_centroid_hz": 604.0617392474095,
+        "gap_spectral_flatness": 0.010224469250901471,
+        "junction_class": "Silence",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      }
+    ],
+    "junction_profile": [
+      {
+        "junction_class": "Silence",
+        "count": 1
+      }
+    ],
+    "dominant_junction_class": "Silence",
+    "repertoire_entropy_bits": -0.0,
+    "repertoire_entropy_normalized": 0.0,
+    "transition_entropy_bits": 0.0,
+    "syntactic_information_bits": 0.0,
+    "determinism": 0.0,
+    "repeat_ratio": 1.0,
+    "distinct_bigrams": 1,
+    "bigram_coverage": 1.0,
+    "dominant_motif": "",
+    "dominant_motif_occurrences": 0,
+    "median_gap_seconds": 1.0027210884353739,
+    "gap_regularity": 0.0,
+    "bound_ratio": 0.0,
+    "syntax_class": "Isolated",
+    "transitions_per_type_pair": 1.0,
+    "reason": [
+      "1) 2 slices over 1 type — sequence AA",
+      "2) 0.00 bits of syntactic information (determinism 0%, H(next|current) 0.00 bits) (sparse: 1.0 transitions per type-pair — suggestive, not measured)",
+      "3) junctions mostly Silence · median gap 1003 ms · regularity 0% · 0% bound"
     ]
   }
 }

@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
     "length_seconds": 4.022857142857143,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0005712797397084177,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 3 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 1985 ms, sustain 1%, 3 transients)",
+      "2) envelope Multi (3 transients — loudest of 3 slices: attack 80 ms, sustain 65%)",
       "3) Harmonic · high-band 79% · root C5"
     ],
     "timbre": "Loop",
@@ -39,15 +40,62 @@
     "attack_seconds": 2.6622448979591837,
     "sustain_ratio": 0.15289256198347106,
     "sustained": false,
-    "envelope_attack_seconds": 1.9854875283446711,
-    "envelope_decay_seconds": 0.673469387755102,
-    "envelope_sustain_level": 0.008131702115645324,
-    "envelope_release_seconds": 0.04988662131519274,
-    "envelope_temporal_centroid": 0.5285152637596057,
-    "envelope_skewness": 1.6003261296031368,
-    "envelope_kurtosis": 1.265235157691766,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 2.561586821589768,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 2.165079365079365,
+        "relative_level": 0.7980274280465648,
+        "envelope_attack_seconds": 0.11972789115646258,
+        "envelope_decay_seconds": 0.61859410430839,
+        "envelope_sustain_level": 0.007185372457351697,
+        "envelope_release_seconds": 0.1895691609977324,
+        "envelope_temporal_centroid": 0.38906117919643324,
+        "envelope_skewness": 1.8719473857121995,
+        "envelope_kurtosis": 2.1714264217408745,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.2206201665086287
+      },
+      {
+        "index": 1,
+        "start_seconds": 2.165079365079365,
+        "end_seconds": 2.7188208616780045,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.07981859410430839,
+        "envelope_decay_seconds": 0.019954648526077097,
+        "envelope_sustain_level": 0.6549263103707721,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.869410436980448,
+        "envelope_skewness": 1.3940514326875624,
+        "envelope_kurtosis": 0.3789170279397096,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 2.7188208616780045,
+        "end_seconds": 4.025850340136055,
+        "relative_level": 0.8580530480777346,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.5537414965986395,
+        "envelope_sustain_level": 0.0077111935257556585,
+        "envelope_release_seconds": 0.06485260770975057,
+        "envelope_temporal_centroid": 0.1311033799481562,
+        "envelope_skewness": 1.166525970990656,
+        "envelope_kurtosis": -0.07065921991508795,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.9792984122428614
+      }
+    ],
     "onset_periodicity": 0.3984939417136727,
     "onset_rate_per_second": 0.7457386363636364
   },
@@ -121,33 +169,24 @@
     ]
   },
   "unsupervised": {
-    "cluster": 9,
+    "cluster": 8,
     "principal_components": [
-      1.7201957402562515,
-      0.0016510140274764266,
-      -0.606606682493944
+      1.3450367840902433,
+      -0.2918839324703068,
+      -1.58131973246497
     ]
   },
   "ucs": {
-    "category": "OBJECTS",
-    "subcategory": "FASHION",
-    "id": "OBJFash",
-    "confidence": 0.4894369192903854,
+    "category": "CROWDS",
+    "subcategory": "BATTLE",
+    "id": "CRWDBatl",
+    "confidence": 0.2589693534433944,
     "alternatives": [
-      {
-        "category": "CROWDS",
-        "subcategory": "BATTLE",
-        "id": "CRWDBatl",
-        "probability": 0.112,
-        "synonyms": [
-          "screaming"
-        ]
-      },
       {
         "category": "CROWDS",
         "subcategory": "PANIC",
         "id": "CRWDPanic",
-        "probability": 0.071,
+        "probability": 0.164,
         "synonyms": [
           "scream",
           "screaming"
@@ -157,16 +196,25 @@
         "category": "VOICES",
         "subcategory": "SCREAM",
         "id": "VOXScrm",
-        "probability": 0.061,
+        "probability": 0.142,
+        "synonyms": [
+          "scream"
+        ]
+      },
+      {
+        "category": "DESIGNED",
+        "subcategory": "VOCAL",
+        "id": "DSGNVocl",
+        "probability": 0.104,
         "synonyms": [
           "scream"
         ]
       }
     ],
     "synonyms": [
-      "high"
+      "screaming"
     ],
-    "reason": "name matched [high]; signal 0.89, tier semantic_only, 27 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0229 > max 4.0000)"
+    "reason": "name matched [screaming]; signal 0.35, tier semantic_only, 18 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0229 > max 4.0000)"
   },
   "regions": {
     "count": 2,
@@ -183,11 +231,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
             "length_seconds": 0.7233333333333334,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -195,7 +243,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0005508830198781978,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Perc",
@@ -231,6 +280,23 @@
             "envelope_kurtosis": -1.262072213919117,
             "envelope_shape": "Decaying",
             "decay_time_seconds_60db": 1.2206201665086287,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.7233560090702947,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.11972789115646258,
+                "envelope_decay_seconds": 0.27936507936507937,
+                "envelope_sustain_level": 0.27498357227434966,
+                "envelope_release_seconds": 0.1895691609977324,
+                "envelope_temporal_centroid": 0.2539962349144942,
+                "envelope_skewness": 0.27818591886687505,
+                "envelope_kurtosis": -1.262072213919117,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 1.2206201665086287
+              }
+            ],
             "onset_periodicity": 0.27937553046744174,
             "onset_rate_per_second": 1.3824884792626728
           },
@@ -308,25 +374,16 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "OBJECTS",
-            "subcategory": "MISC",
-            "id": "OBJMisc",
-            "confidence": 0.2094441424890927,
+            "category": "VOCALS",
+            "subcategory": "CHOP",
+            "id": "VOCLChop",
+            "confidence": 0.3324592311537491,
             "alternatives": [
-              {
-                "category": "VOCALS",
-                "subcategory": "CHOP",
-                "id": "VOCLChop",
-                "probability": 0.208,
-                "synonyms": [
-                  "pitched"
-                ]
-              },
               {
                 "category": "HUMAN",
                 "subcategory": "BURP",
                 "id": "HMNBurp",
-                "probability": 0.149,
+                "probability": 0.238,
                 "synonyms": [
                   "female"
                 ]
@@ -335,16 +392,25 @@
                 "category": "VOICES",
                 "subcategory": "SCREAM",
                 "id": "VOXScrm",
-                "probability": 0.141,
+                "probability": 0.225,
+                "synonyms": [
+                  "scream"
+                ]
+              },
+              {
+                "category": "DESIGNED",
+                "subcategory": "VOCAL",
+                "id": "DSGNVocl",
+                "probability": 0.085,
                 "synonyms": [
                   "scream"
                 ]
               }
             ],
             "synonyms": [
-              "high"
+              "pitched"
             ],
-            "reason": "name matched [high]; signal 0.67, tier semantic_only, 20 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.2540 < min 0.4000); ABSTAINED to MISC (top two too close to call)"
+            "reason": "name matched [pitched]; signal 0.71, tier signal_narrowable, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.2540 < min 0.4000)"
           },
           "regions": {
             "count": 0,
@@ -352,6 +418,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 125,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/wH9A/oF+Aj2CPQL8gzxDvEP8A7xDvAQ8A/xD/AP7w/wD/IN8g3wD/IP8Q/wEO8R8BDzDvQN8w3zDfMM9Qv0DPUL+Qf1C/MM8gzzDvUK9wr2CvYJ9Az3CfUL9wn3CPcI+Af3CvQM9Az0C/UK9Az1CvQL8wzxDvIN8w32CvUK9gr1CvUL9wn3CPcJ+Af5B/sF+gf4B/sF+Qb6BvoG+gX5BvoF+wX9A/0E/AP9A/4D/QP+Av0D/gP9Av4C/gL/Af4B/gL/Af4B/gH9A/4C/wH+Af4C/gH+Av4C/gH/Af8B/wH/Av8B/wH/Af8B/wD/Af8A/wH/AAAAAAAAAA=="
           }
         }
       },
@@ -364,11 +438,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 25 - HUMAN, SCREAM - FEMALE- SCREAMING, HIGH PITCHED, HORROR.mp3",
             "length_seconds": 0.7982086167800454,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -376,13 +450,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0005572992351759098,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 2 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 80 ms, sustain 54%, 2 transients)",
+              "2) envelope Multi (2 transients — loudest of 2 slices: attack 80 ms, sustain 65%)",
               "3) Inharmonic · high-band 85% · root C5"
             ],
             "timbre": "Loop",
@@ -403,15 +478,47 @@
             "attack_seconds": 0.133015873015873,
             "sustain_ratio": 0.5208333333333334,
             "sustained": false,
-            "envelope_attack_seconds": 0.07981859410430839,
-            "envelope_decay_seconds": 0.029931972789115645,
-            "envelope_sustain_level": 0.5350805132992187,
-            "envelope_release_seconds": 0.23945578231292516,
-            "envelope_temporal_centroid": 0.34734272511968284,
-            "envelope_skewness": 0.07351334022040157,
-            "envelope_kurtosis": -1.1588211455921136,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 2.562681000132592,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.18458049886621314,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.07981859410430839,
+                "envelope_decay_seconds": 0.019954648526077097,
+                "envelope_sustain_level": 0.6542449358913437,
+                "envelope_release_seconds": 0.0,
+                "envelope_temporal_centroid": 0.6276601309040953,
+                "envelope_skewness": -0.3035817342796784,
+                "envelope_kurtosis": -1.109793152153549,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.18458049886621314,
+                "end_seconds": 0.8031746031746032,
+                "relative_level": 0.858044054263517,
+                "envelope_attack_seconds": 0.06485260770975057,
+                "envelope_decay_seconds": 0.2494331065759637,
+                "envelope_sustain_level": 0.3784312594887242,
+                "envelope_release_seconds": 0.06485260770975057,
+                "envelope_temporal_centroid": 0.2818657321135363,
+                "envelope_skewness": 0.11243155145322202,
+                "envelope_kurtosis": -1.1959634541490192,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 1.9802138691370583
+              }
+            ],
             "onset_periodicity": 0.4633191459653321,
             "onset_rate_per_second": 2.5056106360614754
           },
@@ -489,43 +596,43 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "OBJECTS",
-            "subcategory": "FASHION",
-            "id": "OBJFash",
-            "confidence": 0.2878664208452682,
+            "category": "VOCALS",
+            "subcategory": "CHOP",
+            "id": "VOCLChop",
+            "confidence": 0.3528933810642897,
             "alternatives": [
-              {
-                "category": "VOCALS",
-                "subcategory": "CHOP",
-                "id": "VOCLChop",
-                "probability": 0.157,
-                "synonyms": [
-                  "pitched"
-                ]
-              },
               {
                 "category": "VOICES",
                 "subcategory": "SCREAM",
                 "id": "VOXScrm",
-                "probability": 0.138,
+                "probability": 0.285,
                 "synonyms": [
                   "scream"
                 ]
               },
               {
-                "category": "SCIFI",
-                "subcategory": "WEAPON",
-                "id": "SCIWeap",
-                "probability": 0.102,
+                "category": "HUMAN",
+                "subcategory": "BURP",
+                "id": "HMNBurp",
+                "probability": 0.101,
                 "synonyms": [
-                  "high"
+                  "female"
+                ]
+              },
+              {
+                "category": "WHISTLES",
+                "subcategory": "HUMAN",
+                "id": "WHSTHmn",
+                "probability": 0.101,
+                "synonyms": [
+                  "human"
                 ]
               }
             ],
             "synonyms": [
-              "high"
+              "pitched"
             ],
-            "reason": "name matched [high]; signal 0.65, tier semantic_only, 20 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRHiss (harmonicity 0.9382 > max 0.8891)"
+            "reason": "name matched [pitched]; signal 0.56, tier signal_narrowable, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRHiss (harmonicity 0.9382 > max 0.8891)"
           },
           "regions": {
             "count": 0,
@@ -533,9 +640,117 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 138,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gL+Av4B/gL+Av4C/gL6B/MI8A71DPML8A7vDusS6xPsDusV6xbqFO0U6xboE+oW6xPtEPAP8BDzDPQK8w3xD/QL8Q/wD/QK9A3vDusU8A7xDvMP8RHsFO4S7RTuEvER8g/xD+8R8RLvD/MO8g32CewS7BTyD+8Q8wzzDewU7hDtEvAO8A7zDvQK8w3zDvUL8w3yDvMN8A7xD/EO8g7yDfIO8Q/zDfYL9gn1CvYI9gr5CfgI+Aj4CPoG+Qj5B/kH+wb8BPsE+wT8BP0D/gL9A/wE/QL9A/oG+wX8BP4C/QP7BvcJ+An5B/gI+gX3CfgH+gb7BvsE/AT8A/wD/QP+Av8B/wH/Af8B/wAAAQAAAAAAAAAA"
           }
         }
       }
+    ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 693,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8A/QP7BfgH9wj0CvML8Q7xD/AO8Q7wEPAP8Q/xD+8P8A/zDPIN8Q/wD/IP8A/wEO8R8A/2C/QN8w3zDfUJ9Az1C/gH9gr1C/IM8w71C/YK9gr2CfQM9Av1C/cJ9wn5B/cI+Aj0DPQM9Az1C/QM9Qv1C/QL8wzxDvIN9gr1CvcI9Qr3CfUL9wn4CPcJ+gb5B/oH+Af7BfoG+Qb6BvsF+Qb6BvsE+wX9BPwE/AP9A/0D/gL/Af0D/QL+Av4C/gL/Af4B/gL+Af4B/QP+Av4C/gH+Av4B/gL+Av8B/gH/Af8B/wL/Af8B/wH/Af8A/wH/AP8B/wD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wH+Av4C/gL+Af4C/gL+A/kH8w3wDvMM8wzwDusS7RDrE+wT6xbvEuoU6xbrFugV6hbtEO8Q8A/wEPYM9AnxD/EN9AvwD/MM9Az0DesR7hTyDvEP8w3wEewU7RPtFPAR8g/yD+8R8BLxEO8P8g3zC/QO7BTsE/AQ7w/zDO0S7BTtEvAS8A71CfMO8wzzDvMN9AzyDvMN8w3wD/EP8Q7yDvIO8g3xD/MN9gv2CfUK+Aj2CvgI+Aj4CPkG+Qj5B/kH+gb7Bv0D+wT9A/wE/QP+AvwE/AT9Av0D+gb8BP4C/gL8BPoG9wn5B/kI+Aj3CfgI+Qf6BvsG+wT8BP0D/AP9A/8B/wH/Af8B/wH/AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  },
+  "bioacoustic_syntax": {
+    "slice_count": 2,
+    "type_count": 1,
+    "sequence": "AA",
+    "slices": [
+      {
+        "region_index": 0,
+        "type_label": "A",
+        "start_seconds": 0.6585034013605442,
+        "duration_seconds": 0.7233560090702946,
+        "embedding_x": -4.472135954999584,
+        "embedding_y": 1.6096178026225722e-28
+      },
+      {
+        "region_index": 1,
+        "type_label": "A",
+        "start_seconds": 2.529251700680272,
+        "duration_seconds": 0.798185941043084,
+        "embedding_x": 4.472135954999579,
+        "embedding_y": -1.6096178026225707e-28
+      }
+    ],
+    "slice_types": [
+      {
+        "label": "A",
+        "descriptor": "medium bright tonal",
+        "occurrences": 2,
+        "share": 1.0,
+        "exemplar_region_index": 0,
+        "mean_duration_seconds": 0.7607709750566893,
+        "mean_spectral_centroid_hz": 2795.193426754877,
+        "mean_harmonicity": 0.8426774204334824
+      }
+    ],
+    "transitions": [
+      {
+        "from_label": "A",
+        "to_label": "A",
+        "count": 1,
+        "probability": 1.0,
+        "mean_gap_seconds": 1.1473922902494331,
+        "mean_inter_onset_seconds": 1.8707482993197277
+      }
+    ],
+    "junctions": [
+      {
+        "index": 0,
+        "from_region_index": 0,
+        "to_region_index": 1,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 1.1473922902494331,
+        "inter_onset_seconds": 1.8707482993197277,
+        "gap_root_mean_square_level": 0.0006003329589539233,
+        "gap_level_below_previous_peak_decibels": -43.241910781306615,
+        "gap_level_above_noise_floor_decibels": 1.3131155484088362,
+        "gap_slope_decibels_per_second": -0.14104802260014107,
+        "gap_spectral_centroid_hz": 393.63693456540614,
+        "gap_spectral_flatness": 0.0015614945533394976,
+        "junction_class": "Silence",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      }
+    ],
+    "junction_profile": [
+      {
+        "junction_class": "Silence",
+        "count": 1
+      }
+    ],
+    "dominant_junction_class": "Silence",
+    "repertoire_entropy_bits": -0.0,
+    "repertoire_entropy_normalized": 0.0,
+    "transition_entropy_bits": 0.0,
+    "syntactic_information_bits": 0.0,
+    "determinism": 0.0,
+    "repeat_ratio": 1.0,
+    "distinct_bigrams": 1,
+    "bigram_coverage": 1.0,
+    "dominant_motif": "",
+    "dominant_motif_occurrences": 0,
+    "median_gap_seconds": 1.1473922902494331,
+    "gap_regularity": 0.0,
+    "bound_ratio": 0.0,
+    "syntax_class": "Isolated",
+    "transitions_per_type_pair": 1.0,
+    "reason": [
+      "1) 2 slices over 1 type — sequence AA",
+      "2) 0.00 bits of syntactic information (determinism 0%, H(next|current) 0.00 bits) (sparse: 1.0 transitions per type-pair — suggestive, not measured)",
+      "3) junctions mostly Silence · median gap 1147 ms · regularity 0% · 0% bound"
     ]
   }
 }

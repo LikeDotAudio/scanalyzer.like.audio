@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Synth Pop OS.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Synth Pop OS.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Synth Pop OS.wav",
     "length_seconds": 0.0899546485260771,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.00018985210752379,
-    "trailing_silence_ms": 0.11337868480725624
+    "trailing_silence_ms": 0.11337868480725624,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Keyboards",
@@ -48,6 +49,23 @@
     "envelope_kurtosis": -0.23741636841602354,
     "envelope_shape": "Decaying",
     "decay_time_seconds_60db": 0.15970915875804007,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.0947845804988662,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.039909297052154194,
+        "envelope_sustain_level": 0.28284786826544606,
+        "envelope_release_seconds": 0.03492063492063492,
+        "envelope_temporal_centroid": 0.12572963682228366,
+        "envelope_skewness": 0.9863276504187793,
+        "envelope_kurtosis": -0.23741636841602354,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.15970915875804007
+      }
+    ],
     "onset_periodicity": 0.0,
     "onset_rate_per_second": 11.116712881270482
   },
@@ -123,9 +141,9 @@
   "unsupervised": {
     "cluster": 6,
     "principal_components": [
-      -1.6313094474748469,
-      -1.0238848282745576,
-      0.9328845945861035
+      -1.2186173840341281,
+      1.5228139270508159,
+      0.4701783579783609
     ]
   },
   "ucs": {
@@ -183,5 +201,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 16,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "5xbkH/AW6w/yDfgI9wj5BvwF/AT9A/0D/gL/Af8BAAA="
   }
 }

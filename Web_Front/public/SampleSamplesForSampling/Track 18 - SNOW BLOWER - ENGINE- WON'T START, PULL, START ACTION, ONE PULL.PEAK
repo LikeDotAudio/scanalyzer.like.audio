@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
     "length_seconds": 4.780408163265306,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0013596354310828661,
-    "trailing_silence_ms": 1.2698412698412698
+    "trailing_silence_ms": 1.2698412698412698,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 7 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 309 ms, sustain 9%, 7 transients)",
+      "2) envelope Multi (7 transients — loudest of 7 slices: attack 55 ms, sustain 53%)",
       "3) Inharmonic · high-band 57% · root C3"
     ],
     "timbre": "Loop",
@@ -39,15 +40,122 @@
     "attack_seconds": 1.4724716553287982,
     "sustain_ratio": 0.08710801393728224,
     "sustained": false,
-    "envelope_attack_seconds": 0.309297052154195,
-    "envelope_decay_seconds": 1.112471655328798,
-    "envelope_sustain_level": 0.08965235376027797,
-    "envelope_release_seconds": 0.06485260770975057,
-    "envelope_temporal_centroid": 0.3966833575688963,
-    "envelope_skewness": 1.933746974833271,
-    "envelope_kurtosis": 3.5147849322313096,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 6.386569552482453,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.4317460317460318,
+        "relative_level": 0.7459362510356272,
+        "envelope_attack_seconds": 0.8979591836734694,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.80196480758967,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.9663992880475775,
+        "envelope_skewness": 4.3288476484206475,
+        "envelope_kurtosis": 20.61510898314333,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.4317460317460318,
+        "end_seconds": 1.5514739229024943,
+        "relative_level": 0.8552857445484953,
+        "envelope_attack_seconds": 0.039909297052154194,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.6809378106851522,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.5195748763924698,
+        "envelope_skewness": 0.7376106248713507,
+        "envelope_kurtosis": 0.6903442979004462,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 1.5514739229024943,
+        "end_seconds": 1.835827664399093,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.05487528344671202,
+        "envelope_decay_seconds": 0.0947845804988662,
+        "envelope_sustain_level": 0.5301687051245757,
+        "envelope_release_seconds": 0.05986394557823129,
+        "envelope_temporal_centroid": 0.3598661595224664,
+        "envelope_skewness": 0.2582919138965409,
+        "envelope_kurtosis": -0.9961804236029801,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 1.835827664399093,
+        "end_seconds": 2.2498866213151927,
+        "relative_level": 0.6192059861670015,
+        "envelope_attack_seconds": 0.12471655328798185,
+        "envelope_decay_seconds": 0.05487528344671202,
+        "envelope_sustain_level": 0.3794050406342553,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.4468173610914196,
+        "envelope_skewness": 0.8491234999758905,
+        "envelope_kurtosis": -0.21291980698884894,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 4,
+        "start_seconds": 2.2498866213151927,
+        "end_seconds": 2.768707482993197,
+        "relative_level": 0.7186985548512655,
+        "envelope_attack_seconds": 0.11972789115646258,
+        "envelope_decay_seconds": 0.14965986394557823,
+        "envelope_sustain_level": 0.19665829358355819,
+        "envelope_release_seconds": 0.06984126984126984,
+        "envelope_temporal_centroid": 0.29428612942591925,
+        "envelope_skewness": 1.2356313619260995,
+        "envelope_kurtosis": 0.6940784229360335,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 5,
+        "start_seconds": 2.768707482993197,
+        "end_seconds": 3.3523809523809525,
+        "relative_level": 0.38338585876324793,
+        "envelope_attack_seconds": 0.05487528344671202,
+        "envelope_decay_seconds": 0.18458049886621314,
+        "envelope_sustain_level": 0.29523891086161164,
+        "envelope_release_seconds": 0.1746031746031746,
+        "envelope_temporal_centroid": 0.262480299664327,
+        "envelope_skewness": 1.206382646805189,
+        "envelope_kurtosis": 0.8361633505762396,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.5980220983363902
+      },
+      {
+        "index": 6,
+        "start_seconds": 3.3523809523809525,
+        "end_seconds": 4.784126984126984,
+        "relative_level": 0.37958260747954914,
+        "envelope_attack_seconds": 0.06984126984126984,
+        "envelope_decay_seconds": 0.5736961451247166,
+        "envelope_sustain_level": 0.014602195122512146,
+        "envelope_release_seconds": 0.08480725623582766,
+        "envelope_temporal_centroid": 0.06226892005411661,
+        "envelope_skewness": 5.575781560860553,
+        "envelope_kurtosis": 36.171311197504835,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.34038500868323157
+      }
+    ],
     "onset_periodicity": 0.31169909447189675,
     "onset_rate_per_second": 1.4643101092896176
   },
@@ -123,49 +231,49 @@
   "unsupervised": {
     "cluster": 12,
     "principal_components": [
-      1.4982264938408583,
-      0.9301921976877973,
-      -0.6634634493940412
+      0.8046260198435438,
+      -1.131146818543746,
+      -1.4405629151211579
     ]
   },
   "ucs": {
     "category": "OBJECTS",
-    "subcategory": "GYM",
-    "id": "OBJGym",
-    "confidence": 0.20441319806690436,
+    "subcategory": "MISC",
+    "id": "OBJMisc",
+    "confidence": 0.14094686827522898,
     "alternatives": [
+      {
+        "category": "METAL",
+        "subcategory": "HANDLE",
+        "id": "METLHndl",
+        "probability": 0.134,
+        "synonyms": [
+          "pull"
+        ]
+      },
       {
         "category": "CREATURES",
         "subcategory": "ELEMENTAL",
         "id": "CREAElem",
-        "probability": 0.155,
+        "probability": 0.107,
         "synonyms": [
           "snow"
         ]
       },
       {
-        "category": "ANIMALS",
-        "subcategory": "CAT WILD",
-        "id": "ANMLWcat",
-        "probability": 0.098,
+        "category": "GLASS",
+        "subcategory": "HANDLE",
+        "id": "GLASHndl",
+        "probability": 0.106,
         "synonyms": [
-          "snow"
-        ]
-      },
-      {
-        "category": "MOTORS",
-        "subcategory": "COMBUSTION",
-        "id": "MOTRComb",
-        "probability": 0.086,
-        "synonyms": [
-          "engine"
+          "pull"
         ]
       }
     ],
     "synonyms": [
       "pull"
     ],
-    "reason": "name matched [pull]; signal 0.83, tier semantic_only, 31 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.7804 > max 4.0000)"
+    "reason": "name matched [pull]; signal 0.83, tier semantic_only, 36 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.7804 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
   },
   "regions": {
     "count": 2,
@@ -182,11 +290,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
             "length_seconds": 0.11473922902494331,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -194,7 +302,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.00020735972357718637,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Perc",
@@ -230,6 +339,23 @@
             "envelope_kurtosis": 0.3239314892732197,
             "envelope_shape": "Decaying",
             "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.11473922902494331,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.014965986394557823,
+                "envelope_decay_seconds": 0.044897959183673466,
+                "envelope_sustain_level": 0.25578022973980796,
+                "envelope_release_seconds": 0.04988662131519274,
+                "envelope_temporal_centroid": 0.20387471920735936,
+                "envelope_skewness": 1.2227259054338355,
+                "envelope_kurtosis": 0.3239314892732197,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              }
+            ],
             "onset_periodicity": 0.0,
             "onset_rate_per_second": 8.715415019762846
           },
@@ -351,6 +477,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 20,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gL8BP0C/AT+Av4C/QL+Av8C/wL/Af8B/wH/Af8BAAD/Af8AAAH/AA=="
           }
         }
       },
@@ -363,11 +497,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 18 - SNOW BLOWER - ENGINE- WON'T START, PULL, START ACTION, ONE PULL.mp3",
             "length_seconds": 2.6589795918367347,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -375,13 +509,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.002054415116120787,
-            "trailing_silence_ms": 0.045351473922902494
+            "trailing_silence_ms": 0.045351473922902494,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 7 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 309 ms, sustain 17%, 7 transients)",
+              "2) envelope Multi (7 transients — loudest of 7 slices: attack 55 ms, sustain 56%)",
               "3) Inharmonic · high-band 57% · root C3"
             ],
             "timbre": "Loop",
@@ -402,15 +537,122 @@
             "attack_seconds": 0.29018140589569164,
             "sustain_ratio": 0.1625,
             "sustained": false,
-            "envelope_attack_seconds": 0.309297052154195,
-            "envelope_decay_seconds": 0.5038548752834467,
-            "envelope_sustain_level": 0.16696347606033882,
-            "envelope_release_seconds": 0.06485260770975057,
-            "envelope_temporal_centroid": 0.2688735053186986,
-            "envelope_skewness": 1.273226701278502,
-            "envelope_kurtosis": 1.1915714071151937,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 6.38462969591253,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.2494331065759637,
+                "relative_level": 0.744880376227611,
+                "envelope_attack_seconds": 0.09977324263038548,
+                "envelope_decay_seconds": 0.009977324263038548,
+                "envelope_sustain_level": 0.802682501449181,
+                "envelope_release_seconds": 0.0,
+                "envelope_temporal_centroid": 0.836376519331571,
+                "envelope_skewness": 1.3143859233809059,
+                "envelope_kurtosis": 1.0696685672593675,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.2494331065759637,
+                "end_seconds": 0.3691609977324263,
+                "relative_level": 0.8539993203579368,
+                "envelope_attack_seconds": 0.039909297052154194,
+                "envelope_decay_seconds": 0.014965986394557823,
+                "envelope_sustain_level": 0.6808094015489676,
+                "envelope_release_seconds": 0.0,
+                "envelope_temporal_centroid": 0.5196053278813115,
+                "envelope_skewness": 0.7338114676452576,
+                "envelope_kurtosis": 0.6744273429696399,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 2,
+                "start_seconds": 0.3691609977324263,
+                "end_seconds": 0.6485260770975056,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.05487528344671202,
+                "envelope_decay_seconds": 0.08979591836734693,
+                "envelope_sustain_level": 0.5605817338581209,
+                "envelope_release_seconds": 0.05487528344671202,
+                "envelope_temporal_centroid": 0.36349176518640963,
+                "envelope_skewness": 0.2307907643664197,
+                "envelope_kurtosis": -0.9859448586175494,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 3,
+                "start_seconds": 0.6485260770975056,
+                "end_seconds": 1.0675736961451248,
+                "relative_level": 0.6204575194036489,
+                "envelope_attack_seconds": 0.12970521541950114,
+                "envelope_decay_seconds": 0.05487528344671202,
+                "envelope_sustain_level": 0.3780689459223173,
+                "envelope_release_seconds": 0.014965986394557823,
+                "envelope_temporal_centroid": 0.44974356946834443,
+                "envelope_skewness": 0.8690278325503786,
+                "envelope_kurtosis": -0.13437452891431345,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 4,
+                "start_seconds": 1.0675736961451248,
+                "end_seconds": 1.58140589569161,
+                "relative_level": 0.7187369926364519,
+                "envelope_attack_seconds": 0.11972789115646258,
+                "envelope_decay_seconds": 0.14965986394557823,
+                "envelope_sustain_level": 0.19655336424413364,
+                "envelope_release_seconds": 0.06485260770975057,
+                "envelope_temporal_centroid": 0.29648974159366664,
+                "envelope_skewness": 1.2256899902660923,
+                "envelope_kurtosis": 0.6731930601859379,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 5,
+                "start_seconds": 1.58140589569161,
+                "end_seconds": 2.165079365079365,
+                "relative_level": 0.38290172072762424,
+                "envelope_attack_seconds": 0.05986394557823129,
+                "envelope_decay_seconds": 0.18458049886621314,
+                "envelope_sustain_level": 0.3022918426896334,
+                "envelope_release_seconds": 0.16961451247165532,
+                "envelope_temporal_centroid": 0.27013049559858376,
+                "envelope_skewness": 1.2148788620212039,
+                "envelope_kurtosis": 0.8721846125218242,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 1.605818629554788
+              },
+              {
+                "index": 6,
+                "start_seconds": 2.165079365079365,
+                "end_seconds": 2.6639455782312926,
+                "relative_level": 0.37915004393779034,
+                "envelope_attack_seconds": 0.06984126984126984,
+                "envelope_decay_seconds": 0.12970521541950114,
+                "envelope_sustain_level": 0.03782854411610988,
+                "envelope_release_seconds": 0.08480725623582766,
+                "envelope_temporal_centroid": 0.18426281326142893,
+                "envelope_skewness": 3.2979715743887126,
+                "envelope_kurtosis": 11.69192297118444,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.34058668311927254
+              }
+            ],
             "onset_periodicity": 0.3092165930931115,
             "onset_rate_per_second": 2.632588840279377
           },
@@ -489,42 +731,42 @@
           },
           "ucs": {
             "category": "OBJECTS",
-            "subcategory": "GYM",
-            "id": "OBJGym",
-            "confidence": 0.19076618552995836,
+            "subcategory": "MISC",
+            "id": "OBJMisc",
+            "confidence": 0.13233438627124183,
             "alternatives": [
+              {
+                "category": "METAL",
+                "subcategory": "HANDLE",
+                "id": "METLHndl",
+                "probability": 0.109,
+                "synonyms": [
+                  "pull"
+                ]
+              },
+              {
+                "category": "GLASS",
+                "subcategory": "HANDLE",
+                "id": "GLASHndl",
+                "probability": 0.106,
+                "synonyms": [
+                  "pull"
+                ]
+              },
               {
                 "category": "CREATURES",
                 "subcategory": "ELEMENTAL",
                 "id": "CREAElem",
-                "probability": 0.123,
+                "probability": 0.085,
                 "synonyms": [
                   "snow"
-                ]
-              },
-              {
-                "category": "ANIMALS",
-                "subcategory": "CAT WILD",
-                "id": "ANMLWcat",
-                "probability": 0.112,
-                "synonyms": [
-                  "snow"
-                ]
-              },
-              {
-                "category": "VEHICLES",
-                "subcategory": "JALOPY",
-                "id": "VEHJalop",
-                "probability": 0.094,
-                "synonyms": [
-                  "start"
                 ]
               }
             ],
             "synonyms": [
               "pull"
             ],
-            "reason": "name matched [pull]; signal 0.94, tier semantic_only, 32 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.3093 > max 0.1500)"
+            "reason": "name matched [pull]; signal 0.94, tier semantic_only, 37 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.3092 < min 0.3500); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -532,9 +774,117 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 459,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/wL9A/0C/gL/Af8B/gH/AP8B/wH+Af0C/AT8Bf4C/gL9Av4C/gL7B/cI9Qn1D/UL+gf6BvEI9grzCfIL7Q3tEu4R5RrsEN0lyzjYNdko5hnJI+ge4RvhF+Ue5xbtFfEP7hnWP8Q10jPdHeIo0SfmGukU2CHhJ+Am6RjbHtguzCnoGuIn2xzjF9Ik1jXYKd0iyy/KL8c31S7XNs0szTnTMMo1wTnQNNYp2i/VJ9EqxSveMdwj2hnlGtYi3yfjGuYW6BXmFu0h7xLdE+Yf7hzyC/MM9BLyDPMJ9Q7yCvcU8xHxDPYN7wz0DPYM8BPpFOYb6Q/sF+Ir4R3fKOIf4SLkIeMg4BzhGuwT5xzhFuUk1iDfIuYV6w/vE9Qi2hrrFvQb7A30D+gX6BzmEu8T8RDxC/MM9AzyEu4M0h7fE+4M7w75B/EL9Az1DfIJyyTjFOsL8wvzEPEN8Q7xDfYL9xHLDdUl7RrtDPUN9g33CfYI9g31C/gI+Ab0CPcJ6RXbH+kT7A/eGeUi7RneKe4P3xnnFOUT4RneIOUU2jjPLMwj2SPoHN4U3yHjHPAT6hvuEesQ8BXxEu8L9gr0DPYJ9QvyEPQL9gz4CvYM9A73CvQI9g31B/QJ9An2CvkI9wf2CfkI9wv6BvoG9wf4BPoG+AnzCvoM9wX2CPoF+Af3BvoI+QX7BeEW7hj0D/YP8wn5CPgI+AX6BfoH9gb6BfgG+gX5B/cG/AT7BP0D/QL7A/kH+QfuDfAN5B/iHeUZ5hrpF+UY8hPnE/AQ8w/wCfMM9AnzCfQL9Qz1DfIP8AryEfUN+ArzDeUa5hnpFvEU7hHyEPIJ9gj0CPgG+Qb2CPcK+Af4BPUJ+gX2B/gJ9wf8B/sF+wX8A/sE+Qb4B/QP9Qj5CPkF+An6CPgF+QX6A/wE+wb6BPkG+wT8BfsE/AT9Bf0C/gL+Av0C/QH9Af4B/gH+Af8B/gH+Av4B/gH+Av0B/QH+Av4B/gP+Af4B/gD+Af4B/gL+Af4B/gH8A/0D/APlHOwU9gn7BPkH+QX2BuMh6BztDvgE9wv3CfgH+gX7BPwC/AP3CvgF/AT+Af4B/QH/Af4B/gH/Af8B/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAA/wD/AP8A/wD/AAAAAAD/AAAAAAD/AAAAAAD/AP8AAAAAAP8AAAD/AP8AAAD/AAAA"
           }
         }
       }
+    ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 824,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
+  },
+  "bioacoustic_syntax": {
+    "slice_count": 2,
+    "type_count": 1,
+    "sequence": "AA",
+    "slices": [
+      {
+        "region_index": 0,
+        "type_label": "A",
+        "start_seconds": 0.47891156462585033,
+        "duration_seconds": 0.11473922902494332,
+        "embedding_x": -4.472135954999581,
+        "embedding_y": 7.884367950996299e-29
+      },
+      {
+        "region_index": 1,
+        "type_label": "A",
+        "start_seconds": 1.182312925170068,
+        "duration_seconds": 2.658956916099773,
+        "embedding_x": 4.47213595499958,
+        "embedding_y": -7.884367950996297e-29
+      }
+    ],
+    "slice_types": [
+      {
+        "label": "A",
+        "descriptor": "medium bright noisy",
+        "occurrences": 2,
+        "share": 1.0,
+        "exemplar_region_index": 0,
+        "mean_duration_seconds": 1.386848072562358,
+        "mean_spectral_centroid_hz": 3504.994646824276,
+        "mean_harmonicity": 0.2752565407564595
+      }
+    ],
+    "transitions": [
+      {
+        "from_label": "A",
+        "to_label": "A",
+        "count": 1,
+        "probability": 1.0,
+        "mean_gap_seconds": 0.5886621315192743,
+        "mean_inter_onset_seconds": 0.7034013605442175
+      }
+    ],
+    "junctions": [
+      {
+        "index": 0,
+        "from_region_index": 0,
+        "to_region_index": 1,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.5886621315192743,
+        "inter_onset_seconds": 0.7034013605442175,
+        "gap_root_mean_square_level": 0.0008604821157065896,
+        "gap_level_below_previous_peak_decibels": -26.27382370353132,
+        "gap_level_above_noise_floor_decibels": 18.14045525018619,
+        "gap_slope_decibels_per_second": -9.805588381836575,
+        "gap_spectral_centroid_hz": 4620.092262462319,
+        "gap_spectral_flatness": 0.2327285656922073,
+        "junction_class": "Silence",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      }
+    ],
+    "junction_profile": [
+      {
+        "junction_class": "Silence",
+        "count": 1
+      }
+    ],
+    "dominant_junction_class": "Silence",
+    "repertoire_entropy_bits": -0.0,
+    "repertoire_entropy_normalized": 0.0,
+    "transition_entropy_bits": 0.0,
+    "syntactic_information_bits": 0.0,
+    "determinism": 0.0,
+    "repeat_ratio": 1.0,
+    "distinct_bigrams": 1,
+    "bigram_coverage": 1.0,
+    "dominant_motif": "",
+    "dominant_motif_occurrences": 0,
+    "median_gap_seconds": 0.5886621315192743,
+    "gap_regularity": 0.0,
+    "bound_ratio": 0.0,
+    "syntax_class": "Isolated",
+    "transitions_per_type_pair": 1.0,
+    "reason": [
+      "1) 2 slices over 1 type — sequence AA",
+      "2) 0.00 bits of syntactic information (determinism 0%, H(next|current) 0.00 bits) (sparse: 1.0 transitions per type-pair — suggestive, not measured)",
+      "3) junctions mostly Silence · median gap 589 ms · regularity 0% · 0% bound"
     ]
   }
 }

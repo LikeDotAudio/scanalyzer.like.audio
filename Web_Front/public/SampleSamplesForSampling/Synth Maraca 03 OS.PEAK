@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Synth Maraca 03 OS.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Synth Maraca 03 OS.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Synth Maraca 03 OS.wav",
     "length_seconds": 0.017619047619047618,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": -0.00025690537775498716,
-    "trailing_silence_ms": 9.977324263038549
+    "trailing_silence_ms": 9.977324263038549,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Shaker",
@@ -49,6 +50,23 @@
     "envelope_kurtosis": -0.7888064693425361,
     "envelope_shape": "Plucky",
     "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.019954648526077097,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.0,
+        "envelope_release_seconds": 0.004988662131519274,
+        "envelope_temporal_centroid": 0.010128414505857646,
+        "envelope_skewness": 1.0202197349272322,
+        "envelope_kurtosis": -0.7888064693425361,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": null
+      }
+    ],
     "onset_periodicity": null,
     "onset_rate_per_second": 56.756756756756765
   },
@@ -124,9 +142,9 @@
   "unsupervised": {
     "cluster": 5,
     "principal_components": [
-      -1.944128010407052,
-      2.5825095525693733,
-      0.9654065943066605
+      -2.82459175583325,
+      -1.7192234644337643,
+      0.978557562421586
     ]
   },
   "ucs": {
@@ -174,5 +192,13 @@
     "minimum_silence_seconds": 0.15,
     "minimum_region_seconds": 0.05,
     "regions": []
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 4,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "ukQAAAAAAAA="
   }
 }

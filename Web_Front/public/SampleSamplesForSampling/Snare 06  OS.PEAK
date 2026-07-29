@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Snare 06  OS.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Snare 06  OS.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Snare 06  OS.wav",
     "length_seconds": 0.021950113378684806,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": -0.0056035538350255034,
-    "trailing_silence_ms": 0.022675736961451247
+    "trailing_silence_ms": 0.022675736961451247,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Snare",
@@ -49,6 +50,23 @@
     "envelope_kurtosis": -1.4371879864273531,
     "envelope_shape": "Sustained",
     "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.02494331065759637,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.004988662131519274,
+        "envelope_sustain_level": 0.8191519918847017,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.15239623498981386,
+        "envelope_skewness": 0.42329594742547993,
+        "envelope_kurtosis": -1.4371879864273531,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      }
+    ],
     "onset_periodicity": null,
     "onset_rate_per_second": 45.557851239669425
   },
@@ -124,9 +142,9 @@
   "unsupervised": {
     "cluster": 5,
     "principal_components": [
-      -4.866951250341016,
-      2.090114931584622,
-      -0.03858273495702174
+      -4.949870214813584,
+      -0.5399887313999835,
+      -0.28469851300744925
     ]
   },
   "ucs": {
@@ -146,5 +164,13 @@
     "minimum_silence_seconds": 0.15,
     "minimum_region_seconds": 0.05,
     "regions": []
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 4,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "k22Bdtsn6hU="
   }
 }

@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
     "length_seconds": 8.568163265306122,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0005890293244137307,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 18 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 683 ms, sustain 2%, 18 transients)",
+      "2) envelope Multi (18 transients — loudest of 18 slices: attack 30 ms, sustain 5%)",
       "3) Inharmonic · high-band 84%"
     ],
     "timbre": "Loop",
@@ -39,15 +40,287 @@
     "attack_seconds": 1.2504761904761905,
     "sustain_ratio": 0.036893203883495145,
     "sustained": false,
-    "envelope_attack_seconds": 0.6834467120181406,
-    "envelope_decay_seconds": 0.11473922902494331,
-    "envelope_sustain_level": 0.018743446124860685,
-    "envelope_release_seconds": 0.029931972789115645,
-    "envelope_temporal_centroid": 0.49914856258162993,
-    "envelope_skewness": 3.8551532958246137,
-    "envelope_kurtosis": 16.681795508402736,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 0.17459532871689798,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.1523809523809523,
+        "relative_level": 0.5597939719254069,
+        "envelope_attack_seconds": 0.11473922902494331,
+        "envelope_decay_seconds": 0.08480725623582766,
+        "envelope_sustain_level": 0.0291754560061111,
+        "envelope_release_seconds": 0.05986394557823129,
+        "envelope_temporal_centroid": 0.642193814361018,
+        "envelope_skewness": 4.804832111259283,
+        "envelope_kurtosis": 30.208665710322677,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.1543593923771749
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.1523809523809523,
+        "end_seconds": 2.0852607709750566,
+        "relative_level": 0.9538847538548902,
+        "envelope_attack_seconds": 0.039909297052154194,
+        "envelope_decay_seconds": 0.27936507936507937,
+        "envelope_sustain_level": 0.0028277876794221045,
+        "envelope_release_seconds": 0.044897959183673466,
+        "envelope_temporal_centroid": 0.09596115728495355,
+        "envelope_skewness": 4.420997312264098,
+        "envelope_kurtosis": 20.631423355829625,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.17459532871689804
+      },
+      {
+        "index": 2,
+        "start_seconds": 2.0852607709750566,
+        "end_seconds": 2.3147392290249433,
+        "relative_level": 0.8197948362400882,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.019954648526077097,
+        "envelope_sustain_level": 0.3596587507352956,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.8004073688893568,
+        "envelope_skewness": 2.333218521563379,
+        "envelope_kurtosis": 4.6730405701468705,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 2.3147392290249433,
+        "end_seconds": 2.569160997732426,
+        "relative_level": 0.9802727264882068,
+        "envelope_attack_seconds": 0.039909297052154194,
+        "envelope_decay_seconds": 0.08979591836734693,
+        "envelope_sustain_level": 0.029538193596674086,
+        "envelope_release_seconds": 0.14965986394557823,
+        "envelope_temporal_centroid": 0.1925500831705659,
+        "envelope_skewness": 2.1961575084106193,
+        "envelope_kurtosis": 4.061728794971553,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.1530392701310257
+      },
+      {
+        "index": 4,
+        "start_seconds": 2.569160997732426,
+        "end_seconds": 2.798639455782313,
+        "relative_level": 0.3638704760780169,
+        "envelope_attack_seconds": 0.02494331065759637,
+        "envelope_decay_seconds": 0.03492063492063492,
+        "envelope_sustain_level": 0.10358587267852006,
+        "envelope_release_seconds": 0.13968253968253969,
+        "envelope_temporal_centroid": 0.30946701064825854,
+        "envelope_skewness": 2.9388200687824693,
+        "envelope_kurtosis": 8.741136403221793,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.9869376270670097
+      },
+      {
+        "index": 5,
+        "start_seconds": 2.798639455782313,
+        "end_seconds": 4.0358276643990925,
+        "relative_level": 0.5754780967599136,
+        "envelope_attack_seconds": 0.20453514739229026,
+        "envelope_decay_seconds": 0.15963718820861678,
+        "envelope_sustain_level": 0.004720002080133646,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.17691330530751076,
+        "envelope_skewness": 5.390890659252254,
+        "envelope_kurtosis": 33.882061506872674,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": 0.11789182538878372
+      },
+      {
+        "index": 6,
+        "start_seconds": 4.0358276643990925,
+        "end_seconds": 4.365079365079365,
+        "relative_level": 0.41968272702370846,
+        "envelope_attack_seconds": 0.004988662131519274,
+        "envelope_decay_seconds": 0.029931972789115645,
+        "envelope_sustain_level": 0.19913666802540947,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.3143796827815853,
+        "envelope_skewness": 3.2157642231215307,
+        "envelope_kurtosis": 11.38345439797635,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 7,
+        "start_seconds": 4.365079365079365,
+        "end_seconds": 4.549659863945578,
+        "relative_level": 0.25281559742032034,
+        "envelope_attack_seconds": 0.009977324263038548,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.38112001521715955,
+        "envelope_release_seconds": 0.044897959183673466,
+        "envelope_temporal_centroid": 0.5005087670481148,
+        "envelope_skewness": 2.4185071247902536,
+        "envelope_kurtosis": 5.963206411949887,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 8,
+        "start_seconds": 4.549659863945578,
+        "end_seconds": 4.649433106575963,
+        "relative_level": 0.7407061334072378,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.5216521765696879,
+        "envelope_release_seconds": 0.02494331065759637,
+        "envelope_temporal_centroid": 0.5814318433580606,
+        "envelope_skewness": 1.2324160107746507,
+        "envelope_kurtosis": 0.11354896195021791,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 9,
+        "start_seconds": 4.649433106575963,
+        "end_seconds": 5.502494331065759,
+        "relative_level": 0.6342011528035821,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.1895691609977324,
+        "envelope_sustain_level": 0.004261852073724743,
+        "envelope_release_seconds": 0.7433106575963718,
+        "envelope_temporal_centroid": 0.07927521150991873,
+        "envelope_skewness": 5.327563488101432,
+        "envelope_kurtosis": 33.24396214825314,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 10,
+        "start_seconds": 5.502494331065759,
+        "end_seconds": 5.617233560090702,
+        "relative_level": 0.27301422102645295,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.8862867239593264,
+        "envelope_release_seconds": 0.004988662131519274,
+        "envelope_temporal_centroid": 0.6613804239890618,
+        "envelope_skewness": 0.3665276466449516,
+        "envelope_kurtosis": -1.3858862595259245,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 11,
+        "start_seconds": 5.617233560090702,
+        "end_seconds": 5.916553287981859,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.029931972789115645,
+        "envelope_decay_seconds": 0.08480725623582766,
+        "envelope_sustain_level": 0.05126145669752876,
+        "envelope_release_seconds": 0.11972789115646258,
+        "envelope_temporal_centroid": 0.21333777584781843,
+        "envelope_skewness": 1.7532358322845842,
+        "envelope_kurtosis": 1.8719737585145042,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.22354205011454842
+      },
+      {
+        "index": 12,
+        "start_seconds": 5.916553287981859,
+        "end_seconds": 6.101133786848073,
+        "relative_level": 0.4651148394884378,
+        "envelope_attack_seconds": 0.039909297052154194,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.24809108506645905,
+        "envelope_release_seconds": 0.044897959183673466,
+        "envelope_temporal_centroid": 0.5660385077814566,
+        "envelope_skewness": 1.8351888939413472,
+        "envelope_kurtosis": 2.5569004301445677,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 13,
+        "start_seconds": 6.101133786848073,
+        "end_seconds": 6.215873015873016,
+        "relative_level": 0.5964647605356056,
+        "envelope_attack_seconds": 0.02494331065759637,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.326385838036634,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.592756437865905,
+        "envelope_skewness": 1.6098040484579965,
+        "envelope_kurtosis": 1.6132782726407155,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 14,
+        "start_seconds": 6.215873015873016,
+        "end_seconds": 7.118820861678004,
+        "relative_level": 0.6252401144551417,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.1546485260770975,
+        "envelope_sustain_level": 0.004533355513970297,
+        "envelope_release_seconds": 0.019954648526077097,
+        "envelope_temporal_centroid": 0.21000165243404903,
+        "envelope_skewness": 4.892721541742876,
+        "envelope_kurtosis": 29.729110433326333,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 15,
+        "start_seconds": 7.118820861678004,
+        "end_seconds": 7.617687074829932,
+        "relative_level": 0.6677343315417912,
+        "envelope_attack_seconds": 0.06984126984126984,
+        "envelope_decay_seconds": 0.1346938775510204,
+        "envelope_sustain_level": 0.007685954466659858,
+        "envelope_release_seconds": 0.37414965986394555,
+        "envelope_temporal_centroid": 0.16785966288721602,
+        "envelope_skewness": 2.951574425572408,
+        "envelope_kurtosis": 8.823288822663017,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.1558203528813189
+      },
+      {
+        "index": 16,
+        "start_seconds": 7.617687074829932,
+        "end_seconds": 7.717460317460318,
+        "relative_level": 0.790714002112921,
+        "envelope_attack_seconds": 0.019954648526077097,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.350628282551429,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.5984190790328228,
+        "envelope_skewness": 1.5561403830905143,
+        "envelope_kurtosis": 1.4330352606745338,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.10446584994171526
+      },
+      {
+        "index": 17,
+        "start_seconds": 7.717460317460318,
+        "end_seconds": 8.570521541950113,
+        "relative_level": 0.7791424031009279,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.254421768707483,
+        "envelope_sustain_level": 0.0036070352172234013,
+        "envelope_release_seconds": 0.039909297052154194,
+        "envelope_temporal_centroid": 0.06178445682702018,
+        "envelope_skewness": 6.037437028298697,
+        "envelope_kurtosis": 41.171682553864386,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.12446700879218611
+      }
+    ],
     "onset_periodicity": 0.15649810151147203,
     "onset_rate_per_second": 2.100800304878049
   },
@@ -123,22 +396,22 @@
   "unsupervised": {
     "cluster": 8,
     "principal_components": [
-      2.446506000636574,
-      1.553379132927302,
-      -0.07887853331222043
+      1.5077494927527666,
+      -2.155276641815468,
+      -0.28800816725342
     ]
   },
   "ucs": {
     "category": "COMMUNICATIONS",
     "subcategory": "AUDIO VISUAL",
     "id": "COMAv",
-    "confidence": 0.2915096118198468,
+    "confidence": 0.2807659723984908,
     "alternatives": [
       {
         "category": "METAL",
         "subcategory": "MOVEMENT",
         "id": "METLMvmt",
-        "probability": 0.178,
+        "probability": 0.169,
         "synonyms": [
           "slide"
         ]
@@ -147,7 +420,7 @@
         "category": "MOVEMENT",
         "subcategory": "CREATURE",
         "id": "MOVECrea",
-        "probability": 0.161,
+        "probability": 0.155,
         "synonyms": [
           "slide"
         ]
@@ -156,7 +429,7 @@
         "category": "ROCKS",
         "subcategory": "MOVEMENT",
         "id": "ROCKMvmt",
-        "probability": 0.122,
+        "probability": 0.119,
         "synonyms": [
           "slide"
         ]
@@ -166,7 +439,7 @@
       "projector",
       "slide"
     ],
-    "reason": "name matched [projector, slide]; signal 0.27, tier semantic_only, 12 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 8.5682 > max 4.0000)"
+    "reason": "name matched [projector, slide]; signal 0.27, tier semantic_only, 13 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 8.5682 > max 4.0000)"
   },
   "regions": {
     "count": 6,
@@ -183,11 +456,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "length_seconds": 0.9678004535147392,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -195,13 +468,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0005820227824795433,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 2 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 683 ms, sustain 3%, 2 transients)",
+              "2) envelope Multi (2 transients — loudest of 2 slices: attack 40 ms, sustain 3%)",
               "3) Inharmonic · high-band 80% · root B4"
             ],
             "timbre": "Loop",
@@ -222,15 +496,47 @@
             "attack_seconds": 0.7565986394557823,
             "sustain_ratio": 0.0847457627118644,
             "sustained": false,
-            "envelope_attack_seconds": 0.6834467120181406,
-            "envelope_decay_seconds": 0.08480725623582766,
-            "envelope_sustain_level": 0.03114688021522489,
-            "envelope_release_seconds": 0.044897959183673466,
-            "envelope_temporal_centroid": 0.5781104099661099,
-            "envelope_skewness": 3.226866963091242,
-            "envelope_kurtosis": 11.36763088082899,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 0.17459532871689804,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.6684807256235827,
+                "relative_level": 0.5868570282344251,
+                "envelope_attack_seconds": 0.11473922902494331,
+                "envelope_decay_seconds": 0.07981859410430839,
+                "envelope_sustain_level": 0.03727079900958376,
+                "envelope_release_seconds": 0.06984126984126984,
+                "envelope_temporal_centroid": 0.36899434949170684,
+                "envelope_skewness": 3.7935043107968074,
+                "envelope_kurtosis": 18.44333361438156,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.1543593923771749
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.6684807256235827,
+                "end_seconds": 0.9678004535147392,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.039909297052154194,
+                "envelope_decay_seconds": 0.08480725623582766,
+                "envelope_sustain_level": 0.03114688021522489,
+                "envelope_release_seconds": 0.044897959183673466,
+                "envelope_temporal_centroid": 0.26550675465178536,
+                "envelope_skewness": 2.20130130744642,
+                "envelope_kurtosis": 4.122423193319538,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.17459532871689804
+              }
+            ],
             "onset_periodicity": 0.32866471916342666,
             "onset_rate_per_second": 2.0665417057169635
           },
@@ -308,44 +614,44 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "COMMUNICATIONS",
-            "subcategory": "AUDIO VISUAL",
-            "id": "COMAv",
-            "confidence": 0.2451249569981015,
+            "category": "MECHANICAL",
+            "subcategory": "MISC",
+            "id": "MECHMisc",
+            "confidence": 0.18631404831968792,
             "alternatives": [
               {
-                "category": "METAL",
-                "subcategory": "MOVEMENT",
-                "id": "METLMvmt",
-                "probability": 0.169,
+                "category": "MECHANICAL",
+                "subcategory": "SWITCH",
+                "id": "MECHSwtch",
+                "probability": 0.147,
                 "synonyms": [
                   "slide"
                 ]
               },
               {
-                "category": "MOVEMENT",
-                "subcategory": "CREATURE",
-                "id": "MOVECrea",
-                "probability": 0.151,
+                "category": "GUNS",
+                "subcategory": "MECHANISM",
+                "id": "GUNMech",
+                "probability": 0.145,
                 "synonyms": [
                   "slide"
                 ]
               },
               {
-                "category": "ROCKS",
-                "subcategory": "MOVEMENT",
-                "id": "ROCKMvmt",
-                "probability": 0.095,
+                "category": "COMMUNICATIONS",
+                "subcategory": "AUDIO VISUAL",
+                "id": "COMAv",
+                "probability": 0.136,
                 "synonyms": [
+                  "projector",
                   "slide"
                 ]
               }
             ],
             "synonyms": [
-              "projector",
               "slide"
             ],
-            "reason": "name matched [projector, slide]; signal 0.28, tier semantic_only, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.6834 > max 0.1500)"
+            "reason": "name matched [slide]; signal 0.80, tier signal_narrowable, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.3287 < min 0.3500); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -353,6 +659,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 167,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gL/Af8A/wH/Af0C/wH/Af8C/wH/Af4B9wrzCvcJ+gb6B/wE+wX7A/sI/Af9BPwE9wX8Bf0C/ATnG/IT7BXVMswr7BfxEOoTyzboFugY6hr0C/wK+wT5B/kJ/QL+Av4C/gL/A/8B/wH/AP8A/wAAAQAA/wEAAPoE/gL/AAAB/wH+Av8B/gL9Av0C/gH8Av4C/wEAAf8AAAD/AP4B/wH/AP8BAAH/Af8B/wL/AfcJ/AT+Av0E/wH9A/4C/gL+AvwF+QT5BPcK8BTmFewT8g/4B/0E/QP9A/0D/QLzC/YL/QL+Av8B/QL9A/0C/gL9A/wD/Ab7BPsE+wXQNdEx1yvaJdUj4B28Qc4w4BzqEesQ9Qz1CPgG+Qf5BPwE+wX8A/4C/QL9Av4C/gH9Av0C/wH/AP8A/wH/Af8B/wAAAQAB/wH/AAAA/wAAAP4C/wH/AA=="
           }
         }
       },
@@ -365,11 +679,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "length_seconds": 0.9628344671201814,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -377,13 +691,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.000622902066275526,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 4 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 120 ms, sustain 4%, 4 transients)",
+              "2) envelope Multi (4 transients — loudest of 4 slices: attack 45 ms, sustain 3%)",
               "3) Inharmonic · high-band 81% · root D#5"
             ],
             "timbre": "Loop",
@@ -404,15 +719,77 @@
             "attack_seconds": 0.20204081632653062,
             "sustain_ratio": 0.10344827586206896,
             "sustained": false,
-            "envelope_attack_seconds": 0.11972789115646258,
-            "envelope_decay_seconds": 0.07981859410430839,
-            "envelope_sustain_level": 0.04110478417479575,
-            "envelope_release_seconds": 0.02494331065759637,
-            "envelope_temporal_centroid": 0.3309511517905478,
-            "envelope_skewness": 2.769199746525809,
-            "envelope_kurtosis": 7.755869477331371,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 0.15295853064856246,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.14965986394557823,
+                "relative_level": 0.8349135945413337,
+                "envelope_attack_seconds": 0.06485260770975057,
+                "envelope_decay_seconds": 0.014965986394557823,
+                "envelope_sustain_level": 0.42532977052171,
+                "envelope_release_seconds": 0.004988662131519274,
+                "envelope_temporal_centroid": 0.7248590700672259,
+                "envelope_skewness": 1.7754637499091928,
+                "envelope_kurtosis": 1.9838264852398542,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.14965986394557823,
+                "end_seconds": 0.41904761904761906,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.044897959183673466,
+                "envelope_decay_seconds": 0.08979591836734693,
+                "envelope_sustain_level": 0.029517218958910952,
+                "envelope_release_seconds": 0.14965986394557823,
+                "envelope_temporal_centroid": 0.19944673408388738,
+                "envelope_skewness": 2.275110820745435,
+                "envelope_kurtosis": 4.484149849176594,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.15295853064856246
+              },
+              {
+                "index": 2,
+                "start_seconds": 0.41904761904761906,
+                "end_seconds": 0.6335600907029478,
+                "relative_level": 0.3709330805867576,
+                "envelope_attack_seconds": 0.02494331065759637,
+                "envelope_decay_seconds": 0.03492063492063492,
+                "envelope_sustain_level": 0.10356163083685167,
+                "envelope_release_seconds": 0.13968253968253969,
+                "envelope_temporal_centroid": 0.2843424173530807,
+                "envelope_skewness": 2.8239832182130433,
+                "envelope_kurtosis": 7.967886302780686,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.9852750072440472
+              },
+              {
+                "index": 3,
+                "start_seconds": 0.6335600907029478,
+                "end_seconds": 0.9678004535147392,
+                "relative_level": 0.5868495334631968,
+                "envelope_attack_seconds": 0.20453514739229026,
+                "envelope_decay_seconds": 0.039909297052154194,
+                "envelope_sustain_level": 0.05753329565541963,
+                "envelope_release_seconds": 0.029931972789115645,
+                "envelope_temporal_centroid": 0.5026066578530847,
+                "envelope_skewness": 2.9054247862587066,
+                "envelope_kurtosis": 8.417562003664568,
+                "envelope_shape": "Swell",
+                "decay_time_seconds_60db": 0.11777577303766383
+              }
+            ],
             "onset_periodicity": 0.287424446027614,
             "onset_rate_per_second": 4.154400508702103
           },
@@ -491,33 +868,33 @@
           },
           "ucs": {
             "category": "COMMUNICATIONS",
-            "subcategory": "AUDIO VISUAL",
-            "id": "COMAv",
-            "confidence": 0.2552582212941792,
+            "subcategory": "MISC",
+            "id": "COMMisc",
+            "confidence": 0.19792813225243397,
             "alternatives": [
+              {
+                "category": "GUNS",
+                "subcategory": "MECHANISM",
+                "id": "GUNMech",
+                "probability": 0.175,
+                "synonyms": [
+                  "slide"
+                ]
+              },
               {
                 "category": "METAL",
                 "subcategory": "MOVEMENT",
                 "id": "METLMvmt",
-                "probability": 0.197,
+                "probability": 0.165,
                 "synonyms": [
                   "slide"
                 ]
               },
               {
-                "category": "ICE",
-                "subcategory": "MOVEMENT",
-                "id": "ICEMvmt",
-                "probability": 0.135,
-                "synonyms": [
-                  "slide"
-                ]
-              },
-              {
-                "category": "VEHICLES",
-                "subcategory": "SKID",
-                "id": "VEHSkid",
-                "probability": 0.097,
+                "category": "MECHANICAL",
+                "subcategory": "LATCH",
+                "id": "MECHLtch",
+                "probability": 0.109,
                 "synonyms": [
                   "slide"
                 ]
@@ -527,7 +904,7 @@
               "projector",
               "slide"
             ],
-            "reason": "name matched [projector, slide]; signal 0.28, tier semantic_only, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.3310 < min 0.4000)"
+            "reason": "name matched [projector, slide]; signal 0.28, tier semantic_only, 16 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.2874 < min 0.3500); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -535,6 +912,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 166,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gL+Av8B/wL/Af8C+Qb6BfsF/QP8Bf4D+Qf5BvYI+wX1CsUzzzbQMeIa7RLyD+Ua8g70C/gK8Q32B/kK9AryD9kpxEK9PMQszDrVLeMg6BD3EPcM+gj2CfoF/QP9A/0D/gL+Af4B/gH/Af0E/gH/Af8B/wH/AfYI+wX9Au4O9gn7A/0D/wH/AfsE/AT/Af8B/wEAAf8AAAH/AP8A+Aj+A/IR7BTfHfAS9Ar6B/0G/gP+Af4B/wH7B/sE+wX8Av4C/gL9A/4C/gL+Af4C/gL/Af4C/gL+Af4C/wH/Af8B/wH+Av8B/gL/AfQN8wvnEdgt7Rf2EPsH+wb8BfwD+wP6CfoE/gL+Av4B/gL2B/gE/gL4CfwD/QL9A9wo9RP6Bf0D/gP+A/sE/QT9Bdsh0THkE/gJ+Qf3B/0D/gL9Av8C/wH/Af8B/wH/AQAA/wA="
           }
         }
       },
@@ -547,11 +932,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "length_seconds": 0.5387755102040817,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -559,13 +944,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0005933240553470259,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 2 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 354 ms, sustain 19%, 2 transients)",
+              "2) envelope Multi (2 transients — loudest of 2 slices: attack 354 ms, sustain 27%)",
               "3) Inharmonic · high-band 89% · root B4"
             ],
             "timbre": "Loop",
@@ -586,15 +972,47 @@
             "attack_seconds": 0.49882086167800455,
             "sustain_ratio": 0.06060606060606061,
             "sustained": false,
-            "envelope_attack_seconds": 0.35419501133786846,
-            "envelope_decay_seconds": 0.029931972789115645,
-            "envelope_sustain_level": 0.1881536432177055,
-            "envelope_release_seconds": 0.02494331065759637,
-            "envelope_temporal_centroid": 0.7375241244627977,
-            "envelope_skewness": 3.8967110824023,
-            "envelope_kurtosis": 18.012547096041796,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
             "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.3990929705215419,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.35419501133786846,
+                "envelope_decay_seconds": 0.009977324263038548,
+                "envelope_sustain_level": 0.2714424176548749,
+                "envelope_release_seconds": 0.009977324263038548,
+                "envelope_temporal_centroid": 0.8591897069860178,
+                "envelope_skewness": 4.945157194487805,
+                "envelope_kurtosis": 27.92929857048963,
+                "envelope_shape": "Swell",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.3990929705215419,
+                "end_seconds": 0.5387755102040817,
+                "relative_level": 0.7712493223719852,
+                "envelope_attack_seconds": 0.0947845804988662,
+                "envelope_decay_seconds": 0.014965986394557823,
+                "envelope_sustain_level": 0.281116974637549,
+                "envelope_release_seconds": 0.02494331065759637,
+                "envelope_temporal_centroid": 0.6182447604474027,
+                "envelope_skewness": 2.2853273032800168,
+                "envelope_kurtosis": 4.892260592988707,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              }
+            ],
             "onset_periodicity": 0.32889169784301225,
             "onset_rate_per_second": 3.712121212121212
           },
@@ -672,16 +1090,26 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "COMMUNICATIONS",
-            "subcategory": "AUDIO VISUAL",
-            "id": "COMAv",
-            "confidence": 0.3743620533291295,
+            "category": "GUNS",
+            "subcategory": "MECHANISM",
+            "id": "GUNMech",
+            "confidence": 0.29062902896714765,
             "alternatives": [
+              {
+                "category": "COMMUNICATIONS",
+                "subcategory": "AUDIO VISUAL",
+                "id": "COMAv",
+                "probability": 0.236,
+                "synonyms": [
+                  "projector",
+                  "slide"
+                ]
+              },
               {
                 "category": "METAL",
                 "subcategory": "MOVEMENT",
                 "id": "METLMvmt",
-                "probability": 0.203,
+                "probability": 0.127,
                 "synonyms": [
                   "slide"
                 ]
@@ -690,26 +1118,16 @@
                 "category": "ICE",
                 "subcategory": "MOVEMENT",
                 "id": "ICEMvmt",
-                "probability": 0.119,
-                "synonyms": [
-                  "slide"
-                ]
-              },
-              {
-                "category": "VEHICLES",
-                "subcategory": "SKID",
-                "id": "VEHSkid",
-                "probability": 0.069,
+                "probability": 0.075,
                 "synonyms": [
                   "slide"
                 ]
               }
             ],
             "synonyms": [
-              "projector",
               "slide"
             ],
-            "reason": "name matched [projector, slide]; signal 0.24, tier semantic_only, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.3542 > max 0.1500)"
+            "reason": "name matched [slide]; signal 0.67, tier signal_narrowable, 16 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.3289 < min 0.3500)"
           },
           "regions": {
             "count": 0,
@@ -717,6 +1135,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 93,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/QT+Af8AAAAAAAAAAAAAAAAAAAD+Av8B/wEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AAAAAAAAAPwD/QL5B/gG/gP+Af8B/wH/Af8B/QP/Af8B/wH+Af8B/wH9A+4O+Qf8BPwF/AT+Av4C/wH/Af8B/wH/Af4C/QPjIt8q9wf6Be8Q+Af6Bf0D/gP5BvwF/AX+Af4B+wT9A/IO+gT9BP0E7xL5CPwE9AzeK90p9wn6Bf0E/gL/Av8B"
           }
         }
       },
@@ -729,11 +1155,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "length_seconds": 0.45396825396825397,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -741,13 +1167,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0006162197940508353,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 2 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 170 ms, sustain 24%, 2 transients)",
+              "2) envelope Multi (2 transients — loudest of 2 slices: attack 170 ms, sustain 83%)",
               "3) Inharmonic · high-band 86%"
             ],
             "timbre": "Loop",
@@ -768,15 +1195,47 @@
             "attack_seconds": 0.19047619047619047,
             "sustain_ratio": 0.14285714285714285,
             "sustained": false,
-            "envelope_attack_seconds": 0.16961451247165532,
-            "envelope_decay_seconds": 0.02494331065759637,
-            "envelope_sustain_level": 0.2358116086032388,
-            "envelope_release_seconds": 0.029931972789115645,
-            "envelope_temporal_centroid": 0.4736281363667853,
-            "envelope_skewness": 2.3390375723860775,
-            "envelope_kurtosis": 5.151547579690121,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 1.3840484524394314,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.2145124716553288,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.16961451247165532,
+                "envelope_decay_seconds": 0.009977324263038548,
+                "envelope_sustain_level": 0.8310048568130693,
+                "envelope_release_seconds": 0.014965986394557823,
+                "envelope_temporal_centroid": 0.7588326431669647,
+                "envelope_skewness": 2.0627518899559276,
+                "envelope_kurtosis": 3.3728564704160897,
+                "envelope_shape": "Swell",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.2145124716553288,
+                "end_seconds": 0.45396825396825397,
+                "relative_level": 0.8562115584034194,
+                "envelope_attack_seconds": 0.07981859410430839,
+                "envelope_decay_seconds": 0.06485260770975057,
+                "envelope_sustain_level": 0.026051479519971023,
+                "envelope_release_seconds": 0.02494331065759637,
+                "envelope_temporal_centroid": 0.3021095424516885,
+                "envelope_skewness": 2.645054392771644,
+                "envelope_kurtosis": 7.611537712977718,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": null
+              }
+            ],
             "onset_periodicity": 0.30104218500857494,
             "onset_rate_per_second": 4.405594405594406
           },
@@ -854,44 +1313,44 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "COMMUNICATIONS",
-            "subcategory": "AUDIO VISUAL",
-            "id": "COMAv",
-            "confidence": 0.26266169004951223,
+            "category": "MECHANICAL",
+            "subcategory": "MISC",
+            "id": "MECHMisc",
+            "confidence": 0.191658867436304,
             "alternatives": [
               {
-                "category": "MOVEMENT",
-                "subcategory": "CREATURE",
-                "id": "MOVECrea",
-                "probability": 0.178,
+                "category": "MECHANICAL",
+                "subcategory": "LATCH",
+                "id": "MECHLtch",
+                "probability": 0.165,
                 "synonyms": [
                   "slide"
                 ]
               },
               {
-                "category": "METAL",
-                "subcategory": "MOVEMENT",
-                "id": "METLMvmt",
-                "probability": 0.147,
+                "category": "COMMUNICATIONS",
+                "subcategory": "AUDIO VISUAL",
+                "id": "COMAv",
+                "probability": 0.138,
                 "synonyms": [
+                  "projector",
                   "slide"
                 ]
               },
               {
-                "category": "LEATHER",
-                "subcategory": "MOVEMENT",
-                "id": "LETHRMvmt",
-                "probability": 0.106,
+                "category": "GUNS",
+                "subcategory": "MECHANISM",
+                "id": "GUNMech",
+                "probability": 0.12,
                 "synonyms": [
                   "slide"
                 ]
               }
             ],
             "synonyms": [
-              "projector",
               "slide"
             ],
-            "reason": "name matched [projector, slide]; signal 0.24, tier semantic_only, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.1696 > max 0.1500)"
+            "reason": "name matched [slide]; signal 0.70, tier signal_narrowable, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRHiss (length_seconds 0.4540 < min 0.5000); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -899,6 +1358,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 79,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/wH/Af4B6BrpFfgH6Rz4B/sE+Aj7BfoF9gn4CPwE/QL9A/0D/AL8BP0D/QP9A/4C/QP+Av0C/gL8BPwE2iXTMMY4zjPaI+4O9g3uDPgJ+Qf8BfsE8wjrGPYK9wrcJfIP8AvvEuMZzDDhFfIK8gz4CvwF/AP+Av4C/gL+Av8C/wH/Af8A/wH/AP8A/wD/AAAAAAAAAAAAAAD9A/4CAAE="
           }
         }
       },
@@ -911,11 +1378,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "length_seconds": 0.9229024943310657,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -923,13 +1390,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0006211860259903942,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 5 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 115 ms, sustain 5%, 5 transients)",
+              "2) envelope Multi (5 transients — loudest of 5 slices: attack 60 ms, sustain 5%)",
               "3) Inharmonic · high-band 86%"
             ],
             "timbre": "Loop",
@@ -950,15 +1418,92 @@
             "attack_seconds": 0.2167800453514739,
             "sustain_ratio": 0.10714285714285714,
             "sustained": false,
-            "envelope_attack_seconds": 0.11473922902494331,
-            "envelope_decay_seconds": 0.08480725623582766,
-            "envelope_sustain_level": 0.05082374238394849,
-            "envelope_release_seconds": 0.02494331065759637,
-            "envelope_temporal_centroid": 0.4375065949924667,
-            "envelope_skewness": 2.28974278304084,
-            "envelope_kurtosis": 5.141047875463546,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 0.22225553046551344,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.14965986394557823,
+                "relative_level": 0.27327957841245004,
+                "envelope_attack_seconds": 0.09977324263038548,
+                "envelope_decay_seconds": 0.014965986394557823,
+                "envelope_sustain_level": 0.9406220136793447,
+                "envelope_release_seconds": 0.0,
+                "envelope_temporal_centroid": 0.7698620235379195,
+                "envelope_skewness": 0.8737270380785241,
+                "envelope_kurtosis": -0.8324828224607885,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.14965986394557823,
+                "end_seconds": 0.4689342403628118,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.05986394557823129,
+                "envelope_decay_seconds": 0.08480725623582766,
+                "envelope_sustain_level": 0.05121209096351135,
+                "envelope_release_seconds": 0.11972789115646258,
+                "envelope_temporal_centroid": 0.23003197962072958,
+                "envelope_skewness": 1.8443208847241335,
+                "envelope_kurtosis": 2.2640371222022386,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.22225553046551344
+              },
+              {
+                "index": 2,
+                "start_seconds": 0.4689342403628118,
+                "end_seconds": 0.6485260770975056,
+                "relative_level": 0.4639523465834558,
+                "envelope_attack_seconds": 0.039909297052154194,
+                "envelope_decay_seconds": 0.03492063492063492,
+                "envelope_sustain_level": 0.16088984155870087,
+                "envelope_release_seconds": 0.04988662131519274,
+                "envelope_temporal_centroid": 0.5269951127310976,
+                "envelope_skewness": 1.8192719900047958,
+                "envelope_kurtosis": 2.495484383060699,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 3,
+                "start_seconds": 0.6485260770975056,
+                "end_seconds": 0.7482993197278911,
+                "relative_level": 0.5961183754030693,
+                "envelope_attack_seconds": 0.02494331065759637,
+                "envelope_decay_seconds": 0.009977324263038548,
+                "envelope_sustain_level": 0.47888626892526254,
+                "envelope_release_seconds": 0.019954648526077097,
+                "envelope_temporal_centroid": 0.6281010438211568,
+                "envelope_skewness": 1.401987498542237,
+                "envelope_kurtosis": 0.91855887786057,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 4,
+                "start_seconds": 0.7482993197278911,
+                "end_seconds": 0.9229024943310657,
+                "relative_level": 0.6238005438165777,
+                "envelope_attack_seconds": 0.06984126984126984,
+                "envelope_decay_seconds": 0.044897959183673466,
+                "envelope_sustain_level": 0.05786523719384099,
+                "envelope_release_seconds": 0.029931972789115645,
+                "envelope_temporal_centroid": 0.3769153725302861,
+                "envelope_skewness": 2.495654829961485,
+                "envelope_kurtosis": 6.2684318383587545,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": null
+              }
+            ],
             "onset_periodicity": 0.1340528721657749,
             "onset_rate_per_second": 5.417690417690418
           },
@@ -1036,44 +1581,44 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "METAL",
+            "category": "COMMUNICATIONS",
             "subcategory": "MISC",
-            "id": "METLMisc",
-            "confidence": 0.18862733360154196,
+            "id": "COMMisc",
+            "confidence": 0.15002574515600794,
             "alternatives": [
               {
-                "category": "COMMUNICATIONS",
-                "subcategory": "AUDIO VISUAL",
-                "id": "COMAv",
-                "probability": 0.182,
+                "category": "METAL",
+                "subcategory": "MOVEMENT",
+                "id": "METLMvmt",
+                "probability": 0.146,
                 "synonyms": [
-                  "projector",
                   "slide"
                 ]
               },
               {
-                "category": "ICE",
-                "subcategory": "MOVEMENT",
-                "id": "ICEMvmt",
+                "category": "MECHANICAL",
+                "subcategory": "LATCH",
+                "id": "MECHLtch",
                 "probability": 0.125,
                 "synonyms": [
                   "slide"
                 ]
               },
               {
-                "category": "VEHICLES",
-                "subcategory": "SKID",
-                "id": "VEHSkid",
-                "probability": 0.102,
+                "category": "GUNS",
+                "subcategory": "MECHANISM",
+                "id": "GUNMech",
+                "probability": 0.124,
                 "synonyms": [
                   "slide"
                 ]
               }
             ],
             "synonyms": [
+              "projector",
               "slide"
             ],
-            "reason": "name matched [slide]; signal 0.59, tier signal_narrowable, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.1341 < min 0.3500); ABSTAINED to MISC (top two too close to call)"
+            "reason": "name matched [projector, slide]; signal 0.22, tier semantic_only, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.1341 < min 0.3500); ABSTAINED to MISC (top two too close to call)"
           },
           "regions": {
             "count": 0,
@@ -1081,6 +1626,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 159,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gH9AvUI+wX+Av8B/gH/Af0E/QL9A/4C/gL9BP4C/gH+AuwR7hDxEO8Q8wzsD+wT9QnuDvUN+QX7Bf0E+An6Be8R1inWIss6zTTCPdAqyjDcLsc50SbsG/MK+QfkGuIX+Af8BP0E/QP6BvkF/gH/Af8B/wH8BP4C/wH/AvwF9gj+AvYJ/gPwE/oF/gH/Af8C/wD/AP8A/wD/AAAAAAAAAP8A/wAAAAAAAAAAAP8A/wD/Af4D/gL8BO8N9grZGeIm8gvhIN0g6RT4BfYK8hH5B/wD/QT3CPsF/QP9Av4D/QP9Av0E+wT9Av4C/QP7BfwF5xbpINUy4yzgHPQM7w3tCvUJ+QT6B/wE+gTuEO8Q+gbhGd8c7A7vFe0RyzTNMe8R9wj4BfwG/QP8A/4C/gL/Af8C/wH+Af8A/wAAAP8A"
           }
         }
       },
@@ -1093,11 +1646,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 20 - PROJECTOR, SLIDE - CHANGES ONLY.mp3",
             "length_seconds": 0.9129024943310657,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -1105,13 +1658,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0005875375053739276,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 4 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 609 ms, sustain 28%, 4 transients)",
+              "2) envelope Multi (4 transients — loudest of 4 slices: attack 20 ms, sustain 52%)",
               "3) Inharmonic · high-band 86% · root D#5"
             ],
             "timbre": "Loop",
@@ -1132,15 +1686,77 @@
             "attack_seconds": 0.8136281179138322,
             "sustain_ratio": 0.12727272727272726,
             "sustained": false,
-            "envelope_attack_seconds": 0.6086167800453515,
-            "envelope_decay_seconds": 0.019954648526077097,
-            "envelope_sustain_level": 0.28275822547646007,
-            "envelope_release_seconds": 0.039909297052154194,
-            "envelope_temporal_centroid": 0.5808861252738994,
-            "envelope_skewness": 2.77016565896696,
-            "envelope_kurtosis": 7.9852702662702235,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 1.035077935317593,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.16462585034013605,
+                "relative_level": 0.35712373978690093,
+                "envelope_attack_seconds": 0.10975056689342404,
+                "envelope_decay_seconds": 0.014965986394557823,
+                "envelope_sustain_level": 0.5836593243894614,
+                "envelope_release_seconds": 0.009977324263038548,
+                "envelope_temporal_centroid": 0.7425010339415086,
+                "envelope_skewness": 1.5420960331226274,
+                "envelope_kurtosis": 1.2378991327183062,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.16462585034013605,
+                "end_seconds": 0.6684807256235827,
+                "relative_level": 0.8444700988694934,
+                "envelope_attack_seconds": 0.06485260770975057,
+                "envelope_decay_seconds": 0.1346938775510204,
+                "envelope_sustain_level": 0.0076826481957555275,
+                "envelope_release_seconds": 0.37414965986394555,
+                "envelope_temporal_centroid": 0.15735563785212422,
+                "envelope_skewness": 2.978160734463431,
+                "envelope_kurtosis": 8.9790430390973,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.1558203528813189
+              },
+              {
+                "index": 2,
+                "start_seconds": 0.6684807256235827,
+                "end_seconds": 0.7482993197278911,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.019954648526077097,
+                "envelope_decay_seconds": 0.009977324263038548,
+                "envelope_sustain_level": 0.5210442412811452,
+                "envelope_release_seconds": 0.014965986394557823,
+                "envelope_temporal_centroid": 0.6216300194394309,
+                "envelope_skewness": 1.2427668916014651,
+                "envelope_kurtosis": 0.48936742982543,
+                "envelope_shape": "Sustained",
+                "decay_time_seconds_60db": null
+              },
+              {
+                "index": 3,
+                "start_seconds": 0.7482993197278911,
+                "end_seconds": 0.9129251700680272,
+                "relative_level": 0.9853656328570484,
+                "envelope_attack_seconds": 0.06485260770975057,
+                "envelope_decay_seconds": 0.044897959183673466,
+                "envelope_sustain_level": 0.057804672185544456,
+                "envelope_release_seconds": 0.039909297052154194,
+                "envelope_temporal_centroid": 0.3773175624364234,
+                "envelope_skewness": 2.4697593265224524,
+                "envelope_kurtosis": 5.808271875074611,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.12446700879218611
+              }
+            ],
             "onset_periodicity": 0.3816469368265532,
             "onset_rate_per_second": 4.3816289525323535
           },
@@ -1221,31 +1837,31 @@
             "category": "COMMUNICATIONS",
             "subcategory": "AUDIO VISUAL",
             "id": "COMAv",
-            "confidence": 0.3237396400481541,
+            "confidence": 0.19558928555205696,
             "alternatives": [
+              {
+                "category": "MECHANICAL",
+                "subcategory": "LATCH",
+                "id": "MECHLtch",
+                "probability": 0.14,
+                "synonyms": [
+                  "slide"
+                ]
+              },
+              {
+                "category": "GUNS",
+                "subcategory": "MECHANISM",
+                "id": "GUNMech",
+                "probability": 0.123,
+                "synonyms": [
+                  "slide"
+                ]
+              },
               {
                 "category": "METAL",
                 "subcategory": "MOVEMENT",
                 "id": "METLMvmt",
-                "probability": 0.183,
-                "synonyms": [
-                  "slide"
-                ]
-              },
-              {
-                "category": "MOVEMENT",
-                "subcategory": "CREATURE",
-                "id": "MOVECrea",
-                "probability": 0.147,
-                "synonyms": [
-                  "slide"
-                ]
-              },
-              {
-                "category": "LEATHER",
-                "subcategory": "MOVEMENT",
-                "id": "LETHRMvmt",
-                "probability": 0.084,
+                "probability": 0.101,
                 "synonyms": [
                   "slide"
                 ]
@@ -1255,7 +1871,7 @@
               "projector",
               "slide"
             ],
-            "reason": "name matched [projector, slide]; signal 0.29, tier semantic_only, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 0.6086 > max 0.1500)"
+            "reason": "name matched [projector, slide]; signal 0.29, tier semantic_only, 15 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (low_band_energy 0.0113 < min 0.2000)"
           },
           "regions": {
             "count": 0,
@@ -1263,9 +1879,225 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 158,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/wH+Av8B+Qb+Av8B/wH9Av4C/wL9Av4B/wH+Av8B/gH+Av8C/gLsEuoR7g7zEPYK9gf2DPgI+gX5CPsH/AT9BPgH+gT8BOgd7RzdKs0v4RfHOeAa4R3vEfYJ9wbVKPAO+QT7B/4D/QP+Af4B/wH/Af8B/QL/Af8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD9Av8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wL5BvsG/wH/Af8B/wH/Af4C/gL/AfYI+Qb7BvcH+gb8Av0C/QP9Av4B/gP/Af4C/gL+Av8B+wbzDd8bzC/VKd8e6g7vDPMO+Qb9BPsG+gb2DfoG6hLpE+Ya8A7NMs861ivwD/oI+Qf7BfwE/QL8Bf4C/gL/Av8B/wH/Af8B/wD/AA=="
           }
         }
       }
+    ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 1476,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
+  },
+  "bioacoustic_syntax": {
+    "slice_count": 6,
+    "type_count": 1,
+    "sequence": "AAAAAA",
+    "slices": [
+      {
+        "region_index": 0,
+        "type_label": "A",
+        "start_seconds": 0.49387755102040815,
+        "duration_seconds": 0.9678004535147393,
+        "embedding_x": -5.152606513837471,
+        "embedding_y": 1.1823722869057975
+      },
+      {
+        "region_index": 1,
+        "type_label": "A",
+        "start_seconds": 2.1600907029478456,
+        "duration_seconds": 0.9628117913832202,
+        "embedding_x": -2.150234308252629,
+        "embedding_y": 1.5588115263367388
+      },
+      {
+        "region_index": 2,
+        "type_label": "A",
+        "start_seconds": 3.726530612244898,
+        "duration_seconds": 0.5387755102040819,
+        "embedding_x": 4.027626252781106,
+        "embedding_y": 3.043348043938628
+      },
+      {
+        "region_index": 3,
+        "type_label": "A",
+        "start_seconds": 4.419954648526077,
+        "duration_seconds": 0.45396825396825413,
+        "embedding_x": 3.1344017745023884,
+        "embedding_y": -0.6640126494086688
+      },
+      {
+        "region_index": 4,
+        "type_label": "A",
+        "start_seconds": 5.457596371882086,
+        "duration_seconds": 0.9229024943310655,
+        "embedding_x": 1.115135715527065,
+        "embedding_y": -2.738085364702148
+      },
+      {
+        "region_index": 5,
+        "type_label": "A",
+        "start_seconds": 6.959183673469387,
+        "duration_seconds": 0.9129251700680268,
+        "embedding_x": -0.9743229207204365,
+        "embedding_y": -2.382433843070356
+      }
+    ],
+    "slice_types": [
+      {
+        "label": "A",
+        "descriptor": "medium bright noisy",
+        "occurrences": 6,
+        "share": 1.0,
+        "exemplar_region_index": 5,
+        "mean_duration_seconds": 0.7931972789115647,
+        "mean_spectral_centroid_hz": 4638.253687091361,
+        "mean_harmonicity": 0.3945235572636216
+      }
+    ],
+    "transitions": [
+      {
+        "from_label": "A",
+        "to_label": "A",
+        "count": 5,
+        "probability": 1.0,
+        "mean_gap_seconds": 0.5238095238095236,
+        "mean_inter_onset_seconds": 1.2930612244897959
+      }
+    ],
+    "junctions": [
+      {
+        "index": 0,
+        "from_region_index": 0,
+        "to_region_index": 1,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.6984126984126982,
+        "inter_onset_seconds": 1.6662131519274375,
+        "gap_root_mean_square_level": 0.0007564775496857969,
+        "gap_level_below_previous_peak_decibels": -50.569431573185774,
+        "gap_level_above_noise_floor_decibels": 4.072097228423418,
+        "gap_slope_decibels_per_second": 3.420835085179036,
+        "gap_spectral_centroid_hz": 2099.3719164937993,
+        "gap_spectral_flatness": 0.007011429749211836,
+        "junction_class": "Silence",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      },
+      {
+        "index": 1,
+        "from_region_index": 1,
+        "to_region_index": 2,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.6036281179138321,
+        "inter_onset_seconds": 1.5664399092970522,
+        "gap_root_mean_square_level": 0.000732343723881666,
+        "gap_level_below_previous_peak_decibels": -50.1348641264741,
+        "gap_level_above_noise_floor_decibels": 3.7904756333023144,
+        "gap_slope_decibels_per_second": -7.904790675008438,
+        "gap_spectral_centroid_hz": 1437.1143913159556,
+        "gap_spectral_flatness": 0.01222248054646078,
+        "junction_class": "Silence",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      },
+      {
+        "index": 2,
+        "from_region_index": 2,
+        "to_region_index": 3,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.15464852607709734,
+        "inter_onset_seconds": 0.6934240362811792,
+        "gap_root_mean_square_level": 0.0012926111336566378,
+        "gap_level_below_previous_peak_decibels": -41.18524616925548,
+        "gap_level_above_noise_floor_decibels": 8.725534198639796,
+        "gap_slope_decibels_per_second": -54.37489398965272,
+        "gap_spectral_centroid_hz": 3302.1454470831363,
+        "gap_spectral_flatness": 0.022863568910836154,
+        "junction_class": "Resonant Tail",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      },
+      {
+        "index": 3,
+        "from_region_index": 3,
+        "to_region_index": 4,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.5836734693877546,
+        "inter_onset_seconds": 1.0376417233560087,
+        "gap_root_mean_square_level": 0.0006773580181747965,
+        "gap_level_below_previous_peak_decibels": -48.974878790701275,
+        "gap_level_above_noise_floor_decibels": 3.1125418743404625,
+        "gap_slope_decibels_per_second": -3.412046387751441,
+        "gap_spectral_centroid_hz": 2979.7505520764876,
+        "gap_spectral_flatness": 0.028700415751503464,
+        "junction_class": "Silence",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      },
+      {
+        "index": 4,
+        "from_region_index": 4,
+        "to_region_index": 5,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.5786848072562361,
+        "inter_onset_seconds": 1.5015873015873016,
+        "gap_root_mean_square_level": 0.0006631908773416684,
+        "gap_level_below_previous_peak_decibels": -51.06756910897987,
+        "gap_level_above_noise_floor_decibels": 2.9289472234768636,
+        "gap_slope_decibels_per_second": -1.8588265930962706,
+        "gap_spectral_centroid_hz": 1602.88113167326,
+        "gap_spectral_flatness": 0.007849580277659468,
+        "junction_class": "Silence",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      }
+    ],
+    "junction_profile": [
+      {
+        "junction_class": "Silence",
+        "count": 4
+      },
+      {
+        "junction_class": "Resonant Tail",
+        "count": 1
+      }
+    ],
+    "dominant_junction_class": "Silence",
+    "repertoire_entropy_bits": -0.0,
+    "repertoire_entropy_normalized": 0.0,
+    "transition_entropy_bits": 0.0,
+    "syntactic_information_bits": 0.0,
+    "determinism": 0.0,
+    "repeat_ratio": 1.0,
+    "distinct_bigrams": 1,
+    "bigram_coverage": 1.0,
+    "dominant_motif": "AAA",
+    "dominant_motif_occurrences": 4,
+    "median_gap_seconds": 0.5836734693877546,
+    "gap_regularity": 0.7143247990213377,
+    "bound_ratio": 0.2,
+    "syntax_class": "Repetition",
+    "transitions_per_type_pair": 5.0,
+    "reason": [
+      "1) 6 slices over 1 type — sequence AAAAAA · motif \"AAA\" ×4",
+      "2) 0.00 bits of syntactic information (determinism 0%, H(next|current) 0.00 bits)",
+      "3) junctions mostly Silence · median gap 584 ms · regularity 71% · 20% bound"
     ]
   }
 }

@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "909 H Tom 1.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/909 H Tom 1.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/909 H Tom 1.wav",
     "length_seconds": 0.4556689342403628,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.0006272102653995086,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Tom",
@@ -52,6 +53,23 @@
     "envelope_kurtosis": 1.1825510405476223,
     "envelope_shape": "Decaying",
     "decay_time_seconds_60db": 0.6050802178682426,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.45895691609977324,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.2145124716553288,
+        "envelope_sustain_level": 0.095376114319822,
+        "envelope_release_seconds": 0.13968253968253969,
+        "envelope_temporal_centroid": 0.10536020287661103,
+        "envelope_skewness": 1.4895420776821757,
+        "envelope_kurtosis": 1.1825510405476223,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.6050802178682426
+      }
+    ],
     "onset_periodicity": 0.09306999929914725,
     "onset_rate_per_second": 2.1945757651157005
   },
@@ -127,9 +145,9 @@
   "unsupervised": {
     "cluster": 6,
     "principal_components": [
-      -1.4174516325888482,
-      -1.9976983704627433,
-      1.1057202384973694
+      -0.7738563937044043,
+      2.401399954159737,
+      1.1351362403942817
     ]
   },
   "ucs": {
@@ -169,5 +187,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 79,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "jn+nf59UtESoVbZX4kC5VbZI4izLR7ot4BzHOsMx4RfRLNwu4xXcIeIs5RTlFuIj8hPrDOUb9RPxDeoU9RP3De8P9RL7C/MQ9Q/8B/YM9Qv8BvkJ9gj8B/sH+Ab8B/0F+gb8Bv8D/AX8BP8C/QT8A/8C/gP9Av8C/gL9Av8C/wH+Av8C/wH/Af8B/wH/Af8B/wH/AP8B/wH/AP8AAAE="
   }
 }

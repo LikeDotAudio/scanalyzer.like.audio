@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "SR16 Prc_Clave Hi.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Clave Hi.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Clave Hi.wav",
     "length_seconds": 0.11877551020408163,
     "sample_rate": 22050,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.00029052874203536655,
-    "trailing_silence_ms": 0.8616780045351474
+    "trailing_silence_ms": 0.8616780045351474,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Woodblock",
@@ -52,6 +53,23 @@
     "envelope_kurtosis": 11.594430938171506,
     "envelope_shape": "Plucky",
     "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.11972789115646258,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.04988662131519274,
+        "envelope_sustain_level": 0.02255768277303376,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.011868534693371612,
+        "envelope_skewness": 3.495993406626513,
+        "envelope_kurtosis": 11.594430938171506,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": null
+      }
+    ],
     "onset_periodicity": null,
     "onset_rate_per_second": 8.419243986254296
   },
@@ -127,9 +145,9 @@
   "unsupervised": {
     "cluster": 2,
     "principal_components": [
-      -1.5208774541840575,
-      0.7376023630495836,
-      2.1575366640169484
+      -1.9043130745272532,
+      -0.11948359202406388,
+      2.147191696111957
     ]
   },
   "ucs": {
@@ -178,5 +196,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 11,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "gXrvEvwD/AT+Av4C/wEAAAAAAAAAAA=="
   }
 }

@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 15 - DRILL, MILITARY - ORDER SHOUTED- 'ATTENTION', MARCHING, SOLDIERS.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 15 - DRILL, MILITARY - ORDER SHOUTED- 'ATTENTION', MARCHING, SOLDIERS.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 15 - DRILL, MILITARY - ORDER SHOUTED- 'ATTENTION', MARCHING, SOLDIERS.mp3",
     "length_seconds": 4.048979591836734,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0019892442243921588,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Vocal",
     "reason": [
       "1) path matched \"shout\"",
-      "2) envelope Multi (attack 843 ms, sustain 8%, 3 transients)",
+      "2) envelope Multi (3 transients — loudest of 3 slices: attack 65 ms, sustain 27%)",
       "3) Harmonic · mid-band 69% · root A3"
     ],
     "timbre": "Loop",
@@ -38,15 +39,62 @@
     "attack_seconds": 1.4047845804988661,
     "sustain_ratio": 0.037037037037037035,
     "sustained": false,
-    "envelope_attack_seconds": 0.8430839002267574,
-    "envelope_decay_seconds": 0.5587301587301587,
-    "envelope_sustain_level": 0.08180170504976018,
-    "envelope_release_seconds": 0.7383219954648526,
-    "envelope_temporal_centroid": 0.39953699524465186,
-    "envelope_skewness": 2.590887531522592,
-    "envelope_kurtosis": 7.9991401660866615,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 6.08869308411685,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.2521541950113377,
+        "relative_level": 0.26004008646079,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.04988662131519274,
+        "envelope_sustain_level": 0.3323396846877761,
+        "envelope_release_seconds": 0.30430839002267573,
+        "envelope_temporal_centroid": 0.5731675978407162,
+        "envelope_skewness": 1.7774931169326347,
+        "envelope_kurtosis": 2.8069830461712266,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.2521541950113377,
+        "end_seconds": 2.050340136054422,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.13968253968253969,
+        "envelope_sustain_level": 0.27305378511512346,
+        "envelope_release_seconds": 0.044897959183673466,
+        "envelope_temporal_centroid": 0.3439933784995012,
+        "envelope_skewness": 1.1191635672368014,
+        "envelope_kurtosis": 0.7398045837438159,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 2.050340136054422,
+        "end_seconds": 4.050793650793651,
+        "relative_level": 0.44509629182072075,
+        "envelope_attack_seconds": 0.08480725623582766,
+        "envelope_decay_seconds": 0.8331065759637188,
+        "envelope_sustain_level": 0.06884971068058206,
+        "envelope_release_seconds": 0.4888888888888889,
+        "envelope_temporal_centroid": 0.1202873691111385,
+        "envelope_skewness": 2.329856419108209,
+        "envelope_kurtosis": 7.101670447379176,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 4.059027607234937
+      }
+    ],
     "onset_periodicity": 0.3836013341323961,
     "onset_rate_per_second": 0.7409274193548387
   },
@@ -122,31 +170,31 @@
   "unsupervised": {
     "cluster": 0,
     "principal_components": [
-      1.63222857963488,
-      -0.4442048104126785,
-      -0.0870888528997124
+      1.4430090930414654,
+      0.030537400403202387,
+      -0.660176827655862
     ]
   },
   "ucs": {
-    "category": "MACHINES",
-    "subcategory": "MEDICAL",
-    "id": "MACHMed",
-    "confidence": 0.33802406680870256,
+    "category": "USER INTERFACE",
+    "subcategory": "ALERT",
+    "id": "UIAlert",
+    "confidence": 0.5691053854065741,
     "alternatives": [
       {
-        "category": "USER INTERFACE",
-        "subcategory": "ALERT",
-        "id": "UIAlert",
-        "probability": 0.261,
+        "category": "MACHINES",
+        "subcategory": "MEDICAL",
+        "id": "MACHMed",
+        "probability": 0.154,
         "synonyms": [
-          "attention"
+          "drill"
         ]
       },
       {
         "category": "TOOLS",
         "subcategory": "HAND",
         "id": "TOOLHand",
-        "probability": 0.174,
+        "probability": 0.145,
         "synonyms": [
           "drill"
         ]
@@ -155,16 +203,16 @@
         "category": "EQUIPMENT",
         "subcategory": "TACTICAL",
         "id": "EQUIPTact",
-        "probability": 0.077,
+        "probability": 0.035,
         "synonyms": [
           "military"
         ]
       }
     ],
     "synonyms": [
-      "drill"
+      "attention"
     ],
-    "reason": "name matched [drill]; signal 0.32, tier semantic_only, 12 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0490 > max 4.0000)"
+    "reason": "name matched [attention]; signal 0.69, tier signal_separable, 13 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0490 > max 4.0000)"
   },
   "regions": {
     "count": 1,
@@ -182,5 +230,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 698,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/Af4C/AT1C/QN9BDxE+wX6hjuGOoY6hjpGuUc6RvnG+oa6RXwEvAQ+gv2BfoH/AX9BfwF+wT6BPwF+wT7A/wF+gj7BvwE+wX8Bf0E/AP9BPsF+wT8BPsE+wX7BvkE+Qn2DPQQ8AvyDPQN8gvxCu8L8w/wDfQN8w/zCvcK+Qf4CPYH+gX6B/cI9Qn2CPgG+QX8BvoG+wT8A/oE/AX8BfwH/AT9A/0D/QT9AvwE/QP8A/sE/AT9BPwD/QX8Bf0D/AP+A/wD/QP8A/sD/QT9A/4C/gL+Av4C/QL+Av4C/gL9A/4D/gP+Av0C/QP8A/0D/AP+Av4D/gH+Av4D/gL9A/0C/gL9A/wE/QP9Av4D/QL8A/kE+Ab2Buob2izVI90p4C/WK9EyzkHMM8pJw0u2V7RUvUe5Q8c6uzuuRL5EyTzFO9Awyj3IJ8s1ykbRLs4m3yThKOEl5yHoIuMd4BzcFfEN5hTjFesY8RPnE9Yi2SvaJ+YR9gzlGOIe4xvuFOwO5hXvGPMO8wvzCe4L7BPoE94i2yDeIe0V8xHqFtwf2SPrFO0U8Q/rFekV6xnjGegX7xTuE+kV5xncJNor4x/sEvAN7BXuFOUW7Q7qFucg9A3wEPYP9gz0C/cK9QrzCu8Q8RPwFfYM9BDwDu8O9Q36CPcL9AXxCfQM6xPjHegX8RHtC/MM+AnwF/AT8gz1CfMJ7RL2DfMN+AbxDfEQ8g/sCtcs6xjhEukS8SnXMdYl8hDqH9gX1CzUKOgP5xzyFuQg1DPiHeEd5RXrK/AR6Rb0EPYK9QjuDvQM9wz2Bu0P8wvzCvsG9wj3CfgG9AvmEuoQ8BTxEPcI9Ar1BvkF8wrxCvcK9wjwFewQ7BXxD/IM9gn1CfkF9wf5C/cL+AX5Bu0N9Q7vD/ML9gb4CfYI8wrxC/MK9wv7BvYL9Af1CfYL+Ab6B/YH+Ab3BvcI9gjwDfMM9gj4CPoH+gX6BfoJ9gr2C/QI+Ab5CvQK+Qf6BvMJ9wr0C/gI+gX7BPkF/AX6BPkF+gX5CPoF+Qb4BfsF+wT6BvoG9gj2CPkG+gX5BvsD+gb6BfoF+AT6BfsE+gP8B/sG/QL4B/UI9wf5BvkG+Qf7A/sC/AP8A/wD/AT7A/wC/AL7BP0B/QL9A/wD/gP8Av0C/QL8AvwE+gT+AvwD/gL8A/wE/gP9Av0C/QL8Af4B/QH+Af4B/QH+Av4B/QH9Af4C/gL+Af4B/gH9Av4B/gH+Af4B/wD+Af4B/gH+Af4B/wD+Af4A/gD+AP8A/wD/AP8A/wD/Af8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AAAA/wD/AP8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
   }
 }

@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "SR16 Prc_Conga HiSlap.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Conga HiSlap.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Conga HiSlap.wav",
     "length_seconds": 0.2577324263038549,
     "sample_rate": 22050,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.0002990593776806924,
-    "trailing_silence_ms": 1.0430839002267573
+    "trailing_silence_ms": 1.0430839002267573,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Conga",
@@ -52,6 +53,23 @@
     "envelope_kurtosis": 14.993445396112069,
     "envelope_shape": "Plucky",
     "decay_time_seconds_60db": 0.19660545214285222,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.2594104308390023,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.12471655328798185,
+        "envelope_sustain_level": 0.013107082098744281,
+        "envelope_release_seconds": 0.05487528344671202,
+        "envelope_temporal_centroid": 0.022604667464424633,
+        "envelope_skewness": 3.8219826548668037,
+        "envelope_kurtosis": 14.993445396112069,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.19660545214285222
+      }
+    ],
     "onset_periodicity": 0.0,
     "onset_rate_per_second": 3.879992961464015
   },
@@ -127,9 +145,9 @@
   "unsupervised": {
     "cluster": 2,
     "principal_components": [
-      -0.42443217536621103,
-      -0.15791345154562209,
-      1.760962466244098
+      -0.5572015742730673,
+      0.352623386166739,
+      1.6625849711684608
     ]
   },
   "ucs": {
@@ -188,5 +206,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 23,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "gXvVLeca6RXyC/YK+Af8BPwE/gP+Av4C/wH/Af8BAAAAAAAAAAAAAAAAAAAAAA=="
   }
 }

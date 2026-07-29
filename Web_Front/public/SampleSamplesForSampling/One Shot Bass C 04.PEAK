@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "One Shot Bass C 04.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/One Shot Bass C 04.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/One Shot Bass C 04.wav",
     "length_seconds": 0.27997732426303856,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.010954721780926668,
-    "trailing_silence_ms": 49.77324263038549
+    "trailing_silence_ms": 49.77324263038549,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Bass",
@@ -51,6 +52,23 @@
     "envelope_kurtosis": -1.032540599953173,
     "envelope_shape": "Decaying",
     "decay_time_seconds_60db": 0.7958453466263206,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.28435374149659864,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.02494331065759637,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.47377467430012077,
+        "envelope_release_seconds": 0.03492063492063492,
+        "envelope_temporal_centroid": 0.2746375289114307,
+        "envelope_skewness": 0.5657051062850071,
+        "envelope_kurtosis": -1.032540599953173,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.7958453466263206
+      }
+    ],
     "onset_periodicity": 0.5748479979887741,
     "onset_rate_per_second": 3.571717826192597
   },
@@ -126,9 +144,9 @@
   "unsupervised": {
     "cluster": 4,
     "principal_components": [
-      -2.8190131094375466,
-      -6.2273270088010495,
-      0.048018108397278866
+      -0.41627538459733837,
+      6.7118250987496575,
+      0.3304769556034812
     ]
   },
   "ucs": {
@@ -186,5 +204,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 49,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AHEHYNgMhNefbRZxBxaHBoQrLHEHSLkNhMPDcAtw9w2E94dRL3AILqANi/LzYgZV5gqn5rdFEEgFEMUFww4PLwMf7QTf7+8VAhUAAvoA/AAAAAAAAAAAAAAAAAAAAAAAAAA="
   }
 }

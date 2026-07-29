@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 67 - TRAIN, STEAM - CONDUCTOR CALL 'ALL ABOARD'.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 67 - TRAIN, STEAM - CONDUCTOR CALL 'ALL ABOARD'.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 67 - TRAIN, STEAM - CONDUCTOR CALL 'ALL ABOARD'.mp3",
     "length_seconds": 2.2987755102040817,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0004993486412294411,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 4 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 1073 ms, sustain 0%, 4 transients)",
+      "2) envelope Multi (4 transients — loudest of 4 slices: attack 45 ms, sustain 0%)",
       "3) Inharmonic · mid-band 74% · root C4"
     ],
     "timbre": "Loop",
@@ -39,15 +40,77 @@
     "attack_seconds": 1.677596371882086,
     "sustain_ratio": 0.10144927536231885,
     "sustained": false,
-    "envelope_attack_seconds": 1.072562358276644,
-    "envelope_decay_seconds": 0.18458049886621314,
-    "envelope_sustain_level": 0.0049336357185396475,
-    "envelope_release_seconds": 0.03492063492063492,
-    "envelope_temporal_centroid": 0.6334344181459944,
-    "envelope_skewness": 1.546275477690144,
-    "envelope_kurtosis": 2.1065728746761447,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
     "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.2820861678004536,
+        "relative_level": 0.3702261234322767,
+        "envelope_attack_seconds": 0.3492063492063492,
+        "envelope_decay_seconds": 0.039909297052154194,
+        "envelope_sustain_level": 0.8087318072037446,
+        "envelope_release_seconds": 0.004988662131519274,
+        "envelope_temporal_centroid": 0.7961804014967248,
+        "envelope_skewness": 0.5144583291718486,
+        "envelope_kurtosis": -1.381657093522933,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.2820861678004536,
+        "end_seconds": 1.4317460317460318,
+        "relative_level": 0.41326507536867646,
+        "envelope_attack_seconds": 0.08979591836734693,
+        "envelope_decay_seconds": 0.019954648526077097,
+        "envelope_sustain_level": 0.9468864445879452,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.6072930409647498,
+        "envelope_skewness": -0.10491460638756844,
+        "envelope_kurtosis": -1.367279686295847,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 1.4317460317460318,
+        "end_seconds": 1.58140589569161,
+        "relative_level": 0.7699348292443458,
+        "envelope_attack_seconds": 0.11473922902494331,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.9762189667730199,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.6127819541012489,
+        "envelope_skewness": 0.41184114904869856,
+        "envelope_kurtosis": -0.7110854608117174,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 1.58140589569161,
+        "end_seconds": 2.2997732426303856,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.18458049886621314,
+        "envelope_sustain_level": 0.0049336357185396475,
+        "envelope_release_seconds": 0.03492063492063492,
+        "envelope_temporal_centroid": 0.1014746806309887,
+        "envelope_skewness": 1.6992830212023786,
+        "envelope_kurtosis": 1.1880575490022363,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": null
+      }
+    ],
     "onset_periodicity": 0.3304984903930339,
     "onset_rate_per_second": 1.7400568181818181
   },
@@ -121,24 +184,33 @@
     ]
   },
   "unsupervised": {
-    "cluster": 13,
+    "cluster": 11,
     "principal_components": [
-      1.4052193024517836,
-      -0.7720801008007261,
-      -0.2692109393769002
+      1.557677279987718,
+      0.2703263900621132,
+      -0.06082060951762207
     ]
   },
   "ucs": {
     "category": "TOYS",
     "subcategory": "ELECTRONIC",
     "id": "TOYElec",
-    "confidence": 0.3364074100219977,
+    "confidence": 0.2717356573544232,
     "alternatives": [
+      {
+        "category": "TRAINS",
+        "subcategory": "DOOR",
+        "id": "TRNDoor",
+        "probability": 0.15,
+        "synonyms": [
+          "train"
+        ]
+      },
       {
         "category": "TRAINS",
         "subcategory": "SUBWAY",
         "id": "TRNSbwy",
-        "probability": 0.174,
+        "probability": 0.141,
         "synonyms": [
           "train"
         ]
@@ -147,25 +219,16 @@
         "category": "CARTOON",
         "subcategory": "ANIMAL",
         "id": "TOONAnml",
-        "probability": 0.161,
+        "probability": 0.13,
         "synonyms": [
           "call"
-        ]
-      },
-      {
-        "category": "VEHICLES",
-        "subcategory": "ATV",
-        "id": "VEHAtv",
-        "probability": 0.128,
-        "synonyms": [
-          "all"
         ]
       }
     ],
     "synonyms": [
       "train"
     ],
-    "reason": "name matched [train]; signal 0.82, tier semantic_only, 21 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (envelope_attack_seconds 1.0726 > max 0.1500)"
+    "reason": "name matched [train]; signal 0.82, tier semantic_only, 22 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.3305 < min 0.3500)"
   },
   "regions": {
     "count": 1,
@@ -183,5 +246,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 396,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wH+Av4D/gP9BP0E/Qb7B/sF+gf7BvsF+wX8BfwF+wb7BvwG/Ab9BPwE/AP9A/0C/gH/Af8B/wH/Af8B/wH/Af8B/wH/AP8A/wD/AP8A/wD/AP8B/gL9A/wF/AX8BfsF+wb8BfwE/AX7B/sH+gf6B/kI+An4CfcJ9wv3C/gL+Qz6DPoM+Qv5DPkL+Qv5C/kK+Qr5CfkJ+Qr4C/cM9w32DfYN9g32DfYM9gz2DfYN9w33DPcM9gz2DfYN9g33DfcO+A74DfkM+Qz5C/kM+Qv5DPkM+Qz4DfcM9gz2C/YL9gz2DPYM9gz2DfcN9gz2DfYL9wv3CvcK+An4CPgI+Aj5B/kH+Qf5B/kG+gb6BvoG+wb7BfoG+gf6B/oH9wj3CPcI9wj2CfYK9gr2CvUL9Qv1DPcL9gv3C/gK9wn4CvcK9wr2CvYK9Qv0DPQM8wzxDvEN8g3yDfIM8gzxDPIM8QzvDe0P7BHtE+4T8BXxFfMS9A/yDPAM7w3sDOsN6BDmE+UV5hboF+0V7hXtFukb6B3sHPAa7hLuFe0W7hXyD/kK+gb6BPwE/AT9A/4B/wH/AAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   }
 }

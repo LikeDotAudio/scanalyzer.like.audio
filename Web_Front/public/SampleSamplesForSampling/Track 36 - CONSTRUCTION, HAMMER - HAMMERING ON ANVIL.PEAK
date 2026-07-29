@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
     "length_seconds": 3.9183673469387754,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.001111680340400509,
-    "trailing_silence_ms": 1.0204081632653061
+    "trailing_silence_ms": 1.0204081632653061,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 5 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 60 ms, sustain 1%, 5 transients)",
+      "2) envelope Multi (5 transients — loudest of 5 slices: attack 60 ms, sustain 1%)",
       "3) Inharmonic · high-band 69% · root F#2"
     ],
     "timbre": "Loop",
@@ -39,15 +40,92 @@
     "attack_seconds": 1.3030612244897959,
     "sustain_ratio": 0.11440677966101695,
     "sustained": false,
-    "envelope_attack_seconds": 0.05986394557823129,
-    "envelope_decay_seconds": 0.29931972789115646,
-    "envelope_sustain_level": 0.009201663848953158,
-    "envelope_release_seconds": 0.04988662131519274,
-    "envelope_temporal_centroid": 0.3616456611849353,
-    "envelope_skewness": 2.129100130319291,
-    "envelope_kurtosis": 3.366312035165185,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 0.33397476120143593,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.2321995464852606,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.29931972789115646,
+        "envelope_sustain_level": 0.00905876510527533,
+        "envelope_release_seconds": 0.07482993197278912,
+        "envelope_temporal_centroid": 0.4751179940979782,
+        "envelope_skewness": 2.146762983422005,
+        "envelope_kurtosis": 3.114572959645054,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.33397476120143593
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.2321995464852606,
+        "end_seconds": 1.9356009070294784,
+        "relative_level": 0.9732740207013703,
+        "envelope_attack_seconds": 0.019954648526077097,
+        "envelope_decay_seconds": 0.30430839002267573,
+        "envelope_sustain_level": 0.009488835503945485,
+        "envelope_release_seconds": 0.06984126984126984,
+        "envelope_temporal_centroid": 0.14696176884419618,
+        "envelope_skewness": 1.7736899524124219,
+        "envelope_kurtosis": 1.808867704730777,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.38022820262788937
+      },
+      {
+        "index": 2,
+        "start_seconds": 1.9356009070294784,
+        "end_seconds": 2.4643990929705213,
+        "relative_level": 0.757315339620497,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.22448979591836735,
+        "envelope_sustain_level": 0.01865643510448937,
+        "envelope_release_seconds": 0.04988662131519274,
+        "envelope_temporal_centroid": 0.1642202165633484,
+        "envelope_skewness": 1.4160543566640675,
+        "envelope_kurtosis": 0.3615804933195155,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.2403326812270017
+      },
+      {
+        "index": 3,
+        "start_seconds": 2.4643990929705213,
+        "end_seconds": 2.8485260770975054,
+        "relative_level": 0.7384148864541812,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.1546485260770975,
+        "envelope_sustain_level": 0.14745079500724442,
+        "envelope_release_seconds": 0.05986394557823129,
+        "envelope_temporal_centroid": 0.2685635170036231,
+        "envelope_skewness": 0.8507420726670114,
+        "envelope_kurtosis": -0.8531886835361422,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.3078726551372043
+      },
+      {
+        "index": 4,
+        "start_seconds": 2.8485260770975054,
+        "end_seconds": 3.9210884353741497,
+        "relative_level": 0.5452942641485836,
+        "envelope_attack_seconds": 0.014965986394557823,
+        "envelope_decay_seconds": 0.14965986394557823,
+        "envelope_sustain_level": 0.011681361637559996,
+        "envelope_release_seconds": 0.03492063492063492,
+        "envelope_temporal_centroid": 0.08431682309227287,
+        "envelope_skewness": 3.5977063903035065,
+        "envelope_kurtosis": 12.47694831413674,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.20642797852392863
+      }
+    ],
     "onset_periodicity": 0.24656455254267662,
     "onset_rate_per_second": 1.2760416666666667
   },
@@ -121,33 +199,24 @@
     ]
   },
   "unsupervised": {
-    "cluster": 13,
+    "cluster": 8,
     "principal_components": [
-      1.6568423346454628,
-      0.2231677220231153,
-      -0.20675987858176567
+      1.4562512462915425,
+      -0.7627530402217229,
+      0.1147101598100799
     ]
   },
   "ucs": {
-    "category": "TOOLS",
-    "subcategory": "HAND",
-    "id": "TOOLHand",
-    "confidence": 0.6942289510677219,
+    "category": "CARTOON",
+    "subcategory": "CLANG",
+    "id": "TOONClang",
+    "confidence": 0.3496123791140557,
     "alternatives": [
       {
-        "category": "MACHINES",
-        "subcategory": "CONSTRUCTION",
-        "id": "MACHCnst",
-        "probability": 0.132,
-        "synonyms": [
-          "construction"
-        ]
-      },
-      {
-        "category": "SPORTS",
-        "subcategory": "TRACK & FIELD",
-        "id": "SPRTTrck",
-        "probability": 0.081,
+        "category": "TOOLS",
+        "subcategory": "HAND",
+        "id": "TOOLHand",
+        "probability": 0.28,
         "synonyms": [
           "hammer"
         ]
@@ -156,16 +225,25 @@
         "category": "GUNS",
         "subcategory": "MECHANISM",
         "id": "GUNMech",
-        "probability": 0.045,
+        "probability": 0.205,
+        "synonyms": [
+          "hammer"
+        ]
+      },
+      {
+        "category": "SPORTS",
+        "subcategory": "TRACK & FIELD",
+        "id": "SPRTTrck",
+        "probability": 0.082,
         "synonyms": [
           "hammer"
         ]
       }
     ],
     "synonyms": [
-      "hammer"
+      "anvil"
     ],
-    "reason": "name matched [hammer]; signal 0.77, tier signal_narrowable, 9 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.3616 < min 0.4000)"
+    "reason": "name matched [anvil]; signal 0.70, tier signal_separable, 11 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (onset_periodicity 0.2466 < min 0.3500)"
   },
   "regions": {
     "count": 3,
@@ -182,11 +260,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
             "length_seconds": 0.42403628117913833,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -194,7 +272,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.0012057890583243539,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Perc",
@@ -230,6 +309,23 @@
             "envelope_kurtosis": -1.3701759524588042,
             "envelope_shape": "Decaying",
             "decay_time_seconds_60db": 0.33397476120143593,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.42403628117913833,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.05986394557823129,
+                "envelope_decay_seconds": 0.15963718820861678,
+                "envelope_sustain_level": 0.11532365903005837,
+                "envelope_release_seconds": 0.07482993197278912,
+                "envelope_temporal_centroid": 0.20414002495109682,
+                "envelope_skewness": 0.49804101190091493,
+                "envelope_kurtosis": -1.3701759524588042,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 0.33397476120143593
+              }
+            ],
             "onset_periodicity": 0.4599431953392951,
             "onset_rate_per_second": 2.358288770053476
           },
@@ -351,6 +447,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 74,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gHsFuQf5SDhH94h3CLfKNwh3ivZJNoi3iLWKd0k4R7jH+Ma5hvhGuMZ5SHkGuUY5hvoFuwV6BXvFO0T7hHwD/EP8g3zC/UK9wj3BvwF+gb8BfsF+gT8A/0E/QL9Av0C/gL+Af4B/wH+Af8B/wH/Af8B/wH/AP8AAAD/AP8AAAAAAP8AAAAAAAAAAAAAAAAAAAAAAA=="
           }
         }
       },
@@ -363,11 +467,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
             "length_seconds": 0.4140589569160998,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -375,7 +479,8 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.00120735180269108,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Perc",
@@ -414,6 +519,23 @@
             "envelope_kurtosis": -0.4582328637257098,
             "envelope_shape": "Decaying",
             "decay_time_seconds_60db": 0.3804074557704205,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.4140589569160998,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.019954648526077097,
+                "envelope_decay_seconds": 0.18458049886621314,
+                "envelope_sustain_level": 0.09546163924247125,
+                "envelope_release_seconds": 0.06984126984126984,
+                "envelope_temporal_centroid": 0.1531221884792171,
+                "envelope_skewness": 0.9906729855878466,
+                "envelope_kurtosis": -0.4582328637257098,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 0.3804074557704205
+              }
+            ],
             "onset_periodicity": 0.03991361213406335,
             "onset_rate_per_second": 2.415115005476451
           },
@@ -535,6 +657,14 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 72,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/wH/At4b2yzeJds61SbSI9Yn3yLXI9ok4RvhHuUd5RvlGeMd6RvmGOwU7hbsFe8P8hbyEPUN7w70C/QJ+Qv2CfgG+gf3BfwE+gT7BPwD/QP9A/4C/gH+Av4B/gH+Af8B/wH+Af8B/wD/Af8B/wD/AP8AAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         }
       },
@@ -547,11 +677,11 @@
         "name": "",
         "analysis": {
           "metadata": {
-            "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+            "analyzer_version": "20260728.2125-155e412706ef2aec",
             "name": "Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
             "folder": "SampleSamplesForSampling",
             "sub": "SampleSamplesForSampling",
-            "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
+            "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 36 - CONSTRUCTION, HAMMER - HAMMERING ON ANVIL.mp3",
             "length_seconds": 1.1822902494331067,
             "sample_rate": 44100,
             "bit_depth": 0,
@@ -559,13 +689,14 @@
             "source_format": "MP3",
             "lossy_source": true,
             "dc_offset": -0.001118017221470235,
-            "trailing_silence_ms": 0.0
+            "trailing_silence_ms": 0.0,
+            "analysis_depth": "full"
           },
           "classification": {
             "group": "Loops/Patterns",
             "reason": [
               "1) 2 transients (>1), no drum/instrument name → loop",
-              "2) envelope Multi (attack 15 ms, sustain 3%, 2 transients)",
+              "2) envelope Multi (2 transients — loudest of 2 slices: attack 15 ms, sustain 1%)",
               "3) Inharmonic · high-band 69% · root A#1"
             ],
             "timbre": "Loop",
@@ -586,15 +717,47 @@
             "attack_seconds": 0.019931972789115647,
             "sustain_ratio": 0.2112676056338028,
             "sustained": false,
-            "envelope_attack_seconds": 0.014965986394557823,
-            "envelope_decay_seconds": 0.1895691609977324,
-            "envelope_sustain_level": 0.034103677238401284,
-            "envelope_release_seconds": 0.039909297052154194,
-            "envelope_temporal_centroid": 0.34632530577283405,
-            "envelope_skewness": 1.231390131606246,
-            "envelope_kurtosis": 0.015059784913221907,
+            "envelope_attack_seconds": null,
+            "envelope_decay_seconds": null,
+            "envelope_sustain_level": null,
+            "envelope_release_seconds": null,
+            "envelope_temporal_centroid": null,
+            "envelope_skewness": null,
+            "envelope_kurtosis": null,
             "envelope_shape": "Multi",
-            "decay_time_seconds_60db": 0.2403326812270017,
+            "decay_time_seconds_60db": null,
+            "slices": [
+              {
+                "index": 0,
+                "start_seconds": 0.0,
+                "end_seconds": 0.8829931972789116,
+                "relative_level": 1.0,
+                "envelope_attack_seconds": 0.014965986394557823,
+                "envelope_decay_seconds": 0.2693877551020408,
+                "envelope_sustain_level": 0.009974193023685407,
+                "envelope_release_seconds": 0.05986394557823129,
+                "envelope_temporal_centroid": 0.3692010735643665,
+                "envelope_skewness": 1.1014719250486158,
+                "envelope_kurtosis": -0.4042731413262257,
+                "envelope_shape": "Decaying",
+                "decay_time_seconds_60db": 0.2403326812270017
+              },
+              {
+                "index": 1,
+                "start_seconds": 0.8829931972789116,
+                "end_seconds": 1.182312925170068,
+                "relative_level": 0.7200359422560217,
+                "envelope_attack_seconds": 0.014965986394557823,
+                "envelope_decay_seconds": 0.10975056689342404,
+                "envelope_sustain_level": 0.06043792552240678,
+                "envelope_release_seconds": 0.03492063492063492,
+                "envelope_temporal_centroid": 0.296535562610962,
+                "envelope_skewness": 1.3484618246034643,
+                "envelope_kurtosis": 0.49978960848144727,
+                "envelope_shape": "Plucky",
+                "decay_time_seconds_60db": 0.20642797852392863
+              }
+            ],
             "onset_periodicity": 0.3898042220474248,
             "onset_rate_per_second": 1.691631983735783
           },
@@ -672,43 +835,43 @@
             "principal_components": []
           },
           "ucs": {
-            "category": "TOOLS",
-            "subcategory": "HAND",
-            "id": "TOOLHand",
-            "confidence": 0.3687715708999187,
+            "category": "GUNS",
+            "subcategory": "MECHANISM",
+            "id": "GUNMech",
+            "confidence": 0.4411407329021496,
             "alternatives": [
+              {
+                "category": "TOOLS",
+                "subcategory": "HAND",
+                "id": "TOOLHand",
+                "probability": 0.228,
+                "synonyms": [
+                  "hammer"
+                ]
+              },
               {
                 "category": "SPORTS",
                 "subcategory": "TRACK & FIELD",
                 "id": "SPRTTrck",
-                "probability": 0.275,
+                "probability": 0.15,
                 "synonyms": [
                   "hammer"
                 ]
               },
               {
-                "category": "GUNS",
-                "subcategory": "MECHANISM",
-                "id": "GUNMech",
-                "probability": 0.188,
+                "category": "CARTOON",
+                "subcategory": "CLANG",
+                "id": "TOONClang",
+                "probability": 0.084,
                 "synonyms": [
-                  "hammer"
-                ]
-              },
-              {
-                "category": "MACHINES",
-                "subcategory": "CONSTRUCTION",
-                "id": "MACHCnst",
-                "probability": 0.089,
-                "synonyms": [
-                  "construction"
+                  "anvil"
                 ]
               }
             ],
             "synonyms": [
               "hammer"
             ],
-            "reason": "name matched [hammer]; signal 0.62, tier signal_narrowable, 9 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRSuck (envelope_temporal_centroid 0.3463 < min 0.4000)"
+            "reason": "name matched [hammer]; signal 0.73, tier signal_narrowable, 9 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AEROHeli (low_band_energy 0.0404 < min 0.2000)"
           },
           "regions": {
             "count": 0,
@@ -716,9 +879,143 @@
             "minimum_silence_seconds": 0.0,
             "minimum_region_seconds": 0.0,
             "regions": []
+          },
+          "preview": {
+            "preview_version": 1,
+            "samples_per_bin": 256,
+            "bin_count": 204,
+            "bits_per_value": 8,
+            "channel_mode": "mono_mixdown",
+            "peak_data_base64": "/gHuFeYe2RvlH+Yf5hvsGega6xrlF+kb6RrqF+0W7BTtFO4S7BLyEO8M9Az3CvcI+Qn4CPkG+wX8BfwE/QP+Av4C/gH+Av8B/wH/Af4B/wH/AP8A/wD/AP8A/wAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+AuUW3B7eHuMi5RznFegZ5RzoGukc6BznFugY6hXuFewU7RTxDfIO9AvwDPMQ8Az1CvcJ+Aj4B/kF+wT7BP0E/QT9A/4D/gL+Av4B/gH+Af8B/wH/Af8B/wH/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8Q/qFuoV6RftE+sT8RDwDfIQ8g7yC/YN8gr0CfcI+Ab6BfwE/QP9Av4C/gH/Av8B/wAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         }
       }
+    ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 675,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4B7BbkH+Ug4R/eIdwo3yjcIeIr2STaId4i1indJOEe4x/mGuYb4RrjGeUh5BrlG+YZ6BbsFegV7xTtE+4R8A/xD/IN9Qv1CvcI9wb8BfoG/AX6BfoE/AP9BP0C/QL9Av4C/gH+Af8B/gH/Af8B/wH/Af8B/wD/AAAA/wD/AAAAAAD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wH/AuMb2yzeJds61SbSI9Yn3yLcI9ck4RvhHuUd5RvoGeUd4xvmGOwU7hbsFe8P8hbyEPUN7w70C/QJ9wv2CfkH+Af3BfsE+gT7BPwD/QP9A/4C/gL+Av4B/gH+Af8B/wH+Af8B/wD/AP8B/wD/AP8AAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8A/QLmF+Ye2R/lHOYf5hjqGega5RfqGOkb6RbsF+0T7BTuFO4S7BLvD/ML9Az3CvcJ+Aj5B/kG/AX8Bf0D/QP+Av4C/gL+Af8B/wH/Af4B/wH/AP8A/wD/AP8A/wD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADsFeUb3B7iIuUa5RzoGeUX5RzoHOgc6hznGOgV6hXuFOwU7xTxDfIO8AzzDPAQ9Qz1CvgJ+Aj5BvsF+wT8BP0E/QP9Av4D/gL+Av4B/wH+Af8B/wH/Af8B/wD/AP8A/wD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8B6hHtFukU7RfuE+sQ8BDxDfIQ8gv0DfIL9wn0CPgI+Qb6BfwD/QP9Av4B/gH/Av8B/wAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  },
+  "bioacoustic_syntax": {
+    "slice_count": 3,
+    "type_count": 1,
+    "sequence": "AAA",
+    "slices": [
+      {
+        "region_index": 0,
+        "type_label": "A",
+        "start_seconds": 0.4988662131519274,
+        "duration_seconds": 0.42403628117913833,
+        "embedding_x": -4.094698519631624,
+        "embedding_y": -2.21972555537274
+      },
+      {
+        "region_index": 1,
+        "type_label": "A",
+        "start_seconds": 1.2721088435374148,
+        "duration_seconds": 0.41405895691609973,
+        "embedding_x": 4.5079003413419345,
+        "embedding_y": -1.6605857860510156
+      },
+      {
+        "region_index": 2,
+        "type_label": "A",
+        "start_seconds": 1.965532879818594,
+        "duration_seconds": 1.1823129251700677,
+        "embedding_x": -0.4132018217102676,
+        "embedding_y": 3.880311341423737
+      }
+    ],
+    "slice_types": [
+      {
+        "label": "A",
+        "descriptor": "medium bright mixed",
+        "occurrences": 3,
+        "share": 1.0,
+        "exemplar_region_index": 2,
+        "mean_duration_seconds": 0.673469387755102,
+        "mean_spectral_centroid_hz": 3191.9320423012664,
+        "mean_harmonicity": 0.6951044617173571
+      }
+    ],
+    "transitions": [
+      {
+        "from_label": "A",
+        "to_label": "A",
+        "count": 2,
+        "probability": 1.0,
+        "mean_gap_seconds": 0.3142857142857143,
+        "mean_inter_onset_seconds": 0.7333333333333333
+      }
+    ],
+    "junctions": [
+      {
+        "index": 0,
+        "from_region_index": 0,
+        "to_region_index": 1,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.3492063492063491,
+        "inter_onset_seconds": 0.7732426303854874,
+        "gap_root_mean_square_level": 0.0011657567249016372,
+        "gap_level_below_previous_peak_decibels": -42.94818678665447,
+        "gap_level_above_noise_floor_decibels": 2.961333160508484,
+        "gap_slope_decibels_per_second": -5.328701490384013,
+        "gap_spectral_centroid_hz": 1653.9893665288832,
+        "gap_spectral_flatness": 0.01949198267554237,
+        "junction_class": "Noise Bed",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      },
+      {
+        "index": 1,
+        "from_region_index": 1,
+        "to_region_index": 2,
+        "from_label": "A",
+        "to_label": "A",
+        "gap_seconds": 0.2793650793650795,
+        "inter_onset_seconds": 0.6934240362811792,
+        "gap_root_mean_square_level": 0.0011630278128129015,
+        "gap_level_below_previous_peak_decibels": -43.05194256916178,
+        "gap_level_above_noise_floor_decibels": 2.940976584191341,
+        "gap_slope_decibels_per_second": -1.53194330341876,
+        "gap_spectral_centroid_hz": 2310.7683398852355,
+        "gap_spectral_flatness": 0.0231249479070441,
+        "junction_class": "Noise Bed",
+        "transition_probability": 1.0,
+        "surprisal_bits": 0.0
+      }
+    ],
+    "junction_profile": [
+      {
+        "junction_class": "Noise Bed",
+        "count": 2
+      }
+    ],
+    "dominant_junction_class": "Noise Bed",
+    "repertoire_entropy_bits": -0.0,
+    "repertoire_entropy_normalized": 0.0,
+    "transition_entropy_bits": 0.0,
+    "syntactic_information_bits": 0.0,
+    "determinism": 0.0,
+    "repeat_ratio": 1.0,
+    "distinct_bigrams": 1,
+    "bigram_coverage": 1.0,
+    "dominant_motif": "",
+    "dominant_motif_occurrences": 0,
+    "median_gap_seconds": 0.3492063492063491,
+    "gap_regularity": 0.9455782312925172,
+    "bound_ratio": 0.0,
+    "syntax_class": "Isochronous Repetition",
+    "transitions_per_type_pair": 2.0,
+    "reason": [
+      "1) 3 slices over 1 type — sequence AAA",
+      "2) 0.00 bits of syntactic information (determinism 0%, H(next|current) 0.00 bits)",
+      "3) junctions mostly Noise Bed · median gap 349 ms · regularity 95% · 0% bound"
     ]
   }
 }

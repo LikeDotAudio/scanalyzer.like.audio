@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 45 - BIRD, BLUE JAY - CALLS, ANIMAL.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 45 - BIRD, BLUE JAY - CALLS, ANIMAL.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 45 - BIRD, BLUE JAY - CALLS, ANIMAL.mp3",
     "length_seconds": 4.284081632653061,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0013381730794118903,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 3 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 10 ms, sustain 2%, 3 transients)",
+      "2) envelope Multi (3 transients — loudest of 3 slices: attack 10 ms, sustain 1%)",
       "3) Harmonic · high-band 95% · root G5"
     ],
     "timbre": "Loop",
@@ -39,15 +40,62 @@
     "attack_seconds": 0.4951927437641723,
     "sustain_ratio": 0.12403100775193798,
     "sustained": false,
-    "envelope_attack_seconds": 0.009977324263038548,
-    "envelope_decay_seconds": 0.4290249433106576,
-    "envelope_sustain_level": 0.01784469057026119,
-    "envelope_release_seconds": 0.009977324263038548,
-    "envelope_temporal_centroid": 0.420682121923743,
-    "envelope_skewness": 1.9227573240005709,
-    "envelope_kurtosis": 2.716505339039773,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 2.3057912725023146,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 1.8158730158730159,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.009977324263038548,
+        "envelope_decay_seconds": 0.4489795918367347,
+        "envelope_sustain_level": 0.014416414329610177,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.3249698695976128,
+        "envelope_skewness": 2.3267929552001623,
+        "envelope_kurtosis": 4.451528693692688,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 2.3057912725023146
+      },
+      {
+        "index": 1,
+        "start_seconds": 1.8158730158730159,
+        "end_seconds": 3.2176870748299318,
+        "relative_level": 0.8792448996851978,
+        "envelope_attack_seconds": 0.009977324263038548,
+        "envelope_decay_seconds": 0.3691609977324263,
+        "envelope_sustain_level": 0.01826326249661369,
+        "envelope_release_seconds": 0.019954648526077097,
+        "envelope_temporal_centroid": 0.12124987308273595,
+        "envelope_skewness": 1.7608363690463888,
+        "envelope_kurtosis": 2.064025559584045,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.9590672289452837
+      },
+      {
+        "index": 2,
+        "start_seconds": 3.2176870748299318,
+        "end_seconds": 4.285260770975056,
+        "relative_level": 0.8346965565542522,
+        "envelope_attack_seconds": 0.009977324263038548,
+        "envelope_decay_seconds": 0.4439909297052154,
+        "envelope_sustain_level": 0.014503653753211951,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.15722447409658655,
+        "envelope_skewness": 1.409218129459464,
+        "envelope_kurtosis": 0.5942906385516329,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.4009426265423623
+      }
+    ],
     "onset_periodicity": 0.3432722993796589,
     "onset_rate_per_second": 0.700266768292683
   },
@@ -121,24 +169,24 @@
     ]
   },
   "unsupervised": {
-    "cluster": 13,
+    "cluster": 10,
     "principal_components": [
-      0.9541100605281067,
-      0.804173124701666,
-      0.05444868316305038
+      0.6447542611945634,
+      -1.1044812812630693,
+      0.5257922333475171
     ]
   },
   "ucs": {
     "category": "OBJECTS",
     "subcategory": "MISC",
     "id": "OBJMisc",
-    "confidence": 0.2936979763175161,
+    "confidence": 0.2827613803611863,
     "alternatives": [
       {
         "category": "BIRDS",
         "subcategory": "CROW",
         "id": "BIRDCrow",
-        "probability": 0.276,
+        "probability": 0.266,
         "synonyms": [
           "blue",
           "jay"
@@ -148,7 +196,7 @@
         "category": "BIRDS",
         "subcategory": "WADING",
         "id": "BIRDWade",
-        "probability": 0.128,
+        "probability": 0.123,
         "synonyms": [
           "blue"
         ]
@@ -157,7 +205,7 @@
         "category": "BIRDS",
         "subcategory": "BIRD OF PREY",
         "id": "BIRDPrey",
-        "probability": 0.119,
+        "probability": 0.115,
         "synonyms": [
           "bird"
         ]
@@ -166,7 +214,7 @@
     "synonyms": [
       "bird"
     ],
-    "reason": "name matched [bird]; signal 0.85, tier semantic_only, 13 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.2841 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
+    "reason": "name matched [bird]; signal 0.85, tier semantic_only, 14 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.2841 > max 4.0000); ABSTAINED to MISC (top two too close to call)"
   },
   "regions": {
     "count": 1,
@@ -184,5 +232,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 738,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AP8B5yDfKuAj4xbjGOYW6BTmFeYV5xTpE+sR6xDrEOsQ7A/sEO0P7g/vDvAO8g31CvMJ8QrwDfEL8QvvCvAL7wvvC+8M7gzuDe4O7w3vDvAO7w/wD/AP7BHwDu4X8BXwE/EO8BLzDvUO9A37B/0D/gL+Af8B/wH/Af8B/wH/Af8B/wH/AP8B/wH/AP8B/wD+Af8B/wH/AP8A/wD/AP8A/wD/AP8B/wD/AP8AAAD/AP8A/wD/AP8A/wD/AP8A/wAAAAAA/wAAAP8A/wD/AAAA/wD/AAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AAAAAAAAAAAAAAAAAAAA/wAAAP8AAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAA/wAAAAAAAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AAAAAAAAAAAAAAAAAAAAAAD/AAAAAAAAAAAA/wAAAAAA/wAAAAAA/wAAAAAAAAAAAP8A/wAAAAAAAAAAAAAA/wAAAAAAAAD/AAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8B6xPoIeMf5BnqEeoR6xHuEO8S7g7wD/AP8A/xD/AN7w/wDvEM8gzxDvEP8g7yDvEO8Q3zC/IM8wvzC/IL8QvzCvEI8QrxDPEL8ArwCu8O7w7xD/IO8g/yC/IN9A31DfEQ8hDvEvMP9Q34B/wE/gL/Af8B/wH/Af8B/wD/Af8B/wD/AP8A/wD/Af8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AAAA/wAAAP8A/wAAAP8A/wD/AAAAAAAAAAAA/wAAAAAA/wD/AAAAAAAAAAAA/wAAAAAAAAD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8AAAD/AP8A/wD/AP8A/wD/AP8B/wD/Af8B/wH/Af8B/wH/Af8A/wH/Af8B/wH/Af8B/wH/AP8B/wH/Af4B/wH+Af8B/wH/Af8B/wH/Af4B/gH+Af8B/gH/Af8B/wH/Af8B/wH/Af8B/wH/Af8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAP8A/wAAAP8A/wAAAAAA/wD/AP8A/wD/AAAA/wD/AP8A/wAAAAAAAAAAAAAAAAD/AAAA/wD/AP8AAAD/AAAAAAD/AP8AAAAAAAAA/wAAAAAAAAD/AP8A/wD/AP8B/gLrF+Ie5x7pGeYW6BTqEOkR6w/sEO4P7RHuEOwP7Q3vDe8N7w7vDfAL7wzwDPAL8AzwC/AL8AzwC/EM8QzxDPIM8gzyDPEM8QzwDPEQ8A7xDfEO7xLwEe4S7RPxDfIO+An6Bv4C/gL/Af8B/wH/Af8B/wD/AP8A/wH/AP8A/wD/AP8B/wD/AP8AAAAAAP8A/wAAAP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   }
 }

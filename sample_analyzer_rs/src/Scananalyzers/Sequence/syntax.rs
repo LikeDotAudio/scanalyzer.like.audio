@@ -286,12 +286,20 @@ pub fn bioacoustic_syntax(
         order.iter().map(|&i| slice_vector(&regions.regions[i])).collect();
     let measured: Vec<usize> = (0..order.len()).filter(|&k| vectors[k].is_some()).collect();
 
-    let (assignment, embedding) = if measured.len() >= 2 {
+    // One scaled matrix, used by the clustering, the medoid search AND the 2-D
+    // layout, so the map the UI draws is the same space the types were decided
+    // in. `scaled[k]` is None for a slice with no analysis to read.
+    let mut scaled: Vec<Option<Vec<f64>>> = vec![None; order.len()];
+    let (assignment, embedding, type_separation) = if measured.len() >= 2 {
         let feats: Vec<Vec<f64>> =
             measured.iter().map(|&k| vectors[k].clone().unwrap()).collect();
-        let standardized = crate::feature_vec::standardize(&feats);
-        let clusters = cluster_slices(&standardized);
-        let projected = crate::pca::project(&standardized, 2);
+        let rows = scale_slices(&feats);
+        let clusters = cluster_slices(&rows);
+        let separation = closest_type_separation(&clusters, &rows);
+        let projected = crate::pca::project(&rows, 2);
+        for (slot, &k) in measured.iter().enumerate() {
+            scaled[k] = Some(rows[slot].clone());
+        }
 
         // Lift the per-measured-slice results back onto every slice. A slice
         // without an analysis (an older record, or one too short to measure)
@@ -307,9 +315,9 @@ pub fn bioacoustic_syntax(
                 projected[slot].get(1).copied().unwrap_or(0.0),
             );
         }
-        (assignment, embedding)
+        (assignment, embedding, separation)
     } else {
-        (vec![0usize; order.len()], vec![(0.0, 0.0); order.len()])
+        (vec![0usize; order.len()], vec![(0.0, 0.0); order.len()], 0.0)
     };
 
     // Relabel by descending frequency so "A" is always the commonest syllable.
@@ -334,25 +342,7 @@ pub fn bioacoustic_syntax(
     let sequence: String = labels.concat();
 
     // ---- the vocabulary entries themselves.
-    let standardized_for_medoid: Vec<Option<Vec<f64>>> = {
-        // Recompute once for the medoid search; cheap and keeps the branch above
-        // free of extra bookkeeping.
-        let feats: Vec<Vec<f64>> =
-            measured.iter().map(|&k| vectors[k].clone().unwrap_or_default()).collect();
-        if feats.len() >= 2 {
-            let s = crate::feature_vec::standardize(&feats);
-            let mut out = vec![None; order.len()];
-            for (slot, &k) in measured.iter().enumerate() {
-                out[k] = Some(s[slot].clone());
-            }
-            out
-        } else {
-            vec![None; order.len()]
-        }
-    };
-    let slice_types = build_slice_types(
-        regions, &order, &types, type_count, &standardized_for_medoid,
-    );
+    let slice_types = build_slice_types(regions, &order, &types, type_count, &scaled);
 
     // ---- the nodes.
     let slices: Vec<SliceNode> = order
@@ -585,6 +575,67 @@ struct BigramStats {
 
 // ---------------------------------------------------------------- the embedding
 
+/// How many MFCC coefficients join the slice vector.
+const MFCC_IN_SLICE_VECTOR: usize = 5;
+
+/// The smallest difference in each feature that means anything — one
+/// just-noticeable difference, in that feature's own units and in the same order
+/// as `slice_vector` builds them.
+///
+/// These exist because plain z-scoring is actively wrong here. Standardizing by
+/// the within-file spread divides by whatever variation happens to be present,
+/// so when a file holds eight copies of ONE sound the only variation left is the
+/// segmenter's frame quantization — region edges land on envelope frames, so
+/// durations come out in discrete steps — and z-scoring blows that up to unit
+/// variance and hands the clusterer two beautifully tight, entirely fictional
+/// groups. (It did exactly that: eight identical snares read as "AAABBAAB".)
+///
+/// Scaling by `max(observed spread, floor)` instead means a feature that barely
+/// varies stays barely varied. Nothing is manufactured, and a file whose slices
+/// really are all the same lands in one cluster, which is the truth.
+const SLICE_FEATURE_FLOORS: [f64; 15 + MFCC_IN_SLICE_VECTOR] = [
+    0.10, // ln duration — ~10 % longer or shorter
+    0.10, // ln spectral centroid — ~10 % brighter
+    0.10, // ln rolloff
+    0.10, // ln zero-crossing rate
+    0.05, // spectral flatness (0..1)
+    0.05, // harmonicity (0..1)
+    0.05, // inharmonicity (0..1)
+    0.03, // low-band energy share
+    0.03, // mid-band energy share
+    0.03, // high-band energy share
+    0.10, // ln pitch — well under a semitone (0.058)
+    0.05, // envelope temporal centroid (0..1)
+    0.02, // ln attack — ≈20 ms, the audible edge between "plucked" and "bowed"
+    0.05, // envelope sustain level (0..1)
+    0.50, // crest factor (1..~20)
+    0.75, 0.75, 0.75, 0.75, 0.75, // MFCC 1..5 — a perceptible timbre step
+];
+
+/// Center each column and divide by the larger of its spread and its
+/// just-noticeable difference. The same geometry feeds the clustering, the
+/// medoid search and the 2-D layout, so the map the UI draws is the space the
+/// types were decided in.
+fn scale_slices(feats: &[Vec<f64>]) -> Vec<Vec<f64>> {
+    if feats.is_empty() {
+        return Vec::new();
+    }
+    let n = feats.len() as f64;
+    let d = feats[0].len();
+    let mean: Vec<f64> = (0..d).map(|j| feats.iter().map(|f| f[j]).sum::<f64>() / n).collect();
+    let scale: Vec<f64> = (0..d)
+        .map(|j| {
+            let variance =
+                feats.iter().map(|f| (f[j] - mean[j]).powi(2)).sum::<f64>() / n;
+            variance.sqrt().max(SLICE_FEATURE_FLOORS.get(j).copied().unwrap_or(1.0))
+        })
+        .collect();
+    feats
+        .iter()
+        .map(|f| (0..d).map(|j| (f[j] - mean[j]) / scale[j]).collect())
+        .collect()
+}
+
 /// The acoustic vector for one slice, read off the full analysis the pipeline
 /// already ran on that slice. This is deliberately NOT `feature_vec::feature_vec`:
 /// that vector is tuned to separate whole files across a library (it leans on
@@ -633,9 +684,10 @@ fn slice_vector(region: &crate::peak::Region) -> Option<Vec<f64>> {
     // MFCC 1..5 — the timbral fingerprint, and the closest thing this pipeline
     // has to the learned embedding an auto-encoder would produce. c0 is skipped
     // for the same reason level is: it is loudness.
-    for j in 1..=5 {
+    for j in 1..=MFCC_IN_SLICE_VECTOR {
         v.push(s.mel_frequency_cepstral_coefficients.get(j).copied().unwrap_or(0.0));
     }
+    debug_assert_eq!(v.len(), SLICE_FEATURE_FLOORS.len(), "floors must cover every feature");
     if v.iter().any(|x| !x.is_finite()) {
         return None;
     }

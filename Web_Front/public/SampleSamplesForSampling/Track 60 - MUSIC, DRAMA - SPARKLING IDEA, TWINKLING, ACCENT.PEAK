@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 60 - MUSIC, DRAMA - SPARKLING IDEA, TWINKLING, ACCENT.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 60 - MUSIC, DRAMA - SPARKLING IDEA, TWINKLING, ACCENT.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 60 - MUSIC, DRAMA - SPARKLING IDEA, TWINKLING, ACCENT.mp3",
     "length_seconds": 4.022857142857143,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0005482297486727766,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 11 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 75 ms, sustain 8%, 11 transients)",
+      "2) envelope Multi (11 transients — loudest of 11 slices: attack 60 ms, sustain 100%)",
       "3) Inharmonic · mid-band 86% · root C4"
     ],
     "timbre": "Loop",
@@ -39,15 +40,182 @@
     "attack_seconds": 1.3692290249433106,
     "sustain_ratio": 0.17768595041322313,
     "sustained": false,
-    "envelope_attack_seconds": 0.07482993197278912,
-    "envelope_decay_seconds": 1.1374149659863946,
-    "envelope_sustain_level": 0.08292737584354842,
-    "envelope_release_seconds": 0.7083900226757369,
-    "envelope_temporal_centroid": 0.2970138196172904,
-    "envelope_skewness": 1.4174426761044085,
-    "envelope_kurtosis": 1.4431097075315824,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 6.800717758782714,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.61859410430839,
+        "relative_level": 0.9200472420330257,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.8072351940208116,
+        "envelope_release_seconds": 0.019954648526077097,
+        "envelope_temporal_centroid": 0.9044280931016802,
+        "envelope_skewness": 2.0663563219397036,
+        "envelope_kurtosis": 3.074013981541513,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.61859410430839,
+        "end_seconds": 0.7183673469387755,
+        "relative_level": 0.6449086540108615,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.019954648526077097,
+        "envelope_sustain_level": 0.8212234630711339,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.47167005420175184,
+        "envelope_skewness": 0.3355238043661848,
+        "envelope_kurtosis": -0.9039583663401114,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 0.7183673469387755,
+        "end_seconds": 0.8979591836734694,
+        "relative_level": 0.588739171102515,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.044897959183673466,
+        "envelope_sustain_level": 0.5919510519295261,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.5155315194871776,
+        "envelope_skewness": -0.24243023816432305,
+        "envelope_kurtosis": -0.9503378071991744,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 0.8979591836734694,
+        "end_seconds": 1.017687074829932,
+        "relative_level": 0.8129587112334983,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.004988662131519274,
+        "envelope_sustain_level": 0.922179257911638,
+        "envelope_release_seconds": 0.019954648526077097,
+        "envelope_temporal_centroid": 0.5753177892137982,
+        "envelope_skewness": 0.6192536417031969,
+        "envelope_kurtosis": -0.6632974731516366,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 4,
+        "start_seconds": 1.017687074829932,
+        "end_seconds": 1.1174603174603175,
+        "relative_level": 0.9611175572662998,
+        "envelope_attack_seconds": 0.05487528344671202,
+        "envelope_decay_seconds": 0.014965986394557823,
+        "envelope_sustain_level": 0.7400385741922045,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.5159747648830754,
+        "envelope_skewness": 0.47185438455325696,
+        "envelope_kurtosis": -0.30610173693406306,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 5,
+        "start_seconds": 1.1174603174603175,
+        "end_seconds": 1.217233560090703,
+        "relative_level": 0.7747612915833934,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.6253402855689031,
+        "envelope_release_seconds": 0.004988662131519274,
+        "envelope_temporal_centroid": 0.515135886052151,
+        "envelope_skewness": 0.4855998718116582,
+        "envelope_kurtosis": -0.9528204271226839,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 6,
+        "start_seconds": 1.217233560090703,
+        "end_seconds": 1.3020408163265307,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.05986394557823129,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 1.0,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.5820693388470164,
+        "envelope_skewness": 0.1457955909212055,
+        "envelope_kurtosis": 0.2462356665521166,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 7,
+        "start_seconds": 1.3020408163265307,
+        "end_seconds": 1.4167800453514738,
+        "relative_level": 0.978666500839151,
+        "envelope_attack_seconds": 0.06485260770975057,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.6997243800130497,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.5050668814606393,
+        "envelope_skewness": 0.5532603795200409,
+        "envelope_kurtosis": -0.6322485596098675,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 8,
+        "start_seconds": 1.4167800453514738,
+        "end_seconds": 1.5165532879818593,
+        "relative_level": 0.6803470496892199,
+        "envelope_attack_seconds": 0.039909297052154194,
+        "envelope_decay_seconds": 0.004988662131519274,
+        "envelope_sustain_level": 0.9605593576290088,
+        "envelope_release_seconds": 0.009977324263038548,
+        "envelope_temporal_centroid": 0.5035290543129372,
+        "envelope_skewness": -0.23147583023087623,
+        "envelope_kurtosis": -1.5540296292176257,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 9,
+        "start_seconds": 1.5165532879818593,
+        "end_seconds": 1.616326530612245,
+        "relative_level": 0.7107478296862944,
+        "envelope_attack_seconds": 0.044897959183673466,
+        "envelope_decay_seconds": 0.009977324263038548,
+        "envelope_sustain_level": 0.8032119435741674,
+        "envelope_release_seconds": 0.014965986394557823,
+        "envelope_temporal_centroid": 0.5272874947322916,
+        "envelope_skewness": 0.3911022810489159,
+        "envelope_kurtosis": -0.7817426090934547,
+        "envelope_shape": "Sustained",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 10,
+        "start_seconds": 1.616326530612245,
+        "end_seconds": 4.025850340136055,
+        "relative_level": 0.6595536827566161,
+        "envelope_attack_seconds": 0.039909297052154194,
+        "envelope_decay_seconds": 0.8630385487528345,
+        "envelope_sustain_level": 0.057323315393764215,
+        "envelope_release_seconds": 0.5188208616780046,
+        "envelope_temporal_centroid": 0.11412361810078606,
+        "envelope_skewness": 2.238750292452266,
+        "envelope_kurtosis": 6.6161028174771666,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 4.54184288099742
+      }
+    ],
     "onset_periodicity": 0.565194728520731,
     "onset_rate_per_second": 2.734375
   },
@@ -123,41 +291,41 @@
   "unsupervised": {
     "cluster": 11,
     "principal_components": [
-      1.0740934105722877,
-      -0.7776694362595145,
-      -0.2684852285607774
+      0.7779519038331613,
+      0.8405060694989923,
+      -2.32205289058704
     ]
   },
   "ucs": {
-    "category": "LOOPS",
-    "subcategory": "MELODIC LOOP",
-    "id": "LOOPMel",
-    "confidence": 0.7652689308475382,
+    "category": "SYNTH",
+    "subcategory": "KEYS",
+    "id": "SYNTKeys",
+    "confidence": 0.4787168599379598,
     "alternatives": [
+      {
+        "category": "LOOPS",
+        "subcategory": "MELODIC LOOP",
+        "id": "LOOPMel",
+        "probability": 0.429,
+        "synonyms": [
+          "music"
+        ]
+      },
       {
         "category": "MAGIC",
         "subcategory": "SHIMMER",
         "id": "MAGShim",
-        "probability": 0.109,
+        "probability": 0.061,
         "synonyms": [
           "sparkling",
           "twinkling"
         ]
       },
       {
-        "category": "SYNTH",
-        "subcategory": "KEYS",
-        "id": "SYNTKeys",
-        "probability": 0.086,
-        "synonyms": [
-          "music"
-        ]
-      },
-      {
         "category": "COMMUNICATIONS",
         "subcategory": "TELEVISION",
         "id": "COMTv",
-        "probability": 0.036,
+        "probability": 0.02,
         "synonyms": [
           "drama"
         ]
@@ -166,7 +334,7 @@
     "synonyms": [
       "music"
     ],
-    "reason": "name matched [music]; signal 0.85, tier signal_narrowable, 8 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0229 > max 4.0000)"
+    "reason": "name matched [music]; signal 0.89, tier signal_narrowable, 9 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.0229 > max 4.0000)"
   },
   "regions": {
     "count": 1,
@@ -184,5 +352,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 693,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB/QP6BvQK9gn5B/sF+Qf2CvMM9QnwEPAP8RPrE+oV7RPvE/EP8g3zDPYK+Qb6BfoE+AX0CfcH8QzvDPUH7gz1CO8M8gvyDPEJ9wb1B/kH/AP7A/wF9wj7BvMM+Ar2CvQP9A7xEPMN9gvyDfQN+Aj6B/kG/QT5B/oF9w73DPYL9Q/0DPYJ9wrwEPcJ9Q34B/kG/Af6BfoG/AX5CfYL9Qv2DPUJ6hTsE/YM8wrvEPAR9Qv5BvcJ9Az8BPsF9wjxDfMN9QvwD+cX+AztEusS6xTuDvEQ8gzzDfcK+gb6BfoG9Qv2CvQO8g7wDu8N8g70CO4S7g7xEfkG8Q32B/oF/QT3CfQN9Qv2DPIP6RbrEO4Q6w/pFu0R8RP1C+4Q8g74CfsG9gr0CvMM7RHsFPUN7hDnFugV7w/xDe8R7xL6BvML+gf6BvsF+Af2CvMQ9wXyEPIN8w32DfAR8w/xEfML9Q35CPoF/AX7BPkI9wb2CvIO+Aj1DO8R8g/yDvUM8w3vEPgI+Qf4B/oH/QL6BfgH8gv5BfgJ8QztEvcJ9AvzDvAQ9Qn5B/sI9gn6BP0D+wT5B/gH/Af8BfUL9Qv4CPsF+QbzC/oF+wX8BPsF/AT+A/4C/AT7BvkH/AT4B/gH+An3CPcG9gv4C/sF+QX5B/0E/QP9BPsG/AP8BPkG+Qf4CPoH+Qf3CfgI+gb6BvwE+gX8BP4C/wL9A/wD+wX8BPsF+gb6BvoH+wX7BvkH+gX7BfwF/QP9BP4D/QP+A/0D+wb6BPoF+gX8BPkI+wX9BPoF/AT9A/0D/gL+Av4B/gL9A/0D/gL9BPwE+wX8A/4C+wT8A/wE/gL+Av4C/wH/Af4B/QP+Av8B/QP9A/wE/gL+AvwE/AP9A/4B/QP+Av4B/wH/Af4C/QP+Av0D/AT8BP0D/QL7BPwF/QL+A/4C/gL/Af8B/gL/Af4C/gL+Av0D/gL+AvwE/gL+Av4C/wH+Av8B/wH/Af8B/wH/Af4B/gL/Af4C/gL+Av4C/gL+Av4C/wH/Af8B/wH/Af8B/wH/Af8B/gL+Av4B/gL+Av8B/gH/Af8B/wH/Af8B/wD/Af8B/wH/Af8B/wH/Af8B/wH/Af8B/wH/AP8B/wEAAQAAAAD/Af8A/wH/AP8B/wEAAP8B/wH/Af8B/wH/AQAAAAD/AAAA/wD/AAAA/wH/AP8B/wEAAP8B/wH/AAAAAAD/AAAAAAAAAAAAAAAAAAAAAAD/AAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   }
 }

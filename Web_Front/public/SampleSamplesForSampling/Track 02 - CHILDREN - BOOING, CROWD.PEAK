@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "Track 02 - CHILDREN - BOOING, CROWD.mp3",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/Track 02 - CHILDREN - BOOING, CROWD.mp3",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/Track 02 - CHILDREN - BOOING, CROWD.mp3",
     "length_seconds": 4.806530612244898,
     "sample_rate": 44100,
     "bit_depth": 0,
@@ -12,13 +12,14 @@
     "source_format": "MP3",
     "lossy_source": true,
     "dc_offset": -0.0012980482543535736,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Loops/Patterns",
     "reason": [
       "1) 4 transients (>1), no drum/instrument name → loop",
-      "2) envelope Multi (attack 409 ms, sustain 41%, 4 transients)",
+      "2) envelope Multi (4 transients — loudest of 4 slices: attack 190 ms, sustain 47%)",
       "3) Inharmonic · mid-band 76% · root A#4"
     ],
     "timbre": "Loop",
@@ -39,15 +40,77 @@
     "attack_seconds": 0.9148526077097505,
     "sustain_ratio": 0.314878892733564,
     "sustained": false,
-    "envelope_attack_seconds": 0.4090702947845805,
-    "envelope_decay_seconds": 0.15963718820861678,
-    "envelope_sustain_level": 0.40521099423624557,
-    "envelope_release_seconds": 0.4988662131519274,
-    "envelope_temporal_centroid": 0.36800916280682394,
-    "envelope_skewness": 0.3014659686520612,
-    "envelope_kurtosis": -0.9351358446229807,
+    "envelope_attack_seconds": null,
+    "envelope_decay_seconds": null,
+    "envelope_sustain_level": null,
+    "envelope_release_seconds": null,
+    "envelope_temporal_centroid": null,
+    "envelope_skewness": null,
+    "envelope_kurtosis": null,
     "envelope_shape": "Multi",
-    "decay_time_seconds_60db": 20.054752879686188,
+    "decay_time_seconds_60db": null,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.7183673469387755,
+        "relative_level": 0.6631894331889727,
+        "envelope_attack_seconds": 0.16462585034013605,
+        "envelope_decay_seconds": 0.004988662131519274,
+        "envelope_sustain_level": 0.9291226139854225,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.8794244908013928,
+        "envelope_skewness": 1.1491588483767492,
+        "envelope_kurtosis": -0.36761479870183145,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 1,
+        "start_seconds": 0.7183673469387755,
+        "end_seconds": 2.4993197278911565,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.1895691609977324,
+        "envelope_decay_seconds": 0.10975056689342404,
+        "envelope_sustain_level": 0.46843187359992905,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.37841280323771337,
+        "envelope_skewness": 0.7203071958482905,
+        "envelope_kurtosis": -0.1387346219104355,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 2,
+        "start_seconds": 2.4993197278911565,
+        "end_seconds": 3.1179138321995463,
+        "relative_level": 0.7442043999230759,
+        "envelope_attack_seconds": 0.19455782312925168,
+        "envelope_decay_seconds": 0.11972789115646258,
+        "envelope_sustain_level": 0.5737598258963992,
+        "envelope_release_seconds": 0.0,
+        "envelope_temporal_centroid": 0.4244186042202153,
+        "envelope_skewness": 0.21633360792085857,
+        "envelope_kurtosis": -0.6333745905497414,
+        "envelope_shape": "Swell",
+        "decay_time_seconds_60db": null
+      },
+      {
+        "index": 3,
+        "start_seconds": 3.1179138321995463,
+        "end_seconds": 4.80907029478458,
+        "relative_level": 0.7748422483574299,
+        "envelope_attack_seconds": 0.0947845804988662,
+        "envelope_decay_seconds": 0.6634920634920635,
+        "envelope_sustain_level": 0.042461475635133264,
+        "envelope_release_seconds": 0.4839002267573696,
+        "envelope_temporal_centroid": 0.10760456290682606,
+        "envelope_skewness": 1.8658917174528604,
+        "envelope_kurtosis": 2.7916259684609726,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 1.8136573803439076
+      }
+    ],
     "onset_periodicity": 0.37468224551983476,
     "onset_rate_per_second": 0.8322010869565217
   },
@@ -123,22 +186,22 @@
   "unsupervised": {
     "cluster": 11,
     "principal_components": [
-      1.1504437326959107,
-      -0.787967494099048,
-      -1.967220851840714
+      1.6380282020510797,
+      0.22999743194579036,
+      -1.8235897856874044
     ]
   },
   "ucs": {
     "category": "CROWDS",
     "subcategory": "REACTION",
     "id": "CRWDReac",
-    "confidence": 0.4387947736925783,
+    "confidence": 0.3919913338066015,
     "alternatives": [
       {
         "category": "VOICES",
         "subcategory": "REACTION",
         "id": "VOXReac",
-        "probability": 0.188,
+        "probability": 0.204,
         "synonyms": [
           "booing"
         ]
@@ -147,7 +210,7 @@
         "category": "CROWDS",
         "subcategory": "SPORT",
         "id": "CRWDSprt",
-        "probability": 0.141,
+        "probability": 0.153,
         "synonyms": [
           "booing"
         ]
@@ -156,7 +219,7 @@
         "category": "CROWDS",
         "subcategory": "CHILDREN",
         "id": "CRWDChld",
-        "probability": 0.121,
+        "probability": 0.131,
         "synonyms": [
           "children"
         ]
@@ -165,7 +228,7 @@
     "synonyms": [
       "booing"
     ],
-    "reason": "name matched [booing]; signal 0.68, tier signal_narrowable, 7 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.8065 > max 4.0000)"
+    "reason": "name matched [booing]; signal 0.63, tier signal_narrowable, 7 candidates in contention; lossy source — brightness and clipping gates relaxed; gate ruled out AIRBrst (length_seconds 4.8065 > max 4.0000)"
   },
   "regions": {
     "count": 1,
@@ -183,5 +246,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 828,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "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"
   }
 }

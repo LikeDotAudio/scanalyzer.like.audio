@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "909 L Tom 2.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/909 L Tom 2.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/909 L Tom 2.wav",
     "length_seconds": 0.3574603174603175,
     "sample_rate": 44100,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": -0.001177954510425257,
-    "trailing_silence_ms": 0.0
+    "trailing_silence_ms": 0.0,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Tom",
@@ -53,6 +54,23 @@
     "envelope_kurtosis": 1.7297231781242743,
     "envelope_shape": "Decaying",
     "decay_time_seconds_60db": 0.5174366669886873,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.35918367346938773,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.004988662131519274,
+        "envelope_decay_seconds": 0.1546485260770975,
+        "envelope_sustain_level": 0.0816998243552102,
+        "envelope_release_seconds": 0.10975056689342404,
+        "envelope_temporal_centroid": 0.10635423927187919,
+        "envelope_skewness": 1.5851831295697079,
+        "envelope_kurtosis": 1.7297231781242743,
+        "envelope_shape": "Decaying",
+        "decay_time_seconds_60db": 0.5174366669886873
+      }
+    ],
     "onset_periodicity": 0.4587219178721405,
     "onset_rate_per_second": 2.797513321492007
   },
@@ -128,9 +146,9 @@
   "unsupervised": {
     "cluster": 6,
     "principal_components": [
-      -2.233419960176494,
-      -3.1666444557903013,
-      2.8852044923396134
+      -1.2687062514574117,
+      3.832437199013752,
+      2.711006714259371
     ]
   },
   "ucs": {
@@ -170,5 +188,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 62,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "gX+bf79Xyxyuf7NvsH/CUcc1/TbLAwE80wH7LuQE9CPlB/oj5gP6G+gH+iPmAv0a7gT8E/AE/hHyAf8O9QEAC/cAAAn4Av8H+gP9BvsE/Ab6BvoF+wb7A/0E/AL+A/0B/wP+Af8C/gD/Af8AAAAAAAAAAAAAAf8B/wAAAA=="
   }
 }

@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "analyzer_version": "20260715.1850-a0573c3c46fbebde",
+    "analyzer_version": "20260728.2125-155e412706ef2aec",
     "name": "SR16 Prc_Claps Hi.wav",
     "folder": "SampleSamplesForSampling",
     "sub": "SampleSamplesForSampling",
-    "path": "/home/anthony/Documents/GitProjects/Sample Analysis/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Claps Hi.wav",
+    "path": "/home/anthony/Documents/GitProjects/Scanalyzer.like.audio/Web_Front/public/SampleSamplesForSampling/SR16 Prc_Claps Hi.wav",
     "length_seconds": 0.2509297052154195,
     "sample_rate": 22050,
     "bit_depth": 16,
@@ -12,7 +12,8 @@
     "source_format": "WAV",
     "lossy_source": false,
     "dc_offset": 0.00005196206461515001,
-    "trailing_silence_ms": 0.045351473922902494
+    "trailing_silence_ms": 0.045351473922902494,
+    "analysis_depth": "full"
   },
   "classification": {
     "group": "Clap",
@@ -50,6 +51,23 @@
     "envelope_kurtosis": 3.639480835439775,
     "envelope_shape": "Plucky",
     "decay_time_seconds_60db": 0.25121712911021893,
+    "slices": [
+      {
+        "index": 0,
+        "start_seconds": 0.0,
+        "end_seconds": 0.254421768707483,
+        "relative_level": 1.0,
+        "envelope_attack_seconds": 0.0,
+        "envelope_decay_seconds": 0.11972789115646258,
+        "envelope_sustain_level": 0.04016684827254617,
+        "envelope_release_seconds": 0.06485260770975057,
+        "envelope_temporal_centroid": 0.055272311745419224,
+        "envelope_skewness": 2.1606965650013503,
+        "envelope_kurtosis": 3.639480835439775,
+        "envelope_shape": "Plucky",
+        "decay_time_seconds_60db": 0.25121712911021893
+      }
+    ],
     "onset_periodicity": 0.0,
     "onset_rate_per_second": 3.9851798301102472
   },
@@ -125,9 +143,9 @@
   "unsupervised": {
     "cluster": 2,
     "principal_components": [
-      -0.6385348077719614,
-      1.3379014793480655,
-      0.8807455447975178
+      -1.1754766475672367,
+      -1.0025145880812276,
+      0.8835647655507244
     ]
   },
   "ucs": {
@@ -157,5 +175,13 @@
         "analysis": null
       }
     ]
+  },
+  "preview": {
+    "preview_version": 1,
+    "samples_per_bin": 256,
+    "bin_count": 22,
+    "bits_per_value": 8,
+    "channel_mode": "mono_mixdown",
+    "peak_data_base64": "pHHMT8ku5SLrGPMV9Qz7B/oF+wT9A/4C/gL/Av8B/wEAAQABAAAAAAAAAAA="
   }
 }
