@@ -86,10 +86,20 @@ try {
 
         $stmtAudio->execute([$filename, $folder, $version]);
         // Retrieve the ID. Since we used ON DUPLICATE KEY UPDATE, lastInsertId might be 0 if it was an update.
-        // We can select it to be safe. (Prepared once, above the loop — it was
-        // being re-prepared per record, a wasted round trip on every file.)
+        // We can select it to be safe.
+        //
+        // closeCursor() is NOT optional. With ATTR_EMULATE_PREPARES => false these
+        // are real server-side prepares, and fetchColumn() reads one value while
+        // leaving the result set open. Re-executing the same handle on the next
+        // record then fails with "Cannot execute queries while other unbuffered
+        // queries are active", which aborts the transaction and loses the WHOLE
+        // batch. This loop originally called prepare() per record, which sidestepped
+        // it by handing every record a fresh cursor; hoisting the prepare for speed
+        // without freeing the cursor is what broke multi-record uploads — a batch of
+        // one worked, a batch of two did not.
         $idStmt->execute([$filename, $folder]);
         $file_id = $idStmt->fetchColumn();
+        $idStmt->closeCursor();
         if (!$file_id) { $skipped++; continue; }
 
         $stmtMeta->execute([
@@ -177,11 +187,20 @@ try {
         // Kept so an older client that reads `inserted` keeps working.
         'inserted' => $stored,
     ]);
-} catch (\PDOException $e) {
+} catch (\Throwable $e) {
+    // \Throwable, not \PDOException. Anything this endpoint throws that is not a
+    // PDOException used to escape as an uncaught fatal, and with display_errors
+    // off on the host that means a 500 with a COMPLETELY EMPTY body — no message,
+    // no line, nothing in the client's log but "HTTP 500". Every caller then
+    // reported a generic failure and the real cause had to be bisected by hand.
     if (isset($pdo) && $pdo->inTransaction()) {
-        $pdo->rollBack();
+        try { $pdo->rollBack(); } catch (\Throwable $ignored) {}
     }
     http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+    echo json_encode([
+        'error' => $e->getMessage(),
+        'type' => get_class($e),
+        'line' => $e->getLine(),
+    ]);
 }
 ?>
