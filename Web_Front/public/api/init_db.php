@@ -104,7 +104,15 @@ try {
             source_format VARCHAR(50),
             lossy_source BOOLEAN,
             dc_offset FLOAT,
-            FOREIGN KEY (file_id) REFERENCES audio_files(id) ON DELETE CASCADE
+            -- How many silence-separated regions the scan found. The database had
+            -- no record of this at all, so the question the Extractor exists to
+            -- answer -- which files are multi-segment -- could not be asked of
+            -- the cloud, only of a local .PEAK. NULL means a record uploaded
+            -- before this column existed, which differs from a measured 1.
+            region_count INT DEFAULT NULL,
+            FOREIGN KEY (file_id) REFERENCES audio_files(id) ON DELETE CASCADE,
+            -- Indexed because the interesting query is `region_count > 1`.
+            KEY idx_region_count (region_count)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
 

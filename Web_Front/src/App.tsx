@@ -59,6 +59,50 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [progress, setProgress] = useState(0)
   const [currentSound, setCurrentSound] = useState('')
+
+  // ---- Selection history: step back through what you were just listening to.
+  //
+  // A ring of the last selections with a cursor into it. `selectSound` is what
+  // every tab calls, and it records; Back/Forward set the selection directly and
+  // only move the cursor — routing them through `selectSound` would push the
+  // step back onto the history and you could never leave the last two entries.
+  const SELECTION_HISTORY_MAX = 11; // the current pick plus ten to go back through
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+
+  const selectSound = useCallback((name: string) => {
+    setCurrentSound(name);
+    if (!name) return;
+    setHistory((prev) => {
+      // Re-picking what is already selected is not a new history entry.
+      if (prev[historyIndex] === name) return prev;
+      // A new pick after going back discards the forward entries — the usual
+      // browser rule, and the only one that keeps Forward meaning "where I came
+      // back from" rather than an unrelated branch.
+      const kept = prev.slice(0, historyIndex + 1);
+      kept.push(name);
+      const trimmed = kept.slice(-SELECTION_HISTORY_MAX);
+      setHistoryIndex(trimmed.length - 1);
+      return trimmed;
+    });
+  }, [historyIndex]);
+
+  const canGoBack = historyIndex > 0;
+  const canGoForward = historyIndex >= 0 && historyIndex < history.length - 1;
+  const goBack = useCallback(() => {
+    setHistoryIndex((i) => {
+      if (i <= 0) return i;
+      setCurrentSound(history[i - 1]);
+      return i - 1;
+    });
+  }, [history]);
+  const goForward = useCallback(() => {
+    setHistoryIndex((i) => {
+      if (i < 0 || i >= history.length - 1) return i;
+      setCurrentSound(history[i + 1]);
+      return i + 1;
+    });
+  }, [history]);
   // Set when a loaded .PEAK predates the grouped schema and had to be migrated.
   const [schemaNotice, setSchemaNotice] = useState('')
   // Desktop only: the absolute folder relative .PEAK paths resolve against.
@@ -486,7 +530,7 @@ function App() {
     if (digging) {
       const idx = filteredData.findIndex(it => it === footerItem);
       if (idx !== -1 && idx + 1 < filteredData.length) {
-        setCurrentSound(filteredData[idx + 1].metadata?.name || '');
+        selectSound(filteredData[idx + 1].metadata?.name || '');
       } else {
         setDigging(false); // Reached end of list
       }
@@ -730,31 +774,31 @@ function App() {
         </div>
 
         <div style={{ display: activeTab === 'cloud' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-          <CloudTab analysisResult={analysisResult} filteredData={scopedData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} playing={footerPlaying}
+          <CloudTab analysisResult={analysisResult} filteredData={scopedData} audioFiles={audioFiles} onSound={selectSound} selectedItem={footerItem} playing={footerPlaying}
             onExamine={(name) => footerPush('examiner', name)}
             onExtract={(name) => footerPush('extractor', name)}
             eyeAudio={footerAudioEl} onEyePlay={footerPlay} />
         </div>
 
         <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--text-secondary)' }}>Loading tab...</div>}>
-          {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} selectedItem={footerItem} />}
+          {activeTab === 'stats' && <StatsTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={selectSound} selectedItem={footerItem} />}
           {activeTab === 'groups' && <GroupsTab filteredData={filteredData} />}
-          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} autoLoop={autoLoop}
+          {activeTab === 'examiner' && <ExaminerTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={selectSound} autoLoop={autoLoop}
             favorites={favorites}
             autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
           {/* The Favorites tab IS an Examiner — same component, mounted under its own hash
               with rows pre-filtered to the favorites set. DIG here digs favorites only. */}
-          {activeTab === 'favorites' && <ExaminerTab analysisResult={analysisResult} filteredData={favoriteRows} audioFiles={audioFiles} onSound={setCurrentSound} autoLoop={autoLoop}
+          {activeTab === 'favorites' && <ExaminerTab analysisResult={analysisResult} filteredData={favoriteRows} audioFiles={audioFiles} onSound={selectSound} autoLoop={autoLoop}
             favorites={favorites}
             autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             emptyMessage="No favorites yet — press F while a sample plays, or tap ★ in the footer."
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} onDiggingChange={setTabDigging} />}
-          {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={setCurrentSound} setAnalysisResult={setAnalysisResult}
+          {activeTab === 'extractor' && <ExtractorTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} onSound={selectSound} setAnalysisResult={setAnalysisResult}
             favorites={favorites}
             autoOpenName={pushedName} onAutoOpened={() => setPushedName('')}
             registerTransport={t => { tabTransportRef.current = t; }} onPlayingChange={setTabPlaying} />}
-          {activeTab === 'faceball' && <FaceBallTab filteredData={scopedData} selectedItem={footerItem} onSound={setCurrentSound}
+          {activeTab === 'faceball' && <FaceBallTab filteredData={scopedData} selectedItem={footerItem} onSound={selectSound}
             audioFiles={audioFiles} eyeAudio={footerAudioEl} onEyePlay={footerPlay} />}
           {activeTab === 'rename' && <RenameTab analysisResult={analysisResult} filteredData={filteredData} audioFiles={audioFiles} />}
         </Suspense>
@@ -772,6 +816,10 @@ function App() {
         autoLoop={autoLoop}
         current={activeTab as FooterTab}
         onPlay={footerPlay}
+        onBack={goBack}
+        onForward={goForward}
+        canBack={canGoBack}
+        canForward={canGoForward}
         onDig={() => { if (tabOwnsAudio && tabTransportRef.current) tabTransportRef.current.dig(); else setDigging(!digging); }}
         onToggleAutoPlay={setAutoPlay}
         onToggleAutoLoop={setAutoLoop}

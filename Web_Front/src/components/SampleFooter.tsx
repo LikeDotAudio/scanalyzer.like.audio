@@ -23,6 +23,12 @@ interface SampleFooterProps {
   onCopyData?: () => void | Promise<any>; // copy the selected record's full .PEAK data to the clipboard
   onPlay?: () => void;              // play / stop toggle
   onDig?: () => void;              // start / stop DIG
+  // Step through the last selections. Up to ten back, and forward again through
+  // whatever you stepped back over.
+  onBack?: () => void;
+  onForward?: () => void;
+  canBack?: boolean;
+  canForward?: boolean;
   onToggleAutoPlay?: (v: boolean) => void;
   onToggleAutoLoop?: (v: boolean) => void;
   // Push the selected file to another tab (pre-filtered to its name). The current tab's
@@ -44,6 +50,7 @@ const TAB_LABEL: Record<FooterTab, { icon: string; text: string }> = {
 
 export default function SampleFooter({
   item, playing, digging, autoPlay, autoLoop, favorite, onToggleFavorite, onDownload, onCopyData, onPlay, onDig, onToggleAutoPlay, onToggleAutoLoop, current, onPush, layersMenu, dbStatus,
+  onBack, onForward, canBack, canForward,
 }: SampleFooterProps) {
   const narrow = useIsNarrow();
   const name = item?.metadata?.name || '';
@@ -77,7 +84,20 @@ export default function SampleFooter({
 
       {!narrow && <div style={{ flex: 1 }} />}
 
-      {/* Transport (centred) */}
+      {/* Transport (centred). Back/Forward lead it, so the row reads left to
+          right as "where I was → what I'm doing → where to send it". */}
+      {onBack && (
+        <button className="btn secondary" style={btn} onClick={onBack} disabled={!canBack}
+          title="Go back to the previous selection (up to 10)">
+          {lbl('◀', 'Go Back')}
+        </button>
+      )}
+      {onForward && (
+        <button className="btn secondary" style={btn} onClick={onForward} disabled={!canForward}
+          title="Go forward again through the selections you stepped back over">
+          {lbl('▶', 'Go Forward')}
+        </button>
+      )}
       {onToggleFavorite && (
         <button className="btn secondary" style={{ ...btn, color: favorite ? 'var(--accent-primary)' : undefined, borderColor: favorite ? 'var(--accent-primary)' : undefined, fontWeight: favorite ? 700 : undefined }}
           onClick={onToggleFavorite} disabled={!item} title={favorite ? 'Un-favorite — F' : 'Favorite — F'}>

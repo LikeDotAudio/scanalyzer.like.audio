@@ -39,6 +39,15 @@ struct Upload<'a> {
     spectral_features: Spectral,
     musicality: Musicality<'a>,
     envelope: Envelope<'a>,
+    regions: RegionCount,
+}
+
+/// Just the count. The per-region detail is a whole nested analysis each and has
+/// no columns; the count is what lets the cloud answer "which files have more
+/// than one segment", which it previously could not answer at all.
+#[derive(Serialize)]
+struct RegionCount {
+    count: usize,
 }
 
 #[derive(Serialize)]
@@ -180,6 +189,7 @@ fn slim(p: &Peak) -> Upload<'_> {
             envelope_temporal_centroid: p.envelope.envelope_temporal_centroid,
             envelope_shape: &p.envelope.envelope_shape,
         },
+        regions: RegionCount { count: p.regions.count },
     }
 }
 

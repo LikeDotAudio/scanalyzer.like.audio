@@ -54,7 +54,7 @@ try {
     $stmtPathFind = $pdo->prepare("SELECT id FROM paths WHERE path_key = ?");
     $stmtPathAdd = $pdo->prepare("INSERT INTO paths (full_path, path_key) VALUES (?, ?) ON DUPLICATE KEY UPDATE full_path = VALUES(full_path)");
     $stmtAudio = $pdo->prepare("INSERT INTO audio_files (filename, path_id, analyzer_version) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE analyzer_version = VALUES(analyzer_version)");
-    $stmtMeta = $pdo->prepare("REPLACE INTO metadata (file_id, length_seconds, sample_rate, bit_depth, channels, source_format, lossy_source, dc_offset) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmtMeta = $pdo->prepare("REPLACE INTO metadata (file_id, length_seconds, sample_rate, bit_depth, channels, source_format, lossy_source, dc_offset, region_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtClass = $pdo->prepare("REPLACE INTO classification (file_id, ucs_category, ucs_subcategory, group_name, subgroup, timbre, acoustic_types, instrument_family, reason, alt_1_group, alt_1_sub, alt_2_group, alt_2_sub, alt_3_group, alt_3_sub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtSpec = $pdo->prepare("REPLACE INTO spectral_features (file_id, root_mean_square_level, crest_factor, complexity, spectral_centroid_hz, spectral_rolloff_hz, spectral_flatness, harmonicity, total_harmonic_distortion, clipping_density) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtMusic = $pdo->prepare("REPLACE INTO musicality (file_id, pitch_hz, root_note_name, root_midi_note, root_cents_offset, beats_per_minute) VALUES (?, ?, ?, ?, ?, ?)");
@@ -137,7 +137,11 @@ try {
             // happens to run non-strict and silently coerced '' to 0, so this
             // only ever looked fine by accident.
             isset($meta['lossy_source']) ? ($meta['lossy_source'] ? 1 : 0) : null,
-            $meta['dc_offset'] ?? null
+            $meta['dc_offset'] ?? null,
+            // Absent (an older client) stays NULL — "not reported" is a different
+            // statement from "one region", and the rescan trigger relies on
+            // being able to tell them apart.
+            isset($record['regions']['count']) ? (int)$record['regions']['count'] : null
         ]);
 
         $cls = $record['classification'] ?? [];

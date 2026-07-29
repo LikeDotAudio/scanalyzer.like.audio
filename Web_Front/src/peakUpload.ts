@@ -71,6 +71,12 @@ export function slimForUpload(record: any): any {
     spectral_features: pick(record?.spectral_features, SPECTRAL_FIELDS),
     musicality: pick(record?.musicality, MUSICALITY_FIELDS),
     envelope: pick(record?.envelope, ENVELOPE_FIELDS),
+    // Just the COUNT, never the per-region detail. The count is what makes
+    // "which files have segments" answerable from the cloud; the detail is a
+    // full nested analysis per region and would dwarf everything else here.
+    regions: typeof record?.regions?.count === 'number'
+      ? { count: record.regions.count }
+      : undefined,
   };
 }
 

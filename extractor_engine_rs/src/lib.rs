@@ -72,7 +72,34 @@ pub struct DetectParams {
     pub transient_aware: bool,
     /// Snap in/out sample indices to the nearest zero crossing — kills export clicks.
     pub snap_zero_crossing: bool,
+    /// How far above the file's OWN noise floor the gate must sit, in dB. `0` disables
+    /// the lift and restores the pure peak-relative behaviour.
+    ///
+    /// The other thresholds are relative to the PEAK only, which silently assumes the
+    /// quiet parts are quiet in absolute terms. On continuous material they are not: a
+    /// 72-second breathing-apparatus recording has mask noise and room tone sitting
+    /// above `peak − 40 dB`, so the gate opened on the first breath and never closed —
+    /// 43 measured transients collapsed into ONE region spanning the whole file, and
+    /// lowering the threshold (the obvious move, and the one the UI hint suggests) made
+    /// it strictly worse because a lower gate is even easier to stay above.
+    #[serde(default = "default_noise_floor_margin_db")]
+    pub noise_floor_margin_db: f64,
 }
+
+/// Default lift: 9 dB clear of the noise floor. Enough to ignore floor wobble, small
+/// enough that a genuinely quiet event still opens the gate.
+fn default_noise_floor_margin_db() -> f64 {
+    9.0
+}
+
+/// The envelope quantile taken as "the noise floor". Low enough to sit in the gaps of
+/// even a densely-packed file, high enough not to be a single anomalous frame.
+const NOISE_FLOOR_QUANTILE: f64 = 0.10;
+
+/// The lifted gate may never rise above this many dB below the peak. Without a ceiling a
+/// file whose floor is close to its peak — a drone, a dense wall of noise — would gate
+/// away nearly everything and report regions where there is really one continuous sound.
+const MAX_LIFTED_GATE_DB: f64 = -12.0;
 
 impl Default for DetectParams {
     fn default() -> Self {
@@ -87,13 +114,21 @@ impl Default for DetectParams {
             release_pad_seconds: 0.030,
             transient_aware: true,
             snap_zero_crossing: true,
+            noise_floor_margin_db: default_noise_floor_margin_db(),
         }
     }
 }
 
 impl DetectParams {
-    /// The historical algorithm, bit-for-bit: single threshold (open == close), no padding,
-    /// no onset/zero-cross refinement. Used by the analyzer so stored regions don't move.
+    /// The historical algorithm: single threshold (open == close), no padding, no
+    /// onset/zero-cross refinement. Used by the analyzer.
+    ///
+    /// No longer bit-for-bit historical: the noise-floor lift applies here too, because
+    /// this is the path that writes `regions` into every `.PEAK` and it was the path
+    /// reporting one region for a file with 43 audible events. The lift is a no-op on
+    /// any file whose gaps fall below `peak − 40 dB` — which is every cleanly-edited
+    /// one-shot — so ordinary sample libraries are unaffected; it only engages where the
+    /// old answer was wrong.
     pub fn legacy() -> Self {
         Self {
             open_threshold_db: -40.0,
@@ -104,6 +139,7 @@ impl DetectParams {
             release_pad_seconds: 0.0,
             transient_aware: false,
             snap_zero_crossing: false,
+            noise_floor_margin_db: default_noise_floor_margin_db(),
         }
     }
 }
@@ -126,6 +162,18 @@ pub fn amplitude_envelope(samples: &[f32], sample_rate: u32) -> (Vec<f64>, f64) 
         i += hop;
     }
     (env, rate_hz)
+}
+
+/// The `q`-quantile of an unsorted slice. Used for the noise floor, so it must not be
+/// swayed by the loud frames that make up most of a dense file.
+fn quantile(values: &[f64], q: f64) -> f64 {
+    if values.is_empty() {
+        return 0.0;
+    }
+    let mut v: Vec<f64> = values.to_vec();
+    v.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+    let i = (((v.len() - 1) as f64) * q.clamp(0.0, 1.0)).round() as usize;
+    v[i]
 }
 
 /// Hysteresis-gated, gap-bridged runs of above-threshold frames, as
@@ -182,6 +230,80 @@ fn gate_and_merge(envelope: &[f64], rate_hz: f64, p: &DetectParams) -> Vec<(usiz
 /// samples, so no zero-cross/onset refinement). With [`DetectParams::legacy`] this is
 /// identical to the historical `regions.rs`. `length_seconds` clamps the final out-point.
 pub fn detect_regions_with_params(
+    envelope: &[f64],
+    rate_hz: f64,
+    length_seconds: f64,
+    p: &DetectParams,
+) -> Vec<Region> {
+    let first = build_regions(envelope, rate_hz, length_seconds, p);
+
+    // If the gate found real structure, that is the answer. The lift below only ever
+    // runs when the file came back as a single blob.
+    if first.len() > 1 || p.noise_floor_margin_db <= 0.0 {
+        return first;
+    }
+    match lifted_params(envelope, p) {
+        None => first,
+        Some(lifted) => {
+            let retry = build_regions(envelope, rate_hz, length_seconds, &lifted);
+            // Accept only a DENSE result. Turning one region into two is hysteresis
+            // doing its job on a wobbling tail, and must not be overridden; turning one
+            // into eighteen is the pathology this exists for — a file whose events are
+            // separated by a floor the gate was sitting underneath.
+            if retry.len() >= MINIMUM_LIFTED_REGIONS {
+                retry
+            } else {
+                first
+            }
+        }
+    }
+}
+
+/// Below this many regions, a lifted gate has not demonstrated dense structure and its
+/// result is discarded in favour of the original.
+const MINIMUM_LIFTED_REGIONS: usize = 4;
+
+/// Params with the gate raised clear of the file's own noise floor, or `None` when the
+/// gate already sits above it and there is nothing to fix.
+///
+/// The floor is measured over SOUNDING frames only. Taking a plain quantile of the whole
+/// envelope reads the digital silence at a file's head and tail instead: this file is
+/// 6.9 % leading/trailing zeros, which dragged the 10th percentile to −41 dB and hid a
+/// true inter-event floor around −30 dB.
+fn lifted_params(envelope: &[f64], p: &DetectParams) -> Option<DetectParams> {
+    let peak = envelope.iter().cloned().fold(0.0f64, f64::max);
+    if peak <= 1e-9 {
+        return None;
+    }
+    let silence = peak * 10f64.powf(DIGITAL_SILENCE_DB / 20.0);
+    let sounding: Vec<f64> = envelope.iter().copied().filter(|&x| x > silence).collect();
+    if sounding.len() < 8 {
+        return None;
+    }
+    let floor = quantile(&sounding, NOISE_FLOOR_QUANTILE);
+    if floor <= 0.0 {
+        return None;
+    }
+    let floor_db = 20.0 * (floor / peak).log10();
+    let target_db = (floor_db + p.noise_floor_margin_db).min(MAX_LIFTED_GATE_DB);
+    // Nothing to do if the caller's gate is already clear of the floor.
+    if target_db <= p.open_threshold_db {
+        return None;
+    }
+    let mut lifted = p.clone();
+    // Shift open and close together so the caller's hysteresis width is preserved.
+    let delta = target_db - p.open_threshold_db;
+    lifted.open_threshold_db = target_db;
+    lifted.close_threshold_db = p.close_threshold_db + delta;
+    Some(lifted)
+}
+
+/// Everything below `DIGITAL_SILENCE_DB` under the peak is treated as "not sounding" when
+/// estimating the floor — edited-in silence, not room tone.
+const DIGITAL_SILENCE_DB: f64 = -80.0;
+
+/// The gate → regions pipeline for one set of params.
+fn build_regions(
     envelope: &[f64],
     rate_hz: f64,
     length_seconds: f64,
@@ -492,6 +614,59 @@ mod tests {
         let s = pcm(&[(0.0, 0.2), (1.0, 0.02), (0.0, 0.2)]);
         let r = detect_regions_from_samples(&s, SR, &DetectParams::default());
         assert!(r.is_empty(), "20 ms burst should be dropped, got {}", r.len());
+    }
+
+    /// Eight events over a floor that sits ABOVE the −40 dB gate — the shape of a
+    /// continuous recording (breathing apparatus, an engine, a crowd). The gate can
+    /// never close, so the plain algorithm returns the whole file as one region.
+    fn dense_over_a_high_floor() -> Vec<f32> {
+        let mut blocks: Vec<(f32, f64)> = vec![(0.0, 0.30)]; // edited-in silence at the head
+        for _ in 0..8 {
+            blocks.push((1.0, 0.25)); // event
+            blocks.push((0.05, 0.25)); // floor between events: −26 dB, well above the gate
+        }
+        blocks.push((0.0, 0.30)); // and at the tail
+        pcm(&blocks)
+    }
+
+    #[test]
+    fn a_gate_underneath_the_noise_floor_still_finds_the_events() {
+        let s = dense_over_a_high_floor();
+        let (env, rate) = amplitude_envelope(&s, SR);
+        let len = s.len() as f64 / SR as f64;
+
+        let mut off = DetectParams::legacy();
+        off.noise_floor_margin_db = 0.0;
+        let before = detect_regions_with_params(&env, rate, len, &off);
+        assert_eq!(before.len(), 1, "precondition: the plain gate returns one blob");
+
+        let after = detect_regions_with_params(&env, rate, len, &DetectParams::legacy());
+        assert!(
+            after.len() >= 6,
+            "the lift should recover the events, got {}",
+            after.len()
+        );
+    }
+
+    #[test]
+    fn the_lift_leaves_a_clean_one_shot_alone() {
+        // Digital silence either side of a single hit: the gate already closes, so the
+        // fallback must not run at all.
+        let s = pcm(&[(0.0, 0.2), (1.0, 0.4), (0.0, 0.5)]);
+        let (env, rate) = amplitude_envelope(&s, SR);
+        let len = s.len() as f64 / SR as f64;
+        let r = detect_regions_with_params(&env, rate, len, &DetectParams::legacy());
+        assert_eq!(r.len(), 1, "a one-shot is one region, got {}", r.len());
+    }
+
+    #[test]
+    fn zero_margin_disables_the_lift() {
+        let s = dense_over_a_high_floor();
+        let (env, rate) = amplitude_envelope(&s, SR);
+        let len = s.len() as f64 / SR as f64;
+        let mut p = DetectParams::legacy();
+        p.noise_floor_margin_db = 0.0;
+        assert_eq!(detect_regions_with_params(&env, rate, len, &p).len(), 1);
     }
 
     #[test]

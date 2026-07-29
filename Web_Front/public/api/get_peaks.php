@@ -29,7 +29,7 @@ try {
     $sql = "
         SELECT
             a.filename, p.full_path, a.analyzer_version,
-            m.length_seconds, m.sample_rate, m.bit_depth, m.channels, m.source_format, m.lossy_source, m.dc_offset,
+            m.length_seconds, m.sample_rate, m.bit_depth, m.channels, m.source_format, m.lossy_source, m.dc_offset, m.region_count,
             c.ucs_category, c.ucs_subcategory, c.group_name, c.subgroup, c.timbre, c.acoustic_types, c.instrument_family,
             c.reason, c.alt_1_group, c.alt_1_sub, c.alt_2_group, c.alt_2_sub, c.alt_3_group, c.alt_3_sub,
             s.root_mean_square_level, s.crest_factor, s.complexity, s.spectral_centroid_hz, s.spectral_rolloff_hz, s.spectral_flatness, s.harmonicity, s.total_harmonic_distortion, s.clipping_density,
@@ -75,6 +75,11 @@ try {
                 "lossy_source" => $row['lossy_source'] ? true : false,
                 "dc_offset" => (float)$row['dc_offset']
             ],
+            // Region count travels as the `regions` group the rest of the app
+            // already reads (item.regions?.count). NULL stays absent rather than
+            // becoming 0, so a pre-column record is distinguishable from a file
+            // genuinely measured as having no regions.
+            "regions" => $row['region_count'] === null ? null : ["count" => (int)$row['region_count']],
             "classification" => [
                 "group" => $row['group_name'],
                 "subgroup" => $row['subgroup'],
