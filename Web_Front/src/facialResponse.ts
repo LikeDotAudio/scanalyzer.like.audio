@@ -104,6 +104,16 @@ export interface Face {
    *  ON the face rather than at a single point. */
   tangentU: Vec3;
   tangentV: Vec3;
+  /** This face's own corner vertices — 5 for a pentagon, 6 for a hexagon — as
+   *  indices into `Solid.vertices`, wound in order around the face.
+   *
+   *  These make the face a set of ATTRACTORS rather than a flat patch. A sample
+   *  carries far more than the three numbers the spatial axes can show, so the
+   *  corners give it five or six more: weight each corner by a feature and place
+   *  the sample at the weighted average, and the position within the face reads
+   *  as "which of these qualities dominates". A pentagon face genuinely has five
+   *  degrees of freedom to spend. */
+  corners: number[];
 }
 
 export interface Solid {
@@ -139,7 +149,7 @@ export function truncatedIcosahedron(): Solid {
     const seed: Vec3 = Math.abs(c.center[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0];
     const tangentU = normalize(cross(c.center, seed));
     const tangentV = normalize(cross(c.center, tangentU));
-    return { index, kind: c.kind, center: c.center, tangentU, tangentV };
+    return { index, kind: c.kind, center: c.center, tangentU, tangentV, corners: [] };
   });
 
   // Truncated vertices: each icosahedral edge contributes the two points one
@@ -197,6 +207,26 @@ export function truncatedIcosahedron(): Solid {
     }
   }
 
+  // Give every face its own corners. A face's corners are simply the vertices
+  // nearest its centre — 5 for a pentagon, 6 for a hexagon — and the gap to the
+  // next-nearest vertex is large, so picking the top N by dot product is exact
+  // rather than a tolerance guess. They are then wound by angle in the face's
+  // tangent plane so consecutive corners are adjacent around the rim.
+  faces.forEach((f) => {
+    const want = f.kind === 'pentagon' ? 5 : 6;
+    const ranked = vertices
+      .map((v, i) => ({ i, d: dot(v, f.center) }))
+      .sort((a, b) => b.d - a.d)
+      .slice(0, want)
+      .map((r) => r.i);
+    ranked.sort((p, q) => {
+      const ap = Math.atan2(dot(vertices[p], f.tangentV), dot(vertices[p], f.tangentU));
+      const aq = Math.atan2(dot(vertices[q], f.tangentV), dot(vertices[q], f.tangentU));
+      return ap - aq;
+    });
+    f.corners = ranked;
+  });
+
   return { faces, vertices, edges, faceAdjacency };
 }
 
@@ -218,6 +248,19 @@ export function validateSolid(s: Solid): string | null {
   if (hex !== 20) return `expected 20 hexagons, built ${hex}`;
   if (s.faceAdjacency.length !== 90) return `expected 90 adjacencies, built ${s.faceAdjacency.length}`;
   if (V - E + F !== 2) return `Euler: ${V} − ${E} + ${F} = ${V - E + F}, expected 2`;
+  // Corners: every face must own exactly as many as its kind, all distinct, and
+  // every vertex must be shared by exactly three faces (a truncated icosahedron
+  // is 3-valent). Sum over faces is therefore 12×5 + 20×6 = 180 = 3 × 60.
+  const seen = new Map<number, number>();
+  for (const f of s.faces) {
+    const want = f.kind === 'pentagon' ? 5 : 6;
+    if (f.corners.length !== want) return `face ${f.index} (${f.kind}) has ${f.corners.length} corners, expected ${want}`;
+    if (new Set(f.corners).size !== want) return `face ${f.index} repeats a corner`;
+    for (const c of f.corners) seen.set(c, (seen.get(c) ?? 0) + 1);
+  }
+  if (seen.size !== 60) return `corners cover ${seen.size} vertices, expected 60`;
+  const wrong = [...seen.entries()].find(([, n]) => n !== 3);
+  if (wrong) return `vertex ${wrong[0]} belongs to ${wrong[1]} faces, expected 3`;
   return null;
 }
 
