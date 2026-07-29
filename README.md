@@ -331,6 +331,55 @@ The analyzer utilizes a suite of industry-standard measurements and machine lear
 - **Algorithmic Rhythm** — tracks spectral flux (sudden bursts of energy) to find the attacks, then reduces that onset envelope to `onset_periodicity`: the autocorrelation peak that separates a periodic onset train (a clock, a gallop) from a stochastic one (rain, applause).
 - **QA Metrics** — scans for hardware faults like `dc_offset`, and wasteful dead space via `trailing_silence_ms`.
 
+### Bioacoustic syntax (`Scananalyzers/Sequence/syntax/`) — the ORDER, and what sits between
+
+Every extractor above describes one sound. This one describes a *sequence* of
+them, and it only runs on files that have one: multi-region files, after each
+region has been fully analyzed. It is the pipeline's answer to the bioacoustic
+question — birdsong, whale song, speech, a machine cycling, a drum loop are all
+a small vocabulary of units delivered in an order that carries information.
+
+- **Vocabulary.** Each slice's own analysis (MFCCs, centroid, envelope,
+  harmonicity — the classical stand-in for a convolutional auto-encoder's
+  learned embedding) becomes a vector, scaled by the larger of its spread in
+  this file and its **just-noticeable difference**. That floor matters: plain
+  z-scoring divides by whatever variation is present, so on eight copies of one
+  sound it amplifies the segmenter's frame quantization into a tidy, entirely
+  fictional repertoire. Complete-linkage agglomerative clustering then builds the
+  whole dendrogram (k is exactly what we don't know), and the level that wins is
+  the one with the best **mean silhouette** — accepted only if it also clears an
+  absolute `type_separation` in JNDs. "This file has one word" has to be a
+  reachable answer, and for a repeated call it is the true one.
+- **The map.** The same vectors run through the analyzer's own PCA to give every
+  slice an (x, y): the node layout of a grammar map, drawn with the deterministic
+  projection the library map already uses.
+- **Syntax.** First-order transition probabilities between types, and the verdict
+  on whether the order means anything: `syntactic_information_bits` is the mutual
+  information between consecutive slices, H(next) − H(next | current). Zero bits
+  is a bag of sounds; the sequence carries no grammar. `determinism` is the same
+  number over its maximum. The record also carries the repertoire entropy,
+  bigram coverage, repeat ratio, the longest repeated motif, and
+  `transitions_per_type_pair` — the sample adequacy, because an entropy computed
+  from a sparse table is suggestive rather than measured, and the reason line
+  says so out loud.
+- **Junctions — what is between the transitions.** The gap between two slices is
+  not nothing, and it is measured: level, spectral centroid and flatness of the
+  residue, and the dB/s slope. What classifies it is **what is still sounding
+  when the next slice begins**, not the gap's average — a release that decayed to
+  nothing binds two slices no more than a hard edit does. Hence `Continuous` (the
+  gate dipped, the sound never stopped), `Resonant Tail` (the previous sound
+  ringing into the next), `Breath` (level rising into the onset — an inhale, a
+  wind-up), `Noise Bed` (a steady background under everything), `Silence`. Each
+  junction also carries the **surprisal** of the transition it spans, in bits, so
+  the one rare move inside an otherwise rigid song is findable.
+- **The verdict.** `syntax_class`: Isolated / Repetition / Isochronous Repetition
+  / Alternation / Structured / Variable / Stochastic, with the usual three-part
+  numbered `reason`.
+
+The whole thing is arithmetic over the STFT, the RMS envelope and the per-region
+analyses that already exist — no new transform. Its ceiling is the segmenter's:
+a syllable the silence gate never separated cannot appear in the sequence.
+
 ---
 
 ## Classification — how the labels are concluded

@@ -4,6 +4,7 @@ import wasmUrl from 'wasm_analyzer/wasm_analyzer_bg.wasm?url';
 import { filterAudioFiles, isTauri, fsaSupported, pickDirectoryFiles, getDirHandle, writePeakSidecar, writeRootFile, relPathOf } from '../../audioLinking';
 import { normalizePeakRecords } from '../../peakSchema';
 import { MANIFEST_FILE, buildManifest } from '../../manifest';
+import { slimForUpload, UPLOAD_CHUNK_SIZE } from '../../peakUpload';
 import TauriScan from './TauriScan';
 
 /** The folder a record is filed under — the file's parent path, or '' at the root.
@@ -28,6 +29,8 @@ interface ScanalyzeTabProps {
   setProgress: (val: number) => void;
   onViewCloud: () => void;
   setAudioFiles: (files: File[]) => void;
+  /** Re-read the cloud database's live row count once a scan has contributed. */
+  onDbChanged?: () => void;
 }
 
 export default function ScanalyzeTab({
@@ -37,13 +40,20 @@ export default function ScanalyzeTab({
     setIsAnalyzing,
     setProgress,
     onViewCloud,
-    setAudioFiles
+    setAudioFiles,
+    onDbChanged
 }: ScanalyzeTabProps) {
   const [wasmReady, setWasmReady] = useState(false);
   const [done, setDone] = useState(0);
   const [total, setTotal] = useState(0);
   const [absorbed, setAbsorbed] = useState(0);
   const [stale, setStale] = useState(0);
+  // Cloud-database contribution, shown live during a scan. Before this there was
+  // no counter at all: uploads were fired and forgotten, so a scan that stored
+  // nothing looked identical to one that stored everything.
+  const [dbStored, setDbStored] = useState(0);
+  const [dbSkipped, setDbSkipped] = useState(0);
+  const [dbError, setDbError] = useState('');
   const [version, setVersion] = useState('');
   // What the folder survey found, shown for confirmation before any file is read.
   // `sidecarEngine` is read from a small sample of the sidecars, not all of them:
@@ -327,35 +337,37 @@ export default function ScanalyzeTab({
     let completed = 0;
 
     let dbBatch: any[] = [];
+    const dbUploads: Promise<void>[] = [];
+    setDbStored(0);
+    setDbSkipped(0);
+    setDbError('');
     const flushDbBatch = async (records: any[]) => {
       // Only upload if running in browser (Tauri app handles its own DB sync in Rust)
       if (isTauri()) return;
 
-      // Phase 2: Frontend Payload Optimization (Strip arrays to reduce payload by 99%)
-      const stripArrays = (obj: any): any => {
-        if (Array.isArray(obj)) return undefined; // Destroy all arrays (waveforms, MFCCs, etc)
-        if (typeof obj === 'object' && obj !== null) {
-          const stripped: any = {};
-          for (const key in obj) {
-            const val = stripArrays(obj[key]);
-            if (val !== undefined) stripped[key] = val;
-          }
-          return stripped;
-        }
-        return obj;
-      };
-
-      const lightweightRecords = records.map(stripArrays);
-
       try {
         const baseUrl = isTauri() ? 'https://scanalyzer.like.audio' : '.';
-        await fetch(`${baseUrl}/api/upload_peak.php`, {
+        const res = await fetch(`${baseUrl}/api/upload_peak.php`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(lightweightRecords)
+          body: JSON.stringify(records.map(slimForUpload))
         });
-      } catch (e) {
+        // Read the outcome. This was fire-and-forget: it never checked res.ok
+        // and never read the count, so a server that rejected every batch looked
+        // exactly like one that stored them all, and the UI had nothing to show.
+        if (!res.ok) {
+          const detail = await res.text().catch(() => '');
+          setDbError(`HTTP ${res.status}${detail ? ` — ${detail.slice(0, 200)}` : ''}`);
+          return;
+        }
+        const body = await res.json().catch(() => null);
+        const stored = Number(body?.stored ?? body?.inserted ?? 0);
+        setDbStored((n) => n + stored);
+        if (body?.skipped) setDbSkipped((n) => n + Number(body.skipped));
+        setDbError('');
+      } catch (e: any) {
         console.warn("DB upload failed for batch", e);
+        setDbError(String(e?.message || e));
       }
     };
 
@@ -421,10 +433,13 @@ export default function ScanalyzeTab({
                                 
                                 // Queue for DB upload
                                 dbBatch.push(parsed);
-                                if (dbBatch.length >= 500) {
+                                if (dbBatch.length >= UPLOAD_CHUNK_SIZE) {
                                     const batchToUpload = [...dbBatch];
                                     dbBatch = [];
-                                    flushDbBatch(batchToUpload); // Fire and forget background upload
+                                    // Not awaited — the scan must not stall on the
+                                    // network — but the promise is tracked so the
+                                    // final tally waits for it below.
+                                    dbUploads.push(flushDbBatch(batchToUpload));
                                 }
                             }
                         } catch (err) {
@@ -451,8 +466,12 @@ export default function ScanalyzeTab({
     });
 
     if (dbBatch.length > 0) {
-        await flushDbBatch(dbBatch);
+        dbUploads.push(flushDbBatch(dbBatch));
     }
+    // Wait for the in-flight batches too. They were fire-and-forget, so a scan
+    // that finished quickly could tear down before its last uploads landed.
+    await Promise.allSettled(dbUploads);
+    if (dbUploads.length) onDbChanged?.();
 
     workers.forEach(w => w.terminate());
 
@@ -494,6 +513,20 @@ export default function ScanalyzeTab({
                   <div style={{ width: '100%', height: '16px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', overflow: 'hidden', marginBottom: '1rem' }}>
                       <div style={{ width: `${pct}%`, height: '100%', background: 'var(--accent-primary)', transition: 'width 0.15s' }} />
                   </div>
+                  {!isTauri() && (dbStored > 0 || dbSkipped > 0 || dbError) && (
+                    <div style={{ textAlign: 'center', fontSize: '0.85rem', marginBottom: '1rem', lineHeight: 1.5 }}>
+                      {dbError ? (
+                        <span style={{ color: 'var(--accent-secondary)' }}>
+                          ☁️ Cloud contribution failed — {dbError}
+                        </span>
+                      ) : (
+                        <span style={{ color: 'var(--text-secondary)' }}>
+                          ☁️ Contributed <strong style={{ color: 'var(--accent-primary)' }}>{dbStored.toLocaleString()}</strong> record{dbStored === 1 ? '' : 's'} to the cloud database
+                          {dbSkipped > 0 && <> · <strong>{dbSkipped.toLocaleString()}</strong> skipped</>}
+                        </span>
+                      )}
+                    </div>
+                  )}
                   {(absorbed > 0 || stale > 0) && (
                     <div style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1rem', lineHeight: 1.5 }}>
                       {absorbed > 0 && (

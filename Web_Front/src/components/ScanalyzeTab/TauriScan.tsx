@@ -51,7 +51,9 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
   const [version, setVersion] = useState('');
   // Paging the finished .PEAK back out of Rust.
   const [loaded, setLoaded] = useState<{ done: number; total: number } | null>(null);
-  const [dbStatus, setDbStatus] = useState<{ success: boolean; count?: number } | null>(null);
+  const [dbStatus, setDbStatus] = useState<
+    { success: boolean; count?: number; sent?: number; error?: string } | null
+  >(null);
   const [recentDir, setRecentDir] = useState<string | null>(localStorage.getItem('scanalyzer_recent_dir'));
   const [dbLoading, setDbLoading] = useState(false);
 
@@ -143,9 +145,11 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
                 setDbStatus(null);
             } else if (msg.type === 'db_export') {
                 if (msg.status === 'success') {
-                    setDbStatus({ success: true, count: msg.count });
+                    setDbStatus({ success: true, count: msg.count, sent: msg.sent });
                 } else {
-                    setDbStatus({ success: false });
+                    // Carry the reason through. "Database sync failed" with no
+                    // detail is why a payload-too-large rejection went unnoticed.
+                    setDbStatus({ success: false, error: msg.error });
                 }
             } else if (msg.type === 'thread_start') {
                 const textEl = threadsTextRef.current[msg.thread_id];
@@ -517,7 +521,11 @@ export default function TauriScan({ analysisResult, setAnalysisResult, isAnalyzi
           
           {dbStatus && (
              <div style={{ marginTop: '0.75rem', padding: '0.5rem', borderRadius: '4px', background: dbStatus.success ? 'rgba(0,200,100,0.1)' : 'rgba(255,50,50,0.1)', color: dbStatus.success ? 'var(--accent-primary)' : 'var(--accent-secondary)' }}>
-                 {dbStatus.success ? `✅ Database sync successful (${dbStatus.count} records)` : '⚠️ Database sync failed'}
+                 {dbStatus.success
+                   ? (dbStatus.sent !== undefined && dbStatus.count !== dbStatus.sent
+                       ? `⚠️ Database stored ${dbStatus.count} of ${dbStatus.sent} records sent`
+                       : `✅ Database sync successful (${dbStatus.count} records)`)
+                   : `⚠️ Database sync failed${dbStatus.error ? ` — ${dbStatus.error}` : ''}`}
              </div>
           )}
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>

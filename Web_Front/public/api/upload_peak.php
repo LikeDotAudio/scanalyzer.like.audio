@@ -7,10 +7,31 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit(json_encode(['error' => 'Method Not Allowed']));
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
+$raw = file_get_contents('php://input');
+$data = json_decode($raw, true);
 if (!$data || !is_array($data)) {
+    // Distinguish "you sent nonsense" from "PHP threw your body away". A POST
+    // larger than post_max_size arrives with an EMPTY body and no error, so the
+    // old blanket "Invalid JSON payload" was the same message for a client bug
+    // and for a server limit the client can do nothing about but must be told.
     http_response_code(400);
-    exit(json_encode(['error' => 'Invalid JSON payload']));
+    $limit = ini_get('post_max_size');
+    exit(json_encode([
+        'error' => $raw === '' ? 'Empty body — the payload probably exceeded post_max_size' : 'Invalid JSON payload',
+        'bytes_received' => strlen($raw),
+        'post_max_size' => $limit,
+    ]));
+}
+
+/** A column holds one string. Join a list into one; leave scalars alone.
+ *  Passing the raw array into execute() made PDO stringify it to the literal
+ *  "Array", which is what 1,000 rows in this database still say. */
+function as_text($value) {
+    if (is_array($value)) {
+        $flat = array_filter($value, 'is_scalar');
+        return $flat ? implode(', ', $flat) : null;
+    }
+    return $value;
 }
 
 $host = 'localhost';
@@ -37,22 +58,39 @@ try {
     $stmtMusic = $pdo->prepare("REPLACE INTO musicality (file_id, pitch_hz, root_note_name, root_midi_note, root_cents_offset, beats_per_minute) VALUES (?, ?, ?, ?, ?, ?)");
     $stmtEnv = $pdo->prepare("REPLACE INTO envelope (file_id, transient_count, attack_seconds, decay_seconds, sustain_level, release_seconds, temporal_centroid, shape) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
+    $idStmt = $pdo->prepare("SELECT id FROM audio_files WHERE filename = ? AND folder_path = ?");
+
+    $stored = 0;
+    $skipped = 0;
+
     foreach ($data as $record) {
         $meta = $record['metadata'] ?? [];
-        if (!isset($meta['name'])) continue;
-        
-        $filePath = $meta['name'];
-        $filename = basename($filePath);
-        $folder = dirname($filePath);
+        if (!isset($meta['name'])) { $skipped++; continue; }
+
+        // The folder comes from `metadata.folder`, which is what the analyzer
+        // actually populates with it.
+        //
+        // This used to be dirname($meta['name']) — but `name` is a bare
+        // filename, never a path, so dirname() returned "." for every record
+        // ever uploaded. Combined with UNIQUE KEY (filename, folder_path) that
+        // made every same-named file in the library overwrite every other one:
+        // the row count tracked distinct FILENAMES, not files scanned, and a
+        // library of 200k samples collapsed to 34k rows with no error anywhere.
+        $filename = basename($meta['name']);
+        $folder = $meta['folder'] ?? '';
+        if ($folder === '' && !empty($meta['path'])) {
+            $folder = dirname(str_replace('\\', '/', $meta['path']));
+        }
+        if ($folder === '' || $folder === '.') $folder = '(root)';
         $version = $meta['analyzer_version'] ?? null;
-        
+
         $stmtAudio->execute([$filename, $folder, $version]);
         // Retrieve the ID. Since we used ON DUPLICATE KEY UPDATE, lastInsertId might be 0 if it was an update.
-        // We can select it to be safe.
-        $idStmt = $pdo->prepare("SELECT id FROM audio_files WHERE filename = ? AND folder_path = ?");
+        // We can select it to be safe. (Prepared once, above the loop — it was
+        // being re-prepared per record, a wasted round trip on every file.)
         $idStmt->execute([$filename, $folder]);
         $file_id = $idStmt->fetchColumn();
-        if (!$file_id) continue;
+        if (!$file_id) { $skipped++; continue; }
 
         $stmtMeta->execute([
             $file_id,
@@ -74,9 +112,11 @@ try {
             $cls['group'] ?? null,
             $cls['subgroup'] ?? null,
             $cls['timbre'] ?? null,
-            $cls['acoustic_types'] ?? null,
-            $cls['instrument_family'] ?? null,
-            isset($cls['reason']) && is_array($cls['reason']) ? ($cls['reason'][0] ?? null) : null,
+            as_text($cls['acoustic_types'] ?? null),
+            as_text($cls['instrument_family'] ?? null),
+            // `reason` is the three-part membership argument — store all of it,
+            // not just clause 1. The column is TEXT.
+            as_text($cls['reason'] ?? null),
             $ucs['alternatives'][0]['category'] ?? null,
             $ucs['alternatives'][0]['subcategory'] ?? null,
             $ucs['alternatives'][1]['category'] ?? null,
@@ -120,10 +160,23 @@ try {
             $env['envelope_temporal_centroid'] ?? null,
             $env['envelope_shape'] ?? null
         ]);
+
+        $stored++;
     }
     $pdo->commit();
-    
-    echo json_encode(['status' => 'success', 'inserted' => count($data)]);
+
+    // `stored` is what actually reached a row. It used to report count($data) —
+    // the number of records POSTed — which meant a batch that skipped every
+    // record for want of a name still reported total success, and no client
+    // could tell. The UI counter reads this field.
+    echo json_encode([
+        'status' => 'success',
+        'stored' => $stored,
+        'skipped' => $skipped,
+        'received' => count($data),
+        // Kept so an older client that reads `inserted` keeps working.
+        'inserted' => $stored,
+    ]);
 } catch (\PDOException $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();

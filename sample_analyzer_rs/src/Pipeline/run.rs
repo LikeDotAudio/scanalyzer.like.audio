@@ -150,11 +150,27 @@ pub fn run(cfg: &Config) {
 
     #[cfg(not(target_arch = "wasm32"))]
     if let Some(pool) = &db_pool {
-        if let Err(e) = db::write_peaks(pool, &results) {
-            eprintln!("Warning: DB write failed: {}", e);
-            emit(&serde_json::json!({ "type": "db_export", "status": "failed" }));
-        } else {
-            emit(&serde_json::json!({ "type": "db_export", "status": "success", "count": results.len() }));
+        // Report what the server STORED, not how many records were handed to it.
+        // The old form emitted results.len() on any 200, so a batch the endpoint
+        // silently dropped still showed up as a complete success.
+        match db::write_peaks(pool, &results) {
+            Err(e) => {
+                eprintln!("Warning: DB write failed: {}", e);
+                emit(&serde_json::json!({ "type": "db_export", "status": "failed", "error": e }));
+            }
+            Ok(stored) => {
+                if stored < results.len() {
+                    eprintln!(
+                        "Warning: DB stored {} of {} records",
+                        stored,
+                        results.len()
+                    );
+                }
+                emit(&serde_json::json!({
+                    "type": "db_export", "status": "success",
+                    "count": stored, "sent": results.len()
+                }));
+            }
         }
     }
 

@@ -316,11 +316,25 @@ fn sync_to_db(app: tauri::AppHandle, directory: String) {
             return;
         }
 
-        if oa_sample_analyzer::db::write_peaks(&pool, &records).is_err() {
-            let _ = app.emit("analyzer-progress", r#"{"type":"db_export","status":"failed"}"#);
-        } else {
-            let msg = format!(r#"{{"type":"db_export","status":"success","count":{}}}"#, records.len());
-            let _ = app.emit("analyzer-progress", msg);
+        // The count reported is the server's `stored`, not records.len() — the
+        // desktop sync used to claim every record succeeded whatever came back.
+        match oa_sample_analyzer::db::write_peaks(&pool, &records) {
+            Err(e) => {
+                eprintln!("DB sync failed: {e}");
+                let msg = serde_json::json!({
+                    "type": "db_export", "status": "failed", "error": e
+                })
+                .to_string();
+                let _ = app.emit("analyzer-progress", msg);
+            }
+            Ok(stored) => {
+                let msg = serde_json::json!({
+                    "type": "db_export", "status": "success",
+                    "count": stored, "sent": records.len()
+                })
+                .to_string();
+                let _ = app.emit("analyzer-progress", msg);
+            }
         }
     });
 }

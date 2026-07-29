@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import './index.css'
 import { fsaSupported, getDirHandle, scanDirectoryHandle, clearDirHandle, setAudioRoot, getAudioRoot, filterAudioFiles, isTauri, getLastFolderName, clearLastFolderName, resolveAudioUrl, readRootFile, writeRootFile, ensureReadwrite } from './audioLinking'
 import { MANIFEST_FILE, manifestIsCurrent } from './manifest'
@@ -6,6 +6,7 @@ import { FAVORITES_FILE, FAVORITES_STORAGE_KEY, favoriteKeyOf, buildFavorites, p
 import SampleFooter, { type FooterTab } from './components/SampleFooter'
 import LayersMenu from './components/examiner/LayersMenu'
 import { normalizePeakRecords, LEGACY_MIGRATION_GAPS } from './peakSchema'
+import { slimForUpload, UPLOAD_CHUNK_SIZE } from './peakUpload'
 import Header from './components/Header'
 import ScanalyzeTab from './components/ScanalyzeTab'
 import CloudTab from './components/CloudTab'
@@ -39,7 +40,11 @@ function App() {
   const [audioFiles, setAudioFiles] = useState<File[]>([])
   // DB Live Status for Web deployment
   const [dbStatus, setDbStatus] = useState<{ online: boolean; records: number; checked: boolean }>({ online: false, records: 0, checked: false });
-  useEffect(() => {
+  // Re-read the live row count. Called on mount AND after a scan finishes
+  // contributing — it used to run only on mount, so the number on screen stayed
+  // frozen at whatever it was when the page loaded, no matter how much the scan
+  // had just added.
+  const refreshDbStatus = useCallback(() => {
     const baseUrl = isTauri() ? 'https://scanalyzer.like.audio' : '.';
     fetch(`${baseUrl}/api/db_status.php`)
       .then(res => res.json())
@@ -48,6 +53,7 @@ function App() {
       })
       .catch(() => setDbStatus({ online: false, records: 0, checked: true }));
   }, []);
+  useEffect(() => { refreshDbStatus(); }, [refreshDbStatus]);
 
   const [activeTab, setActiveTab] = useState(tabFromHash())
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -545,23 +551,42 @@ function App() {
            if (allResults.length > 0 && window.confirm(`Would you like to contribute these ${allResults.length} analyzed peak(s) to the shared cloud database?`)) {
              (async () => {
                const baseUrl = isTauri() ? 'https://scanalyzer.like.audio' : '.';
-               const CHUNK_SIZE = 500;
                let uploaded = 0;
-               for (let i = 0; i < allResults.length; i += CHUNK_SIZE) {
-                 const chunk = allResults.slice(i, i + CHUNK_SIZE);
+               let failed = 0;
+               let lastError = '';
+               for (let i = 0; i < allResults.length; i += UPLOAD_CHUNK_SIZE) {
+                 const chunk = allResults.slice(i, i + UPLOAD_CHUNK_SIZE);
                  try {
                    const res = await fetch(`${baseUrl}/api/upload_peak.php`, {
                      method: 'POST',
                      headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify(chunk)
+                     // Slimmed to the stored columns. Sending raw records made a
+                     // 500-record POST ~5.7 MB, over post_max_size on most hosts,
+                     // which PHP discards silently.
+                     body: JSON.stringify(chunk.map(slimForUpload))
                    });
-                   if (res.ok) uploaded += chunk.length;
-                 } catch (err) {
+                   // Count what the SERVER says it stored, not the chunk length:
+                   // res.ok only meant the request arrived, and a record the
+                   // endpoint skipped was still being reported as contributed.
+                   if (res.ok) {
+                     const body = await res.json().catch(() => null);
+                     uploaded += Number(body?.stored ?? body?.inserted ?? 0);
+                   } else {
+                     failed += chunk.length;
+                     lastError = `HTTP ${res.status}`;
+                   }
+                 } catch (err: any) {
+                   failed += chunk.length;
+                   lastError = String(err?.message || err);
                    console.error('Failed to upload chunk', err);
                  }
                }
-               if (uploaded > 0) {
+               if (failed > 0) {
+                 alert(`Contributed ${uploaded} peak(s); ${failed} could not be uploaded (${lastError}).`);
+               } else if (uploaded > 0) {
                  alert(`Successfully contributed ${uploaded} peak(s) to the cloud!`);
+               } else {
+                 alert('No peaks were stored — the server accepted the upload but recorded nothing.');
                }
              })();
            }
@@ -700,6 +725,7 @@ function App() {
             setProgress={setProgress}
             onViewCloud={() => goToTab('cloud')}
             setAudioFiles={setAudioFiles}
+            onDbChanged={refreshDbStatus}
           />
         </div>
 

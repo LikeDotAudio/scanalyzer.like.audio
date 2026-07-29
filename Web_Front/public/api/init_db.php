@@ -2,7 +2,24 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-$host = 'scanalyzer.like.audio';
+// THIS ENDPOINT DESTROYS THE DATABASE. It drops and recreates every table.
+//
+// It used to do that for anyone who typed the URL into a browser — one GET from
+// a crawler, a link preview, or a mistyped tab and 34,000 contributed records
+// were gone with no confirmation and no backup. Require an explicit POST plus a
+// spelled-out confirmation phrase, so it cannot happen by accident or by
+// drive-by.
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || ($_POST['confirm'] ?? '') !== 'DROP ALL TABLES') {
+    http_response_code(403);
+    exit(json_encode([
+        'status' => 'refused',
+        'message' => 'Destructive. POST with confirm=DROP ALL TABLES to proceed.',
+    ]));
+}
+
+// localhost, not the public hostname: the DB user is only granted access from
+// the local socket, so connecting via the domain is refused by the server.
+$host = 'localhost';
 $db   = 'tandapho_scanalyzer';
 $user = 'tandapho_scanalyzer';
 $pass = 'GITHUB_SECRET_DB_PASSWORD';
