@@ -19,8 +19,11 @@ import {
   truncatedIcosahedron, validateSolid, RESPONSES, faceOfItem,
   type ResponseFamily, type Vec3,
 } from '../../facialResponse';
-import { adsrNumber } from '../../envelopeSlices';
 import { ucsColor, ucsSubColor, taxonomyKeys } from '../../groupColors';
+import { AXES, AXIS_GROUPS, AXIS_NAMES, CORNER_SCHEMES, normalizer } from './axes';
+
+export { AXIS_GROUPS, AXIS_NAMES, CORNER_SCHEMES } from './axes';
+export const CORNER_SCHEME_NAMES = Object.keys(CORNER_SCHEMES);
 
 /** World radius of the ball. */
 const R = 26;
@@ -57,37 +60,6 @@ function sampleColor(item: any, mode: ColorMode, faceIndex: number): string {
   if (mode === 'Response Family') return FAMILY_COLOR[RESPONSES[faceIndex].family];
   const [category, subcategory] = taxonomyKeys(item);
   return mode === 'UCS Category' ? ucsColor(category) : ucsSubColor(category, subcategory);
-}
-
-/** Numeric readers for the three acoustic axes. Kept small and local: this view
- *  is about the 4th dimension, the other three just need to be reasonable. */
-const AXES: Record<string, (it: any) => number> = {
-  Brightness: (it) => it.spectral_features?.spectral_centroid_hz ?? 0,
-  Harmonicity: (it) => it.spectral_features?.harmonicity ?? 0,
-  Length: (it) => it.metadata?.length_seconds ?? 0,
-  Transients: (it) => it.envelope?.transient_count ?? 0,
-  Sustain: (it) => adsrNumber(it, 'envelope_sustain_level'),
-  Attack: (it) => adsrNumber(it, 'envelope_attack_seconds'),
-  Flatness: (it) => it.spectral_features?.spectral_flatness ?? 0,
-  RMS: (it) => it.spectral_features?.root_mean_square_level ?? 0,
-  Pitch: (it) => it.musicality?.pitch_hz ?? 0,
-};
-export const AXIS_NAMES = Object.keys(AXES);
-
-/** Normalize a feature across the dataset to [-1, 1]; absent reads as centre. */
-function normalizer(data: any[], name: string): (it: any) => number {
-  const get = AXES[name] ?? (() => 0);
-  let mn = Infinity, mx = -Infinity;
-  for (const it of data) {
-    const v = Number(get(it));
-    if (Number.isFinite(v)) { if (v < mn) mn = v; if (v > mx) mx = v; }
-  }
-  const range = mx - mn || 1;
-  return (it) => {
-    const v = Number(get(it));
-    if (!Number.isFinite(v)) return 0;
-    return ((v - mn) / range) * 2 - 1;
-  };
 }
 
 const v3 = (a: Vec3) => new THREE.Vector3(a[0], a[1], a[2]);
