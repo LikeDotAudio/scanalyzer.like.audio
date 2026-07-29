@@ -20,7 +20,7 @@ import {
   type ResponseFamily, type Vec3,
 } from '../../facialResponse';
 import { ucsColor, ucsSubColor, taxonomyKeys } from '../../groupColors';
-import { AXES, AXIS_GROUPS, AXIS_NAMES, CORNER_SCHEMES, normalizer } from './axes';
+import { AXES, CORNER_SCHEMES, normalizer } from './axes';
 
 export { AXIS_GROUPS, AXIS_NAMES, CORNER_SCHEMES } from './axes';
 export const CORNER_SCHEME_NAMES = Object.keys(CORNER_SCHEMES);
