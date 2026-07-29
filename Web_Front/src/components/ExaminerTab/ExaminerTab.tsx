@@ -11,6 +11,7 @@ import { computeSpectrogramFrames, type SpectrogramFrames } from '../examiner/la
 import type { LayerData } from '../examiner/layers/types';
 import PropertyBars from '../examiner/PropertyBars';
 import FieldValueTable from '../examiner/FieldValueTable';
+import SliceTable from '../examiner/SliceTable';
 import RadialWaveform from '../examiner/RadialWaveform';
 import EyeMeters from '../examiner/EyeMeters';
 import { useAudioPrefetch } from '../examiner/useAudioPrefetch';
@@ -862,6 +863,7 @@ export default function ExaminerTab({ analysisResult, filteredData, audioFiles, 
           {/* Bottom Left: Field/Value details */}
           <div style={{ ...(isNarrow ? { width: '100%', order: 3, borderTop: '1px solid var(--border-color)' } : { width: '300px', borderRight: '1px solid var(--border-color)' }), overflowY: 'auto' }}>
               <FieldValueTable item={detailItem || selectedItem} />
+              <SliceTable item={detailItem || selectedItem} />
           </div>
 
           {/* Bottom Centre: static waveform + FFT preview (the wave is the centrepiece).

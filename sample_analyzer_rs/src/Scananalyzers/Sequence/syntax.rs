@@ -617,7 +617,14 @@ const SLICE_FEATURE_FLOORS: [f64; 15 + MFCC_IN_SLICE_VECTOR] = [
     0.10, // ln zero-crossing rate
     0.05, // spectral flatness (0..1)
     0.05, // harmonicity (0..1)
-    0.05, // inharmonicity (0..1)
+    // Inharmonicity is coarser than the rest and its floor has to say so: it
+    // rides on discrete partial peak-picking, so a region edge landing one frame
+    // over flips a partial in or out and the value jumps. Measured on bit-
+    // identical copies of one chirp segmented at slightly different offsets it
+    // moved by 0.10 — so anything under that is the peak-picker twitching, not a
+    // difference in the sound. At the old 0.05 it single-handedly supplied 84 %
+    // of the distance that split those identical copies into two "types".
+    0.15, // inharmonicity (0..1)
     0.03, // low-band energy share
     0.03, // mid-band energy share
     0.03, // high-band energy share
