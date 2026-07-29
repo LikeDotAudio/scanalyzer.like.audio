@@ -31,6 +31,34 @@ const PREF = 'scanalyzer_faceball_';
 const getPref = (k: string, d: string) => localStorage.getItem(PREF + k) || d;
 const setPref = (k: string, v: string) => localStorage.setItem(PREF + k, v);
 
+/** A–H view presets: three axes (with directions), a corner scheme and its pull.
+ *  Each is a different question to ask of the same library — the point of eight
+ *  buttons rather than one default is that no single projection answers them all. */
+type Preset = {
+  key: string; name: string;
+  x: string; y: string; z: string;
+  signs: [1 | -1, 1 | -1, 1 | -1];
+  corners: string; cornerPull: number; pull: number;
+};
+const PRESETS: Preset[] = [
+  { key: 'A', name: 'Classic — brightness / harmonicity / transients',
+    x: 'Brightness', y: 'Harmonicity', z: 'Transients', signs: [1, 1, 1], corners: 'Off', cornerPull: 0, pull: 0.85 },
+  { key: 'B', name: 'Envelope shape — attack / sustain / release',
+    x: 'Attack', y: 'Sustain', z: 'Release', signs: [1, 1, 1], corners: 'Envelope', cornerPull: 0.7, pull: 0.9 },
+  { key: 'C', name: 'Spectral balance — low / high / flatness',
+    x: 'Low band', y: 'High band', z: 'Flatness', signs: [1, 1, 1], corners: 'Spectral balance', cornerPull: 0.8, pull: 0.9 },
+  { key: 'D', name: 'Timbre fingerprint — the MFCC space',
+    x: 'MFCC 1', y: 'MFCC 2', z: 'MFCC 3', signs: [1, 1, 1], corners: 'Timbre (MFCC)', cornerPull: 0.8, pull: 0.85 },
+  { key: 'E', name: 'Material — harmonicity / inharmonicity / stationarity',
+    x: 'Harmonicity', y: 'Inharmonicity', z: 'Stationarity', signs: [1, 1, 1], corners: 'Material', cornerPull: 0.7, pull: 0.9 },
+  { key: 'F', name: 'Sequence — slices / vocabulary / determinism',
+    x: 'Slices', y: 'Vocabulary size', z: 'Determinism', signs: [1, 1, 1], corners: 'Sequence', cornerPull: 0.75, pull: 0.9 },
+  { key: 'G', name: 'Loudness & space — LUFS / crest / stereo width',
+    x: 'LUFS', y: 'Crest factor', z: 'Stereo width', signs: [1, 1, 1], corners: 'Off', cornerPull: 0, pull: 0.8 },
+  { key: 'H', name: 'Free scatter — no category pull, pure acoustics',
+    x: 'Brightness', y: 'Length', z: 'Pitch', signs: [1, -1, 1], corners: 'Off', cornerPull: 0, pull: 0 },
+];
+
 const panel: React.CSSProperties = {
   background: 'rgba(255,255,255,0.04)',
   border: '1px solid var(--border-color)',
@@ -62,6 +90,18 @@ export default function FaceBallTab({
   );
   const [soloFace, setSoloFace] = useState<number | null>(null);
   const [picked, setPicked] = useState<any>(null);
+
+  const applyPreset = (p: Preset) => {
+    setAxisX(p.x); setPref('x', p.x);
+    setAxisY(p.y); setPref('y', p.y);
+    setAxisZ(p.z); setPref('z', p.z);
+    setSignX(p.signs[0]); setPref('sx', String(p.signs[0]));
+    setSignY(p.signs[1]); setPref('sy', String(p.signs[1]));
+    setSignZ(p.signs[2]); setPref('sz', String(p.signs[2]));
+    setCornerScheme(p.corners); setPref('corners', p.corners);
+    setCornerPull(p.cornerPull); setPref('cornerPull', String(p.cornerPull));
+    setPull(p.pull); setPref('pull', String(p.pull));
+  };
 
   const item = picked ?? selectedItem;
   const visibleFaces = useMemo(
@@ -182,6 +222,33 @@ export default function FaceBallTab({
               onChange={(e) => { const v = Number(e.target.value); setOutline(v); setPref('outline', String(v)); }}
             />
           </label>
+          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 2, minWidth: 170 }}>
+            Category intensity — {(categoryIntensity * 100).toFixed(0)}%
+            <input
+              type="range" min={0} max={2} step={0.01} value={categoryIntensity}
+              onChange={(e) => { const v = Number(e.target.value); setCategoryIntensity(v); setPref('cat', String(v)); }}
+            />
+          </label>
+          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 2 }}>
+            Corner weighting
+            <select
+              className="btn"
+              value={cornerScheme}
+              onChange={(e) => { setCornerScheme(e.target.value); setPref('corners', e.target.value); }}
+              style={{ fontSize: '0.75rem', padding: '0.15rem 0.3rem' }}
+            >
+              {CORNER_SCHEME_NAMES.map((n) => <option key={n} value={n}>{n}</option>)}
+            </select>
+          </label>
+          {cornerScheme !== 'Off' && (
+            <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 2, minWidth: 170 }}>
+              Corner pull — {(cornerPull * 100).toFixed(0)}%
+              <input
+                type="range" min={0} max={1} step={0.01} value={cornerPull}
+                onChange={(e) => { const v = Number(e.target.value); setCornerPull(v); setPref('cornerPull', String(v)); }}
+              />
+            </label>
+          )}
           <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', maxWidth: 300, lineHeight: 1.35 }}>
             0 % is the plain 3-feature scatter. 100 % seats every sample on its
             response face. Past 100 % the samples overshoot outward, which pulls
@@ -193,6 +260,25 @@ export default function FaceBallTab({
               Show all 32 faces
             </button>
           )}
+        </div>
+        {/* A–H: eight ways to ask the library a different question. */}
+        <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center', padding: '0.3rem 0.6rem',
+          borderBottom: '1px solid var(--border-color)', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginRight: '0.2rem' }}>Views</span>
+          {PRESETS.map((p) => {
+            const active = axisX === p.x && axisY === p.y && axisZ === p.z && cornerScheme === p.corners;
+            return (
+              <button
+                key={p.key}
+                className={`btn ${active ? 'primary' : 'secondary'}`}
+                onClick={() => applyPreset(p)}
+                title={p.name}
+                style={{ fontSize: '0.72rem', padding: '0.15rem 0.55rem', fontWeight: 700 }}
+              >
+                {p.key}
+              </button>
+            );
+          })}
         </div>
         {/* position: relative so the EYE can be pinned inside the ball's own
             area rather than the whole tab — otherwise it would sit over the
