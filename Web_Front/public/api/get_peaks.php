@@ -27,8 +27,8 @@ try {
     $stmt->closeCursor();
 
     $sql = "
-        SELECT 
-            a.filename, a.folder_path, a.analyzer_version,
+        SELECT
+            a.filename, p.full_path, a.analyzer_version,
             m.length_seconds, m.sample_rate, m.bit_depth, m.channels, m.source_format, m.lossy_source, m.dc_offset,
             c.ucs_category, c.ucs_subcategory, c.group_name, c.subgroup, c.timbre, c.acoustic_types, c.instrument_family,
             c.reason, c.alt_1_group, c.alt_1_sub, c.alt_2_group, c.alt_2_sub, c.alt_3_group, c.alt_3_sub,
@@ -36,6 +36,7 @@ try {
             mu.pitch_hz, mu.root_note_name, mu.root_midi_note, mu.root_cents_offset, mu.beats_per_minute,
             e.transient_count, e.attack_seconds, e.decay_seconds, e.sustain_level, e.release_seconds, e.temporal_centroid, e.shape
         FROM audio_files a
+        LEFT JOIN paths p ON a.path_id = p.id
         LEFT JOIN metadata m ON a.id = m.file_id
         LEFT JOIN classification c ON a.id = c.file_id
         LEFT JOIN spectral_features s ON a.id = s.file_id
@@ -52,7 +53,19 @@ try {
         
         $record = [
             "metadata" => [
-                "name" => $row['folder_path'] . '/' . $row['filename'],
+                // `name` is the bare filename, matching what the analyzer writes
+                // into a .PEAK — it used to be folder+'/'+filename glued
+                // together, so a record read back from the cloud disagreed with
+                // the same record read from disk.
+                "name" => $row['filename'],
+                // The directory, and the full reconstruction of where the sound
+                // lives. This is the point of the paths table: a player can walk
+                // straight back to the file rather than guessing from a folder
+                // fragment that was only ever relative to somebody's scan root.
+                "folder" => $row['full_path'],
+                "path" => $row['full_path'] === null || $row['full_path'] === ''
+                    ? $row['filename']
+                    : rtrim($row['full_path'], '/') . '/' . $row['filename'],
                 "analyzer_version" => $row['analyzer_version'],
                 "length_seconds" => (float)$row['length_seconds'],
                 "sample_rate" => (int)$row['sample_rate'],

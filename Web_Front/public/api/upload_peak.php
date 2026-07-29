@@ -51,40 +51,61 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     $pdo->beginTransaction();
 
-    $stmtAudio = $pdo->prepare("INSERT INTO audio_files (filename, folder_path, analyzer_version) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE analyzer_version = VALUES(analyzer_version)");
+    $stmtPathFind = $pdo->prepare("SELECT id FROM paths WHERE path_key = ?");
+    $stmtPathAdd = $pdo->prepare("INSERT INTO paths (full_path, path_key) VALUES (?, ?) ON DUPLICATE KEY UPDATE full_path = VALUES(full_path)");
+    $stmtAudio = $pdo->prepare("INSERT INTO audio_files (filename, path_id, analyzer_version) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE analyzer_version = VALUES(analyzer_version)");
     $stmtMeta = $pdo->prepare("REPLACE INTO metadata (file_id, length_seconds, sample_rate, bit_depth, channels, source_format, lossy_source, dc_offset) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtClass = $pdo->prepare("REPLACE INTO classification (file_id, ucs_category, ucs_subcategory, group_name, subgroup, timbre, acoustic_types, instrument_family, reason, alt_1_group, alt_1_sub, alt_2_group, alt_2_sub, alt_3_group, alt_3_sub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtSpec = $pdo->prepare("REPLACE INTO spectral_features (file_id, root_mean_square_level, crest_factor, complexity, spectral_centroid_hz, spectral_rolloff_hz, spectral_flatness, harmonicity, total_harmonic_distortion, clipping_density) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmtMusic = $pdo->prepare("REPLACE INTO musicality (file_id, pitch_hz, root_note_name, root_midi_note, root_cents_offset, beats_per_minute) VALUES (?, ?, ?, ?, ?, ?)");
     $stmtEnv = $pdo->prepare("REPLACE INTO envelope (file_id, transient_count, attack_seconds, decay_seconds, sustain_level, release_seconds, temporal_centroid, shape) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $idStmt = $pdo->prepare("SELECT id FROM audio_files WHERE filename = ? AND folder_path = ?");
+    $idStmt = $pdo->prepare("SELECT id FROM audio_files WHERE filename = ? AND path_id = ?");
 
     $stored = 0;
     $skipped = 0;
+    // Directories repeat thousands of times across one upload, so resolve each
+    // one to its row id once per request instead of round-tripping per file.
+    $pathIds = [];
 
     foreach ($data as $record) {
         $meta = $record['metadata'] ?? [];
         if (!isset($meta['name'])) { $skipped++; continue; }
 
-        // The folder comes from `metadata.folder`, which is what the analyzer
-        // actually populates with it.
+        // The directory comes from `metadata.path` — the FULL path the analyzer
+        // walked — so a file keeps one identity no matter which folder a scan
+        // started from. `metadata.folder` is only ever relative to the scan
+        // root, which is why one library scanned from two different levels
+        // produced two complete sets of rows instead of updating in place.
         //
-        // This used to be dirname($meta['name']) — but `name` is a bare
-        // filename, never a path, so dirname() returned "." for every record
-        // ever uploaded. Combined with UNIQUE KEY (filename, folder_path) that
-        // made every same-named file in the library overwrite every other one:
-        // the row count tracked distinct FILENAMES, not files scanned, and a
-        // library of 200k samples collapsed to 34k rows with no error anywhere.
-        $filename = basename($meta['name']);
-        $folder = $meta['folder'] ?? '';
-        if ($folder === '' && !empty($meta['path'])) {
-            $folder = dirname(str_replace('\\', '/', $meta['path']));
+        // (Before that it was dirname($meta['name']), and `name` is a bare
+        // filename, so dirname() returned "." for every record ever uploaded —
+        // making every same-named file overwrite every other one.)
+        $filename = basename(str_replace('\\', '/', $meta['name']));
+        $fullPath = str_replace('\\', '/', (string)($meta['path'] ?? ''));
+        $directory = $fullPath !== '' ? dirname($fullPath) : '';
+        if ($directory === '' || $directory === '.') {
+            // No usable full path: fall back to the scan-relative folder so the
+            // record still lands somewhere findable rather than being dropped.
+            $directory = (string)($meta['folder'] ?? '');
+            if ($directory === '' || $directory === '.') $directory = '(unknown path)';
         }
-        if ($folder === '' || $folder === '.') $folder = '(root)';
         $version = $meta['analyzer_version'] ?? null;
 
-        $stmtAudio->execute([$filename, $folder, $version]);
+        // Intern the directory. Cached per request, so a 250-file batch out of
+        // one folder costs a single lookup rather than 250.
+        if (!isset($pathIds[$directory])) {
+            $pathKey = hash('sha256', $directory);
+            $stmtPathAdd->execute([mb_substr($directory, 0, 1024), $pathKey]);
+            $stmtPathFind->execute([$pathKey]);
+            $foundPathId = $stmtPathFind->fetchColumn();
+            $stmtPathFind->closeCursor();
+            if (!$foundPathId) { $skipped++; continue; }
+            $pathIds[$directory] = $foundPathId;
+        }
+        $pathId = $pathIds[$directory];
+
+        $stmtAudio->execute([$filename, $pathId, $version]);
         // Retrieve the ID. Since we used ON DUPLICATE KEY UPDATE, lastInsertId might be 0 if it was an update.
         // We can select it to be safe.
         //
@@ -97,7 +118,7 @@ try {
         // it by handing every record a fresh cursor; hoisting the prepare for speed
         // without freeing the cursor is what broke multi-record uploads — a batch of
         // one worked, a batch of two did not.
-        $idStmt->execute([$filename, $folder]);
+        $idStmt->execute([$filename, $pathId]);
         $file_id = $idStmt->fetchColumn();
         $idStmt->closeCursor();
         if (!$file_id) { $skipped++; continue; }
@@ -109,7 +130,13 @@ try {
             $meta['bit_depth'] ?? null,
             $meta['channels'] ?? null,
             $meta['source_format'] ?? null,
-            $meta['lossy_source'] ?? null,
+            // Cast to int. PDO binds a PHP bool as a STRING, so `false` arrives
+            // as '' — which a server running STRICT_TRANS_TABLES rejects
+            // outright ("Incorrect integer value: '' for column
+            // lossy_source"), failing the whole batch. The production host
+            // happens to run non-strict and silently coerced '' to 0, so this
+            // only ever looked fine by accident.
+            isset($meta['lossy_source']) ? ($meta['lossy_source'] ? 1 : 0) : null,
             $meta['dc_offset'] ?? null
         ]);
 

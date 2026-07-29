@@ -42,21 +42,58 @@ try {
     $pdo->exec("DROP TABLE IF EXISTS classification");
     $pdo->exec("DROP TABLE IF EXISTS metadata");
     $pdo->exec("DROP TABLE IF EXISTS audio_files");
+    $pdo->exec("DROP TABLE IF EXISTS paths");
     $pdo->exec("DROP TABLE IF EXISTS peaks"); // the old table
-    
-    // 2. Create the audio_files table (parent)
+
+    // 2. Create the paths table.
+    //
+    // One row per DIRECTORY, holding the full path as the analyzer saw it, so a
+    // player can reconstruct exactly where a sound lives:
+    // CONCAT(paths.full_path, '/', audio_files.filename).
+    //
+    // It is its own table because a library stores thousands of files per
+    // folder, and repeating a 200-character directory string on every one of
+    // them is most of the row. Interning it once also makes "everything under
+    // this folder" an indexed lookup instead of a LIKE over the whole set.
+    //
+    // path_key is a SHA-256 of full_path and is what carries the UNIQUE index.
+    // InnoDB caps an index key at 3072 bytes and utf8mb4 costs 4 bytes per
+    // character, so a VARCHAR(1024) column cannot be indexed whole; a 255-char
+    // PREFIX index would silently treat two paths agreeing in their first 255
+    // characters as the same folder, which is exactly what deep sample-library
+    // trees look like. Hashing compares the path in full at 64 ascii bytes.
+    $pdo->exec("
+        CREATE TABLE paths (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            full_path VARCHAR(1024) NOT NULL,
+            path_key CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_path_key (path_key),
+            KEY idx_full_path (full_path(255))
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    ");
+
+    // 3. Create the audio_files table (parent)
+    //
+    // Identity is (filename, path_id) against the FULL path. It used to be
+    // (filename, folder_path) where folder_path was relative to whatever
+    // directory the scan started from — so the same file scanned from a
+    // different root was a different row, and one library scanned twice from
+    // two levels produced two complete sets of rows.
     $pdo->exec("
         CREATE TABLE audio_files (
             id INT AUTO_INCREMENT PRIMARY KEY,
             filename VARCHAR(255) NOT NULL,
-            folder_path VARCHAR(1024) NOT NULL,
+            path_id INT NOT NULL,
             analyzer_version VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE KEY (filename, folder_path(255))
+            UNIQUE KEY uq_file (filename, path_id),
+            KEY idx_path (path_id),
+            FOREIGN KEY (path_id) REFERENCES paths(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
 
-    // 3. Create metadata table
+    // 4. Create metadata table
     $pdo->exec("
         CREATE TABLE metadata (
             file_id INT PRIMARY KEY,
@@ -71,7 +108,7 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
 
-    // 4. Create classification table
+    // 5. Create classification table
     $pdo->exec("
         CREATE TABLE classification (
             file_id INT PRIMARY KEY,
@@ -93,7 +130,7 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
 
-    // 5. Create spectral_features table
+    // 6. Create spectral_features table
     $pdo->exec("
         CREATE TABLE spectral_features (
             file_id INT PRIMARY KEY,
@@ -110,7 +147,7 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
 
-    // 6. Create musicality table
+    // 7. Create musicality table
     $pdo->exec("
         CREATE TABLE musicality (
             file_id INT PRIMARY KEY,
@@ -123,7 +160,7 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
 
-    // 7. Create envelope table
+    // 8. Create envelope table
     $pdo->exec("
         CREATE TABLE envelope (
             file_id INT PRIMARY KEY,
