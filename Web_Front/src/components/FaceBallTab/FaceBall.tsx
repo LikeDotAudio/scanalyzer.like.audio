@@ -75,7 +75,16 @@ interface Props {
   pull: number;
   /** Wireframe brightness, 0..2. See `Wireframe`. */
   outline: number;
+  /** Face-marker brightness, 0..2 — how loudly the category patches read. */
+  categoryIntensity: number;
   axes: [string, string, string];
+  /** Per-axis direction. -1 flips that axis; a feature's "up" is a convention,
+   *  and flipping one is often what opens a squashed scatter out. */
+  axisSigns: [1 | -1, 1 | -1, 1 | -1];
+  /** Which features weight the face corners; 'Off' disables corner placement. */
+  cornerScheme: string;
+  /** 0 = plain tangent-plane scatter, 1 = fully corner-weighted. */
+  cornerPull: number;
   /** Faces to draw; empty means all. */
   visibleFaces: Set<number>;
   colorBy: ColorMode;
@@ -188,14 +197,23 @@ function FaceMarkers({
 }
 
 /** The samples, one instanced sphere each. */
-function Samples({ data, selectedItem, onSelect, pull, axes, visibleFaces, colorBy }: Props) {
+function Samples({
+  data, selectedItem, onSelect, pull, axes, axisSigns, visibleFaces, colorBy,
+  cornerScheme, cornerPull,
+}: Props) {
   const solid = useMemo(() => truncatedIcosahedron(), []);
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
   const { positions, colors, items } = useMemo(() => {
-    const nx = normalizer(data, axes[0]);
-    const ny = normalizer(data, axes[1]);
-    const nz = normalizer(data, axes[2]);
+    const nx = normalizer(data, axes[0], axisSigns[0]);
+    const ny = normalizer(data, axes[1], axisSigns[1]);
+    const nz = normalizer(data, axes[2], axisSigns[2]);
+    // Corner weighting: one normalizer per corner feature, mapped to 0..1 so a
+    // weight is never negative — a corner can attract or not attract, but it
+    // cannot repel, or the weighted average stops being inside the face.
+    const cornerFeatures = (CORNER_SCHEMES[cornerScheme] ?? []).filter((f) => AXES[f]);
+    const cornerNorms = cornerFeatures.map((f) => normalizer(data, f));
+    const useCorners = cornerPull > 0 && cornerNorms.length > 0;
     const positions: THREE.Vector3[] = [];
     const colors: THREE.Color[] = [];
     const items: any[] = [];
@@ -209,16 +227,44 @@ function Samples({ data, selectedItem, onSelect, pull, axes, visibleFaces, color
       // Free position: the plain acoustic scatter, unchanged from the 3D cloud.
       const free = new THREE.Vector3(a * FREE_SPAN * 0.5, b * FREE_SPAN * 0.5, c * FREE_SPAN * 0.5);
       // Anchored position: on the face's tangent plane, floating by the 3rd axis.
-      const anchored = v3(face.center).multiplyScalar(R + c * FACE_DEPTH)
+      let anchored = v3(face.center).multiplyScalar(R + c * FACE_DEPTH)
         .add(v3(face.tangentU).multiplyScalar(a * FACE_SPREAD))
         .add(v3(face.tangentV).multiplyScalar(b * FACE_SPREAD));
+
+      // Corner attraction. The face's own 5 or 6 corners each carry a feature;
+      // the sample sits at their weighted average, so its place within the face
+      // says which quality dominates it. Blended with the tangent scatter by
+      // `cornerPull` so the two placements can be mixed rather than swapped.
+      if (useCorners) {
+        const corners = face.corners;
+        let wx = 0, wy = 0, wz = 0, wsum = 0;
+        for (let k = 0; k < corners.length; k++) {
+          const norm = cornerNorms[k % cornerNorms.length];
+          // −1..1 → 0..1, then squared so a dominant feature really dominates
+          // instead of every corner pulling nearly equally.
+          const t = (norm(it) + 1) / 2;
+          const w = t * t;
+          const cv = solid.vertices[corners[k]];
+          wx += cv[0] * w; wy += cv[1] * w; wz += cv[2] * w; wsum += w;
+        }
+        if (wsum > 1e-9) {
+          // Weighted direction, carried out to the same shell the face sits on
+          // (plus the 3rd axis float) so corner placement and tangent placement
+          // live at the same radius and blend cleanly.
+          const dir = new THREE.Vector3(wx / wsum, wy / wsum, wz / wsum);
+          if (dir.lengthSq() > 1e-12) {
+            const cornered = dir.normalize().multiplyScalar(R + c * FACE_DEPTH);
+            anchored = anchored.lerp(cornered, Math.min(1, cornerPull));
+          }
+        }
+      }
 
       positions.push(free.lerp(anchored, pull));
       colors.push(new THREE.Color(sampleColor(it, colorBy, fi)));
       items.push(it);
     }
     return { positions, colors, items };
-  }, [data, pull, axes, visibleFaces, solid, colorBy]);
+  }, [data, pull, axes, axisSigns, visibleFaces, solid, colorBy, cornerScheme, cornerPull]);
 
   // Write the instance transforms and colours BEFORE the first paint.
   //
